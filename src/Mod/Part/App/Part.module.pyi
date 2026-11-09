@@ -7,8 +7,6 @@ that is implemented in the Part application module. Helper aliases and simple
 module-level declarations that the callable surface depends on live here.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict, overload
 

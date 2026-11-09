@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui._MDIView`` PyCXX type."""
 
-from __future__ import annotations
-
 from typing import Literal, TypeAlias, overload
 
 from Base.Metadata import deprecated

@@ -70,5 +70,46 @@ class DrawViewPartTest(unittest.TestCase):
         self.assertEqual(lineFormat["visible"], visible)
         self.assertEqual(len(view.GeomFormats), 0)
 
+    def checkUndoRestores(self, make, remove, items):
+        doc = FreeCAD.ActiveDocument
+        doc.UndoMode = 1
+        doc.openTransaction("Add")
+        tag = make()
+        doc.commitTransaction()
+        doc.openTransaction("Remove")
+        remove(tag)
+        doc.commitTransaction()
+        self.assertEqual(len(items()), 0)
+
+        doc.undo()
+        self.assertEqual([item.Tag for item in items()], [tag])
+
+        doc.redo()
+        self.assertEqual(len(items()), 0)
+
+    def testUndoRemoveCosmeticEdge(self):
+        view = self.view
+        self.checkUndoRestores(
+            lambda: view.makeCosmeticLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 10, 0)),
+            view.removeCosmeticEdge,
+            lambda: view.CosmeticEdges,
+        )
+
+    def testUndoRemoveCosmeticVertex(self):
+        view = self.view
+        self.checkUndoRestores(
+            lambda: view.makeCosmeticVertex(FreeCAD.Vector(1, 1, 0)),
+            view.removeCosmeticVertex,
+            lambda: view.CosmeticVertexes,
+        )
+
+    def testUndoRemoveCenterLine(self):
+        view = self.view
+        self.checkUndoRestores(
+            lambda: view.makeCenterLine(["Face0"], 0),
+            view.removeCenterLine,
+            lambda: view.CenterLines,
+        )
+
 if __name__ == "__main__":
     unittest.main()

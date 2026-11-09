@@ -7,8 +7,6 @@ This source-adjacent stub file carries the manual import/export helpers for
 OCAF-backed CAD formats together with the DXF utility surface.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict, overload
 

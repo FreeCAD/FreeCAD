@@ -6,8 +6,6 @@ This source-adjacent stub file carries the FEM mesh file I/O helpers and the
 VTK-backed result utilities exposed directly by the Fem application module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import overload
 

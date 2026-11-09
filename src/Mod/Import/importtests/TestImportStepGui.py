@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2024 Werner Mayer <wmayer[at]users.sourceforge.net>
+# SPDX-FileCopyrightText: 2024 Werner Mayer
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################

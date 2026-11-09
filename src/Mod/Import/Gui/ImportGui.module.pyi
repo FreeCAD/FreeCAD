@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 """Typed public signatures for the ``ImportGui`` module helpers.
 
 This source-adjacent stub file carries the GUI-assisted import/export helpers,
 their option dictionaries, and the DXF inspection utilities.
 """
-
-from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict

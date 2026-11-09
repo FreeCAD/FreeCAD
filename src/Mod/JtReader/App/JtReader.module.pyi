@@ -6,8 +6,6 @@ This source-adjacent stub file carries the JT file reader helpers exposed
 directly by the JtReader application module.
 """
 
-from __future__ import annotations
-
 def read(name: str, /) -> None:
     """Read one JT file through the reader backend without returning public geometry."""
 

@@ -1530,7 +1530,11 @@ void TaskMassProperties::saveResult()
     auto group = freecad_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
 
     if (!group || !group->isValid()) {
-        group = doc->addObject<App::DocumentObjectGroup>("Measurements");
+        group = doc->addObject<App::DocumentObjectGroup>(
+            "Measurements",
+            true,
+            "MeasureGui::ViewProviderMeasureGroup"
+        );
     }
 
     auto* obj = doc->addObject("Measure::Result", "MassProperties");

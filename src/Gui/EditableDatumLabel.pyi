@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, Callable, Optional, Tuple, overload
 
 from Base.Metadata import class_declarations, export

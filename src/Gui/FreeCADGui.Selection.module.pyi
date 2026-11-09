@@ -6,8 +6,6 @@ This file keeps both the function surface and the lightweight helper types
 close to the GUI selection implementation.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from enum import IntEnum
 from typing import Protocol, overload

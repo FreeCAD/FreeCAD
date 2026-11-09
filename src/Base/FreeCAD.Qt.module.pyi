@@ -6,8 +6,6 @@ These helpers are surfaced as a small Python module. The noop variants return
 their source text unchanged while still marking strings for translation tools.
 """
 
-from __future__ import annotations
-
 from Base.Metadata import callback, module
 from typing import TypeVar
 

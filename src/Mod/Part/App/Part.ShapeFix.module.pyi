@@ -6,8 +6,6 @@ This source-adjacent stub file carries the standalone shape-fixing helpers
 exposed directly by the Part ShapeFix submodule.
 """
 
-from __future__ import annotations
-
 from Part import Shape
 
 def sameParameter(shape: Shape, enforce: bool, prec: float = 0.0, /) -> bool:
