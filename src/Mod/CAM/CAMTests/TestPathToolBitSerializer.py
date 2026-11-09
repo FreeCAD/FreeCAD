@@ -81,6 +81,15 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase, PathTestWith
         for substring in expected_substrings:
             self.assertIn(substring, serialized_data)
 
+    def test_serialize_ball_end_shapes(self):
+        """A ball end and a lollipop both go to CAMotics as Ballnose."""
+        for bit_id in ("6mm_Ball_End", "250_Lollipop"):
+            with self.subTest(bit=bit_id):
+                serialized_data = self.serializer_class.serialize(
+                    self.assets.get(f"toolbit://{bit_id}")
+                )
+                self.assertIn(b'"shape": "Ballnose"', serialized_data)
+
     def test_deserialize(self):
         # Create a known serialized data string based on the Camotics format
         camotics_data = (

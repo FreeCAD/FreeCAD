@@ -72,6 +72,10 @@ class ToolBitShape(Asset):
     # NOTE: Subtypes are set dynamically from the shape_aliases.json file.
     subtypes: Tuple[str, ...] = tuple()
 
+    # True for shapes that cut with a ball, which the surface operations,
+    # OCL and CAMotics model as a ball end.
+    ball_end: bool = False
+
     def __init__(self, id: str, **kwargs: Any):
         """
         Initialize the shape.
@@ -518,6 +522,12 @@ class ToolBitShape(Asset):
             ):
                 return thecls
         return default
+
+    @classmethod
+    def is_ball_end(cls, name: str) -> bool:
+        """Whether the shape with this name, alias or subtype cuts with a ball."""
+        shape_class = ToolBitShape.get_subclass_by_name(name or "")
+        return bool(shape_class and shape_class.ball_end)
 
     @classmethod
     def guess_subclass_from_name(

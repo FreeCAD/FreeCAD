@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "3/8in Keyway",
+  "shape": "keyway.fcstd",
+  "shape-type": "Keyway",
+  "parameter": {
+    "CuttingEdgeHeight": "0.1250 in",
+    "Diameter": "0.3750 in",
+    "Flutes": "2",
+    "Length": "2.0000 in",
+    "LowerCuttingHeight": "0.1250 in",
+    "NeckCuttingHeight": "0.0000 in",
+    "NeckDiameter": "0.1875 in",
+    "NeckHeight": "0.3750 in",
+    "ShankDiameter": "0.2500 in",
+    "Units": "Imperial"
+  },
+  "attribute": {}
+}
