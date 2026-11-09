@@ -1113,8 +1113,8 @@ class PostProcessDialog:
                     translate("CAM_Post", "Generate Output"),
                     translate(
                         "CAM_Post",
-                        "Could not load post-processor '{}'.".format(postprocessor_name),
-                    ),
+                        "Could not load post-processor '{}'.",
+                    ).format(postprocessor_name),
                 )
                 return
 

@@ -46,7 +46,13 @@ class ToolBitTaperedBallNose(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
         taper_angle = self.get_property_str("TaperAngle", "?", precision=1)
 
-        return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge",
+        return (
+            FreeCAD.Qt.translate(
+                "CAM",
+                "{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge",
+            )
+            .replace("{diameter}", str(diameter))
+            .replace("{taper_angle}", str(taper_angle))
+            .replace("{flutes}", str(flutes))
+            .replace("{cutting_edge_height}", str(cutting_edge_height))
         )

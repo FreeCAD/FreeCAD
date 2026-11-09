@@ -96,7 +96,7 @@ class CAMoticsUI:
                     outputfile.write(text)
             except IOError:
                 QtGui.QMessageBox.information(
-                    self, translate("Path", "Unable to open file: {}".format(filename))
+                    self, translate("Path", "Unable to open file: {}").format(filename)
                 )
 
         return filename

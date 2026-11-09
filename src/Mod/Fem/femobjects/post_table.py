@@ -36,6 +36,8 @@ from femguiutils.vtk_module_handling import vtk_module_handling
 
 vtk_module_handling()
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 from . import base_fempostextractors
 from . import base_fempostvisualizations
 from . import post_extract1D
@@ -44,7 +46,14 @@ from femguiutils import post_visualization
 
 # register visualization and extractors
 post_visualization.register_visualization(
-    "Table", ":/icons/FEM_PostSpreadsheet.svg", "ObjectsFem", "makePostTable"
+    "Table",
+    ":/icons/FEM_PostSpreadsheet.svg",
+    "ObjectsFem",
+    "makePostTable",
+    menu_text=QT_TRANSLATE_NOOP("FEM_PostVisualizationTable", "Create Table"),
+    tooltip=QT_TRANSLATE_NOOP(
+        "FEM_PostVisualizationTable", "Create a Table post processing data visualization"
+    ),
 )
 
 post_visualization.register_extractor(

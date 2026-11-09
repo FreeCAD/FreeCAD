@@ -36,6 +36,8 @@ from femguiutils.vtk_module_handling import vtk_module_handling
 
 vtk_module_handling()
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 from . import base_fempostextractors
 from . import base_fempostvisualizations
 from . import post_extract1D
@@ -44,7 +46,14 @@ from femguiutils import post_visualization
 
 # register visualization and extractors
 post_visualization.register_visualization(
-    "Histogram", ":/icons/FEM_PostHistogram.svg", "ObjectsFem", "makePostHistogram"
+    "Histogram",
+    ":/icons/FEM_PostHistogram.svg",
+    "ObjectsFem",
+    "makePostHistogram",
+    menu_text=QT_TRANSLATE_NOOP("FEM_PostVisualizationHistogram", "Create Histogram"),
+    tooltip=QT_TRANSLATE_NOOP(
+        "FEM_PostVisualizationHistogram", "Create a Histogram post processing data visualization"
+    ),
 )
 
 post_visualization.register_extractor(
