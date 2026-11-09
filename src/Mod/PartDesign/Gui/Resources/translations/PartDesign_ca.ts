@@ -206,17 +206,17 @@ de manera que s'evita l'autointersecció.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2903"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2904"/>
+      <location filename="../../Command.cpp" line="2873"/>
       <source>Boolean Operation</source>
       <translation>Operació booleana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2905"/>
+      <location filename="../../Command.cpp" line="2874"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Aplica operacions booleanes amb els objectes seleccionats, i activa el cos</translation>
     </message>
@@ -494,17 +494,17 @@ de manera que s'evita l'autointersecció.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2772"/>
+      <location filename="../../Command.cpp" line="2741"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2773"/>
+      <location filename="../../Command.cpp" line="2742"/>
       <source>Multi-Transform</source>
       <translation>Transformació múltiple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2774"/>
+      <location filename="../../Command.cpp" line="2743"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Aplica transformacions múltiples a les característiques seleccionades o al cos actiu</translation>
     </message>
@@ -602,17 +602,17 @@ de manera que s'evita l'autointersecció.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2667"/>
+      <location filename="../../Command.cpp" line="2636"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2668"/>
+      <location filename="../../Command.cpp" line="2637"/>
       <source>Polar Pattern</source>
       <translation>Patró polar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2669"/>
+      <location filename="../../Command.cpp" line="2638"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplica les característiques seleccionades o el cos actiu en un patró circular</translation>
     </message>
@@ -638,17 +638,17 @@ de manera que s'evita l'autointersecció.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2729"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2730"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Scale</source>
       <translation>Escala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2700"/>
       <source>Scales the selected features or the active body</source>
       <translation>Escala les característiques seleccionades o el cos actiu</translation>
     </message>
@@ -905,7 +905,7 @@ de manera que s'evita l'autointersecció.</translation>
       <translation>Fer còpia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2827"/>
+      <location filename="../../Command.cpp" line="2796"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Converteix a la funció Multi-Transform</translation>
     </message>
@@ -926,7 +926,7 @@ de manera que s'evita l'autointersecció.</translation>
       <translation>Croquis nou</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2924"/>
+      <location filename="../../Command.cpp" line="2893"/>
       <source>Create Boolean</source>
       <translation>Crea booleà</translation>
     </message>
@@ -3397,64 +3397,70 @@ mesurada al llarg de la direcció especificada</translation>
   <context>
     <name>PartDesignGui::TaskTransformedParameters</name>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="111"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="112"/>
       <source>Remove</source>
       <translation>Eliminar</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="417"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="445"/>
       <source>Normal sketch axis</source>
       <translation>Eix normal al croquis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="416"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <source>Vertical sketch axis</source>
       <translation>Eix vertical de croquis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="415"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="423"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="509"/>
+      <source>No reference</source>
+      <translation>Sense referència</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="433"/>
       <source>Horizontal sketch axis</source>
       <translation>Eix horitzontal de croquis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="419"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="455"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="449"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="529"/>
       <source>Construction line %1</source>
       <translation>Construcció línia %1</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="433"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="466"/>
       <source>Base X-axis</source>
       <translation>Eix base X</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="434"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="472"/>
       <source>Base Y-axis</source>
       <translation>Eix base Y</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="435"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="478"/>
       <source>Base Z-axis</source>
       <translation>Eix base Z</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="469"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="551"/>
       <source>Base XY-plane</source>
       <translation>Pla XY base</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="470"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="557"/>
       <source>Base YZ-plane</source>
       <translation>Pla YZ base</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="471"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="563"/>
       <source>Base XZ-plane</source>
       <translation>Pla XZ base</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="443"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="479"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="491"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="576"/>
       <source>Select reference…</source>
       <translation>Seleccionar referència…</translation>
     </message>
@@ -3580,11 +3586,11 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>Esbossos no vàlids en aquest document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1194"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ja hi ha un diàleg obert al panell de tasques</translation>
     </message>
@@ -3629,37 +3635,6 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>Cap dibuix està disponible en el document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../ViewProvider.cpp" line="165"/>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <source>Close this dialog?</source>
-      <translation>Tancar aquest diàleg?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1876"/>
-      <location filename="../../Command.cpp" line="1911"/>
-      <source>Wrong selection</source>
-      <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1877"/>
-      <source>Select an edge, face, or body from a single body.</source>
-      <translation>Seleccioneu una aresta, una cara o un cos d'un sol cos.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1884"/>
-      <location filename="../../Command.cpp" line="2335"/>
-      <source>Selection is not in the active body</source>
-      <translation>La selecció no és en un cos actiu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1912"/>
-      <source>Shape of the selected part is empty</source>
-      <translation>La forma de la peça seleccionada és buida</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2085"/>
       <location filename="../../Command.cpp" line="2113"/>
       <source>Wrong Selection</source>
@@ -3695,6 +3670,37 @@ mesurada al llarg de la direcció especificada</translation>
       <location filename="../../Command.cpp" line="2336"/>
       <source>Select only one feature in an active body.</source>
       <translation>Seleccioneu només una característica d'un cos actiu.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="165"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <source>Close this dialog?</source>
+      <translation>Tancar aquest diàleg?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1876"/>
+      <location filename="../../Command.cpp" line="1911"/>
+      <source>Wrong selection</source>
+      <translation>Selecció incorrecta</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1877"/>
+      <source>Select an edge, face, or body from a single body.</source>
+      <translation>Seleccioneu una aresta, una cara o un cos d'un sol cos.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="2335"/>
+      <source>Selection is not in the active body</source>
+      <translation>La selecció no és en un cos actiu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1912"/>
+      <source>Shape of the selected part is empty</source>
+      <translation>La forma de la peça seleccionada és buida</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
@@ -3896,14 +3902,14 @@ Això pot portar a resultats inesperats.</translation>
       <translation>No és possible crear un pla Sustractiu sense una base pla disponible</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="452"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="519"/>
       <source>Vertical sketch axis</source>
       <translation>Eix vertical de croquis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="453"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="525"/>
       <source>Horizontal sketch axis</source>
       <translation>Eix horitzontal de croquis</translation>
     </message>
@@ -3957,9 +3963,9 @@ Per a documents llegats amb objectes PartDesign que no tinguin cos, utilitzeu la
       <translation>Per utilitzar aquesta característica cal que pertanyen a un objecte de part del document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="121"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
+      <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
@@ -4950,23 +4956,23 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <translation>No pots fer una operació booleana amb una forma de base invàlida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <location filename="../../../App/FeatureHelix.cpp" line="419"/>
       <location filename="../../../App/FeatureHelix.cpp" line="435"/>
       <location filename="../../../App/FeatureHelix.cpp" line="453"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>El resultat té sòlids múltiples: habiliteu 'Permetre Compost' al cos activat.</translation>
     </message>
@@ -5001,11 +5007,11 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <translation>L'extrusió fusionada resultant és nul·la.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
       <location filename="../../../App/FeatureLoft.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma resultant no és un sòlid</translation>
     </message>
@@ -5081,8 +5087,8 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <translation>La creació ha fallat perquè la direcció és ortogonal al vector normal del croquis</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="528"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
       <source>Creating a face from sketch failed</source>
       <translation>La creació de la cara del croquis ha fallat</translation>
     </message>
@@ -5403,8 +5409,8 @@ No es permet la intersecció d'entitats o múltiples cares d'un croquis.</transl
       <translation>No pots sostreure una característica primitiva sense una característica base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <location filename="../../../App/FeatureLoft.cpp" line="408"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Failed to perform boolean operation</source>
       <translation>No s'ha pogut realitzar l'operació booleana</translation>
     </message>
@@ -5651,12 +5657,12 @@ No es permet la intersecció d'entitats o múltiples cares d'un croquis.</transl
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2971"/>
+      <location filename="../../Command.cpp" line="2940"/>
       <source>Create Datum</source>
       <translation>Crear referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2972"/>
+      <location filename="../../Command.cpp" line="2941"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crea un objecte de referència o un sistema de coordenades local</translation>
     </message>
@@ -5664,12 +5670,12 @@ No es permet la intersecció d'entitats o múltiples cares d'un croquis.</transl
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="3006"/>
+      <location filename="../../Command.cpp" line="2975"/>
       <source>Create Datum</source>
       <translation>Crear referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3007"/>
+      <location filename="../../Command.cpp" line="2976"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crea un objecte de referència o un sistema de coordenades local</translation>
     </message>
@@ -5898,32 +5904,32 @@ No es permet la intersecció d'entitats o múltiples cares d'un croquis.</transl
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="434"/>
+      <location filename="../../TaskPatternParameters.cpp" line="438"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Seleccioneu un croquis o una forma que contingui els punts del patró</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="440"/>
+      <location filename="../../TaskPatternParameters.cpp" line="444"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Seleccioneu un croquis, una subforma enllaçada o una vora de trajectòria</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="449"/>
+      <location filename="../../TaskPatternParameters.cpp" line="453"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Seleccioneu una direcció de referència (vora, cara, línia de referència)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="513"/>
+      <location filename="../../TaskPatternParameters.cpp" line="517"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Selecció invàlida. Seleccioneu un croquis o una forma que contingui punts.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="516"/>
+      <location filename="../../TaskPatternParameters.cpp" line="520"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Selecció invàlida. Seleccioneu un croquis, una subforma enllaçada o una vora de trajectòria.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="518"/>
+      <location filename="../../TaskPatternParameters.cpp" line="522"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Selecció invàlida. Seleccioneu una vora, cara planar o línia de referència.</translation>
     </message>
@@ -5949,6 +5955,69 @@ No es permet la intersecció d'entitats o múltiples cares d'un croquis.</transl
       <location filename="../../TaskDefeaturingParameters.cpp" line="118"/>
       <source>Empty defeaturing created</source>
       <translation>S'ha creat una supressió de característiques buida</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation>Paràmetres de la supressió de característiques</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation>Paràmetres del patró de punts</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation>Editar patró de punts</translation>
+    </message>
+  </context>
+  <context>
+    <name>BooleanToolSelection</name>
+    <message>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation>El cos resultant no es pot utilitzar com a eina booleana.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation>Edita el patró de trajectòria</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation>Paràmetres del patró de trajectòria</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Error d'entrada</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation>Editar patró circular</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation>Paràmetres del patró circular</translation>
     </message>
   </context>
   <context>
@@ -6008,40 +6077,19 @@ No es permet la intersecció d'entitats o múltiples cares d'un croquis.</transl
   <context>
     <name>CmdPartDesignPointPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2627"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Point Pattern</source>
       <translation>Patró de punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
       <translation>Duplica les característiques seleccionades o el cos actiu als punts d'una forma</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderDefeaturing</name>
-    <message>
-      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
-      <source>Defeaturing Parameters</source>
-      <translation>Paràmetres de la supressió de característiques</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPathPattern</name>
-    <message>
-      <location filename="../../ViewProviderPathPattern.h" line="18"/>
-      <source>Path Pattern Parameters</source>
-      <translation>Paràmetres del patró de trajectòria</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
-      <source>Edit Path Pattern</source>
-      <translation>Edita el patró de trajectòria</translation>
     </message>
   </context>
   <context>
@@ -6067,48 +6115,6 @@ Adjust the parameters and try again.</source>
       <translation>No s'ha pogut crear la característica amb els paràmetres indicats.
 Potser la geometria no és vàlida o els paràmetres són incompatibles.
 Ajusteu els paràmetres i torneu-ho a provar.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Error d'entrada</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderCircularPattern</name>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
-      <source>Circular Pattern Parameters</source>
-      <translation>Paràmetres del patró circular</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
-      <source>Edit Circular Pattern</source>
-      <translation>Editar patró circular</translation>
-    </message>
-  </context>
-  <context>
-    <name>BooleanToolSelection</name>
-    <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
-      <source>The result Body cannot be used as a Boolean tool.</source>
-      <translation>El cos resultant no es pot utilitzar com a eina booleana.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPointPattern</name>
-    <message>
-      <location filename="../../ViewProviderPointPattern.h" line="18"/>
-      <source>Point Pattern Parameters</source>
-      <translation>Paràmetres del patró de punts</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
-      <source>Edit Point Pattern</source>
-      <translation>Editar patró de punts</translation>
     </message>
   </context>
 </TS>

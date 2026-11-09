@@ -1861,7 +1861,7 @@
     <message>
       <location filename="../../Command.cpp" line="2429"/>
       <source>Project on Surface</source>
-      <translation>Projiciraj na površinu</translation>
+      <translation>Projiciraj</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2430"/>
@@ -2197,7 +2197,7 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation>Kružno umnožavanje spona</translation>
+      <translation>Prstenasto umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2313,7 +2313,7 @@ projekcije.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
-      <translation>Projiciraj na površinu</translation>
+      <translation>Projiciraj</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="213"/>
@@ -4129,7 +4129,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation>Projiciraj na površinu</translation>
+      <translation>Projiciraj</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
@@ -7220,7 +7220,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
-      <translation>Jednostavno</translation>
+      <translation>Jednostavni</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="343"/>
@@ -8052,7 +8052,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="165"/>
       <source>Circular Link Array</source>
-      <translation>Kružno umnožavanje spona</translation>
+      <translation>Prstenasto umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="168"/>
@@ -8092,7 +8092,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="571"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Nema reference</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="577"/>
@@ -8162,12 +8162,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation>Kružno umnožavanje spona</translation>
+      <translation>Prstenasto umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Creates a concentric circular array of linked objects</source>
-      <translation>Napravi umnožavanje po koncentričnim kružnicama spona nekog objekta</translation>
+      <translation>Napravi umnožavanje spona nekog objekta po koncentričnim kružnicama</translation>
     </message>
   </context>
   <context>

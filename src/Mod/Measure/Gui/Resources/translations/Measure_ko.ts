@@ -185,7 +185,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measures a feature</source>
-      <translation type="unfinished">Measures a feature</translation>
+      <translation>특징형상을 측정합니다</translation>
     </message>
   </context>
   <context>

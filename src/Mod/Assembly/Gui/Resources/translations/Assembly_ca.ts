@@ -566,32 +566,32 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
       <translation>Simulació</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="394"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>Radial Translation</source>
       <translation>Translació radial</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="398"/>
       <source>Rotation</source>
       <translation>Rotació</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="400"/>
+      <location filename="../../../CommandCreateView.py" line="401"/>
       <source>Translation</source>
       <translation>Translació</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="988"/>
+      <location filename="../../../CommandCreateView.py" line="989"/>
       <source>Angle of this exploded-view move</source>
       <translation>Angle d'aquest moviment de la vista explotada</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="998"/>
+      <location filename="../../../CommandCreateView.py" line="999"/>
       <source>Distance of this exploded-view move</source>
       <translation>Distància d'aquest moviment de la vista explotada</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <location filename="../../../CommandCreateView.py" line="1039"/>
       <source>Edit placement</source>
       <translation>Edita el posicionament</translation>
     </message>
@@ -726,18 +726,18 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
       <translation>L'objecte a bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="527"/>
-      <location filename="../../../CommandCreateView.py" line="564"/>
+      <location filename="../../../CommandCreateView.py" line="528"/>
+      <location filename="../../../CommandCreateView.py" line="565"/>
       <source>The objects moved by the move</source>
       <translation>Els objectes desplaçats pel moviment</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="539"/>
+      <location filename="../../../CommandCreateView.py" line="540"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Aquest és el desplaçament del moviment. La ubicació final és el resultat de la ubicació inicial * aquesta ubicació.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="548"/>
+      <location filename="../../../CommandCreateView.py" line="549"/>
       <source>The type of the move</source>
       <translation>El tipus de moviment</translation>
     </message>
@@ -1633,6 +1633,24 @@ Nota: actualment només se seleccionen les peces no connectades, no les peces re
     </message>
   </context>
   <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Seleccioneu almenys 2 components per crear un grup rígid</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Crea un grup rígid</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Crea un grup rígid.&lt;/p&gt;&lt;p&gt;Crea un grup rígid que bloqueja permanentment els components seleccionats junts.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1656,24 +1674,6 @@ Nota: actualment només se seleccionen les peces no connectades, no les peces re
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Restaura la instantània</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Seleccioneu almenys 2 components per crear un grup rígid</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Crea un grup rígid</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Crea un grup rígid.&lt;/p&gt;&lt;p&gt;Crea un grup rígid que bloqueja permanentment els components seleccionats junts.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

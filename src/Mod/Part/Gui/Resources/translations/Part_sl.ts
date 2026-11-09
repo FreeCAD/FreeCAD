@@ -4946,7 +4946,7 @@ sicer bo uporabljena normala očrtne ravnine</translation>
     <message>
       <location filename="../../Location.ui" line="247"/>
       <source>Angle</source>
-      <translation>Kot</translation>
+      <translation>Kót</translation>
     </message>
   </context>
   <context>
@@ -5548,7 +5548,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="997"/>
       <source>Vertex</source>
-      <translation>Oglišče</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1086"/>

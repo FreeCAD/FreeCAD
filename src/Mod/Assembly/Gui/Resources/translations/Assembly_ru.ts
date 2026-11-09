@@ -567,32 +567,32 @@ H2 — высота в точке T2 в конце ската.
       <translation>Симуляция</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="394"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>Radial Translation</source>
       <translation>Радиальное перемещение</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="398"/>
       <source>Rotation</source>
       <translation>Поворот</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="400"/>
+      <location filename="../../../CommandCreateView.py" line="401"/>
       <source>Translation</source>
       <translation>Перевод</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="988"/>
+      <location filename="../../../CommandCreateView.py" line="989"/>
       <source>Angle of this exploded-view move</source>
       <translation>Угол этого перемещения во взрыв-сцене</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="998"/>
+      <location filename="../../../CommandCreateView.py" line="999"/>
       <source>Distance of this exploded-view move</source>
       <translation>Расстояние этого перемещения во взрыв-сцене</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <location filename="../../../CommandCreateView.py" line="1039"/>
       <source>Edit placement</source>
       <translation>Редактировать размещение</translation>
     </message>
@@ -727,18 +727,18 @@ H2 — высота в точке T2 в конце ската.
       <translation>Объект для фиксации</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="527"/>
-      <location filename="../../../CommandCreateView.py" line="564"/>
+      <location filename="../../../CommandCreateView.py" line="528"/>
+      <location filename="../../../CommandCreateView.py" line="565"/>
       <source>The objects moved by the move</source>
       <translation>Объекты перемещены инструментом "Переместить"</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="539"/>
+      <location filename="../../../CommandCreateView.py" line="540"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Это ход инструмента "Переместить". Конечное расположение является результатом начального размещения * данного размещения.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="548"/>
+      <location filename="../../../CommandCreateView.py" line="549"/>
       <source>The type of the move</source>
       <translation>Тип перемещения</translation>
     </message>
@@ -1645,6 +1645,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Выберите как минимум 2 компонента для создания жесткой группы</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Создать жесткую группу</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Создать жесткую группу.&lt;/p&gt;&lt;p&gt;Создает жесткую группу, которая постоянно блокирует выбранные компоненты вместе.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1668,24 +1686,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Восстановить снимок</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Выберите как минимум 2 компонента для создания жесткой группы</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Создать жесткую группу</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Создать жесткую группу.&lt;/p&gt;&lt;p&gt;Создает жесткую группу, которая постоянно блокирует выбранные компоненты вместе.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

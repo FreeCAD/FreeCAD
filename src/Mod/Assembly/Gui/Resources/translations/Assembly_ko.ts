@@ -1123,7 +1123,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
       <source>Select a feature to align. Press Esc to cancel.</source>
-      <translation>정렬할 피처를 선택하십시오. Esc를 누르면 취소됩니다.</translation>
+      <translation>정렬할 특징형상을 선택하세요. Esc를 누르면 취소됩니다.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>

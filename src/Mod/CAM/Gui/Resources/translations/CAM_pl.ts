@@ -15304,12 +15304,12 @@ Obsługiwane typy narzędzi: płaskie, kuliste z płaską częścią czołową, 
     <message>
       <location filename="../../../Machine/ui/editor/output_options_layout.py" line="63"/>
       <source>Main Options</source>
-      <translation type="unfinished">Main Options</translation>
+      <translation>Główne opcje</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/output_options_layout.py" line="133"/>
       <source>Processing Options</source>
-      <translation type="unfinished">Processing Options</translation>
+      <translation>Opcje przetwarzania</translation>
     </message>
   </context>
   <context>

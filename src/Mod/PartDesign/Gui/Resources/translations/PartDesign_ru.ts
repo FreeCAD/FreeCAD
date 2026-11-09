@@ -2637,7 +2637,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Start</source>
-      <translation>Запустить</translation>
+      <translation>Тип начала</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
@@ -3057,7 +3057,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Start</source>
-      <translation>Запустить</translation>
+      <translation>Тип начала</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
@@ -4531,7 +4531,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="78"/>
       <source>Start</source>
-      <translation>Запустить</translation>
+      <translation>Тип начала</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="86"/>

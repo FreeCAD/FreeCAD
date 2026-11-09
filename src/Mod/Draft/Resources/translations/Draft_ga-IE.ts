@@ -4573,7 +4573,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="703"/>
       <source>Trimex: move the mouse into the 3D view before typing a value</source>
-      <translation type="unfinished">Trimex: move the mouse into the 3D view before typing a value</translation>
+      <translation>Trimex: bog an luch isteach sa radharc 3D sula gclóscríobhann tú luach</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="714"/>

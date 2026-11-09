@@ -8092,7 +8092,7 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="571"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Nessun riferimento</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="577"/>

@@ -902,8 +902,8 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1666"/>
-      <location filename="../../CommandConstraints.cpp" line="10627"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
+      <location filename="../../CommandConstraints.cpp" line="10627"/>
       <source>Modify sketch constraints</source>
       <translation>ແກ້ໄຂຂໍ້ກຳນົດສະເກັດ</translation>
     </message>
@@ -982,9 +982,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>ເພີ່ມ B-Spline ສະເກັດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
-      <source>Add sketch arc of parabola</source>
-      <translation>ເພີ່ມສ່ວນໂຄ້ງພາລາໂບລາສະເກັດ</translation>
+      <location filename="../../EditTextDialog.cpp" line="115"/>
+      <source>Modify sketch text constraint</source>
+      <translation>ແກ້ໄຂຂໍ້ກຳນົດຂໍ້ຄວາມສະເກັດ</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="131"/>
@@ -992,9 +992,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>ເພີ່ມຂໍ້ຄວາມສະເກັດ</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="115"/>
-      <source>Modify sketch text constraint</source>
-      <translation>ແກ້ໄຂຂໍ້ກຳນົດຂໍ້ຄວາມສະເກັດ</translation>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
+      <source>Add sketch arc of parabola</source>
+      <translation>ເພີ່ມສ່ວນໂຄ້ງພາລາໂບລາສະເກັດ</translation>
     </message>
   </context>
   <context>
@@ -1180,9 +1180,17 @@ invalid constraints, and degenerate geometry</source>
       <translation>ບໍ່ຕ້ອງແນບ</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <location filename="../../CommandSketcherTools.cpp" line="468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1118"/>
       <location filename="../../CommandSketcherTools.cpp" line="1447"/>
@@ -1195,6 +1203,9 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandSketcherTools.cpp" line="2345"/>
       <location filename="../../CommandSketcherTools.cpp" line="2392"/>
       <location filename="../../CommandSketcherTools.cpp" line="2457"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandConstraints.cpp" line="480"/>
       <location filename="../../CommandConstraints.cpp" line="487"/>
       <location filename="../../CommandConstraints.cpp" line="3648"/>
@@ -1298,17 +1309,6 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="10756"/>
       <location filename="../../CommandConstraints.cpp" line="10831"/>
       <location filename="../../CommandConstraints.cpp" line="10843"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="423"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="491"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -1460,9 +1460,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>ຈຳນວນວັດຖຸທີ່ເລືອກບໍ່ແມ່ນ 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1080"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
+      <location filename="../../CommandConstraints.cpp" line="1080"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
@@ -2014,6 +2014,11 @@ invalid constraints, and degenerate geometry</source>
       <translation>ປະຈຸບັນຍັງບໍ່ຮອງຮັບການຍ້າຍເລຂາຄະນິດພາຍນອກໄປຫາຊັ້ນການເບິ່ງເຫັນອື່ນ. ເລຂາຄະນິດພາຍນອກຈະຖືກລະເວັ້ນ.</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
+      <source>Polyline Parameters</source>
+      <translation>ພາຣາມິເຕີຂອງເສັ້ນຕໍ່ເນື່ອງ (Polyline)</translation>
+    </message>
+    <message>
       <location filename="../../DrawSketchHandlerText.h" line="92"/>
       <source>Text</source>
       <translation>ຂໍ້ຄວາມ</translation>
@@ -2043,11 +2048,6 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../DrawSketchHandlerText.h" line="748"/>
       <source>%1 pick bottom-right point</source>
       <translation>%1 ເລືອກຈຸດລຸ່ມຂວາ</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
-      <source>Polyline Parameters</source>
-      <translation>ພາຣາມິເຕີຂອງເສັ້ນຕໍ່ເນື່ອງ (Polyline)</translation>
     </message>
   </context>
   <context>
@@ -4883,39 +4883,39 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1396"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1977"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2414"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1412"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
-      <location filename="../../CommandConstraints.cpp" line="2059"/>
-      <location filename="../../CommandConstraints.cpp" line="2066"/>
-      <location filename="../../CommandConstraints.cpp" line="3987"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1396"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1977"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2414"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
+      <location filename="../../CommandConstraints.cpp" line="2059"/>
+      <location filename="../../CommandConstraints.cpp" line="2066"/>
+      <location filename="../../CommandConstraints.cpp" line="3987"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
@@ -4951,6 +4951,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ຂໍ້ຈຳກັດມີຂໍ້ມູນດັດສະນີທີ່ບໍ່ຖືກຕ້ອງ ແລະ ຜິດຮູບແບບ.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <location filename="../../CommandSketcherTools.cpp" line="1182"/>
       <location filename="../../CommandConstraints.cpp" line="748"/>
       <location filename="../../CommandConstraints.cpp" line="825"/>
@@ -4958,9 +4961,6 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../CommandConstraints.cpp" line="1001"/>
       <location filename="../../CommandConstraints.cpp" line="7298"/>
       <location filename="../../CommandConstraints.cpp" line="7493"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
       <source>Invalid Constraint</source>
       <translation>ຂໍ້ຈຳກັດບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -5024,27 +5024,27 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ບໍ່ສາມາດສ້າງການລົບມຸມມົນ (Fillet) ໄດ້</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="145"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="145"/>
       <source>Failed to add line</source>
       <translation>ບໍ່ສາມາດເພີ່ມເສັ້ນໄດ້</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerScale.h" line="160"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <source>Tool execution aborted</source>
       <translation>ການເຮັດວຽກຂອງເຄື່ອງມືຖືກຍົກເລີກ</translation>
     </message>
@@ -5166,14 +5166,14 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ຊື່ຂໍ້ຈຳກັດບໍ່ຖືກຕ້ອງ (ຕ້ອງມີພຽງແຕ່ຕົວອັກສອນ, ຕົວເລກ ແລະ ເຄື່ອງໝາຍຂີດກາງລຸ່ມ, ແລະ ຫ້າມເລີ່ມຕົ້ນດ້ວຍຕົວເລກ)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
-      <source>Failed to add arc of parabola</source>
-      <translation>ບໍ່ສາມາດເພີ່ມເສັ້ນໂຄ້ງພາຣາໂບລາໄດ້</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerText.h" line="183"/>
       <source>Failed to add text</source>
       <translation>ບໍ່ສາມາດເພີ່ມຂໍ້ຄວາມໄດ້</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
+      <source>Failed to add arc of parabola</source>
+      <translation>ບໍ່ສາມາດເພີ່ມເສັ້ນໂຄ້ງພາຣາໂບລາໄດ້</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="226"/>
@@ -8327,24 +8327,45 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_rotate</name>
+    <name>SketcherGui::EditTextDialog</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <source>Font not found</source>
+      <translation>ບໍ່ພົບຮູບແບບຕົວອັກສອນ (Font)</translation>
+    </message>
+    <message>
+      <location filename="../../EditTextDialog.cpp" line="74"/>
+      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
+      <translation>ບໍ່ພົບຮູບແບບຕົວອັກສອນຕົ້ນສະບັບ '%1' ໃນລະບົບຂອງທ່ານ. ໄດ້ເລືອກຮູບແບບຕົວອັກສອນເລີ່ມຕົ້ນໃຫ້ແລ້ວ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
       <source>Symmetric</source>
       <translation>ສົມມາດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation>ກະຈາຍອົງປະກອບແບບສົມມາດອ້ອມຮອບຕຳແໜ່ງຕົ້ນສະບັບ.</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_p4_rotate</name>
+    <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
       <source>Elements</source>
       <translation>ອົງປະກອບ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>ແຖວ</translation>
     </message>
   </context>
   <context>
@@ -8358,71 +8379,6 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
       <source>Include axes as trim boundaries</source>
       <translation>ຮວມເອົາແກນເປັນຂອບເຂດການຕັດ</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCancelSketch</name>
-    <message>
-      <location filename="../../Command.cpp" line="410"/>
-      <source>Cancel Editing</source>
-      <translation>ຍົກເລີກການແກ້ໄຂ</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="411"/>
-      <source>Leaves 'edit' mode and reverts any changes</source>
-      <translation>ອອກຈາກໂໝດ 'ແກ້ໄຂ' ແລະ ກັບຄືນການປ່ຽນແປງທັງໝົດ</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherLeaveGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Leave</source>
-      <translation>ອອກ</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <source>Leaves the sketch editing mode</source>
-      <translation>ອອກຈາກໂໝດການແກ້ໄຂສະເກັດ (Sketch)</translation>
-    </message>
-  </context>
-  <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
-      <source>Sides</source>
-      <translation>ດ້ານ</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree</source>
-      <translation>ລະດັບຂັ້ນ (Degree)</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_c1_text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
-      <source>Width</source>
-      <translation>ຄວາມກວ້າງ</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="363"/>
-      <source>Height</source>
-      <translation>ຄວາມສູງ</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_Text</name>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="369"/>
-      <source>Text</source>
-      <translation>ຂໍ້ຄວາມ</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerText.h" line="375"/>
-      <source>Font</source>
-      <translation>ຮູບແບບຕົວອັກສອນ (Font)</translation>
     </message>
   </context>
   <context>
@@ -8490,16 +8446,97 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
-    <name>SketcherGui::EditTextDialog</name>
+    <name>TaskSketcherTool_c2_rotate</name>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
-      <source>Font not found</source>
-      <translation>ບໍ່ພົບຮູບແບບຕົວອັກສອນ (Font)</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
+      <source>Symmetric</source>
+      <translation>ສົມມາດ</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="74"/>
-      <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation>ບໍ່ພົບຮູບແບບຕົວອັກສອນຕົ້ນສະບັບ '%1' ໃນລະບົບຂອງທ່ານ. ໄດ້ເລືອກຮູບແບບຕົວອັກສອນເລີ່ມຕົ້ນໃຫ້ແລ້ວ.</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation>ກະຈາຍອົງປະກອບແບບສົມມາດອ້ອມຮອບຕຳແໜ່ງຕົ້ນສະບັບ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p4_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>ອົງປະກອບ</translation>
+    </message>
+  </context>
+  <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>ລະດັບຂັ້ນ (Degree)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
+      <source>Sides</source>
+      <translation>ດ້ານ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Width</source>
+      <translation>ຄວາມກວ້າງ</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="363"/>
+      <source>Height</source>
+      <translation>ຄວາມສູງ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="369"/>
+      <source>Text</source>
+      <translation>ຂໍ້ຄວາມ</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="375"/>
+      <source>Font</source>
+      <translation>ຮູບແບບຕົວອັກສອນ (Font)</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreatePolylineLegacy</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
+      <source>Polyline</source>
+      <translation>ເສັ້ນຕໍ່ເນື່ອງ</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>ສ້າງເສັ້ນຕໍ່ເນື່ອງ. ກົດປຸ່ມ 'M' ເພື່ອສະຫຼັບໂໝດສ່ວນຂອງເສັ້ນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <source>Text</source>
+      <translation>ຂໍ້ຄວາມ</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation>ສ້າງເລຂາຄະນິດຂໍ້ຄວາມທີ່ຄວບຄຸມໂດຍຂໍ້ຈຳກັດຂໍ້ຄວາມ (Text constraint).
+ເພື່ອແກ້ໄຂ: ຄລິກສອງບາດທີ່ຂໍ້ຈຳກັດຂໍ້ຄວາມເພື່ອປ່ຽນເນື້ອຫາ ແລະ ຮູບແບບຕົວອັກສອນ.
+ເພື່ອຕຳແໜ່ງ/ຂະໜາດ: ນຳໃຊ້ຂໍ້ຈຳກັດກັບເສັ້ນສ້າງ (Construction line) ຂອງກຸ່ມ.
+ໝາຍເຫດ: ໃນຂະນະທີ່ຂໍ້ຈຳກັດຂໍ້ຄວາມເຮັດວຽກຢູ່, ຂໍ້ຈຳກັດໃດໆທີ່ນຳໃຊ້ໂດຍກົງກັບເລຂາຄະນິດຂໍ້ຄວາມຈະຖືກລະເລີຍ.
+</translation>
     </message>
   </context>
   <context>
@@ -8615,66 +8652,29 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreatePolylineLegacy</name>
+    <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="227"/>
-      <source>Polyline</source>
-      <translation>ເສັ້ນຕໍ່ເນື່ອງ</translation>
+      <location filename="../../Command.cpp" line="410"/>
+      <source>Cancel Editing</source>
+      <translation>ຍົກເລີກການແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="228"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>ສ້າງເສັ້ນຕໍ່ເນື່ອງ. ກົດປຸ່ມ 'M' ເພື່ອສະຫຼັບໂໝດສ່ວນຂອງເສັ້ນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateText</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
-      <source>Text</source>
-      <translation>ຂໍ້ຄວາມ</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation>ສ້າງເລຂາຄະນິດຂໍ້ຄວາມທີ່ຄວບຄຸມໂດຍຂໍ້ຈຳກັດຂໍ້ຄວາມ (Text constraint).
-ເພື່ອແກ້ໄຂ: ຄລິກສອງບາດທີ່ຂໍ້ຈຳກັດຂໍ້ຄວາມເພື່ອປ່ຽນເນື້ອຫາ ແລະ ຮູບແບບຕົວອັກສອນ.
-ເພື່ອຕຳແໜ່ງ/ຂະໜາດ: ນຳໃຊ້ຂໍ້ຈຳກັດກັບເສັ້ນສ້າງ (Construction line) ຂອງກຸ່ມ.
-ໝາຍເຫດ: ໃນຂະນະທີ່ຂໍ້ຈຳກັດຂໍ້ຄວາມເຮັດວຽກຢູ່, ຂໍ້ຈຳກັດໃດໆທີ່ນຳໃຊ້ໂດຍກົງກັບເລຂາຄະນິດຂໍ້ຄວາມຈະຖືກລະເລີຍ.
-</translation>
+      <location filename="../../Command.cpp" line="411"/>
+      <source>Leaves 'edit' mode and reverts any changes</source>
+      <translation>ອອກຈາກໂໝດ 'ແກ້ໄຂ' ແລະ ກັບຄືນການປ່ຽນແປງທັງໝົດ</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_translate</name>
+    <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
-      <source>Symmetric</source>
-      <translation>ສົມມາດ</translation>
+      <location filename="../../Command.cpp" line="455"/>
+      <source>Leave</source>
+      <translation>ອອກ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
-      <source>Distribute the elements symmetrically around the original position.</source>
-      <translation>ກະຈາຍອົງປະກອບແບບສົມມາດອ້ອມຮອບຕຳແໜ່ງຕົ້ນສະບັບ.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p3_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
-      <source>Elements</source>
-      <translation>ອົງປະກອບ</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
-      <source>Rows</source>
-      <translation>ແຖວ</translation>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Leaves the sketch editing mode</source>
+      <translation>ອອກຈາກໂໝດການແກ້ໄຂສະເກັດ (Sketch)</translation>
     </message>
   </context>
 </TS>

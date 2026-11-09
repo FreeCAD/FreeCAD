@@ -2156,13 +2156,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>创建断裂视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation>创建电子表格视图</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1930"/>
       <location filename="../../PagePrinter.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>Save page to DXF</source>
       <translation>将页面保存为 DXF</translation>
     </message>
@@ -2198,6 +2193,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>创建草稿视图</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation>创建电子表格视图</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create spreadsheet view</source>
       <translation>创建电子表格视图</translation>
@@ -2213,8 +2213,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>添加象限顶点</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="545"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
+      <source>Edit Annotation</source>
+      <translation>编辑标注</translation>
+    </message>
+    <message>
       <location filename="../../TaskRichAnno.cpp" line="152"/>
+      <location filename="../../CommandAnnotate.cpp" line="545"/>
       <source>Create Annotation</source>
       <translation>创建批注</translation>
     </message>
@@ -2787,11 +2792,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <source>Edit Weld Symbol</source>
       <translation>编辑焊接符号</translation>
     </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="111"/>
-      <source>Edit Annotation</source>
-      <translation>编辑标注</translation>
-    </message>
   </context>
   <context>
     <name>CompassWidget</name>
@@ -3081,6 +3081,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="649"/>
       <location filename="../../Command.cpp" line="866"/>
@@ -3098,8 +3100,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1627"/>
       <location filename="../../Command.cpp" line="1705"/>
       <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
@@ -3159,6 +3159,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD找不到要导出的页面</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1922"/>
+      <source>Save DXF file</source>
+      <translation>保存 DXF 文件</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2174"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>所选方向与标准方向的偏差在 %1 度以内。是否将所选方向替换为 %2？</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2179"/>
+      <source>Direction is close to standard</source>
+      <translation>方向接近标准方向</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>选择要断开的对象或基础视图和断开定义对象</translation>
@@ -3175,6 +3190,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>此选择中没有形状、组或链接</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3190,25 +3217,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1264"/>
       <location filename="../../CommandAnnotate.cpp" line="1345"/>
       <location filename="../../CommandAnnotate.cpp" line="1411"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
@@ -3220,10 +3228,24 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1887"/>
       <location filename="../../CommandCreateDims.cpp" line="1983"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
       <source>Task in progress</source>
       <translation>任务进行中</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
+      <location filename="../../CommandExtensionDims.cpp" line="826"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <location filename="../../CommandAnnotate.cpp" line="103"/>
       <location filename="../../CommandAnnotate.cpp" line="164"/>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
@@ -3242,13 +3264,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="750"/>
       <location filename="../../Command.cpp" line="843"/>
       <location filename="../../Command.cpp" line="906"/>
-      <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <location filename="../../CommandExtensionDims.cpp" line="538"/>
-      <location filename="../../CommandExtensionDims.cpp" line="826"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Close active task dialog and try again</source>
       <translation>关闭活动任务对话框并重试</translation>
     </message>
@@ -3269,14 +3284,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>此选择中没有基础视图、形状、组或链接</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1202"/>
       <location filename="../../CommandCreateDims.cpp" line="2384"/>
+      <location filename="../../Command.cpp" line="1202"/>
       <source>Select an object first</source>
       <translation>首先选择对象</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1209"/>
       <location filename="../../CommandCreateDims.cpp" line="2392"/>
+      <location filename="../../Command.cpp" line="1209"/>
       <source>Too many objects selected</source>
       <translation>选择的对象过多</translation>
     </message>
@@ -3299,21 +3314,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1908"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>页面包含一个BIM视图，该视图不会被导出。继续吗？</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1922"/>
-      <source>Save DXF file</source>
-      <translation>保存 DXF 文件</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2174"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>所选方向与标准方向的偏差在 %1 度以内。是否将所选方向替换为 %2？</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2179"/>
-      <source>Direction is close to standard</source>
-      <translation>方向接近标准方向</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -3437,21 +3437,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>选择一个SVG文件打开</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
-      <location filename="../../CommandDecorate.cpp" line="420"/>
-      <location filename="../../CommandDecorate.cpp" line="427"/>
-      <location filename="../../CommandDecorate.cpp" line="434"/>
-      <location filename="../../CommandDecorate.cpp" line="441"/>
-      <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1883"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2007"/>
       <location filename="../../TaskDimRepair.cpp" line="139"/>
       <location filename="../../TaskDimRepair.cpp" line="150"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1883"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2007"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3464,6 +3455,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2383"/>
       <location filename="../../CommandCreateDims.cpp" line="2391"/>
       <location filename="../../CommandCreateDims.cpp" line="2400"/>
+      <location filename="../../CommandDecorate.cpp" line="420"/>
+      <location filename="../../CommandDecorate.cpp" line="427"/>
+      <location filename="../../CommandDecorate.cpp" line="434"/>
+      <location filename="../../CommandDecorate.cpp" line="441"/>
+      <location filename="../../CommandDecorate.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Incorrect Selection</source>
       <translation>选择错误</translation>
     </message>
@@ -3592,12 +3592,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>选择2条直线</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
       <location filename="../../CommandExtensionPack.cpp" line="925"/>
       <location filename="../../CommandExtensionPack.cpp" line="947"/>
       <location filename="../../CommandExtensionPack.cpp" line="983"/>
+      <location filename="../../CommandAnnotate.cpp" line="770"/>
+      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <source>Wrong Selection</source>
       <translation>错误选择</translation>
     </message>
@@ -3821,8 +3821,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="221"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="203"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="203"/>
       <source>Are you sure you want to continue?</source>
       <translation>您确定要继续吗？</translation>
     </message>
@@ -3955,9 +3955,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>编辑局部视图</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="141"/>
       <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>编辑 %1</translation>
     </message>
@@ -4091,15 +4091,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw 自定义格式</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1026"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
       <location filename="../../CommandExtensionDims.cpp" line="2347"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandAnnotate.cpp" line="1026"/>
       <source>Selection is empty</source>
       <translation>选择为空</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2155"/>
       <location filename="../../CommandExtensionDims.cpp" line="2363"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2155"/>
       <source>No object selected</source>
       <translation>未选择对象</translation>
     </message>
@@ -4284,14 +4284,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>富文本生成器</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="402"/>
-      <source>Resize Rich Annotation</source>
-      <translation>调整富文本标注的大小</translation>
-    </message>
-    <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
       <translation>选择符号</translation>
+    </message>
+    <message>
+      <location filename="../../QGIRichAnno.cpp" line="402"/>
+      <source>Resize Rich Annotation</source>
+      <translation>调整富文本标注的大小</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="58"/>
@@ -4318,18 +4318,18 @@ it has a weld symbol that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个或多个依赖的视图会被损坏。</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderLeader.cpp" line="214"/>
+      <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderViewPart.cpp" line="426"/>
-      <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="207"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <source>Object dependencies</source>
       <translation>对象依赖关系</translation>
     </message>
@@ -10348,45 +10348,6 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDraw_ExtensionPositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>定位剖视图</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>将所选剖视图与其源视图正交对齐，或将剖视图中选定的边与基础视图中选定的顶点对齐</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_CommandVertexCreationGroup</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>装饰性交点顶点</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>在选定边的交点处添加装饰顶点</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_CommandAddOffsetVertex</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
-      <source>Offset Vertex</source>
-      <translation>偏移顶点</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>从所选顶点创建偏移</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSpreadsheetView</name>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
@@ -10485,19 +10446,63 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>Cmd2LineCenterLine</name>
+    <name>TechDraw_ExtensionPositionSectionView</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>在2线之间添加中心线</translation>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation>定位剖视图</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation>将所选剖视图与其源视图正交对齐，或将剖视图中选定的边与基础视图中选定的顶点对齐</translation>
     </message>
   </context>
   <context>
-    <name>Cmd2PointCenterLine</name>
+    <name>TechDraw_CommandVertexCreationGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>两点之间的中心线</translation>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>装饰性交点顶点</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation>在选定边的交点处添加装饰顶点</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>偏移顶点</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation>从所选顶点创建偏移</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="458"/>
+      <source>Restore Invisible Lines</source>
+      <translation>恢复不可见线</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
+      <source>Add row</source>
+      <translation>添加行</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
+      <source>Add column</source>
+      <translation>添加列</translation>
     </message>
   </context>
   <context>
@@ -10527,34 +10532,19 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
+    <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>将页面导出为PDF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation>将当前页面导出为 PDF</translation>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>在2线之间添加中心线</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportGroup</name>
+    <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>工程图</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>打印所有页面</translation>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>两点之间的中心线</translation>
     </message>
   </context>
   <context>
@@ -10594,24 +10584,34 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <name>CmdTechDrawExportPagePDF</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="458"/>
-      <source>Restore Invisible Lines</source>
-      <translation>恢复不可见线</translation>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>文件</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>将页面导出为PDF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation>将当前页面导出为 PDF</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <name>CmdTechDrawExportGroup</name>
     <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
-      <source>Add row</source>
-      <translation>添加行</translation>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
-      <source>Add column</source>
-      <translation>添加列</translation>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>打印所有页面</translation>
     </message>
   </context>
 </TS>

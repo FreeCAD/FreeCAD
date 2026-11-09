@@ -2426,7 +2426,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="30"/>
       <source>Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</source>
-      <translation type="unfinished">Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</translation>
+      <translation>使用するアルゴリズムを選択: 「OCLドロップカッター*」「OCL適応型*」または「実験的機能」（非OCLベース）。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="106"/>
@@ -2442,7 +2442,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="175"/>
       <source>Set the minimum sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation type="unfinished">Set the minimum sampling resolution. Smaller values quickly increase processing time.</translation>
+      <translation>最小サンプリング分解能を設定します。小さい値ほど処理時間が急激に増加します。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="150"/>
@@ -2459,9 +2459,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
-      <translation type="unfinished">The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
+      <translation>パターンの各サイクルにおける、工具の横方向移動距離。工具径に対するパーセンテージで指定。
 
-A step over of 100% results in no overlap between two different cycles.</translation>
+ステップオーバーを100%に設定すると、連続するサイクル間で重なりが生じません。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="204"/>
@@ -2872,7 +2872,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
       <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
-      <translation type="unfinished">Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</translation>
+      <translation>クライム：回転が正の方向に進みます。従来型：回転が負の方向に進みます。これらは切削動作におけるAの符号に影響します。使用する機械において、工具がどのように材料に切り込むかに合わせて選択してください。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
@@ -2882,7 +2882,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
       <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation type="unfinished">Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</translation>
+      <translation>渦巻：連続的ならせん状の走査。最も高速で、曲面の連続性にも優れています。平行：角度方向にステップ移動する軸方向にジグザグな走査。円環：軸方向にステップ移動する円状の走査。いずれの手法も、4軸（XYZA）の連続的な動作です。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
@@ -2892,7 +2892,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
       <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
-      <translation type="unfinished">How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</translation>
+      <translation>ツールコントローラーがHorizFeedをどう解釈するか。軸のみ: 各切削動作ごとにF=HorizFeedを出力。回転軸の追従動作は、コントローラー独自の送り計算によって決定されます。Gコード内のF値は一定のままです。表面速度: 各移動におけるFを、切削工具の接触点が表面上を移動する際のHorizFeed（mm/min）が維持されるようにF = HorizFeed × 360 / (2π·r)で増減させます。Fは半径に応じて変化しますが、最大フィードによって上限が制限されます。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
@@ -2942,7 +2942,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
       <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
-      <translation type="unfinished">Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</translation>
+      <translation>1回転あたりの軸方向の進み量（mm）。渦巻：ピッチ、円環：円間の距離、平行：角度方向のステップオーバーも制御され、その値は「StepOver / max_radius」として算出。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
@@ -4481,17 +4481,17 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
     <message>
       <location filename="../panels/PathEdit.ui" line="351"/>
       <source>Selection Target</source>
-      <translation type="unfinished">Selection Target</translation>
+      <translation>選択対象</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="360"/>
       <source>Set selection target to Model; stock becomes unselectable</source>
-      <translation type="unfinished">Set selection target to Model; stock becomes unselectable</translation>
+      <translation>選択対象をモデルに設定します。ストックは選択できなくなります。</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="381"/>
       <source>Set selection target to Stock; model becomes unselectable</source>
-      <translation type="unfinished">Set selection target to Stock; model becomes unselectable</translation>
+      <translation>選択対象をストックに設定します。モデルは選択できなくなります。</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="412"/>
@@ -4509,10 +4509,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
 of an edge (or arc center), or the center of the selected face.
 The Selection Target buttons control whether the selection comes
 from the model or the stock.</source>
-      <translation type="unfinished">Sets the origin point to a selected point: a vertex, the center
-of an edge (or arc center), or the center of the selected face.
-The Selection Target buttons control whether the selection comes
-from the model or the stock.</translation>
+      <translation>原点を選択点に設定: 頂点、エッジの中点（または円弧の中心）、または選択面の中心。
+「選択対象」ボタンを使用すると、モデルから選択するか、ストックから選択するかを切り替えられます。</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="463"/>
@@ -4595,37 +4593,37 @@ positioned independently of the model.</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="712"/>
       <source>Moves the selection along the +Z axis by the step distance</source>
-      <translation type="unfinished">Moves the selection along the +Z axis by the step distance</translation>
+      <translation>選択対象を+Z軸に沿ってステップ距離だけ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="745"/>
       <source>Moves the selection along the -Z axis by the step distance</source>
-      <translation type="unfinished">Moves the selection along the -Z axis by the step distance</translation>
+      <translation>選択対象を-Z軸に沿ってステップ距離だけ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="793"/>
       <source>Moves the selection along the +Y axis by the step distance</source>
-      <translation type="unfinished">Moves the selection along the +Y axis by the step distance</translation>
+      <translation>選択対象を+Y軸に沿ってステップ距離だけ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="826"/>
       <source>Moves the selection along the -X axis by the step distance</source>
-      <translation type="unfinished">Moves the selection along the -X axis by the step distance</translation>
+      <translation>選択対象を-X軸に沿ってステップ距離だけ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="853"/>
       <source>Step distance for model move buttons (in document units)</source>
-      <translation type="unfinished">Step distance for model move buttons (in document units)</translation>
+      <translation>モデル移動ボタン用のステップ距離（ドキュメントの単位）</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="872"/>
       <source>Moves the selection along the +X axis by the step distance</source>
-      <translation type="unfinished">Moves the selection along the +X axis by the step distance</translation>
+      <translation>選択対象を+X軸に沿ってステップ距離だけ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="905"/>
       <source>Moves the selection along the -Y axis by the step distance</source>
-      <translation type="unfinished">Moves the selection along the -Y axis by the step distance</translation>
+      <translation>選択対象を-Y軸に沿ってステップ距離だけ移動</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="944"/>
@@ -4635,7 +4633,7 @@ positioned independently of the model.</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="974"/>
       <source>Rotates the selection counter-clockwise around the selected axis</source>
-      <translation type="unfinished">Rotates the selection counter-clockwise around the selected axis</translation>
+      <translation>選択軸を中心に選択対象を反時計回りに回転</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1007"/>
@@ -4665,7 +4663,7 @@ positioned independently of the model.</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="1041"/>
       <source>°</source>
-      <translation type="unfinished">°</translation>
+      <translation>°</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1069"/>
@@ -6698,7 +6696,7 @@ Helix pitch limits by &apos;Step Down&apos;</source>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="403"/>
       <source>Set the minimum sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation type="unfinished">Set the minimum sampling resolution. Smaller values quickly increase processing time.</translation>
+      <translation>最小サンプリング分解能を設定します。小さい値ほど処理時間が急激に増加します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="317"/>
@@ -7705,7 +7703,7 @@ this gives the pause of the next move</translation>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="189"/>
       <source>Toolpath pattern. Supports Spiral, Parallel, Rings.</source>
-      <translation type="unfinished">Toolpath pattern. Supports Spiral, Parallel, Rings.</translation>
+      <translation>ツールパスのパターン。渦巻、平行、円環をサポートしています。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="195"/>
@@ -9465,7 +9463,7 @@ G-code under the cursor defines tool shape placement</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>表面速度 ハイス鋼</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="108"/>
@@ -9510,7 +9508,7 @@ G-code under the cursor defines tool shape placement</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Surface Speed Carbide</source>
-      <translation type="unfinished">Surface Speed Carbide</translation>
+      <translation>表面速度 カーバイド</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="109"/>
@@ -13263,7 +13261,7 @@ Tool number for {}:</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="565"/>
       <source>Surface speed</source>
-      <translation type="unfinished">Surface speed</translation>
+      <translation>表面速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="566"/>
@@ -13740,12 +13738,12 @@ Supported tool types: flat, bull-nose, V-bit.</translation>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="249"/>
       <source>Rings</source>
-      <translation type="unfinished">Rings</translation>
+      <translation>円環</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="252"/>
       <source>Surface Speed</source>
-      <translation type="unfinished">Surface Speed</translation>
+      <translation>表面速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="253"/>
@@ -14280,7 +14278,7 @@ Supported tool types: flat, bull-nose, V-bit.</translation>
     <message>
       <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
       <source>Surface speed:</source>
-      <translation type="unfinished">Surface speed:</translation>
+      <translation>表面速度:</translation>
     </message>
     <message>
       <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>

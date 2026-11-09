@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Creates a feature area from the selected objects</source>
-      <translation>선택한 객체에서 피처 영역을 만듭니다</translation>
+      <translation>선택한 대상체에서 특징형상 영역을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Selects a workplane for a feature area</source>
-      <translation>피처 영역의 작업평면을 선택합니다</translation>
+      <translation>특징형상 영역의 작업평면을 선택합니다</translation>
     </message>
   </context>
   <context>
@@ -686,12 +686,12 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation>3D 보기에서 하나 이상의 피처를 선택하고 &apos;추가&apos;를 눌러 이 작업의 기본 항목으로 추가하십시오. 선택한 피처는 완전히 삭제할 수 있습니다.</translation>
+      <translation>3D 보기에서 하나 이상의 특징형상을 선택하고 &apos;추가&apos;를 눌러 이 작업의 기본 항목으로 추가하십시오. 선택한 특징형상은 완전히 삭제할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>Add selected features to the list of base geometries for this operation</source>
-      <translation>선택한 피처를 이 작업의 기본 지오메트리 목록에 추가합니다</translation>
+      <translation>선택한 특징형상을 이 작업의 기본 지오메트리 목록에 추가합니다</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
@@ -752,11 +752,11 @@ For stock from the base object&apos;s bounding box it means the extra material i
 Add features for processing by selecting them and then pressing &apos;Add&apos;. If a feature is accidentally added to the list, it can be removed through &apos;Remove&apos; and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation>홀 피처와 해당 홀에 대해 결정된 반지름 목록입니다.
+      <translation>구멍 특징형상과 해당 구명에 대해 결정된 반지름 목록입니다.
 
-가공할 피처를 선택한 후 &apos;추가&apos;를 눌러 리스트에 넣으십시오. 실수로 추가된 피처는 &apos;제거&apos;를 통해 리스트에서 뺄 수 있으며, 더 이상 가공 대상에 포함되지 않습니다.
+가공할 특징형상을 선택한 후 &apos;추가&apos;를 눌러 목록에 넣으십시오. 실수로 추가된 특징형상은 &apos;제거&apos;를 통해 목록에서 뺄 수 있으며, 더 이상 가공 대상에 포함되지 않습니다.
 
-재설정을 누르면 현재 리스트의 모든 항목이 삭제되며, 모델에서 이 작업에 적합한 모든 원형 홀을 찾아 다시 채웁니다. 그 후 피처의 활성화/비활성화, 제거 및 추가를 통해 리스트를 다시 정제할 수 있습니다.</translation>
+재설정을 누르면 현재 목록의 모든 항목이 삭제되며, 모델에서 이 작업에 적합한 모든 원형 구멍을 찾아 다시 채웁니다. 그 후 특징형상의 활성화/비활성화, 제거 및 추가를 통해 목록을 다시 정제할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="119"/>
@@ -766,7 +766,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
       <source>Feature</source>
-      <translation>피처</translation>
+      <translation>특징형상</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
@@ -792,7 +792,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="178"/>
       <source>Remove all list items and auto-fill list with all eligible features from the job&apos;s base object.</source>
-      <translation>모든 목록 항목을 제거하고 작업의 기본 객체에서 자격이 있는 모든 피처로 목록을 자동 채웁니다.</translation>
+      <translation>모든 목록 항목을 제거하고 작업의 기본 대상체에서 자격이 있는 모든 특징형상으로 목록을 자동 채웁니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="181"/>
@@ -869,7 +869,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="40"/>
       <source>Transfer the Z value of the selected feature as the start depth for the operation</source>
-      <translation>선택한 피처의 Z 값을 작업의 시작 깊이로 전달합니다</translation>
+      <translation>선택한 특징형상의 Z 값을 작업의 시작 깊이로 전달합니다</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
@@ -886,7 +886,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
       <source>Transfer the Z value of the selected feature as the final depth for the operation</source>
-      <translation>선택한 피처의 Z 값을 작업의 최종 깊이로 전달합니다</translation>
+      <translation>선택한 특징형상의 Z 값을 작업의 최종 깊이로 전달합니다</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="26"/>
@@ -1020,7 +1020,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="74"/>
       <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
-      <translation>선택한 피처의 Z 값을 작업의 최종 깊이로 전달합니다.</translation>
+      <translation>선택한 특징형상의 Z 값을 작업의 최종 깊이로 전달합니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="119"/>
@@ -2100,17 +2100,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <source>End Feature Reference</source>
-      <translation>종료 피처 참조</translation>
+      <translation>종료 특징형상 참조</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="51"/>
       <source>Choose what point to use on the first selected feature</source>
-      <translation>첫 번째 선택한 피처에 사용할 점을 선택하십시오</translation>
+      <translation>첫 번째 선택한 특징형상에 사용할 점을 선택하십시오</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="32"/>
       <source>Start feature reference</source>
-      <translation>시작 피처 참조</translation>
+      <translation>시작 특징형상 참조</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="58"/>
@@ -2149,7 +2149,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="123"/>
       <source>Choose what point to use on the second selected feature</source>
-      <translation>두 번째 선택한 피처에 사용할 점을 선택하십시오</translation>
+      <translation>두 번째 선택한 특징형상에 사용할 점을 선택하십시오</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="183"/>
@@ -2209,7 +2209,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="337"/>
       <source>Choose the path orientation with regard to the features selected</source>
-      <translation>선택한 피처에 대한 경로 방향을 선택하십시오</translation>
+      <translation>선택한 특징형상에 대한 경로 방향을 선택하십시오</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="341"/>
@@ -5963,7 +5963,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="84"/>
       <source>List of disabled features</source>
-      <translation>비활성화된 피처 목록입니다</translation>
+      <translation>비활성화된 특징형상 목록</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="91"/>
@@ -6174,7 +6174,7 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="485"/>
       <source>List of features to extend.</source>
-      <translation>확장할 피처 목록입니다.</translation>
+      <translation>확장할 특징형상 목록.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="495"/>
@@ -6323,7 +6323,7 @@ For External profile - profile radius</translation>
       <location filename="../../../Path/Op/Profile.py" line="114"/>
       <location filename="../../../Path/Op/Surface.py" line="240"/>
       <source>Choose how to process multiple Base Geometry features.</source>
-      <translation>여러 기본 지오메트리 피처를 처리하는 방법을 선택하십시오.</translation>
+      <translation>여러 기본 지오메트리 특징형상을 처리하는 방법을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="78"/>
@@ -6576,17 +6576,17 @@ Helix pitch limits by &apos;Step Down&apos;</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="172"/>
       <source>Choose the toolpath orientation with regard to the feature(s) selected.</source>
-      <translation>선택한 피처에 대한 툴패스 방향을 선택하십시오.</translation>
+      <translation>선택한 특징형상에 대한 툴패스 방향을 선택하십시오.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="181"/>
       <source>Choose what point to use on the first selected feature.</source>
-      <translation>첫 번째 선택한 피처에 사용할 점을 선택하십시오.</translation>
+      <translation>첫 번째 선택한 특징형상에 사용할 점을 선택하십시오.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="190"/>
       <source>Choose what point to use on the second selected feature.</source>
-      <translation>두 번째 선택한 피처에 사용할 점을 선택하십시오.</translation>
+      <translation>두 번째 선택한 특징형상에 사용할 점을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="199"/>
@@ -6664,7 +6664,7 @@ Helix pitch limits by &apos;Step Down&apos;</translation>
       <location filename="../../../Path/Op/Waterline.py" line="240"/>
       <location filename="../../../Path/Op/Surface.py" line="213"/>
       <source>Do not cut internal features on avoided faces.</source>
-      <translation>회피된 면의 내부 피처를 절삭하지 않습니다.</translation>
+      <translation>회피된 면의 내부 특징형상을 절삭하지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="307"/>
@@ -6683,13 +6683,13 @@ Helix pitch limits by &apos;Step Down&apos;</translation>
       <location filename="../../../Path/Op/Waterline.py" line="276"/>
       <location filename="../../../Path/Op/Surface.py" line="249"/>
       <source>Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</source>
-      <translation>양수 값은 커터를 피처 쪽 또는 피처 안으로 밀어냅니다. 음수 값은 커터를 피처에서 멀리 되돌립니다.</translation>
+      <translation>양수 값은 커터를 특징형상 쪽 또는 특징형상 안으로 밀어냅니다. 음수 값은 커터를 특징형상에서 멀리 되돌립니다.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="285"/>
       <location filename="../../../Path/Op/Surface.py" line="258"/>
       <source>Cut internal feature areas within a larger selected face.</source>
-      <translation>더 큰 선택한 면 내의 내부 피처 영역을 절삭합니다.</translation>
+      <translation>더 큰 선택한 면 내의 내부 특징형상 영역을 절삭합니다.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="294"/>
@@ -9941,7 +9941,7 @@ G-code under the cursor defines tool shape placement</translation>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="198"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
-      <translation>%s.%s 피처는 원형 홀으로 처리할 수 없습니다 - 기본 지오메트리 목록에서 제거하십시오.</translation>
+      <translation>%s.%s 특징형상은 원형 홀으로 처리할 수 없습니다 - 기본 지오메트리 목록에서 제거하십시오.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="190"/>
@@ -11238,7 +11238,7 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="316"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
-      <translation>기본 객체의 피처로부터 드릴 툴패스를 생성합니다</translation>
+      <translation>기본 대상체의 특징형상으로부터 드릴 툴패스를 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -11251,7 +11251,7 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="207"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
-      <translation>기본 객체의 피처로부터 나선형 툴패스를 생성합니다</translation>
+      <translation>기본 대상체의 특징형상으로부터 나선형 툴패스를 생성합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="89"/>
@@ -11871,7 +11871,7 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="262"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
-      <translation>기본 객체의 피처로부터 나사 밀링 툴패스를 생성합니다</translation>
+      <translation>기본 대상체의 특징형상으로부터 나사 밀링 툴패스를 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -12475,7 +12475,7 @@ Tool number for {}:</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Tapping.py" line="176"/>
       <source>Creates a Tapping toolpath from the features of a base object</source>
-      <translation>기본 객체의 피처로부터 탭핑 툴패스를 생성합니다</translation>
+      <translation>기본 대상체의 특징형상로부터 탭핑 툴패스를 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -13865,7 +13865,7 @@ Supported tool types: flat, bull-nose, V-bit.</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="125"/>
       <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation>기본 객체 &apos;%s&apos;은(는) Path::Feature에서 파생되지 않았습니다</translation>
+      <translation>기본 대상체 &apos;%s&apos;은(는) Path::Feature에서 파생되지 않았습니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="132"/>
@@ -13949,7 +13949,7 @@ Supported tool types: flat, bull-nose, V-bit.</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="146"/>
       <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation>기본 객체 &apos;%s&apos;은(는) Path::Feature에서 파생되지 않았습니다</translation>
+      <translation>기본 대상체 &apos;%s&apos;은(는) Path::Feature에서 파생되지 않았습니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="154"/>

@@ -4602,7 +4602,7 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="703"/>
       <source>Trimex: move the mouse into the 3D view before typing a value</source>
-      <translation type="unfinished">Trimex: move the mouse into the 3D view before typing a value</translation>
+      <translation>Przytnij / wydłuż: przesuń kursor myszki do widoku 3D przed wpisaniem wartości</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="714"/>

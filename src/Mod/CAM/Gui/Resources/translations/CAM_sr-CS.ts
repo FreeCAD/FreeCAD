@@ -15203,12 +15203,12 @@ Supported tool types: flat, bull-nose, V-bit.</translation>
     <message>
       <location filename="../../../Machine/ui/editor/output_options_layout.py" line="63"/>
       <source>Main Options</source>
-      <translation type="unfinished">Main Options</translation>
+      <translation>Glavne opcije</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/output_options_layout.py" line="133"/>
       <source>Processing Options</source>
-      <translation type="unfinished">Processing Options</translation>
+      <translation>Opcije procesiranja</translation>
     </message>
   </context>
   <context>

@@ -4379,22 +4379,32 @@ Check one or more edge entities first.</source>
       <translation>Maksimum açısal sapma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation type="unfinished">Applies these tessellation settings to all objects in currently open documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation type="unfinished">Apply to Open Documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Sapmayı çok küçük ayarlamak, üçgenlemeyi daha uzun sürdürür; bu da arayüzün donmasına veya yavaşlamasına neden olur.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>Açısal sapma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Açı sapmasını çok küçük ayarlamak, üçgenlemeyi daha uzun sürdürür; bu da arayüzün donmasına veya yavaşlamasına neden olur.</translation>
     </message>
@@ -5066,7 +5076,7 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
       <translation>Aynalanacak bir şekil seçin.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>'%1' adlı belge bulunamadı.</translation>
     </message>
@@ -6578,7 +6588,7 @@ Devam edilsin mi?</translation>
       <translation>Mesafe girin:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>Yüz Başına Görünüm</translation>
     </message>
@@ -7404,7 +7414,7 @@ bir bileşiğin içindeki şekillerle 'dışlayıcı VEYA' (XOR) Boole işlemi y
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Eğrilerin kesişimi tahmin edilemiyor. Yuvarlatmak istediğiniz eğrilerin köşeleri arasına bir çakışma kısıtı eklemeyi deneyin.</translation>
     </message>

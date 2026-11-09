@@ -3417,7 +3417,7 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <location filename="../../TaskTransformedParameters.cpp" line="509"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Brak odniesienia</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>

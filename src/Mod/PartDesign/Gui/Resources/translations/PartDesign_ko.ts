@@ -92,7 +92,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="120"/>
       <source>Pressure angle of gear teeth</source>
-      <translation>기어 톱니의 압력각</translation>
+      <translation>기어의 압력각</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="114"/>
@@ -271,7 +271,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="524"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
-      <translation>솔리드 객체를 새 바디의 기준 피처로 매개변수적으로 복사합니다</translation>
+      <translation>고체 대상체를 새 몸통의 기반 특징형상로 매개변수적으로 복사합니다</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2360"/>
       <source>Mirrors the selected features or active body</source>
-      <translation>선택한 피처 또는 활성 바디를 미러합니다</translation>
+      <translation>선택한 특징형상 또는 활성화된 몸통을 대칭 복사 합니다</translation>
     </message>
   </context>
   <context>
@@ -464,12 +464,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1022"/>
       <source>Move Feature After…</source>
-      <translation>피처를 다음으로 이동…</translation>
+      <translation>특징형상을 다른 특징형상 뒤로 이동…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1023"/>
       <source>Moves the selected feature after another feature in the same body</source>
-      <translation>선택한 피처를 같은 바디의 다른 피처 뒤로 이동합니다</translation>
+      <translation>선택된 특징형상을 같은 몸통의 다른 특징형상 뒤로 이동합니다</translation>
     </message>
   </context>
   <context>
@@ -487,7 +487,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="659"/>
       <source>Moves the tip of the body to the selected feature</source>
-      <translation>바디의 팁을 선택한 피처로 이동합니다</translation>
+      <translation>선택한 특징형상을 몸통의 끝단으로 설정합니다</translation>
     </message>
   </context>
   <context>
@@ -505,7 +505,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2743"/>
       <source>Applies multiple transformations to the selected features or active body</source>
-      <translation>선택한 피처 또는 활성 바디에 여러 변환을 적용합니다</translation>
+      <translation>선택한 특징형상 또는 활성화된 몸텅에 다중 변환을 적용합니다</translation>
     </message>
   </context>
   <context>
@@ -613,7 +613,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
-      <translation>선택한 피처 또는 활성 바디를 원형 패턴으로 복제합니다</translation>
+      <translation>선택한 특징형상 또는 활성화된 몸통을 원형 패턴으로 복제합니다</translation>
     </message>
   </context>
   <context>
@@ -649,7 +649,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2700"/>
       <source>Scales the selected features or the active body</source>
-      <translation>선택한 피처 또는 활성 바디의 크기를 조정합니다</translation>
+      <translation>선택한 특징형상 또는 활성화된 몸통의 배율을 조정합니다</translation>
     </message>
   </context>
   <context>
@@ -906,7 +906,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2796"/>
       <source>Convert to Multi-Transform feature</source>
-      <translation>다중 변환 피처로 변환</translation>
+      <translation>다중 변환 특징형상으로 변환</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="289"/>
@@ -948,12 +948,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1115"/>
       <source>Move a feature inside body</source>
-      <translation>피처를 바디 안으로 이동</translation>
+      <translation>특징형상을 몸통 안으로 이동합니다</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="724"/>
       <source>Move tip to selected feature</source>
-      <translation>선택한 피처로 팁 이동</translation>
+      <translation>선택한 특징형상으로 끝단 이동</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="929"/>
@@ -1697,7 +1697,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="112"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>현재 참조 집합에 맞는 부착 모드가 없습니다. 계속을 선택하면 피처는 현재 위치에 그대로 유지되며 참조가 바뀌어도 이동하지 않습니다. 계속하시겠습니까?</translation>
+      <translation>현재 참조 구성에 적합한 부착 모드가 없습니다. 계속하기를 선택하시면, 특징형상의 현재 위치가 유지되고 참조가 변경되어도 이동하지 않습니다. 계속하시겠습니까?</translation>
     </message>
   </context>
   <context>
@@ -1937,7 +1937,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Sketch already used by other feature</source>
-      <translation>스케치가 이미 다른 피처에서 사용 중입니다</translation>
+      <translation>선택한 스케치가 이미 다른 특징형상에서 사용되고 있습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="87"/>
@@ -1962,7 +1962,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Feature is located after the tip of the body</source>
-      <translation>피처는 바디의 팁 뒤에 배치됩니다</translation>
+      <translation>특징형상은 몸통의 끝단 특징형상 뒤에 배치됩니다</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="107"/>
@@ -3324,7 +3324,7 @@ measured along the specified direction</source>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
       <translation>- 강조 표시할 항목을 선택합니다
-- 항목을 더블클릭하여 피처를 확인하세요</translation>
+- 항목을 더블클릭하여 특징형상을 확인하세요</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="46"/>
@@ -3473,12 +3473,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
       <source>Add Feature</source>
-      <translation>피처 추가</translation>
+      <translation>특징형상 추가</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="88"/>
       <source>Remove Feature</source>
-      <translation>피처 제거</translation>
+      <translation>특징형상 제거</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="116"/>
@@ -3504,12 +3504,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1100"/>
       <source>Move Feature After…</source>
-      <translation>피처를 다음으로 이동…</translation>
+      <translation>특징형상을 다른 특징형상 뒤로 이동…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1101"/>
       <source>Select a feature from the list</source>
-      <translation>목록에서 피처를 선택하세요</translation>
+      <translation>목록에서 특징형상을 선택하세요</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1188"/>
@@ -3519,12 +3519,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1194"/>
       <source>Set tip to last feature?</source>
-      <translation>마지막 피처를 팁으로 설정할까요?</translation>
+      <translation>마지막 특징형상을 끝단으로 설정할까요?</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1189"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>이동된 피처은 현재 설정된 팁 뒤에 나타납니다.</translation>
+      <translation>이동된 특징형상은 현재 설정된 끝단 뒤에 나타납니다.</translation>
     </message>
   </context>
   <context>
@@ -3598,7 +3598,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="1051"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>제거 명령을 시도하기 전에 바디에 피처가 있는지 확인하세요</translation>
+      <translation>뺄셈 명령을 시도하기 전에 먼저 몸통에 특징형상이 있는지 확인하세요.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -3665,7 +3665,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="2336"/>
       <source>Select only one feature in an active body.</source>
-      <translation>활성화된 몸통에서 도형특징을 하나만 선택하세요.</translation>
+      <translation>활성화된 몸통에서 특징형상을 하나만 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="165"/>
@@ -3706,7 +3706,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
-      <translation>바디에서 외부 도형을 참조하려면 형상 바인더나 기준 피처를 사용하는 것이 좋습니다</translation>
+      <translation>몸통에서 외부 도형을 참조하려면 형상 바인더나 기반특징을 사용하는 것을 고려해 보세요</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1898"/>
@@ -3734,17 +3734,17 @@ measured along the specified direction</source>
       <location filename="../../CommandBody.cpp" line="166"/>
       <location filename="../../CommandBody.cpp" line="218"/>
       <source>Bad base feature</source>
-      <translation>잘못된 기준 피처</translation>
+      <translation>잘못된 기반 특징형상</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="140"/>
       <source>A body cannot be based on a Part Design feature.</source>
-      <translation>바디는 파트디자인 피처를 기준으로 할 수 없습니다.</translation>
+      <translation>몸통은 부품설계 작업대의 특징형상을 기반으로 할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="148"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
-      <translation>%1은(는) 이미 바디에 속해 있으므로 다른 바디의 기준 피처로 사용할 수 없습니다.</translation>
+      <translation>%1은(는) 이미 몸통에 속해 있으므로 다른 몸통의 기반 특징형상으로 사용될 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="185"/>
@@ -3777,12 +3777,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="210"/>
       <source>Base feature</source>
-      <translation>기준 피처</translation>
+      <translation>기반 특징형상</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="219"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>바디는 하나의 피처만 기준으로 할 수 있습니다.</translation>
+      <translation>몸통은 다수의 특징형상을 기반으로 할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="234"/>
@@ -3802,17 +3802,17 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="691"/>
       <source>Select exactly one Part Design feature or a body.</source>
-      <translation>파트디자인 피처 또는 바디를 정확히 하나만 선택하세요.</translation>
+      <translation>특징형상 또는 몸통을 정확히 하나만 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="699"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
-      <translation>선택한 피처 '%s'의 바디를 확인할 수 없습니다.</translation>
+      <translation>선택된 특징형상 '%s'의 몸통을 결정할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="880"/>
       <source>Only features of a single source body can be moved</source>
-      <translation>단일 원본 바디의 피처만 이동할 수 있습니다</translation>
+      <translation>오직 한 몸통의 특징형상만 이동할 수 있습니다</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="615"/>
@@ -3822,12 +3822,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>Base feature (%1) has an empty shape.</source>
-      <translation type="unfinished">Base feature (%1) has an empty shape.</translation>
+      <translation>기반 특징형상(%1)에 빈 형상이 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="428"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation>바디가 없는 파트디자인 피처를 찾지 못했습니다. 마이그레이션할 항목이 없습니다.</translation>
+      <translation>몸통에 들어 있지 않은 특징형상을 찾지 못했습니다. 마이그레이션할 항목이 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="690"/>
@@ -3841,7 +3841,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="713"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>솔리드 피처만 바디의 팁이 될 수 있습니다.</translation>
+      <translation>고체 특징형상만이 몸통의 끝단이 될 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="849"/>
@@ -3853,7 +3853,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="850"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation>선택한 피처 중 일부가 원본 바디에 종속되어 있습니다</translation>
+      <translation>선택된 특징형상 중 일부가 원래의 몸통에 종속되어 있습니다</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="898"/>
@@ -3863,12 +3863,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1067"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>바디의 기준 피처는 이동할 수 없습니다.</translation>
+      <translation>몸통의 기반 특징형상은 이동이 불가능합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1077"/>
       <source>Select one or more features from the same body.</source>
-      <translation>같은 바디에서 하나 이상의 피처를 선택하십시오.</translation>
+      <translation>같은 몸통에서 하나 이상의 특징형상을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1092"/>
@@ -3885,19 +3885,19 @@ This may lead to unexpected results.</source>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation>앞의 피처는 뒤의 피처에 의존하지 않아야 합니다.
+      <translation>앞의 특징형상은 뒤의 특징형상에 의존하지 않아야 합니다.
 
 </translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="309"/>
       <source>No previous feature found</source>
-      <translation>이전 피처를 찾을 수 없습니다</translation>
+      <translation>이전 특징형상을 찾을 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="310"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>사용 가능한 기준 피처 없이 제거 피처를 만들 수 없습니다</translation>
+      <translation>기본 특징형상이 전혀 없이는 다른 도형특징을 뺄 것이 없습니다</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
@@ -3943,22 +3943,22 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     <message>
       <location filename="../../Utils.cpp" line="266"/>
       <source>Feature is not in a body</source>
-      <translation>피처가 바디에 없습니다</translation>
+      <translation>몸통 안에 특징형상이 없습니다</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="267"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>이 피처를 사용하려면 문서의 바디 객체에 속해 있어야 합니다.</translation>
+      <translation>이 특징형상을 사용하기 위해서는, 현재 문서에 있는 몸통 대상체에 속해야 합니다.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="313"/>
       <source>Feature is not in a part</source>
-      <translation>피처가 파트에 없습니다</translation>
+      <translation>부품 안에 특징형상이 없습니다</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="314"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>이 피처를 사용하려면 문서의 파트 객체에 속해 있어야 합니다.</translation>
+      <translation>이 특징형상을 사용하기 위해서는, 현재 문서에 있는 부품에 속해야 합니다.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
@@ -4004,14 +4004,14 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="100"/>
       <source>Feature error</source>
-      <translation>도형특징 오류</translation>
+      <translation>특징형상 오류</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="101"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation>%1에 기준 피처가 없습니다.
-이 피처는 손상되어 편집할 수 없습니다.</translation>
+      <translation>%1에 기반 특징형상이 없습니다.
+이 특징형상은 손상되어 편집할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
@@ -4036,7 +4036,7 @@ This feature is broken and cannot be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="163"/>
       <source>Migrate in order to use modern Part Design features?</source>
-      <translation>최신 파트디자인 피처를 사용하려면 마이그레이션하시겠습니까?</translation>
+      <translation>최신 부품설계작업대의 특징형상을 사용하기 위해 마이그레이션하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="168"/>
@@ -4717,22 +4717,22 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Additive Features</source>
-      <translation>결합용 피처</translation>
+      <translation>특징형상 더하기</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Subtractive Features</source>
-      <translation>제거용 피처</translation>
+      <translation>특징형상 빼기</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Dress-Up Features</source>
-      <translation>치장 피처</translation>
+      <translation>마감 특징형상</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Transformation Features</source>
-      <translation>변환 피처</translation>
+      <translation>변환 특징형상</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -4920,7 +4920,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/Body.cpp" line="426"/>
       <source>Linked object is not a PartDesign feature</source>
-      <translation>연결된 객체가 파트디자인 피처가 아닙니다</translation>
+      <translation>연결된 대상체가 부품설계 작업대에서 생성된 특징형상이 아닙니다</translation>
     </message>
     <message>
       <location filename="../../../App/Body.cpp" line="435"/>
@@ -4930,18 +4930,18 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="80"/>
       <source>BaseFeature link is not set</source>
-      <translation>기준 피처 연결이 설정되지 않았습니다</translation>
+      <translation>기반 특징형상에 대한 연결이 설정되지 않았습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="100"/>
       <location filename="../../../App/FeatureBase.cpp" line="125"/>
       <source>BaseFeature has an empty shape</source>
-      <translation>기준 피처에 빈 형상이 있습니다</translation>
+      <translation>기반 특징형상에 빈 형상이 있습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation>기준 피처 없이는 부울 차집합 연산을 할 수 없습니다</translation>
+      <translation>기반 특징형상이 없이는 부울 연산으로 자르기를 할 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="194"/>
@@ -4972,7 +4972,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation>결과에 여러 솔리드가 있습니다. 활성 바디에서 '복합 허용'을 활성화하십시오.</translation>
+      <translation>결과에 여러 고체들이 있습니다. 활성화된 몸통에서 '복합체 허용'을 활성화하세요.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="221"/>
@@ -4992,7 +4992,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="407"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation>전체 길이가 0인 포켓을 생성할 수 없습니다.</translation>
+      <translation>전체 길이가 0인 오목이는 생성할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="770"/>
@@ -5070,9 +5070,9 @@ over 90: larger hole radius at the bottom</source>
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation>요청한 피처를 만들 수 없습니다. 가능한 이유는 다음과 같습니다.
-  - 활성 바디에 기준 형상이 없어 제거할 재질이 없습니다.
-  - 선택한 스케치가 활성 바디에 속하지 않습니다.</translation>
+      <translation>요청한 특징형상을 생성할 수 없습니다. 그 이유는 다음과 같습니다.
+  - 활성화된 몸통에는 기본 형상이 포함되어 있지 않으므로 제거할 재료가 없습니다.
+  - 선택한 스케치는 활성화된 몸통에 속하지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="451"/>
@@ -5098,7 +5098,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="494"/>
       <source>No revolution geometry was generated</source>
-      <translation type="unfinished">No revolution geometry was generated</translation>
+      <translation>공전해서 도형이 생성되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="520"/>
@@ -5404,7 +5404,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <source>Cannot subtract primitive feature without base feature</source>
-      <translation>기준 피처 없이 기본도형 제거 피처를 만들 수 없습니다</translation>
+      <translation>기본 특징형상 없이는 기반 특징형상을 뺄 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="408"/>
@@ -5529,27 +5529,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="819"/>
       <source>Fusion with base feature failed</source>
-      <translation>기준 피처와의 합체에 실패했습니다</translation>
+      <translation>기반 특징형상들 결합 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>Transformation feature Linked object is not a Part object</source>
-      <translation>변환 피처의 연결 객체가 파트 객체가 아닙니다</translation>
+      <translation>변환 특징형상의 연결 대상체가 부품 대상체가 아닙니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="120"/>
       <source>No features selected to be mirrored.</source>
-      <translation>미러할 피처가 선택되지 않았습니다.</translation>
+      <translation>대칭 복사할 특징형상이 선택되지 않았습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="127"/>
       <source>No features selected to be patterned.</source>
-      <translation>패턴화할 피처가 선택되지 않았습니다.</translation>
+      <translation>패턴복사할 특징형상이 선택되지 않았습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="130"/>
       <source>No features selected to be transformed.</source>
-      <translation>변환할 피처가 선택되지 않았습니다.</translation>
+      <translation>변환할 특징형상이 선택되지 않았습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="447"/>
@@ -5793,7 +5793,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="39"/>
       <source>Transformed Feature Messages</source>
-      <translation>변환 피처 메시지</translation>
+      <translation>변환된 특징형상 메시지</translation>
     </message>
   </context>
   <context>
@@ -6028,7 +6028,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../Command.cpp" line="2133"/>
       <source>Defeaturing</source>
-      <translation>도형특징 제거</translation>
+      <translation>특징형상 제거</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2134"/>
@@ -6095,12 +6095,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
       <source>%1 fine dragging</source>
-      <translation>%1 미세 드래그</translation>
+      <translation>%1 미세 끌기</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="141"/>
       <source>%1 coarse dragging</source>
-      <translation>%1 대략적 드래그</translation>
+      <translation>%1 대략적 끌기</translation>
     </message>
   </context>
   <context>
@@ -6110,9 +6110,9 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Adjust the parameters and try again.</source>
-      <translation>주어진 매개변수로는 도형특징을 만들 수 없습니다.
+      <translation>주어진 매개변수로는 특징형상을 만들 수 없습니다.
 도형이 유효하지 않거나 매개변수가 서로 호환되지 않을 수 있습니다.
-매개변수를 조정한 뒤 다시 시도해  보세요.</translation>
+매개변수를 조정한 뒤 다시 시도해 보세요.</translation>
     </message>
   </context>
 </TS>

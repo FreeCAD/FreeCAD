@@ -2156,13 +2156,8 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Crear una vista trencada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation>Crea una vista de full de càlcul</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1930"/>
       <location filename="../../PagePrinter.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="1930"/>
       <source>Save page to DXF</source>
       <translation>Desar pàgina com a DXF</translation>
     </message>
@@ -2198,6 +2193,11 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Crea una vista d'Esbós</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation>Crea una vista de full de càlcul</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create spreadsheet view</source>
       <translation>Crea una vista de full de càlcul</translation>
@@ -2213,8 +2213,13 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Afegeix vèrtexs de quadrant</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="545"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
+      <source>Edit Annotation</source>
+      <translation>Edita l'anotació</translation>
+    </message>
+    <message>
       <location filename="../../TaskRichAnno.cpp" line="152"/>
+      <location filename="../../CommandAnnotate.cpp" line="545"/>
       <source>Create Annotation</source>
       <translation>Crear Anotació</translation>
     </message>
@@ -2787,11 +2792,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <source>Edit Weld Symbol</source>
       <translation>Edita el símbol de soldadura</translation>
     </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="111"/>
-      <source>Edit Annotation</source>
-      <translation>Edita l'anotació</translation>
-    </message>
   </context>
   <context>
     <name>CompassWidget</name>
@@ -3081,6 +3081,8 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="649"/>
       <location filename="../../Command.cpp" line="866"/>
@@ -3098,8 +3100,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../Command.cpp" line="1627"/>
       <location filename="../../Command.cpp" line="1705"/>
       <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3159,6 +3159,21 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>FreeCAD no pot trobar una pàgina per a exportar</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1922"/>
+      <source>Save DXF file</source>
+      <translation>Desa el fitxer DXF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2174"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>La direcció seleccionada es troba a menys de %1 graus d'una direcció estàndard. Voleu substituir la direcció seleccionada per %2?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2179"/>
+      <source>Direction is close to standard</source>
+      <translation>La direcció és propera a una d'estàndard</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Seleccioneu objectes per trencar o una vista base i objectes de definició de trencament</translation>
@@ -3175,6 +3190,18 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>No hi ha formes, grups, ni enllaços en aquesta selecció</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3190,25 +3217,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandAnnotate.cpp" line="1264"/>
       <location filename="../../CommandAnnotate.cpp" line="1345"/>
       <location filename="../../CommandAnnotate.cpp" line="1411"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1524"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1893"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
@@ -3220,10 +3228,24 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandCreateDims.cpp" line="1887"/>
       <location filename="../../CommandCreateDims.cpp" line="1983"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
       <source>Task in progress</source>
       <translation>Tasca en curs</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
+      <location filename="../../CommandExtensionDims.cpp" line="826"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <location filename="../../CommandAnnotate.cpp" line="103"/>
       <location filename="../../CommandAnnotate.cpp" line="164"/>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
@@ -3242,13 +3264,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../Command.cpp" line="750"/>
       <location filename="../../Command.cpp" line="843"/>
       <location filename="../../Command.cpp" line="906"/>
-      <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <location filename="../../CommandExtensionDims.cpp" line="538"/>
-      <location filename="../../CommandExtensionDims.cpp" line="826"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1525"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1894"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Close active task dialog and try again</source>
       <translation>Tanqueu el diàleg de la tasca activa i torneu-ho a provar</translation>
     </message>
@@ -3269,14 +3284,14 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>No hi ha vista base, formes, grups ni enllaços en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1202"/>
       <location filename="../../CommandCreateDims.cpp" line="2384"/>
+      <location filename="../../Command.cpp" line="1202"/>
       <source>Select an object first</source>
       <translation>Seleccioneu primer un objecte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1209"/>
       <location filename="../../CommandCreateDims.cpp" line="2392"/>
+      <location filename="../../Command.cpp" line="1209"/>
       <source>Too many objects selected</source>
       <translation>Hi ha masses objectes seleccionats</translation>
     </message>
@@ -3299,21 +3314,6 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../Command.cpp" line="1908"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>La pàgina conté una vista BIM que no s'exportarà. Voleu continuar?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1922"/>
-      <source>Save DXF file</source>
-      <translation>Desa el fitxer DXF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2174"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>La direcció seleccionada es troba a menys de %1 graus d'una direcció estàndard. Voleu substituir la direcció seleccionada per %2?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2179"/>
-      <source>Direction is close to standard</source>
-      <translation>La direcció és propera a una d'estàndard</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -3437,21 +3437,12 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Triar un fitxer SVG per obrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
-      <location filename="../../CommandDecorate.cpp" line="420"/>
-      <location filename="../../CommandDecorate.cpp" line="427"/>
-      <location filename="../../CommandDecorate.cpp" line="434"/>
-      <location filename="../../CommandDecorate.cpp" line="441"/>
-      <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1883"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2007"/>
       <location filename="../../TaskDimRepair.cpp" line="139"/>
       <location filename="../../TaskDimRepair.cpp" line="150"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1883"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2007"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3464,6 +3455,15 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandCreateDims.cpp" line="2383"/>
       <location filename="../../CommandCreateDims.cpp" line="2391"/>
       <location filename="../../CommandCreateDims.cpp" line="2400"/>
+      <location filename="../../CommandDecorate.cpp" line="420"/>
+      <location filename="../../CommandDecorate.cpp" line="427"/>
+      <location filename="../../CommandDecorate.cpp" line="434"/>
+      <location filename="../../CommandDecorate.cpp" line="441"/>
+      <location filename="../../CommandDecorate.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Incorrect Selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3592,12 +3592,12 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Seleccioneu 2 línies rectes</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <location filename="../../CommandExtensionPack.cpp" line="902"/>
       <location filename="../../CommandExtensionPack.cpp" line="925"/>
       <location filename="../../CommandExtensionPack.cpp" line="947"/>
       <location filename="../../CommandExtensionPack.cpp" line="983"/>
+      <location filename="../../CommandAnnotate.cpp" line="770"/>
+      <location filename="../../CommandAnnotate.cpp" line="1025"/>
       <source>Wrong Selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3821,8 +3821,8 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="221"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="203"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="203"/>
       <source>Are you sure you want to continue?</source>
       <translation>Segur que voleu continuar?</translation>
     </message>
@@ -3955,9 +3955,9 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Edita la vista de detall</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="141"/>
       <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -4091,15 +4091,15 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>TechDraw Personalitzar el format</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1026"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
       <location filename="../../CommandExtensionDims.cpp" line="2347"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandAnnotate.cpp" line="1026"/>
       <source>Selection is empty</source>
       <translation>La selecció és buida</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2155"/>
       <location filename="../../CommandExtensionDims.cpp" line="2363"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2155"/>
       <source>No object selected</source>
       <translation>No hi ha cap objecte seleccionat</translation>
     </message>
@@ -4284,14 +4284,14 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Creador de text enriquit</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="402"/>
-      <source>Resize Rich Annotation</source>
-      <translation>Redimensiona l'anotació enriquida</translation>
-    </message>
-    <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
       <translation>Seleccioneu un símbol</translation>
+    </message>
+    <message>
+      <location filename="../../QGIRichAnno.cpp" line="402"/>
+      <source>Resize Rich Annotation</source>
+      <translation>Redimensiona l'anotació enriquida</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="58"/>
@@ -4318,18 +4318,18 @@ it has a weld symbol that would become broken.</source>
       <translation>No podeu suprimir aquesta vista perquè conté una o més vistes dependents que es trencarien.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderLeader.cpp" line="214"/>
+      <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderViewPart.cpp" line="426"/>
-      <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="207"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <source>Object dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
@@ -10356,45 +10356,6 @@ hi ha un diàleg de tasca obert.</translation>
     </message>
   </context>
   <context>
-    <name>TechDraw_ExtensionPositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>Posicionar la vista de secció</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>Alinea la vista de secció seleccionada amb la seva vista d'origen de manera ortogonal o la vora seleccionada a la vista de secció amb el vèrtex seleccionat a la vista base</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_CommandVertexCreationGroup</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>Vèrtexs d'intersecció cosmètics</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>Afegeix vèrtexs cosmètics a les interseccions de les vores seleccionades</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_CommandAddOffsetVertex</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
-      <source>Offset Vertex</source>
-      <translation>Vèrtex equidistant</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>Crea un desplaçament a partir d'un vèrtex seleccionat</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSpreadsheetView</name>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
@@ -10493,19 +10454,63 @@ hi ha un diàleg de tasca obert.</translation>
     </message>
   </context>
   <context>
-    <name>Cmd2LineCenterLine</name>
+    <name>TechDraw_ExtensionPositionSectionView</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>Línia central entre 2 línies</translation>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation>Posicionar la vista de secció</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation>Alinea la vista de secció seleccionada amb la seva vista d'origen de manera ortogonal o la vora seleccionada a la vista de secció amb el vèrtex seleccionat a la vista base</translation>
     </message>
   </context>
   <context>
-    <name>Cmd2PointCenterLine</name>
+    <name>TechDraw_CommandVertexCreationGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>Línia central entre 2 línies</translation>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>Vèrtexs d'intersecció cosmètics</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation>Afegeix vèrtexs cosmètics a les interseccions de les vores seleccionades</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>Vèrtex equidistant</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation>Crea un desplaçament a partir d'un vèrtex seleccionat</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="458"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Restaura les línies no visibles</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
+      <source>Add row</source>
+      <translation>Afegeix una fila</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
+      <source>Add column</source>
+      <translation>Afegeix una columna</translation>
     </message>
   </context>
   <context>
@@ -10535,34 +10540,19 @@ hi ha un diàleg de tasca obert.</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
+    <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>Fitxer</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>Exporta la pàgina com a PDF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation>Exporta la pàgina actual com a PDF</translation>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>Línia central entre 2 línies</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportGroup</name>
+    <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>Imprimir totes les pàgines</translation>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>Línia central entre 2 línies</translation>
     </message>
   </context>
   <context>
@@ -10602,24 +10592,34 @@ hi ha un diàleg de tasca obert.</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <name>CmdTechDrawExportPagePDF</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="458"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Restaura les línies no visibles</translation>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>Fitxer</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>Exporta la pàgina com a PDF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation>Exporta la pàgina actual com a PDF</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <name>CmdTechDrawExportGroup</name>
     <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
-      <source>Add row</source>
-      <translation>Afegeix una fila</translation>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
-      <source>Add column</source>
-      <translation>Afegeix una columna</translation>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>Imprimir totes les pàgines</translation>
     </message>
   </context>
 </TS>

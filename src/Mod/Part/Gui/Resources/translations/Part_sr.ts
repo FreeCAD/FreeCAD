@@ -1861,7 +1861,7 @@
     <message>
       <location filename="../../Command.cpp" line="2429"/>
       <source>Project on Surface</source>
-      <translation>Пројицирај на површину</translation>
+      <translation>Пројицирај</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2430"/>
@@ -2197,7 +2197,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation>Кружно умножавање спона</translation>
+      <translation>Прстенасто умножавање спона</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2313,7 +2313,7 @@ of the projection.</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
-      <translation>Пројицирај на површину</translation>
+      <translation>Пројицирај</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="213"/>
@@ -4129,7 +4129,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation>Пројицирај на површину</translation>
+      <translation>Пројицирај</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
@@ -8052,7 +8052,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="165"/>
       <source>Circular Link Array</source>
-      <translation>Кружно умножавање спона</translation>
+      <translation>Прстенасто умножавање спона</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="168"/>
@@ -8092,7 +8092,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="571"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Нема референце</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="577"/>
@@ -8162,12 +8162,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation>Кружно умножавање спона</translation>
+      <translation>Прстенасто умножавање спона</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Creates a concentric circular array of linked objects</source>
-      <translation>Направи умножавање по концентричним кружницама спона неког објекта</translation>
+      <translation>Направи умножавање спона неког објекта по концентричним кружницама</translation>
     </message>
   </context>
   <context>

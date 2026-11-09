@@ -726,7 +726,7 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>Perbualan</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
@@ -5402,7 +5402,7 @@ vektor normal muka digunakan sebagai arah</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="14"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>Perbualan</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="20"/>
@@ -5706,7 +5706,7 @@ vektor normal muka digunakan sebagai arah</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="122"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="113"/>
@@ -7756,7 +7756,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="89"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
   </context>
   <context>

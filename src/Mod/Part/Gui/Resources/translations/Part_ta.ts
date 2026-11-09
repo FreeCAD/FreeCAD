@@ -4379,22 +4379,32 @@ Check one or more edge entities first.</source>
       <translation>அதிகபட்ச கோண விலகல்</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation type="unfinished">Applies these tessellation settings to all objects in currently open documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation type="unfinished">Apply to Open Documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>மிகச் சிறிய விலகலை அமைப்பது டெசெலேசன் அதிக நேரம் எடுக்கும், இதனால் GUI உறைகிறது அல்லது வேகத்தைக் குறைக்கிறது.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>கோண விலகல்</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>மிகச் சிறிய கோண விலகலை அமைப்பது டெசெலேசன் அதிக நேரம் எடுக்கும், இதனால் GUI உறைகிறது அல்லது வேகத்தைக் குறைக்கிறது.</translation>
     </message>
@@ -5066,7 +5076,7 @@ the sketch plane's normal vector will be used</source>
       <translation>பிரதிபலிப்புக்கு ஒரு வடிவத்தைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>அத்தகைய ஆவணம் '% 1' இல்லை.</translation>
     </message>
@@ -6578,7 +6588,7 @@ Continue?</source>
       <translation>தூரத்தை உள்ளிடவும்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>ஒவ்வொரு முகத்திற்கும் தோற்றம்</translation>
     </message>
@@ -7404,7 +7414,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>வளைவுகளின் குறுக்குவெட்டை யூகிக்க முடியவில்லை. நீங்கள் ஃபில்லட் செய்ய விரும்பும் வளைவுகளின் செங்குத்துகளுக்கு இடையில் ஒரு தற்செயல் தடையைச் சேர்க்க முயற்சிக்கவும்.</translation>
     </message>

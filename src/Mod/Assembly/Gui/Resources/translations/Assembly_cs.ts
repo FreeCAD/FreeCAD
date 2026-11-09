@@ -567,32 +567,32 @@ Parametr SLOPE definuje strmost přechodu mezi hodnotami 0 a H1 a H2 a 0 v čase
       <translation>Simulace</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="394"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>Radial Translation</source>
       <translation>Radiální translace</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="398"/>
       <source>Rotation</source>
       <translation>Rotace</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="400"/>
+      <location filename="../../../CommandCreateView.py" line="401"/>
       <source>Translation</source>
       <translation>Posunutí</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="988"/>
+      <location filename="../../../CommandCreateView.py" line="989"/>
       <source>Angle of this exploded-view move</source>
       <translation>Úhel tohoto pohybu s rozloženým pohledem</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="998"/>
+      <location filename="../../../CommandCreateView.py" line="999"/>
       <source>Distance of this exploded-view move</source>
       <translation>Vzdálenost tohoto pohybu rozloženého pohledu</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <location filename="../../../CommandCreateView.py" line="1039"/>
       <source>Edit placement</source>
       <translation>Upravit umístění</translation>
     </message>
@@ -727,18 +727,18 @@ Parametr SLOPE definuje strmost přechodu mezi hodnotami 0 a H1 a H2 a 0 v čase
       <translation>Objekt k uzemnění</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="527"/>
-      <location filename="../../../CommandCreateView.py" line="564"/>
+      <location filename="../../../CommandCreateView.py" line="528"/>
+      <location filename="../../../CommandCreateView.py" line="565"/>
       <source>The objects moved by the move</source>
       <translation>Objekt přesunut tahem</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="539"/>
+      <location filename="../../../CommandCreateView.py" line="540"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Toto je pohyb tahu. Konečné umístění je výsledkem počáteční polohy * tohoto umístění.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="548"/>
+      <location filename="../../../CommandCreateView.py" line="549"/>
       <source>The type of the move</source>
       <translation>Typ tahu</translation>
     </message>
@@ -1636,6 +1636,24 @@ Poznámka: V současnosti se zde vybírají pouze nepropojené části, ne zavaz
     </message>
   </context>
   <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Vyberte alespoň 2 komponenty pro vytvoření pevné skupiny</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Vytvořit pevnou skupinu</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Vytvořit pevnou skupinu.&lt;/p&gt;&lt;p&gt;Vytvoří pevnou skupinu, která trvale uzamkne vybrané komponenty dohromady.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1659,24 +1677,6 @@ Poznámka: V současnosti se zde vybírají pouze nepropojené části, ne zavaz
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Obnovit snímek</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Vyberte alespoň 2 komponenty pro vytvoření pevné skupiny</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Vytvořit pevnou skupinu</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Vytvořit pevnou skupinu.&lt;/p&gt;&lt;p&gt;Vytvoří pevnou skupinu, která trvale uzamkne vybrané komponenty dohromady.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

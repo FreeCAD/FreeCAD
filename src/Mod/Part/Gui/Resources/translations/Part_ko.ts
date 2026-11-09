@@ -1555,7 +1555,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="462"/>
       <source>Defeaturing</source>
-      <translation>도형특징 제거</translation>
+      <translation>특징형상 제거</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
@@ -1789,7 +1789,7 @@
     <message>
       <location filename="../../Command.cpp" line="1862"/>
       <source>2D Offset</source>
-      <translation>2D 오프셋</translation>
+      <translation>2D 편차</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1863"/>
@@ -2255,7 +2255,7 @@ of the projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="475"/>
       <source>Defeaturing</source>
-      <translation>도형특징 제거</translation>
+      <translation>특징형상 제거</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.cpp" line="76"/>
@@ -4429,12 +4429,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
       <source>Features Settings</source>
-      <translation>피처 설정</translation>
+      <translation>특징형상 설정</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
       <source>Specifies which profile geometry types are accepted by the Part Design Hole feature</source>
-      <translation>Part Design 구멍 피처에서 허용되는 프로파일 기하 유형을 지정합니다</translation>
+      <translation>부품설계 작업대의 구멍 특징형상에서 허용되는 윤곽도형 유형을 지정합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="181"/>
@@ -4479,32 +4479,32 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Show final result by default when editing features</source>
-      <translation>피처 편집 시 기본으로 최종 결과 표시</translation>
+      <translation>특징형상 편집시 기본적으로 최종 결과를 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
-      <translation>피처를 편집하는 동안 3D 보기에서 완전히 계산된 모델을 표시하여 격리된 피처만이 아닌 최종 컨텍스트를 보여줍니다</translation>
+      <translation>특징형상을 편집하는 동안 3D 보기에서 완전히 계산된 모형을 표시하여 격리된 특징형상이 아닌 최종 컨텍스트를 보여줍니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation>피처 편집 시 기본으로 투명 미리보기 오버레이 표시</translation>
+      <translation>특징형상 편집 시 기본으로 투명 미리보기 오버레이 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
-      <translation>피처 편집 시 적용 전에 변경 사항을 시각화하기 위해 결과의 반투명 미리보기를 오버레이합니다</translation>
+      <translation>특징형상 편집 시 적용 전에 변경 사항을 시각화하기 위해 결과의 반투명 미리보기를 오버레이합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
       <source>Highlight the profile used to create features</source>
-      <translation>피처 생성에 사용된 프로파일 강조</translation>
+      <translation>특징형상 생성에 사용된 윤곽을 강조합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
       <source>Visually highlights the source sketch or geometry used to generate the feature currently being edited</source>
-      <translation>현재 편집 중인 피처를 생성하는 데 사용된 원본 스케치 또는 기하를 시각적으로 강조합니다</translation>
+      <translation>현재 편집 중인 특징형상을 생성하는 데 사용된 원본 스케치 또는 도형을 시각적으로 강조합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
@@ -4519,12 +4519,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="383"/>
       <source>Show interactive draggers when editing features</source>
-      <translation>피처 편집 시 인터랙티브 드래거 표시</translation>
+      <translation>특징형상 편집 시 상호작용적인 끌개를 표시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
-      <translation>드래그하여 편집 중인 피처의 치수와 매개변수를 인터랙티브하게 수정할 수 있도록 3D 보기의 화면 핸들(드래거)을 활성화합니다</translation>
+      <translation>끌어서 편집 중인 특징형상의 치수와 매개변수를 인터랙티브하게 수정할 수 있도록 3D 보기의 화면 핸들(끌개)을 활성화합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="408"/>
@@ -6720,7 +6720,7 @@ Continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="93"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>'계속'을 눌러 피처를 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
+      <translation>'계속'을 눌러 특징형상을 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="94"/>
@@ -6765,7 +6765,7 @@ Continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="398"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="640"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>'계속'을 눌러 피처를 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
+      <translation>'계속'을 눌러 특징형상을 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="195"/>
@@ -6834,7 +6834,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="133"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>'계속'을 눌러 피처를 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
+      <translation>'계속'을 눌러 특징형상을 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
     </message>
   </context>
   <context>
@@ -7095,7 +7095,7 @@ for collision or distance filtering.</source>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
-      <translation>선택한 객체 두 개 이상 또는 복합체 내부 형상에 대해 '배타적 OR' 부울 연산을 수행합니다.
+      <translation>선택한 대상체 두 개 이상 또는 복합체 내부 형상에 대해 '배타적 OR' 부울 연산을 수행합니다.
 형상들의 겹치는 부피는 제거됩니다.</translation>
     </message>
   </context>
@@ -7311,7 +7311,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="87"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>'계속'을 눌러 피처를 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
+      <translation>'계속'을 눌러 특징형상을 계속 생성하거나 '중단'을 눌러 취소하세요.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="88"/>
@@ -7344,7 +7344,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="248"/>
       <source>Select at least one object or compounds</source>
-      <translation>객체 또는 복합체를 최소 하나 선택하세요</translation>
+      <translation>적어도 하나의 대상체나 복합체를 선택하세요</translation>
     </message>
   </context>
   <context>
@@ -7476,7 +7476,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="338"/>
       <source>Embed Shapes</source>
-      <translation>형상 삽입</translation>
+      <translation>내장된 형상</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>

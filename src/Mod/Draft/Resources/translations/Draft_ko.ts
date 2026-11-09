@@ -3505,7 +3505,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="2113"/>
       <source>Create Objects</source>
-      <translation>오브젝트 생성</translation>
+      <translation>대상체 생성</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2295"/>
@@ -4062,12 +4062,12 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="114"/>
       <source>%1 select objects to modify</source>
-      <translation>수정할 객체를 %1개 선택하세요</translation>
+      <translation>수정할 대상체를 %1개 선택하세요</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="116"/>
       <source>%1 select object to modify</source>
-      <translation>수정할 객체를 %1개 선택하세요</translation>
+      <translation>수정할 대상체를 %1개 선택하세요</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="133"/>
@@ -4199,7 +4199,7 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="378"/>
       <source>%1 select object to edit</source>
-      <translation>편집할 객체를 %1개 선택하세요</translation>
+      <translation>편집할 대상체를 %1개 선택하세요</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="386"/>
