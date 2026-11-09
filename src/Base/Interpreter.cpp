@@ -605,10 +605,13 @@ std::string InterpreterSingleton::getPythonPath()
 }
 
 #if PY_VERSION_HEX < 0x030b0000
-std::string InterpreterSingleton::init(int argc, char* argv[])
+std::string InterpreterSingleton::init(int argc, char* argv[], const std::string& home)
 {
     if (!Py_IsInitialized()) {
         Py_SetProgramName(Py_DecodeLocale(argv[0], nullptr));
+        if (!home.empty()) {
+            Py_SetPythonHome(Py_DecodeLocale(home.c_str(), nullptr));
+        }
         // There is a serious bug in VS from 2010 until 2013 where the file descriptor for stdin,
         // stdout or stderr returns a valid value for GUI applications (i.e. subsystem = Windows)
         // where it shouldn't. This causes Python to fail during initialization. A workaround is to
@@ -648,7 +651,7 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
 #else
 namespace
 {
-void initInterpreter(int argc, char* argv[])
+void initInterpreter(int argc, char* argv[], const std::string& home)
 {
     PyStatus status;
     PyConfig config;
@@ -659,6 +662,13 @@ void initInterpreter(int argc, char* argv[])
     status = PyConfig_SetBytesArgv(&config, argc, argv);
     if (PyStatus_Exception(status)) {
         throw Base::RuntimeError("Failed to set config");
+    }
+
+    if (!home.empty()) {
+        status = PyConfig_SetBytesString(&config, &config.home, home.c_str());
+        if (PyStatus_Exception(status)) {
+            throw Base::RuntimeError("Failed to set Python home");
+        }
     }
 
     status = Py_InitializeFromConfig(&config);
@@ -684,11 +694,11 @@ void initInterpreter(int argc, char* argv[])
     Py_Initialize();
 }
 }  // namespace
-std::string InterpreterSingleton::init(int argc, char* argv[])
+std::string InterpreterSingleton::init(int argc, char* argv[], const std::string& home)
 {
     try {
         if (!Py_IsInitialized()) {
-            initInterpreter(argc, argv);
+            initInterpreter(argc, argv, home);
 
             PythonStdOutput::init_type();
             this->_global = PyEval_SaveThread();

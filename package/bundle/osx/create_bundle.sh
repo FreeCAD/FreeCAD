@@ -78,11 +78,11 @@ find . -name "*.pyc" -type f -delete
 # and https://github.com/FreeCAD/FreeCAD-Bundle/issues/375
 python fix_macos_lib_paths.py ${conda_env}/lib -r
 
-# build and install the launcher
-cmake -B build launcher
-cmake --build build
+# make FreeCAD the bundle executable so macOS associates the process with the bundle
 mkdir -p FreeCAD.app/Contents/MacOS
-cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
+mv ${conda_env}/bin/freecad FreeCAD.app/Contents/MacOS/FreeCAD
+ln -s ../../MacOS/FreeCAD ${conda_env}/bin/freecad
+install_name_tool -add_rpath @executable_path/../Resources/lib FreeCAD.app/Contents/MacOS/FreeCAD
 
 # Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
 deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
