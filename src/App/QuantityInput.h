@@ -73,11 +73,12 @@ enum class InputStatus
     Invalid
 };
 
-/** Canonical grammar accepted at this input boundary. */
+/** Different grammars for handling user input. */
 enum class QuantityInputGrammar
 {
-    Quantity,
-    Expression
+    Quantity,      ///< Quantity syntax only, unused, mostly for testing.
+    Expression,    ///< Expression syntax only, for the expression system.
+    QuantityFirst  ///< Quantity precedence; expression fallback.
 };
 
 enum class InputDiagnosticKind
