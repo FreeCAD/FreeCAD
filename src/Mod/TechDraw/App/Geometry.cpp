@@ -1713,7 +1713,7 @@ bool GeometryUtils::isLine(const TopoDS_Edge& splineEdge)
         polePoints.push_back(Base::convertTo<Base::Vector3d>(poles.Value(iPole)));
     }
 
-    return colinearPoints2dAll(polePoints);;
+    return colinearPoints2dAll(polePoints);
 }
 
 
@@ -2016,7 +2016,6 @@ bool GeometryUtils::colinearPoints2d(Base::Vector3d p0, Base::Vector3d p1, Base:
 //! true if all entries in points2d are colinear.  Expects 2 or more points.
 bool GeometryUtils::colinearPoints2dAll(const std::vector<Base::Vector3d>& points2d)
 {
-    constexpr int TripleSize{3};
     int pointCount = points2d.size();
     if (pointCount < 2) {
         throw Base::RuntimeError("BSpline has too few points");
@@ -2025,34 +2024,19 @@ bool GeometryUtils::colinearPoints2dAll(const std::vector<Base::Vector3d>& point
     if (pointCount == 2) {
         return true;
     }
+    Base::Vector3d startPoint = points2d.front();
+    Base::Vector3d endPoint = points2d.back();
+    int iStart = 1;
+    int iStop  = points2d.size() - 2;
 
-    // 3 or more points
-    int tripleCount = pointCount / TripleSize;
-
-    for (int iTriple = 0; iTriple < tripleCount; iTriple++) {
-        int tripleStartPoint = iTriple * TripleSize;
-        if (colinearPoints2d(points2d.at(tripleStartPoint),
-                             points2d.at(tripleStartPoint + 1),
-                             points2d.at(tripleStartPoint + 2))) {
-            continue;
-        }
-        // at least one group of 3 points is not colinear
-        return false;
-    }
-
-    if (pointCount > tripleCount * TripleSize) {
-        // check the last few points
-        if (!colinearPoints2d(points2d.at(pointCount - 3),
-                             points2d.at(pointCount - 2),
-                             points2d.at(pointCount - 1))) {
+    for (int iPoint = iStart; iPoint <= iStop; iPoint++) {
+        if (!colinearPoints2d(startPoint,
+                         points2d.at(iPoint),
+                         endPoint)) {
             return false;
         }
     }
-
-    // all the point triples are colinear, but we don't know yet if all are colinear.  We need to test 3 points that
-    // were not in the same triple.
-    return colinearPoints2d(points2d.front(),
-                            points2d.at(pointCount % 2),
-                            points2d.back());
+    // all points are colinear with the ends
+    return true;
 }
 
