@@ -256,8 +256,8 @@ class SprocketTaskPanel:
         self.update()
 
         if mode == 0:  # fresh created
-            self.obj.Proxy.execute(self.obj)  # calculate once
-            FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
+            if self.obj.recompute():  # calculate once
+                FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def transferTo(self):
         """
@@ -281,8 +281,8 @@ class SprocketTaskPanel:
 
     def pitchChanged(self, value):
         self.obj.Pitch = value
-        self.obj.Proxy.execute(self.obj)
-        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
+        if self.obj.recompute():
+            FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def sprocketReferenceChanged(self, size):
         self.obj.Pitch = str(Sprocket.SprocketReferenceRollerTable[size][0]) + " in"
@@ -292,21 +292,21 @@ class SprocketTaskPanel:
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
-        self.obj.Proxy.execute(self.obj)
-        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
+        if self.obj.recompute():
+            FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def rollerDiameterChanged(self, value):
         self.obj.RollerDiameter = value
-        self.obj.Proxy.execute(self.obj)
+        self.obj.recompute()
 
     def numTeethChanged(self, value):
         self.obj.NumberOfTeeth = value
-        self.obj.Proxy.execute(self.obj)
-        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
+        if self.obj.recompute():
+            FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def thicknessChanged(self, value):
         self.obj.Thickness = str(value)
-        self.obj.Proxy.execute(self.obj)
+        self.obj.recompute()
 
     def getStandardButtons(self):
         return (
@@ -316,7 +316,7 @@ class SprocketTaskPanel:
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.transferTo()
-            self.obj.Proxy.execute(self.obj)
+            self.obj.recompute()
 
     def update(self):
         self.transferFrom()
