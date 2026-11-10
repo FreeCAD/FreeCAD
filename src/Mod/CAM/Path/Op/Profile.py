@@ -637,50 +637,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def _processOpenWire(self, obj, wire):
         """_processOpenWire(obj, wire) ... returns wire which is offset of the open wire"""
-        solids = Part.Compound(self.solids)
-        cutting_plane = Path.Geom.makeBoundBoxFace(
-            solids.BoundBox, 10, wire.BoundBox.ZMax + self.tol
-        )  # create boundbox face, with extra offset
-        section = solids.section(cutting_plane)
-        section.translate(FreeCAD.Vector(0, 0, -self.tol))
-
         shapeTups = []
-        goodWires = []
         passOffsets = self.areaOpAreaParams(obj, False)["Offset"]
         index = obj.Side == "Inside"
         for po in passOffsets:
             owires = Path.Op.Util.offsetWire(wire, self.solids, po, tolerance=self.tol)[index]
             owires = [Path.Op.Util.orientWire(w) for w in owires]
-
-            if not section.Edges:
-                goodWires.extend(owires)
-                continue
-
-            # process intersections tool with section of the model
-            temp = owires[:]
-            added = False
-            while temp:
-                owire = temp.pop()
-                distData = owire.distToShape(section)
-                dist = distData[0]
-                if Path.Geom.isGreaterEqual(dist, self.radius, 2 * self.tol):
-                    goodWires.append(owire)
-                    added = True
-                else:
-                    point = distData[1][0][1]  # nearest point on section which intersects with tool
-                    circle = Part.makeCircle(self.radius, point)
-                    face = Part.makeFace(circle)
-                    cut = owire.cut(face, self.tol)
-                    temp.extend(cut.Wires)
-
-            if not added:
-                # add offset wires as is, if offset wires was completelly cutted by solids
-                goodWires.extend(owires)
-
-        if goodWires:
-            shapeTups.append((Part.Compound(goodWires), False, "OpenEdge"))
-        else:
-            Path.Log.error(self.inaccessibleMsg)
+            shapeTups.append((Part.Compound(owires), False, "OpenEdge"))
 
         return shapeTups
 
