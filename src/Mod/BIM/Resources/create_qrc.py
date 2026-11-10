@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2024 Yorik van Havre
 # SPDX-FileNotice: Part of the FreeCAD project.

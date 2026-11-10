@@ -1,5 +1,5 @@
-# Robot gui init module
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# Robot gui init module
 
 # (c) 2009 Juergen Riegel
 #
