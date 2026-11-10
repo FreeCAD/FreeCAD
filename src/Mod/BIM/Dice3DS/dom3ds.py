@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: 2003 Carl Banks
 """Slice and dice 3DS files.
 
 Provides for reading, writing, and manipulating 3DS files.  It's
