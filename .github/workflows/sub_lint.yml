@@ -103,6 +103,51 @@ permissions:
 
 jobs:
 
+  SPDX:
+    name: Check SPDX headers
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        with:
+          egress-policy: audit
+
+      - name: Check out code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check SPDX headers in modules supporting it
+        run: |
+          python3 tools/lint/check_spdx.py \
+            src/Mod/Assembly \
+            src/Mod/BIM \
+            src/Mod/CAM \
+            src/Mod/Draft \
+            src/Mod/Fem \
+            src/Mod/Help \
+            src/Mod/Import \
+            src/Mod/Inspection \
+            src/Mod/JtReader \
+            src/Mod/Material \
+            src/Mod/Measure \
+            src/Mod/Mesh \
+            src/Mod/MeshPart \
+            src/Mod/OpenSCAD \
+            src/Mod/Part \
+            src/Mod/PartDesign \
+            src/Mod/Plot \
+            src/Mod/Points \
+            src/Mod/ReverseEngineering \
+            src/Mod/Robot \
+            src/Mod/Show \
+            src/Mod/Sketcher \
+            src/Mod/Spreadsheet \
+            src/Mod/Start \
+            src/Mod/Surface \
+            src/Mod/TechDraw \
+            src/Mod/TemplatePyMod \
+            src/Mod/Tux \
+            src/Mod/Web
+
   Lint:
     if: inputs.changedFiles != ''
     runs-on: ubuntu-26.04
