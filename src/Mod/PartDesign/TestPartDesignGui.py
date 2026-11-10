@@ -123,6 +123,21 @@ class CallableRecordDialog:
             QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
 
 
+class CallableChooseReference:
+    def __init__(self, option):
+        self.option = option
+        self.chosen = False
+
+    def __call__(self):
+        dialog = QApplication.activeModalWidget()
+        if dialog is not None:
+            button = dialog.findChild(QtGui.QRadioButton, self.option)
+            if button is not None:
+                button.setChecked(True)
+                self.chosen = True
+            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
+
+
 App = FreeCAD
 Gui = FreeCADGui
 
@@ -495,3 +510,89 @@ class TestDatumPlane(unittest.TestCase):
         )
 
         self.assertEqual(packed_color, color)
+
+
+class TestSketchOnFaceOutsideBody(unittest.TestCase):
+    def setUp(self):
+        self.param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+        self.useAttachment = self.param.GetBool("NewSketchUseAttachmentDialog", False)
+        self.param.SetBool("NewSketchUseAttachmentDialog", False)
+        self.Doc = FreeCAD.newDocument("PartDesignTestSketchOnFaceOutsideBody")
+        self.Box = self.Doc.addObject("Part::Box", "Box")
+        self.Box.Placement = App.Placement(App.Vector(5, -7, 3), App.Rotation(30, 20, 10))
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Body.Placement = App.Placement(App.Vector(100, 20, -30), App.Rotation(90, 0, 45))
+        self.Doc.recompute()
+
+    def tearDown(self):
+        Gui.Selection.clearSelection()
+        if Gui.ActiveDocument.getInEdit():
+            Gui.ActiveDocument.resetEdit()
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.param.SetBool("NewSketchUseAttachmentDialog", self.useAttachment)
+
+    def makeSketch(self, option, obj, sub):
+        Gui.activateView("Gui::View3DInventor", True)
+        Gui.activeView().setActiveObject("pdbody", self.Body)
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(self.Doc.Name, obj.Name, sub)
+        chooser = CallableChooseReference(option)
+        QtCore.QTimer.singleShot(500, chooser)
+        Gui.runCommand("PartDesign_NewSketch", 0)
+        Gui.ActiveDocument.resetEdit()
+        self.Doc.recompute()
+        self.assertTrue(chooser.chosen, "Reference dialog was not shown")
+        binders = [o for o in self.Body.Group if o.isDerivedFrom("PartDesign::ShapeBinder")]
+        sketches = [o for o in self.Body.Group if o.isDerivedFrom("Sketcher::SketchObject")]
+        self.assertEqual(len(binders), 1)
+        self.assertEqual(len(sketches), 1)
+        return binders[0], sketches[0]
+
+    def assertOnFace(self, binder, sketch, face):
+        placement = self.Body.getGlobalPlacement()
+        center = face.CenterOfMass
+        normal = face.normalAt(0, 0)
+        copy = binder.Shape.Faces[0].copy()
+        copy.Placement = placement.multiply(copy.Placement)
+        self.assertLess((copy.CenterOfMass - center).Length, 1e-6)
+        self.assertLess((copy.normalAt(0, 0) - normal).Length, 1e-6)
+        origin = placement.multiply(sketch.Placement)
+        self.assertLess(abs((origin.Base - center).dot(normal)), 1e-6)
+        self.assertLess(origin.Rotation.multVec(App.Vector(0, 0, 1)).cross(normal).Length, 1e-6)
+
+    def testIndependentCopy(self):
+        binder, sketch = self.makeSketch("radioIndependent", self.Box, "Face6")
+        self.assertOnFace(binder, sketch, self.Box.Shape.Faces[5])
+
+    def testDependentCopyFollowsSource(self):
+        binder, sketch = self.makeSketch("radioDependent", self.Box, "Face6")
+        self.assertOnFace(binder, sketch, self.Box.Shape.Faces[5])
+        moved = App.Placement(App.Vector(10, 0, 5), App.Rotation(0, 0, 20))
+        self.Box.Placement = moved.multiply(self.Box.Placement)
+        self.Doc.recompute()
+        self.assertOnFace(binder, sketch, self.Box.Shape.Faces[5])
+        self.Body.Placement = moved.multiply(self.Body.Placement)
+        self.Doc.recompute()
+        self.assertOnFace(binder, sketch, self.Box.Shape.Faces[5])
+
+    def testCopyOfFaceInOtherBody(self):
+        other = self.Doc.addObject("PartDesign::Body", "Other")
+        other.Placement = App.Placement(App.Vector(30, -60, 8), App.Rotation(15, 25, 35))
+        profile = other.newObject("Sketcher::SketchObject", "Profile")
+        profile.addGeometry(Part.Circle(App.Vector(), App.Vector(0, 0, 1), 5))
+        pad = other.newObject("PartDesign::Pad", "Pad")
+        pad.Profile = profile
+        pad.Length = 4
+        self.Doc.recompute()
+        binder, sketch = self.makeSketch("radioIndependent", other, pad.Name + ".Face2")
+        self.assertOnFace(binder, sketch, other.getSubObject(pad.Name + ".Face2"))
+
+    def testCopyInBodyInsidePart(self):
+        part = self.Doc.addObject("App::Part", "Part")
+        part.Placement = App.Placement(App.Vector(-50, 10, 5), App.Rotation(0, 90, 0))
+        part.addObject(self.Body)
+        self.Doc.recompute()
+        Gui.activateView("Gui::View3DInventor", True)
+        Gui.activeView().setActiveObject("part", part)
+        binder, sketch = self.makeSketch("radioIndependent", self.Box, "Face6")
+        self.assertOnFace(binder, sketch, self.Box.Shape.Faces[5])
