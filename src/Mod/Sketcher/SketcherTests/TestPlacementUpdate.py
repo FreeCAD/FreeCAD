@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # test for FreeCAD issue https://github.com/freecad/freecad/issues/25893
 # regression test for sketch placement updates during edit mode
 # when sketcher workbench is active and has not be closed / exited
