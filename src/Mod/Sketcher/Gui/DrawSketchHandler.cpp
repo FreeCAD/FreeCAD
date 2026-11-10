@@ -1521,7 +1521,8 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
 }
 
 bool DrawSketchHandler::filterRedundantAutoConstraints(
-    std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+    bool preserveExisting
 )
 {
     if (autoConstraints.empty()) {
@@ -1545,6 +1546,31 @@ bool DrawSketchHandler::filterRedundantAutoConstraints(
         auto lastsketchconstraintindex = sketchobject->Constraints.getSize() - 1;
 
         auto redundants = sketchobject->getLastRedundant();  // redundants is always sorted
+
+        if (preserveExisting && !redundants.empty()
+            && redundants.front() <= sketchobject->Constraints.getSize()) {
+            // The solver can mark a typed dimension redundant instead of a new suggestion.
+            auto canAdd = [&](const std::vector<Sketcher::Constraint*>& suggestions) {
+                return sketchobject->diagnoseAdditionalConstraints(suggestions) >= 0
+                    && !sketchobject->getLastHasRedundancies()
+                    && !sketchobject->getLastHasConflicts()
+                    && !sketchobject->getLastHasMalformedConstraints()
+                    && !sketchobject->getLastHasPartialRedundancies();
+            };
+            std::vector<Sketcher::Constraint*> accepted;
+            if (!canAdd(accepted)) {
+                return false;
+            }
+            std::erase_if(autoConstraints, [&](const auto& suggestion) {
+                accepted.push_back(suggestion.get());
+                if (canAdd(accepted)) {
+                    return false;
+                }
+                accepted.pop_back();
+                return true;
+            });
+            return true;
+        }
 
         for (int index = redundants.size() - 1; index >= 0; index--) {
             int redundantconstraintindex = redundants[index] - 1;

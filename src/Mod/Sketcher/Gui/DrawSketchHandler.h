@@ -342,7 +342,8 @@ protected:
         std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
     );
     bool filterRedundantAutoConstraints(
-        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+        bool preserveExisting = false
     );
     void addGeneratedAutoConstraints(
         const std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
