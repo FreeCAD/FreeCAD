@@ -32,6 +32,7 @@ import math
 import FreeCAD
 import Path
 import Part
+from Path.Tool.shape import ToolBitShape
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -819,7 +820,7 @@ def _first_pass_mask(
     c_rad = tool_params["c_rad"]
     offset = radius + stock_to_leave
 
-    if "ballend" in profile:
+    if ToolBitShape.is_ball_end(profile):
         c_rad = radius
 
     if (model_top - z_target) <= c_rad:
@@ -904,7 +905,7 @@ def _generate_sampling_plan(
     # is equal to the tool radius. Normalizing c_rad here allows us to use
     # the same 'bullnose' formulas for both tool types, simplifying the math.
 
-    if "ballend" in profile:
+    if ToolBitShape.is_ball_end(profile):
         c_rad = R
 
     # 2. Internal math helpers
