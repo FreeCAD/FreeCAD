@@ -221,11 +221,12 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashInfoPosition"] = "6,75";
     App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
 
-    auto& config = App::Application::Config();
-    if (config.find("DesktopFileName") == config.end() || config["DesktopFileName"].empty()) {
-        App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+    const QString desktopFileName = qEnvironmentVariable("FREECAD_DESKTOP_FILE");
+    if (!desktopFileName.isEmpty()) {
+        App::Application::Config()["DesktopFileName"] = desktopFileName.toStdString();
     }
-
+#endif
     try {
         // Init phase ===========================================================
         // sets the default run mode for FC, starts with gui if not overridden in InitConfig...
