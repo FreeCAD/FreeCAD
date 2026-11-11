@@ -152,7 +152,9 @@ def _fc_install_add_workbench_icon_wrapper(gui_module):
 
 # --- END external workbench icon central patch ---
 
+# Keep translate alias; InitGui.py scripts execed from here may rely on that.
 translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 App.Console.PrintLog("Init: Running FreeCADGuiInit.py start script...\n")
 App.Console.PrintLog("░░░▀█▀░█▀█░▀█▀░▀█▀░░░█▀▀░█░█░▀█▀░░\n")
@@ -564,7 +566,7 @@ FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)", "FreeCADGui")
 FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)", "FreeCADGui")
 FreeCAD.addExportType("WebGL/X3D (*.xhtml)", "FreeCADGui")
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "Portable Document Format"), ["pdf"], "FreeCADGui"
+    QT_TRANSLATE_NOOP("FileFormat", "Portable Document Format"), ["pdf"], "FreeCADGui"
 )
 # FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
 # FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")

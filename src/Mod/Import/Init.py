@@ -21,7 +21,7 @@
 
 import FreeCAD
 
-translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 # Append the open handler
 # FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
@@ -31,7 +31,7 @@ FreeCAD.addImportType("PLMXML files (*.plmxml *.PLMXML)", "PlmXmlParser")
 FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz *.STPZ)", "stepZ")
 FreeCAD.addImportType("glTF (*.gltf *.GLTF *.glb *.GLB)", "ImportGui")
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "STEPZ (Zipped STEP)"), ["stpZ", "stpz"], "stepZ"
+    QT_TRANSLATE_NOOP("FileFormat", "STEPZ (Zipped STEP)"), ["stpZ", "stpz"], "stepZ"
 )
 FreeCAD.addExportType("glTF (*.gltf *.glb)", "ImportGui")
 
