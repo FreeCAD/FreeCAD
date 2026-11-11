@@ -27,10 +27,10 @@
 
 import FreeCAD
 
-translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 # Append the open handler
 FreeCAD.addImportType("Point formats (*.asc *.ASC *.pcd *.PCD *.ply *.PLY *.e57 *.E57)", "Points")
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "Point formats"), ["asc", "pcd", "ply"], "Points"
+    QT_TRANSLATE_NOOP("FileFormat", "Point formats"), ["asc", "pcd", "ply"], "Points"
 )
