@@ -253,7 +253,7 @@ class CAMSanity:
             data["squawkData"].append(
                 self.squawk(
                     "CAMSanity",
-                    translate("CAM_Sanity", "The Job has not been post-processed"),
+                    translate("CAM_Sanity", "The Job has not been post-processed and saved"),
                 )
             )
         else:
