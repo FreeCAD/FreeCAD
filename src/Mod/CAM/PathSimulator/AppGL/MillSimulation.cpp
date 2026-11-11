@@ -27,11 +27,10 @@
 #include "GlUtils.h"
 #include <algorithm>
 #include <iostream>
+#include <numbers>
 
 // include this last as the defines can mess up other includes
 #include "OpenGlWrapper.h"
-
-using namespace std::literals;
 
 #define DRAG_ZOOM_FACTOR 10
 
@@ -59,6 +58,7 @@ void MillSimulation::Clear()
     mCodeParser.Clear();
 
     ClearMillPathSegments();
+    mTimeline.Clear();
 
     for (unsigned int i = 0; i < mToolTable.size(); i++) {
         delete mToolTable[i];
@@ -78,6 +78,7 @@ void MillSimulation::Clear()
 void MillSimulation::InitSimulation(float quality, float maxStockDimension)
 {
     ClearMillPathSegments();
+    mStockCache.Invalidate();
     millPathLine.Clear();
     // mViewSSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
 
@@ -87,7 +88,8 @@ void MillSimulation::InitSimulation(float quality, float maxStockDimension)
     mNTotalSteps = 0;
     mSimPlaying = false;
     mSimSpeed = 1;
-    mTotalElapsed = 0s;
+    mSimTime = 0;
+    mTotalTime = 0;
 
     MillPathSegment::SetQuality(quality, maxStockDimension);
 
@@ -97,10 +99,12 @@ void MillSimulation::InitSimulation(float quality, float maxStockDimension)
     MillMotion prevMotion = !mCodeParser.Operations.empty() ? mCodeParser.Operations.front()
                                                             : MillMotion();
 
+    vec3 startPos;
+    mRotary.StartPosition(startPos, prevMotion);
     MillPathPosition mpPos;
-    mpPos.X = prevMotion.x;
-    mpPos.Y = prevMotion.y;
-    mpPos.Z = prevMotion.z;
+    mpPos.X = startPos[0];
+    mpPos.Y = startPos[1];
+    mpPos.Z = startPos[2];
     mpPos.SegmentId = segId++;
     millPathLine.MillPathPointsBuffer.push_back(mpPos);
 
@@ -108,18 +112,27 @@ void MillSimulation::InitSimulation(float quality, float maxStockDimension)
         const MillMotion curMotion = mCodeParser.Operations[i];
         const EndMill* tool = GetTool(curMotion.tool);
         if (tool != nullptr) {
-            auto segment = new MillPathSegment(*tool, prevMotion, curMotion);
-            segment->indexInArray = i;
-            segment->segmentIndex = segId++;
-            mNTotalSteps += segment->numSimSteps;
-            MillPathSegments.push_back(segment);
-            segment->AppendPathPoints(millPathLine.MillPathPointsBuffer);
+            // a move that turns the rotary axes while it cuts is drawn in pieces
+            const std::vector<MillPathSegment*> segments = mRotary.TurnsWhileCutting(curMotion)
+                ? mRotary.MakeContinuousSegments(*tool, prevMotion, curMotion)
+                : std::vector<MillPathSegment*> {mRotary.MakeSegment(*tool, prevMotion, curMotion)};
+            for (MillPathSegment* segment : segments) {
+                segment->firstStep = mNTotalSteps;
+                segment->indexInArray = i;
+                segment->segmentIndex = segId++;
+                mNTotalSteps += segment->numSimSteps;
+                MillPathSegments.push_back(segment);
+                segment->AppendPathPoints(millPathLine.MillPathPointsBuffer);
+            }
         }
 
         prevMotion = curMotion;
     }
 
     assert(mNTotalSteps >= 0);
+
+    mTotalTime = mTimeline.ComputeTimes();
+    mRotary.MarkClearRapids(MillPathSegments, mStockPoints);
 
     mNPathSteps = (int)MillPathSegments.size();
     millPathLine.GenerateModel();
@@ -237,6 +250,9 @@ void MillSimulation::GlsimEnd(void)
 void MillSimulation::renderSegmentForward(int iSeg)
 {
     MillPathSegment* p = MillPathSegments.at(iSeg);
+    if (!p->isCutting) {
+        return;
+    }
     int step = iSeg == mPathStep ? mSubStep : p->numSimSteps;
     int start = p->isMultyPart ? 1 : step;
     for (int i = start; i <= step; i++) {
@@ -250,6 +266,9 @@ void MillSimulation::renderSegmentForward(int iSeg)
 void MillSimulation::renderSegmentReversed(int iSeg)
 {
     MillPathSegment* p = MillPathSegments.at(iSeg);
+    if (!p->isCutting) {
+        return;
+    }
     int step = iSeg == mPathStep ? mSubStep : p->numSimSteps;
     int end = p->isMultyPart ? 1 : step;
     for (int i = step; i >= end; i--) {
@@ -258,6 +277,40 @@ void MillSimulation::renderSegmentReversed(int iSeg)
         GlsimToolStep2();
         p->render(i);
     }
+}
+
+const std::vector<SimTimeSpan>& MillSimulation::GetIndexSpans() const
+{
+    return mTimeline.IndexSpans();
+}
+
+const std::vector<SimRotaryAxis>& MillSimulation::GetRotaryAxes() const
+{
+    return mRotary.Axes();
+}
+
+bool MillSimulation::GetIndexAngles(std::vector<float>& angles) const
+{
+    // the rotary positions during an index that turns the axes one by one; false when none runs
+    if (mPathStep < 0 || mPathStep >= (int)MillPathSegments.size()) {
+        return false;
+    }
+    return mRotary.IndexAnglesAtStep(MillPathSegments[mPathStep], mSubStep, angles);
+}
+
+void MillSimulation::SetRotaryAxes(const std::vector<SimRotaryAxis>& axes)
+{
+    mRotary.SetAxes(axes);
+}
+
+void MillSimulation::StepFromTime()
+{
+    mCurStep = mTimeline.StepAtTime(mSimTime, mNTotalSteps);
+}
+
+float MillSimulation::TimeOfStep(int step) const
+{
+    return mTimeline.TimeOfStep(step, mNTotalSteps);
 }
 
 void MillSimulation::CalcSegmentPositions()
@@ -277,10 +330,47 @@ void MillSimulation::CalcSegmentPositions()
     else {
         mSubStep++;
     }
+    if (mPathStep >= 0) {
+        mCurFeed = MillPathSegments[mPathStep]->feed;
+        mCurRapid = MillPathSegments[mPathStep]->isRapid;
+    }
 }
 
-void MillSimulation::RenderSimulation()
+void MillSimulation::GetScenePose(quat pose)
 {
+    quat_identity(pose);
+    if (MillPathSegments.empty()) {
+        return;
+    }
+    // At the end of the program the part is shown in the main work coordinates, axes at home.
+    if (mCurStep >= mNTotalSteps) {
+        return;
+    }
+    if (mPathStep < 0) {
+        mRotary.FramePose(pose, mCodeParser.Frames[MillPathSegments[0]->frameFrom]);
+        return;
+    }
+    mRotary.ScenePose(pose, MillPathSegments.at(mPathStep), mSubStep);
+}
+
+void MillSimulation::UpdateScene()
+{
+    // the scene turns with the table, about the stock center so the stock stays in view
+    quat pose;
+    GetScenePose(pose);
+    const vec3& c = mStockObject.center;
+    mat4x4 scene, rot;
+    mat4x4_from_quat(rot, pose);
+    mat4x4_translate(scene, c[0], c[1], c[2]);
+    mat4x4_mul(scene, scene, rot);
+    mat4x4_translate_in_place(scene, -c[0], -c[1], -c[2]);
+    simDisplay.SetSceneMatrix(scene);
+}
+
+void MillSimulation::RenderSimulation(int first, bool fromScratch)
+{
+    // Draws the stock minus the tool sweeps from segment `first` to the current step. Without
+    // fromScratch the depth buffer already holds the earlier sweeps (see StockCache).
     if ((mViewItems & VIEWITEM_SIMULATION) == 0) {
         return;
     }
@@ -288,28 +378,35 @@ void MillSimulation::RenderSimulation()
     simDisplay.StartDepthPass();
 
     GlsimStart();
-    mStockObject.render();
+    if (fromScratch) {
+        mStockObject.render();
+    }
 
     GlsimToolStep2();
 
-    for (int i = 0; i <= mPathStep; i++) {
+    for (int i = first; i <= mPathStep; i++) {
         renderSegmentForward(i);
     }
 
-    for (int i = mPathStep; i >= 0; i--) {
+    for (int i = mPathStep; i >= first; i--) {
         renderSegmentForward(i);
     }
 
-    for (int i = 0; i < mPathStep; i++) {
+    for (int i = first; i < mPathStep; i++) {
         renderSegmentReversed(i);
     }
 
-    for (int i = mPathStep; i >= 0; i--) {
+    for (int i = mPathStep; i >= first; i--) {
         renderSegmentReversed(i);
     }
 
     GlsimClipBack();
     mStockObject.render();
+
+    if (!fromScratch) {
+        // clear the cached pixels where the stock is now cut through
+        simDisplay.ClearCacheHoles();
+    }
 
     // start coloring
     simDisplay.StartGeometryPass(stockColor, false);
@@ -319,8 +416,11 @@ void MillSimulation::RenderSimulation()
     // render cuts (back faces of tools)
     simDisplay.StartGeometryPass(cutColor, true);
     GlsimRenderTools();
-    for (int i = 0; i <= mPathStep; i++) {
+    for (int i = first; i <= mPathStep; i++) {
         MillPathSegment* p = MillPathSegments.at(i);
+        if (!p->isCutting) {
+            continue;
+        }
         int step = (i == mPathStep) ? mSubStep : p->numSimSteps;
         int start = p->isMultyPart ? 1 : step;
         for (int j = start; j <= step; j++) {
@@ -331,6 +431,13 @@ void MillSimulation::RenderSimulation()
     GlsimEnd();
 }
 
+void MillSimulation::ToolPose(MillPathSegment* p, int step, vec3 toolPos, mat4x4 rmat)
+{
+    quat scene;
+    GetScenePose(scene);
+    mRotary.ToolPose(p, step, toolPos, rmat, scene);
+}
+
 void MillSimulation::RenderTool()
 {
     if (mPathStep < 0) {
@@ -339,12 +446,13 @@ void MillSimulation::RenderTool()
 
     MillPathSegment* p = MillPathSegments.at(mPathStep);
     vec3 toolPos;
-    p->GetHeadPosition(toolPos);
-    mat4x4 tmat;
+    mat4x4 tmat, rmat;
+    ToolPose(p, mSubStep, toolPos, rmat);
     mat4x4_translate(tmat, toolPos[0], toolPos[1], toolPos[2]);
+    mat4x4_mul(tmat, tmat, rmat);
     // mat4x4_translate(tmat, toolPos.x, toolPos.y, toolPos.z);
     simDisplay.StartGeometryPass(toolColor, false);
-    p->endmill->toolShape.Render(tmat, identityMat);
+    p->endmill->toolShape.Render(tmat, rmat);
 }
 
 void MillSimulation::RenderPath()
@@ -385,8 +493,16 @@ void MillSimulation::Render()
     // render the simulation offscreen in an FBO
 
     if (simDisplay.updateDisplay) {
+        UpdateScene();
         simDisplay.PrepareFrameBuffer();
-        RenderSimulation();
+        if (mIncremental && (mViewItems & VIEWITEM_SIMULATION) != 0 && simDisplay.MakeCache()) {
+            mStockCache.Render(simDisplay, mPathStep, mSubStep, [this](int first, bool fromScratch) {
+                RenderSimulation(first, fromScratch);
+            });
+        }
+        else {
+            RenderSimulation();
+        }
         RenderTool();
         RenderBaseShape();
         RenderPath();
@@ -423,41 +539,32 @@ void MillSimulation::SimNext(const clock::duration& elapsed)
 {
     // calculate number of steps based on elapsed time
 
-    int numSteps = 0;
+    const int oldStep = mCurStep;
+    const float oldTime = mSimTime;
 
     if (mSimPlaying) {
-        mTotalElapsed += elapsed;
-
-        const float seconds
-            = std::chrono::duration_cast<std::chrono::duration<float>>(mTotalElapsed).count();
-
-        const float secondsToSteps = mSimSpeed * 60;
-        numSteps = seconds * secondsToSteps;
-
-        const std::chrono::duration<float> processed {(float)numSteps / secondsToSteps};
-        mTotalElapsed -= std::chrono::duration_cast<clock::duration>(processed);
+        if (mTimeline.IsHolding()) {
+            return;  // paused after a back skip
+        }
+        // at the programmed feeds, speed times real time
+        const float seconds = std::chrono::duration_cast<std::chrono::duration<float>>(elapsed).count();
+        mSimTime = mTimeline.Advance(mSimTime, seconds, mSimSpeed);
+        StepFromTime();
     }
     else if (mSingleStep) {
-        numSteps = 1;
-
-        mTotalElapsed = 0s;
+        mCurStep = std::min(mCurStep + 1, mNTotalSteps);
+        mSimTime = TimeOfStep(mCurStep);
         mSingleStep = false;
     }
     else {
         return;
     }
 
-    // advance simulation
-
-    const int oldStep = mCurStep;
-
-    mCurStep += numSteps;
-    mCurStep = std::clamp(mCurStep, 0, mNTotalSteps);
     if (mCurStep == mNTotalSteps) {
         mSimPlaying = false;
     }
 
-    if (mCurStep != oldStep) {
+    if (mCurStep != oldStep || mSimTime != oldTime) {
         CalcSegmentPositions();
         simDisplay.updateDisplay = true;
     }
@@ -482,6 +589,7 @@ void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, fl
 {
     mStockObject.GenerateBoxStock(x, y, z, l, w, h);
     simDisplay.ScaleViewToStock(&mStockObject);
+    mStockCache.Invalidate();
 }
 
 void MillSimulation::SetArbitraryStock(
@@ -491,6 +599,12 @@ void MillSimulation::SetArbitraryStock(
 {
     mStockObject.GenerateSolid(verts, indices);
     simDisplay.ScaleViewToStock(&mStockObject);
+    mStockCache.Invalidate();
+    mStockPoints.clear();
+    for (const Vertex& v : verts) {
+        mStockPoints.push_back({v.x, v.y, v.z});
+    }
+    mRotary.MarkClearRapids(MillPathSegments, mStockPoints);
 }
 
 void MillSimulation::SetStockVisible(bool b)
@@ -560,6 +674,28 @@ void MillSimulation::EnableSsao(bool b)
     simDisplay.updateDisplay = true;
 }
 
+void MillSimulation::EnableIncremental(bool b)
+{
+    if (b == mIncremental) {
+        return;
+    }
+
+    mIncremental = b;
+    mStockCache.Invalidate();
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::EnableTablePose(bool b)
+{
+    if (b == mViewTablePose) {
+        return;
+    }
+
+    mViewTablePose = b;
+    mRotary.SetTablePose(b);
+    simDisplay.updateDisplay = true;
+}
+
 void MillSimulation::UpdateCamera(const SoCamera& camera)
 {
     simDisplay.UpdateCamera(camera);
@@ -577,6 +713,65 @@ bool MillSimulation::LoadGCodeFile(const char* fileName)
 bool MillSimulation::AddGcodeLine(const char* line)
 {
     return mCodeParser.AddLine(line);
+}
+
+void MillSimulation::SetFrame(const MillFrame& frame)
+{
+    mCodeParser.SetFrame(frame);
+}
+
+void MillSimulation::BeginOperation(const std::string& name)
+{
+    mCodeParser.BeginOperation(name);
+}
+
+const std::vector<float>& MillSimulation::GetOperationStarts() const
+{
+    return mTimeline.OperationStarts();
+}
+
+std::string MillSimulation::GetCurrentOperation() const
+{
+    if (mPathStep < 0 || mPathStep >= (int)MillPathSegments.size()) {
+        return {};
+    }
+    const int op = MillPathSegments[mPathStep]->op;
+    if (op < 0 || op >= (int)mCodeParser.OpNames.size()) {
+        return {};
+    }
+    return mCodeParser.OpNames[op];
+}
+
+void MillSimulation::SkipToPreviousMark()
+{
+    // Jumps back to the start of the current section, or to the mark before. While playing it
+    // pauses there a moment, so another press goes further back.
+    if (mSimPlaying) {
+        mTimeline.HoldPlayback();
+    }
+    const std::vector<float>& marks = mTimeline.Marks();
+    auto it = std::lower_bound(marks.begin(), marks.end(), mSimTime - SimTimeline::TimeTolerance);
+    SkipTo(it == marks.begin() ? 0.f : *(it - 1));
+}
+
+void MillSimulation::SkipToNextMark()
+{
+    // Jumps to the next mark: an operation start, or a rotary axis starting or stopping. After
+    // the last mark, jumps to the end of the program.
+    const std::vector<float>& marks = mTimeline.Marks();
+    auto it = std::upper_bound(marks.begin(), marks.end(), mSimTime + SimTimeline::TimeTolerance);
+    SkipTo(it == marks.end() ? mTotalTime : *it);
+}
+
+void MillSimulation::SkipTo(float time)
+{
+    if (time == mSimTime) {
+        return;
+    }
+    mSimTime = time;
+    StepFromTime();
+    CalcSegmentPositions();
+    simDisplay.updateDisplay = true;
 }
 
 void MillSimulation::SetPlaying(bool b)
@@ -607,13 +802,14 @@ void MillSimulation::SetSpeed(int s)
 
 void MillSimulation::SetSimulationStage(float stage)
 {
-    const int newStep = (int)((float)mNTotalSteps * stage);
-    if (newStep == mCurStep) {
+    // stage is a fraction of the program time
+    mSimTime = std::clamp(stage, 0.f, 1.f) * mTotalTime;
+    const int oldStep = mCurStep;
+    StepFromTime();
+    if (mCurStep == oldStep) {
         return;
     }
 
-    mCurStep = newStep;
-    mSingleStep = true;
     CalcSegmentPositions();
 
     simDisplay.updateDisplay = true;
@@ -626,7 +822,7 @@ void MillSimulation::SetState(const MillSimulationState& state)
         SingleStep();
     }
 
-    const float stage = (float)state.mCurStep / state.mNTotalSteps;
+    const float stage = state.mTotalTime > 0 ? state.mSimTime / state.mTotalTime : 0.f;
     SetSimulationStage(stage);
 
     SetSpeed(state.mSimSpeed);
@@ -634,6 +830,9 @@ void MillSimulation::SetState(const MillSimulationState& state)
     mViewItems = state.mViewItems;
     mViewPath = state.mViewPath;
     mViewSSAO = state.mViewSSAO;
+    mViewTablePose = state.mViewTablePose;
+    mRotary.SetTablePose(mViewTablePose);
+    EnableIncremental(state.mIncremental);
 }
 
 const MillSimulationState& MillSimulation::GetState() const

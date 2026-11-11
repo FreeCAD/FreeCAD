@@ -62,6 +62,34 @@
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="prevOpButton">
+       <property name="toolTip">
+        <string>Back to the start of the operation or rotary move, or the one before</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Gui/Resources/Path.qrc">
+         <normaloff>:/gl_simulator/PreviousOperation.png</normaloff>:/gl_simulator/PreviousOperation.png</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="nextOpButton">
+       <property name="toolTip">
+        <string>Skip to the next operation or rotary move</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Gui/Resources/Path.qrc">
+         <normaloff>:/gl_simulator/NextOperation.png</normaloff>:/gl_simulator/NextOperation.png</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="slowerButton">
        <property name="toolTip">
         <string>Decrease simulation speed</string>
@@ -96,6 +124,49 @@
        </property>
        <property name="text">
         <string>x1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="timeLabel">
+       <property name="toolTip">
+        <string>Machine time into the program, and the whole program's time, at the programmed feed rates</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:white; padding-left:12px</string>
+       </property>
+       <property name="text">
+        <string notr="true">0:00 / 0:00</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="feedLabel">
+       <property name="toolTip">
+        <string>Feed rate of the current move</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:white; padding-left:12px</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="fpsLabel">
+       <property name="toolTip">
+        <string>Frames drawn per second</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:white; padding-left:12px</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="opLabel">
+       <property name="toolTip">
+        <string>Operation the current move belongs to</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:white; padding-left:12px</string>
        </property>
       </widget>
      </item>
@@ -172,6 +243,43 @@
        <property name="icon">
         <iconset resource="../../Gui/Resources/Path.qrc">
          <normaloff>:/gl_simulator/AmbientOclusion.png</normaloff>:/gl_simulator/AmbientOclusion.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="tablePoseButton">
+       <property name="toolTip">
+        <string>Turn the part with the machine's rotary table, keeping the tool vertical. Off: the part stays put and the tool tilts.</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Gui/Resources/Path.qrc">
+         <normaloff>:/gl_simulator/TablePose.png</normaloff>:/gl_simulator/TablePose.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="incrementalButton">
+       <property name="toolTip">
+        <string>Incremental drawing: keep the cut stock between frames and draw only the moves since, so long jobs stay fast. A change of view, of what is shown or of the part's pose, or going back, draws it all again. Off: draw everything every frame.</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Gui/Resources/Path.qrc">
+         <normaloff>:/gl_simulator/IncrementalDraw.png</normaloff>:/gl_simulator/IncrementalDraw.png</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>

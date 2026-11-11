@@ -28,10 +28,14 @@
 #include "MillPathLine.h"
 #include "MillPathSegment.h"
 #include "SimDisplay.h"
+#include "SimRotary.h"
+#include "SimTimeline.h"
+#include "StockCache.h"
 #include "SolidObject.h"
 #include "StockObject.h"
 #include "linmath.h"
 #include <chrono>
+#include <memory>
 #include <vector>
 
 #define VIEWITEM_SIMULATION 1
@@ -49,9 +53,15 @@ struct MillSimulationState
     int mSubStep = 0;
     int mNPathSteps = 0;
     int mSimSpeed = 1;
+    float mSimTime = 0;    // machine time into the program, in seconds
+    float mTotalTime = 0;  // machine time of the whole program, in seconds
+    float mCurFeed = 0;    // feed rate of the current move in mm/s, 0 when unknown
+    bool mCurRapid = false;
     int mViewItems = VIEWITEM_SIMULATION;
     bool mViewPath = false;
     bool mViewSSAO = false;
+    bool mViewTablePose = true;  // the part turns with the rotary table, else the tool tilts
+    bool mIncremental = true;    // keep the cut stock between frames and draw only the new moves
 
     bool mSimPlaying = false;
     bool mSingleStep = false;
@@ -70,7 +80,7 @@ public:
     void AddTool(EndMill* tool);
     void AddTool(const std::vector<float>& toolProfile, int toolid, float diameter);
     bool ToolExists(int toolid);
-    void RenderSimulation();
+    void RenderSimulation(int first = 0, bool fromScratch = true);
     void RenderTool();
     void RenderPath();
     void RenderBaseShape();
@@ -80,6 +90,15 @@ public:
 
     bool LoadGCodeFile(const char* fileName);
     bool AddGcodeLine(const char* line);
+    void SetFrame(const MillFrame& frame);
+    void BeginOperation(const std::string& name);
+    void SkipToNextMark();
+    void SkipToPreviousMark();
+    const std::vector<SimTimeSpan>& GetIndexSpans() const;
+    const std::vector<SimRotaryAxis>& GetRotaryAxes() const;
+    bool GetIndexAngles(std::vector<float>& angles) const;
+    const std::vector<float>& GetOperationStarts() const;
+    std::string GetCurrentOperation() const;
 
     void SetPlaying(bool b);
     void SingleStep();
@@ -100,6 +119,9 @@ public:
 
     void SetPathVisible(bool b);
     void EnableSsao(bool b);
+    void EnableIncremental(bool b);
+    void EnableTablePose(bool b);
+    void SetRotaryAxes(const std::vector<SimRotaryAxis>& axes);
 
     void UpdateWindowScale(int width, int height);
     void UpdateCamera(const SoCamera& camera);
@@ -116,9 +138,15 @@ protected:
     void GlsimRenderStock(void);
     void GlsimRenderTools(void);
     void GlsimEnd(void);
+    void ToolPose(MillPathSegment* p, int step, vec3 pos, mat4x4 rmat);
     void renderSegmentForward(int iSeg);
     void renderSegmentReversed(int iSeg);
     void CalcSegmentPositions();
+    void StepFromTime();
+    void SkipTo(float time);
+    float TimeOfStep(int step) const;
+    void GetScenePose(quat pose);
+    void UpdateScene();
     EndMill* GetTool(int tool);
     void RemoveTool(int toolId);
 
@@ -129,9 +157,14 @@ protected:
 public:
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
+    SimRotary mRotary {mCodeParser.Frames};
     SimDisplay simDisplay;
     MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
+    SimTimeline mTimeline {MillPathSegments, mRotary, mCodeParser.Frames};
+    std::vector<Point3D> mStockPoints;  // stock vertices, to find how far it reaches from an axis
+
+    StockCache mStockCache;
 
     int mWidth = -1;
     int mHeight = -1;
@@ -144,8 +177,6 @@ public:
     vec3 cutColor = {0.5f, 0.84f, 0.73f};
     vec3 toolColor = {0.5f, 0.4f, 0.3f};
     vec3 baseShapeColor = {0.7f, 0.6f, 0.5f};
-
-    clock::duration mTotalElapsed;
 };
 
 }  // namespace CAMSimulator
