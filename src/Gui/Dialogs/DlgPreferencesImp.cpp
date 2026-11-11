@@ -1437,9 +1437,9 @@ void PreferencesSearchController::performSearch(const QString& searchText)
     QList<SearchResult> uniqueResults;
     QSet<QString> seenKeys;
     for (const SearchResult& res : std::as_const(m_searchResults)) {
-        const QString key = res.groupName + QLatin1Char('|') + res.pageName
-            + QLatin1Char('|') + (res.isPageLevelMatch ? QLatin1Char('1') : QLatin1Char('0'))
-            + QLatin1Char('|') + res.matchText;
+        const QString key = res.groupName + QLatin1Char('|') + res.pageName + QLatin1Char('|')
+            + (res.isPageLevelMatch ? QLatin1Char('1') : QLatin1Char('0')) + QLatin1Char('|')
+            + res.matchText;
         if (!seenKeys.contains(key)) {
             seenKeys.insert(key);
             uniqueResults.append(res);
