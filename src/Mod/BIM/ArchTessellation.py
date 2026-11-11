@@ -321,7 +321,7 @@ class Tessellator(ABC):
 
         If ``thickness`` is positive, the substrate is extruded into a solid and the lines are
         placed just above its top face and just below its bottom face. Otherwise the lines float
-        just above and below the flat substrate.In both cases a small Z offset is added to prevent
+        just above and below the flat substrate. In both cases a small Z offset is added to prevent
         Z-fighting in the viewport.
 
         Parameters
