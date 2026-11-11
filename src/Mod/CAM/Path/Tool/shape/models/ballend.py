@@ -28,6 +28,7 @@ from .base import ToolBitShape
 
 class ToolBitShapeBallend(ToolBitShape):
     name: str = "Ballend"
+    ball_end = True
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

@@ -29,6 +29,7 @@ and geometry are passed in by the operation wrapper.
 import Path
 import Part
 import FreeCAD
+from Path.Tool.shape import ToolBitShape
 
 __title__ = "Surface Common Utilities"
 __author__ = "sliptonic (Brad Collette)"
@@ -95,9 +96,7 @@ def _get_meshpart():
 # Map of FreeCAD ToolBit shape types to OCL cutter factory names
 _TOOL_TYPE_MAP = {
     "endmill": "CylCutter",
-    "ballend": "BallCutter",
     "bullnose": "BullCutter",
-    "taperedballnose": "BallCutter",
     "drill": "ConeCutter",
     "engraver": "ConeCutter",
     "v_bit": "ConeCutter",
@@ -136,8 +135,10 @@ def make_ocl_cutter(
         supported.
     """
     ocl = _get_ocl()
-    tool_type_lower = tool_type.lower()
-    cutter_name = _TOOL_TYPE_MAP.get(tool_type_lower)
+    if ToolBitShape.is_ball_end(tool_type):
+        cutter_name = "BallCutter"
+    else:
+        cutter_name = _TOOL_TYPE_MAP.get(tool_type.lower())
 
     if cutter_name is None:
         Path.Log.error("Unsupported tool type '{}' for OCL cutter creation.".format(tool_type))

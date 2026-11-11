@@ -56,6 +56,10 @@ class ToolBitShapeDovetail(ToolBitShape):
                 FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
                 "App::PropertyLength",
             ),
+            "NeckCuttingHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Neck cutting height"),
+                "App::PropertyLength",
+            ),
             "NeckDiameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Neck diameter"),
                 "App::PropertyLength",
