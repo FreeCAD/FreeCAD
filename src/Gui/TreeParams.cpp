@@ -48,6 +48,7 @@ public:
     bool CheckBoxesSelection;
     bool SyncView;
     bool PreSelection;
+    bool PreSelectHidden;
     bool SyncPlacement;
     bool RecordSelection;
     long DocumentMode;
@@ -100,6 +101,8 @@ public:
         funcs["SyncView"] = &TreeParamsP::updateSyncView;
         PreSelection = handle->GetBool("PreSelection", true);
         funcs["PreSelection"] = &TreeParamsP::updatePreSelection;
+        PreSelectHidden = handle->GetBool("PreSelectHidden", false);
+        funcs["PreSelectHidden"] = &TreeParamsP::updatePreSelectHidden;
         SyncPlacement = handle->GetBool("SyncPlacement", false);
         funcs["SyncPlacement"] = &TreeParamsP::updateSyncPlacement;
         RecordSelection = handle->GetBool("RecordSelection", true);
@@ -217,6 +220,11 @@ public:
     static void updatePreSelection(TreeParamsP* self)
     {
         self->PreSelection = self->handle->GetBool("PreSelection", true);
+    }
+    // Auto generated code (Tools/params_utils.py:288)
+    static void updatePreSelectHidden(TreeParamsP* self)
+    {
+        self->PreSelectHidden = self->handle->GetBool("PreSelectHidden", false);
     }
     // Auto generated code (Tools/params_utils.py:288)
     static void updateSyncPlacement(TreeParamsP* self)
@@ -608,6 +616,38 @@ void TreeParams::setPreSelection(const bool& v)
 void TreeParams::removePreSelection()
 {
     instance()->handle->RemoveBool("PreSelection");
+}
+
+// Auto generated code (Tools/params_utils.py:350)
+const char* TreeParams::docPreSelectHidden()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Preselect hidden objects hovered in the tree view.");
+}
+
+// Auto generated code (Tools/params_utils.py:358)
+const bool& TreeParams::getPreSelectHidden()
+{
+    return instance()->PreSelectHidden;
+}
+
+// Auto generated code (Tools/params_utils.py:366)
+const bool& TreeParams::defaultPreSelectHidden()
+{
+    const static bool def = false;
+    return def;
+}
+
+// Auto generated code (Tools/params_utils.py:375)
+void TreeParams::setPreSelectHidden(const bool& v)
+{
+    instance()->handle->SetBool("PreSelectHidden", v);
+    instance()->PreSelectHidden = v;
+}
+
+// Auto generated code (Tools/params_utils.py:384)
+void TreeParams::removePreSelectHidden()
+{
+    instance()->handle->RemoveBool("PreSelectHidden");
 }
 
 // Auto generated code (Tools/params_utils.py:350)

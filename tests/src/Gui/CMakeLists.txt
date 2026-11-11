@@ -29,7 +29,9 @@ add_executable(Gui_tests_run
         NavigationStylePinchTest.cpp
         NavigationStyleWheelTest.cpp
         SelectionTest.cpp
+        SoFCSwitch.cpp
         SoMouseWheelEventTest.cpp
+        ViewProviderModeSwitch.cpp
 )
 
 # Qt tests
