@@ -80,6 +80,8 @@ public:
     virtual QColor getSelectColor();
     virtual void setColor(QColor c);
 
+    virtual void setBackgroundOn(bool newState) {m_backgroundState = newState;}
+
     virtual void setTightBounding(bool tight);
 
     void makeMark(double x, double y);
@@ -99,12 +101,17 @@ protected:
 
     Base::Reference<ParameterGrp> getParmGroup();
 
+    void paintBackground();
+
+private:
     bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText
     QColor m_colNormal;
 
-private:
     void checkCursorChange();
     QTextCursor m_lastCursor;
+
+    QGraphicsRectItem* m_background;
+    bool m_backgroundState{false};
 
 };
 

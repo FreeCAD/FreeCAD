@@ -110,6 +110,8 @@ protected:
     std::vector<int> getSeps() const { return seps; }
     void setSeps(std::vector<int> newSeps) { seps = newSeps; }
 
+    bool showTextBackground();
+
 private:
     bool verticalSep;
     std::vector<int> seps;

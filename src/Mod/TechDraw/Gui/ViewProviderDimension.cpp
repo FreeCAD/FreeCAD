@@ -112,6 +112,11 @@ ViewProviderDimension::ViewProviderDimension()
 
     ADD_PROPERTY_TYPE(AllowSnap, (Preferences::SnapDimensions()), group, App::Prop_None,
                       "Dimension will snap to position if true");
+
+    // set this property for dimensions over hatched areas
+    ADD_PROPERTY_TYPE(ShowTextBackground, (false), group, App::Prop_None,
+                      "Shows a background behind dimension text.");
+
    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
@@ -239,7 +244,8 @@ void ViewProviderDimension::onChanged(const App::Property* prop)
         (prop == &GapFactorASME) ||
         (prop == &GapFactorISO) ||
         prop == &LineSpacingFactorISO ||
-        prop == &AllowSnap)  {
+        prop == &AllowSnap ||
+        prop == &ShowTextBackground)  {
         auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
