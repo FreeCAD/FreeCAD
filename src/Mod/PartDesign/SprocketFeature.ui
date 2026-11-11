@@ -44,6 +44,9 @@
      <property name="value">
       <number>50</number>
      </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item row="1" column="0">
@@ -221,7 +224,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="Gui::InputField" name="Quantity_Pitch">
+    <widget class="Gui::QuantitySpinBox" name="Quantity_Pitch">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -234,11 +237,11 @@
        <height>20</height>
       </size>
      </property>
-     <property name="text">
-      <string>0 in</string>
-     </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="singleStep">
       <double>0.001000000000000</double>
@@ -268,7 +271,7 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="Gui::InputField" name="Quantity_RollerDiameter">
+    <widget class="Gui::QuantitySpinBox" name="Quantity_RollerDiameter">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -283,6 +286,9 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="singleStep">
       <double>0.010000000000000</double>
@@ -312,7 +318,7 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="Gui::InputField" name="Quantity_Thickness">
+    <widget class="Gui::QuantitySpinBox" name="Quantity_Thickness">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -327,6 +333,9 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
      <property name="singleStep">
       <double>0.010000000000000</double>
@@ -352,9 +361,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

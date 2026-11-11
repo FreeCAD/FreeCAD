@@ -264,20 +264,20 @@ class SprocketTaskPanel:
         Transfer from the dialog to the object
         """
         self.obj.NumberOfTeeth = self.form.spinBox_NumberOfTeeth.value()
-        self.obj.Pitch = self.form.Quantity_Pitch.text()
-        self.obj.RollerDiameter = self.form.Quantity_RollerDiameter.text()
+        self.obj.Pitch = self.form.Quantity_Pitch.property("value")
+        self.obj.RollerDiameter = self.form.Quantity_RollerDiameter.property("value")
         self.obj.SprocketReference = self.form.comboBox_SprocketReference.currentIndex()
-        self.obj.Thickness = self.form.Quantity_Thickness.text()
+        self.obj.Thickness = self.form.Quantity_Thickness.property("value")
 
     def transferFrom(self):
         """
         Transfer from the object to the dialog
         """
         self.form.spinBox_NumberOfTeeth.setValue(self.obj.NumberOfTeeth)
-        self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
-        self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
+        self.form.Quantity_Pitch.setProperty("value", self.obj.Pitch)
+        self.form.Quantity_RollerDiameter.setProperty("value", self.obj.RollerDiameter)
         self.form.comboBox_SprocketReference.setCurrentText(self.obj.SprocketReference)
-        self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
+        self.form.Quantity_Thickness.setProperty("value", self.obj.Thickness)
 
     def pitchChanged(self, value):
         self.obj.Pitch = value
@@ -289,9 +289,9 @@ class SprocketTaskPanel:
         self.obj.RollerDiameter = str(Sprocket.SprocketReferenceRollerTable[size][1]) + " in"
         self.obj.Thickness = str(Sprocket.SprocketReferenceRollerTable[size][2]) + " in"
         self.obj.SprocketReference = self.obj.getEnumerationsOfProperty("SprocketReference")[size]
-        self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
-        self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
-        self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
+        self.form.Quantity_Pitch.setProperty("value", self.obj.Pitch)
+        self.form.Quantity_RollerDiameter.setProperty("value", self.obj.RollerDiameter)
+        self.form.Quantity_Thickness.setProperty("value", self.obj.Thickness)
         if self.obj.recompute():
             FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
