@@ -357,29 +357,32 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
     secondDistanceGizmo = new Gui::LinearGizmo(ui->chamferSize);
     angleGizmo = new Gui::RotationGizmo(ui->chamferAngle);
 
-    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
-        auto type = static_cast<Part::ChamferType>(index);
+    connect(ui->chamferType,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            [this](int index) {
+                auto type = static_cast<Part::ChamferType>(index);
 
-        switch (type) {
-            case Part::ChamferType::equalDistance:
-                secondDistanceGizmo->setVisibility(true);
-                angleGizmo->setVisibility(false);
+                switch (type) {
+                    case Part::ChamferType::equalDistance:
+                        secondDistanceGizmo->setVisibility(true);
+                        angleGizmo->setVisibility(false);
 
-                secondDistanceGizmo->setProperty(ui->chamferSize);
+                        secondDistanceGizmo->setProperty(ui->chamferSize);
 
-                break;
-            case Part::ChamferType::twoDistances:
-                secondDistanceGizmo->setVisibility(true);
-                angleGizmo->setVisibility(false);
+                        break;
+                    case Part::ChamferType::twoDistances:
+                        secondDistanceGizmo->setVisibility(true);
+                        angleGizmo->setVisibility(false);
 
-                secondDistanceGizmo->setProperty(ui->chamferSize2);
+                        secondDistanceGizmo->setProperty(ui->chamferSize2);
 
-                break;
-            case Part::ChamferType::distanceAngle:
-                secondDistanceGizmo->setVisibility(false);
-                angleGizmo->setVisibility(true);
-        }
-    });
+                        break;
+                    case Part::ChamferType::distanceAngle:
+                        secondDistanceGizmo->setVisibility(false);
+                        angleGizmo->setVisibility(true);
+                }
+            });
 
     gizmoContainer = GizmoContainer::create({distanceGizmo, secondDistanceGizmo, angleGizmo}, vp);
 
