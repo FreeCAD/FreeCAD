@@ -2049,16 +2049,14 @@ App::DocumentObjectExecReturn* Hole::execute()
         if (Threaded.getValue() && ModelThread.getValue()) {
             TopoDS_Shape protoThread = makeThread(xDir, zDir, length);
 
-            TopoDS_Compound holeWithThread;
-            holeWithThread.Nullify();
-
-            BRep_Builder builder;
-            builder.MakeCompound(holeWithThread);
-            builder.Add(holeWithThread, protoHole);
-            builder.Add(holeWithThread, protoThread);
-
-            // we reuse the name protoHole (only now it is threaded)
-            protoHole = holeWithThread;
+            // Fuse once so cuts and previews reuse a non-overlapping tool.
+            TopoShape threadedHole;
+            threadedHole.makeElementFuse(
+                {TopoShape(protoHole), TopoShape(protoThread)},
+                nullptr,
+                FuzzyTolerance.getValue()
+            );
+            protoHole = threadedHole.getShape();
         }
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
