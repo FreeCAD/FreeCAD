@@ -29,11 +29,11 @@ __url__ = "https://www.freecad.org"
 
 import importlib
 import unittest
+import importlib.util
 from os.path import join
 
 import FreeCAD
 
-import femsolver.run
 from . import support_utils as testtools
 from .support_utils import fcc_print
 from .support_utils import get_namefromdef
@@ -48,6 +48,8 @@ class TestSolverMystran(unittest.TestCase):
 
         if importlib.util.find_spec("pyNastran") is None:
             self.skipTest("pyNastran is not available")
+        if importlib.util.find_spec("vtkmodules") is None:
+            self.skipTest("VTK Python bindings are not available")
 
         # new document
         self.document = FreeCAD.newDocument(self.__class__.__name__)

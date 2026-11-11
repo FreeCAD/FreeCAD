@@ -121,16 +121,15 @@ class TestFemCommon(unittest.TestCase):
             ) and not FreeCAD.GuiUp:
                 continue
 
-            fcc_print(f"Try importing {mod} ...")
-            try:
-                im = __import__(f"{mod}")
-            except ImportError as e:
-                # check if it is a VTK module that is missing, because maybe we should not need it
-                if "vtkmodules" in e.name and not "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
-                    im = True
-                else:
-                    im = False
-            if not im:
-                # to get an error message what was going wrong
-                __import__(f"{mod}")
-            self.assertTrue(im, f"Problem importing {mod}")
+            with self.subTest(module=mod):
+                fcc_print(f"Try importing {mod} ...")
+                try:
+                    __import__(mod)
+                except ModuleNotFoundError as error:
+                    if mod == "femtools.tokrules" and error.name == "ply":
+                        self.skipTest("PLY is not available")
+                    if (
+                        error.name == "vtkmodules" or (error.name or "").startswith("vtkmodules.")
+                    ) and "BUILD_FEM_VTK_PYTHON" not in FreeCAD.__cmake__:
+                        self.skipTest("FEM was built without VTK Python bindings")
+                    raise
