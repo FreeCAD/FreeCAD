@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <utility>
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>
@@ -1432,6 +1433,20 @@ void PreferencesSearchController::performSearch(const QString& searchText)
         [](const SearchResult& a, const SearchResult& b) { return a.score > b.score; }
     );
 
+    // Collapse duplicate entries on the same page while preserving highest-scoring match
+    QList<SearchResult> uniqueResults;
+    QSet<QString> seenKeys;
+    for (const SearchResult& res : std::as_const(m_searchResults)) {
+        const QString key = res.groupName + QLatin1Char('|') + res.pageName
+            + QLatin1Char('|') + (res.isPageLevelMatch ? QLatin1Char('1') : QLatin1Char('0'))
+            + QLatin1Char('|') + res.matchText;
+        if (!seenKeys.contains(key)) {
+            seenKeys.insert(key);
+            uniqueResults.append(res);
+        }
+    }
+    m_searchResults = std::move(uniqueResults);
+
     // Update UI with search results
     if (!m_searchResults.isEmpty()) {
         populateSearchResultsList();
@@ -1713,13 +1728,13 @@ void PreferencesSearchController::searchWidgetType(
             // check if widget is marked with "doNotSearch" aka. do not search
             QVariant doNotSearch = widget->property("doNotSearch");
             if (doNotSearch.isValid() && doNotSearch.toBool()) {
-                return;  // skip search items in this combobox
+                continue;  // skip search items in this combobox
             }
 
             // skip QFontComboBox widgets (including PrefFontBox), ie. used in draft wb
             // these auto-populate with system fonts
             if (qobject_cast<QFontComboBox*>(widget)) {
-                return;
+                continue;
             }
 
             for (int i = 0; i < widget->count(); ++i) {
