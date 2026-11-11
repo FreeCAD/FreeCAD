@@ -29,13 +29,13 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 import unittest
+import importlib.util
 from os import listdir
 from os.path import join
 from os.path import isfile
 
 import FreeCAD
 
-from femsolver.z88 import z88tools
 from . import support_utils as testtools
 from .support_utils import fcc_print
 from .support_utils import get_namefromdef
@@ -47,6 +47,9 @@ class TestSolverZ88(unittest.TestCase):
     # ********************************************************************************************
     def setUp(self):
         # setUp is executed before every test
+
+        if importlib.util.find_spec("vtkmodules") is None:
+            self.skipTest("VTK Python bindings are not available")
 
         # new document
         self.document = FreeCAD.newDocument(self.__class__.__name__)
@@ -113,6 +116,8 @@ class TestSolverZ88(unittest.TestCase):
 
         # write input file
         self.document.SolverZ88.WorkingDirectory = working_dir
+        from femsolver.z88 import z88tools
+
         tool = z88tools.Z88Tools(self.document.SolverZ88)
         tool.prepare()
 
