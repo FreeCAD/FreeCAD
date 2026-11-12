@@ -23,6 +23,8 @@
 
 import unittest
 import functools
+import os
+import tempfile
 
 import FreeCAD
 import Part
@@ -737,3 +739,27 @@ class FineGrainedRecomputeCases(unittest.TestCase):
         self.assertEqual(cube.OutList, [varSet, varSet])
         self.assertDep(varSet.InListProp, depEdges)
         self.assertEqual(varSet.InList, [cube])
+
+    @finegrained((True, False))
+    def testExternalExpressionDocumentClose(self):
+        with tempfile.TemporaryDirectory() as directory:
+            # Create a property in a first file, save it
+            source = FreeCAD.newDocument()
+            sourceName = source.Name
+            values = source.addObject("App::VarSet", "Values")
+            values.addProperty("App::PropertyLength", "Length")
+            values.Length = 10
+            source.recompute()
+            source.saveAs(os.path.join(directory, "Main.FCStd"))
+
+            # Create a second file, referencing a property from the first one.
+            cube = self.Doc.addObject("Part::Box", "Cube")
+            self.Doc.saveAs(os.path.join(directory, "Consumer.FCStd"))
+            cube.setExpression("Length", sourceName + "#Values.Length")
+            self.Doc.recompute()
+            self.assertEqual(cube.Length.Value, 10)
+
+            # Close source, make sure that the target is cleaned from OutListProp
+            # and not a dangling reference
+            FreeCAD.closeDocument(sourceName)
+            self.assertEqual(len(cube.OutListProp), 0)
