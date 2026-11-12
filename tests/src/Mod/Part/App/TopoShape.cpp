@@ -11,6 +11,8 @@
 #include <gp_Ax3.hxx>
 #include <Precision.hxx>
 #include <TopoDS.hxx>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>
 #include "src/App/InitApplication.h"
@@ -192,6 +194,18 @@ void setFixedNotation(std::ostream& out)
     out.setf(std::ios::fixed, std::ios::floatfield);
 }
 
+// Write the face the way older versions saved it
+void writeWithLongNumbers(std::ostream& out)
+{
+    TopoDS_Shape face = makeInfiniteFace();
+    setFixedNotation(out);
+    BRepTools_ShapeSet shapeSet(false);
+    shapeSet.SetFormatNb(1);
+    shapeSet.Add(face);
+    shapeSet.Write(out);
+    shapeSet.Write(face, out);
+}
+
 std::size_t longestToken(const std::string& text)
 {
     std::istringstream in(text);
@@ -212,15 +226,9 @@ double upperVBound(const Part::TopoShape& shape)
 
 TEST_F(TopoShapeTest, TestImportBrepWithLongNumbers)
 {
-    // Arrange: write the face the way older versions saved it
-    TopoDS_Shape face = makeInfiniteFace();
+    // Arrange
     std::stringstream stream;
-    setFixedNotation(stream);
-    BRepTools_ShapeSet shapeSet(false);
-    shapeSet.SetFormatNb(1);
-    shapeSet.Add(face);
-    shapeSet.Write(stream);
-    shapeSet.Write(face, stream);
+    writeWithLongNumbers(stream);
     ASSERT_GT(longestToken(stream.str()), 100U);
     Part::TopoShape shape;
     // Act
@@ -242,6 +250,23 @@ TEST_F(TopoShapeTest, TestExportBrepWithoutLongNumbers)
     // Assert
     EXPECT_LE(longestToken(stream.str()), 31U);
     EXPECT_EQ(stream.flags() & std::ios::floatfield, std::ios::fixed);
+    ASSERT_FALSE(shape.isNull());
+    EXPECT_DOUBLE_EQ(upperVBound(shape), Precision::Infinite());
+}
+
+TEST_F(TopoShapeTest, TestImportBrepFileWithLongNumbers)
+{
+    // Arrange
+    Base::FileInfo file(App::Application::getTempFileName());
+    {
+        Base::ofstream out(file, std::ios::out | std::ios::binary);
+        writeWithLongNumbers(out);
+    }
+    Part::TopoShape shape;
+    // Act
+    shape.importBrep(file.filePath().c_str());
+    file.deleteFile();
+    // Assert
     ASSERT_FALSE(shape.isNull());
     EXPECT_DOUBLE_EQ(upperVBound(shape), Precision::Infinite());
 }

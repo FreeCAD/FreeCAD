@@ -166,6 +166,7 @@
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "BRepMesh.h"
@@ -790,16 +791,11 @@ void TopoShape::importStep(const char* FileName)
 
 void TopoShape::importBrep(const char* FileName)
 {
-    try {
-        // read brep-file
-        BRep_Builder aBuilder;
-        TopoDS_Shape aShape;
-        BRepTools::Read(aShape, static_cast<Standard_CString>(FileName), aBuilder);
-        this->_Shape = aShape;
+    Base::ifstream file(Base::FileInfo(FileName), std::ios::in | std::ios::binary);
+    if (!file) {
+        throw Base::FileException("Cannot open file", FileName);
     }
-    catch (Standard_Failure& e) {
-        throw Base::CADKernelError(e.GetMessageString());
-    }
+    importBrep(file);
 }
 
 namespace
