@@ -32,9 +32,7 @@ from .support_utils import fcc_print
 
 V = FreeCAD.Vector
 
-# Off the face or edge a node is laid for, both ways, never at its tolerance itself where the
-# last bit of 2 measures owuld decide. Under 1e-3 inside a solid its classifier answers ON and
-# the distance to the boundary decides, which keeps such a node out
+# Off the face or edge both ways, never right at the tolerance where the last bit would decide
 TOLERANCE_FRACTIONS = (0.3, 3.0)
 OFFSETS = (1e-4, 5e-4, 2e-3)
 
@@ -89,8 +87,7 @@ def nodes_around(shape, mesh, per_face=2, scattered=30):
 
 def closer_than(mesh, shape, limit):
     """The nodes closer than limit by OpenCASCADE's own distance, a fresh measure for each node"""
-    # Past the box by more than the limit a node can't be kept, it saves the measure. The search
-    # filters by a box as well, both keep every node closer than the limit
+    # Past the box by more than the limit no node is kept, the search filters by a box too
     box = shape.BoundBox
     box.enlarge(2 * limit)
     kept = set()
@@ -135,6 +132,179 @@ class TestMeshNodeSearch(unittest.TestCase):
             mesh.addNode(*back.multVec(point))
         mesh.Placement = placement
         self.check_searches("placed bitten box", mesh, shape)
+
+    def test_nodes_by_a_loose_vertex_or_edge(self):
+        # A node within the own tolerance of a loose vertex or edge lies on every face meeting there
+        box = Part.makeBox(10, 10, 10)
+        corner = next(v for v in box.Vertexes if v.Point.Length < 1e-9)
+        corner.fixTolerance(1e-4)
+        rng = random.Random(1945)
+        mesh = Fem.FemMesh()
+        by_corner = (set(), set())
+        for r in (2e-5, 5e-5, 9e-5, 5e-4):
+            for _ in range(32):
+                way = V(rng.gauss(0, 1), rng.gauss(0, 1), rng.gauss(0, 1)).normalize()
+                # Out in the octant beyond the vertex, the vertex is the closest point
+                p = corner.Point - V(abs(way.x), abs(way.y), abs(way.z)) * r
+                by_corner[r > 1e-4].add(mesh.addNode(p.x, p.y, p.z))
+        # Off the bottom face by half the loose tolerance, far from the loose vertex
+        by_corner[1].add(mesh.addNode(5.0, 5.0, -5e-5))
+        # In every box but out of the tolerance, the loose vertex turns them away, right at it is on
+        by_corner[1].add(mesh.addNode(*(V(-1, -1, -1).normalize() * 1.5e-4)))
+        by_corner[1].add(mesh.addNode(-5e-5, 5.0, 0.0))
+        by_corner[0].add(mesh.addNode(-1e-4, 0.0, 0.0))
+        solid = box.Solids[0]
+        with self.subTest(element="Solid"):
+            # The solid takes its loosest tolerance everywhere, its box must reach as far
+            limit = solid.getTolerance(1)
+            kept = {
+                n for n, p in mesh.Nodes.items() if solid.distToShape(Part.Vertex(p))[0] < limit
+            }
+            self.assertEqual(set(mesh.getNodesBySolid(solid)), kept)
+        loose = next(
+            e
+            for e in box.Edges
+            if e.BoundBox.ZLength > 1 and e.BoundBox.XMax < 1e-9 and e.BoundBox.YMax < 1e-9
+        )
+        loose.fixTolerance(1e-4)
+        by_edge = (set(), set())
+        for r in (2e-5, 9e-5, 1.2e-4, 5e-4):
+            by_edge[r > 1e-4].add(mesh.addNode(-r * 0.6, -r * 0.8, 5.0))
+        cases = [
+            (by_corner, lambda s: any(v.isSame(corner) for v in s.Vertexes)),
+            (by_edge, lambda s: s.isSame(loose) or any(e.isSame(loose) for e in s.Edges)),
+        ]
+        for (on, off), meets in cases:
+            elements = [f for f in box.Faces if meets(f)] + [e for e in box.Edges if meets(e)]
+            for index, element in enumerate(elements, 1):
+                with self.subTest(element=f"{element.ShapeType}{index}", nodes=len(on)):
+                    if element.ShapeType == "Face":
+                        found = set(mesh.getNodesByFace(element))
+                    else:
+                        found = set(mesh.getNodesByEdge(element))
+                    self.assertEqual((len(on - found), len(off & found)), (0, 0))
+        # Right at the tolerance of an ordinary vertex too, the one every face and edge shares
+        plain = Part.makeBox(10, 10, 10)
+        tip = next(v for v in plain.Vertexes if v.Point.Length < 1e-9)
+        mesh = Fem.FemMesh()
+        node = mesh.addNode(-tip.Tolerance, 0.0, 0.0)
+        with self.subTest(element="ordinary vertex"):
+            self.assertEqual(mesh.getNodesByVertex(tip), [node])
+            for element in plain.Faces + plain.Edges:
+                if any(v.isSame(tip) for v in element.Vertexes):
+                    if element.ShapeType == "Face":
+                        self.assertEqual(mesh.getNodesByFace(element), [node])
+                    else:
+                        self.assertEqual(mesh.getNodesByEdge(element), [node])
+        # A vertex left off the curve of its edge, within its own tolerance
+        line = Part.makeLine(V(0, 0, 0), V(10, 0, 0))
+        shifted = Part.Vertex(V(0, 8e-5, 0))
+        shifted.fixTolerance(1e-4)
+        edge = line.replaceShape([(line.Vertexes[0], shifted)])
+        mesh = Fem.FemMesh()
+        node = mesh.addNode(0, 1.5e-4, 0)
+        with self.subTest(element="shifted vertex"):
+            self.assertEqual(mesh.getNodesByEdge(edge), [node])
+        # A seam moved 8e-5 off its sphere in the BRep text, where the radius 4 ends the curves
+        brep = Part.makeSphere(4).exportBrepToString()
+        self.assertEqual(brep.count("0 0 1 4\nPolygon3D"), 1)
+        sphere = Part.Shape()
+        sphere.importBrepFromString(brep.replace("0 0 1 4\nPolygon3D", "0 0 1 4.00008\nPolygon3D"))
+        for part in sphere.Edges + sphere.Vertexes:
+            part.fixTolerance(1e-4)
+        self.assertTrue(sphere.isValid())
+        mesh = Fem.FemMesh()
+        node = mesh.addNode(4.00015, 0.0, 0.0)
+        for element, search in (
+            ("seam face", mesh.getNodesByFace),
+            ("seam solid", mesh.getNodesBySolid),
+        ):
+            with self.subTest(element=element):
+                shape = sphere.Faces[0] if element == "seam face" else sphere.Solids[0]
+                self.assertEqual(search(shape), [node])
+
+    def test_nodes_out_of_a_short_box(self):
+        # BRepBndLib::Add cuts the box of a fillet torus patch short by 0.3, a whole torus keeps it
+        solid = Part.makeBox(11.7, 9.65, 7.44)
+        cone = Part.makeCone(2.70, 0.322, 2.11, V(6.04, 3.25, 6.58))
+        cone.rotate(cone.BoundBox.Center, V(-0.271, 1.19, -1.12).normalize(), 165.0)
+        solid = solid.fuse(cone).removeSplitter().Solids[0]
+        rim = [
+            e
+            for e in solid.Edges
+            if isinstance(e.Curve, Part.Circle) and abs(e.Curve.Radius - 2.70) < 1e-9
+        ]
+        solid = solid.makeFillet(0.790, rim).Solids[0]
+        faces = [f for f in solid.Faces if isinstance(f.Surface, Part.Toroid)]
+        self.assertTrue(faces and all(f.Surface.MajorRadius < f.Surface.MinorRadius for f in faces))
+        nurbs = Part.makeSphere(4, V(1, 2, 3)).toNurbs()
+
+        def out_of(bound, points):
+            # How far the furthest point lies out of a box, 0 inside
+            return max(
+                max(
+                    bound.XMin - p.x,
+                    p.x - bound.XMax,
+                    bound.YMin - p.y,
+                    p.y - bound.YMax,
+                    bound.ZMin - p.z,
+                    p.z - bound.ZMax,
+                    0.0,
+                )
+                for p in points
+            )
+
+        # A plain torus turned askew, and one offset from another : Add cuts their patch boxes short
+        patches = []
+        for big, offset in ((2, 0.0), (3, 0.3)):
+            turned = Part.Toroid()
+            # The setter wants R above r at every step
+            turned.MajorRadius = 100
+            turned.MinorRadius = 1
+            turned.MajorRadius = big
+            turned.Axis = V(1, 2, 3).normalize()
+            surface = Part.OffsetSurface(turned, offset) if offset else turned
+            patch = surface.toShape(0, 6, 5, 6)
+            grid = [
+                patch.valueAt(6 * i / 40, 5 + j / 40) for i in range(2, 39) for j in range(2, 39)
+            ]
+            self.assertGreater(out_of(patch.BoundBox, grid), 1e-4)
+            patches.append((patch, None))
+        cases = [(f, solid) for f in faces] + [(nurbs.Faces[0], nurbs.Solids[0])] + patches
+        for face, solid in cases:
+            u0, u1, v0, v1 = face.ParameterRange
+            mesh = Fem.FemMesh()
+            nodes = set()
+            # Inside the face only, its border is a matter for the measure, not for the box
+            for i in range(2, 39):
+                for j in range(2, 39):
+                    u = u0 + (u1 - u0) * i / 40
+                    v = v0 + (v1 - v0) * j / 40
+                    if face.isPartOfDomain(u, v):
+                        nodes.add(mesh.addNode(*face.valueAt(u, v)))
+            # BRepExtrema prunes by the same short box, every node it keeps the box keeps too
+            searches = [(face, face.Tolerance, mesh.getNodesByFace)]
+            if solid is not None:
+                searches.append((solid, solid.getTolerance(1), mesh.getNodesBySolid))
+            for shape, limit, search in searches:
+                with self.subTest(surface=type(face.Surface).__name__, element=shape.ShapeType):
+                    found = set(search(shape))
+                    kept = {
+                        n for n in nodes if shape.distToShape(Part.Vertex(mesh.Nodes[n]))[0] < limit
+                    }
+                    self.assertGreater(len(kept), 0.9 * len(nodes))
+                    self.assertEqual(kept - found, set())
+        # A parabola sketched flat then placed askew : Add misses where it goes furthest
+        flat = Part.Parabola()
+        flat.Focal = 2.0
+        arc = Part.Edge(flat, -3.0, 3.0)
+        arc.Placement = FreeCAD.Placement(V(1, 1, 1), FreeCAD.Rotation(V(1, 1, 0), 35))
+        laid = [arc.valueAt(-3.0 + 6.0 * i / 200) for i in range(1, 200)]
+        self.assertGreater(out_of(arc.BoundBox, laid), 1e-4)
+        mesh = Fem.FemMesh()
+        nodes = {mesh.addNode(p.x, p.y, p.z) for p in laid}
+        with self.subTest(curve="placed parabola"):
+            self.assertEqual(nodes - set(mesh.getNodesByEdge(arc)), set())
 
     def check_searches(self, name, mesh, shape):
         solid = shape.Solids[0]
