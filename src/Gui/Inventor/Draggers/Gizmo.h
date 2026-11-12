@@ -104,7 +104,7 @@ public:
     using ClickCallback = std::function<void()>;
 
     LinearGizmo(QuantitySpinBox* property);
-    ~LinearGizmo() override = default;
+    ~LinearGizmo() override;
 
     SoInteractionKit* initDragger() override;
     void uninitDragger() override;
