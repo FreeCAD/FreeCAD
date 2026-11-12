@@ -1200,4 +1200,24 @@ def pyopen(
     return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
 
 
+def get_number_length(text):
+    """Return the length of the numerical portion of a string with units.
+
+    Parameters
+    ----------
+    text: str
+        For example: "12.3 mm"
+
+    Returns
+    -------
+    int
+    """
+    num_len = len(text)
+    for char in text[::-1]:
+        if char in "0123456789.,-+/":
+            break
+        num_len -= 1
+    return num_len
+
+
 ## @}
