@@ -974,6 +974,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         base_children = []
         if not obj.WindowParts and obj.Base and hasattr(obj.Base, "Shape"):
             # Type-based window: obj.Base furnishes the window solids.
+
+            # App::Part: child visibility is set by each child's Visibility property
             for child in getattr(obj.Base, "Group", []):
                 if child.Visibility and getattr(child, "Shape", None) and child.Shape.Solids:
                     base_children.append(child)
