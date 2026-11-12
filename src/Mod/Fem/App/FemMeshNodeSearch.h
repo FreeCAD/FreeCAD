@@ -35,7 +35,7 @@ namespace Fem
 
 class FemMesh;
 
-// The mesh nodes on a face or an edge
+// The mesh nodes on a face or an edge, read on the exact geometry
 namespace NodeSearch
 {
 
