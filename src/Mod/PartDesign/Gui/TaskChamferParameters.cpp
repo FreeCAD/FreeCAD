@@ -357,7 +357,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
     secondDistanceGizmo = new Gui::LinearGizmo(ui->chamferSize);
     angleGizmo = new Gui::RotationGizmo(ui->chamferAngle);
 
-    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
+    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         auto type = static_cast<Part::ChamferType>(index);
 
         switch (type) {
