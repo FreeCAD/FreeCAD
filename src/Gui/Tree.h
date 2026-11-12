@@ -566,6 +566,7 @@ private:
     );
 
     App::DocumentObject* getElementVisibilityParent() const;
+    bool hasErrorInChildren() const;
     void setIconOverlays(int currentStatus, QPixmap& overlays) const;
     void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
     QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);
