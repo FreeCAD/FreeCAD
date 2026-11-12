@@ -973,7 +973,9 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         sapp = []
         base_children = []
         if not obj.WindowParts and obj.Base and hasattr(obj.Base, "Shape"):
-            # Type-based window: obj.Base furnishes the window solids.
+            # Type-based window: the material of each solid is looked up by the Label of the
+            # Base child that produced it. That child is found by position: the window shape
+            # is a copy of obj.Base.Shape, which keeps the visible children's solid in order.
 
             # App::Part: child visibility is set by each child's Visibility property
             for child in getattr(obj.Base, "Group", []):
