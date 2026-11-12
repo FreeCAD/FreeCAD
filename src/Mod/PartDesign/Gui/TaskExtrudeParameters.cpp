@@ -1501,7 +1501,7 @@ void TaskExtrudeParameters::setupGizmos()
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
 
-    connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int) {
+    connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
         setGizmoPositions();
     });
 
