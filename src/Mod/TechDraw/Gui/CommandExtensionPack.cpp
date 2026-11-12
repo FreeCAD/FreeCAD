@@ -316,7 +316,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg)
             execHoleCircle(this);
             break;
         default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -601,7 +601,7 @@ CmdTechDrawExtensionThreadsGroup::CmdTechDrawExtensionThreadsGroup()
 
 void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::TechDrawExtensionThreadsGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::TechDrawExtensionThreadsGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -625,7 +625,7 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
             execThreadBoltBottom(this);
             break;
         default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1221,7 +1221,7 @@ CmdTechDrawExtensionDrawCirclesGroup::CmdTechDrawExtensionDrawCirclesGroup()
 
 void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionDrawCirclesGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionDrawCirclesGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -1245,7 +1245,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
             execDrawCosmArc(this);
             break;
         default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1466,7 +1466,7 @@ CmdTechDrawExtensionLinePPGroup::CmdTechDrawExtensionLinePPGroup()
 
 void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionLinePPGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -1484,7 +1484,7 @@ void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
             execLineParallelPerpendicular(this, false);
             break;
         default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1764,7 +1764,7 @@ CmdTechDrawExtendShortenLineGroup::CmdTechDrawExtendShortenLineGroup()
 
 void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
 {
-    // Base::Console().message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
+    // Base::Console().message("CMD::ExtendShortenLineGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -1782,7 +1782,7 @@ void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
             execExtendShortenLine(this, false);
             break;
         default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 

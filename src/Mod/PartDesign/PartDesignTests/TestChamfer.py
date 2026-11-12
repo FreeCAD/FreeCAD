@@ -24,6 +24,7 @@
 import unittest
 
 import FreeCAD
+import TestSketcherApp
 
 
 class TestChamfer(unittest.TestCase):
@@ -60,6 +61,43 @@ class TestChamfer(unittest.TestCase):
         self.Doc.recompute()
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
         self.assertEqual(len(self.MajorFaces), 9)
+
+    def testInsertPadBeforeChamferPreservesBaseThroughEdit(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        box = body.newObject("PartDesign::AdditiveBox", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        self.Doc.recompute()
+        chamfer = body.newObject("PartDesign::Chamfer", "Chamfer")
+        chamfer.Base = (box, ["Edge1"])
+        chamfer.Size = 1
+        self.Doc.recompute()
+        self.assertTrue(chamfer.isValid())
+        original_volume = chamfer.Shape.Volume
+
+        body.Tip = box
+        sketch = body.newObject("Sketcher::SketchObject", "InsertedSketch")
+        sketch.Placement.Base = FreeCAD.Vector(0, 0, 2)
+        TestSketcherApp.CreateRectangleSketch(sketch, (10, 3), (2, 4))
+        pad = body.newObject("PartDesign::Pad", "InsertedPad")
+        pad.Profile = sketch
+        pad.Length = 4
+
+        self.assertTrue(pad.Shape.isNull())
+        self.assertEqual(chamfer.BaseFeature.Name, pad.Name)
+        self.assertEqual(chamfer.Base[0].Name, pad.Name)
+        self.Doc.recompute()
+        self.assertTrue(pad.isValid())
+        self.assertTrue(chamfer.isValid())
+
+        chamfer.Base = (chamfer.Base[0], list(chamfer.Base[1]))
+        body.Tip = chamfer
+        self.Doc.recompute()
+        self.assertEqual(chamfer.BaseFeature.Name, pad.Name)
+        self.assertTrue(chamfer.isValid())
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 12)
+        self.assertGreater(body.Shape.Volume, original_volume)
 
     def tearDown(self):
         # closing doc

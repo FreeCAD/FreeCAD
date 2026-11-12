@@ -31,9 +31,9 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.point import Point
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -91,6 +91,14 @@ def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
     return obj
 
 
-makePoint = make_point
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_point()",
+)
+def makePoint(*args, **kwarg):
+    """DEPRECATED. Use 'make_point'."""
+    return make_point(*args, **kwarg)
+
 
 ## @}

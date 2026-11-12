@@ -21,6 +21,7 @@ class TestLinkArrayPath(unittest.TestCase):
         self.array.LinkedObject = source
         self.array.ShowElement = False
         self.array.Path = (self.path, ["Edge1", "Edge2"])
+        self.array.RelativeToFirst = False
 
     def tearDown(self):
         App.closeDocument(self.doc.Name)
@@ -73,7 +74,7 @@ class TestLinkArrayPath(unittest.TestCase):
             App.Vector(0, 0, 0),
         ]
         for placement, point in zip(self.array.PlacementList, expected):
-            self.assertLess((placement.Base - point).Length, 1e-7)
+            self.assertAlmostEqual((placement.Base - point).Length, 0)
 
     def testAlignFollowsPathTangent(self):
         self.array.Count = 3
@@ -97,7 +98,7 @@ class TestLinkArrayPath(unittest.TestCase):
             App.Vector(0, 0, 0),
         ]
         for placement, point in zip(self.array.PlacementList, expected):
-            self.assertLess((placement.Base - point).Length, 1e-7)
+            self.assertAlmostEqual((placement.Base - point).Length, 0)
 
     def testUnsetPathIsSilent(self):
         self.array.Path = None

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from typing import Tuple, overload
 
@@ -36,7 +34,6 @@ class ChFi2d_ChamferAPI(PyObjectBase):
         Initializes a chamfer algorithm: accepts a wire consisting of two edges in a plane,
         or a pair of edges.
         """
-        ...
 
     def perform(self) -> bool:
         """
@@ -44,7 +41,6 @@ class ChFi2d_ChamferAPI(PyObjectBase):
 
         Constructs a chamfer edge
         """
-        ...
 
     def result(self, length1: float, length2: float, /) -> Tuple[object, object, object]:
         """
@@ -52,4 +48,3 @@ class ChFi2d_ChamferAPI(PyObjectBase):
 
         Returns result (chamfer edge, modified edge1, modified edge2)
         """
-        ...

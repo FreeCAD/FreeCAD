@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
 from typing import Any, Final, List, Optional
+from App.DocumentObject import DocumentObject
+from ViewProvider import ViewProvider as _ViewProvider
+from ViewProviderDocumentObject import ViewProviderDocumentObject as _ViewProviderDocumentObject
 
 class Document(Persistence):
     """
@@ -15,100 +16,91 @@ class Document(Persistence):
     Licence: LGPL
     """
 
-    def show(self, objName: str, /) -> None:
+    def show(self, object_name: str, /) -> None:
         """
         Show an object.
 
-        objName : str
+        object_name : str
             Name of the `Gui.ViewProvider` to show.
         """
-        ...
 
-    def hide(self, objName: str, /) -> None:
+    def hide(self, object_name: str, /) -> None:
         """
         Hide an object.
 
-        objName : str
+        object_name : str
             Name of the `Gui.ViewProvider` to hide.
         """
-        ...
 
-    def setPos(self, objName: str, matrix: Matrix, /) -> None:
+    def setPos(self, object_name: str, matrix: Matrix, /) -> None:
         """
         Set the position of an object.
 
-        objName : str
+        object_name : str
             Name of the `Gui.ViewProvider`.
 
         matrix : Base.Matrix
             Transformation to apply on the object.
         """
-        ...
 
-    def setEdit(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> bool:
+    def setEdit(
+        self, obj: str | DocumentObject | _ViewProvider, mode: int = 0, subname: str = ..., /
+    ) -> bool:
         """
         Set an object in edit mode.
 
         obj : str, App.DocumentObject, Gui.ViewPrivider
             Object to set in edit mode.
-        mod : int
+        mode : int
             Edit mode.
-        subName : str
+        subname : str
             Subelement name. Optional.
         """
-        ...
 
     def getInEdit(self) -> Optional[Any]:
         """
         Returns the current object in edit mode or None if there is no such object.
         """
-        ...
 
     def resetEdit(self) -> None:
         """
         End the current editing.
         """
-        ...
 
-    def addAnnotation(self, annoName: str, fileName: str, modName: str, /) -> None:
+    def addAnnotation(self, name: str, filename: str, mode: str = "Main", /) -> None:
         """
         Add an Inventor object from a file.
 
-        annoName : str
+        name : str
             Annotation name.
-        fileName : str
+        filename : str
             File name.
-        modName : str
+        mode : str
             Display mode name. Optional.
         """
-        ...
 
     def update(self) -> None:
         """
         Update the view representations of all objects.
         """
-        ...
 
-    def getObject(self, objName: str, /) -> Optional[Any]:
+    def getObject(self, name: str, /) -> Optional[Any]:
         """
         Return the object with the given name. If no one exists, return None.
 
-        ObjName : str
+        name : str
             Object name.
         """
-        ...
 
     def activeObject(self) -> Optional[Any]:
         """
         The active object of the document. Deprecated, use ActiveObject.
         """
-        ...
 
     def activeView(self) -> Optional[Any]:
         """
         The active view of the document. Deprecated, use ActiveView.
         """
-        ...
 
     def createView(self, type: str, /) -> Optional[Any]:
         """
@@ -117,7 +109,6 @@ class Document(Persistence):
         type : str
             Type name.
         """
-        ...
 
     @constmethod
     def mdiViewsOfType(self, type: str, /) -> List[Any]:
@@ -127,19 +118,16 @@ class Document(Persistence):
         type : str
             Type name.
         """
-        ...
 
     def save(self) -> bool:
         """
         Attempts to save the document
         """
-        ...
 
     def saveAs(self) -> bool:
         """
         Attempts to save the document under a new name
         """
-        ...
 
     def sendMsgToViews(self, msg: str, /) -> None:
         """
@@ -147,46 +135,41 @@ class Document(Persistence):
 
         msg : str
         """
-        ...
 
-    def mergeProject(self, fileName: str, /) -> None:
+    def mergeProject(self, filename: str, /) -> None:
         """
         Merges this document with another project file.
 
-        fileName : str
+        filename : str
             File name.
         """
-        ...
 
-    def toggleTreeItem(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> None:
+    def toggleTreeItem(self, obj: DocumentObject, mode: int = 0, subname: str = ..., /) -> None:
         """
         Change TreeItem of a document object.
 
         obj : App.DocumentObject
-        mod : int
+        mode : int
             Item mode.
             0: Toggle, 1: Collapse, 2: Expand, 3: Expand path.
-        subName : str
+        subname : str
             Subelement name. Optional.
         """
-        ...
 
-    def scrollToTreeItem(self, obj: Any, /) -> None:
+    def scrollToTreeItem(self, obj: _ViewProviderDocumentObject, /) -> None:
         """
         Scroll the tree view to the item of a view object.
 
         obj : Gui.ViewProviderDocumentObject
         """
-        ...
 
-    def toggleInSceneGraph(self, obj: Any, /) -> None:
+    def toggleInSceneGraph(self, obj: _ViewProvider, /) -> None:
         """
         Add or remove view object from scene graph of all views depending
         on its canAddToSceneGraph().
 
         obj : Gui.ViewProvider
         """
-        ...
 
     def openCommand(self, name: str) -> int:
         """
@@ -195,7 +178,6 @@ class Document(Persistence):
         Opens a named transaction for the document and returns it's
         id or 0 on failure
         """
-        ...
 
     def commitCommand(self) -> None:
         """
@@ -203,7 +185,6 @@ class Document(Persistence):
 
         Commits the current transaction of the document
         """
-        ...
 
     def abortCommand(self) -> None:
         """
@@ -211,7 +192,6 @@ class Document(Persistence):
 
         Aborts the current transaction of the document
         """
-        ...
     ActiveObject: Any = ...
     """The active object of the document."""
 

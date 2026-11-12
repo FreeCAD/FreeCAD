@@ -219,7 +219,7 @@ std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdL
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
-        Base::Console().error("Invalid GeoId: %d\n", GeoId);
+        Base::Console().error("Invalid GeoId: {}\n", GeoId);
         return -1;
     }
 
@@ -232,7 +232,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() != 2 || GeoIdList[0] < 0 || GeoIdList[1] < 0) {
-        Base::Console().error("Invalid number of edges connected to GeoId: %d\n", GeoId);
+        Base::Console().error("Invalid number of edges connected to GeoId: {}\n", GeoId);
         return -1;
     }
 
@@ -460,30 +460,16 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         coinc2->addElement(GeoElementId(lineGeoId, filletPosId2));
 #endif
 
-        if (trim) {
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = GeoId1;
-            coinc1->SecondPos = PosId1;
+        coinc1->Second = filletId;
+        coinc1->SecondPos = PointPos::start;
 
-            coinc2->Second = GeoId2;
-            coinc2->SecondPos = PosId2;
+        coinc2->Second = filletId;
+        coinc2->SecondPos = PointPos::end;
 #else
-            coinc1->addElement(GeoElementId(GeoId1, PosId1));
-            coinc2->addElement(GeoElementId(GeoId2, PosId2));
+        coinc1->addElement(GeoElementId(filletId, PointPos::start));
+        coinc2->addElement(GeoElementId(filletId, PointPos::end));
 #endif
-        }
-        else {
-#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = filletId;
-            coinc1->SecondPos = PointPos::start;
-
-            coinc2->Second = filletId;
-            coinc2->SecondPos = PointPos::end;
-#else
-            coinc1->addElement(GeoElementId(filletId, PointPos::start));
-            coinc2->addElement(GeoElementId(filletId, PointPos::end));
-#endif
-        }
 
         addConstraint(std::move(coinc1));
         addConstraint(std::move(coinc2));
@@ -1220,8 +1206,17 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
         transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end, true);
     }
+    const bool isConic = geoAsCurve->isDerivedFrom<Part::GeomConic>()
+        || geoAsCurve->isDerivedFrom<Part::GeomArcOfConic>();
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
+        // Internal geometry stays with the first piece, as in trim
+        if (con->Type == InternalAlignment && isConic) {
+            auto* newCon = con->copy();
+            newCon->Second = newIds.front();
+            newConstraints.push_back(newCon);
+            continue;
+        }
         deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints, true);
     }
 
@@ -1251,6 +1246,14 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         midJoint->Second = newIds.back();
         midJoint->SecondPos = PointPos::mid;
         newConstraints.push_back(midJoint);
+        // Center and end point fix a circle but not the other conics
+        if (!geoAsCurve->is<Part::GeomArcOfCircle>()) {
+            auto* equal = new Constraint();
+            equal->Type = Equal;
+            equal->First = newIds.front();
+            equal->Second = newIds.back();
+            newConstraints.push_back(equal);
+        }
     }
     // for lines, we add a tangent constraint instead of coincident
     // TODO: this shouldn't be only for lines & bsplines, but for any geometry that isn't
@@ -2802,6 +2805,13 @@ int SketchObject::addCopy(
 
     return Geometry.getSize() - 1;
 }
+
+bool SketchObject::isExemptFromNURBSConversion(int GeoId) const
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    return GeoId >= 0 && geo
+        && (geo->is<Part::GeomBSplineCurve>() || GeometryFacade::isInternalAligned(geo));
+}
 // clang-format off
 
 bool SketchObject::convertToNURBS(int GeoId)
@@ -2809,22 +2819,25 @@ bool SketchObject::convertToNURBS(int GeoId)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    if (GeoId > getHighestCurveIndex()
-        || (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.getSize())) || GeoId == -1
-        || GeoId == -2)
+    const Part::Geometry* geo = getGeometry(GeoId);
+    if (!geo || GeoId == -1 || GeoId == -2)
         return false;
 
-    const Part::Geometry* geo = getGeometry(GeoId);
+    if (isExemptFromNURBSConversion(GeoId))
+        return true;
 
     if (geo->is<Part::GeomPoint>())
         return false;
 
     const auto* geo1 = static_cast<const Part::GeomCurve*>(geo);
 
-    Part::GeomBSplineCurve* bspline;
+    std::unique_ptr<Part::GeomBSplineCurve> bspline;
 
     try {
-        bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+        bspline.reset(geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter()));
+
+        if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>())
+            bspline->setPeriodic();
 
         if (geo1->isDerivedFrom<Part::GeomArcOfConic>()) {
             const auto* geoaoc = static_cast<const Part::GeomArcOfConic*>(geo1);
@@ -2834,7 +2847,7 @@ bool SketchObject::convertToNURBS(int GeoId)
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         return false;
     }
@@ -2843,18 +2856,35 @@ bool SketchObject::convertToNURBS(int GeoId)
 
     std::vector<Part::Geometry*> newVals(vals);
 
+    // Like deletion, hand the axes/foci over to a sibling arc of the trimmed conic if there is one.
+    int siblingGeoId = GeoId >= 0 ? findInternalAlignmentSibling(GeoId) : GeoEnum::GeoUndef;
+
+    std::set<int> internalGeometry;
+    if (GeoId >= 0 && siblingGeoId == GeoEnum::GeoUndef) {
+        for (const auto* constraint : Constraints.getValues()) {
+            if (constraint->Type == InternalAlignment && constraint->Second == GeoId
+                && constraint->First >= 0 && constraint->First != GeoId)
+                internalGeometry.insert(constraint->First);
+        }
+        // Shared internal geometry still belongs to the other conic.
+        for (const auto* constraint : Constraints.getValues()) {
+            if (constraint->Type == InternalAlignment && constraint->Second != GeoId)
+                internalGeometry.erase(constraint->First);
+        }
+    }
+
     // Block checks and updates in OnChanged to avoid unnecessary checks and updates
     {
         Base::StateLocker preventUpdate(internaltransaction, true);
 
         if (GeoId < 0) {// external geometry
-            newVals.push_back(bspline);
-            generateId(bspline);
+            generateId(bspline.get());
+            newVals.push_back(bspline.release());
         }
         else {// normal geometry
 
-            newVals[GeoId] = bspline;
-            GeometryFacade::copyId(geo, bspline);
+            GeometryFacade::copyId(geo, bspline.get());
+            newVals[GeoId] = bspline.release();
 
             const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
@@ -2865,6 +2895,14 @@ bool SketchObject::convertToNURBS(int GeoId)
             // not support them currently), except for coincidents on mid point of the
             // to-be-converted curve.
             for (; index >= 0; index--) {
+                if (siblingGeoId != GeoEnum::GeoUndef && cvals[index]->Type == InternalAlignment
+                    && cvals[index]->Second == GeoId) {
+                    Constraint* transferred = cvals[index]->clone();
+                    transferred->Second = siblingGeoId;
+                    newcVals[index] = transferred;
+                    continue;
+                }
+
                 auto otherthancoincident = cvals[index]->Type != Sketcher::Coincident
                     && cvals[index]->involvesGeoId(GeoId);
 
@@ -2879,6 +2917,13 @@ bool SketchObject::convertToNURBS(int GeoId)
         }
 
         Geometry.setValues(std::move(newVals));
+
+        // Remove obsolete axes/foci along with their constraints, and remap surviving geometry.
+        if (!internalGeometry.empty()) {
+            delGeometriesExclusiveList(
+                std::vector<int>(internalGeometry.begin(), internalGeometry.end()),
+                DeleteOption::NoSolve);
+        }
     }
 
     // trigger update now
@@ -2916,7 +2961,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
         bspline->increaseDegree(cdegree + degreeincrement);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -2962,7 +3007,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         bspline->approximate(Precision::Confusion(), 20, maxdegree, GeomAbs_C0);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -3077,7 +3122,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -3225,7 +3270,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         bspline->insertKnot(param, multiplicity);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 

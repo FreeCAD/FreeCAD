@@ -14,7 +14,7 @@ FreeCAD does not accept raw and unverified AI output in PRs and no AI output in 
 Please check the following box:
 -->
 
-- [ ] This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR is done by me personally.
+- [ ] This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR, including **PR description, comments and commit messages** is done by me personally.
 
 <!--
 If your work has been assisted by AI, please disclose the used technology in the PR description (in natural language) and with git trailers in the commit messages:
@@ -43,6 +43,7 @@ The complete AI policy can be found in the root of the source tree (AI_POLICY.md
 The following section describes what the maintainers consider when reviewing your Pull Request.  These items may not require you to take any action.  This information is provided for context. Understanding what we consider will help you prepare your request for speedy approval.
 
 You can find additional documentation about these guidelines in the [Developers handbook](https://freecad.github.io/DevelopersHandbook).
+Practical repository guidance is in [contrib/guidelines](https://github.com/FreeCAD/FreeCAD/tree/main/contrib/guidelines).
 
 Alignment (Does the PR align with the goals and interests of the project?)
   - Does the PR have at least one issue linked, which this PR closes?

@@ -346,7 +346,7 @@ void TaskMeasure::tryUpdate()
 
         std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
-            Base::Console().message("No measure handler available for geometry of module: %s\n", mod);
+            Base::Console().message("No measure handler available for geometry of module: {}\n", mod);
             clearSelection();
             return;
         }
@@ -879,7 +879,7 @@ void TaskMeasureDistanceInfo::update()
     const auto* deltaZProp = measureObject->getPropertyByName<App::PropertyDistance>("DistanceZ");
     if (!deltaXProp || !deltaYProp || !deltaZProp) {
         Base::Console().error(
-            "TaskMeasureDistanceInfo: measure type '%s' must define DistanceX, DistanceY, and "
+            "TaskMeasureDistanceInfo: measure type '{}' must define DistanceX, DistanceY, and "
             "DistanceZ properties\n",
             measureObject->getTypeId().getName()
         );

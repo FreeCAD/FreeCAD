@@ -5016,7 +5016,6 @@ protected:
 
     struct CoincidentSolveStatus {
         SketchSolveStatus status {SketchSolveStatus::Success};
-        std::vector<ConstraintDiagnosticIdentity> redundantIdentities;
         std::vector<ConstraintDiagnosticIdentity> conflictingIdentities;
         std::vector<ConstraintDiagnosticIdentity> malformedIdentities;
     };
@@ -5586,13 +5585,6 @@ void CmdSketcherConstrainCoincidentUnified::showCoincidentSolveWarning(SketchObj
                                                                        SketchSolveStatus result)
 {
     switch (result) {
-        case SketchSolveStatus::RedundantConstraints:
-            Gui::TranslatedUserWarning(
-                obj,
-                QObject::tr("Coincident constraint not added"),
-                QObject::tr("Cannot add the coincident constraint because it would create redundant "
-                            "constraints."));
-            break;
         case SketchSolveStatus::ConflictingConstraints:
             Gui::TranslatedUserWarning(
                 obj,
@@ -5628,6 +5620,7 @@ void CmdSketcherConstrainCoincidentUnified::showCoincidentSolveWarning(SketchObj
                 QObject::tr("Cannot add the coincident constraint because the sketch contains "
                             "constraints that refer to invalid geometry."));
             break;
+        case SketchSolveStatus::RedundantConstraints:
         case SketchSolveStatus::Success:
             break;
     }
@@ -5741,7 +5734,6 @@ CmdSketcherConstrainCoincidentUnified::getCoincidentSolveStatus(SketchObject* ob
     }
 
     return {status,
-            getConstraintDiagnosticIdentities(obj, obj->getLastRedundant()),
             getConstraintDiagnosticIdentities(obj, obj->getLastConflicting()),
             getConstraintDiagnosticIdentities(obj, obj->getLastMalformedConstraints())};
 }
@@ -5750,7 +5742,9 @@ bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
     const CoincidentSolveStatus& before,
     const CoincidentSolveStatus& after)
 {
-    if (after.status == SketchSolveStatus::Success) {
+    // Redundancy is left to the user or to AutoRemoveRedundants, which runs after the commit.
+    if (after.status == SketchSolveStatus::Success
+        || after.status == SketchSolveStatus::RedundantConstraints) {
         return false;
     }
 
@@ -5776,8 +5770,7 @@ bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
         return false;
     };
 
-    return introducesDiagnostic(before.redundantIdentities, after.redundantIdentities)
-        || introducesDiagnostic(before.conflictingIdentities, after.conflictingIdentities)
+    return introducesDiagnostic(before.conflictingIdentities, after.conflictingIdentities)
         || introducesDiagnostic(before.malformedIdentities, after.malformedIdentities);
 }
 
@@ -7157,25 +7150,61 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (! isLineSegment(*geo1) && ! isLineSegment(*geo2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("One of the selected edges should be a line."));
-                return;
-            }
-
-            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
-            //     // unsupported until tangent to B-spline at any point implemented.
-            //     Gui::TranslatedUserWarning(
-            //         Obj,
-            //         QObject::tr("Wrong selection"),
-            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-            //     return;
-            // }
-
             if (isLineSegment(*geo1)) {
                 std::swap(GeoId1, GeoId2);
+            }
+
+            if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
+                std::vector<int> nGeoId3;
+                std::vector<PointPos> nPosId3;
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, true);
+
+                if (found > 1) {  // too many intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Too many intersection points found.")
+                    );
+                    return;
+                }
+                if (found == 0) {  // no intersection points
+                    // check if they are joined by midpoint
+                    if (Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, false) > 0) {
+                        Gui::TranslatedUserWarning(
+                            Obj,
+                            QObject::tr("Wrong selection"),
+                            QObject::tr("Edges are joined by midpoint.")
+                        );
+                        return;
+                    }
+
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("No intersection points found.")
+                    );
+                    return;
+                }
+
+                GeoId3 = nGeoId3[0];
+                PosId3 = nPosId3[0];
+
+                // edge, edge, vertex perpendicularity
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+                Gui::cmdAppObjectArgs(
+                    selection->getObject(),
+                    "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
+                    GeoId1,
+                    GeoId2,
+                    GeoId3,
+                    static_cast<int>(PosId3)
+                );
+
+                removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+                commitCommand();
+                tryAutoRecompute(Obj);
+                getSelection().clearSelection();
+                return;
             }
 
             if (isBsplinePole(Obj, GeoId1)) {
@@ -7351,25 +7380,46 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (! isLineSegment(*geo1) && ! isLineSegment(*geo2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("One of the selected edges should be a line."));
-                return;
-            }
-
-            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
-            //     // unsupported until tangent to B-spline at any point implemented.
-            //     Gui::TranslatedUserWarning(
-            //         Obj,
-            //         QObject::tr("Wrong selection"),
-            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-            //     return;
-            // }
-
             if (isLineSegment(*geo1)) {
                 std::swap(GeoId1, GeoId2);
+            }
+
+            if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
+                std::vector<int> nGeoId3;
+                std::vector<PointPos> nPosId3;
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, true);
+
+                if (found > 1) {  // too many intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Too many intersection points found.")
+                    );
+                    return;
+                }
+                if (found == 0) {  // no intersection points
+                    // check if they are joined by midpoint
+                    if (Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, false) > 0) {
+                        Gui::TranslatedUserWarning(
+                            Obj,
+                            QObject::tr("Wrong selection"),
+                            QObject::tr("Edges are joined by midpoint.")
+                        );
+                        return;
+                    }
+
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("No intersection points found.")
+                    );
+                    return;
+                }
+
+                GeoId3 = nGeoId3[0];
+                PosId3 = nPosId3[0];
+
+                break;
             }
 
             if (isBsplinePole(Obj, GeoId1)) {
@@ -10501,7 +10551,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     elts.erase(new_end, elts.end());
 
     if (elts.size() < 2) {
-        Base::Console().warning("Cannot create %s constraint: minimum 2 geometries.\n", constraintType.c_str());
+        Base::Console().warning("Cannot create {} constraint: minimum 2 geometries.\n", constraintType);
         return false;
     }
 
@@ -10516,7 +10566,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
         }
 
         if (!totalBBox.HasFinitePart()) {
-            Base::Console().warning("Cannot create %s constraint: bounding box is infinite\n", constraintType.c_str());
+            Base::Console().warning("Cannot create {} constraint: bounding box is infinite\n", constraintType);
             return false;
         }
 
@@ -10568,7 +10618,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
             isTextHeight ? "True" : "False");
     }
     else {
-        Base::Console().error("Unsupported list constraint type: %s\n", constraintType.c_str());
+        Base::Console().error("Unsupported list constraint type: {}\n", constraintType);
         return false;
     }
 

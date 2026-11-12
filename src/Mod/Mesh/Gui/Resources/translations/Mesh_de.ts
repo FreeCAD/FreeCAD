@@ -679,7 +679,7 @@
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Mesh VertexCurvature</source>
-      <translation>Netzscheitelpunktkrümmung</translation>
+      <translation>Mesh Knotenkrümmung</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.cpp" line="175"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="754"/>
       <source>Refresh</source>
-      <translation>Erneut laden</translation>
+      <translation>Aktualisieren</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>

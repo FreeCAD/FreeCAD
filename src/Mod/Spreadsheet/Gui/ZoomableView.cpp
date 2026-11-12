@@ -56,7 +56,7 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     qpw = m_scene.addWidget(stv);
     setScene(&m_scene);
 
-    setBackgroundBrush(Qt::transparent);
+    setBackgroundBrush(QPalette().brush(QPalette::Normal, QPalette::Window));
     setFrameStyle(QFrame::NoFrame);
 
     setSizePolicy(QSizePolicy {QSizePolicy::Expanding, QSizePolicy::Expanding});
@@ -199,6 +199,11 @@ void ZoomableView::updateView(void)
     setSceneRect(new_geometry_f);
     scale(scale_factor, scale_factor);
     centerOn(new_geometry_f.center());
+}
+
+void ZoomableView::focusInEvent(QFocusEvent* event)
+{
+    QAbstractScrollArea::focusInEvent(event);
 }
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)

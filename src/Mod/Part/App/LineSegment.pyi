@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.Type import Type
 from Base.Vector import Vector
@@ -51,4 +49,3 @@ class LineSegment(TrimmedCurve):
         """
         Set the parameter range of the underlying line geometry
         """
-        ...

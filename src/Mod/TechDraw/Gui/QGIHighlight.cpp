@@ -68,8 +68,8 @@ QGIHighlight::~QGIHighlight()
 // QGIHighlight is no longer dragged except through TaskDetail.
 void QGIHighlight::onDragFinished()
 {
-//    Base::Console().message("QGIH::onDragFinished - pos: %s\n",
-//                            DrawUtil::formatVector(pos()).c_str());
+//    Base::Console().message("QGIH::onDragFinished - pos: {}\n",
+//                            DrawUtil::formatVector(pos()));
     QGraphicsItem* parent = parentItem();
     auto qgivp = dynamic_cast<QGIViewPart*>(parent);
     if (qgivp) {

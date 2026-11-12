@@ -36,6 +36,7 @@
 #include <BRepGProp.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp.hxx>
@@ -45,6 +46,7 @@
 #include <gp_Circ.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <Standard_Failure.hxx>
 
 #include <DatumFeature.h>
 #include <App/Datums.h>
@@ -136,7 +138,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
     );
     if (ts.isNull()) {
         Base::Console().log(
-            "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
+            "Part::MeasureClient::getLocatedShape: Did not retrieve shape for {}, {}\n",
             obj->getNameInDocument(),
             subject.getElementName()
         );
@@ -165,7 +167,7 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n",
+            "Part::PartMeasureTypeCb did not retrieve shape for {}, {}\n",
             ob->getNameInDocument(),
             subName
         );
@@ -236,12 +238,12 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     TopoDS_Edge edge = TopoDS::Edge(edges.Current());
                     edges.Next();
                     if (edges.More()) {
-                        return App::MeasureElementType::PLANE;
+                        return App::MeasureElementType::PLANESEGMENT;
                     }
 
                     BRepAdaptor_Curve adapt(edge);
                     if (adapt.GetType() != GeomAbs_Circle) {
-                        return App::MeasureElementType::PLANE;
+                        return App::MeasureElementType::PLANESEGMENT;
                     }
 
                     return App::MeasureElementType::DISC;
@@ -250,8 +252,10 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     TopLoc_Location loc;
                     Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
                     GeomLib_IsPlanarSurface check(surf, AttachEnginePlane::planarPrecision());
-                    return check.IsPlanar() ? App::MeasureElementType::PLANE
-                                            : App::MeasureElementType::SURFACE;
+                    if (!check.IsPlanar()) {
+                        return App::MeasureElementType::SURFACE;
+                    }
+                    return App::MeasureElementType::PLANESEGMENT;
                 }
             }
         }
@@ -274,7 +278,7 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureLengthHandler did not retrieve shape for %s, %s\n",
+            "MeasureLengthHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -286,10 +290,25 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
         return std::make_shared<MeasureLengthInfo>(false, 0.0, Base::Matrix4D());
     }
 
-    // Get Center of mass as the attachment point of the label
+    // Attach the label halfway along the edge; a curved edge's center of mass lies off it.
+    // Fall back to the center of mass for edges without a usable curve (e.g. degenerated).
     GProp_GProps gprops;
     BRepGProp::LinearProperties(shape, gprops);
-    auto origin = gprops.CentreOfMass();
+    gp_Pnt origin = gprops.CentreOfMass();
+
+    const TopoDS_Edge& edge = TopoDS::Edge(shape);
+    if (!BRep_Tool::Degenerated(edge)) {
+        try {
+            BRepAdaptor_Curve curve(edge);
+            double halfLength = GCPnts_AbscissaPoint::Length(curve) / 2.0;
+            GCPnts_AbscissaPoint midPoint(curve, halfLength, curve.FirstParameter());
+            if (midPoint.IsDone()) {
+                origin = curve.Value(midPoint.Parameter());
+            }
+        }
+        catch (const Standard_Failure&) {
+        }
+    }
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureLengthInfo>(true, getLength(shape), placement);
@@ -406,7 +425,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureAreaHandler did not retrieve shape for %s, %s\n",
+            "MeasureAreaHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -415,7 +434,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (isDatum(subject)) {
         return std::make_shared<MeasureAreaInfo>(
-            true,
+            false,
             0.0,
             App::GeoFeature::getGlobalPlacement(
                 subject.getSubObjectList().back(),
@@ -449,7 +468,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         Base::Console().message(
-            "MeasurePositionHandler did not retrieve shape for %s, %s\n",
+            "MeasurePositionHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -473,7 +492,7 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureAngleHandler did not retrieve shape for %s, %s\n",
+            "MeasureAngleHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -528,7 +547,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureDistanceHandler did not retrieve shape for %s, %s\n",
+            "MeasureDistanceHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );

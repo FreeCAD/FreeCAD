@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export
 from typing import Final, overload
 from Part.Geom2d import ArcOfConic2d
@@ -42,4 +40,3 @@ class ArcOfCircle2d(ArcOfConic2d):
         Circle : object
             The internal circle representation.
     """
-    ...

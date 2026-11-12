@@ -272,10 +272,10 @@ void DocumentRecovery::accept()
                 ++index;
             }
             catch (const std::exception& e) {
-                errorInfo = QString::fromLatin1(e.what());
+                errorInfo = QString::fromUtf8(e.what());
             }
             catch (const Base::Exception& e) {
-                errorInfo = QString::fromLatin1(e.what());
+                errorInfo = QString::fromUtf8(e.what());
             }
             catch (...) {
                 errorInfo = tr("Unknown problem occurred");
@@ -826,7 +826,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().log("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().log("Failed to lock file {}\n", fn.toStdString());
             }
         }
     }

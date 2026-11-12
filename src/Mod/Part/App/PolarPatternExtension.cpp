@@ -24,7 +24,6 @@
 
 
 #include "PolarPatternExtension.h"
-#include <limits>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <gp_Dir.hxx>
@@ -40,13 +39,11 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/DocumentObject.h>
 #include "PartFeature.h"
+#include "PatternConstants.h"
 
 using namespace Part;
 
 EXTENSION_PROPERTY_SOURCE(Part::PolarPatternExtension, App::DocumentObjectExtension)
-
-const App::PropertyIntegerConstraint::Constraints PolarPatternExtension::intOccurrences
-    = {1, std::numeric_limits<int>::max(), 1};
 
 const char* PolarPatternExtension::ModeEnums[] = {"Extent", "Spacing", nullptr};
 
@@ -122,7 +119,7 @@ PolarPatternExtension::PolarPatternExtension()
         App::Prop_None,
         "The total number of instances in the pattern, including the original feature."
     );
-    Occurrences.setConstraints(&intOccurrences);
+    Occurrences.setConstraints(PatternConstants::occurrenceConstraints());
 
     setReadWriteStatusForMode(initialMode);
 }

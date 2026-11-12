@@ -4053,12 +4053,12 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="172"/>
       <source>%1 / hold %2 select edge</source>
-      <translation type="unfinished">%1 / hold %2 select edge</translation>
+      <translation>%1 / mantenga pulsado %2 para seleccionar la arista</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="174"/>
       <source>Hold %1 select edge</source>
-      <translation type="unfinished">Hold %1 select edge</translation>
+      <translation>Mantenga pulsado %1 para seleccionar la arista</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="312"/>
@@ -4150,7 +4150,7 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
-      <translation type="unfinished">%1 run Move, Rotate or Scale on subelements</translation>
+      <translation>%1 Ejecute Mover, Rotar o Escalar sobre los subelementos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="179"/>
@@ -4167,22 +4167,22 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="374"/>
       <source>%1 select object to edit</source>
-      <translation type="unfinished">%1 select object to edit</translation>
+      <translation>%1 Seleccione el objeto que editar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="382"/>
       <source>%1 pick node to edit</source>
-      <translation type="unfinished">%1 pick node to edit</translation>
+      <translation>%1 Elija el nodo que editar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="384"/>
       <source>%1 options for hovered node/edge</source>
-      <translation type="unfinished">%1 options for hovered node/edge</translation>
+      <translation>%1 Opciones del nodo/arista bajo el cursor</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
       <source>%1 place node</source>
-      <translation type="unfinished">%1 place node</translation>
+      <translation>%1 Coloque el nodo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="541"/>
@@ -4342,17 +4342,17 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
-      <translation type="unfinished">%1 pick rotation center</translation>
+      <translation>%1 Elija el centro de rotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
-      <translation type="unfinished">%1 pick base angle</translation>
+      <translation>%1 Elija el ángulo base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
-      <translation type="unfinished">%1 pick rotation angle</translation>
+      <translation>%1 Elija el ángulo de rotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
@@ -4519,7 +4519,7 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
       <location filename="../../draftguitools/gui_trimex.py" line="178"/>
       <location filename="../../draftguitools/gui_trimex.py" line="694"/>
       <source>Select a single face to extrude</source>
-      <translation type="unfinished">Select a single face to extrude</translation>
+      <translation>Seleccione una sola cara para extruir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="568"/>
@@ -4539,32 +4539,32 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="667"/>
       <source>%1 pick target</source>
-      <translation type="unfinished">%1 pick target</translation>
+      <translation>%1 Elija el destino</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="669"/>
       <source>Hold %1 free direction</source>
-      <translation type="unfinished">Hold %1 free direction</translation>
+      <translation>Mantenga pulsado %1 para dirección libre</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="672"/>
       <source>Hold %1 keep active endpoint</source>
-      <translation type="unfinished">Hold %1 keep active endpoint</translation>
+      <translation>Mantenga pulsado %1 para conservar el extremo activo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="675"/>
       <source>Hold %1 invert trim direction</source>
-      <translation type="unfinished">Hold %1 invert trim direction</translation>
+      <translation>Mantenga pulsado %1 para invertir la dirección de recorte</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="684"/>
       <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>Extruir cara</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="685"/>
       <source>Select a face to extrude</source>
-      <translation type="unfinished">Select a face to extrude</translation>
+      <translation>Seleccione una cara para extruir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4579,7 +4579,7 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
-      <translation type="unfinished">%1 pick distance</translation>
+      <translation>%1 Elija la distancia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="168"/>
@@ -4627,7 +4627,7 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="119"/>
       <source>Set Point as First</source>
-      <translation type="unfinished">Set Point as First</translation>
+      <translation>Establecer punto como primero</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
@@ -4765,12 +4765,12 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 Defina el primer punto y nudo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 Defina el siguiente punto y nudo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4833,17 +4833,17 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
-      <translation type="unfinished">%1 pick base point</translation>
+      <translation>%1 Elija el punto base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
-      <translation type="unfinished">%1 pick reference distance</translation>
+      <translation>%1 Elija la distancia de referencia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
-      <translation type="unfinished">%1 pick new distance</translation>
+      <translation>%1 Elija la nueva distancia</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="158"/>
@@ -4866,27 +4866,27 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
-      <translation type="unfinished">%1 pick dimension position</translation>
+      <translation>%1 Elija la posición de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
-      <translation type="unfinished">%1 select edge</translation>
+      <translation>%1 Seleccione la arista</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
-      <translation type="unfinished">%1 pick next dimension point</translation>
+      <translation>%1 Elija el siguiente punto de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
-      <translation type="unfinished">%1 pick first dimension point</translation>
+      <translation>%1 Elija el primer punto de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
-      <translation type="unfinished">%1 pick second dimension point</translation>
+      <translation>%1 Elija el segundo punto de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="80"/>
@@ -4911,22 +4911,22 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="536"/>
       <source>%1 pick first point of selection rectangle</source>
-      <translation type="unfinished">%1 pick first point of selection rectangle</translation>
+      <translation>%1 Elija el primer punto del rectángulo de selección</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="538"/>
       <source>%1 pick opposite point of selection rectangle</source>
-      <translation type="unfinished">%1 pick opposite point of selection rectangle</translation>
+      <translation>%1 Elija el punto opuesto del rectángulo de selección</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="540"/>
       <source>%1 pick start point of displacement</source>
-      <translation type="unfinished">%1 pick start point of displacement</translation>
+      <translation>%1 Elija el punto inicial del desplazamiento</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="542"/>
       <source>%1 pick end point of displacement</source>
-      <translation type="unfinished">%1 pick end point of displacement</translation>
+      <translation>%1 Elija el punto final del desplazamiento</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="180"/>
@@ -4982,12 +4982,12 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="210"/>
       <source>%1 pick start point of mirror line</source>
-      <translation type="unfinished">%1 pick start point of mirror line</translation>
+      <translation>%1 Elija el punto inicial de la línea de simetría</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="212"/>
       <source>%1 pick end point of mirror line</source>
-      <translation type="unfinished">%1 pick end point of mirror line</translation>
+      <translation>%1 Elija el punto final de la línea de simetría</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="86"/>
@@ -5340,7 +5340,7 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="650"/>
       <source>Spacing unit of 0 is not allowed, using default</source>
-      <translation type="unfinished">Spacing unit of 0 is not allowed, using default</translation>
+      <translation>No se permite una unidad de espaciado de 0; se usa el valor predeterminado</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="736"/>
@@ -6020,7 +6020,7 @@ de los objetos existentes en todos los documentos abiertos?</translation>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="123"/>
       <source>%1 click on a line to split it</source>
-      <translation type="unfinished">%1 click on a line to split it</translation>
+      <translation>%1 Haga clic en una línea para dividirla</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="76"/>
@@ -6139,12 +6139,12 @@ Para que FreeCAD pueda descargar estas bibliotecas, responda Sí.</translation>
     <message>
       <location filename="../../draftobjects/hatch.py" line="243"/>
       <source>No valid faces for hatch</source>
-      <translation type="unfinished">No valid faces for hatch</translation>
+      <translation>No hay caras válidas para el sombreado</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Guardar vista de cámara</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
@@ -6700,7 +6700,7 @@ Si la opción "Copiar" está activada, creará copias rotadas.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="72"/>
       <source>Trims or extends the selected object</source>
-      <translation type="unfinished">Trims or extends the selected object</translation>
+      <translation>Recorta o extiende el objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -7322,7 +7322,7 @@ Para obtener mejores resultados con 'original' o 'tangente' es posible que tenga
     <message>
       <location filename="../../draftobjects/patharray.py" line="317"/>
       <source>Walk the path backwards.</source>
-      <translation type="unfinished">Walk the path backwards.</translation>
+      <translation>Recorre la trayectoria hacia atrás.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="345"/>
@@ -7694,13 +7694,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension is measuring.
+      <translation>El objeto, y subelementos específicos de él,
+que esta cota está midiendo.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Hay varias posibilidades:
+- Un objeto y una de sus aristas.
+- Un objeto y dos de sus vértices.
+- Un objeto de arco y su arista.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="184"/>
@@ -8304,7 +8304,7 @@ Si otros objetos están seleccionados, son ignorados.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="61"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Draft a croquis</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="65"/>
@@ -8649,7 +8649,7 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="110"/>
       <source>Snaps to the perpendicular points on faces and edges</source>
-      <translation type="unfinished">Snaps to the perpendicular points on faces and edges</translation>
+      <translation>Ajusta a los puntos perpendiculares de caras y aristas</translation>
     </message>
   </context>
   <context>
@@ -8993,14 +8993,14 @@ de la capa. Lo mejor para ver archivos muy grandes con el máximo rendimiento.</
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
       <source>Force 2D View Update</source>
-      <translation type="unfinished">Force 2D View Update</translation>
+      <translation>Forzar actualización de vista 2D</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
       <source>Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</source>
-      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
-The 'Auto Update' property of the views is ignored.</translation>
+      <translation>Fuerza una actualización de las vistas 2D seleccionadas o de todas las vistas 2D del documento.
+Se ignora la propiedad 'Auto Update' de las vistas.</translation>
     </message>
   </context>
 </TS>

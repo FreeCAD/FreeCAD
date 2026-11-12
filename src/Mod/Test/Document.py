@@ -554,6 +554,35 @@ class DocumentBasicCases(unittest.TestCase):
         obj1.Link = obj2
         self.assertEqual(obj1.MustExecute, True)
 
+    def testNullLinkSubPythonRoundTrip(self):
+        obj = self.Doc.addObject("App::FeaturePython", "Reference")
+        obj.addProperty("App::PropertyLinkSub", "Axis")
+        self.assertIsNone(obj.Axis)
+        for subnames in ("X_Axis", ["Y_Axis"], ("Z_Axis", "X_Axis")):
+            with self.subTest(subnames=subnames):
+                obj.Axis = (None, subnames)
+                expected = [subnames] if isinstance(subnames, str) else list(subnames)
+                self.assertEqual(obj.Axis, (None, expected))
+        with self.assertRaises(TypeError):
+            obj.Axis = (None, [1])
+        with self.assertRaises(TypeError):
+            obj.Axis = (1, ["X_Axis"])
+        obj.Axis = None
+        self.assertIsNone(obj.Axis)
+        obj.Axis = (None, [])
+        self.assertIsNone(obj.Axis)
+
+    def testNullLinkSubSaveRestore(self):
+        obj = self.Doc.addObject("App::FeaturePython", "Reference")
+        obj.addProperty("App::PropertyLinkSub", "Axis")
+        obj.Axis = (None, ["Y_Axis"])
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "CreateTest.FCStd")
+            self.Doc.saveAs(filename)
+            FreeCAD.closeDocument(self.Doc.Name)
+            self.Doc = FreeCAD.openDocument(filename)
+            self.assertEqual(self.Doc.Reference.Axis, (None, ["Y_Axis"]))
+
     def testProp_OutputPropertyLink(self):
         obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
         obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")

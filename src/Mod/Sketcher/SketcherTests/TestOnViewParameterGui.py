@@ -61,6 +61,10 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         for ch in text:
             self.key_click(widget, self.KEYS[ch], ch)
 
+    def cancel_drawing_tool(self, viewport):
+        viewport.setFocus()
+        self.key_click(viewport, QtCore.Qt.Key_Escape)
+
     def active_spinbox(self):
         widget = QtGui.QApplication.focusWidget()
         if isinstance(widget, QtGui.QAbstractSpinBox):
@@ -354,8 +358,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             "Expected restoring the marker size to update the active marker",
         )
 
-        self.move(viewport, drawing_point)
-        self.right_click(viewport, drawing_point)
+        self.cancel_drawing_tool(viewport)
         self.assertTrue(
             self.wait_until(
                 lambda: self.origin_marker_is("CIRCLE_FILLED"),
@@ -385,8 +388,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             0,
             "Expected geometry away from the origin before cancelling the tool",
         )
-        self.move(viewport, second_point)
-        self.right_click(viewport, second_point)
+        self.cancel_drawing_tool(viewport)
         self.assertTrue(
             self.wait_until(
                 lambda: self.origin_marker_is("CIRCLE_FILLED"),
@@ -407,8 +409,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 ),
                 f"Expected {command} to activate the hollow origin marker",
             )
-            self.move(viewport, drawing_point)
-            self.right_click(viewport, drawing_point)
+            self.cancel_drawing_tool(viewport)
             self.assertTrue(
                 self.wait_until(
                     lambda: self.origin_marker_is("CIRCLE_FILLED"),

@@ -76,6 +76,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/Array.py
     Path/Dressup/Gui/AxisMap.py
+    Path/Dressup/Gui/Boundary2.py
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
@@ -92,6 +93,7 @@ SET(PathPythonDressupGui_SRCS
 SET(PathPythonMain_SRCS
     Path/Main/__init__.py
     Path/Main/Job.py
+    Path/Main/Workplane.py
     Path/Main/Stock.py
 )
 
@@ -103,6 +105,7 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/Inspect.py
     Path/Main/Gui/Job.py
     Path/Main/Gui/JobCmd.py
+    Path/Main/Gui/WorkplaneCmd.py
     Path/Main/Gui/JobDlg.py
     Path/Main/Gui/PreferencesJob.py
     Path/Main/Gui/SanityCmd.py
@@ -228,6 +231,8 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/dovetail.py
     Path/Tool/toolbit/models/drill.py
     Path/Tool/toolbit/models/endmill.py
+    Path/Tool/toolbit/models/keyway.py
+    Path/Tool/toolbit/models/lollipop.py
     Path/Tool/toolbit/models/radius.py
     Path/Tool/toolbit/models/probe.py
     Path/Tool/toolbit/models/reamer.py
@@ -302,6 +307,8 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/dovetail.py
     Path/Tool/shape/models/drill.py
     Path/Tool/shape/models/endmill.py
+    Path/Tool/shape/models/keyway.py
+    Path/Tool/shape/models/lollipop.py
     Path/Tool/shape/models/radius.py
     Path/Tool/shape/models/icon.py
     Path/Tool/shape/models/probe.py
@@ -325,11 +332,11 @@ SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
     Path/Post/CAMErrors.py
-    Path/Post/GcodeProcessingUtils.py
     Path/Post/PathOptimizationUtils.py
     Path/Post/PostList.py
     Path/Post/Processor.py
     Path/Post/DrillCycleExpander.py
+    Path/Post/TiltedWorkPlane.py
     Path/Post/Utils.py
     Path/Post/UtilsArguments.py
     Path/Post/UtilsExport.py
@@ -348,9 +355,11 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_legacy_post.py
     Path/Post/scripts/dynapath_4060_legacy_post.py
+    Path/Post/scripts/dynapath_post.py
     Path/Post/scripts/estlcam_legacy_post.py
     Path/Post/scripts/fablin_legacy_post.py
     Path/Post/scripts/fanuc_legacy_post.py
+    Path/Post/scripts/fanuc_post.py
     Path/Post/scripts/fangling_legacy_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
@@ -358,6 +367,8 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/grbl_post.py
     Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
+    Path/Post/scripts/heidenhain_post.py
+    Path/Post/scripts/estlcam_post.py
     Path/Post/scripts/KineticNCBeamicon2_legacy_post.py
     Path/Post/scripts/linuxcnc_post.py
     Path/Post/scripts/linuxcnc_legacy_post.py
@@ -503,9 +514,11 @@ SET(Tools_SRCS
 )
 
 SET(Tools_Bit_SRCS
+    Tools/Bit/250_Lollipop.fctb
     Tools/Bit/30degree_Vbit.fctb
     Tools/Bit/3.175mm_Endmill.fctb
     Tools/Bit/375-16_Tap.fctb
+    Tools/Bit/375_Keyway.fctb
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/45degree_Vbit.fctb
     Tools/Bit/5mm-thread-cutter.fctb
@@ -537,6 +550,10 @@ SET(Tools_Shape_SRCS
     Tools/Shape/drill.svg
     Tools/Shape/endmill.fcstd
     Tools/Shape/endmill.svg
+    Tools/Shape/keyway.fcstd
+    Tools/Shape/keyway.svg
+    Tools/Shape/lollipop.fcstd
+    Tools/Shape/lollipop.svg
     Tools/Shape/radius.fcstd
     Tools/Shape/radius.svg
     Tools/Shape/probe.fcstd
@@ -575,13 +592,19 @@ SET(Tests_SRCS
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
     CAMTests/TestDxfPost.py
+    CAMTests/TestDynapath4060Post.py
+    CAMTests/TestDynapathPost.py
+    CAMTests/TestFanucLegacyPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericSheetCutting.py
     CAMTests/TestGrblPost.py
+    CAMTests/TestHeidenhainPost.py
+    CAMTests/TestEstlCamPost.py
     CAMTests/TestKineticNCBeamicon2LegacyPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinuxCNCLegacyPost.py
+    CAMTests/TestLegacyPostRetractMode.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMachineValidate.py
@@ -597,6 +620,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogboneII.py
+    CAMTests/TestPathDressupDragknife.py
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestPathDrilling.py
@@ -605,6 +629,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillable.py
     CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFeedRate.py
     CAMTests/TestPathFlute.py
     CAMTests/TestPathFollowWireGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
@@ -616,7 +641,9 @@ SET(Tests_SRCS
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
     CAMTests/TestPathLogNew.py
+    CAMTests/TestPathMillFacing.py
     CAMTests/TestPathOpDeburr.py
+    CAMTests/TestPathOpDeprecation.py
     CAMTests/TestPathOpUtil.py
     CAMTests/TestPostCore.py
     CAMTests/TestPostProcessor.py
@@ -662,6 +689,11 @@ SET(Tests_SRCS
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
     CAMTests/TestPathVoronoi.py
+    CAMTests/TestPathWorkplane.py
+    CAMTests/TestPathWorkplaneFrame.py
+    CAMTests/TestPathTiltedWorkPlane.py
+    CAMTests/TestPathJobModelLinks.py
+    CAMTests/TestPathSharedWorkplane.py
     CAMTests/TestProcessorOptimizations.py
     CAMTests/TestGrblLegacyPost.py
     CAMTests/TestDressupPost.py
@@ -673,7 +705,6 @@ SET(Tests_SRCS
     CAMTests/TestPostToolProcessing.py
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
-    CAMTests/TestGcodeProcessingUtils.py
     CAMTests/TestFeedsSpeedsResolver.py
     CAMTests/TestFeedsSpeedsToolBitPresets.py
     CAMTests/TestFeedsSpeedsToolController.py

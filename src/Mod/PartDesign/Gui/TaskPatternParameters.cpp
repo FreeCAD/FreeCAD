@@ -44,6 +44,7 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Selection/Selection.h>
@@ -60,8 +61,11 @@
 #include <Mod/PartDesign/App/FeaturePointPattern.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/Part/Gui/PatternInstanceControls.h>
 #include <Mod/Part/Gui/PatternParametersWidget.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/Gui/PatternPathParametersWidget.h>
+#include <Mod/Part/Gui/PatternCircularParametersWidget.h>
 
 #include "ui_TaskPatternParameters.h"
 #include "TaskPatternParameters.h"
@@ -74,6 +78,59 @@ using namespace Gui;
 
 namespace
 {
+
+std::optional<Base::Matrix4D> standalonePatternEditingTransform(
+    ViewProviderTransformed* view,
+    PartDesign::Transformed* pattern
+)
+{
+    const bool supported = freecad_cast<PartDesign::LinearPattern*>(pattern)
+        || freecad_cast<PartDesign::PolarPattern*>(pattern);
+    if (!supported || !view || view->getObject() != pattern) {
+        return std::nullopt;
+    }
+    auto* document = Gui::Application::Instance->editDocument([view](Gui::Document* doc) {
+        return doc->getEditViewProvider() == view;
+    });
+    if (!document) {
+        return std::nullopt;
+    }
+    const auto& transform = document->getEditingTransform();
+    if (transform.hasScale() != Base::ScaleType::NoScaling) {
+        return std::nullopt;
+    }
+    return transform;
+}
+
+std::optional<Base::Vector3d> shapeCenter(const TopoDS_Shape& shape)
+{
+    if (shape.IsNull()) {
+        return std::nullopt;
+    }
+
+    Bnd_Box bndBox;
+    BRepBndLib::Add(shape, bndBox);
+    if (bndBox.IsVoid()) {
+        return std::nullopt;
+    }
+
+    double xmin = 0.0;
+    double ymin = 0.0;
+    double zmin = 0.0;
+    double xmax = 0.0;
+    double ymax = 0.0;
+    double zmax = 0.0;
+    bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+
+    return Base::Vector3d((xmin + xmax) / 2.0, (ymin + ymax) / 2.0, (zmin + zmax) / 2.0);
+}
+
+Base::Vector3d transformedPoint(const Base::Vector3d& point, const gp_Trsf& transform)
+{
+    gp_Pnt pnt = Base::convertTo<gp_Pnt>(point);
+    pnt.Transform(transform);
+    return Base::convertTo<Base::Vector3d>(pnt);
+}
 
 Base::Vector3d transformedVector(const Base::Vector3d& vector, const gp_Trsf& transform)
 {
@@ -92,6 +149,7 @@ TaskPatternParameters::TaskPatternParameters(ViewProviderTransformed* Transforme
 {
     setupUI();
     updatePatternSpacingLabels();
+    setupInstanceControls();
 }
 
 TaskPatternParameters::TaskPatternParameters(
@@ -103,6 +161,7 @@ TaskPatternParameters::TaskPatternParameters(
 {
     setupParameterUI(parameterWidget);
     updatePatternSpacingLabels();
+    setupInstanceControls();
 }
 
 void TaskPatternParameters::setupParameterUI(QWidget* widget)
@@ -112,7 +171,14 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
 
     if (auto* point = freecad_cast<PartDesign::PointPattern*>(getObject())) {
         ui->parametersWidgetPlaceholder2->hide();
-        setupPointPatternParameterUI(widget, ui->parametersWidgetPlaceholder, this, &point->PointObject);
+        setupPointPatternParameterUI(
+            widget,
+            ui->parametersWidgetPlaceholder,
+            this,
+            &point->PointObject,
+            &point->RelativeToFirst,
+            &point->OriginPointIndex
+        );
     }
     else if (auto* path = freecad_cast<PartDesign::PathPattern*>(getObject())) {
         ui->parametersWidgetPlaceholder2->hide();
@@ -126,8 +192,15 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
             &path->Spacing,
             &path->StartOffset,
             &path->EndOffset,
+            &path->CyclicOffset,
             &path->ReversePath,
-            &path->Align
+            &path->Align,
+            &path->TangentAxis,
+            &path->FlipTangentAxis,
+            &path->VerticalAxis,
+            &path->FlipVerticalAxis,
+            &path->OriginPointIndex,
+            &path->RelativeToFirst
         );
     }
     else if (auto* circular = freecad_cast<PartDesign::CircularPattern*>(getObject())) {
@@ -140,7 +213,10 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
             &circular->RadialDistance,
             &circular->TangentialDistance,
             &circular->NumberCircles,
-            &circular->Symmetry
+            &circular->Symmetry,
+            &circular->StartAtShape,
+            &circular->BinormalAxis,
+            &circular->FlipBinormalAxis
         );
     }
     else {
@@ -167,10 +243,14 @@ App::DocumentObject* TaskPatternParameters::getPatternObject() const
     return getObject();
 }
 
-void TaskPatternParameters::fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection /*direction*/)
+void TaskPatternParameters::fillDirectionCombo(
+    Gui::ComboLinks& combo,
+    Part::LinearPatternDirection /*direction*/,
+    bool allowEmpty
+)
 {
     auto* sketch = freecad_cast<Part::Part2DObject*>(getSketchObject());
-    this->fillAxisCombo(combo, sketch);
+    this->fillAxisCombo(combo, sketch, allowEmpty);
 }
 
 void TaskPatternParameters::setupPatternTransaction()
@@ -181,11 +261,21 @@ void TaskPatternParameters::setupPatternTransaction()
 void TaskPatternParameters::recomputePatternFeature()
 {
     recomputeFeature();
+    updateInstanceControls();
 }
 
 Base::Vector3d TaskPatternParameters::getPatternStartPoint() const
 {
-    return getStartPoint();
+    const auto point = getStartPoint();
+    auto* pattern = freecad_cast<PartDesign::Transformed*>(getObject());
+    if (const auto transform = standalonePatternEditingTransform(getTopTransformedView(), pattern)) {
+        // getStartPoint is already in Body coordinates; return to the pattern's
+        // local frame before applying its complete selected-occurrence transform.
+        Base::Vector3d localPoint;
+        pattern->Placement.getValue().inverse().multVec(point, localPoint);
+        return *transform * localPoint;
+    }
+    return point;
 }
 
 Base::Vector3d TaskPatternParameters::getLinearPatternFallbackDirection(
@@ -208,6 +298,10 @@ Base::Vector3d TaskPatternParameters::transformLinearPatternDirection(
         return direction;
     }
 
+    if (const auto transform = standalonePatternEditingTransform(getTopTransformedView(), transformed)) {
+        return transform->getCol(0) * direction.x + transform->getCol(1) * direction.y
+            + transform->getCol(2) * direction.z;
+    }
     return transformedVector(direction, transformed->getLocation().Transformation());
 }
 
@@ -219,7 +313,11 @@ Base::Vector3d TaskPatternParameters::getLinearPatternLabelPlaneNormal(Part::Lin
 void TaskPatternParameters::transformPolarPatternAxis(gp_Ax2& axis) const
 {
     auto* transformed = freecad_cast<PartDesign::Transformed*>(getObject());
-    if (transformed) {
+    if (const auto transform = standalonePatternEditingTransform(getTopTransformedView(), transformed)) {
+        // getRotation() returns the axis in the pattern's local frame.
+        axis.Transform(Part::TopoShape::convert(*transform));
+    }
+    else if (transformed) {
         axis.Transform(transformed->getLocation().Transformation());
     }
 }
@@ -230,6 +328,108 @@ std::string TaskPatternParameters::buildDirectionReferencePythonString(
 ) const
 {
     return buildLinkSingleSubPythonStr(obj, subs);
+}
+
+void TaskPatternParameters::setupInstanceControls()
+{
+    auto* pattern = freecad_cast<PartDesign::Transformed*>(getObject());
+    auto* topPattern = getTopTransformedObject();
+    auto* view = getTopTransformedView();
+    if (!pattern || !topPattern || pattern != topPattern || !view) {
+        instanceControls.reset();
+        return;
+    }
+
+    auto* viewer = view->getViewer();
+    if (!viewer) {
+        instanceControls.reset();
+        return;
+    }
+
+    instanceControls = std::make_unique<PartGui::PatternInstanceControls>(viewer, this);
+    connect(
+        instanceControls.get(),
+        &PartGui::PatternInstanceControls::toggleRequested,
+        this,
+        &TaskPatternParameters::setInstanceSuppressed
+    );
+    updateInstanceControls();
+}
+
+void TaskPatternParameters::updateInstanceControls()
+{
+    if (!instanceControls) {
+        return;
+    }
+
+    auto* pattern = freecad_cast<PartDesign::Transformed*>(getObject());
+    if (!pattern) {
+        instanceControls->clear();
+        return;
+    }
+
+    auto sourceCenter = shapeCenter(pattern->PreviewShape.getShape().getShape());
+    if (!sourceCenter) {
+        instanceControls->clear();
+        return;
+    }
+
+    std::list<gp_Trsf> transformations;
+    try {
+        transformations = pattern->getTransformations(pattern->getOriginals());
+    }
+    catch (const Base::Exception&) {
+        instanceControls->clear();
+        return;
+    }
+    catch (const Standard_Failure&) {
+        instanceControls->clear();
+        return;
+    }
+
+    auto* view = getTopTransformedView();
+    auto* editDocument = Gui::Application::Instance->editDocument([view](Gui::Document* document) {
+        // The viewer has not entered edit mode while this task is being constructed.
+        return document->getEditViewProvider() == view;
+    });
+    if (!editDocument) {
+        instanceControls->clear();
+        return;
+    }
+
+    std::vector<PartGui::PatternInstanceControls::Instance> instances;
+    int index = 0;
+    // Match the edited occurrence, including enclosing bodies, parts and links.
+    const Base::Matrix4D& patternLocation = editDocument->getEditingTransform();
+    for (const auto& transformation : transformations) {
+        Base::Vector3d center = transformedPoint(*sourceCenter, transformation);
+        center = patternLocation * center;
+        instances.push_back({index, center, pattern->isTransformationSuppressed(index)});
+        ++index;
+    }
+
+    instanceControls->setInstances(instances);
+}
+
+void TaskPatternParameters::setInstanceSuppressed(int index, bool suppress)
+{
+    if (index < 0) {
+        return;
+    }
+
+    auto* pattern = freecad_cast<PartDesign::Transformed*>(getObject());
+    if (!pattern) {
+        return;
+    }
+
+    if (suppress == pattern->isTransformationSuppressed(index)) {
+        return;
+    }
+
+    setupTransaction();
+    pattern->setTransformationSuppressed(index, suppress);
+    recomputeFeature();
+    updateInstanceControls();
 }
 
 // --- Task-Specific Logic ---
@@ -254,7 +454,7 @@ void TaskPatternParameters::showOriginAxes(bool show)
             }
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("TaskPatternParameters: Error accessing origin axes: %s\n", ex.what());
+            Base::Console().error("TaskPatternParameters: Error accessing origin axes: {}\n", ex.what());
         }
     }
 }
@@ -327,6 +527,7 @@ void TaskPatternParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         PartGui::TaskPatternParameters::kickUpdateViewTimer();
+        updateInstanceControls();
     }
 }
 
@@ -360,7 +561,7 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
             return tr("Invalid selection. Select an edge, planar face, or datum line.");
         }();
-        Base::Console().warning("%s\n", warning.toUtf8().constData());
+        Base::Console().warning("{}\n", warning.toUtf8().constData());
         return;
     }
 
@@ -377,10 +578,28 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (auto* circularPattern = freecad_cast<PartDesign::CircularPattern*>(patternObj)) {
-            circularPattern->Axis.setValue(selObj, directions);
+            if (getActiveDirectionWidget()->getSelectionIndex()
+                == PartGui::PatternCircularParametersWidget::BINORMAL_AXIS_INDEX) {
+                circularPattern->BinormalAxis.setValue(selObj, directions);
+            }
+            else {
+                circularPattern->Axis.setValue(selObj, directions);
+            }
         }
         else if (auto* pathPattern = freecad_cast<PartDesign::PathPattern*>(patternObj)) {
-            pathPattern->Path.setValue(selObj, directions);
+            if (getActiveDirectionWidget()->getSelectionIndex()
+                == PartGui::PatternPathParametersWidget::TANGENT_AXIS_INDEX) {
+                pathPattern->TangentAxis.setValue(selObj, directions);
+            }
+            else if (
+                getActiveDirectionWidget()->getSelectionIndex()
+                == PartGui::PatternPathParametersWidget::VERTICAL_AXIS_INDEX
+            ) {
+                pathPattern->VerticalAxis.setValue(selObj, directions);
+            }
+            else {
+                pathPattern->Path.setValue(selObj, directions);
+            }
         }
         else if (auto* pointPattern = freecad_cast<PartDesign::PointPattern*>(patternObj)) {
             pointPattern->PointObject.setValue(selObj);
@@ -397,6 +616,7 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 TaskPatternParameters::~TaskPatternParameters()
 {
     cancelPendingUpdate();
+    instanceControls.reset();
     showOriginAxes(false);         // Clean up temporary visibility
     exitReferenceSelectionMode();  // Ensure gates are removed etc.
 }
@@ -416,7 +636,11 @@ void TaskPatternParameters::apply()
     // This triggers accept() before the update timer for the 3D view has a
     // chance to fire. If the timer is active, it means a recompute is
     // pending.
-    consumePendingUpdate();
+    if (!consumePendingUpdate()) {
+        // force recompute if is wasn't updated by the timer
+        recomputePatternFeature();
+    }
+    updateInstanceControls();
 }
 
 Base::Vector3d TaskPatternParameters::getStartPoint() const
@@ -450,19 +674,13 @@ Base::Vector3d TaskPatternParameters::getStartPoint() const
         // 3. If we collected any shapes, calculate the center of their combined bounding box.
         if (!compoundShape.IsNull()) {
             try {
-                Bnd_Box bndBox;
-                BRepBndLib::Add(compoundShape, bndBox);
-                if (!bndBox.IsVoid()) {
-                    double xmin, ymin, zmin, xmax, ymax, zmax;
-                    bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-                    startPoint.x = (xmin + xmax) / 2.0;
-                    startPoint.y = (ymin + ymax) / 2.0;
-                    startPoint.z = (zmin + zmax) / 2.0;
+                if (const auto center = shapeCenter(compoundShape)) {
+                    startPoint = *center;
                 }
             }
             catch (const Base::Exception& e) {
                 Base::Console().warning(
-                    "Could not calculate center of patterned features: %s\n",
+                    "Could not calculate center of patterned features: {}\n",
                     e.what()
                 );
                 // startPoint remains (0,0,0) as a fallback.

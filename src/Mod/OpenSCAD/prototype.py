@@ -1,9 +1,22 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License (LGPL)
-# as published by the Free Software Foundation; either version 2 of
-# the License, or (at your option) any later version.
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import math
@@ -156,8 +169,8 @@ class Node:
                 else: #Use Part::Loft and GetWire Feature
                     obj = doc.addObject('Part::Loft', 'frustum')
                     import Draft
-                    p1 = Draft.makePolygon(int(self.arguments['$fn']), r1)
-                    p2 = Draft.makePolygon(int(self.arguments['$fn']), r2)
+                    p1 = Draft.make_polygon(int(self.arguments['$fn']), r1)
+                    p2 = Draft.make_polygon(int(self.arguments['$fn']), r2)
                     if self.arguments['center']:
                         p1.Placement = FreeCAD.Placement(\
                         FreeCAD.Vector(0.0,0.0,-h/2.0),FreeCAD.Rotation())
@@ -226,9 +239,9 @@ class Node:
             import Draft
             if '$fn' in self.arguments and self.arguments['$fn'] != 0 \
             and self.arguments['$fn']<=Node.fnmin:
-                obj = Draft.makePolygon(int(self.arguments['$fn']),r)
+                obj = Draft.make_polygon(int(self.arguments['$fn']), r)
             else:
-                obj = Draft.makeCircle(r) # create a Face
+                obj = Draft.make_circle(r) # create a Face
                 #obj = doc.addObject("Part::Circle",namel);obj.Radius = r
         elif namel == 'color':
             if len(self.children) == 1:

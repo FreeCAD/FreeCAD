@@ -967,7 +967,7 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertVectorAlmostEqual(sketch.Geometry[circle].Center, expected)
 
     def testRemovedExternalGeometryReference(self):
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")
             sketch = body.newObject("Sketcher::SketchObject", "Sketch")
             CreateRectangleSketch(sketch, (0, 0), (30, 30))
@@ -1012,7 +1012,12 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(len(hole.Shape.Edges), 77)
 
             # Edges in the thread should disappear when we stop modeling thread
-            sketch2.addExternal("Hole", "Edge29")
+            thread_edge = next(
+                i
+                for i, edge in enumerate(hole.Shape.Edges, 1)
+                if isinstance(edge.Curve, Part.BSplineCurve)
+            )
+            sketch2.addExternal("Hole", f"Edge{thread_edge}")
             hole.ModelThread = 0
             hole.Refine = 1
             self.Doc.recompute()
@@ -1020,7 +1025,7 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(len(sketch2.ExternalGeometry), 0)
 
     def testSaveLoadWithExternalGeometryReference(self):
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             # Arrange
             body = self.Doc.addObject("PartDesign::Body", "Body")
             sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
@@ -1067,7 +1072,7 @@ class TestSketcherSolver(unittest.TestCase):
 
     def testTNPExternalGeometryStored(self):
         # Arrange
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             import xml.etree.ElementTree as ET
 
             sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
@@ -1129,7 +1134,7 @@ class TestSketcherSolver(unittest.TestCase):
 
     def testConstructionToggleTNP(self):
         """Bug 15484"""
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             # Arrange
             import xml.etree.ElementTree as ET
 

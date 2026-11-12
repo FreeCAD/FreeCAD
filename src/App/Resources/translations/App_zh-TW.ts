@@ -4,30 +4,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="609"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>True</source>
       <translation>真(True)</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>False</source>
       <translation>偽(False)</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="587"/>
+      <location filename="../../Expression.cpp" line="601"/>
       <source>Null</source>
-      <translation type="unfinished">Null</translation>
+      <translation>空值(Null)</translation>
     </message>
   </context>
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="163"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>原點</translation>
     </message>
@@ -81,7 +81,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>原點</translation>
     </message>
   </context>
   <context>
@@ -90,8 +90,7 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>儲存使用者上次的選擇：是否將「變更時複製」設定套用到所有連到同一可設定物件的鏈結</translation>
     </message>
   </context>
 </TS>

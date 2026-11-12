@@ -203,11 +203,16 @@ bool VRMLObject::restoreTextureFinished(Base::Reader& reader)
     Base::StateLocker locker(restoreData, true);
     if (this->indexRestore < Resources.getSize()) {
         std::string path = getDocument()->TransientDir.getValue();
-        std::string url = Resources[this->indexRestore];
+        std::optional<std::string> safePath = Base::FileInfo::safeArchiveEntryPath(Resources[this->indexRestore]);
+        if (!safePath) {
+            this->indexRestore++;
+            return (this->indexRestore == Urls.getSize());
+        }
+        std::string url = safePath.value();
         std::string intname = this->getNameInDocument();
         url = fixRelativePath(intname, url);
         Resources.set1Value(this->indexRestore, url);
-        makeDirectories(path, url);
+        makeDirectories(path, url);  // Full path, but we know it's clean now
 
         url = path + "/" + url;
         Base::FileInfo fi(url);

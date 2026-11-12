@@ -298,6 +298,8 @@ class ViewProvider:
             children.append(self.obj.SetupSheet)
         if hasattr(self.obj, "Tools"):
             children.append(self.obj.Tools)
+        if getattr(self.obj, "Workplanes", None):
+            children.append(self.obj.Workplanes)
         return children
 
     def onDelete(self, vobj, arg2=None):
@@ -1492,12 +1494,14 @@ class TaskPanel:
                     if self.form.linkStockAndModel.isChecked():
                         # Also move the objects not selected
                         # if selection is not model, move the model too
-                        # if the selection is not stock and there is a stock, move the stock too
+                        # if the selection is not stock and there is a stock, move the stock too,
+                        # once: a stock made from the model follows it by itself, which
+                        # keepingPoints() sees to
                         for model in self.obj.Model.Group:
                             if model != selObject:
                                 Draft.move(model, offset)
-                            if selObject != self.obj.Stock and self.obj.Stock:
-                                Draft.move(self.obj.Stock, offset)
+                        if selObject != self.obj.Stock and self.obj.Stock:
+                            Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
         scale = self.form.modelMoveValue.property("rawValue")
@@ -1535,25 +1539,43 @@ class TaskPanel:
         combo = self.form.jobMachine
         combo.blockSignals(True)
         combo.clear()
+        combo.addItem(translate("CAM_Post", "(Legacy post-processor)"), "")
         try:
             entries = MachineFactory.list_configuration_files()
         except Exception as e:
             Path.Log.warning(f"Failed to list machines: {e}")
-            entries = [("<none>", None)]
+            entries = []
         for display, filename in entries:
-            combo.addItem(display, filename or "")
+            combo.addItem(display, filename)
         current = getattr(self.obj, "Machine", "") or ""
         idx = combo.findText(current) if current else -1
         idx = max(0, idx)
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
+        self.updatePostProcessorVisibility()
+
+    def machineSelected(self):
+        """Return True when a machine configuration (not legacy post) is selected."""
+        return bool(self.form.jobMachine.currentData())
+
+    def updatePostProcessorVisibility(self):
+        """Show the post processor / arguments rows only when no machine is selected.
+        A machine configuration carries its own post processor settings."""
+        noMachine = not self.machineSelected()
+        for widget in (
+            self.form.label_10,
+            self.form.postProcessor,
+            self.form.label_11,
+            self.form.postProcessorArguments,
+        ):
+            widget.setVisible(noMachine)
 
     def machineChanged(self):
         """Write the selected machine name back to Job.Machine."""
+        self.updatePostProcessorVisibility()
         if not hasattr(self.obj, "Machine"):
             return
-        text = self.form.jobMachine.currentText()
-        self.obj.Machine = text if text and text != "<any>" else ""
+        self.obj.Machine = self.form.jobMachine.currentText() if self.machineSelected() else ""
 
     def newMachine(self):
         """Open the Machine Editor to create a new machine, then refresh the combo."""
@@ -1590,6 +1612,63 @@ class TaskPanel:
         active_style = f"background-color: {hl_color}; color: {hl_text};"
         self.form.pickTargetModel.setStyleSheet(active_style if modelTarget else "")
         self.form.pickTargetStock.setStyleSheet("" if modelTarget else active_style)
+
+    def keepingPoints(self, action):
+        """keepingPoints(action) ... action wrapped so that what is placed on the model goes with
+        it when action changes the Job's origin or moves the model.
+
+        Work planes set where they are and the shapes operations are made from, text and
+        sketches, not attached to the model, are moved as the model was. Anything the action
+        moved itself is left as it put it. The stock is left to the action, so the model can
+        move inside it.
+
+        The operations' points, such as their start points, stay where they are on the model,
+        and the heights typed in for them go up and down with it. Only when the models moved as
+        one: an operation is not told which model it is on, so when they move apart the points
+        and heights are left alone and a warning says so."""
+
+        def run(*args):
+            if getattr(self, "_keepingPoints", False):
+                return action(*args)
+            models = list(self.obj.Model.Group)
+            before = [FreeCAD.Placement(m.Placement) for m in models]
+            carried = PathJob.objectsInModelFrame(self.obj)
+            carried = [(o, FreeCAD.Placement(o.Placement)) for o in carried]
+            self._keepingPoints = True
+            try:
+                result = action(*args)
+            finally:
+                self._keepingPoints = False
+            moves = [
+                model.Placement.multiply(placement.inverse())
+                for model, placement in zip(models, before)
+                if not model.Placement.isSame(placement, 1e-9)
+            ]
+            if not moves:
+                return result
+            move = moves[0]
+            # what went with the model: nothing measured in a work plane among them has moved
+            withModel = []
+            for obj, placement in carried:
+                if obj.Placement.isSame(placement, 1e-9):
+                    obj.Placement = move.multiply(placement)
+                if obj.Placement.isSame(move.multiply(placement), 1e-9):
+                    withModel.append(obj)
+            if len(moves) < len(models) or any(not m.isSame(move, 1e-9) for m in moves[1:]):
+                Path.Log.warning(
+                    translate(
+                        "CAM_Job",
+                        "The models did not move together, so the operations' points and "
+                        "heights were left where they were. Check them.",
+                    )
+                )
+                PathJob.touchOperations(self.obj)
+                return result
+            PathJob.carryOperationPoints(self.obj, move, withModel)
+            PathJob.carryOperationHeights(self.obj, move, withModel)
+            return result
+
+        return run
 
     def alignSetOrigin(self):
         obj, by = self.alignMoveToOrigin()
@@ -1791,15 +1870,16 @@ class TaskPanel:
                     for i in range(count):
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
+                        if not self.confirmModelRemoval(model, base):
+                            continue
                         self.vproxy.forgetBaseVisibility(obj, base)
                         self.obj.Proxy.removeBase(obj, base, True)
                 # do not access any of the retired objects after this point, they don't exist anymore
 
-                # then add all rookie base models
+                # then add all rookie base models, taking up what linked them when taken out
                 for model, count in additions.items():
                     for i in range(count):
-                        base = PathJob.createModelResourceClone(obj, model)
-                        obj.Model.addObject(base)
+                        base = proxy.addModel(obj, model)
                         self.vproxy.rememberBaseVisibility(obj, base)
 
                 # refresh the view
@@ -1807,6 +1887,34 @@ class TaskPanel:
                     self.setFields()
                 else:
                     Path.Log.track("no changes to model")
+
+    def confirmModelRemoval(self, model, base):
+        """confirmModelRemoval(model, base) ... whether to take model out of the Job, asked when
+        operations or work planes are made from it: their links to it go with it, taken up again
+        if it is added back."""
+        records = self.obj.Proxy.modelLinks(self.obj, base)
+        if not records:
+            return True
+        doc = self.obj.Document
+        names = {r["obj"] for r in records}
+        objs = [doc.getObject(n) for n in names]
+        planes = sum(1 for o in objs if o and o.TypeId == "Part::LocalCoordinateSystem")
+        ops = sum(1 for o in objs if o and hasattr(o, "Path"))
+        others = len(objs) - planes - ops
+        message = translate(
+            "CAM_Job",
+            "Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} "
+            "operations, the attachments of {planes} work planes and {others} other links. They are "
+            "linked again if {model} is added back to this Job.\n\nTake it out?",
+        ).format(model=model.Label, ops=ops, planes=planes, others=others)
+        answer = QtGui.QMessageBox.question(
+            self.form,
+            translate("CAM_Job", "Take the model out"),
+            message,
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+            QtGui.QMessageBox.No,
+        )
+        return answer == QtGui.QMessageBox.Yes
 
     def tabPageChanged(self, index):
         if index == 0:
@@ -1862,6 +1970,19 @@ class TaskPanel:
         # Stock, Orientation and Alignment
         self.form.btnMaterial.clicked.connect(self.assignMaterial)
         self.updateMaterialLabel()
+        # what changes the origin or moves the model keeps the operations' points where they
+        # are on the model
+        for name in (
+            "alignCenterInStock",
+            "alignCenterInStockXY",
+            "modelSetAxis",
+            "modelSet0",
+            "modelMove",
+            "modelRotate",
+            "alignSetOrigin",
+            "alignMoveToOrigin",
+        ):
+            setattr(self, name, self.keepingPoints(getattr(self, name)))
         self.form.centerInStock.clicked.connect(self.alignCenterInStock)
         self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 

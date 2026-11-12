@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="121"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Sklopovi</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Spojevi u sklopu</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="125"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Sklopovi</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2061"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Distance</source>
       <translation>Rastojanje</translation>
     </message>
@@ -185,22 +185,22 @@
       <translation type="unfinished">Update Stored Positions</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1869"/>
+      <location filename="../../../JointObject.py" line="1875"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Potrebno je izabrati 2 elementa sa 2 različita dela</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2063"/>
+      <location filename="../../../JointObject.py" line="2069"/>
       <source>Radius 1</source>
       <translation>Poluprečnik 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2065"/>
+      <location filename="../../../JointObject.py" line="2071"/>
       <source>Thread pitch</source>
       <translation>Korak navoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2073"/>
       <source>Pitch radius</source>
       <translation>Podeoni poluprečnik</translation>
     </message>
@@ -532,37 +532,37 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
       <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="169"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Napravi</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="185"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Aktivirati</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="219"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Umetni</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Napravi nepokretnim</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="257"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Ograničenja</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="273"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Alati</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Simulacija</translation>
     </message>
@@ -1203,7 +1203,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="777"/>
       <source>Joints</source>
       <translation>Spojevi</translation>
     </message>

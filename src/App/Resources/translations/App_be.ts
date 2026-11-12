@@ -4,22 +4,22 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="609"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>Без назвы</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>True</source>
       <translation>Ісціна</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>False</source>
       <translation>Хлусня</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="587"/>
+      <location filename="../../Expression.cpp" line="601"/>
       <source>Null</source>
       <translation>Null</translation>
     </message>
@@ -27,7 +27,7 @@
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="163"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>Пачатак каардынат</translation>
     </message>

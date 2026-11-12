@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="121"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Συναρμολόγηση</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Αρθρώσεις Συναρμολόγησης</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="125"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Συναρμολόγηση</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2061"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
@@ -185,22 +185,22 @@
       <translation type="unfinished">Update Stored Positions</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1869"/>
+      <location filename="../../../JointObject.py" line="1875"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Επιλέξτε 2 στοιχεία από 2 ξεχωριστά μέρη</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2063"/>
+      <location filename="../../../JointObject.py" line="2069"/>
       <source>Radius 1</source>
       <translation>Ακτίνα 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2065"/>
+      <location filename="../../../JointObject.py" line="2071"/>
       <source>Thread pitch</source>
       <translation>Βήμα Σπειρώματος</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2073"/>
       <source>Pitch radius</source>
       <translation>Ακτίνα βήματος</translation>
     </message>
@@ -532,37 +532,37 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
       <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="169"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Δημιουργήστε</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="185"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Ενεργοποίηση</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="219"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Εισαγωγή</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Ακινητοποίηση</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="257"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Περιορισμοί</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="273"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Εργαλεία</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Προσομοίωση</translation>
     </message>
@@ -1203,7 +1203,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="777"/>
       <source>Joints</source>
       <translation>Συνδέσεις</translation>
     </message>

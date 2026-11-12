@@ -335,7 +335,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     catch (const Base::Exception&) {
         // 9/16/24: We used to clear the constraints here, but we no longer want to do that
         // as missing reference geometry is not considered an error while we sort out sketcher UI.
-        // Base::Console().error("%s\nClear constraints to external geometry\n", e.what());
+        // Base::Console().error("{}\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
         //  delConstraintsToExternal();
     }
@@ -1114,7 +1114,7 @@ void SketchObject::onGeometryChanged()
         Base::Console().error(
             this->getFullLabel() + " SketchObject::onChanged ",
             QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
-                              "Property results in invalid constraint indices") "\n");
+                "Property results in invalid constraint indices") "\n");
     }
     Base::StateLocker lock(internaltransaction, true);
     setUpSketch();

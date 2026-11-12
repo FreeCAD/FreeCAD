@@ -125,29 +125,21 @@ App::DocumentObjectExecReturn* Pipe::execute()
         return App::DocumentObject::StdReturn;
     }
 
-    auto getSectionShape = [](App::DocumentObject* feature,
-                              const std::vector<std::string>& subs) -> Part::TopoShape {
-        if (!feature || !feature->isDerivedFrom<Part::Feature>()) {
-            throw Base::TypeError("Pipe: Invalid profile/section");
+    auto getSectionShape =
+        [this](App::DocumentObject* feature, const std::vector<std::string>& subs) -> Part::TopoShape {
+        if (!feature || !feature->isDerivedFrom<Part::Part2DObject>()) {
+            return getTopoShapeVerifiedFace(false, false, feature, subs);
         }
 
+        // use the entire sketch unless a single vertex is selected
         auto subName = subs.empty() ? "" : subs.front();
-
-        // only take the entire shape when we have a sketch selected, but
-        // not a point of the sketch
-        if (feature->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
-            return static_cast<Part::Part2DObject*>(feature)->Shape.getShape();
-        }
-        else {
-            if (subName.empty()) {
-                throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
-            }
-            return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubTopoShape(
+        if (subName.compare(0, 6, "Vertex") == 0) {
+            return static_cast<Part::Part2DObject*>(feature)->Shape.getShape().getSubTopoShape(
                 subName.c_str()
             );
         }
+        return getTopoShapeVerifiedFace(false, false, feature, {});
     };
-
 
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
@@ -648,7 +640,7 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
 
     Base::Console().message("Initial edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().message("Subname: {}\n", SubNames[i]);
 
     unsigned int i = 0;
     while(i < SubNames.size())
@@ -685,7 +677,7 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
 
     Base::Console().message("Final edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().message("Subname: {}\n", SubNames[i]);
     */
 }
 

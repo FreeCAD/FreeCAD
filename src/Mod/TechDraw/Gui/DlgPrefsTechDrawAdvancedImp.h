@@ -58,9 +58,12 @@ protected:
     void slotBalloonBoxChecked();
     void enableBalloonOptions(bool newState);
 
+    void faceFinderVersionChanged(int index);
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAdvancedImp> ui;
+
+    bool lastIdentifyVoids { false };
 };
 
 } // namespace TechDrawGui

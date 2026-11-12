@@ -1322,11 +1322,11 @@ void CmdMeshEvaluateSolid::activated(int)
         QString msg;
         if (mesh->Mesh.getValue().getKernel().HasOpenEdges()) {
             msg = QObject::tr("The mesh '%1' is not a solid.")
-                      .arg(QString::fromLatin1(mesh->Label.getValue()));
+                      .arg(QString::fromUtf8(mesh->Label.getValue()));
         }
         else {
             msg = QObject::tr("The mesh '%1' is a solid.")
-                      .arg(QString::fromLatin1(mesh->Label.getValue()));
+                      .arg(QString::fromUtf8(mesh->Label.getValue()));
         }
         QMessageBox::information(Gui::getMainWindow(), QObject::tr("Solid Mesh"), msg);
     }
@@ -1503,7 +1503,7 @@ void CmdMeshBoundingBox::activated(int)
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
         Base::Console().message(
-            "Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
+            "Boundings: Min=<{:f},{:f},{:f}>, Max=<{:f},{:f},{:f}>\n",
             box.MinX,
             box.MinY,
             box.MinZ,

@@ -31,8 +31,9 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
+from draftutils import gui_utils
+from draftutils import utils
+from freecad.deprecation import deprecated
 
 
 def make_copy(obj, force=None, reparent=False, simple_copy=False):
@@ -93,6 +94,16 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
                             par.Group = group
 
     return newobj
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_copy()",
+)
+def makeCopy(*args, **kwarg):
+    """DEPRECATED. Use 'make_copy'."""
+    return make_copy(*args, **kwarg)
 
 
 ## @}

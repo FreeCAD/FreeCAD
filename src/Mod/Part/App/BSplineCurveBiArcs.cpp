@@ -274,6 +274,8 @@ std::list<Geometry*> BSplineCurveBiArcs::toBiArcs(double tolerance) const
 
     // the spline is closed
     if (p_start.Distance(p_end) < Precision::Intersection()) {
+        double midParameter = (this->myCurve->FirstParameter() + this->myCurve->LastParameter())
+            / 2.0;
         this->myCurve->D1(this->myCurve->FirstParameter(), p_start, v_start);
         createArcs(
             tolerance,
@@ -281,17 +283,17 @@ std::list<Geometry*> BSplineCurveBiArcs::toBiArcs(double tolerance) const
             p_start,
             v_start,
             this->myCurve->FirstParameter(),
-            this->myCurve->LastParameter() / 2,
+            midParameter,
             p_end,
             v_end
         );
-        this->myCurve->D1(this->myCurve->LastParameter() / 2, p_start, v_start);
+        this->myCurve->D1(midParameter, p_start, v_start);
         createArcs(
             tolerance,
             list,
             p_start,
             v_start,
-            this->myCurve->LastParameter() / 2,
+            midParameter,
             this->myCurve->LastParameter(),
             p_end,
             v_end

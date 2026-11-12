@@ -96,12 +96,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>經典軌跡球</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="662"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>圓角弧球</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="663"/>
@@ -112,7 +112,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="675"/>
       <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation Styles</translation>
+      <translation>導覽樣式</translation>
     </message>
   </context>
 </TS>

@@ -23,11 +23,10 @@
 
 #pragma once
 
+#include <cmath>
+#include <format>
 #include <map>
 #include <vector>
-
-#include "fmt/format.h"
-#include "fmt/ranges.h"
 
 #include "UnitsConvData.h"
 #include "UnitsSchemasSpecs.h"
@@ -65,7 +64,8 @@ inline const UnitsSchemaSpec s1
         { "Length",             {{ 0 , "m"    , 1e3 }}},
         { "Area",               {{ 0 , "m^2"  , 1e6 }}},
         { "Volume",             {{ 0 , "m^3"  , 1e9 }}},
-        { "Inertia",            {{ 0 , "kg*m^2", 1e6 }}},
+        { "MassMomentOfInertia",{{ 0 , "kg*m^2", 1e6 }}},
+        { "AreaMomentOfInertia",{{ 0 , "m^4"  , 1e12 }}},
         { "Power",              {{ 0 , "W"    , 1e6 }}},
         { "ElectricPotential",  {{ 0 , "V"    , 1e6 }}},
         { "HeatFlux",           {{ 0 , "W/m^2", 1.0 }}},
@@ -81,7 +81,8 @@ inline const UnitsSchemaSpec s2
         { "Area",         {{ 0 , "in^2"    , in * in           }}},
         { "Volume",       {{ 0 , "in^3"    , in * in * in      }}},
         { "Mass",         {{ 0 , "lb"      , lb                }}},
-        { "Inertia",      {{ 0 , "lb*in^2", lb * in * in       }}},
+        { "MassMomentOfInertia", {{ 0 , "lb*in^2", lb * in * in }}},
+        { "AreaMomentOfInertia", {{ 0 , "in^4", in * in * in * in }}},
         { "Pressure",     {{ 0 , "psi"     , psi               }}},
         { "Stiffness",    {{ 0 , "lbf/in"  , lbf / in * 1000   }}},
         { "Velocity",     {{ 0 , "in/min"  , in / 60           }}},
@@ -129,8 +130,11 @@ inline const UnitsSchemaSpec s3
             { 1e3             , "kg"         , 1.0             },
             { 0               , "t"          , 1e3             }}
         },
-        { "Inertia", {
+        { "MassMomentOfInertia", {
             { 0               , "kg*mm^2"    , 1.0             }}
+        },
+        { "AreaMomentOfInertia", {
+            { 0               , "mm^4"       , 1.0             }}
         },
         { "Density", {
             { 1e-4            , "kg/m^3"     , 1e-9            },
@@ -378,8 +382,13 @@ inline const UnitsSchemaSpec s4
             { 1e3             , "kg"         , 1.0             },
             { 0               , "t"          , 1e3             }}
         },
-        { "Inertia", {
+        { "MassMomentOfInertia", {
             { 0               , "kg*m^2"     , 1e6             }}
+        },
+        { "AreaMomentOfInertia", {
+            { 1e4             , "mm^4"       , 1.0             },
+            { 1e10            , "cm^4"       , 1e4             },
+            { 0               , "m^4"        , 1e12            }}
         },
         { "Density", {
             { 0.0001          , "kg/m^3"     , 0.000000001     },
@@ -443,6 +452,9 @@ inline const UnitsSchemaSpec s4
             { 1e6             , "mW"         , 1e3             },
             { 1e9             , "W"          , 1e6             },
             { 0               , "kW"         , 1e9             }}
+        },
+        { "Moment", {
+            { 0               , "Nm"         , 1e6             }}
         },
         { "ElectricPotential", {
             { 1e6             , "mV"         , 1e3             },
@@ -590,8 +602,11 @@ inline const UnitsSchemaSpec s5
         { "Volume", {
             { 0              , "m^3"         , 1e9              }}
         },
-        { "Inertia", {
-            { 0              , "kg*cm^2"     , 100.0            }}
+        { "MassMomentOfInertia", {
+            { 0              , "kg*cm^2"     , 1e2              }}
+        },
+        { "AreaMomentOfInertia", {
+            { 0              , "cm^4"        , 1e4              }}
         },
         { "Power", {
             { 0              , "W"           , 1e6              }}
@@ -787,8 +802,11 @@ inline const UnitsSchemaSpec s7
         { "Mass", {
             { 0               , "lb"       , lb                }}
         },
-        { "Inertia", {
-            { 0               , "lb*in^2"  , lb * in * in       }}
+        { "MassMomentOfInertia", {
+            { 0               , "lb*in^2"  , lb * in * in      }}
+        },
+        { "AreaMomentOfInertia", {
+            { 0               , "in^4"     , in * in * in * in }}
         },
         { "Pressure", {
             { 1000 * psi      , "psi"      , psi               },
@@ -824,7 +842,8 @@ inline const UnitsSchemaSpec s9
         { "Area"     , {{ 0   , "ft^2"  , ft * ft                  }}},
         { "Volume"   , {{ 0   , "ft^3"  , ft * ft * ft             }}},
         { "Mass"     , {{ 0   , "lb"    , lb                       }}},
-        { "Inertia"  , {{ 0   , "lb*ft^2", lb * ft * ft            }}},
+        { "MassMomentOfInertia"  , {{ 0 , "lb*ft^2", lb * ft * ft }}},
+        { "AreaMomentOfInertia"  , {{ 0 , "ft^4", ft * ft * ft * ft }}},
         { "Density"  , {{ 0   , "lb/ft^3", lb / (ft * ft * ft)     }}},
         { "Pressure" , {{ 0   , "psi"   , psi                      }}},
         { "Stiffness", {{ 0   , "lbf/in", lbf / in * 1000          }}},
@@ -883,21 +902,21 @@ inline std::string toFractional(const double value, std::size_t denominator)
     }
 
     if (feet > 0) {
-        result += fmt::format("{}'", feet);
+        result += std::format("{}'", feet);
         addSpace = true;
     }
 
     if (inches > 0) {
-        result += fmt::format("{}{}\"", addSpace ? " " : "", inches);
+        result += std::format("{}{}\"", addSpace ? " " : "", inches);
         addSpace = false;
     }
 
     if (numerator > 0) {
         if (inches > 0) {
-            result += fmt::format(" {} ", value < 0 ? "-" : "+");
+            result += std::format(" {} ", value < 0 ? "-" : "+");
             addSpace = false;
         }
-        result += fmt::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
+        result += std::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
     }
 
     return result;
@@ -916,14 +935,14 @@ inline std::string toDms(const double value)
     };
 
     auto [degrees, totalMinutes] = calc(value);
-    std::string out = fmt::format("{}°", degrees);
+    std::string out = std::format("{}°", degrees);
 
     if (totalMinutes > 0) {
         auto [minutes, totalSeconds] = calc(totalMinutes);
-        out += fmt::format("{}′", minutes);
+        out += std::format("{}′", minutes);
 
         if (totalSeconds > 0) {
-            out += fmt::format("{}″", std::round(totalSeconds));
+            out += std::format("{}″", std::round(totalSeconds));
         }
     }
 

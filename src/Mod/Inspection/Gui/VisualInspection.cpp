@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <limits>
 
@@ -113,13 +110,13 @@ VisualInspection::VisualInspection(QWidget* parent)
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
             item1->setText(0, QString::fromUtf8(it->Label.getValue()));
-            item1->setData(0, Qt::UserRole, QString::fromLatin1(it->getNameInDocument()));
+            item1->setData(0, Qt::UserRole, QString::fromUtf8(it->getNameInDocument()));
             item1->setCheckState(0, Qt::Unchecked);
             item1->setIcon(0, px);
 
             SingleSelectionItem* item2 = new SingleSelectionItem(ui->treeWidgetNominal);
             item2->setText(0, QString::fromUtf8(it->Label.getValue()));
-            item2->setData(0, Qt::UserRole, QString::fromLatin1(it->getNameInDocument()));
+            item2->setData(0, Qt::UserRole, QString::fromUtf8(it->getNameInDocument()));
             item2->setCheckState(0, Qt::Unchecked);
             item2->setIcon(0, px);
 
@@ -249,7 +246,7 @@ bool VisualInspection::accept()
                 Gui::Command::App,
                 "App_activeDocument___InspectionGroup.newObject("
                 "\"Inspection::Feature\",\"%s_Inspect\")",
-                (const char*)actualName.toLatin1()
+                (const char*)actualName.toUtf8()
             );
             Gui::Command::doCommand(
                 Gui::Command::App,
@@ -257,7 +254,7 @@ bool VisualInspection::accept()
                 "App_activeDocument___activeObject___Nominals=list()\n"
                 "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
                 "App.ActiveDocument.ActiveObject.Thickness=%.3f\n",
-                (const char*)actualName.toLatin1(),
+                (const char*)actualName.toUtf8(),
                 searchRadius,
                 thickness
             );
@@ -266,7 +263,7 @@ bool VisualInspection::accept()
                     Gui::Command::App,
                     "App_activeDocument___activeObject___Nominals.append("
                     "App.ActiveDocument.%s)\n",
-                    (const char*)it.toLatin1()
+                    (const char*)it.toUtf8()
                 );
             }
             Gui::Command::doCommand(
@@ -290,7 +287,7 @@ bool VisualInspection::accept()
             Gui::Command::doCommand(
                 Gui::Command::App,
                 "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+                (const char*)sel->data(0, Qt::UserRole).toString().toUtf8()
             );
         }
     }
@@ -301,7 +298,7 @@ bool VisualInspection::accept()
             Gui::Command::doCommand(
                 Gui::Command::App,
                 "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+                (const char*)sel->data(0, Qt::UserRole).toString().toUtf8()
             );
         }
     }

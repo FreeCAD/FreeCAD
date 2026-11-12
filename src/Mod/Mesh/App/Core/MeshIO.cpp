@@ -254,7 +254,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else if (fi.hasExtension("iv")) {
         ok = LoadInventor(str);
         if (ok && _rclMesh.CountFacets() == 0) {
-            Base::Console().warning("No usable mesh found in file '%s'", FileName);
+            Base::Console().warning("No usable mesh found in file '{}'", FileName);
         }
     }
     else if (fi.hasExtension({"nas", "bdf"})) {
@@ -780,6 +780,11 @@ bool MeshInput::LoadAsciiSTL(std::istream& input)
 
     // restart from the beginning
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
+
+    if (input.bad()) {
+        return false;
+    }
+    input.clear();
 
 #if 0
     MeshBuilder builder(this->_rclMesh);

@@ -163,9 +163,9 @@ void FeatureExtrude::onChanged(const App::Property* prop)
             App::DocumentObject* obj = Profile.getValue();
             auto baseName = obj ? obj->getNameInDocument() : "";
             Base::Console().warning(
-                "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+                "The 'Midplane' property being set for the extrusion of {} is deprecated and has "
                 "been replaced by the 'SideType' property in FeatureExtrude; assuming "
-                "SideType='%s'. Please update your script, this property will be removed in a"
+                "SideType='{}'. Please update your script, this property will be removed in a"
                 " future version.\n",
                 baseName,
                 impliedSideType

@@ -228,7 +228,7 @@ void EditModeInformationOverlayCoinConverter::calculate(
                         e.reportException();
                         Base::Console().developerError(
                             "EditModeInformationOverlayCoinConverter",
-                            "Curvature graph for B-spline with GeoId=%d could not be calculated.\n",
+                            "Curvature graph for B-spline with GeoId={} could not be calculated.\n",
                             geoid
                         );
                         curvaturelist.emplace_back(0);

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2013 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #if defined(__MINGW32__)
 # define WNT  // avoid conflict with GUID
@@ -164,10 +161,10 @@ void ImportOCAFAssembly::loadShapes(
     std::stringstream str;
 
     Base::Console().log(
-        "H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
-        "Free:%d, Ref:%d, Component:%d, SubShape:%d\tTrf:%s-- Dep:%d  \n",
+        "H:{:<9} \tN:{:<30} \tTop:{}, Asm:{}, Shape:{}, Compound:{}, Simple:{}, "
+        "Free:{}, Ref:{}, Component:{}, SubShape:{}\tTrf:{}-- Dep:{}  \n",
         hash,
-        part_name.c_str(),
+        part_name,
         aShapeTool->IsTopLevel(label),
         aShapeTool->IsAssembly(label),
         aShapeTool->IsShape(label),
@@ -182,7 +179,7 @@ void ImportOCAFAssembly::loadShapes(
     );
 
     label.Dump(str);
-    Base::Console().message(str.str().c_str());
+    Base::Console().message("{}", str.str());
 #endif
 
     std::string asm_name = assembly;

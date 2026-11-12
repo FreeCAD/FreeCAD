@@ -405,6 +405,22 @@ QString Action::createToolTip(
     return tooltip + cmdName;
 }
 
+QString Action::createToolTip(const QAction* action, const Command* command)
+{
+    if (!action || !command) {
+        return {};
+    }
+
+    // Use the same translation context as Command::applyCommandData()
+    const char* context = command->className();
+    if (dynamic_cast<const PythonCommand*>(command)
+        || dynamic_cast<const PythonGroupCommand*>(command)) {
+        context = command->getName();
+    }
+    QString helpText = QApplication::translate(context, command->getToolTipText());
+    return createToolTip(helpText, action->text(), action->font(), command->getShortcut(), command);
+}
+
 QString Action::toolTip() const
 {
     return _tooltip;
@@ -1191,7 +1207,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             " by default, if this is now blank then you should revert it back to"
             " Ctrl+Shift+ by pressing both keys at the same time."
         );
-        Base::Console().warning("%s\n", qPrintable(msgMain));
+        Base::Console().warning("{}\n", qPrintable(msgMain));
     }
 }
 

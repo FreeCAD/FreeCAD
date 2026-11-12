@@ -2441,7 +2441,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Kép létrehozás</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="527"/>
+      <location filename="../../QGIViewBalloon.cpp" line="621"/>
       <source>Drag Balloon</source>
       <translation>Buborék húzása</translation>
     </message>
@@ -2451,7 +2451,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Dimenzió húzása</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="587"/>
+      <location filename="../../QGSPage.cpp" line="592"/>
       <source>Create Balloon</source>
       <translation>Buborék létrehozása</translation>
     </message>
@@ -3774,47 +3774,47 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Nincsenek felületek a kitöltéshez ebben a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="311"/>
+      <location filename="../../DrawGuiUtil.cpp" line="312"/>
       <source>No page found</source>
       <translation>Az oldal nem található</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="312"/>
+      <location filename="../../DrawGuiUtil.cpp" line="313"/>
       <source>No Drawing Pages available.</source>
       <translation>Nincs elérhető rajzlap.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="417"/>
+      <location filename="../../DrawGuiUtil.cpp" line="418"/>
       <source>No page selected</source>
       <translation>Nincs kiválasztott oldal</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="418"/>
+      <location filename="../../DrawGuiUtil.cpp" line="419"/>
       <source>This function needs a page.</source>
       <translation>Ehhez a funkcióhoz egy oldal szükséges.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="840"/>
+      <location filename="../../MDIViewPage.cpp" line="870"/>
       <source>Export Page as PDF</source>
       <translation>Oldal export mint PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="759"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>Oldal export SVG formában</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="782"/>
+      <location filename="../../MDIViewPage.cpp" line="806"/>
       <source>Export page as DXF</source>
       <translation>Oldal export mint PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="823"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Unable to Write File</source>
       <translation type="unfinished">Unable to Write File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="824"/>
+      <location filename="../../MDIViewPage.cpp" line="854"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
@@ -6303,7 +6303,48 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
       <translation>A hegesztési szimbólumok méretének szorzója</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="445"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
+      <source>Screen Mode</source>
+      <translation type="unfinished">Screen Mode</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
+      <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
+      <translation type="unfinished">Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
+      <source>Screen mode</source>
+      <translation type="unfinished">Screen mode</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
+      <source>Vertex size</source>
+      <translation>Csúcspont mérete</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
+      <source>Size of vertex dots on screen. Only used in screen mode.</source>
+      <translation type="unfinished">Size of vertex dots on screen. Only used in screen mode.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="563"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
+      <source>Edge width</source>
+      <translation type="unfinished">Edge width</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
+      <source>Width of edges on screen. Only used in screen mode.</source>
+      <translation type="unfinished">Width of edges on screen. Only used in screen mode.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Megjegyzés:&lt;/span&gt; A &lt;span style=&quot; font-style:italic;&quot;&gt;dőlt&lt;/span&gt; elemek az új objektumok alapértelmezett értékei. A meglévő objektumokra nincs hatásuk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6311,66 +6352,71 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
       <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
       <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="107"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
       <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="110"/>
+      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <source>Screen &amp;Mode</source>
+      <translation type="unfinished">Screen &amp;Mode</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="114"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportálás SVG-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="118"/>
       <source>Export DXF</source>
       <translation>DXF export</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="122"/>
       <source>Export PDF</source>
       <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="126"/>
       <source>Print All Pages</source>
       <translation>Összes oldal nyomtatása</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="444"/>
+      <location filename="../../MDIViewPage.cpp" line="448"/>
       <source>Different orientation</source>
       <translation>Eltérő tájolású</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="445"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő tájolást használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="454"/>
+      <location filename="../../MDIViewPage.cpp" line="458"/>
       <source>Different paper size</source>
       <translation>Eltérő papírméret</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="455"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1403"/>
+      <location filename="../../MDIViewPage.cpp" line="1433"/>
       <source>Selected:</source>
       <translation>Kiválasztott:</translation>
     </message>

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QSignalBlocker>
 #include <algorithm>
@@ -413,14 +410,14 @@ void DlgDisplayPropertiesImp::onChangeModeActivated(const QString& s)
     for (auto it : Provider) {
         if (auto* prop =
                 dynamic_cast<App::PropertyEnumeration*>(it->getPropertyByName("DisplayMode"))) {
-            prop->setValue(static_cast<const char*>(s.toLatin1()));
+            prop->setValue(static_cast<const char*>(s.toUtf8()));
         }
     }
 }
 
 void DlgDisplayPropertiesImp::onChangePlotActivated(const QString& s)
 {
-    Base::Console().log("Plot = %s\n", (const char*)s.toLatin1());
+    Base::Console().log("Plot = {}\n", s.toStdString());
 }
 
 /**
@@ -513,13 +510,14 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
             std::vector<std::string> value = prop->getEnumVector();
             if (it == views.begin()) {
                 for (const auto& jt : value) {
-                    commonModes << QLatin1String(jt.c_str());
+                    commonModes << QString::fromStdString(jt);
                 }
             }
             else {
                 for (const auto& jt : value) {
-                    if (commonModes.contains(QLatin1String(jt.c_str()))) {
-                        modes << QLatin1String(jt.c_str());
+                    const QString mode = QString::fromStdString(jt);
+                    if (commonModes.contains(mode)) {
+                        modes << mode;
                     }
                 }
 
@@ -537,7 +535,7 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
     for (const auto& view : views) {
         if (auto* prop =
                 dynamic_cast<App::PropertyEnumeration*>(view->getPropertyByName("DisplayMode"))) {
-            QString activeMode = QString::fromLatin1(prop->getValueAsString());
+            QString activeMode = QString::fromUtf8(prop->getValueAsString());
             int index = d->ui.changeMode->findText(activeMode);
             if (index != -1) {
                 d->ui.changeMode->setCurrentIndex(index);

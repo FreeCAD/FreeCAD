@@ -75,12 +75,7 @@ class JobCreate:
 
     def _schemaUsesMinutes(self, schema_id):
         """Return True if the given unit schema expresses velocity in /min."""
-        try:
-            q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
-            r = FreeCAD.Units.schemaTranslate(q, schema_id)
-            return "/min" in r[2]
-        except (IndexError, TypeError):
-            return False
+        return PathUtil.schemaUsesMinutes(schema_id)
 
     # Colors for the unit-schema combobox: green = minute-based (safe);
     # red = per-second (unsafe).
@@ -192,6 +187,7 @@ class JobCreate:
         self.dialog.setWindowTitle(title)
 
     def setupModel(self, job=None):
+        from PathScripts.PathUtils import jobInstances
 
         if job:
             preSelected = Counter(
@@ -252,7 +248,7 @@ class JobCreate:
                     if itemSelected:
                         expand2Ds = True
 
-        for j in sorted(PathJob.Instances(), key=lambda x: x.Label):
+        for j in sorted(jobInstances(), key=lambda x: x.Label):
             if j != job:
                 item0 = QtGui.QStandardItem()
                 item1 = QtGui.QStandardItem()

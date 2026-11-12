@@ -51,7 +51,7 @@ except ImportError as e:
     Path.Log.critical("The 3D Surface operation will be non-functional.")
     Path.Log.critical(f"Error details: {e}")
     # Re-raise the error to halt module loading.
-    raise e
+    raise
 
 __title__ = "Surface Scan Pattern Generator"
 __author__ = "sliptonic (Brad Collette)"
@@ -155,7 +155,8 @@ def split_selected_features(base_property, avoid_count):
                 shape = base.Shape.getElement(sub)
                 if shape and isinstance(shape, Part.Face):
                     all_selected.append(shape)
-            except Exception:
+            except Exception as e:
+                Path.Log.debug(str(e))
                 continue
 
     Path.Log.debug(

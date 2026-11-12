@@ -4526,7 +4526,7 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <location filename="../../draftguitools/gui_trimex.py" line="178"/>
       <location filename="../../draftguitools/gui_trimex.py" line="694"/>
       <source>Select a single face to extrude</source>
-      <translation type="unfinished">Select a single face to extrude</translation>
+      <translation>Válassz egy lapot a kinyújtáshoz</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="568"/>
@@ -4566,12 +4566,12 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="684"/>
       <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>Lap kinyújtása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="685"/>
       <source>Select a face to extrude</source>
-      <translation type="unfinished">Select a face to extrude</translation>
+      <translation>Válassz egy lapot a kinyújtáshoz</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4772,12 +4772,12 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 az első pont és csomó meghatározása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 következő pont és csomó meghatározása</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -6151,7 +6151,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Kamera nézet mentése</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
@@ -6706,7 +6706,7 @@ Ha a "Másolás" beállítás be van kapcsolva, forgatott példányok jönnek l�
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="72"/>
       <source>Trims or extends the selected object</source>
-      <translation type="unfinished">Trims or extends the selected object</translation>
+      <translation>Kijelölt objektum vágása vagy nyújtása</translation>
     </message>
   </context>
   <context>
@@ -9007,14 +9007,14 @@ Legjobb nagyon nagy fájlok megtekintésére maximális teljesítménnyel.</tran
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
       <source>Force 2D View Update</source>
-      <translation type="unfinished">Force 2D View Update</translation>
+      <translation>2D-nézet frissítés kényszerítése</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
       <source>Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</source>
-      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
-The 'Auto Update' property of the views is ignored.</translation>
+      <translation>Kényszeríti a kiválasztott 2D nézetek vagy a dokumentumban található összes 2D nézet frissítését.
+A nézetek „Automatikus frissítés” tulajdonságát a rendszer figyelmen kívül hagyja.</translation>
     </message>
   </context>
 </TS>

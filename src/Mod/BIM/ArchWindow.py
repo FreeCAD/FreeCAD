@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Window"
 __author__ = "Yorik van Havre"
@@ -116,6 +113,24 @@ class _Window(ArchComponent.Component):
         self.setProperties(obj)
         obj.IfcType = "Window"
         obj.MoveWithHost = True
+
+        # Add features in the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj)
+
+    def addSketchArchFeatures(self, obj, linkObj=None, mode=None):
+        """
+        To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
+        -  import ArchSketchObject module, and
+        -  set properties that are common to ArchObjects (including Links) and ArchSketch
+           to support the additional features
+
+        To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
+        """
+
+        import ArchSketchObject
+
+        if hasattr(ArchSketchObject.ArchSketch, "setPropertiesLinkCommon"):
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj, linkObj, mode)
 
     def setProperties(self, obj, mode=None):
 
@@ -296,6 +311,9 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj, mode="ODR")
+
+        # Add features in the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj, mode="ODR")
 
         # During the v1.1 dev cycle an experiment with a new SillHeight handling was
         # undertaken. This did not work out as intended and was therefore reverted.
@@ -1446,16 +1464,27 @@ class _ArchWindowTaskPanel:
 
             FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
             self.widthWidget.setProperty("value", self.obj.Width)
+            self.widthWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+            )
 
             FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
             self.heightWidget.setProperty("value", self.obj.Height)
+            self.heightWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+            )
 
             FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+            self.openingWidget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Opening"))
+            )
             # Opening is a scalar property, as opposed to a quantity property. It appears to have
-            # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
-            # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
-            # the property to these, so it must be reading them from metadata, but they might not
-            # be queryable via Python.
+            # no "preferred unit" metadata, but it is a percentage (App::PropertyPercent), so set
+            # the same " %" suffix the Property Editor uses for that property type. We can also set
+            # some safe limits. These limits are hardcoded: the Property Editor clamps the property
+            # to these, so it must be reading them from metadata, but they might not be queryable
+            # via Python.
+            self.openingWidget.setSuffix(" %")
             self.openingWidget.setProperty("minimum", 0)
             self.openingWidget.setProperty("maximum", 100)
             self.openingWidget.setProperty("value", self.obj.Opening)

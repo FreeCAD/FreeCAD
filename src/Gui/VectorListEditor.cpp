@@ -221,7 +221,7 @@ void Gui::VectorTableModel::pasteFromClipboard()
             + QLatin1String("\n")
         );
         msg += clipboard->text();
-        Base::Console().error(msg.toStdString().c_str());
+        Base::Console().error("{}", msg.toStdString());
     }
 }
 

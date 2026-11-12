@@ -217,14 +217,14 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
-//    Base::Console().message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
+//    Base::Console().message("VPVP::attach({})\n", pcFeat->getNameInDocument());
     auto* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
-        KeepLabel.setValue(true);
+
         // these properties apply to the base view, not the detail
         HighlightLineStyle.setStatus(App::Property::ReadOnly, true);
         HighlightLineStyle.setStatus(App::Property::Hidden, true);
@@ -250,6 +250,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+          // One child may reference its parent through several persisted links.
+          if (std::find(temp.begin(), temp.end(), *it) != temp.end()) continue;
           auto view = dynamic_cast<TechDraw::DrawView *>(*it);
           if (view && view->claimParent() == getViewPart()) {
               temp.push_back(view);
@@ -303,7 +305,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
         if (!dvd->BaseView.getValue()) {
-            throw Base::RuntimeError(fmt::format("DrawViewDetail - {} - has no BaseView!",
+            throw Base::RuntimeError(std::format("DrawViewDetail - {} - has no BaseView!",
                                                  dvd->getNameInDocument()));
         }
         return setDetailEdit(ModNum, dvd);

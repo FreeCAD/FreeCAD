@@ -41,6 +41,8 @@ translate = FreeCAD.Qt.translate
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Custom operation."""
 
+    needsFullSpace = True  # use the full height of the task panel
+
     def getForm(self):
         """getForm() ... returns UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpCustomEdit.ui")
@@ -72,6 +74,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.txtGCodeBox.layout().removeWidget(form.txtGCode)
         form.txtGCode.deleteLater()
         form.txtGCodeBox.layout().addWidget(self.editor)
+        for widget in (form, form.txtGCodeBox):
+            policy = widget.sizePolicy()
+            policy.setVerticalPolicy(QtGui.QSizePolicy.Expanding)
+            widget.setSizePolicy(policy)
 
         return form
 

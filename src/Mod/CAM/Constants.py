@@ -33,6 +33,7 @@ GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 
 # Canned drilling cycles
 GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
+EXPANDABLE_DRILL_CYCLES = ["G73", "G81", "G82", "G83", "G85"]  # currently the same
 
 # Additional drilling cycles
 GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
@@ -58,6 +59,17 @@ GCODE_UNITS = ["G20", "G21"]
 GCODE_UNITS_METRIC = ["G21"]
 GCODE_UNITS_INCHES = ["G20"]
 
+# Arc plane selection
+GCODE_PLANE_XY = ["G17"]
+GCODE_PLANE_XZ = ["G18"]
+GCODE_PLANE_YZ = ["G19"]
+GCODE_PLANE = GCODE_PLANE_XY + GCODE_PLANE_XZ + GCODE_PLANE_YZ
+
+# The arc center word along each plane's normal. An arc in the plane has no
+# use for it (a helix carries its pitch in the axis word), and LinuxCNC and
+# Fanuc refuse it, so the post drops it.
+ARC_CENTER_WORD_NORMAL_TO_PLANE = {"G17": "K", "G18": "J", "G19": "I"}
+
 # Dwell
 GCODE_DWELL = ["G4", "G04"]
 
@@ -70,7 +82,6 @@ GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 GCODE_CYCLE_CANCEL = ["G80"]
 
 # Additional drilling cycles
-EXPANDABLE_DRILL_CYCLES = ["G81", "G82", "G83", "G73"]
 GCODE_DRILL_COMMANDS = sorted(set(GCODE_MOVE_DRILL + GCODE_DRILL_EXTENDED + ["G85", "G87"]))
 
 # Probing
@@ -158,6 +169,7 @@ GCODE_SUPPORTED = (
     + GCODE_MOVE_STRAIGHT
     + GCODE_MOVE_ARC
     + GCODE_DWELL
+    + GCODE_PLANE
     + GCODE_MOVE_DRILL
     + GCODE_DRILL_EXTENDED
     + GCODE_CYCLE_CANCEL

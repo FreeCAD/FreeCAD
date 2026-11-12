@@ -78,7 +78,7 @@ static QByteArray loadFCStdThumbnail(const App::ProjectFile& proj, const QString
         }
     }
     catch (...) {
-        Base::Console().log("Failed to load thumbnail for %s", filePath.toStdString());
+        Base::Console().log("Failed to load thumbnail for {}", filePath.toStdString());
     }
     return {};
 }

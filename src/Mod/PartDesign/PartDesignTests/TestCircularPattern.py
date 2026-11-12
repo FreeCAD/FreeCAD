@@ -38,6 +38,7 @@ class TestCircularPattern(unittest.TestCase):
         pattern = self.doc.addObject("PartDesign::CircularPattern", "CircularPattern")
         pattern.Originals = [box]
         pattern.Axis = (self.doc.Z_Axis, [""])
+        pattern.BinormalAxis = (self.doc.Y_Axis, [""])
         pattern.RadialDistance = 10
         pattern.TangentialDistance = 15
         pattern.NumberCircles = 2
@@ -65,9 +66,10 @@ class TestCircularPattern(unittest.TestCase):
 
         circular = self.doc.addObject("PartDesign::CircularPattern", "CircularPattern")
         circular.Axis = (self.doc.Z_Axis, [""])
+        circular.BinormalAxis = (self.doc.Y_Axis, [""])
         circular.RadialDistance = 20
         circular.TangentialDistance = 20
-        circular.NumberCircles = 2
+        circular.NumberCircles = 1
         circular.Symmetry = 4
         body.addObject(circular)
 

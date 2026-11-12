@@ -4552,7 +4552,7 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
       <location filename="../../draftguitools/gui_trimex.py" line="178"/>
       <location filename="../../draftguitools/gui_trimex.py" line="694"/>
       <source>Select a single face to extrude</source>
-      <translation type="unfinished">Select a single face to extrude</translation>
+      <translation>Wybierz pojedynczą ścianę do wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="568"/>
@@ -4592,12 +4592,12 @@ Zaznacz grupy, które nie są puste lub obiekty wewnątrz grup.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="684"/>
       <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>Wyciągnij ścianę</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="685"/>
       <source>Select a face to extrude</source>
-      <translation type="unfinished">Select a face to extrude</translation>
+      <translation>Wybierz ścianę do wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -6747,7 +6747,7 @@ Jeśli opcja "Kopiuj" jest aktywna, to utworzy obracane kopie.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="72"/>
       <source>Trims or extends the selected object</source>
-      <translation type="unfinished">Trims or extends the selected object</translation>
+      <translation>Przycina lub wydłuża wybrany obiekt</translation>
     </message>
   </context>
   <context>
@@ -9063,14 +9063,14 @@ Najlepsze do przeglądania bardzo dużych plików przy maksymalnej wydajności.<
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
       <source>Force 2D View Update</source>
-      <translation type="unfinished">Force 2D View Update</translation>
+      <translation>WYmusza aktualizację widoku 2D</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
       <source>Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</source>
-      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
-The 'Auto Update' property of the views is ignored.</translation>
+      <translation>Wymusza aktualizację wybranych widoków 2D lub wszystkich widoków 2D w dokumencie.
+Właściwość widoków 'Automatyczna aktualizacja' jest ignorowana.</translation>
     </message>
   </context>
 </TS>

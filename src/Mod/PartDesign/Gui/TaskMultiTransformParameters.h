@@ -77,6 +77,9 @@ private Q_SLOTS:
     void onTransformActivated(const QModelIndex& index);
     void onTransformAddMirrored();
     void onTransformAddLinearPattern();
+    void onTransformAddCircularPattern();
+    void onTransformAddPathPattern();
+    void onTransformAddPointPattern();
     void onTransformAddPolarPattern();
     void onTransformAddScaled();
     void onMoveUp();

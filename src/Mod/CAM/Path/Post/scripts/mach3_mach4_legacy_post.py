@@ -29,7 +29,7 @@ import datetime
 import shlex
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from builtins import open as pyopen
 
 TOOLTIP = """
@@ -365,7 +365,7 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in PostUtils.cannedCycleTerminator(PathUtils.getPathWithPlacement(pathobj)).Commands:
 
             outstring = []
             command = c.Name

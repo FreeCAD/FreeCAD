@@ -128,6 +128,7 @@ public:
         return GetArea() < 0;
     }
     bool IsClosed() const;
+    bool IsExactlyClosed() const;
     void ChangeStart(const Point& p);
     void ExtractSeparateCurves(
         const std::list<Point>& ordered_points,

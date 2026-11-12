@@ -133,17 +133,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1706"/>
       <source>PartDesign</source>
       <translation>ნაწილის დაპროექტება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Additive Helix</source>
       <translation>ადიტიური სპირალი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation type="unfinished">Sweeps the selected sketch or profile along a helix and adds it to the body</translation>
     </message>
@@ -151,17 +151,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Additive Loft</source>
       <translation>ადიტიური პროფილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
       <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and adds it to the body</translation>
     </message>
@@ -169,17 +169,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Additive Pipe</source>
       <translation>ადიტიური პროფილი ტრაექტორიის გასწვრივ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
     </message>
@@ -205,17 +205,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2710"/>
+      <location filename="../../Command.cpp" line="2716"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2711"/>
+      <location filename="../../Command.cpp" line="2717"/>
       <source>Boolean Operation</source>
       <translation>ბულევური ოპერაცია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2712"/>
+      <location filename="../../Command.cpp" line="2718"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation type="unfinished">Applies boolean operations with the selected objects and the active body</translation>
     </message>
@@ -241,17 +241,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2034"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>Chamfer</source>
       <translation>კუთხის ნაზოლი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2036"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation>გადაატარებს კუთხის ნაზოლს მონიშნულ წიბოებს ან ზედაპირებს</translation>
     </message>
@@ -259,17 +259,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Clone</source>
       <translation>ასლი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="524"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation type="unfinished">Copies a solid object parametrically as the base feature of a new body</translation>
     </message>
@@ -277,17 +277,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2146"/>
+      <location filename="../../Command.cpp" line="2152"/>
       <source>Draft</source>
       <translation>მონახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2147"/>
+      <location filename="../../Command.cpp" line="2153"/>
       <source>Applies a draft to the selected faces</source>
       <translation>გადაატარებს მონახაზს მონიშნულ ზედაპირებს</translation>
     </message>
@@ -313,17 +313,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2000"/>
+      <location filename="../../Command.cpp" line="2006"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2001"/>
+      <location filename="../../Command.cpp" line="2007"/>
       <source>Fillet</source>
       <translation>მომრგვალება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2002"/>
+      <location filename="../../Command.cpp" line="2008"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation>გადაატარებს მომრგვალებულ ნაზოლს მონიშნულ წიბოებს ან ზედაპირებს</translation>
     </message>
@@ -331,17 +331,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Groove</source>
       <translation>კილო</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation type="unfinished">Revolves the sketch or profile around a line or axis and removes it from the body</translation>
     </message>
@@ -349,17 +349,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1326"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Hole</source>
       <translation>ხვრელი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation type="unfinished">Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</translation>
     </message>
@@ -385,17 +385,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2406"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2401"/>
+      <location filename="../../Command.cpp" line="2407"/>
       <source>Linear Pattern</source>
       <translation>წრფივი შაბლონი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2408"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation type="unfinished">Duplicates the selected features or the active body in a linear pattern</translation>
     </message>
@@ -421,17 +421,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2343"/>
+      <location filename="../../Command.cpp" line="2349"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Mirror</source>
       <translation>სარკე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Mirrors the selected features or active body</source>
       <translation>შექმნის მონიშნული თვისებების, ან აქტიური სხეულის ანარეკლს</translation>
     </message>
@@ -493,17 +493,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2579"/>
+      <location filename="../../Command.cpp" line="2585"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2580"/>
+      <location filename="../../Command.cpp" line="2586"/>
       <source>Multi-Transform</source>
       <translation>მრავლობითი ტრანსფორმაცია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2581"/>
+      <location filename="../../Command.cpp" line="2587"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation type="unfinished">Applies multiple transformations to the selected features or active body</translation>
     </message>
@@ -511,17 +511,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="603"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>New Sketch</source>
       <translation>ახალი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Creates a new sketch</source>
       <translation>ქმნის ახალ ესკიზს</translation>
     </message>
@@ -529,17 +529,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1274"/>
       <source>Pad</source>
       <translation>ექსტრუზია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1269"/>
+      <location filename="../../Command.cpp" line="1275"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation type="unfinished">Extrudes the selected sketch or profile and adds it to the body</translation>
     </message>
@@ -565,17 +565,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1303"/>
       <source>Pocket</source>
       <translation>ამოჭრა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1298"/>
+      <location filename="../../Command.cpp" line="1304"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation type="unfinished">Extrudes the selected sketch or profile and removes it from the body</translation>
     </message>
@@ -601,17 +601,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2474"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2475"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Polar Pattern</source>
       <translation>პოლარული შაბლონი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2476"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation type="unfinished">Duplicates the selected features or the active body in a circular pattern</translation>
     </message>
@@ -619,17 +619,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolve</source>
       <translation>ტრიალის სხეული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1372"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation type="unfinished">Revolves the selected sketch or profile around a line or axis and adds it to the body</translation>
     </message>
@@ -637,17 +637,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2542"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2537"/>
+      <location filename="../../Command.cpp" line="2543"/>
       <source>Scale</source>
       <translation>მასშტაბირება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2544"/>
       <source>Scales the selected features or the active body</source>
       <translation>გაადიდებს მონიშნულ თვისებებს ან აქტიურ სხეულს</translation>
     </message>
@@ -691,17 +691,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Subtractive Helix</source>
       <translation>გამოკლებადი სპირალი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation type="unfinished">Sweeps the selected sketch or profile along a helix and removes it from the body</translation>
     </message>
@@ -709,17 +709,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1659"/>
       <source>Subtractive Loft</source>
       <translation>მოხსნადი პროფილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
+      <location filename="../../Command.cpp" line="1661"/>
       <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
       <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and removes it from the body</translation>
     </message>
@@ -727,17 +727,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1559"/>
       <source>Subtractive Pipe</source>
       <translation>მოხსნადი მილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1560"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation type="unfinished">Sweeps the selected sketch or profile along a path and removes it from the body</translation>
     </message>
@@ -745,17 +745,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>PartDesign</source>
       <translation>ნაწილისდიზაინი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2222"/>
       <source>Thickness</source>
       <translation>სისქე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2223"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>გადაატარებს სისქეს და წაშლის მონიშნულ ზედაპირებს</translation>
     </message>
@@ -889,22 +889,22 @@ so that self intersection is avoided.</source>
       <translation>მოხაზულობის გადაბმის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Create Sub-Shape Binder</source>
       <translation>ქვემოხაზულობის გადაბმის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="542"/>
       <source>Create Clone</source>
       <translation>ასლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1157"/>
       <source>Make Copy</source>
       <translation>ასლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2634"/>
+      <location filename="../../Command.cpp" line="2640"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>გადაყვანა თვისებაში Multi-Transform</translation>
     </message>
@@ -925,7 +925,7 @@ so that self intersection is avoided.</source>
       <translation>ახალი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Create Boolean</source>
       <translation>ბულევის შექმნა</translation>
     </message>
@@ -3535,7 +3535,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
@@ -3543,17 +3543,17 @@ measured along the specified direction</source>
       <translation>ფანჯარა უკვე ღიაა ამოცანების პანელზე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1039"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>ამ ბრძანების გამოყენება არ შეიძლება, რადგან არ არსებობს მყარი სხეული, რომ გამოვაკლოთ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1036"/>
+      <location filename="../../Command.cpp" line="1042"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>გამოკლების ბრძანების გაშვებამდე დარწმუნდით, რომ სხეული რამე თვისებას მაინც შეიცავს.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>მონიშნული ობიექტის გამოყენება შეუძლებელია. მონიშნული ობიექტი აქტიურ სხეულს უნდა ეკუთვნოდეს</translation>
     </message>
@@ -3568,60 +3568,60 @@ measured along the specified direction</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="500"/>
       <source>Sub-shape binder</source>
       <translation>ქვემონახაზის შემაერთებელი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1098"/>
       <source>No sketch to work on</source>
       <translation>სამუშაო ესკიზი ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1093"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>No sketch is available in the document</source>
       <translation>დოკუმენტში ესკიზები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2104"/>
       <source>Wrong Selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2071"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Select faces from a single body</source>
       <translation type="unfinished">Select faces from a single body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2078"/>
+      <location filename="../../Command.cpp" line="2084"/>
       <source>Selection Outside Active Body</source>
       <translation type="unfinished">Selection Outside Active Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2079"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Select faces from the active body</source>
       <translation type="unfinished">Select faces from the active body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2093"/>
       <source>Wrong Object Type</source>
       <translation type="unfinished">Wrong Object Type</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Defeaturing works only on faces</source>
       <translation type="unfinished">Defeaturing works only on faces</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Select only one feature in an active body.</source>
       <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
@@ -3629,44 +3629,44 @@ measured along the specified direction</source>
       <translation>დავხურო ეს დიალოგი?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="1902"/>
       <source>Wrong selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>მონიშნეთ წიბო, ზედაპირი ან სხეული იგივე სხეულიდან.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Selection is not in the active body</source>
       <translation>მონიშნული აქტიური სხეული არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1903"/>
       <source>Shape of the selected part is empty</source>
       <translation>მონიშნული ნაწილის მონახაზი ცარიელია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>აქტიური სხეულიდან მონიშნეთ წიბო, ზედაპირი ან სხეული.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1069"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation type="unfinished">Consider using a shape binder or a base feature to reference external geometry in a body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Wrong object type</source>
       <translation>ობიექტის არასწორი ტიპი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1890"/>
       <source>%1 works only on parts.</source>
       <translation>%1 მხოლოდ ნაწილებზე მუშაობს.</translation>
     </message>
@@ -3874,12 +3874,12 @@ This may lead to unexpected results.</source>
       <translation>სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="209"/>
+      <location filename="../../Utils.cpp" line="203"/>
       <source>Active Body Required</source>
       <translation>საჭიროა აქტიური სხეული</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="151"/>
+      <location filename="../../Utils.cpp" line="145"/>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
@@ -3888,32 +3888,32 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="210"/>
+      <location filename="../../Utils.cpp" line="204"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
       <translation type="unfinished">To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="272"/>
+      <location filename="../../Utils.cpp" line="266"/>
       <source>Feature is not in a body</source>
       <translation>თვისება სხეულში არაა</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="273"/>
+      <location filename="../../Utils.cpp" line="267"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>ამ თვისების გამოსაყენებლად ის დოკუმენტში სხეულის ობიექტს უნდა ეკუთვნოდეს.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="319"/>
+      <location filename="../../Utils.cpp" line="313"/>
       <source>Feature is not in a part</source>
       <translation>თვისება არ წარმოადგენს ნაწილს</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="320"/>
+      <location filename="../../Utils.cpp" line="314"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>ამ თვისების გამოსაყენებლად ის დოკუმენტში ნაწლის ობიექტს უნდა ეკუთვნოდეს.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
@@ -3954,12 +3954,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>სიდიდის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="93"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
       <source>Feature error</source>
       <translation>თვისების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation type="unfinished">%1 misses a base feature.
@@ -5598,12 +5598,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Create Datum</source>
       <translation>ამოსავალი მონაცემების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2779"/>
+      <location filename="../../Command.cpp" line="2785"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>ქმნის მონაცემების ობიექტს ან ლოკალურ კოორდინატების სისტემას</translation>
     </message>
@@ -5611,12 +5611,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2813"/>
+      <location filename="../../Command.cpp" line="2819"/>
       <source>Create Datum</source>
       <translation>ამოსავალი მონაცემების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2814"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>ქმნის მონაცემების ობიექტს ან ლოკალურ კოორდინატების სისტემას</translation>
     </message>
@@ -5902,17 +5902,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignDefeaturing</name>
     <message>
-      <location filename="../../Command.cpp" line="2117"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>PartDesign</source>
       <translation>ნაწილის დაპროექტება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2118"/>
+      <location filename="../../Command.cpp" line="2124"/>
       <source>Defeaturing</source>
       <translation>თვისების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2119"/>
+      <location filename="../../Command.cpp" line="2125"/>
       <source>Removes selected faces from a solid</source>
       <translation type="unfinished">Removes selected faces from a solid</translation>
     </message>

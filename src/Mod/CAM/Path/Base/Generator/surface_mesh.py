@@ -533,13 +533,6 @@ def _model_optimization(
     if faces is None:
         faces = shape.Faces
 
-    # Detect pre-triangulated models and skip optimization
-    if not exempt_faces and surface_common._is_triangulated_mesh(faces):
-        Path.Log.debug(
-            "surface_mesh._model_optimization: Pre-triangulated model detected. Skipping face optimization."
-        )
-        return shape
-
     filtered = []
     rejected = 0
     clip_bb = None
@@ -614,7 +607,7 @@ def _shape_to_safe_stl(
     bb_safe,
     pad_buffer,
     final_depth,
-    avoid_boundary,
+    avoid_boundary_stl,
     start_depth,
     linear_deflection,
     angular_deflection,
@@ -631,7 +624,7 @@ def _shape_to_safe_stl(
         bb_safe (Part.Face): The bounding box of the model or selected faces.
         pad_buffer (float): The calculated outward offset for the safety pad.
         final_depth (float): The lower Z-bound of the operation.
-        avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
+        avoid_boundary_stl (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         start_depth (float): The upper Z-bound of the operation.
         linear_deflection (float): The base linear deflection for calculating a coarse mesh.
         angular_deflection (float): The base angular deflection for calculating a coarse mesh.
@@ -660,12 +653,12 @@ def _shape_to_safe_stl(
         Path.Log.warning(f"Failed to create bottom pad face for safe STL: {e}")
 
     # Fuse in the "Keep-Out Pillar" for the pre-built avoid boundary, if any
-    if avoid_boundary:
+    if avoid_boundary_stl:
         Path.Log.debug(
             "surface_mesh._shape_to_safe_stl: Fusing precomputed avoid-zone boundary into safe STL."
         )
         try:
-            avoid = Part.makeFace(avoid_boundary)
+            avoid = Part.makeFace(avoid_boundary_stl)
             avoid.translate(FreeCAD.Vector(0, 0, start_depth + 0.1))
             fused_shapes.append(avoid)
         except Exception as e:
@@ -713,7 +706,7 @@ def generate_stl(
     stl_faces,
     stl_filter_adj,
     bb_face,
-    avoid_boundary,
+    avoid_boundary_stl,
     tool_diam,
     needs_safe_stl,
     boundary_adjustment,
@@ -740,7 +733,7 @@ def generate_stl(
         stl_faces (list): A list of Part.Face objects to be machined.
         stl_filter_adj (float): A positive offset value for the boundary adjustment of the STL face filter.
         bb_face: (Part.Face): The BoundBox of the selected faces.
-        avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
+        avoid_boundary_stl (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         tool_diam (float): The diameter of the active tool.
         needs_safe_stl (bool): Flag indicating if the safety model is required.
         boundary_adjustment (float): A positive or negative value of the boundary adjustment.
@@ -842,7 +835,7 @@ def generate_stl(
                 bb_safe,
                 pad_buffer,
                 final_depth,
-                avoid_boundary,
+                avoid_boundary_stl,
                 start_depth,
                 linear_deflection,
                 angular_deflection,

@@ -37,6 +37,7 @@
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 
+#include <format>
 #include <numbers>
 #include <cctype>
 #include <limits>
@@ -45,7 +46,6 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include <fmt/format.h>
 
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
@@ -1326,17 +1326,14 @@ void NumberExpression::negate()
     setQuantity(-getQuantity());
 }
 
-void NumberExpression::_toString(std::ostream &ss, bool,int) const
+void NumberExpression::_toString(std::ostream &ss, bool persistent, int) const
 {
-    // Restore the old implementation because using digits10 + 2 causes
-    // undesired side-effects:
-    // https://forum.freecad.org/viewtopic.php?f=3&t=44057&p=375882#p375882
-    // See also:
-    // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
-    // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
-    // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    // Keep the displayed form compact, but preserve the exact value when
+    // serializing expressions so parsing it restores the same double.
     boost::io::ios_flags_saver ifs(ss);
-    ss << std::setprecision(std::numeric_limits<double>::digits10) << getValue();
+    const int precision = persistent ? std::numeric_limits<double>::max_digits10
+                                     : std::numeric_limits<double>::digits10;
+    ss << std::setprecision(precision) << getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
@@ -3783,11 +3780,11 @@ ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, con
     int result = ExpressionParser::ExpressionParser_yyparse ();
 
     if (result != 0) {
-        throw ParserError(fmt::format("Failed to parse expression '{}'", buffer));
+        throw ParserError(std::format("Failed to parse expression '{}'", buffer));
     }
 
     if (!ScanResult) {
-        throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
+        throw ParserError(std::format("Unknown error in expression '{}'", buffer));
     }
 
     if (!valueExpression) {
@@ -3809,11 +3806,26 @@ bool expressionStartsAt(
         && input.substr(position, value.size()) == value;
 }
 
-bool isExpressionIdentifierContinuation(const UChar32 codePoint)
+bool isExpressionUnitPunctuation(const UChar32 codePoint)
 {
-    // Keep this policy aligned with the IDENTIFIER and CELLADDRESS rules in Expression.l.
+    switch (codePoint) {
+        case '\'':
+        case '"':
+        case U'\u00B0': // degree °
+        case U'\u2032': // prime ′
+        case U'\u2033': // double prime ″
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool isExpressionTokenContinuation(const UChar32 codePoint)
+{
+    // Keep this policy aligned with the IDENTIFIER, CELLADDRESS, and UNIT rules in Expression.l.
     // Localized numeric normalization must never split a token accepted by the canonical lexer.
-    if (codePoint == '_' || codePoint == '@' || codePoint == '$') {
+    if (codePoint == '_' || codePoint == '@' || codePoint == '$'
+        || isExpressionUnitPunctuation(codePoint)) {
         return true;
     }
 
@@ -3835,17 +3847,46 @@ bool isExpressionIdentifierContinuation(const UChar32 codePoint)
     }
 }
 
-bool followsExpressionIdentifier(std::string_view input, const std::size_t position)
+bool localizedDigitEndsAt(
+    std::string_view input,
+    const std::size_t end,
+    const NumericLocaleContext& locale
+)
 {
+    constexpr std::size_t MaxNrBytes = 4; // Max bytes in a UTF-8 code point
+    const std::size_t limit = end > MaxNrBytes ? end - MaxNrBytes : 0;
+    for (std::size_t candidate = end; candidate > limit; --candidate) {
+        int digit = 0;
+        std::size_t digitLength = 0;
+        if (Base::localizedDigitAt(input, candidate - 1, locale, digit, digitLength)
+            && candidate - 1 + digitLength == end) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Decodes the code point ending at `position`; `start` receives its first byte offset.
+UChar32 previousCodePoint(std::string_view input, const std::size_t position, std::size_t& start)
+{
+    start = position;
     if (position == 0 || position > static_cast<std::size_t>(std::numeric_limits<int32_t>::max())) {
-        return false;
+        return U_SENTINEL;
     }
 
-    auto previous = static_cast<int32_t>(position);
+    auto index = static_cast<int32_t>(position);
     UChar32 codePoint = U_SENTINEL;
     const auto* bytes = reinterpret_cast<const uint8_t*>(input.data());
-    U8_PREV(bytes, 0, previous, codePoint);
-    return codePoint != U_SENTINEL && isExpressionIdentifierContinuation(codePoint);
+    U8_PREV(bytes, 0, index, codePoint);
+    start = static_cast<std::size_t>(index);
+    return codePoint;
+}
+
+bool followsExpressionTokenContinuation(std::string_view input, const std::size_t position)
+{
+    std::size_t start = 0;
+    const UChar32 codePoint = previousCodePoint(input, position, start);
+    return codePoint != U_SENTINEL && isExpressionTokenContinuation(codePoint);
 }
 
 bool startsExpressionNumber(
@@ -3858,9 +3899,20 @@ bool startsExpressionNumber(
         return false;
     }
 
+    const std::string_view positiveSign {
+        locale.positiveSign.data(), locale.positiveSign.size()
+    };
+    const std::string_view negativeSign {locale.negativeSign.data(), locale.negativeSign.size()};
+    const auto signs = {std::string_view {"+"}, std::string_view {"-"}, positiveSign, negativeSign};
+    const auto isSignAt = [&](const std::size_t offset) {
+        return std::ranges::any_of(signs, [&](const auto sign) {
+            return expressionStartsAt(input, offset, sign);
+        });
+    };
+
     // Base scans numeric tokens; App decides where expression grammar allows one to start.
     // In particular, identifier and cell-reference suffixes remain opaque to localization.
-    if (followsExpressionIdentifier(input, position)) {
+    if (followsExpressionTokenContinuation(input, position) && !isSignAt(position)) {
         return false;
     }
 
@@ -3882,14 +3934,7 @@ bool startsExpressionNumber(
         return digitAt(position + separatorLength);
     }
 
-    const std::string_view positiveSign {
-        locale.positiveSign.data(), locale.positiveSign.size()
-    };
-    const std::string_view negativeSign {
-        locale.negativeSign.data(), locale.negativeSign.size()
-    };
-    for (const auto sign : {std::string_view {"+"}, std::string_view {"-"}, positiveSign,
-                            negativeSign}) {
+    for (const auto sign : signs) {
         if (!expressionStartsAt(input, position, sign)) {
             continue;
         }
@@ -3907,16 +3952,23 @@ bool startsExpressionNumber(
                 || preceding == ']') {
                 return false;
             }
+
+            // Unit punctuation can also terminate a numeric token.
+            // Treat a sign following such punctuation as binary when
+            // the punctuation itself follows a localized digit.
+            std::size_t unitStart = 0;
+            const UChar32 unit = previousCodePoint(input, previous, unitStart);
+            if (
+                isExpressionUnitPunctuation(unit)
+                && localizedDigitEndsAt(input, unitStart, locale)) {
+                return false;
+            }
+
             // A UTF-8 localized digit may end with a non-ASCII continuation byte, which is not
             // recognized by std::isalnum. Check the complete code point before treating a sign
             // as unary so compact localized expressions keep their binary operator semantics.
-            for (std::size_t candidate = previous; candidate > 0; --candidate) {
-                int digit = 0;
-                std::size_t digitLength = 0;
-                if (Base::localizedDigitAt(input, candidate - 1, locale, digit, digitLength)
-                    && candidate - 1 + digitLength == previous) {
-                    return false;
-                }
+            if (localizedDigitEndsAt(input, previous, locale)) {
+                return false;
             }
         }
 

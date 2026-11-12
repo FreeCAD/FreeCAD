@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
       <translation>Άνοιγμα Αρχείου</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="237"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Assembly</source>
       <translation>Συγκρότημα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
       <translation>2D Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
       <translation>Δημιουργεί ένα δισδιάστατο (2D) προσχέδιο εγγράφου</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="245"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Αρχιτεκτονική</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
       <translation>Άδειο Αρχείο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Δημιουργήστε ένα κενό αρχείο FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Άνοιγμα ενός υπάρχοντος αρχείου CAD ή 3D μοντέλου</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Parametric Body</source>
       <translation>Παραμετρικό Σώμα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="233"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Δημιουργήστε ένα τμήμα με τον πάγκο εργασίας Σχεδίου Εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="238"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
       <translation>Δημιουργία έργου συναρμολόγησης</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="246"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
       <translation>Δημιουργήστε ένα έργο αρχιτεκτονικής</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="538"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>New File</source>
       <translation>Νέο αρχείο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>Παραδείγματα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="542"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>Πρόσφατα αρχεία</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="557"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>Άνοιγμα Ρύθμισης Πρώτης Εκκίνησης</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="558"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Να μην εμφανιστεί ξανά αυτή η αρχική σελίδα (έναρξη με κενή οθόνη)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="532"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Start</source>
       <translation>Εκκίνηση</translation>
     </message>

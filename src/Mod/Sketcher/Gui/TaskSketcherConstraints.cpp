@@ -33,15 +33,15 @@
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
-#include <fmt/format.h>
-#include <fmt/ranges.h>
 #include <cmath>
 #include <cstring>
+#include <format>
 #include <limits>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -547,7 +547,7 @@ protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
         QString key = QStringLiteral("%1_%2x%3")
-                          .arg(QString::fromLatin1(name))
+                          .arg(QString::fromUtf8(name))
                           .arg(size.width())
                           .arg(size.height());
         QPixmap icon;
@@ -1177,7 +1177,7 @@ void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    Base::ConnectionBlocker block(changedSketchView);
+    fastsignals::shared_connection_block blocker(changedSketchView);
     sketchView->Autoconstraints.setValue(value);
 }
 
@@ -1259,7 +1259,7 @@ void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
     }
 
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
-    const std::string idList = fmt::format("[{}]", fmt::join(ids, ", "));
+    const std::string idList = std::format("[{}]", Base::Tools::joinFormatted(ids, ", "));
     sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
     try {
         Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());
@@ -1351,7 +1351,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         EditDatumDialog(tid, this->sketchView, it->ConstraintNbr).exec(false);
     }
     else if (it->constraintType() == Sketcher::Text) {
-        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr, this);
         editDialog->exec();
         delete editDialog;
     }
@@ -1521,7 +1521,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
     else if (ui->filterBox->checkState() == Qt::Checked && specialFilterMode == SpecialFilterType::Associated) {
         int geoid = Sketcher::GeoEnum::GeoUndef;
         Sketcher::PointPos pointpos = Sketcher::PointPos::none;
-        QString expr = QString::fromLatin1(msg.pSubName);
+        QString expr = QString::fromUtf8(msg.pSubName);
         getSelectionGeoId(expr, geoid, pointpos);
 
         if (geoid != Sketcher::GeoEnum::GeoUndef

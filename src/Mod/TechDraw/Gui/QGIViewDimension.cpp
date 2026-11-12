@@ -182,7 +182,7 @@ bool QGIViewDimension::getGroupSelection()
 //Set selection state for this and its children
 void QGIViewDimension::setGroupSelection(bool isSelected)
 {
-    //    Base::Console().message("QGIVD::setGroupSelection(%d)\n", b);
+    //    Base::Console().message("QGIVD::setGroupSelection({})\n", b);
     setSelected(isSelected);
     datumLabel->setSelected(isSelected);
     dimLines->setSelected(isSelected);
@@ -235,7 +235,7 @@ void QGIViewDimension::setNormalColorAll()
 //and so mouse events need to be ignored.  Only the QGIDatumLabel mouse events are relevant.
 void QGIViewDimension::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().message("QGIVD::mousePressEvent() - %s\n", getViewName());
+    //    Base::Console().message("QGIVD::mousePressEvent() - {}\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
@@ -246,7 +246,7 @@ void QGIViewDimension::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().message("QGIVDim::mouseReleaseEvent() - %s\n", getViewName());
+    //    Base::Console().message("QGIVDim::mouseReleaseEvent() - {}\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -419,7 +419,7 @@ void QGIViewDimension::draw()
             drawArea(dim, vp);
         }
         else {
-            Base::Console().error("QGIVD::draw - this DimensionType is unknown: %s\n", dimType);
+            Base::Console().error("QGIVD::draw - this DimensionType is unknown: {}\n", dimType);
         }
     }
     else {
@@ -725,7 +725,7 @@ bool QGIViewDimension::constructDimensionLine(
     // The start position > 0 is not expected, the caller must handle this
     if (startPosition > 0.0) {
         Base::Console().error(
-            "QGIVD::constructDimLine - Start Position must not be positive! Received: %f\n",
+            "QGIVD::constructDimLine - Start Position must not be positive! Received: {:f}\n",
             startPosition);
         return false;
     }
@@ -797,7 +797,7 @@ bool QGIViewDimension::constructDimensionArc(
     // The start rotation > 0 is not expected, the caller must handle this
     if (startRotation > 0.0) {
         Base::Console().error(
-            "QGIVD::constructDimArc - Start Rotation must not be positive! Received: %f\n",
+            "QGIVD::constructDimArc - Start Rotation must not be positive! Received: {:f}\n",
             startRotation);
         return false;
     }
@@ -1280,7 +1280,7 @@ void QGIViewDimension::drawDistanceExecutive(const Base::Vector2d& startPoint,
     }
     else {
         Base::Console().error(
-            "QGIVD::drawDistanceExecutive - this Standard&Style is not supported: %d\n",
+            "QGIVD::drawDistanceExecutive - this Standard&Style is not supported: {}\n",
             standardStyle);
         arrowCount = 0;
     }
@@ -1491,7 +1491,7 @@ void QGIViewDimension::drawDistanceOverride(const Base::Vector2d& startPoint,
     }
     else {
         Base::Console().error(
-            "QGIVD::drawDistanceExecutive - this Standard&Style is not supported: %d\n",
+            "QGIVD::drawDistanceExecutive - this Standard&Style is not supported: {}\n",
             standardStyle);
         arrowCount = 0;
     }
@@ -1738,7 +1738,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
     }
     else {
         Base::Console().error(
-            "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: %d\n",
+            "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: {}\n",
             standardStyle);
     }
 
@@ -1810,7 +1810,7 @@ void QGIViewDimension::drawAreaExecutive(const Base::Vector2d& centerPoint, doub
     }
     else {
         Base::Console().error(
-            "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: %d\n",
+            "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: {}\n",
             standardStyle);
     }
 
@@ -2011,7 +2011,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
                 labelRectangle, 2, standardStyle, flipArrows);
         }
         else {
-            Base::Console().error("QGIVD::drawRadius - this Standard&Style is not supported: %d\n",
+            Base::Console().error("QGIVD::drawRadius - this Standard&Style is not supported: {}\n",
                                   standardStyle);
         }
 
@@ -2211,7 +2211,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
                          flipArrows);
     }
     else {
-        Base::Console().error("QGIVD::drawAngle - this Standard&Style is not supported: %d\n",
+        Base::Console().error("QGIVD::drawAngle - this Standard&Style is not supported: {}\n",
                               standardStyle);
         arrowCount = 0;
     }
@@ -2378,14 +2378,14 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
     }
 
     //tarfu
-    Base::Console().message("QGIVD::findIsoExt - %s - input is not iso axis\n",
+    Base::Console().message("QGIVD::findIsoExt - {} - input is not iso axis\n",
                             getViewObject()->getNameInDocument());
     return Base::Vector3d(1, 0, 0);
 }
 
 void QGIViewDimension::onPrettyChanged(int state)
 {
-    //    Base::Console().message("QGIVD::onPrettyChange(%d)\n", state);
+    //    Base::Console().message("QGIVD::onPrettyChange({})\n", state);
     if (state == NORMAL) {
         setPrettyNormal();
     }

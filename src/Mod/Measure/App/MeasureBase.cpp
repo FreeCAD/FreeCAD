@@ -32,8 +32,7 @@
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
 
-#include <fmt/format.h>
-
+#include <format>
 #include "MeasureBase.h"
 // Generated from MeasureBasePy.xml
 #include "MeasureBasePy.h"
@@ -187,7 +186,7 @@ std::string MeasureBase::formatQuantity(const Base::Quantity& qty) const
     );
 
     displayQty.setValue(convertedValue);
-    return fmt::format("{} {}", displayQty.toNumber(format), displayUnitstr);
+    return std::format("{} {}", displayQty.toNumber(format), displayUnitstr);
 }
 
 

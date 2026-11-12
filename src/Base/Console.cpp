@@ -435,7 +435,7 @@ PyObject* ConsoleSingleton::sPrintMessage(PyObject* /*self*/, PyObject* args)
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Message, IntendedRecipient::Developer, ContentType::Untranslatable>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -446,7 +446,7 @@ PyObject* ConsoleSingleton::sPrintMessage(PyObject* /*self*/, PyObject* args)
 PyObject* ConsoleSingleton::sPrintWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
-        [](const std::string& notifier, const char* msg) { instance().warning(notifier, "%s", msg); },
+        [](const std::string& notifier, const char* msg) { instance().warning(notifier, "{}", msg); },
         args
     );
 }
@@ -457,7 +457,7 @@ PyObject* ConsoleSingleton::sPrintDeveloperWarning(PyObject* /*self*/, PyObject*
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Warning, IntendedRecipient::Developer, ContentType::Untranslatable>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -471,7 +471,7 @@ PyObject* ConsoleSingleton::sPrintUserWarning(PyObject* /*self*/, PyObject* args
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Warning, IntendedRecipient::User, ContentType::Untranslated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -485,7 +485,7 @@ PyObject* ConsoleSingleton::sPrintTranslatedUserWarning(PyObject* /*self*/, PyOb
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Warning, IntendedRecipient::User, ContentType::Translated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -499,7 +499,7 @@ PyObject* ConsoleSingleton::sPrintError(PyObject* /*self*/, PyObject* args)
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Error, IntendedRecipient::All, ContentType::Untranslated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -513,7 +513,7 @@ PyObject* ConsoleSingleton::sPrintDeveloperError(PyObject* /*self*/, PyObject* a
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Error, IntendedRecipient::Developer, ContentType::Untranslatable>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -527,7 +527,7 @@ PyObject* ConsoleSingleton::sPrintUserError(PyObject* /*self*/, PyObject* args)
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Error, IntendedRecipient::User, ContentType::Untranslated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -541,7 +541,7 @@ PyObject* ConsoleSingleton::sPrintTranslatedUserError(PyObject* /*self*/, PyObje
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Error, IntendedRecipient::User, ContentType::Translated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -555,7 +555,7 @@ PyObject* ConsoleSingleton::sPrintLog(PyObject* /*self*/, PyObject* args)
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Log, IntendedRecipient::Developer, ContentType::Untranslatable>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -569,7 +569,7 @@ PyObject* ConsoleSingleton::sPrintCritical(PyObject* /*self*/, PyObject* args)
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Critical, IntendedRecipient::All, ContentType::Untranslated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -583,7 +583,7 @@ PyObject* ConsoleSingleton::sPrintNotification(PyObject* /*self*/, PyObject* arg
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Notification, IntendedRecipient::User, ContentType::Untranslated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },
@@ -597,7 +597,7 @@ PyObject* ConsoleSingleton::sPrintTranslatedNotification(PyObject* /*self*/, PyO
         [](const std::string& notifier, const char* msg) {
             instance().send<LogStyle::Notification, IntendedRecipient::User, ContentType::Translated>(
                 notifier,
-                "%s",
+                "{}",
                 msg
             );
         },

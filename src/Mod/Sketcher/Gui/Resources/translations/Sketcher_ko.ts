@@ -476,12 +476,12 @@ invalid constraints, and degenerate geometry</source>
       <translation>동일 구속 추가</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10405"/>
+      <location filename="../../CommandConstraints.cpp" line="10406"/>
       <source>Add Group constraint</source>
       <translation>모둠 구속 추가</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10825"/>
+      <location filename="../../CommandConstraints.cpp" line="10826"/>
       <source>Activate/Deactivate constraints</source>
       <translation>구속 활성화/비활성화</translation>
     </message>
@@ -664,7 +664,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>스넬의 법칙 구속 추가</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10738"/>
+      <location filename="../../CommandConstraints.cpp" line="10739"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>구속을 주도/참조로 전환</translation>
     </message>
@@ -842,7 +842,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2273"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1245"/>
       <source>Delete all constraints</source>
       <translation>모든 구속 제거</translation>
     </message>
@@ -857,22 +857,22 @@ invalid constraints, and degenerate geometry</source>
       <translation>다른 가상 공간으로 구속 전환하기</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1728"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1733"/>
       <source>Update constraint's virtual space</source>
       <translation>구속의 가상 공간 업데이트</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="823"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="828"/>
       <source>Swap constraint names</source>
       <translation>구속 이름 변경</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1263"/>
       <source>Delete constraints</source>
       <translation>구속 삭제</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1378"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1383"/>
       <source>Rename sketch constraint</source>
       <translation>스케치 구속 이름 바꾸기</translation>
     </message>
@@ -898,8 +898,8 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1660"/>
-      <location filename="../../CommandConstraints.cpp" line="10603"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1345"/>
+      <location filename="../../CommandConstraints.cpp" line="10604"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
       <translation>스케치 구속 수정</translation>
     </message>
@@ -1285,14 +1285,14 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="10213"/>
       <location filename="../../CommandConstraints.cpp" line="10223"/>
       <location filename="../../CommandConstraints.cpp" line="10241"/>
-      <location filename="../../CommandConstraints.cpp" line="10366"/>
-      <location filename="../../CommandConstraints.cpp" line="10376"/>
-      <location filename="../../CommandConstraints.cpp" line="10608"/>
-      <location filename="../../CommandConstraints.cpp" line="10684"/>
-      <location filename="../../CommandConstraints.cpp" line="10696"/>
-      <location filename="../../CommandConstraints.cpp" line="10732"/>
-      <location filename="../../CommandConstraints.cpp" line="10807"/>
-      <location filename="../../CommandConstraints.cpp" line="10819"/>
+      <location filename="../../CommandConstraints.cpp" line="10367"/>
+      <location filename="../../CommandConstraints.cpp" line="10377"/>
+      <location filename="../../CommandConstraints.cpp" line="10609"/>
+      <location filename="../../CommandConstraints.cpp" line="10685"/>
+      <location filename="../../CommandConstraints.cpp" line="10697"/>
+      <location filename="../../CommandConstraints.cpp" line="10733"/>
+      <location filename="../../CommandConstraints.cpp" line="10808"/>
+      <location filename="../../CommandConstraints.cpp" line="10820"/>
       <location filename="../../CommandSketcherTools.cpp" line="468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1118"/>
       <location filename="../../CommandSketcherTools.cpp" line="1447"/>
@@ -1824,7 +1824,7 @@ invalid constraints, and degenerate geometry</source>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10172"/>
-      <location filename="../../CommandConstraints.cpp" line="10361"/>
+      <location filename="../../CommandConstraints.cpp" line="10362"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>선택된 대상체들은 하나의 스케치에 있는 도형들이 아닙니다.</translation>
     </message>
@@ -1839,12 +1839,12 @@ invalid constraints, and degenerate geometry</source>
       <translation>호환되지 않는 도형이 선택되었습니다.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10377"/>
+      <location filename="../../CommandConstraints.cpp" line="10378"/>
       <source>No geometries selected</source>
       <translation>선택된 도형이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10609"/>
+      <location filename="../../CommandConstraints.cpp" line="10610"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>스케치에서 치수 구속을 하나 선택하세요.</translation>
     </message>
@@ -1852,11 +1852,11 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
-      <location filename="../../CommandConstraints.cpp" line="10685"/>
-      <location filename="../../CommandConstraints.cpp" line="10697"/>
-      <location filename="../../CommandConstraints.cpp" line="10733"/>
-      <location filename="../../CommandConstraints.cpp" line="10808"/>
-      <location filename="../../CommandConstraints.cpp" line="10820"/>
+      <location filename="../../CommandConstraints.cpp" line="10686"/>
+      <location filename="../../CommandConstraints.cpp" line="10698"/>
+      <location filename="../../CommandConstraints.cpp" line="10734"/>
+      <location filename="../../CommandConstraints.cpp" line="10809"/>
+      <location filename="../../CommandConstraints.cpp" line="10821"/>
       <source>Select constraints from the sketch.</source>
       <translation>스케치에서 구속을 선택하세요.</translation>
     </message>
@@ -1998,14 +1998,14 @@ invalid constraints, and degenerate geometry</source>
       <translation>축 정렬을 제거하려면 외부 도형이 아닌 요소를 하나 이상 선택해야 합니다</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="674"/>
-      <location filename="../../TaskSketcherElements.cpp" line="724"/>
+      <location filename="../../TaskSketcherElements.cpp" line="678"/>
+      <location filename="../../TaskSketcherElements.cpp" line="728"/>
       <source>Unsupported visual layer operation</source>
       <translation>지원되지 않는 시각 레이어 작업</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="675"/>
-      <location filename="../../TaskSketcherElements.cpp" line="725"/>
+      <location filename="../../TaskSketcherElements.cpp" line="679"/>
+      <location filename="../../TaskSketcherElements.cpp" line="729"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>현재 외부 도형을 다른 시각 레이어로 이동하는 것은 지원되지 않습니다. 외부 도형은 생략됩니다</translation>
     </message>
@@ -2240,172 +2240,172 @@ invalid constraints, and degenerate geometry</source>
       <translation>요소 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="661"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="666"/>
       <source>Toggle Driving/Reference</source>
       <translation>주도/참조 전환</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="665"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="670"/>
       <source>Deactivate</source>
       <translation>비활성화</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="665"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="670"/>
       <source>Activate</source>
       <translation>활성화</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="669"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="674"/>
       <source>Show Constraints</source>
       <translation>구속 표시</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="671"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="676"/>
       <source>Hide Constraints</source>
       <translation>구속 숨김</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="688"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="693"/>
       <source>Center Sketch</source>
       <translation>스케치 중심 맞추기</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="699"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="704"/>
       <source>Swap Constraint Names</source>
       <translation>구속 이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="681"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="686"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="125"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="130"/>
       <source>Horizontal</source>
       <translation>수평</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="128"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="133"/>
       <source>Vertical</source>
       <translation>수직</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="131"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="136"/>
       <source>Coincident</source>
       <translation>일치</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="134"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="139"/>
       <source>PointOnObject</source>
       <translation>객체 위의 점</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="137"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="142"/>
       <source>Parallel</source>
       <translation>평행</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="140"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="145"/>
       <source>Perpendicular</source>
       <translation>직교</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="143"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="148"/>
       <source>Tangent</source>
       <translation>접선</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="146"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="151"/>
       <source>Equal</source>
       <translation>동일</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="149"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="154"/>
       <source>Symmetric</source>
       <translation>대칭</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="152"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="157"/>
       <source>Lock</source>
       <translation>잠금</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="155"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="160"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="158"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="163"/>
       <source>DistanceX</source>
       <translation>X 방향 거리</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="161"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="166"/>
       <source>DistanceY</source>
       <translation>Y 방향 거리</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="164"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="169"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="167"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="172"/>
       <source>Diameter</source>
       <translation>지름</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="170"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="175"/>
       <source>Angle</source>
       <translation>각도</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="173"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="178"/>
       <source>Weight</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="176"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="181"/>
       <source>Snell</source>
       <translation>스넬</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="179"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="184"/>
       <source>Alignment</source>
       <translation>정렬</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="188"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="193"/>
       <source>Constraint</source>
       <translation>구속</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="656"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="661"/>
       <source>Edit Value</source>
       <translation>값 편집</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="691"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="695"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="700"/>
       <source>Delete All</source>
       <translation>전체 삭제</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="701"/>
       <source>Delete by Filter</source>
       <translation type="unfinished">Delete by Filter</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="811"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="816"/>
       <source>Unnamed constraint</source>
       <translation>이름 없는 구속</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="812"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="817"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>이름이 있는 구속의 이름만 바꿀 수 있습니다.</translation>
     </message>
@@ -2492,72 +2492,72 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="351"/>
+      <location filename="../../TaskSketcherElements.cpp" line="355"/>
       <source>Normal</source>
       <translation>일반</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="352"/>
+      <location filename="../../TaskSketcherElements.cpp" line="356"/>
       <source>Construction</source>
       <translation>구성선</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="353"/>
+      <location filename="../../TaskSketcherElements.cpp" line="357"/>
       <source>Internal</source>
       <translation>내부</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="354"/>
+      <location filename="../../TaskSketcherElements.cpp" line="358"/>
       <source>External</source>
       <translation>외부</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="355"/>
+      <location filename="../../TaskSketcherElements.cpp" line="359"/>
       <source>All types</source>
       <translation>모든 유형</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="356"/>
+      <location filename="../../TaskSketcherElements.cpp" line="360"/>
       <source>Point</source>
       <translation>점</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="357"/>
+      <location filename="../../TaskSketcherElements.cpp" line="361"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="358"/>
+      <location filename="../../TaskSketcherElements.cpp" line="362"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="359"/>
+      <location filename="../../TaskSketcherElements.cpp" line="363"/>
       <source>Ellipse</source>
       <translation>타원</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="360"/>
+      <location filename="../../TaskSketcherElements.cpp" line="364"/>
       <source>Arc of circle</source>
       <translation>원호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="361"/>
+      <location filename="../../TaskSketcherElements.cpp" line="365"/>
       <source>Arc of ellipse</source>
       <translation>타원호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="362"/>
+      <location filename="../../TaskSketcherElements.cpp" line="366"/>
       <source>Arc of hyperbola</source>
       <translation>쌍곡선호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="363"/>
+      <location filename="../../TaskSketcherElements.cpp" line="367"/>
       <source>Arc of parabola</source>
       <translation>포물선호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="364"/>
+      <location filename="../../TaskSketcherElements.cpp" line="368"/>
       <source>B-spline</source>
       <translation>B-조절곡선</translation>
     </message>
@@ -2685,32 +2685,32 @@ invalid constraints, and degenerate geometry</source>
       <translation>수직축 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="763"/>
+      <location filename="../../TaskSketcherElements.cpp" line="767"/>
       <source>Convert to geometries</source>
       <translation>도형으로 변환</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="892"/>
       <source>Layer</source>
       <translation>레이어</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="898"/>
+      <location filename="../../TaskSketcherElements.cpp" line="902"/>
       <source>Layer 0</source>
       <translation>레이어 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="899"/>
+      <location filename="../../TaskSketcherElements.cpp" line="903"/>
       <source>Layer 1</source>
       <translation>레이어 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="900"/>
+      <location filename="../../TaskSketcherElements.cpp" line="904"/>
       <source>Hidden</source>
       <translation>숨김</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="905"/>
+      <location filename="../../TaskSketcherElements.cpp" line="909"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
@@ -3662,48 +3662,48 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>설정</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="942"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="947"/>
       <source>Constraints</source>
       <translation>구속</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="977"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="982"/>
       <source>Auto constraints</source>
       <translation>자동 구속</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="978"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="983"/>
       <source>Auto remove redundant constraints</source>
       <translation>중복 구속 자동 제거</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="979"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="984"/>
       <source>Display only filtered constraints</source>
       <translation>여과된 구속만 표시</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="980"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="985"/>
       <source>Extended information (in widget)</source>
       <translation>확장 정보(위젯)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="981"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="986"/>
       <source>Hide internal alignment (in widget)</source>
       <translation>내부 정렬 숨기기(위젯)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1740"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1769"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1745"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1774"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1740"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1745"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>표시 추적을 업데이트할 수 없음:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1769"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1774"/>
       <source>Impossible to update visibility:</source>
       <translation>표시를 업데이트할 수 없음:</translation>
     </message>
@@ -3731,114 +3731,114 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>설정</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2100"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2104"/>
       <source>Construction</source>
       <translation>컨스트럭션</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1333"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1337"/>
       <source>Elements</source>
       <translation>요소</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2196"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2056"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2201"/>
       <source>Point</source>
       <translation>점</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2103"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2107"/>
       <source>Internal</source>
       <translation>내부</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2068"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2072"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2203"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2204"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2060"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2064"/>
       <source>Group</source>
       <translation>그룹</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2063"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2067"/>
       <source>Text</source>
       <translation>글자</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2072"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2202"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2203"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2076"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2207"/>
       <source>Arc</source>
       <translation>호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2205"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2079"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2209"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2208"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2209"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2082"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2212"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2213"/>
       <source>Ellipse</source>
       <translation>타원</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2212"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2085"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2216"/>
       <source>Elliptical Arc</source>
       <translation>타원호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2213"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
       <source>Elliptical arc</source>
       <translation>타원호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2216"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2088"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
       <source>Hyperbolic Arc</source>
       <translation>쌍곡선호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2221"/>
       <source>Hyperbolic arc</source>
       <translation>쌍곡선호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2224"/>
       <source>Parabolic Arc</source>
       <translation>포물선호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2221"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2091"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2225"/>
       <source>Parabolic arc</source>
       <translation>포물선호</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2090"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2223"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2224"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2094"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2227"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2228"/>
       <source>B-spline</source>
       <translation>B-조절곡선</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2093"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2225"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2226"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2097"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2229"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2230"/>
       <source>Other</source>
       <translation>기타</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2268"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2272"/>
       <source>Extended information</source>
       <translation>확장 정보</translation>
     </message>
@@ -5091,7 +5091,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     <message>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
       <location filename="../../EditDatumDialog.cpp" line="339"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1388"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1393"/>
       <source>Value Error</source>
       <translation>값 오류</translation>
     </message>
@@ -6470,12 +6470,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10573"/>
+      <location filename="../../CommandConstraints.cpp" line="10574"/>
       <source>Edit Value</source>
       <translation>값 편집</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10574"/>
+      <location filename="../../CommandConstraints.cpp" line="10575"/>
       <source>Edits the value of a dimensional constraint</source>
       <translation>치수 구속의 값을 편집합니다</translation>
     </message>
@@ -6483,12 +6483,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10627"/>
+      <location filename="../../CommandConstraints.cpp" line="10628"/>
       <source>Toggle Driving/Reference Constraints</source>
       <translation>주도/참조 구속 전환</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10628"/>
+      <location filename="../../CommandConstraints.cpp" line="10629"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation>선택한 구속과 명령의 주도/참조 모드를 전환합니다</translation>
     </message>
@@ -6496,12 +6496,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10782"/>
+      <location filename="../../CommandConstraints.cpp" line="10783"/>
       <source>Toggle Constraints</source>
       <translation>구속 전환</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10783"/>
+      <location filename="../../CommandConstraints.cpp" line="10784"/>
       <source>Toggles the state of the selected constraints</source>
       <translation>선택한 구속의 상태를 전환합니다</translation>
     </message>
@@ -6912,12 +6912,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1430"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1431"/>
       <source>B-Spline</source>
       <translation>B-조절곡선</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1431"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1432"/>
       <source>Creates a B-spline curve defined by control points</source>
       <translation>제어점으로 정의된 B-스플라인 곡선을 생성합니다</translation>
     </message>
@@ -6925,12 +6925,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1470"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1471"/>
       <source>Periodic B-Spline</source>
       <translation>주기적 B-조절곡선</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1471"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1472"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
       <translation>제어점으로 정의된 주기적 B-스플라인 곡선을 생성합니다</translation>
     </message>
@@ -6938,12 +6938,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1509"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1510"/>
       <source>B-Spline From Knots</source>
       <translation>매듭으로 B-스플라인 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1510"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1511"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
       <translation>매듭(즉, 보간)으로 B-스플라인을 생성합니다</translation>
     </message>
@@ -6951,12 +6951,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1546"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1547"/>
       <source>Periodic B-Spline From Knots</source>
       <translation>매듭으로 주기적 B-스플라인 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1547"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1548"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
       <translation>보간을 사용하여 매듭으로 정의된 주기적 B-스플라인을 생성합니다</translation>
     </message>
@@ -6964,12 +6964,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1589"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1590"/>
       <source>Fillet/Chamfer</source>
       <translation>모깎기/모따기</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1590"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1591"/>
       <source>Creates a fillet or chamfer between 2 curves</source>
       <translation type="unfinished">Creates a fillet or chamfer between 2 curves</translation>
     </message>
@@ -6977,12 +6977,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1623"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1624"/>
       <source>Fillet</source>
       <translation>모깎기</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1624"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1625"/>
       <source>Creates a fillet between 2 selected curves or at coincident points</source>
       <translation type="unfinished">Creates a fillet between 2 selected curves or at coincident points</translation>
     </message>
@@ -6990,12 +6990,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1655"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1656"/>
       <source>Chamfer</source>
       <translation>모따기</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1656"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1657"/>
       <source>Creates a chamfer between 2 selected curves or at coincident points</source>
       <translation type="unfinished">Creates a chamfer between 2 selected curves or at coincident points</translation>
     </message>
@@ -7003,12 +7003,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1689"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1690"/>
       <source>Edit Edges</source>
       <translation>모서리 편집</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1690"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1691"/>
       <source>Edge editing tools</source>
       <translation>모서리 편집 도구</translation>
     </message>
@@ -7016,12 +7016,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1723"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1724"/>
       <source>Trim Edge</source>
       <translation>모서리 다듬기</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1724"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1725"/>
       <source>Trims an edge with respect to the selected position</source>
       <translation>선택한 위치를 기준으로 모서리를 다듬습니다</translation>
     </message>
@@ -7029,12 +7029,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1753"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1754"/>
       <source>Extend Edge</source>
       <translation>모서리 연장</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1754"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1755"/>
       <source>Extends an edge with respect to the selected position</source>
       <translation>선택한 위치를 기준으로 모서리를 연장합니다</translation>
     </message>
@@ -7042,12 +7042,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1783"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1784"/>
       <source>Split Edge</source>
       <translation>모서리 분할</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1784"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1785"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
       <translation>구속을 유지하면서 모서리를 두 구간으로 분할합니다</translation>
     </message>
@@ -7055,12 +7055,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCompExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1814"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1815"/>
       <source>External Geometry</source>
       <translation>외부 도형</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1815"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1816"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
       <translation>스케치 외부에 정의된 도형에 연결된 스케치 요소를 생성합니다</translation>
     </message>
@@ -7068,12 +7068,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherProjection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1872"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1873"/>
       <source>External Projection</source>
       <translation>외부 투영</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1873"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1874"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
       <translation>외부 도형의 투영을 스케치 평면에 생성합니다</translation>
     </message>
@@ -7081,12 +7081,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherIntersection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1909"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1910"/>
       <source>External Intersection</source>
       <translation>외부 교차</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1910"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1911"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
       <translation>외부 도형과 스케치 평면의 교차를 생성합니다</translation>
     </message>
@@ -7094,12 +7094,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1947"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1948"/>
       <source>Carbon Copy</source>
       <translation>카본 복사</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1948"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1949"/>
       <source>Copies the geometry of another sketch</source>
       <translation>다른 스케치의 도형을 복사합니다</translation>
     </message>

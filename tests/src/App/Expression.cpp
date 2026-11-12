@@ -313,6 +313,14 @@ TEST_F(Expression, toString)
     EXPECT_EQ(expr.toString(), "pi rad");
 }
 
+TEST_F(Expression, numberToStringUsesRoundTripPrecisionForPersistence)
+{
+    App::NumberExpression expr{nullptr, Base::Quantity{9030000.000000002}};
+
+    EXPECT_EQ(expr.toString(), "9030000");
+    EXPECT_EQ(std::stod(expr.toString(true)), expr.getValue());
+}
+
 TEST_F(Expression, test_pi_rad)
 {
     auto constant = std::make_unique<App::ConstantExpression>(nullptr, "pi");

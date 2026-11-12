@@ -45,6 +45,7 @@ public:
                const Base::Color& color,
                const bool visible,
                const int lineNumber);
+
    // TODO: phase out the old 4 parameter constructor
    LineFormat(const int style,
                const double weight,

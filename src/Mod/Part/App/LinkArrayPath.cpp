@@ -20,7 +20,7 @@ void LinkArrayPath::onDocumentRestored()
 
 std::vector<Base::Placement> LinkArrayPath::getElementPlacements()
 {
-    return placementsFromTransforms(calculateTransformations(false));
+    return placementsFromTransforms(calculateTransformations());
 }
 
 void LinkArrayPath::setPathLinkScope()

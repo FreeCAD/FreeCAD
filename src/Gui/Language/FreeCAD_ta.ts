@@ -53,7 +53,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="336"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="372"/>
       <source>Edit</source>
       <translation>திருத்து</translation>
     </message>
@@ -141,7 +141,7 @@
       <translation>உருமாற்று, உருமாற்றம்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3215"/>
+      <location filename="../ViewProviderLink.cpp" line="3223"/>
       <source>Toggle array elements</source>
       <translation>வரிசை உறுப்புகளை நிலைமாற்று</translation>
     </message>
@@ -4720,12 +4720,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="145"/>
+      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="149"/>
       <source>unknown unit:</source>
       <translation>அறியப்படாத அலகு:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="152"/>
+      <location filename="../Dialogs/DlgUnitsCalculatorImp.cpp" line="156"/>
       <source>unit mismatch</source>
       <translation>அலகு பொருத்தமின்மை</translation>
     </message>
@@ -5977,12 +5977,12 @@ Save all changes?</source>
   <context>
     <name>Gui::InputField</name>
     <message>
-      <location filename="../InputField.cpp" line="218"/>
+      <location filename="../InputField.cpp" line="267"/>
       <source>Edit</source>
       <translation>திருத்து</translation>
     </message>
     <message>
-      <location filename="../InputField.cpp" line="238"/>
+      <location filename="../InputField.cpp" line="287"/>
       <source>Save Value</source>
       <translation>மதிப்பைச் சேமிக்கவும்</translation>
     </message>
@@ -6116,12 +6116,12 @@ Save all changes?</source>
       <translation>பெரியவைகள்</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1319"/>
+      <location filename="../Command.cpp" line="1364"/>
       <source>Macro file doesn't exist</source>
       <translation>மேக்ரோ கோப்பு இல்லை</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1320"/>
+      <location filename="../Command.cpp" line="1365"/>
       <source>No such macro file: '%1'</source>
       <translation>அத்தகைய மேக்ரோ கோப்பு இல்லை: '% 1'</translation>
     </message>
@@ -7179,252 +7179,252 @@ Specify another directory?</source>
   <context>
     <name>Gui::Translator</name>
     <message>
-      <location filename="Translator.cpp" line="211"/>
+      <location filename="Translator.cpp" line="229"/>
       <source>Afrikaans</source>
       <translation>ஆப்பிரிக்கா</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="212"/>
+      <location filename="Translator.cpp" line="230"/>
       <source>Arabic</source>
       <translation>அரபு</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="213"/>
+      <location filename="Translator.cpp" line="231"/>
       <source>Basque</source>
       <translation>பாச்க்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="214"/>
+      <location filename="Translator.cpp" line="232"/>
       <source>Belarusian</source>
       <translation>பெலாருசியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="215"/>
+      <location filename="Translator.cpp" line="233"/>
       <source>Bulgarian</source>
       <translation>பல்கேரியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="216"/>
+      <location filename="Translator.cpp" line="234"/>
       <source>Catalan</source>
       <translation>கற்றலான்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="217"/>
+      <location filename="Translator.cpp" line="235"/>
       <source>Chinese (Simplified)</source>
       <oldsource>Chinese Simplified</oldsource>
       <translation>சீன (எளிமைப்படுத்தப்பட்ட)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="218"/>
+      <location filename="Translator.cpp" line="236"/>
       <source>Chinese (Traditional)</source>
       <oldsource>Chinese Traditional</oldsource>
       <translation>சீன (பாரம்பரிய)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="219"/>
+      <location filename="Translator.cpp" line="237"/>
       <source>Croatian</source>
       <translation>குரோசியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="220"/>
+      <location filename="Translator.cpp" line="238"/>
       <source>Czech</source>
       <translation>செக்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="222"/>
+      <location filename="Translator.cpp" line="240"/>
       <source>Dutch</source>
       <translation>டச்சு</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="223"/>
+      <location filename="Translator.cpp" line="241"/>
       <source>English</source>
       <translation>ஆங்கிலம்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="224"/>
+      <location filename="Translator.cpp" line="242"/>
       <source>Filipino</source>
       <translation>ஃபிலிபினோ</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="225"/>
+      <location filename="Translator.cpp" line="243"/>
       <source>Finnish</source>
       <translation>பின்னிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="226"/>
+      <location filename="Translator.cpp" line="244"/>
       <source>French</source>
       <translation>பிரஞ்சு</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="227"/>
+      <location filename="Translator.cpp" line="245"/>
       <source>Galician</source>
       <translation>காலிசியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="229"/>
+      <location filename="Translator.cpp" line="247"/>
       <source>German</source>
       <translation>செர்மன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="230"/>
+      <location filename="Translator.cpp" line="248"/>
       <source>Greek</source>
       <translation>கிரேக்கம்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="231"/>
+      <location filename="Translator.cpp" line="249"/>
       <source>Hungarian</source>
       <translation>அங்கேரியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="232"/>
+      <location filename="Translator.cpp" line="250"/>
       <source>Indonesian</source>
       <translation>இந்தோனேசிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="233"/>
+      <location filename="Translator.cpp" line="251"/>
       <source>Italian</source>
       <translation>இத்தாலிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="234"/>
+      <location filename="Translator.cpp" line="252"/>
       <source>Japanese</source>
       <translation>சப்பானியர்கள்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="235"/>
+      <location filename="Translator.cpp" line="253"/>
       <source>Kabyle</source>
       <translation>கபாய்ல்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="236"/>
+      <location filename="Translator.cpp" line="254"/>
       <source>Korean</source>
       <translation>கொரிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="237"/>
+      <location filename="Translator.cpp" line="255"/>
       <source>Lithuanian</source>
       <translation>லிதுவேனியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="238"/>
+      <location filename="Translator.cpp" line="256"/>
       <source>Norwegian</source>
       <translation>நோர்வே</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="239"/>
+      <location filename="Translator.cpp" line="257"/>
       <source>Polish</source>
       <translation>போலீச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="240"/>
+      <location filename="Translator.cpp" line="258"/>
       <source>Portuguese (Brazilian)</source>
       <oldsource>Portuguese, Brazilian</oldsource>
       <translation>போர்த்துகீசியம் (பிரேசிலியன்)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="241"/>
+      <location filename="Translator.cpp" line="259"/>
       <source>Portuguese</source>
       <translation>போர்த்துகீசியம்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="242"/>
+      <location filename="Translator.cpp" line="260"/>
       <source>Romanian</source>
       <translation>ருமேனிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="243"/>
+      <location filename="Translator.cpp" line="261"/>
       <source>Russian</source>
       <translation>ரச்ய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="244"/>
+      <location filename="Translator.cpp" line="262"/>
       <source>Serbian</source>
       <translation>செர்பிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="245"/>
+      <location filename="Translator.cpp" line="263"/>
       <source>Serbian (Latin)</source>
       <oldsource>Serbian, Latin</oldsource>
       <translation>செர்பிய (லத்தீன்)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="246"/>
+      <location filename="Translator.cpp" line="264"/>
       <source>Slovak</source>
       <translation>ச்லோவாக்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="247"/>
+      <location filename="Translator.cpp" line="265"/>
       <source>Slovenian</source>
       <translation>ச்லோவேனியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="248"/>
+      <location filename="Translator.cpp" line="266"/>
       <source>Spanish</source>
       <translation>ச்பானிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="249"/>
+      <location filename="Translator.cpp" line="267"/>
       <source>Spanish (Argentina)</source>
       <oldsource>Spanish, Argentina</oldsource>
       <translation>ச்பானிச் (அர்சென்டினா)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="250"/>
+      <location filename="Translator.cpp" line="268"/>
       <source>Swedish</source>
       <translation>ச்வீடிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="251"/>
+      <location filename="Translator.cpp" line="269"/>
       <source>Turkish</source>
       <translation>துருக்கிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="252"/>
+      <location filename="Translator.cpp" line="270"/>
       <source>Ukrainian</source>
       <translation>உக்ரேனிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="253"/>
+      <location filename="Translator.cpp" line="271"/>
       <source>Valencian</source>
       <translation>வலென்சியன்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="254"/>
+      <location filename="Translator.cpp" line="272"/>
       <source>Vietnamese</source>
       <translation>வியட்நாமிய</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="255"/>
+      <location filename="Translator.cpp" line="273"/>
       <source>Malay</source>
       <translation>மலாய்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="256"/>
+      <location filename="Translator.cpp" line="274"/>
       <source>Tamil</source>
       <translation>தமிழ்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="257"/>
+      <location filename="Translator.cpp" line="275"/>
       <source>Irish</source>
       <translation>ஐரிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="258"/>
+      <location filename="Translator.cpp" line="276"/>
       <source>Lao</source>
       <translation type="unfinished">Lao</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="259"/>
+      <location filename="Translator.cpp" line="277"/>
       <source>Hebrew</source>
       <translation type="unfinished">Hebrew</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="221"/>
+      <location filename="Translator.cpp" line="239"/>
       <source>Danish</source>
       <translation>டேனிச்</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="228"/>
+      <location filename="Translator.cpp" line="246"/>
       <source>Georgian</source>
       <translation>சார்சியன்</translation>
     </message>
@@ -7447,7 +7447,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4251"/>
+      <location filename="../Tree.cpp" line="4262"/>
       <source>Search</source>
       <translation>தேடு</translation>
     </message>
@@ -7490,153 +7490,153 @@ Specify another directory?</source>
       <translation>குழு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3400"/>
-      <location filename="../Tree.cpp" line="3421"/>
+      <location filename="../Tree.cpp" line="3411"/>
+      <location filename="../Tree.cpp" line="3432"/>
       <source>Error</source>
       <translation>பிழை</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3400"/>
+      <location filename="../Tree.cpp" line="3411"/>
       <source>File does not exist.</source>
       <translation>கோப்பு இல்லை.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3421"/>
+      <location filename="../Tree.cpp" line="3432"/>
       <source>Failed to open directory.</source>
       <translation>கோப்பகத்தைத் திறக்க முடியவில்லை.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Labels &amp; Attributes</source>
       <translation>லேபிள்கள் &amp; பண்புக்கூறுகள்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3901"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Description</source>
       <translation>விவரம்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3902"/>
+      <location filename="../Tree.cpp" line="3913"/>
       <source>Internal name</source>
       <translation>உள் பெயர்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3904"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>ட்ரீ வியூவில் மறைக்கப்பட்ட பொருட்களைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3906"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>மரக் காட்சியில் 'மறைக்கப்பட்டவை' எனக் குறிக்கப்பட்ட உருப்படிகளைக் காட்டுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>மரக் காட்சியில் தெரிவுநிலையை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3925"/>
       <source>Create Group</source>
       <translation>குழுவை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Creates a group</source>
       <translation>ஒரு குழுவை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3929"/>
       <source>Renames object</source>
       <translation>பொருளை மறுபெயரிடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Finish Editing</source>
       <translation>திருத்துதல் முடிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Finishes editing object</source>
       <translation>பொருளைத் திருத்துவதை முடிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3923"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>தேர்வில் சார்பு பொருள்களைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Close Document</source>
       <translation>ஆவணத்தை மூடு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3927"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Closes the document</source>
       <translation>ஆவணத்தை மூடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3943"/>
       <source>Reveals the current file location in Finder</source>
       <translation>ஃபைண்டரில் தற்போதைய கோப்பு இருப்பிடத்தை வெளிப்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3946"/>
       <source>Opens the current file location</source>
       <translation>தற்போதைய கோப்பு இருப்பிடத்தைத் திறக்கிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3949"/>
       <source>Reload Document</source>
       <translation>ஆவணத்தை மீண்டும் ஏற்றவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3950"/>
       <source>Reloads a partially loaded document</source>
       <translation>பகுதி ஏற்றப்பட்ட ஆவணத்தை மீண்டும் ஏற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3941"/>
+      <location filename="../Tree.cpp" line="3952"/>
       <source>Skip Recomputes</source>
       <translation>மறுகணிப்புகளைத் தவிர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>ஆவணத்தின் மறு கணக்கீடுகளை இயக்குகிறது அல்லது முடக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3955"/>
       <source>Allow Partial Recomputes</source>
       <translation>பகுதி மறுகணிப்புகளை அனுமதிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3945"/>
+      <location filename="../Tree.cpp" line="3956"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>'மறு கணக்கீட்டைத் தவிர்' இயக்கப்பட்டிருக்கும் போது, ​​மறுகணிப்பு திருத்துதல் பொருளை இயக்குகிறது அல்லது முடக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3949"/>
+      <location filename="../Tree.cpp" line="3960"/>
       <source>Mark to Recompute</source>
       <translation>மீண்டும் கணக்கிட குறி</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3950"/>
+      <location filename="../Tree.cpp" line="3961"/>
       <source>Marks this object to be recomputed</source>
       <translation>இந்த பொருளை மீண்டும் கணக்கிட வேண்டும் எனக் குறிக்கும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3953"/>
+      <location filename="../Tree.cpp" line="3964"/>
       <source>Recompute Object</source>
       <translation>பொருள் மறுகணிப்பு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3954"/>
+      <location filename="../Tree.cpp" line="3965"/>
       <source>Recomputes the selected object</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருளை மீண்டும் கணக்கிடுகிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3922"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>மரக் காட்சியில் தேர்ந்தெடுக்கப்பட்ட உருப்படிகளின் தெரிவுநிலையை மாற்றுகிறது</translation>
     </message>
@@ -7656,33 +7656,33 @@ Specify another directory?</source>
       <translation>உருப்படிகளுக்கான விளக்க நெடுவரிசையைக் காட்டுகிறது. 'லேபிள்2' சொத்தை திருத்துவதன் மூலம் ஒரு பொருளின் விளக்கத்தை அமைக்கலாம்.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
-      <location filename="../Tree.cpp" line="6615"/>
+      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="6626"/>
       <source>Rename</source>
       <translation>மறுபெயரிடு</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>தேர்வில் அனைத்து சார்ந்த பொருட்களையும் சேர்க்கிறது</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Reveal in Finder</source>
       <translation>கண்டுபிடிப்பாளரில் வெளிப்படுத்துங்கள்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Open File Location</source>
       <translation>கோப்பு இருப்பிடத்தைத் திறக்கவும்</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6583"/>
+      <location filename="../Tree.cpp" line="6594"/>
       <source> (but must be executed)</source>
       <translation>(ஆனால் செயல்படுத்தப்பட வேண்டும்)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6586"/>
+      <location filename="../Tree.cpp" line="6597"/>
       <source>%1, Internal name: %2</source>
       <translation>% 1, உள் பெயர்:% 2</translation>
     </message>
@@ -8106,7 +8106,7 @@ Check the report view for more details.</source>
       <translation>→ மீண்டும் தொடங்குகிறது…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="520"/>
+      <location filename="../Command.cpp" line="548"/>
       <source>Exception</source>
       <translation>விதிவிலக்கு</translation>
     </message>
@@ -8883,59 +8883,59 @@ Choose 'Abort' to abort</source>
       <translation>'% 1' இல் சொத்தை சேர்க்க முடியவில்லை:% 2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2776"/>
-      <location filename="../Tree.cpp" line="3173"/>
+      <location filename="../Tree.cpp" line="2787"/>
+      <location filename="../Tree.cpp" line="3184"/>
       <source>Drag &amp; drop failed</source>
       <translation>இழுத்து விட முடியவில்லை</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1018"/>
-      <location filename="../ViewProviderLink.cpp" line="3047"/>
+      <location filename="../ViewProviderLink.cpp" line="3055"/>
       <source>Apply to all</source>
       <translation>அனைவருக்கும் விண்ணப்பிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3021"/>
+      <location filename="../ViewProviderLink.cpp" line="3029"/>
       <source>Setup Configurable Object</source>
       <translation>உள்ளமைக்கக்கூடிய பொருளை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3023"/>
+      <location filename="../ViewProviderLink.cpp" line="3031"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>உள்ளமைவு மாறும்போது எந்தப் பொருளை நகலெடுக்க வேண்டும் அல்லது விலக்க வேண்டும் என்பதைத் தேர்ந்தெடுக்கிறது. அனைத்து வெளிப்புற இணைக்கப்பட்ட பொருள்களும் இயல்பாகவே விலக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3045"/>
+      <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>கட்டமைப்பு மாற்றப்படும்போது எந்தெந்த பொருட்களை நகலெடுக்க வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3048"/>
+      <location filename="../ViewProviderLink.cpp" line="3056"/>
       <source>Applies the setting to all links</source>
       <translation>அனைத்து இணைப்புகளுக்கும் அமைப்பைப் பயன்படுத்துகிறது</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3109"/>
+      <location filename="../ViewProviderLink.cpp" line="3117"/>
       <source>Copy on Change</source>
       <translation>மாற்றத்தின் மீது நகல்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3110"/>
+      <location filename="../ViewProviderLink.cpp" line="3118"/>
       <source>Enable</source>
       <translation>இயக்கு</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3120"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>இணைக்கப்பட்ட பொருளின் உள்ளமைவு மாற்றப்படும்போது அதன் தானாக நகலை இயக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3128"/>
+      <location filename="../ViewProviderLink.cpp" line="3136"/>
       <source>Tracking</source>
       <translation>கண்காணிப்பு</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3130"/>
+      <location filename="../ViewProviderLink.cpp" line="3138"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8944,17 +8944,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3150"/>
+      <location filename="../ViewProviderLink.cpp" line="3158"/>
       <source>Disable Copy on Change</source>
       <translation>மாற்றத்தில் நகலை முடக்கு</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3168"/>
+      <location filename="../ViewProviderLink.cpp" line="3176"/>
       <source>Refresh Configurable Object</source>
       <translation>கட்டமைக்கக்கூடிய பொருளைப் புதுப்பிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3170"/>
+      <location filename="../ViewProviderLink.cpp" line="3178"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8965,23 +8965,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3212"/>
+      <location filename="../ViewProviderLink.cpp" line="3220"/>
       <source>Toggle Array Elements</source>
       <translation>வரிசை உறுப்புகளை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3225"/>
+      <location filename="../ViewProviderLink.cpp" line="3233"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>ஒவ்வொரு இணைப்பு வரிசை உறுப்புகளையும் தனிப்பட்ட பொருள்களாகக் காட்ட வேண்டுமா என்பதை மாற்றுகிறது</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3234"/>
-      <location filename="../ViewProviderLink.cpp" line="3240"/>
+      <location filename="../ViewProviderLink.cpp" line="3242"/>
+      <location filename="../ViewProviderLink.cpp" line="3248"/>
       <source>Override Colors</source>
       <translation>நிறங்களை மேலெழுதவும்</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDocumentObject.cpp" line="291"/>
+      <location filename="../ViewProviderDocumentObject.cpp" line="327"/>
       <source>Edit %1</source>
       <translation>திருத்த % 1</translation>
     </message>
@@ -8996,18 +8996,18 @@ the current copy will be lost.
       <translation>வண்ண புராணம்</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1079"/>
+      <location filename="../OverlayManager.cpp" line="1122"/>
       <source>Toggle overlay</source>
       <translation>மேலடுக்கை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1080"/>
-      <location filename="../OverlayWidgets.cpp" line="2574"/>
+      <location filename="../OverlayManager.cpp" line="1123"/>
+      <location filename="../OverlayWidgets.cpp" line="2618"/>
       <source>Toggle floating window</source>
       <translation>மிதக்கும் சாளரத்தை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1081"/>
+      <location filename="../OverlayManager.cpp" line="1124"/>
       <source>Close dock window</source>
       <translation>டாக் சாளரத்தை மூடு</translation>
     </message>
@@ -9117,12 +9117,12 @@ the current copy will be lost.
       <translation>அனிமேசன் வளைவு வகை</translation>
     </message>
     <message>
-      <location filename="../SplashScreen.cpp" line="192"/>
+      <location filename="../SplashScreen.cpp" line="195"/>
       <source>WARNING: This is a development version.</source>
       <translation>எச்சரிக்கை: இது ஒரு வளர்ச்சிப் பதிப்பு.</translation>
     </message>
     <message>
-      <location filename="../SplashScreen.cpp" line="193"/>
+      <location filename="../SplashScreen.cpp" line="196"/>
       <source>Do not use it in a production environment.</source>
       <translation>விளைவாக்கம் சூழலில் இதைப் பயன்படுத்த வேண்டாம்.</translation>
     </message>
@@ -11953,67 +11953,67 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::OverlayTabWidget</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="952"/>
+      <location filename="../OverlayWidgets.cpp" line="995"/>
       <source>Toggle transparent mode</source>
       <translation>வெளிப்படையான பயன்முறையை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="953"/>
+      <location filename="../OverlayWidgets.cpp" line="996"/>
       <source>None</source>
       <translation>எதுவுமில்லை</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="954"/>
+      <location filename="../OverlayWidgets.cpp" line="997"/>
       <source>Turn off auto hide/show</source>
       <translation>தானாக மறை/காட்சியை முடக்கு</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="955"/>
+      <location filename="../OverlayWidgets.cpp" line="998"/>
       <source>Auto hide</source>
       <translation>தானாக மறை</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="956"/>
+      <location filename="../OverlayWidgets.cpp" line="999"/>
       <source>Auto hide docked widgets on leave</source>
       <translation>விடுப்பில் டாக் செய்யப்பட்ட விட்செட்களை தானாக மறை</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="957"/>
+      <location filename="../OverlayWidgets.cpp" line="1000"/>
       <source>Hide on edit</source>
       <translation>திருத்தத்தில் மறை</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="958"/>
+      <location filename="../OverlayWidgets.cpp" line="1001"/>
       <source>Auto hide docked widgets on editing</source>
       <translation>தொகுக்கப்பட்ட விட்செட்களைத் திருத்தும்போது தானாக மறை</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="959"/>
+      <location filename="../OverlayWidgets.cpp" line="1002"/>
       <source>Show on edit</source>
       <translation>திருத்தத்தில் காட்டு</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="960"/>
+      <location filename="../OverlayWidgets.cpp" line="1003"/>
       <source>Auto show docked widgets on editing</source>
       <translation>தொகுக்கப்பட்ட விட்செட்களை எடிட்டிங்கில் தானாகக் காட்டும்</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="961"/>
+      <location filename="../OverlayWidgets.cpp" line="1004"/>
       <source>Auto task</source>
       <translation>தன்னியக்க பணி</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="963"/>
+      <location filename="../OverlayWidgets.cpp" line="1006"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
       <translation>எந்தவொரு தற்போதைய பணிக்கான பணிக் காட்சியைத் தானாகக் காண்பிக்கவும், மேலும் பணி இல்லாதபோது பார்வையை மறைக்கவும்.</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="965"/>
+      <location filename="../OverlayWidgets.cpp" line="1008"/>
       <source>Toggle overlay</source>
       <translation>மேலடுக்கை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1109"/>
+      <location filename="../OverlayWidgets.cpp" line="1152"/>
       <source>Select auto show/hide mode</source>
       <translation>தானியங்கு காட்சி/மறை பயன்முறையைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -14423,7 +14423,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2214"/>
+      <location filename="../OverlayWidgets.cpp" line="2258"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>மவுச் கடந்து செல்கிறது, நிறுத்த தப்பி</translation>
     </message>
@@ -14439,7 +14439,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4323"/>
+      <location filename="../Tree.cpp" line="4334"/>
       <source>Tree View</source>
       <translation>மரக் காட்சி</translation>
     </message>
@@ -14447,48 +14447,48 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="80"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>கடைசியாக கணக்கிடப்பட்ட மதிப்புக்கு (நிலையாக) மாற்றியமை</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="404"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="407"/>
       <source> (Warning: unit discarded)</source>
       <translation>(எச்சரிக்கை: அலகு நிராகரிக்கப்பட்டது)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="513"/>
       <source>Invalid property name: %1</source>
       <translation>தவறான சொத்து பெயர்:% 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="514"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="517"/>
       <source>Unknown object</source>
       <translation>தெரியாத பொருள்</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="925"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="523"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="928"/>
       <source>the name cannot be empty</source>
       <translation>பெயர் காலியாக இருக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="530"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
       <source>%1 is a unit</source>
       <translation>% 1 என்பது ஒரு அலகு</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="535"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="538"/>
       <source>%1 is a constant</source>
       <translation>% 1 என்பது ஒரு மாறிலி</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="541"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="544"/>
       <source>%1 already exists</source>
       <translation>% 1 ஏற்கனவே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="921"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="924"/>
       <source>Invalid group name: %1</source>
       <translation>தவறான குழு பெயர்:% 1</translation>
     </message>
@@ -14615,17 +14615,17 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="307"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation>வரம்பிற்கு வெளியே மதிப்பு (% 1 / [%2, %3])</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="389"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="392"/>
       <source>Not a Number</source>
       <translation type="unfinished">Not a Number</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="397"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="400"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>முடிவு மற்றும் தேவையான அலகு இடையே அலகு பொருந்தவில்லை</translation>
     </message>
@@ -14910,6 +14910,29 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1063"/>
+      <source>Experimental</source>
+      <translation>ஆய்வு</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1065"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>Development preview</source>
+      <translation type="unfinished">Development preview</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1070"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdToggleSuppress</name>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
@@ -14990,6 +15013,44 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>மதிப்பு</translation>
+    </message>
+  </context>
+  <context>
+    <name>NumericInput</name>
+    <message>
+      <location filename="../NumericLocale.cpp" line="86"/>
+      <source>Incomplete number</source>
+      <translation type="unfinished">Incomplete number</translation>
+    </message>
+    <message>
+      <location filename="../NumericLocale.cpp" line="88"/>
+      <source>Malformed grouping separator placement</source>
+      <translation type="unfinished">Malformed grouping separator placement</translation>
+    </message>
+    <message>
+      <location filename="../NumericLocale.cpp" line="90"/>
+      <source>Invalid number</source>
+      <translation type="unfinished">Invalid number</translation>
+    </message>
+    <message>
+      <location filename="../NumericLocale.cpp" line="92"/>
+      <source>Invalid expression</source>
+      <translation type="unfinished">Invalid expression</translation>
+    </message>
+    <message>
+      <location filename="../NumericLocale.cpp" line="94"/>
+      <source>Expression could not be evaluated</source>
+      <translation type="unfinished">Expression could not be evaluated</translation>
+    </message>
+    <message>
+      <location filename="../NumericLocale.cpp" line="96"/>
+      <source>Incompatible unit</source>
+      <translation type="unfinished">Incompatible unit</translation>
+    </message>
+    <message>
+      <location filename="../NumericLocale.cpp" line="98"/>
+      <source>Value is outside the allowed range</source>
+      <translation type="unfinished">Value is outside the allowed range</translation>
     </message>
   </context>
   <context>

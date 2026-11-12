@@ -25,6 +25,7 @@
 #define STYLEPARAMETERS_VALUE_H
 
 #include <concepts>
+#include <format>
 #include <memory>
 #include <optional>
 #include <string>
@@ -33,8 +34,6 @@
 #include <variant>
 #include <vector>
 #include <cstdint>
-
-#include <fmt/format.h>
 
 #include <Base/Color.h>
 #include <FCGlobal.h>
@@ -514,11 +513,11 @@ std::optional<T> valueAs(const std::optional<Value>& value)
 }  // namespace Gui::StyleParameters
 
 template<>
-struct fmt::formatter<Gui::StyleParameters::Value>: fmt::formatter<std::string>
+struct std::formatter<Gui::StyleParameters::Value>: std::formatter<std::string>
 {
-    auto format(const Gui::StyleParameters::Value& value, fmt::format_context& ctx) const
+    auto format(const Gui::StyleParameters::Value& value, std::format_context& ctx) const
     {
-        return fmt::formatter<std::string>::format(value.toString(), ctx);
+        return std::formatter<std::string>::format(value.toString(), ctx);
     }
 };
 

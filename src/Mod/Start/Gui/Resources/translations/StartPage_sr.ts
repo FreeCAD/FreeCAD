@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
       <translation>Отвори датотеку</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="237"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Assembly</source>
       <translation>Склоп</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
       <translation>2D цртеж</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
       <translation>Направи 2Д цртеж у окружењу Цртање</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="245"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>BIM/Architecture</source>
       <translation>БИМ/Архитектура</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
       <translation>Празна датотека</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Направи нову празну FreeCAD датотеку</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Отвори постојећу CAD датотеку или 3Д модел</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Parametric Body</source>
       <translation>Део</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="233"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Направи део у окружењу Конструисање делова</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="238"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
       <translation>Направи склоп у окружењу Склопови</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="246"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
       <translation>Направи архитектонски пројекат</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="538"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>New File</source>
       <translation>Нова датотека</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>Примери</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="542"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>Недавне датотеке</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="557"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>Отвори почетна подешавања</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="558"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Не приказуј поново ову почетну страну (почни са празним екраном)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="532"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Start</source>
       <translation>Старт</translation>
     </message>

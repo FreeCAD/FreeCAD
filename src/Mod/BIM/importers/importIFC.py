@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD IFC importer - Enhanced IfcOpenShell-only version"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -602,7 +599,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                         if (len(ex[0].Edges) == 1) and isinstance(
                                             ex[0].Edges[0].Curve, Part.Circle
                                         ):
-                                            baseface = Draft.makeCircle(ex[0].Edges[0])
+                                            baseface = Draft.make_circle(ex[0].Edges[0])
                                         else:
                                             # curves or holes? We just make a Part face
                                             baseface = doc.addObject(
@@ -627,10 +624,10 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                                         # TODO verts are different if shape is made of RectangleProfileDef or not
                                         # is this a rectangle?
                                         if importIFCHelper.isRectangle(verts):
-                                            baseface = Draft.makeRectangle(verts, face=True)
+                                            baseface = Draft.make_rectangle(verts, face=True)
                                         else:
                                             # no hole and no curves, we make a Draft Wire instead
-                                            baseface = Draft.makeWire(verts, closed=True)
+                                            baseface = Draft.make_wire(verts, closed=True)
                                     if profileid:
                                         # store for possible shared use
                                         profiles[profileid] = baseface

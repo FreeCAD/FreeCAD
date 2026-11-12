@@ -1,25 +1,25 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
+
+#include <format>
 
 #include <QMetaType>
 #include <QRegularExpression>
@@ -404,12 +404,16 @@ void Array2D::validateColumn(int column) const
 void Array2D::validate(const Array2D& other) const
 {
     if (rows() != other.rows()) {
-        Base::Console().log("Local row count %d, remote %d\n", rows(), other.rows());
-        throw InvalidProperty("Material property value row counts don't match");
+        throw InvalidProperty(
+            std::format("Material property value row counts don't match (local {}, remote {})",
+                        rows(),
+                        other.rows()));
     }
     if (columns() != other.columns()) {
-        Base::Console().log("Local column count %d, remote %d\n", columns(), other.columns());
-        throw InvalidProperty("Material property value column counts don't match");
+        throw InvalidProperty(
+            std::format("Material property value column counts don't match (local {}, remote {})",
+                        columns(),
+                        other.columns()));
     }
     try {
         for (int i = 0; i < rows(); i++) {
@@ -509,7 +513,7 @@ void Array2D::dumpRow(const std::shared_ptr<QList<QVariant>>& row)
 {
     Base::Console().log("row: ");
     for (auto& column : *row) {
-        Base::Console().log("'%s' ", column.toString().toStdString().c_str());
+        Base::Console().log("'{}' ", column.toString().toStdString());
     }
     Base::Console().log("\n");
 }

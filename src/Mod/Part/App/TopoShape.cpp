@@ -151,11 +151,6 @@
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
 
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
-#endif
-
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/core/ignore_unused.hpp>
 
@@ -938,7 +933,6 @@ void TopoShape::exportStep(const char* filename) const
 
 void TopoShape::exportBrep(const char* filename) const
 {
-#if OCC_VERSION_HEX >= 0x070600
     if (!BRepTools::Write(
             this->_Shape,
             encodeFilename(filename).c_str(),
@@ -948,11 +942,6 @@ void TopoShape::exportBrep(const char* filename) const
         )) {
         throw Base::FileWriteException(filename);
     }
-#else
-    if (!BRepTools::Write(this->_Shape, encodeFilename(filename).c_str())) {
-        throw Base::FileWriteException(filename);
-    }
-#endif
 }
 
 void TopoShape::exportBrep(std::ostream& out) const
@@ -1792,11 +1781,7 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
     else if (tolerance < 0.0) {
         mkCut.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
     mkCut.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkCut.Build();
-#endif
     if (!mkCut.IsDone()) {
         throw Base::RuntimeError("Multi cut failed");
     }
@@ -1841,11 +1826,7 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
     else if (tolerance < 0.0) {
         mkCommon.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
     mkCommon.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkCommon.Build();
-#endif
     if (!mkCommon.IsDone()) {
         throw Base::RuntimeError("Multi common failed");
     }
@@ -1890,11 +1871,7 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     else if (tolerance < 0.0) {
         mkFuse.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
     mkFuse.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkFuse.Build();
-#endif
     if (!mkFuse.IsDone()) {
         throw Base::RuntimeError("Multi fuse failed");
     }
@@ -1916,11 +1893,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
     mkSection.Init1(this->_Shape);
     mkSection.Init2(shape);
     mkSection.Approximation(approximate);
-#if OCC_VERSION_HEX >= 0x070600
     mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkSection.Build();
-#endif
     if (!mkSection.IsDone()) {
         throw Base::RuntimeError("Section failed");
     }
@@ -1957,11 +1930,7 @@ TopoDS_Shape TopoShape::section(
     else if (tolerance < 0.0) {
         mkSection.setAutoFuzzy();
     }
-#if OCC_VERSION_HEX >= 0x070600
     mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkSection.Build();
-#endif
     if (!mkSection.IsDone()) {
         throw Base::RuntimeError("Multi section failed");
     }
@@ -2030,11 +1999,7 @@ TopoDS_Shape TopoShape::generalFuse(
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
-#if OCC_VERSION_HEX >= 0x070600
     mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkGFA.Build();
-#endif
     if (!mkGFA.IsDone()) {
         throw BooleanException("MultiFusion failed");
     }
@@ -2100,11 +2065,7 @@ TopoDS_Shape TopoShape::makePipeShell(
         throw Standard_Failure("shape is not ready to build");
     }
 
-#if OCC_VERSION_HEX >= 0x070600
     mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkPipeShell.Build();
-#endif
     if (make_solid) {
         mkPipeShell.MakeSolid();
     }
@@ -2141,23 +2102,12 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
         throw Standard_Failure("Cannot sweep along empty spine");
     }
 
-#if OCC_VERSION_HEX >= 0x070600
-
     Handle(Adaptor3d_Curve) myPath;
 
     if (this->_Shape.ShapeType() == TopAbs_EDGE) {
         const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
         myPath = new BRepAdaptor_Curve(path_edge);
     }
-#else
-    Handle(Adaptor3d_HCurve) myPath;
-    if (this->_Shape.ShapeType() == TopAbs_EDGE) {
-        const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
-        BRepAdaptor_Curve path_adapt(path_edge);
-        myPath = new BRepAdaptor_HCurve(path_adapt);
-    }
-#endif
-
     else {
         throw Standard_Failure("Spine shape is not an edge");
     }
@@ -2659,11 +2609,7 @@ TopoDS_Shape TopoShape::makeLoft(
     Standard_Boolean anIsCheck = Standard_True;
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
-#if OCC_VERSION_HEX >= 0x070600
     aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    aGenerator.Build();
-#endif
     if (!aGenerator.IsDone()) {
         throw Standard_Failure("Failed to create loft face");
     }
@@ -2825,11 +2771,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(originalWire);
         aGenerator.AddWire(offsetWire);
-#if OCC_VERSION_HEX >= 0x070600
         aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-        aGenerator.Build();
-#endif
         if (!aGenerator.IsDone()) {
             throw Standard_Failure("ThruSections failed");
         }
@@ -3190,11 +3132,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 
-#if OCC_VERSION_HEX >= 0x070600
                 mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-                mkWire.Build();
-#endif
                 wiresForMakingFaces.push_front(mkWire.Wire());
             }
         }
@@ -3206,11 +3144,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
             for (TopoDS_Wire& w : wiresForMakingFaces) {
                 mkFace.addWire(w);
             }
-#if OCC_VERSION_HEX >= 0x070600
             mkFace.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-            mkFace.Build();
-#endif
             if (mkFace.Shape().IsNull()) {
                 throw Base::CADKernelError("makeOffset2D: making face failed (null shape returned).");
             }
@@ -3828,10 +3762,6 @@ void TopoShape::getLinesFromSubShape(
         return;
     }
 
-    // build up map edge->face
-    TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
-    TopExp::MapShapesAndAncestors(this->_Shape, TopAbs_EDGE, TopAbs_FACE, edge2Face);
-
     for (TopExp_Explorer exp(shape, TopAbs_EDGE); exp.More(); exp.Next()) {
         TopoDS_Edge aEdge = TopoDS::Edge(exp.Current());
         std::vector<gp_Pnt> points;
@@ -3840,18 +3770,13 @@ void TopoShape::getLinesFromSubShape(
             // the edge has not its own triangulation, but then a face the edge is attached to
             // must provide this triangulation
 
-            // Look for one face in our map (it doesn't care which one we take)
-            int index = edge2Face.FindIndex(aEdge);
-            if (index < 1) {
+            // Look for one face the edge belongs to (it doesn't care which one we take).
+            // The edge->face map is built once and kept in the shape cache.
+            const TopoDS_Shape face = findAncestorShape(aEdge, TopAbs_FACE);
+            if (face.IsNull()) {
                 continue;
             }
-
-            const auto& faces = edge2Face.FindFromIndex(index);
-            if (faces.IsEmpty()) {
-                continue;
-            }
-
-            const TopoDS_Face& aFace = TopoDS::Face(faces.First());
+            const TopoDS_Face& aFace = TopoDS::Face(face);
             if (!Part::Tools::getPolygonOnTriangulation(aEdge, aFace, points)) {
                 continue;
             }
@@ -4302,11 +4227,7 @@ TopoShape& TopoShape::makeFace(const std::vector<TopoShape>& shapes, const char*
             mkFace->addShape(s.getShape());
         }
     }
-#if OCC_VERSION_HEX >= 0x070600
     mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkFace->Build();
-#endif
     _Shape = mkFace->Shape();
     return *this;
 }
@@ -4550,7 +4471,7 @@ bool TopoShape::_makeTransform(
             }
         }
         catch (const Standard_Failure& e) {
-            Base::Console().warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+            Base::Console().warning("TopoShape::makeGTransform failed: {}\n", e.GetMessageString());
         }
     }
     makeTransform(shape, convert(rclTrf), op, copy);

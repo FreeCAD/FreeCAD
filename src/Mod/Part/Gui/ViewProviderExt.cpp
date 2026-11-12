@@ -35,7 +35,6 @@
 #include <Poly_Polygon3D.hxx>
 #include <Poly_PolygonOnTriangulation.hxx>
 #include <Poly_Triangulation.hxx>
-#include <Standard_Version.hxx>
 #include <TColgp_Array1OfDir.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TColStd_Array1OfInteger.hxx>
@@ -945,7 +944,7 @@ bool ViewProviderPartExt::loadParameter()
         "User parameter:BaseApp/Preferences/Mod/Part"
     );
     float deviation = hGrp->GetFloat("MeshDeviation", 0.2);
-    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection", 28.65);
+    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection", 28.5);
     NormalsFromUV = hGrp->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
     if (Deviation.getValue() != deviation) {
@@ -954,6 +953,7 @@ bool ViewProviderPartExt::loadParameter()
     }
     if (AngularDeflection.getValue() != angularDeflection) {
         AngularDeflection.setValue(angularDeflection);
+        changed = true;
     }
 
     return changed;
@@ -1105,11 +1105,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     meshParams.AllowQualityDecrease = Standard_True;
 
     // Clear triangulation and PCurves from geometry which can slow down the process
-#if OCC_VERSION_HEX < 0x070600
-    BRepTools::Clean(shape);
-#else
     BRepTools::Clean(shape, Standard_True);
-#endif
 
     BRepMesh_IncrementalMesh(shape, meshParams);
 
@@ -1229,14 +1225,8 @@ void ViewProviderPartExt::setupCoinGeometry(
         TopAbs_Orientation orient = actFace.Orientation();
 
         // cycling through the poly mesh
-#if OCC_VERSION_HEX < 0x070600
-        const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
-        const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
-        TColgp_Array1OfDir Normals(Nodes.Lower(), Nodes.Upper());
-#else
         int numNodes = mesh->NbNodes();
         TColgp_Array1OfDir Normals(1, numNodes);
-#endif
         if (normalsFromUV) {
             Part::Tools::getPointNormals(actFace, mesh, Normals);
         }
@@ -1244,11 +1234,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         for (int g = 1; g <= nbTriInFace; g++) {
             // Get the triangle
             Standard_Integer N1, N2, N3;
-#if OCC_VERSION_HEX < 0x070600
-            Triangles(g).Get(N1, N2, N3);
-#else
             mesh->Triangle(g).Get(N1, N2, N3);
-#endif
 
             // change orientation of the triangle if the face is reversed
             if (orient != TopAbs_FORWARD) {
@@ -1258,11 +1244,7 @@ void ViewProviderPartExt::setupCoinGeometry(
             }
 
             // get the 3 points of this triangle
-#if OCC_VERSION_HEX < 0x070600
-            gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
-#else
             gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
-#endif
 
             // get the 3 normals of this triangle
             gp_Vec NV1, NV2, NV3;
@@ -1343,11 +1325,7 @@ void ViewProviderPartExt::setupCoinGeometry(
                     // rare cases where some points are only referenced by the polygon
                     // but not by any triangle. Thus, we must apply the coordinates to
                     // make sure that everything is properly set.
-#if OCC_VERSION_HEX < 0x070600
-                    gp_Pnt p(Nodes(nodeIndex));
-#else
                     gp_Pnt p(mesh->Node(nodeIndex));
-#endif
                     if (!identity) {
                         p.Transform(myTransf);
                     }
@@ -1476,11 +1454,11 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 #ifdef FC_DEBUG
     Base::Console().log(
-        "ViewProvider update time: %f s\n",
+        "ViewProvider update time: {:f} s\n",
         Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed())
     );
     Base::Console().log(
-        "Shape mesh info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",
+        "Shape mesh info: Faces:{} Edges:{} Nodes:{} Triangles:{} IdxVec:{}\n",
         numFaces,
         numEdges,
         numNodes,

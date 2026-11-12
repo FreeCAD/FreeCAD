@@ -22,8 +22,7 @@
 #include <CXX/Python3/Objects.hxx>
 
 #include <chrono>
-#include <fmt/format.h>
-#include <fmt/chrono.h>
+#include <format>
 #include <string>
 
 #include "FaultCodes.h"
@@ -38,9 +37,9 @@ using namespace Base;
 std::string CrashReportPy::representation() const
 {
     const PointerType report = getParsedCrashReportPtr();
-    const std::string timestamp = fmt::format( /*ISO-8601 UTC*/
+    const std::string timestamp = std::format( /*ISO-8601 UTC*/
         "{:%FT%TZ}", std::chrono::floor<std::chrono::seconds>(report->timestamp));
-    return fmt::format(
+    return std::format(
         "<CrashReport {} at {}, {} frames, {}{}>",
         report->faultName,
         timestamp,

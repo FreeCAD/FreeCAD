@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Metadata import (
     export,
@@ -47,10 +46,8 @@ class MaterialTreeWidget(BaseClass):
         """
         Set the material filter or list of filters.
         """
-        ...
 
     def selectFilter(self, name: str, /) -> None:
         """
         Set the current material filter. Currently has no effect.
         """
-        ...

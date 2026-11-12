@@ -1001,7 +1001,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
     std::vector<FemFace> facesHelper(numTries);
 
     Base::Console().log(
-        "    %f: Start build up %i face helper\n",
+        "    {:f}: Start build up {} face helper\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()),
         facesHelper.size()
     );
@@ -1707,7 +1707,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
 
     if (FaceSize < MaxFacesShowInner) {
         Base::Console().log(
-            "    %f: Start eliminate internal faces SIMPLE\n",
+            "    {:f}: Start eliminate internal faces SIMPLE\n",
             Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
         );
 
@@ -1726,7 +1726,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
     }
     else {
         Base::Console().log(
-            "    %f: Start eliminate internal faces GRID\n",
+            "    {:f}: Start eliminate internal faces GRID\n",
             Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
         );
         BndBox.Enlarge(BndBox.CalcDiagonalLength() / 10000.0);
@@ -1739,7 +1739,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
         unsigned int NbrX = (unsigned int)(BndBox.LengthX() / size) + 1;
         unsigned int NbrY = (unsigned int)(BndBox.LengthY() / size) + 1;
         unsigned int NbrZ = (unsigned int)(BndBox.LengthZ() / size) + 1;
-        Base::Console().log("      Size:F:%f,  X:%i  ,Y:%i  ,Z:%i\n", gridFactor, NbrX, NbrY, NbrZ);
+        Base::Console().log("      Size:F:{},  X:{}  ,Y:{}  ,Z:{}\n", gridFactor, NbrX, NbrY, NbrZ);
 
         double Xmin = BndBox.MinX;
         double Ymin = BndBox.MinY;
@@ -1792,13 +1792,13 @@ void ViewProviderFEMMeshBuilder::createMesh(
         }
         avg = avg / Grid.size();
 
-        Base::Console().log("      VoxelSize: Max:%i ,Average:%i\n", max, avg);
+        Base::Console().log("      VoxelSize: Max:{} ,Average:{}\n", max, avg);
 
     }  // if( FaceSize < 1000)
 
 
     Base::Console().log(
-        "    %f: Start build up node map\n",
+        "    {:f}: Start build up node map\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 
@@ -1833,7 +1833,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
         }
     }
     Base::Console().log(
-        "    %f: Start set point vector\n",
+        "    {:f}: Start set point vector\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 
@@ -1853,7 +1853,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
 
     // count triangle size
     Base::Console().log(
-        "    %f: Start count triangle size\n",
+        "    {:f}: Start count triangle size\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
     int triangleCount = 0;
@@ -1880,7 +1880,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
             }
         }
     }
-    Base::Console().log("    NumTriangles:%i\n", triangleCount);
+    Base::Console().log("    NumTriangles:{}\n", triangleCount);
     // edge map collect and sort edges of the faces to be shown.
     std::map<int, std::set<int>> EdgeMap;
 
@@ -1912,7 +1912,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
     }
 
     Base::Console().log(
-        "    %f: Start build up triangle vector\n",
+        "    {:f}: Start build up triangle vector\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
     // set the triangle face indices
@@ -3335,7 +3335,7 @@ void ViewProviderFEMMeshBuilder::createMesh(
     faces->coordIndex.finishEditing();
 
     Base::Console().log(
-        "    %f: Start build up edge vector\n",
+        "    {:f}: Start build up edge vector\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
     // std::map<int,std::set<int> > EdgeMap;
@@ -3361,10 +3361,10 @@ void ViewProviderFEMMeshBuilder::createMesh(
     }
 
     lines->coordIndex.finishEditing();
-    Base::Console().log("    NumEdges:%i\n", EdgeSize);
+    Base::Console().log("    NumEdges:{}\n", EdgeSize);
 
     Base::Console().log(
-        "    %f: Finish =========================================================\n",
+        "    {:f}: Finish =========================================================\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 }

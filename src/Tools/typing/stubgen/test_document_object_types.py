@@ -23,7 +23,7 @@ from stubgen.model import PublicPythonType, PythonObjectType  # noqa: E402
 from stubgen.parsing import iter_source_files  # noqa: E402
 from stubgen.source_inputs import collect_binding_classes  # noqa: E402
 from stubgen.type_hierarchy import TypeHierarchy, discover_type_hierarchy  # noqa: E402
-from stubgen.cli import run_generate  # noqa: E402
+from stubgen.cli import parse_args, run_generate  # noqa: E402
 
 ROOT_DIR = Path(__file__).resolve().parents[4]
 
@@ -113,17 +113,18 @@ class DocumentObjectTypeTests(unittest.TestCase):
         self.assertIn("Part::Box", registrations)
 
     def test_generated_freecad_stub_contains_composed_public_api(self):
-        from argparse import Namespace
-
         with tempfile.TemporaryDirectory() as temp_dir:
             out_dir = Path(temp_dir)
             result = run_generate(
-                Namespace(
-                    root=ROOT_DIR,
-                    source_dir=ROOT_DIR / "src",
-                    out_dir=out_dir,
-                    overlay_dir=None,
-                    no_overlays=False,
+                parse_args(
+                    [
+                        "--root",
+                        str(ROOT_DIR),
+                        "--source-dir",
+                        str(ROOT_DIR / "src"),
+                        "--out-dir",
+                        str(out_dir),
+                    ]
                 )
             )
             self.assertEqual(0, result)

@@ -215,7 +215,11 @@ TopoShape Feature::getSolid(const TopoShape& shape) const
     return shape;
 }
 
-void Feature::onBaseFeatureRerouted(App::DocumentObject* /*oldBase*/, App::DocumentObject* /*newBase*/)
+void Feature::onBaseFeatureRerouted(
+    App::DocumentObject* /*oldBase*/,
+    App::DocumentObject* /*newBase*/,
+    BaseFeatureChange /*change*/
+)
 {}
 
 bool Feature::relinkToMatchingSubelements(

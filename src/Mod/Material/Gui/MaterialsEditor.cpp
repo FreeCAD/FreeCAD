@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QColorDialog>
 #include <QDesktopServices>
@@ -807,8 +805,8 @@ QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::Library>& librar
     if (library->hasIcon()) {
         QImage image;
         if (!image.loadFromData(library->getIcon())) {
-            Base::Console().log("Unable to load icon image for library '%s'\n",
-                                library->getName().toStdString().c_str());
+            Base::Console().log("Unable to load icon image for library '{}'\n",
+                                library->getName().toStdString());
             return QIcon();
         }
         icon = QIcon(QPixmap::fromImage(image));
@@ -959,8 +957,8 @@ bool MaterialsEditor::updateTexturePreview() const
                     // Base::Console().log("Has 'TexturePath'\n");
                     auto filePath = property->getString();
                     if (!image.load(filePath)) {
-                        Base::Console().log("Unable to load image '%s'\n",
-                                            filePath.toStdString().c_str());
+                        Base::Console().log("Unable to load image '{}'\n",
+                                            filePath.toStdString());
                         hasImage = false;
                     }
                     else {
@@ -977,7 +975,7 @@ bool MaterialsEditor::updateTexturePreview() const
             auto property = _material->getAppearanceProperty(QStringLiteral("TextureScaling"));
             if (!property->isNull()) {
                 // scaling = property->getFloat();
-                //  Base::Console().log("Has 'TextureScaling' = %g\n", scaling);
+                //  Base::Console().log("Has 'TextureScaling' = {}\n", scaling);
             }
         }
         catch (const Materials::PropertyNotFound&) {
@@ -1287,7 +1285,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
         _material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
     catch (Materials::ModelNotFound const&) {
-        Base::Console().log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("*** Unable to load material '{}'\n", uuid.toStdString());
         _material = std::make_shared<Materials::Material>();
     }
 

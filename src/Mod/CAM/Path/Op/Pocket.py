@@ -268,6 +268,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.AdaptivePocketStart = False
         obj.AdaptivePocketFinish = False
         obj.ProcessStockArea = False
+        obj.FinishingPasses = (0, 0, 999999, 1)
 
     # methods for eliminating air milling with some pockets: adaptive start and finish
     def calculateAdaptivePocket(self, obj, base, subObjTups):

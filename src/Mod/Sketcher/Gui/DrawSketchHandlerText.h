@@ -38,8 +38,9 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "Utils.h"
 #include "CommandConstraints.h"
+#include "FontProvider.h"
+#include "Utils.h"
 
 #include <vector>
 #include <algorithm>

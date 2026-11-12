@@ -135,17 +135,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1706"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Additive Helix</source>
       <translation>Hélice additive</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation>Balaye l'esquisse ou le profil sélectionné suivant une hélice et ajoute le résultat au corps.</translation>
     </message>
@@ -153,17 +153,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Additive Loft</source>
       <translation>Lissage additif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
       <translation>Crée un lissage à partir de l'esquisse ou du profil sélectionné en passant par une ou plusieurs sections, puis l'ajoute au corps.</translation>
     </message>
@@ -171,17 +171,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Additive Pipe</source>
       <translation>Balayage additif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>Balaie l'esquisse ou le profil sélectionné suivant une trajectoire et ajoute le résultat au corps.</translation>
     </message>
@@ -207,17 +207,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2710"/>
+      <location filename="../../Command.cpp" line="2716"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2711"/>
+      <location filename="../../Command.cpp" line="2717"/>
       <source>Boolean Operation</source>
       <translation>Créer une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2712"/>
+      <location filename="../../Command.cpp" line="2718"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Applique une opération booléenne à des objets sélectionnés et au corps actif.</translation>
     </message>
@@ -243,17 +243,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2034"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>Chamfer</source>
       <translation>Chanfrein</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2036"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation>Applique un chanfrein aux arêtes ou aux faces sélectionnées.</translation>
     </message>
@@ -261,17 +261,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Clone</source>
       <translation>Cloner</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="524"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation>Copie un objet solide de manière paramétrique en tant que fonction de base d'un nouveau corps.</translation>
     </message>
@@ -279,17 +279,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2146"/>
+      <location filename="../../Command.cpp" line="2152"/>
       <source>Draft</source>
       <translation>Dépouille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2147"/>
+      <location filename="../../Command.cpp" line="2153"/>
       <source>Applies a draft to the selected faces</source>
       <translation>Applique une dépouille aux faces sélectionnées.</translation>
     </message>
@@ -315,17 +315,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2000"/>
+      <location filename="../../Command.cpp" line="2006"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2001"/>
+      <location filename="../../Command.cpp" line="2007"/>
       <source>Fillet</source>
       <translation>Congé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2002"/>
+      <location filename="../../Command.cpp" line="2008"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation>Applique un congé aux arêtes ou aux faces sélectionnées.</translation>
     </message>
@@ -333,17 +333,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Groove</source>
       <translation>Rainure</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>Applique une révolution à l'esquisse ou au profil autour d'une ligne ou d'un axe et le supprime du corps.</translation>
     </message>
@@ -351,17 +351,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1326"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Hole</source>
       <translation>Perçage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>Crée des trous dans le corps actif au centre des cercles ou des arcs de l'esquisse ou du profil sélectionné.</translation>
     </message>
@@ -387,17 +387,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2406"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2401"/>
+      <location filename="../../Command.cpp" line="2407"/>
       <source>Linear Pattern</source>
       <translation>Répétition linéaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2408"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>Duplique les éléments sélectionnés ou le corps actif selon un motif linéaire.</translation>
     </message>
@@ -423,17 +423,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2343"/>
+      <location filename="../../Command.cpp" line="2349"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Mirror</source>
       <translation>Symétrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Mirrors the selected features or active body</source>
       <translation>Crée une symétrie des fonctions sélectionnées ou du corps actif.</translation>
     </message>
@@ -495,17 +495,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2579"/>
+      <location filename="../../Command.cpp" line="2585"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2580"/>
+      <location filename="../../Command.cpp" line="2586"/>
       <source>Multi-Transform</source>
       <translation>Transformation multiple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2581"/>
+      <location filename="../../Command.cpp" line="2587"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Applique plusieurs transformations aux éléments sélectionnés ou au corps actif.</translation>
     </message>
@@ -513,17 +513,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="603"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>New Sketch</source>
       <translation>Créer une esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Creates a new sketch</source>
       <translation>Crée une nouvelle esquisse.</translation>
     </message>
@@ -531,17 +531,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1274"/>
       <source>Pad</source>
       <translation>Protrusion</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1269"/>
+      <location filename="../../Command.cpp" line="1275"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>Permet d'extruder l'esquisse ou le profil sélectionné et de l'ajouter au corps.</translation>
     </message>
@@ -567,17 +567,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1303"/>
       <source>Pocket</source>
       <translation>Cavité</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1298"/>
+      <location filename="../../Command.cpp" line="1304"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>Permet d'extruder l'esquisse ou le profil sélectionné et de le supprimer du corps.</translation>
     </message>
@@ -603,17 +603,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2474"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2475"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Polar Pattern</source>
       <translation>Répétition circulaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2476"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplique les fonctions sélectionnées ou le corps actif selon un motif circulaire.</translation>
     </message>
@@ -621,17 +621,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolve</source>
       <translation>Révolution</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1372"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>Applique une révolution à l'esquisse ou au profil sélectionné autour d'une ligne ou d'un axe et l"ajoute au corps.</translation>
     </message>
@@ -639,17 +639,17 @@ False = roue dentée planétaire</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2542"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2537"/>
+      <location filename="../../Command.cpp" line="2543"/>
       <source>Scale</source>
       <translation>Échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2544"/>
       <source>Scales the selected features or the active body</source>
       <translation>Met à l'échelle les fonctions sélectionnées ou le corps actif.</translation>
     </message>
@@ -695,17 +695,17 @@ avec des objets dans le même document ou dans des documents externes.</translat
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Subtractive Helix</source>
       <translation>Hélice soustractive</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation>Balaye l'esquisse ou le profil sélectionné suivant une hélice et soustrait le résultat au corps.</translation>
     </message>
@@ -713,17 +713,17 @@ avec des objets dans le même document ou dans des documents externes.</translat
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1659"/>
       <source>Subtractive Loft</source>
       <translation>Lissage soustractif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
+      <location filename="../../Command.cpp" line="1661"/>
       <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
       <translation>Crée un lissage à partir de l'esquisse ou du profil sélectionné en passant par une ou plusieurs sections, puis le supprime du corps.</translation>
     </message>
@@ -731,17 +731,17 @@ avec des objets dans le même document ou dans des documents externes.</translat
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1559"/>
       <source>Subtractive Pipe</source>
       <translation>Balayage soustractif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1560"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>Balaie l'esquisse ou le profil sélectionné suivant une trajectoire et soustrait le résultat au corps.</translation>
     </message>
@@ -749,17 +749,17 @@ avec des objets dans le même document ou dans des documents externes.</translat
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2222"/>
       <source>Thickness</source>
       <translation>Évidement</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2223"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>Applique un évidement et supprime les faces sélectionnées.</translation>
     </message>
@@ -893,22 +893,22 @@ avec des objets dans le même document ou dans des documents externes.</translat
       <translation>Créer une forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Create Sub-Shape Binder</source>
       <translation>Crée une sous forme liée.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="542"/>
       <source>Create Clone</source>
       <translation>Créer un clone</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1157"/>
       <source>Make Copy</source>
       <translation>Créer une copie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2634"/>
+      <location filename="../../Command.cpp" line="2640"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Transformation multiple</translation>
     </message>
@@ -929,7 +929,7 @@ avec des objets dans le même document ou dans des documents externes.</translat
       <translation>Créer une esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Create Boolean</source>
       <translation>Créer une opération booléenne</translation>
     </message>
@@ -3533,7 +3533,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
@@ -3541,17 +3541,17 @@ measured along the specified direction</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1039"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Impossible d'utiliser cette commande car il n'y a pas de solide à soustraire.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1036"/>
+      <location filename="../../Command.cpp" line="1042"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Assurez-vous que le corps contient une fonction avant de tenter une commande soustractive.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Impossible d'utiliser l'objet sélectionné. L'objet sélectionné doit appartenir au corps actif.</translation>
     </message>
@@ -3566,60 +3566,60 @@ measured along the specified direction</source>
       <translation>La sélection est non valide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="500"/>
       <source>Sub-shape binder</source>
       <translation>Créer une sous forme liée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1098"/>
       <source>No sketch to work on</source>
       <translation>Pas d'esquisse de travail</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1093"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>No sketch is available in the document</source>
       <translation>Aucune esquisse n’est disponible dans le document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2104"/>
       <source>Wrong Selection</source>
       <translation>Sélection incorrecte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2071"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Select faces from a single body</source>
       <translation>Sélectionner les faces d'un seul corps</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2078"/>
+      <location filename="../../Command.cpp" line="2084"/>
       <source>Selection Outside Active Body</source>
       <translation>Sélectionner en dehors du corps actif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2079"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Select faces from the active body</source>
       <translation>Sélectionner les faces du corps actif</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2093"/>
       <source>Wrong Object Type</source>
       <translation>Mauvais type d'objet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Defeaturing works only on faces</source>
       <translation>La fonction « Supprimer la fonction » ne s'applique qu'aux faces.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Select only one feature in an active body.</source>
       <translation>Sélectionner une seule fonction dans un corps actif</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
@@ -3627,44 +3627,44 @@ measured along the specified direction</source>
       <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="1902"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Sélectionnez une arête, une face ou un corps d'un corps unique.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Selection is not in the active body</source>
       <translation>La sélection n'est pas dans le corps actif.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1903"/>
       <source>Shape of the selected part is empty</source>
       <translation>La forme de la pièce sélectionnée est vide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Sélectionnez une arête, une face ou un corps d'un corps actif.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1069"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Penser à utiliser une forme liée ou une fonction de base pour référencer la géométrie externe dans un corps.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Wrong object type</source>
       <translation>Type d'objet incorrect</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1890"/>
       <source>%1 works only on parts.</source>
       <translation>%1 fonctionne uniquement sur les pièces.</translation>
     </message>
@@ -3866,12 +3866,12 @@ This may lead to unexpected results.</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="209"/>
+      <location filename="../../Utils.cpp" line="203"/>
       <source>Active Body Required</source>
       <translation>Corps actif requis</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="151"/>
+      <location filename="../../Utils.cpp" line="145"/>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
@@ -3880,32 +3880,32 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
 Pour les documents historiques contenant des objets PartDesign sans corps, utilisez la fonction de migration dans PartDesign pour les placer dans un corps.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="210"/>
+      <location filename="../../Utils.cpp" line="204"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
       <translation>Pour créer un nouvel objet de PartDesign, un corps actif est nécessaire dans le document. Activer un corps existant (double-clic) ou créer un nouveau corps.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="272"/>
+      <location filename="../../Utils.cpp" line="266"/>
       <source>Feature is not in a body</source>
       <translation>La fonction ne fait pas partie d'un corps</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="273"/>
+      <location filename="../../Utils.cpp" line="267"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Pour utiliser cette fonction, elle doit appartenir à un corps dans le document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="319"/>
+      <location filename="../../Utils.cpp" line="313"/>
       <source>Feature is not in a part</source>
       <translation>La fonction ne fait pas partie d'une pièce</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="320"/>
+      <location filename="../../Utils.cpp" line="314"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
@@ -3946,12 +3946,12 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Éditer une référence</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="93"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
       <source>Feature error</source>
       <translation>Erreur de la fonction</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation>%1 manque d'une fonction de base. Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
@@ -5585,12 +5585,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2779"/>
+      <location filename="../../Command.cpp" line="2785"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>
@@ -5598,12 +5598,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2813"/>
+      <location filename="../../Command.cpp" line="2819"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2814"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>
@@ -5889,17 +5889,17 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignDefeaturing</name>
     <message>
-      <location filename="../../Command.cpp" line="2117"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2118"/>
+      <location filename="../../Command.cpp" line="2124"/>
       <source>Defeaturing</source>
       <translation>Supprimer une fonction</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2119"/>
+      <location filename="../../Command.cpp" line="2125"/>
       <source>Removes selected faces from a solid</source>
       <translation>Supprime les faces sélectionnées d'un solide.</translation>
     </message>

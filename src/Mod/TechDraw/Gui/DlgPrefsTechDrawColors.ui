@@ -615,6 +615,18 @@
          </widget>
         </item>
         <item row="8" column="3">
+         <widget class="QLabel" name="labelFaceColor">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Face color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="3">
          <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
           <property name="minimumSize">
            <size>

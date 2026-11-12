@@ -107,7 +107,7 @@ void Diagnostics::emit(const std::string& message)
         return;
     }
 
-    Base::Console().developerWarning("StyleParameters", "%s\n", prefixed);
+    Base::Console().developerWarning("StyleParameters", "{}\n", prefixed);
 
     for (const auto& observer : observers() | std::views::values) {
         try {

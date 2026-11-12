@@ -23,24 +23,25 @@ class Command(Persistence):
     @constmethod
     def toGCode(self) -> str:
         """returns a GCode representation of the command"""
-        ...
 
     def setFromGCode(self, gcode: str, /) -> None:
         """sets the path from the contents of the given GCode string"""
-        ...
 
     def transform(self, placement: Placement, /) -> Command:
         """returns a copy of this command transformed by the given placement"""
-        ...
 
     def addAnnotations(self, annotations, /) -> "Command":
         """addAnnotations(annotations): adds annotations from dictionary or string and returns self for chaining"""
-        ...
     Name: str
     """The name of the command"""
 
     Parameters: dict[str, float]
-    """The parameters of the command"""
+    """The parameters of the command.
+
+    Assigning a dictionary replaces the whole parameter set: keys that are not
+    in the assigned dictionary are removed. To change a single parameter, copy
+    the dictionary, modify it, and assign it back.
+    """
 
     Annotations: dict[str, str]
     """The annotations of the command"""

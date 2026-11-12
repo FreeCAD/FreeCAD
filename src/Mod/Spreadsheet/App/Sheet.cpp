@@ -127,7 +127,7 @@ Sheet::~Sheet()
     catch (...) {
         // Don't let an exception propagate out of a destructor (calls terminate())
         Base::Console().error(
-            "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
+            "clearAll() resulted in an exception when deleting the spreadsheet : {}\n",
             getNameInDocument()
         );
     }
@@ -505,6 +505,16 @@ PyObject* Sheet::getPyObject()
 Property* Sheet::getProperty(CellAddress key) const
 {
     return props.getDynamicPropertyByName(key.toString(CellAddress::Cell::ShowRowColumn).c_str());
+}
+
+std::string Sheet::getCanonicalPropertyName(const char* name) const
+{
+    App::CellAddress address = getCellAddress(name, true);
+    if (!address.isValid()) {
+        return {};
+    }
+
+    return address.toString(CellAddress::Cell::ShowRowColumn);
 }
 
 /**
@@ -1178,7 +1188,7 @@ DocumentObjectExecReturn* Sheet::execute()
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
                 Base::Console().error(
-                    "Cyclic dependency detected in spreadsheet : %s\n",
+                    "Cyclic dependency detected in spreadsheet : {}\n",
                     getNameInDocument()
                 );
                 std::ostringstream ss;

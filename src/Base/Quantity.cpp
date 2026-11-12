@@ -24,12 +24,11 @@
 
 #include <array>
 #include <cmath>
+#include <format>
 #include <limits>
 #include <numbers>
 #include <sstream>
 #include <string>
-
-#include <fmt/format.h>
 
 #include "Exception.h"
 #include "NumericFormatting.h"
@@ -256,7 +255,7 @@ Quantity Quantity::operator-() const
 
 std::string Quantity::toString(const QuantityFormat& format) const
 {
-    return fmt::format("'{} {}'", toNumber(format), myUnit.getString());
+    return std::format("'{} {}'", toNumber(format), myUnit.getString());
 }
 
 std::string Quantity::toNumber(const QuantityFormat& format) const
@@ -308,7 +307,7 @@ std::string Quantity::getSafeUserString() const
         }
         if (useFallback) {
             auto unitStr = getUnit().getString();
-            userStr = fmt::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
+            userStr = std::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
         }
     }
 

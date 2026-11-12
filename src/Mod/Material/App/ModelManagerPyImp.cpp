@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include "Model.h"
@@ -122,7 +120,7 @@ Py::List ModelManagerPy::getModelLibraries() const
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
         auto lib = *it;
-        Py::Tuple libTuple(3);
+        Py::Tuple libTuple(4);
         libTuple.setItem(0, Py::String(lib->getName().toStdString()));
         libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
         libTuple.setItem(2, Py::Bytes(lib->getIcon().data(), lib->getIcon().size()));
@@ -141,7 +139,7 @@ Py::List ModelManagerPy::getLocalModelLibraries() const
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
         auto lib = *it;
-        Py::Tuple libTuple(3);
+        Py::Tuple libTuple(4);
         libTuple.setItem(0, Py::String(lib->getName().toStdString()));
         libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
         libTuple.setItem(2, Py::Bytes(lib->getIcon().data(), lib->getIcon().size()));

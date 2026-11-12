@@ -2369,7 +2369,7 @@ in Fuß: 304,8</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="288"/>
       <source>If checked, text, mtext, and dimension entities will be imported as Draft objects</source>
-      <translation>Wenn diese Option aktiviert ist, werden Text-, MText- und Bemaßungselemente als Entwurfsobjekte importiert</translation>
+      <translation>Wenn diese Option aktiviert ist, werden Text-, MText- und Maßelemente als Draft-Objekte importiert</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="304"/>
@@ -4181,7 +4181,7 @@ Bitte die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-lateinis
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
       <source>%1 place node</source>
-      <translation>%1 Knoten platzieren</translation>
+      <translation>%1 Knoten positionieren</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="541"/>
@@ -7339,10 +7339,10 @@ Um mit 'Original' oder 'Tangente' bessere Ergebnisse zu erzielen, müssen Sie m�
  - Fixed count: available path length (minus start and end offsets) is evenly divided into n.
  - Fixed spacing: start at "Start offset" and place new copies after traveling a fixed distance along the path.
  - Fixed count and spacing: same as "Fixed spacing", but also stop at given number of copies.</source>
-      <translation>Wie Kopien angeordnet sind.
- - Feste Anzahl: Die verfügbare Pfadlänge (abzüglich Start- und End-Offsets) wird gleichmäßig in n unterteilt.
- - Fester Abstand: Bei „Startversatz“ beginnen und neue Kopien platzieren, nachdem eine feste Strecke entlang des Pfades zurückgelegt wurde.
- - Feste Anzahl und Abstand: Wie „Fester Abstand“, jedoch zusätzlich Stopp bei einer bestimmten Anzahl von Kopien.</translation>
+      <translation>Wie Kopien angeordnet werden.
+ - Feste Anzahl: Die verfügbare Pfadlänge (abzüglich Start- und Endabstand) wird gleichmäßig in n Abschnitte unterteilt.
+ - Fester Abstand: Bei „Startabstand“ beginnen und neue Kopien platzieren, nachdem eine feste Strecke entlang des Pfades zurückgelegt wurde.
+ - Feste Anzahl und Abstand: Wie „Fester Abstand“, aber auch bei einer bestimmten Anzahl von Kopien anhalten.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="351"/>

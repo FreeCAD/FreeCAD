@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 import FreeCAD
-from typing import Tuple, Mapping
+from typing import Any, Tuple, Mapping
 from .base import ToolBitShape
 
 
@@ -40,6 +40,10 @@ class ToolBitShapeReamer(ToolBitShape):
                 FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
                 "App::PropertyLength",
             ),
+            "FluteLength": (
+                FreeCAD.Qt.translate("ToolBitShape", "Flute length"),
+                "App::PropertyLength",
+            ),
             "Length": (
                 FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
                 "App::PropertyLength",
@@ -49,6 +53,11 @@ class ToolBitShapeReamer(ToolBitShape):
                 "App::PropertyLength",
             ),
         }
+
+    @classmethod
+    def derived_parameters(cls) -> Mapping[str, Any]:
+        """Only the lead chamfer cuts; the fluted body (FluteLength) only follows the hole."""
+        return {"CuttingEdgeHeight": lambda p: 0.0}
 
     @property
     def label(self) -> str:

@@ -2442,7 +2442,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>创建图像</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="527"/>
+      <location filename="../../QGIViewBalloon.cpp" line="621"/>
       <source>Drag Balloon</source>
       <translation>拖动气球</translation>
     </message>
@@ -2452,7 +2452,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>拖动尺寸</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="587"/>
+      <location filename="../../QGSPage.cpp" line="592"/>
       <source>Create Balloon</source>
       <translation>创建气球</translation>
     </message>
@@ -3775,47 +3775,47 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>此选择中没有要添加剖面线的面</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="311"/>
+      <location filename="../../DrawGuiUtil.cpp" line="312"/>
       <source>No page found</source>
       <translation>没有找到页面</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="312"/>
+      <location filename="../../DrawGuiUtil.cpp" line="313"/>
       <source>No Drawing Pages available.</source>
       <translation>没有可用的绘图页面。</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="417"/>
+      <location filename="../../DrawGuiUtil.cpp" line="418"/>
       <source>No page selected</source>
       <translation>未选择页面</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="418"/>
+      <location filename="../../DrawGuiUtil.cpp" line="419"/>
       <source>This function needs a page.</source>
       <translation>此功能需要一个页面。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="840"/>
+      <location filename="../../MDIViewPage.cpp" line="870"/>
       <source>Export Page as PDF</source>
       <translation>将页面导出为PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="759"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>以 SVG格式导出页面</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="782"/>
+      <location filename="../../MDIViewPage.cpp" line="806"/>
       <source>Export page as DXF</source>
       <translation>将页面导出为DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="823"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Unable to Write File</source>
       <translation>无法写入文件</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="824"/>
+      <location filename="../../MDIViewPage.cpp" line="854"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD 无法打开文件 '%1' 进行写入。该文件可能已在另一个程序中打开。</translation>
     </message>
@@ -6292,7 +6292,48 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>焊接符号大小的倍数</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="445"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
+      <source>Screen Mode</source>
+      <translation>屏幕模式</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
+      <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
+      <translation>在屏幕上以固定大小绘制顶点和边，而不是随页面缩放。也可以从页面右键菜单中切换。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
+      <source>Screen mode</source>
+      <translation>屏幕模式</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
+      <source>Vertex size</source>
+      <translation>顶点大小</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
+      <source>Size of vertex dots on screen. Only used in screen mode.</source>
+      <translation>屏幕上顶点点的大小。仅在屏幕模式下使用。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="563"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
+      <source>Edge width</source>
+      <translation>边线宽度</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
+      <source>Width of edges on screen. Only used in screen mode.</source>
+      <translation>屏幕上边的宽度。仅在屏幕模式下使用。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt; 项是新对象的默认值。它们对现有对象没有影响。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6300,66 +6341,71 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
       <translation>保持更新(&amp;K)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
       <translation>显示图框(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="107"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
       <translation>显示网格(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="110"/>
+      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <source>Screen &amp;Mode</source>
+      <translation>屏幕模式(&amp;M)</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="114"/>
       <source>&amp;Export SVG</source>
       <translation>导出 SVG(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="118"/>
       <source>Export DXF</source>
       <translation>导出 DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="122"/>
       <source>Export PDF</source>
       <translation>导出PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="126"/>
       <source>Print All Pages</source>
       <translation>打印所有页面</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="444"/>
+      <location filename="../../MDIViewPage.cpp" line="448"/>
       <source>Different orientation</source>
       <translation>不同方向</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="445"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>打印机使用的方向与图纸不同。
 是否继续？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="454"/>
+      <location filename="../../MDIViewPage.cpp" line="458"/>
       <source>Different paper size</source>
       <translation>不同的图纸大小</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="455"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>打印机使用的纸张尺寸与图纸不同。
 是否继续？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1403"/>
+      <location filename="../../MDIViewPage.cpp" line="1433"/>
       <source>Selected:</source>
       <translation>已选择:</translation>
     </message>

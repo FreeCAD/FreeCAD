@@ -2,6 +2,7 @@
 
 add_executable(Mesh_tests_run
         Core/KDTree.cpp
+        Core/MeshIO.cpp
         Exporter.cpp
         Importer.cpp
         Mesh.cpp

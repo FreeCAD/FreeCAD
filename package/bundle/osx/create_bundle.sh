@@ -61,6 +61,8 @@ cp ${conda_env}/bin_tmp/dot ${conda_env}/bin/
 cp ${conda_env}/bin_tmp/unflatten ${conda_env}/bin/
 rm -rf ${conda_env}/bin_tmp
 
+${conda_env}/bin/dot -c
+
 sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip
 
 # copy resources
@@ -159,12 +161,9 @@ else
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
 fi
 
-# create hash
-sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
-
 if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
     for attempt in 1 2 3 4 5; do
-        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"; then
+        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg"; then
             break
         fi
         if [[ $attempt -eq 5 ]]; then

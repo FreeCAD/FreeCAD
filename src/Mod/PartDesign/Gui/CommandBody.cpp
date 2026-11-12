@@ -717,7 +717,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
 
     App::DocumentObject* oldTip = body->Tip.getValue();
     if (oldTip == selFeature) {  // it's not generally an error, so print only a console message
-        Base::Console().message("%s is already the tip of the body\n", selFeature->getNameInDocument());
+        Base::Console().message("{} is already the tip of the body\n", selFeature->getNameInDocument());
         return;
     }
 
@@ -994,7 +994,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
             } catch (Base::Exception &) {
                 QMessageBox::warning( Gui::getMainWindow(), QObject::tr("Sketch plane cannot be
     migrated"), QObject::tr("Please edit '%1' and redefine it to use a Base or Datum plane as the
-    sketch plane."). arg( QString::fromLatin1( sketch->Label.getValue () ) ) );
+    sketch plane."). arg( QString::fromUtf8( sketch->Label.getValue () ) ) );
             }
         }
 

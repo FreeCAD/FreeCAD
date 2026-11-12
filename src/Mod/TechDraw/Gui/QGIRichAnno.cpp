@@ -110,7 +110,7 @@ QGIRichAnno::QGIRichAnno() :
 
 void QGIRichAnno::updateView(bool update)
 {
-//    Base::Console().message("QGIRA::updateView() - %s\n", getViewName());
+//    Base::Console().message("QGIRA::updateView() - {}\n", getViewName());
     Q_UNUSED(update);
     auto annoFeat( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
     if (!annoFeat) {
@@ -140,7 +140,7 @@ void QGIRichAnno::updateView(bool update)
 
 void QGIRichAnno::draw()
 {
-//    Base::Console().log("QGIRA::draw() - %s - parent: %X\n", getFeature()->getNameInDocument(), parentItem());
+//    Base::Console().log("QGIRA::draw() - {} - parent: {:X}\n", getFeature()->getNameInDocument(), parentItem());
     if (!isVisible())
 //        Base::Console().message("QGIRA::draw - not visible\n");
         return;
@@ -163,7 +163,7 @@ void QGIRichAnno::draw()
 
 void QGIRichAnno::setTextItem()
 {
-//    Base::Console().message("QGIRA::setTextItem() - %s - exportingSvg: %d\n", getViewName(), getExportingSvg());
+//    Base::Console().message("QGIRA::setTextItem() - {} - exportingSvg: {}\n", getViewName(), getExportingSvg());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
 
     updateLayout();

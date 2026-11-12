@@ -32,6 +32,7 @@ import FreeCAD
 import Path
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
+from Path.Tool.shape import ToolBitShape
 import math
 
 # lazily loaded modules
@@ -1071,7 +1072,7 @@ def getProjectedFace(tempGroup, wire):
     F.purgeTouched()
     tempGroup.addObject(F)
     try:
-        prj = Draft.makeShape2DView(F, FreeCAD.Vector(0, 0, 1))
+        prj = Draft.make_shape_2d_view(F, FreeCAD.Vector(0, 0, 1))
         prj.recompute()
         prj.purgeTouched()
         tempGroup.addObject(prj)
@@ -2668,9 +2669,7 @@ class OCL_Tool:
         if self.toolMode == "ToolBit":
             toolMap = {
                 "endmill": "CylCutter",
-                "ballend": "BallCutter",
                 "bullnose": "BullCutter",
-                "taperedballnose": "BallCutter",
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
                 "v_bit": "ConeCutter",
@@ -2679,7 +2678,9 @@ class OCL_Tool:
                 "chamfer": "None",
             }
         self.toolMethod = "None"
-        if self.toolType in toolMap:
+        if self.toolMode == "ToolBit" and ToolBitShape.is_ball_end(self.toolType):
+            self.toolMethod = "BallCutter"
+        elif self.toolType in toolMap:
             self.toolMethod = toolMap[self.toolType]
 
     # Public methods

@@ -29,11 +29,11 @@
 #include <QTimer>
 
 
+#include <format>
 #include <ranges>
 
-#include <fmt/format.h>
-
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/Origin.h>
 #include <App/Datums.h>
 #include <App/Part.h>
@@ -59,6 +59,16 @@
 
 using namespace PartDesignGui;
 using namespace Attacher;
+
+namespace
+{
+void acceptDialogOf(const std::string& docName)
+{
+    if (Gui::Document* doc = Gui::Application::Instance->getDocument(docName.c_str())) {
+        Gui::Control().accept(doc->getDocument());
+    }
+}
+}  // namespace
 
 // TODO Do ve should snap here to App:Part or GeoFeatureGroup/DocumentObjectGroup ? (2015-09-04,
 // Fat-Zer)
@@ -131,7 +141,7 @@ TaskFeaturePick::TaskFeaturePick(
             QString::fromUtf8((*objIt)->Label.getValue()),
             getFeatureStatusString(*statusIt)
         ));
-        item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
+        item->setData(Qt::UserRole, QString::fromUtf8((*objIt)->getNameInDocument()));
         ui->listWidget->addItem(item);
 
         App::Document* pDoc = (*objIt)->getDocument();
@@ -261,7 +271,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures()
 
     for (const auto& feature : features) {
         result.push_back(
-            App::GetApplication().getDocument(documentName.c_str())->getObject(feature.toLatin1().data())
+            App::GetApplication().getDocument(documentName.c_str())->getObject(feature.toUtf8().data())
         );
     }
 
@@ -287,7 +297,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                 QString t = item->data(Qt::UserRole).toString();
                 auto obj = App::GetApplication()
                                .getDocument(documentName.c_str())
-                               ->getObject(t.toLatin1().data());
+                               ->getObject(t.toUtf8().data());
 
                 // build the dependent copy or reference if wanted by the user
                 if (status == otherBody || status == otherPart || status == notInBody) {
@@ -361,7 +371,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         // we do know that the created instance is a document object, as obj is one. But we do not
         // know which exact type
         auto* doc = App::GetApplication().getActiveDocument();
-        const auto name = fmt::format("Copy{}", obj->getNameInDocument());
+        const auto name = std::format("Copy{}", obj->getNameInDocument());
         copy = doc->addObject(obj->getTypeId().getName(), name.c_str());
 
         // copy over all properties
@@ -510,7 +520,7 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
         for (int row = 0; row < ui->listWidget->count(); row++) {
             QListWidgetItem* item = ui->listWidget->item(row);
             QString t = item->data(Qt::UserRole).toString();
-            if (t.compare(QString::fromLatin1(obj.FeatName)) == 0) {
+            if (t.compare(QString::fromUtf8(obj.FeatName)) == 0) {
                 item->setSelected(true);
 
                 if (msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -518,12 +528,7 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
                     if (isSingleSelectionEnabled()) {
                         QMetaObject::invokeMethod(
                             qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
-                            [docNameCopy] {
-                                Gui::Control().accept(
-                                    Gui::Application::Instance->getDocument(docNameCopy.c_str())
-                                        ->getDocument()
-                                );
-                            },
+                            [docNameCopy] { acceptDialogOf(docNameCopy); },
                             Qt::QueuedConnection
                         );
                     }
@@ -546,7 +551,7 @@ void TaskFeaturePick::onItemSelectionChanged()
         QListWidgetItem* item = ui->listWidget->item(row);
         QString t = item->data(Qt::UserRole).toString();
         if (item->isSelected()) {
-            Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
+            Gui::Selection().addSelection(documentName.c_str(), t.toUtf8());
         }
     }
     ui->listWidget->blockSignals(false);
@@ -560,17 +565,13 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
     }
     doSelection = true;
     QString t = item->data(Qt::UserRole).toString();
-    Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
+    Gui::Selection().addSelection(documentName.c_str(), t.toUtf8());
     doSelection = false;
 
     std::string docNameCopy = documentName;
     QMetaObject::invokeMethod(
         qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
-        [docNameCopy] {
-            Gui::Control().accept(
-                Gui::Application::Instance->getDocument(docNameCopy.c_str())->getDocument()
-            );
-        },
+        [docNameCopy] { acceptDialogOf(docNameCopy); },
         Qt::QueuedConnection
     );
 }
@@ -585,15 +586,18 @@ void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& O
 void TaskFeaturePick::slotUndoDocument(const Gui::Document& doc)
 {
     if (origins.empty()) {
-        QTimer::singleShot(100, [&doc]() { Gui::Control().closeDialog(doc.getDocument()); });
+        // The document may be closed before the timer fires, so look it up again by name
+        QTimer::singleShot(100, [docT = App::DocumentT(doc.getDocument())]() {
+            if (App::Document* appDoc = docT.getDocument()) {
+                Gui::Control().closeDialog(appDoc);
+            }
+        });
     }
 }
 
-void TaskFeaturePick::slotDeleteDocument(const Gui::Document& doc)
+void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
 {
     origins.clear();
-    App::Document* docPtr = doc.getDocument();
-    QTimer::singleShot(100, [docPtr]() { Gui::Control().closeDialog(docPtr); });
 }
 
 void TaskFeaturePick::showExternal(bool val)

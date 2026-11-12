@@ -31,11 +31,11 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.translate import translate
 from draftobjects.bspline import BSpline
+from draftutils import gui_utils
+from draftutils import utils
+from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_bspline import ViewProviderBSpline
@@ -115,6 +115,14 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     return obj
 
 
-makeBSpline = make_bspline
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_bspline()",
+)
+def makeBSpline(*args, **kwarg):
+    """DEPRECATED. Use 'make_bspline'."""
+    return make_bspline(*args, **kwarg)
+
 
 ## @}

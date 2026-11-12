@@ -109,6 +109,7 @@ tolerance : float
 
 from FreeCAD import Vector
 from Path.Base import Language as PathLanguage
+from Path.Base.Generator import linking
 
 import Constants
 import FreeCAD
@@ -153,6 +154,7 @@ class LeadInOut:
         safeHeight=0,
         startDepth=0,
         tolerance=0.1,
+        linkingArgs=None,
     ):
         self.source = PathLanguage.Maneuver.FromPath(path, skipZeroLength=True).instr
         self.side = side
@@ -186,6 +188,7 @@ class LeadInOut:
         self.safeHeight = safeHeight
         self.startDepth = startDepth
         self.tolerance = tolerance
+        self.linkingArgs = linkingArgs
 
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, invert=False):
@@ -224,6 +227,12 @@ class LeadInOut:
         posXY = Vector(pos.x, pos.y, 0)
         distance = posPrevXY.distanceToPoint(posXY)
 
+        if not first and outInstrPrev and self.linkingArgs and distance > self.retractThreshold:
+            # link the same way as the base operation (its collision avoidance strategy)
+            linkingMoves = self.getLinkingMoves(posPrev, pos)
+            if linkingMoves:
+                return linkingMoves
+
         if first or (distance > self.retractThreshold):
             # move to clearance height
             commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": self.clearanceHeight}))
@@ -257,6 +266,24 @@ class LeadInOut:
                 )
 
         return commands
+
+    # Linking moves from the end of a lead-out to the start of the next lead-in,
+    # generated with the base operation's linking arguments
+    def getLinkingMoves(self, begin, end):
+        cmds = linking.get_dressup_linking_moves(
+            self.linkingArgs,
+            begin,
+            end,
+            self.startDepth,
+            self.safeHeight,
+            None if self.rapidPlunge else self.vertFeed,
+        )
+        if not cmds:
+            return None
+        return [
+            PathLanguage.MoveStraight(None, cmd.Name, cmd.Parameters, cmd.Annotations)
+            for cmd in cmds
+        ]
 
     # Create commands with movements to clearance height
     def getTravelEnd(self):
@@ -767,7 +794,12 @@ class LeadInOut:
 
     # Check command
     def isCuttingMove(self, instr):
-        return instr.isMove() and not instr.isRapid() and not instr.isPlunge()
+        return (
+            instr.isMove()
+            and not instr.isRapid()
+            and not instr.isPlunge()
+            and not instr.isLinking()
+        )
 
     # Get direction of non cut movements
     def getMoveDir(self, instr):

@@ -402,7 +402,7 @@ bool GeomFillSurface::accept()
         QMessageBox::warning(
             this,
             tr("Invalid object"),
-            QString::fromLatin1(editedObject->getStatusString())
+            QString::fromUtf8(editedObject->getStatusString())
         );
         return false;
     }
@@ -452,7 +452,7 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
         editedObject->FillType.setValue(static_cast<long>(fillType));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
-            Base::Console().error("Surface filling: %s", editedObject->getStatusString());
+            Base::Console().error("Surface filling: {}", editedObject->getStatusString());
         }
     }
 }
@@ -495,7 +495,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             Gui::SelectionObject sel(msg);
             QString text = QStringLiteral("%1.%2").arg(
                 QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName)
+                QString::fromUtf8(msg.pSubName)
             );
             item->setText(text);
 

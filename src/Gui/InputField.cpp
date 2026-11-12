@@ -159,7 +159,7 @@ bool InputField::apply()
 QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 {
     QString key
-        = QStringLiteral("%1_%2x%3").arg(QString::fromLatin1(name)).arg(size.width()).arg(size.height());
+        = QStringLiteral("%1_%2x%3").arg(QString::fromUtf8(name)).arg(size.width()).arg(size.height());
     QPixmap icon;
     if (QPixmapCache::find(key, &icon)) {
         return icon;

@@ -359,17 +359,33 @@ class TechDrawExport Wire
 };
 using WirePtr = std::shared_ptr<Wire>;
 
+enum class FaceRepresentation {
+    Failed = -1,
+    Hollow =  0,
+    Common = +1,
+    Opaque = +2,
+    Sliced = +3
+};
+
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
 class TechDrawExport Face
 {
     public:
-        Face() = default;
+        Face() : representation(FaceRepresentation::Common) { };
+        explicit Face(const TopoDS_Face &f);
         ~Face();
+
+        FaceRepresentation getRepresentation() { return representation; }
+        void setRepresentation(FaceRepresentation representation) { this->representation = representation; }
+
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 
         double getArea() const;
         Base::Vector3d getCenter() const;
+
+    protected:
+        FaceRepresentation representation;
 };
 using FacePtr = std::shared_ptr<Face>;
 
@@ -464,7 +480,7 @@ class TechDrawExport GeometryUtils
         static bool isCircle(const TopoDS_Edge& occEdge);
         static bool getCircleParms(const TopoDS_Edge& occEdge, double& radius, Base::Vector3d& center, bool& isArc);
         static TopoDS_Edge asCircle(const TopoDS_Edge& splineEdge, bool& arc);
-        static bool isLine(const TopoDS_Edge& occEdge);
+        static bool isLine(const TopoDS_Edge& splineEdge);
         static TopoDS_Edge asLine(const TopoDS_Edge& occEdge);
 
         static double edgeLength(TopoDS_Edge occEdge);
@@ -490,6 +506,10 @@ class TechDrawExport GeometryUtils
                     bestFitArc(opencascade::handle<Geom_TrimmedCurve> splineActual,
                                opencascade::handle<Geom_TrimmedCurve> circleArc0,
                                opencascade::handle<Geom_TrimmedCurve> circleArc1);
+
+        static bool colinearPoints2d(Base::Vector3d p0, Base::Vector3d p1, Base::Vector3d p2);
+        static bool colinearPoints2dAll(const std::vector<Base::Vector3d>& points2d);
+
 };
 
 } //end namespace TechDraw

@@ -1206,8 +1206,10 @@ static View3DInventorViewer* spaceballMotionEventTarget()
 {
     // check if the active window has a 3d view
 
-    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
-        return viewer;
+    if (auto active = getMainWindow()->activeWindow()) {
+        if (auto viewer = active->findChild<View3DInventorViewer*>()) {
+            return viewer;
+        }
     }
 
     // check active view for the document
@@ -1879,6 +1881,10 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    if (!Application::hiddenMainWindow()) {
+        Q_EMIT guiInitialized();
+    }
+
     // processing all command line files
     try {
         std::list<std::string> files = App::Application::getCmdLineFiles();
@@ -2238,7 +2244,7 @@ void MainWindowP::restoreWindowState(const QByteArray& windowState)
         getMainWindow()->restoreState(windowState);
     }
 
-    Base::ConnectionBlocker block(connParam);
+    fastsignals::shared_connection_block blocker(connParam);
     // as a notification for user code on window state restore
     hGrp->SetBool("WindowStateRestored", !hGrp->GetBool("WindowStateRestored", false));
 }
@@ -2254,7 +2260,7 @@ void MainWindow::saveWindowSettings(bool canDelay)
         return;
     }
 
-    Base::ConnectionBlocker block(d->connParam);
+    fastsignals::shared_connection_block blocker(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
     d->hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
@@ -2479,10 +2485,7 @@ void MainWindow::insertFromMimeData(const QMimeData* mimeData)
             doc->commitTransaction();
         }
         else {
-            Base::Console().error(
-                "Failed to save pasted image to temporary file: %s\n",
-                tempPath.c_str()
-            );
+            Base::Console().error("Failed to save pasted image to temporary file: {}\n", tempPath);
         }
         return;
     }
@@ -2610,7 +2613,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             }
             else {
                 Base::Console().message(
-                    "No support to load file '%s'\n",
+                    "No support to load file '{}'\n",
                     (const char*)info.absoluteFilePath().toUtf8()
                 );
             }

@@ -29,6 +29,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Base/Tools.h>
+
 #include "ViewProviderPage.h"
 #include "QGISVGTemplate.h"
 
@@ -106,6 +108,8 @@ public:
 
     static PaperAttributes getPaperAttributes(TechDraw::DrawPage* pageObject);
     static PaperAttributes getPaperAttributes(ViewProviderPage* vpPage);
+
+    static Base::ScopeGuard suspendScreenMode();
 
     static void print(ViewProviderPage* vpPage, QPrinter* printer);
     static void printPdf(ViewProviderPage* vpPage, const std::string& file);

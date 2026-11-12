@@ -59,8 +59,8 @@ class CommandVertexCreationGroup:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'TechDraw_ExtensionVertexAtIntersection.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection","Cosmetic Intersection Vertices"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection", "Adds cosmetic vertices at the intersectionss of selected edges")}
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_CommandVertexCreationGroup","Cosmetic Intersection Vertices"),
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_CommandVertexCreationGroup", "Adds cosmetic vertices at the intersectionss of selected edges")}
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""
@@ -80,8 +80,8 @@ class CommandAddOffsetVertex:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_AddOffsetVertex.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AddOffsetVertex", "Offset Vertex"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AddOffsetVertex", "Creates an offset from one selected vertex")}
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_CommandAddOffsetVertex", "Offset Vertex"),
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_CommandAddOffsetVertex", "Creates an offset from one selected vertex")}
 
     def Activated(self):
         """Run the following code when the command is activated (button pressed)."""

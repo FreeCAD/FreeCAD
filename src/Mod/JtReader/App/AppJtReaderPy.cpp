@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: Juergen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <App/Application.h>
@@ -96,7 +93,7 @@ private:
         PyMem_Free(Name);
 
 
-        // Base::Console().log("Open in Mesh with %s",Name);
+        // Base::Console().log("Open in Mesh with {}",Name);
         Base::FileInfo file(EncodedName);
         if (file.hasExtension("jt")) {
             TestJtReader reader;
@@ -110,26 +107,22 @@ private:
             }
             catch (const Standard_Failure& e) {
                 Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
-                    file.fileName().c_str(),
+                    "JtReader: error reading '{}': {}\n",
+                    file.fileName(),
                     e.GetMessageString()
                 );
                 return Py::None();
             }
             catch (const std::exception& e) {
-                Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
-                    file.fileName().c_str(),
-                    e.what()
-                );
+                Base::Console().warning("JtReader: error reading '{}': {}\n", file.fileName(), e.what());
                 return Py::None();
             }
 
             if (jtReader.shapeCount() == 0) {
                 Base::Console().warning(
-                    "JtReader: no geometry could be imported from '%s'. "
+                    "JtReader: no geometry could be imported from '{}'. "
                     "The file may use unsupported features.\n",
-                    file.fileName().c_str()
+                    file.fileName()
                 );
                 return Py::None();
             }
@@ -175,26 +168,22 @@ private:
             }
             catch (const Standard_Failure& e) {
                 Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
-                    file.fileName().c_str(),
+                    "JtReader: error reading '{}': {}\n",
+                    file.fileName(),
                     e.GetMessageString()
                 );
                 return Py::None();
             }
             catch (const std::exception& e) {
-                Base::Console().warning(
-                    "JtReader: error reading '%s': %s\n",
-                    file.fileName().c_str(),
-                    e.what()
-                );
+                Base::Console().warning("JtReader: error reading '{}': {}\n", file.fileName(), e.what());
                 return Py::None();
             }
 
             if (jtReader.shapeCount() == 0) {
                 Base::Console().warning(
-                    "JtReader: no geometry could be imported from '%s'. "
+                    "JtReader: no geometry could be imported from '{}'. "
                     "The file may use unsupported features.\n",
-                    file.fileName().c_str()
+                    file.fileName()
                 );
                 return Py::None();
             }

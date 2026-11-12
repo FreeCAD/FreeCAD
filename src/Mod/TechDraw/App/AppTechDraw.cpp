@@ -138,17 +138,27 @@ PyMOD_INIT_FUNC(TechDraw)
    // Python Types
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
+    TechDraw::DrawViewAnnotationPython::init();
     TechDraw::DrawViewPartPython  ::init();
     TechDraw::DrawViewSectionPython::init();
     TechDraw::DrawComplexSectionPython ::init();
+    TechDraw::DrawViewDetailPython::init();
     TechDraw::DrawTemplatePython  ::init();
+    TechDraw::DrawParametricTemplatePython::init();
+    TechDraw::DrawSVGTemplatePython::init();
     TechDraw::DrawViewSymbolPython::init();
+    TechDraw::DrawViewDraftPython ::init();
+    TechDraw::DrawViewSpreadsheetPython::init();
     TechDraw::DrawLeaderLinePython::init();
     TechDraw::DrawRichAnnoPython  ::init();
     TechDraw::DrawTilePython      ::init();
     TechDraw::DrawTileWeldPython  ::init();
     TechDraw::DrawWeldSymbolPython::init();
     TechDraw::DrawBrokenViewPython::init();
+    TechDraw::DrawViewClipPython  ::init();
+    TechDraw::DrawViewImagePython ::init();
+    TechDraw::DrawHatchPython     ::init();
+    TechDraw::DrawGeomHatchPython ::init();
 
     TechDraw::LineFormat::initCurrentLineFormat();
 

@@ -70,9 +70,11 @@ SET(Draft_tests
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
+    drafttests/test_insertion_point.py
     drafttests/test_lines_gui.py
     drafttests/test_manual_input_gui.py
     drafttests/test_modification.py
+    drafttests/test_trimex_gui.py
     drafttests/test_oca.py
     drafttests/test_pivy.py
     drafttests/test_svg.py
@@ -272,6 +274,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py
+    draftguitools/gui_insertion_point.py
     draftguitools/gui_edit_base_object.py
     draftguitools/gui_edit_draft_objects.py
     draftguitools/gui_edit_arch_objects.py

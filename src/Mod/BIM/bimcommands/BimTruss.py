@@ -101,21 +101,22 @@ class Arch_Truss:
                 last=self.points[0], callback=self.getPoint, hints=self.get_hints()
             )
         elif len(self.points) == 2:
+            from draftutils import todo
+
             self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
-            self.createTruss()
+            todo.ToDo.delay(self.createTruss, None)
 
     def createTruss(self, basename=""):
         """Creates the truss"""
 
-        FreeCADGui.Control.closeDialog()
         self.doc.openTransaction(translate("Arch", "Create Truss"))
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("Arch")
         if not basename:
             if self.points:
-                cmd = "base = Draft.makeLine(FreeCAD."
+                cmd = "base = Draft.make_line(FreeCAD."
                 cmd += str(self.points[0]) + ",FreeCAD." + str(self.points[1]) + ")"
                 FreeCADGui.doCommand(cmd)
                 basename = "base"

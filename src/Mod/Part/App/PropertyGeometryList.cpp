@@ -210,8 +210,7 @@ void PropertyGeometryList::trySaveGeometry(Geometry* geom, Base::Writer& writer)
         }
     }
     catch (const Base::NotImplementedError& e) {
-        Base::Console()
-            .warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+        Base::Console().warning("PropertyGeometryList", "Not yet implemented: {}\n", e.what());
     }
 }
 
@@ -233,8 +232,7 @@ void PropertyGeometryList::tryRestoreGeometry(Geometry* geom, Base::XMLReader& r
         geom->Restore(reader);
     }
     catch (const Base::NotImplementedError& e) {
-        Base::Console()
-            .warning(std::string("PropertyGeometryList"), "Not yet implemented: %s\n", e.what());
+        Base::Console().warning("PropertyGeometryList", "Not yet implemented: {}\n", e.what());
     }
 }
 
@@ -285,7 +283,7 @@ void PropertyGeometryList::Restore(Base::XMLReader& reader)
 
         if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
             Base::Console().error(
-                "Geometry \"%s\" within a PropertyGeometryList was subject to a partial restore.\n",
+                "Geometry \"{}\" within a PropertyGeometryList was subject to a partial restore.\n",
                 reader.localName()
             );
             if (isOrderRelevant()) {

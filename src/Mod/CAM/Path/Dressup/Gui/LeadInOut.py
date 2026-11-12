@@ -26,6 +26,7 @@ import FreeCADGui
 import Part
 import Path
 from Path.Base.Generator import leadinout
+from Path.Base.Generator import linking
 from Path.Base.Gui.Util import QuantitySpinBox
 from Path.Base.Util import toolControllerForOp
 from Path.Dressup import Utils as PathDressup
@@ -505,8 +506,10 @@ class ObjectDressup:
             obj.Path = Path.Path("(inactive operation)")
             return
 
+        PathDressup.placeWithBase(obj)
+
         if not obj.LeadIn and not obj.LeadOut:
-            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
+            obj.Path = obj.Base.Path
 
         if obj.RadiusIn <= 0:
             obj.RadiusIn = 1
@@ -554,7 +557,7 @@ class ObjectDressup:
             return
 
         args = {
-            "path": PathUtils.getPathWithPlacement(obj.Base),
+            "path": obj.Base.Path,
             "side": self.side,
             "direction": self.direction,
             "leadIn": obj.LeadIn,
@@ -583,6 +586,7 @@ class ObjectDressup:
             "safeHeight": self.safeHeight,
             "startDepth": self.startDepth,
             "tolerance": job.GeometryTolerance.Value if job else 0.01,
+            "linkingArgs": linking.get_linking_args(PathDressup.baseOp(obj.Base), job),
         }
 
         obj.Path = leadinout.LeadInOut(**args).generate()

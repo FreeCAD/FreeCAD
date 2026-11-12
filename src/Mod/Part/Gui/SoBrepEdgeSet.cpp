@@ -94,13 +94,7 @@ static void applyOverlayDepthState(SoState* state, OverlayDepthMode depthMode)
             );
             return;
         case OverlayDepthMode::RespectDepth:
-            SoDepthBufferElement::set(
-                state,
-                TRUE,
-                FALSE,
-                SoDepthBufferElement::LEQUAL,
-                SbVec2f(0.0f, 1.0f)
-            );
+            SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0f, 1.0f));
             return;
     }
 }
@@ -398,7 +392,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     }
     else if (
         Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
+        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
     ) {
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));

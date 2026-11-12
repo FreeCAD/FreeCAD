@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
+   freecad:scale="1:100"
+   id="svg189"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+  <defs
+     id="defs193" />
+  <title
+     id="title2">Suomalainen SFS/ISO TechDraw - A4 vaaka</title>
+  <desc
+     id="desc4">FreeCAD TechDraw 1.1.3 - Finnish ISO/SFS style drawing template</desc>
+  <g
+     id="page"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.35">
+    <rect
+       x="10"
+       y="10"
+       width="277"
+       height="190"
+       id="rect6" />
+    <rect
+       x="13"
+       y="13"
+       width="271"
+       height="184"
+       stroke-width="0.18"
+       id="rect8" />
+  </g>
+  <g
+     id="zones"
+     font-family="'DejaVu Sans', Arial, sans-serif"
+     font-size="3px"
+     fill="#000000"
+     text-anchor="middle"
+     transform="matrix(1,0,0,0.98872258,0,0.15532832)"
+     style="stroke-width:1.00569">
+    <text
+       x="27.309999"
+       y="16"
+       id="text11"
+       style="stroke-width:1.00569">1</text>
+    <text
+       x="27.309999"
+       y="198"
+       id="text13"
+       style="stroke-width:1.00569">1</text>
+    <text
+       x="61.939999"
+       y="16"
+       id="text15"
+       style="stroke-width:1.00569">2</text>
+    <text
+       x="61.939999"
+       y="198"
+       id="text17"
+       style="stroke-width:1.00569">2</text>
+    <text
+       x="96.559998"
+       y="16"
+       id="text19"
+       style="stroke-width:1.00569">3</text>
+    <text
+       x="96.559998"
+       y="198"
+       id="text21"
+       style="stroke-width:1.00569">3</text>
+    <text
+       x="131.19"
+       y="16"
+       id="text23"
+       style="stroke-width:1.00569">4</text>
+    <text
+       x="131.19"
+       y="198"
+       id="text25"
+       style="stroke-width:1.00569">4</text>
+    <text
+       x="165.81"
+       y="16"
+       id="text27"
+       style="stroke-width:1.00569">5</text>
+    <text
+       x="165.81"
+       y="198"
+       id="text29"
+       style="stroke-width:1.00569">5</text>
+    <text
+       x="200.44"
+       y="16"
+       id="text31"
+       style="stroke-width:1.00569">6</text>
+    <text
+       x="200.44"
+       y="198"
+       id="text33"
+       style="stroke-width:1.00569">6</text>
+    <text
+       x="235.06"
+       y="16"
+       id="text35"
+       style="stroke-width:1.00569">7</text>
+    <text
+       x="235.06"
+       y="198"
+       id="text37"
+       style="stroke-width:1.00569">7</text>
+    <text
+       x="269.69"
+       y="16"
+       id="text39"
+       style="stroke-width:1.00569">8</text>
+    <text
+       x="269.69"
+       y="198"
+       id="text41"
+       style="stroke-width:1.00569">8</text>
+    <text
+       x="15"
+       y="25.83"
+       id="text43"
+       style="stroke-width:1.00569">A</text>
+    <text
+       x="282"
+       y="25.83"
+       id="text45"
+       style="stroke-width:1.00569">A</text>
+    <text
+       x="15"
+       y="57.5"
+       id="text47"
+       style="stroke-width:1.00569">B</text>
+    <text
+       x="282"
+       y="57.5"
+       id="text49"
+       style="stroke-width:1.00569">B</text>
+    <text
+       x="15"
+       y="89.169998"
+       id="text51"
+       style="stroke-width:1.00569">C</text>
+    <text
+       x="282"
+       y="89.169998"
+       id="text53"
+       style="stroke-width:1.00569">C</text>
+    <text
+       x="15"
+       y="120.83"
+       id="text55"
+       style="stroke-width:1.00569">D</text>
+    <text
+       x="282"
+       y="120.83"
+       id="text57"
+       style="stroke-width:1.00569">D</text>
+    <text
+       x="15"
+       y="152.5"
+       id="text59"
+       style="stroke-width:1.00569">E</text>
+    <text
+       x="282"
+       y="152.5"
+       id="text61"
+       style="stroke-width:1.00569">E</text>
+    <text
+       x="15"
+       y="184.17"
+       id="text63"
+       style="stroke-width:1.00569">F</text>
+    <text
+       x="282"
+       y="184.17"
+       id="text65"
+       style="stroke-width:1.00569">F</text>
+  </g>
+  <rect
+     x="107"
+     y="137"
+     width="180"
+     height="63"
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.35"
+     id="rect68"
+     style="fill:#ffffff" />
+  <path
+     d="M 107,152 H 287 M 107,167 H 287 M 107,182 H 287"
+     id="path70" />
+  <path
+     d="m 222,152 v 30 m 30,-45 v 30 m 20,-30 v 30"
+     id="path72" />
+  <path
+     d="m 177,182 v 18 m 50,-18 v 18"
+     id="path74" />
+  <path
+     d="m 257,182 v 18"
+     id="path76" />
+  <g
+     id="labels"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="3.2"
+     fill="#000000">
+    <text
+       x="110"
+       y="142"
+       id="text79">NIMIKE / OTSIKKO / SISÄLTÖ</text>
+    <text
+       x="225"
+       y="142"
+       id="text81">PIIRUSTUSNRO</text>
+    <text
+       x="255"
+       y="142"
+       id="text83">REVISIO</text>
+    <text
+       x="275"
+       y="142"
+       id="text85">ARKKI</text>
+    <text
+       x="110"
+       y="157"
+       id="text87">PROJEKTI / KOHDE</text>
+    <text
+       x="225"
+       y="157"
+       id="text89">MITTAKAAVA</text>
+    <text
+       x="255"
+       y="157"
+       id="text91">KOKO</text>
+    <text
+       x="275"
+       y="157"
+       id="text93">SIVU</text>
+    <text
+       x="110"
+       y="171"
+       id="text95">RAKENNUSPAIKAN TIEDOT</text>
+    <text
+       x="225"
+       y="171"
+       id="text97">STANDARDI</text>
+    <text
+       x="110"
+       y="183"
+       id="text99">SUUNNITTELIJA</text>
+    <text
+       x="180"
+       y="183"
+       id="text101">TARKASTAJA</text>
+    <text
+       x="230"
+       y="183"
+       id="text103">HYVÄKSYJÄ</text>
+    <text
+       x="260"
+       y="183"
+       id="text105">PÄIVÄYS</text>
+    <text
+       x="110"
+       y="194"
+       id="text107">OMISTAJA</text>
+    <text
+       x="180"
+       y="194"
+       id="text109">ASIAKIRJATYYPPI</text>
+    <text
+       x="230"
+       y="194"
+       id="text111">KIELI</text>
+    <text
+       x="260"
+       y="194"
+       id="text113">MASSA</text>
+  </g>
+  <text
+     freecad:editable="FC-Title"
+     freecad:autofill="title"
+     x="110"
+     y="149"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text118"><tspan
+       id="tspan116">NIMIKE</tspan></text>
+  <text
+     freecad:editable="FC-DrawingNumber"
+     x="225"
+     y="149"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text122"><tspan
+       id="tspan120">PIIR-0000</tspan></text>
+  <text
+     freecad:editable="FC-Revision"
+     x="255"
+     y="149"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text126"><tspan
+       id="tspan124">0</tspan></text>
+  <text
+     freecad:editable="FC-Sheet"
+     freecad:autofill="sheet"
+     x="275"
+     y="149"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text130"><tspan
+       id="tspan128">A4</tspan></text>
+  <text
+     freecad:editable="FC-Project"
+     freecad:autofill="freecad_drawing"
+     x="110"
+     y="164"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text134"><tspan
+       id="tspan132">Uudisrakennus ympärivuotiseen asuinkäyttöön</tspan></text>
+  <text
+     freecad:editable="FC-Scale"
+     freecad:autofill="scale"
+     x="225"
+     y="164"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text138"><tspan
+       id="tspan136">1:100</tspan></text>
+  <text
+     freecad:editable="FC-Size"
+     x="255"
+     y="164"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text142"><tspan
+       id="tspan140">A4</tspan></text>
+  <text
+     freecad:editable="FC-Page"
+     x="275"
+     y="164"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text146"><tspan
+       id="tspan144">1 / 1</tspan></text>
+  <text
+     freecad:editable="FC-Material"
+     x="110"
+     y="177"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text150"><tspan
+       id="tspan148">KIINTEISTÖTUNNUS</tspan></text>
+  <text
+     freecad:editable="FC-Standard"
+     x="225"
+     y="177"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text154"><tspan
+       id="tspan152">SFS-EN ISO</tspan></text>
+  <text
+     freecad:editable="FC-Author"
+     freecad:autofill="author_name"
+     x="110"
+     y="189"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text158"><tspan
+       id="tspan156">Laatija</tspan></text>
+  <text
+     freecad:editable="FC-Checker"
+     x="180"
+     y="188"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text162"><tspan
+       id="tspan160">Tarkastaja</tspan></text>
+  <text
+     freecad:editable="FC-Approver"
+     x="230"
+     y="188"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text166"><tspan
+       id="tspan164">Hyväksyjä</tspan></text>
+  <text
+     freecad:editable="FC-Date"
+     freecad:autofill="date"
+     x="260"
+     y="188"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text170"><tspan
+       id="tspan168">YYYY-MM-DD</tspan></text>
+  <text
+     freecad:editable="FC-Organisation"
+     freecad:autofill="organization"
+     x="110"
+     y="198"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text174"><tspan
+       id="tspan172">YRITYKSEN NIMI</tspan></text>
+  <text
+     freecad:editable="FC-DocumentType"
+     x="180"
+     y="198"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text178"><tspan
+       id="tspan176">TEKNINEN PIIRUSTUS</tspan></text>
+  <text
+     freecad:editable="FC-Language"
+     x="230"
+     y="198"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text182"><tspan
+       id="tspan180">fi</tspan></text>
+  <text
+     freecad:editable="FC-Mass"
+     x="260"
+     y="198"
+     font-family="DejaVu Sans, Arial, sans-serif"
+     font-size="4.0"
+     fill="#000000"
+     id="text186"><tspan
+       id="tspan184">-</tspan></text>
+  <g
+     id="company-logo"
+     aria-label="Yrityksen logo"
+     transform="translate(195.500,168.000) scale(0.012695312500)" />
+  <metadata
+     id="metadata557">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Suomalainen SFS/ISO TechDraw - A4 vaaka</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

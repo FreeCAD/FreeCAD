@@ -23,6 +23,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <format>
 #include <string>
 
 #include "Quantity.h"
@@ -125,7 +126,7 @@ std::string UnitsSchema::toLocale(
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";
     };
 
-    return fmt::format("{}{}{}", valueString, notUnit(unitString) ? "" : " ", unitString);
+    return std::format("{}{}{}", valueString, notUnit(unitString) ? "" : " ", unitString);
 }
 
 bool UnitsSchema::isMultiUnitLength() const

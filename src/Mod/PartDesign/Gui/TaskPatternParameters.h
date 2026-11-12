@@ -31,6 +31,10 @@
 
 class Ui_TaskPatternParameters;
 
+namespace PartGui
+{
+class PatternInstanceControls;
+}
 
 namespace PartDesignGui
 {
@@ -63,7 +67,11 @@ private:
     void retranslateParameterUI(QWidget* widget) override;
 
     App::DocumentObject* getPatternObject() const override;
-    void fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection direction) override;
+    void fillDirectionCombo(
+        Gui::ComboLinks& combo,
+        Part::LinearPatternDirection direction,
+        bool allowEmpty = false
+    ) override;
     void onReferenceSelectionRequested() override;
     void onPatternParametersChanged() override;
     void setupPatternTransaction() override;
@@ -86,10 +94,14 @@ private:
     void showOriginAxes(bool show);
     void enterReferenceSelectionMode();
     void exitReferenceSelectionMode();  // Ensure this clears gates etc.
+    void setupInstanceControls();
+    void updateInstanceControls();
+    void setInstanceSuppressed(int index, bool suppress);
 
     Base::Vector3d getStartPoint() const;
 
     std::unique_ptr<Ui_TaskPatternParameters> ui;
+    std::unique_ptr<PartGui::PatternInstanceControls> instanceControls;
 };
 
 

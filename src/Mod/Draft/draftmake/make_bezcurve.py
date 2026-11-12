@@ -31,18 +31,17 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.translate import translate
 from draftobjects.bezcurve import BezCurve
+from draftutils import gui_utils
+from draftutils import utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_bezcurve import ViewProviderBezCurve
 
 
-def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=None, degree=None):
-    """make_bezcurve(pointslist, [closed], [placement])
+def make_bez_curve(pointslist, closed=False, placement=None, face=None, support=None, degree=None):
+    """make_bez_curve(pointslist, [closed], [placement])
 
     Creates a Bezier Curve object from the given list of vectors.
 
@@ -79,7 +78,7 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
             nlist.append(v.Point)
         pointslist = nlist
     if placement:
-        utils.type_check([(placement, App.Placement)], "make_bezcurve")
+        utils.type_check([(placement, App.Placement)], "make_bez_curve")
     if len(pointslist) == 2:
         fname = "Line"
     else:
@@ -111,6 +110,24 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
     return obj
 
 
-makeBezCurve = make_bezcurve
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_bez_curve()",
+)
+def make_bezcurve(*args, **kwarg):
+    """DEPRECATED. Use 'make_bez_curve'."""
+    return make_bez_curve(*args, **kwarg)
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_bez_curve()",
+)
+def makeBezCurve(*args, **kwarg):
+    """DEPRECATED. Use 'make_bez_curve'."""
+    return make_bez_curve(*args, **kwarg)
+
 
 ## @}

@@ -22,6 +22,7 @@
 import Arch
 import ArchSectionPlane
 import Draft
+import Part
 import os
 import FreeCAD as App
 from bimtests import TestArchBase
@@ -36,6 +37,16 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         box.Height = height
         self.document.recompute()
         return box
+
+    def _create_TD_page(self):
+        tpath = os.path.join(
+            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
+        )
+        page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
+        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = tpath
+        page.Template = template
+        return page
 
     def test_makeSectionPlane(self):
         """Test the makeSectionPlane function."""
@@ -132,21 +143,15 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         # Create a drawing view
         section = Arch.makeSectionPlane(level)
         drawing = Arch.make2DDrawing()
-        view = Draft.make_shape2dview(section)
-        cut = Draft.make_shape2dview(section)
+        view = Draft.make_shape_2d_view(section)
+        cut = Draft.make_shape_2d_view(section)
         cut.InPlace = False
         cut.ProjectionMode = "Cutfaces"
         drawing.addObjects([view, cut])
         App.ActiveDocument.recompute()
 
         # Create a TD page
-        tpath = os.path.join(
-            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
-        )
-        page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
-        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
-        template.Template = tpath
-        page.Template = template
+        page = self._create_TD_page()
         view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft", "DraftView")
         view.Source = drawing
         page.addView(view)
@@ -175,7 +180,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
 
         section = Arch.makeSectionPlane(wall)
-        shp_view = Draft.make_shape2dview(section)
+        shp_view = Draft.make_shape_2d_view(section)
         shp_view.InPlace = False
         shp_view.ProjectionMode = "Cutfaces"
         App.ActiveDocument.recompute()
@@ -185,3 +190,57 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
 
         area_expected = 1200 * 2200 - 800 * 1800
         self.assertAlmostEqual(face.Area, area_expected)
+
+    def testTechDrawViewWindowSymbols(self):
+        """Tests the display of plan symbols in a TD view from
+        a section with 'Only Solids' set to true.
+        Regression test for:
+        https://github.com/FreeCAD/FreeCAD/pull/32672
+        """
+
+        door = Arch.makeWindowPreset(
+            "Simple door",
+            width=1000.0,
+            height=2400.0,
+            h1=50.0,
+            h2=50.0,
+            h3=50.0,
+            w1=100.0,
+            w2=50.0,
+            o1=0.0,
+            o2=50.0,
+            placement=App.Placement(App.Vector(), App.Vector(1, 0, 0), 90),
+        )
+        door.SymbolPlan = True
+        App.ActiveDocument.recompute()
+
+        # Create a section
+        section = Arch.makeSectionPlane(door)
+        section.OnlySolids = True
+        App.ActiveDocument.recompute()
+
+        # Create a TD page
+        page = self._create_TD_page()
+        view = App.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIMView")
+        view.Source = section
+        page.addView(view)
+        App.ActiveDocument.recompute()
+        self.assertTrue("A" in view.Symbol)
+
+    def testCutVolumeClipWhenPlaneCutsNothing(self):
+        """Clip and Depth still apply when the section plane cuts nothing."""
+
+        box = Part.makeBox(10, 10, 10)
+        above = Part.makePlane(4, 4, App.Vector(3, 3, 20))
+        below = Part.makePlane(4, 4, App.Vector(3, 3, -20))
+
+        self.assertEqual(Arch.getCutVolume(above, [box]), (None, None, None))
+
+        cutvolume = Arch.getCutVolume(above, [box], clip=True)[1]
+        self.assertAlmostEqual(box.cut(cutvolume).Volume, 160)
+
+        cutvolume = Arch.getCutVolume(below, [box], clip=True)[1]
+        self.assertAlmostEqual(box.cut(cutvolume).Volume, 0)
+
+        cutvolume = Arch.getCutVolume(above, [box], depth=15)[1]
+        self.assertAlmostEqual(box.cut(cutvolume).Volume, 500)

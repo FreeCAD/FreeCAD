@@ -37,6 +37,7 @@
 #include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawView.h"
 #include "DrawLeaderLine.h"
 #include "DrawPage.h"
@@ -80,6 +81,12 @@ const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
                                          "Custom",
                                          nullptr};
+const char* DrawView::CaptionSnapEnums[] = {"Top",
+                                                "Bottom",
+                                                "Left",
+                                                "Right",
+                                                "NoSnap",
+                                                nullptr};
 const double SCALEINCREMENT(0.1);
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
@@ -105,7 +112,9 @@ DrawView::DrawView():
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
-
+    ADD_PROPERTY_TYPE(CaptionLocation, (Base::Vector3d(0.0, 0.0, 0.0)), group, App::Prop_Output, "Location of the caption relative to the view");
+    CaptionSnap.setEnums(CaptionSnapEnums);
+    ADD_PROPERTY_TYPE(CaptionSnap, ("Bottom"), group, App::Prop_Hidden, "Snap the caption to the view's top, bottom, left or right edge");
     setScaleAttribute();
 }
 
@@ -126,7 +135,7 @@ App::DocumentObjectExecReturn* DrawView::recompute()
 
 App::DocumentObjectExecReturn *DrawView::execute()
 {
-//    Base::Console().message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
+//    Base::Console().message("DV::execute() - {} touched: {}\n", getNameInDocument(), isTouched());
     if (!findParentPage()) {
         return App::DocumentObject::execute();
     }
@@ -493,7 +502,7 @@ double DrawView::autoScale() const
 //compare 1:1 rect of view to pagesize(pw, h)
 double DrawView::autoScale(double pw, double ph) const
 {
-//    Base::Console().message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
+//    Base::Console().message("DV::autoScale(Page: {:.3f}, {:.3f}) - {}\n", pw, ph, getNameInDocument());
     QRectF viewBox = getRect();           //getRect is scaled (ie current actual size)
     if (!viewBox.isValid()) {
         return 1.0;
@@ -510,7 +519,7 @@ double DrawView::autoScale(double pw, double ph) const
 
 bool DrawView::checkFit() const
 {
-//    Base::Console().message("DV::checkFit() - %s\n", getNameInDocument());
+//    Base::Console().message("DV::checkFit() - {}\n", getNameInDocument());
     auto page = findParentPage();
     return checkFit(page);
 }
@@ -518,7 +527,7 @@ bool DrawView::checkFit() const
 //!check if View is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
-//    Base::Console().message("DV::checkFit(page) - %s\n", getNameInDocument());
+//    Base::Console().message("DV::checkFit(page) - {}\n", getNameInDocument());
     bool result = true;
 
     double width = 0.0;
@@ -539,7 +548,7 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
 void DrawView::setPosition(double x, double y, bool force)
 {
-//    Base::Console().message("DV::setPosition(%.3f, %.3f) - \n", x,y, getNameInDocument());
+//    Base::Console().message("DV::setPosition({:.3f}, {:.3f}) - \n", x,y, getNameInDocument());
     if ( (!isLocked()) ||
          (force) ) {
         double currX = X.getValue();
@@ -656,7 +665,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
 
 bool DrawView::keepUpdated()
 {
-//    Base::Console().message("DV::keepUpdated() - %s\n", getNameInDocument());
+//    Base::Console().message("DV::keepUpdated() - {}\n", getNameInDocument());
     if (overrideKeepUpdated()) {
         return true;
     }
@@ -715,7 +724,7 @@ double DrawView::prefScale()
 
 void DrawView::requestPaint()
 {
-//    Base::Console().message("DV::requestPaint() - %s\n", getNameInDocument());
+//    Base::Console().message("DV::requestPaint() - {}\n", getNameInDocument());
     signalGuiPaint(this);
 }
 
@@ -730,11 +739,11 @@ void DrawView::showProgressMessage(std::string featureName, std::string text)
 //! the unique name within the document (ex ActiveView001), and use it to update the Label property.
 void DrawView::translateLabel(std::string context, std::string baseName, std::string uniqueName)
 {
-//    Base::Console().message("DV::translateLabel - context: %s baseName: %s uniqueName: %s\n",
-//                            context.c_str(), baseName.c_str(), uniqueName.c_str());
+//    Base::Console().message("DV::translateLabel - context: {} baseName: {} uniqueName: {}\n",
+//                            context, baseName, uniqueName);
 
     Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
-//    Base::Console().message("DV::translateLabel - new label: %s\n", Label.getValue());
+//    Base::Console().message("DV::translateLabel - new label: {}\n", Label.getValue());
 }
 
 PyObject *DrawView::getPyObject(void)
@@ -753,6 +762,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewPython, TechDraw::DrawView)
 template<> const char* TechDraw::DrawViewPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderDrawingView";
+}
+template<>
+PyObject* TechDraw::DrawViewPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

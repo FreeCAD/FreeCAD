@@ -141,7 +141,7 @@ void LoftWidget::findShapes()
 
         if (viable) {
             QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QString name = QString::fromUtf8(obj->getNameInDocument());
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);

@@ -88,6 +88,7 @@ private Q_SLOTS:
     void onAngleChanged(double);
     void onAngle2Changed(double);
     void onAxisChanged(int);
+    void onProjectAxisChanged(bool);
     void onReversed(bool);
     void onStartModeChanged(int);
     void onStartOffsetChanged(double);

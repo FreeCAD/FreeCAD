@@ -8479,7 +8479,7 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1351"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation>Fügt einen Nachbearbeitungsfilter hinzu, der Glyphen zu den Netz-Scheitelpunkten hinzufügt, um Scheitelpunktdaten zu visualisieren</translation>
+      <translation>Fügt einen Nachbereitungsfilter hinzu, der Glyphen zu den Netzknotenpunkten hinzufügt, um Knotenpunktdaten zu visualisieren</translation>
     </message>
   </context>
   <context>

@@ -595,12 +595,13 @@
          id="path897">
         <path
            style="color:#000000;fill:#ff0000;-inkscape-stroke:none"
-           d="M 149.74805,22.267578 V 170.5918 h 1.13476 V 22.267578 Z"
+           d="M 149.74805,40.432082 V 170.298686 h 1.13476 V 40.432082 Z"
            id="path68476" />
         <g
            id="g68458">
           <g
-             id="path68468">
+             id="path68468"
+             transform="translate(0,-0.529174)">
             <path
                style="color:#000000;fill:#ff0000;fill-rule:evenodd;stroke-width:0.779591;stroke-linejoin:round;-inkscape-stroke:none"
                d="m 155.34647,158.46998 -5.01149,13.62834 -5.01148,-13.62834 c 2.95878,2.17724 7.0069,2.16469 10.02297,0 z"
@@ -611,7 +612,8 @@
                id="path68474" />
           </g>
           <g
-             id="path68460">
+             id="path68460"
+             transform="translate(0,18.400504)">
             <path
                style="color:#000000;fill:#ff0000;fill-rule:evenodd;stroke-width:0.779591;stroke-linejoin:round;-inkscape-stroke:none"
                d="m 145.28355,34.389931 5.01149,-13.628339 5.01148,13.62834 c -2.95878,-2.177239 -7.0069,-2.164694 -10.02297,-1e-6 z"
@@ -625,7 +627,7 @@
       </g>
       <path
          id="path1187"
-         d="m 133.77842,19.499193 h 24.62222"
+         d="m 133.77842,38.549169 h 24.62222"
          style="fill:none;stroke:#ff0000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="path1189"

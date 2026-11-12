@@ -49,6 +49,41 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateVisibility()
         self.form.accuracySlider.setPageStep(1)
 
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)"""
+        tuples = []
+        tuples.append(("strategySelect", "Strategy"))
+        tuples.append(("cutPattern", "CutPattern"))
+        tuples.append(("cutPatternZLevel", "CutPatternZLevel"))
+        tuples.append(("layerMode", "LayerMode"))
+        tuples.append(("sampleInterval", "SampleInterval"))
+        tuples.append(("adaptiveSampling", "AdaptiveSampling"))
+        tuples.append(("minSampleInterval", "MinSampleInterval"))
+        tuples.append(("boundBoxSelect", "BoundBox"))
+        tuples.append(("boundaryAdjustment", "BoundaryAdjustment"))
+        tuples.append(("stockToLeave", "StockToLeave"))
+        tuples.append(("depthOffset", "DepthOffset"))
+        tuples.append(("avoidLastX_Faces", "AvoidLastX_Faces"))
+        tuples.append(("avoidFacesOverlap", "AvoidFacesOverlap"))
+        tuples.append(("stepOver", "StepOver"))
+        tuples.append(("profileEdges", "ProfileEdges"))
+        tuples.append(("cutPatternAngle", "CutPatternAngle"))
+        tuples.append(("cutPatternReversed", "CutPatternReversed"))
+        tuples.append(("clearPlanarOnly", "ClearPlanarOnly"))
+        tuples.append(("ignoreOuter", "IgnoreOuter"))
+        tuples.append(("fillSelectedHoles", "FillSelectedHoles"))
+        tuples.append(("useStartPoint", "UseStartPoint"))
+        tuples.append(("keepToolDown", "KeepToolDown"))
+        tuples.append(("optimizeEnabled", "OptimizeLinearPaths"))
+        tuples.append(("adaptivePatternAccuracy", "AdaptiveAccuracy"))
+        tuples.append(("liftDistance", "LiftDistance"))
+        tuples.append(("keepToolDownThreshold", "KeepToolDownThreshold"))
+        tuples.append(("helixMaxRampAngle", "HelixMaxRampAngle"))
+        tuples.append(("helixMaxDiameter", "HelixMaxDiameterPercent"))
+        tuples.append(("forceInsideOut", "ForceInsideOut"))
+        tuples.append(("finishingProfile", "FinishingProfile"))
+        return tuples
+
     def getForm(self):
         """getForm() ... returns UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPlanarSurfaceEdit.ui")

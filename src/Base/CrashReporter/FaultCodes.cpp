@@ -22,7 +22,7 @@
 #include "FaultCodes.h"
 
 #include <FCConfig.h>
-#include <fmt/format.h>
+#include <format>
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
 # include <csignal>
@@ -124,7 +124,7 @@ std::string faultCodeName(std::uint32_t code)
     if (const auto description = describeFaultCode(code)) {
         return std::string(description->name);
     }
-    return fmt::format("UNKNOWN(0x{:08X})", code);
+    return std::format("UNKNOWN(0x{:08X})", code);
 }
 
 std::string_view osName(OS osID)

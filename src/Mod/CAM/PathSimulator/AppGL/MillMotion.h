@@ -55,7 +55,6 @@ struct MillMotion
     float i = 0.0f, j = 0.0f, k = 0.0f;
     float r = 0.0f;
     char retract_mode = '\0';
-    float retract_z = 0;
 };
 
 static inline void MotionPosToVec(vec3 vec, const MillMotion& motion)

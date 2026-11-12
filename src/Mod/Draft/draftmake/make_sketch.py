@@ -41,6 +41,7 @@ from draftgeoutils import geometry as geo_geometry
 from draftutils import gui_utils
 from draftutils import utils
 from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 
 def make_sketch(
@@ -265,6 +266,14 @@ def make_sketch(
     return nobj
 
 
-makeSketch = make_sketch
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_sketch()",
+)
+def makeSketch(*args, **kwarg):
+    """DEPRECATED. Use 'make_sketch'."""
+    return make_sketch(*args, **kwarg)
+
 
 ## @}

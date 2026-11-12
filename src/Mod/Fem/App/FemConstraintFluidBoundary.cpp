@@ -131,7 +131,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             Subtype.setEnums(OutletSubtypes);
         }
         else {
-            Base::Console().message(boundaryType.c_str());
+            Base::Console().message("{}", boundaryType);
             Base::Console().message(" Error: this boundaryType is not defined\n");
         }
 

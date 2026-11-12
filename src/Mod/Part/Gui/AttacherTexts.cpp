@@ -848,8 +848,8 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
     }
 
     Base::Console().warning(
-        "No user-friendly string defined for this attachment mode and attacher type: %s %s \n",
-        AttachEngine::getModeName(mmode).c_str(),
+        "No user-friendly string defined for this attachment mode and attacher type: {} {} \n",
+        AttachEngine::getModeName(mmode),
         attacherType.getName()
     );
     return TwoStrings(QString::fromStdString(AttachEngine::getModeName(mmode)), QString());

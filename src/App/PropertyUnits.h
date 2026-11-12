@@ -453,6 +453,32 @@ public:
     ~PropertyHeatFlux() override = default;
 };
 
+/** MassMomentOfInertia property
+ * This is a property for representing the moment of inertia of mass. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like 1 kg*m^2.
+ */
+class AppExport PropertyMassMomentOfInertia: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMassMomentOfInertia();
+    ~PropertyMassMomentOfInertia() override = default;
+};
+
+/** AreaMomentOfInertia property
+ * This is a property for representing the moment of inertia of area. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like 1 m^4.
+ */
+class AppExport PropertyAreaMomentOfInertia: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyAreaMomentOfInertia();
+    ~PropertyAreaMomentOfInertia() override = default;
+};
+
 /** InverseArea property
  * This is a property for representing the reciprocal of area. It is basically a float
  * property which must not be negative. On the Gui it has a quantity like 1/m^2.

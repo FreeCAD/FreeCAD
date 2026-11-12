@@ -1899,7 +1899,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
             execExtent(this, "DistanceY");
             break;
         default:
-            Base::Console().message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::ExtGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 

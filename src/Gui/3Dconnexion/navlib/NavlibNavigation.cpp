@@ -164,12 +164,12 @@ void NavlibInterface::onViewChanged(const Gui::MDIView* view)
         static unsigned long error_count = 0;  // Limit the number of error messages emitted.
         long error = GetModelExtents(extents);
         if (error && error_count <= 20) {
-            Base::Console().error("NavlibInterface::GetModelExtents error %ld\n", error);
+            Base::Console().error("NavlibInterface::GetModelExtents error {}\n", error);
             error_count++;
         }
         error = GetCameraMatrix(camera);
         if (error && error_count <= 20) {
-            Base::Console().error("NavlibInterface::GetCameraMatrix error %ld\n", error);
+            Base::Console().error("NavlibInterface::GetCameraMatrix error {}\n", error);
             error_count++;
         }
 
@@ -215,7 +215,7 @@ static bool NavlibCanRecognizeApp()
         }
     }
     if (!inBundle) {
-        Base::Console().log("3Dconnexion: executable path is %s\n", path.toUtf8().constData());
+        Base::Console().log("3Dconnexion: executable path is {}\n", path.toStdString());
         Base::Console().log("3Dconnexion Navigation Framework requires the executable path to be inside an .app bundle.\n");
         Base::Console().error("3Dconnexion Navigation Framework cannot recognize this build of FreeCAD.\n");
         ok = false;
@@ -243,7 +243,7 @@ static bool NavlibCanRecognizeApp()
                                                 sel_registerName("UTF8String"));
                 if (idStr && idStr[0]) {
                     hasLaunchServicesId = true;
-                    // Base::Console().log("3Dconnexion: LaunchServices bundle ID is %s\n", idStr);
+                    // Base::Console().log("3Dconnexion: LaunchServices bundle ID is {}\n", idStr);
                 }
             }
         }
@@ -274,7 +274,7 @@ void NavlibInterface::enableNavigation()
     PutProfileHint("FreeCAD");
     CNav3D::EnableNavigation(true, errorCode);
     if (errorCode) {
-        Base::Console().error("NavlibInterface::EnableNavigation error %d\n", errorCode.value());
+        Base::Console().error("NavlibInterface::EnableNavigation error {}\n", errorCode.value());
         return;
     }
 
@@ -478,7 +478,7 @@ long NavlibInterface::SetViewExtents(const navlib::box_t& extents)
         long error = GetViewExtents(oldExtents);
         if (error) {
             if (error_count <= 10) {
-                Base::Console().error("NavlibInterface::GetViewExtents error %ld\n", error);
+                Base::Console().error("NavlibInterface::GetViewExtents error {}\n", error);
                 error_count++;
             }
         } else {

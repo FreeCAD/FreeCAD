@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
@@ -37,12 +34,12 @@ import math
 
 import FreeCAD
 import ArchCommands
-import Draft
 import Part
 
 from FreeCAD import Units
 from FreeCAD import Vector
 from draftutils import params
+from draftutils import utils
 
 if FreeCAD.GuiUp:
     import re
@@ -1060,7 +1057,7 @@ if FreeCAD.GuiUp:
                 if self.cur_col == _LABEL_COLUMN:
                     sel_len = len(widget.text())
                 else:
-                    sel_len = FreeCADGui.draftToolBar.number_length(widget.text())
+                    sel_len = utils.get_number_length(widget.text())
                 widget.setSelection(0, sel_len)
             return super().eventFilter(widget, event)
 

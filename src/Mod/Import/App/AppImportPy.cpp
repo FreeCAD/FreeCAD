@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2013 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #if defined(__MINGW32__)
 # define WNT  // avoid conflict with GUID
@@ -173,7 +170,7 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().error("{}\n", e.GetMessageString());
                     Base::Console().message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc, Utf8Name.c_str());
@@ -186,7 +183,7 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().error("{}\n", e.GetMessageString());
                     Base::Console().message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc, Utf8Name.c_str());
@@ -654,7 +651,7 @@ private:
             PyMem_Free(fname);
             App::DocumentObject* obj
                 = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-            Base::Console().message("Imp:writeDXFObject - docObj: %s\n", obj->getNameInDocument());
+            Base::Console().message("Imp:writeDXFObject - docObj: {}\n", obj->getNameInDocument());
 
             if ((versionParm == 12) || (versionParm == 14)) {
                 versionOverride = true;

@@ -27,6 +27,7 @@ Replaces the hardcoded C-A rotation generator with a solver that derives
 all behavior from the Machine data model.
 """
 
+import dataclasses
 import math
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
@@ -434,6 +435,20 @@ def _solve_analytical_2axis(
             candidates = _decompose_2axis_head(chain[0], chain[1], desired_axis)
             candidates += _decompose_2axis_head(chain[1], chain[0], desired_axis)
     else:
+        # A head tilts the tool where a table turns the part, and the other way about. The
+        # decomposition solves R_second · R_first · desired = Z, as for two tables; a table
+        # and a head satisfy R_table · desired = R_head · Z instead, which is the same with
+        # the head's angle negated. Its limits are the head's own, so it is solved against
+        # them negated too, then the angle turned back.
+        heads = {ax.name for ax in chain if ax.role == AxisRole.HEAD_ROTARY}
+        chain = [
+            (
+                dataclasses.replace(ax, min_limit=-ax.max_limit, max_limit=-ax.min_limit)
+                if ax.name in heads
+                else ax
+            )
+            for ax in chain
+        ]
         # Try both decomposition orders; FK validation filters incorrect ones.
         # _decompose_2axis(first, second) solves R_second · R_first · desired = Z.
         # compute_rotation_matrix sorts axes: azimuth (Z-rot) first, tilt last,
@@ -453,6 +468,12 @@ def _solve_analytical_2axis(
             # No clear azimuth axis; try both orders
             candidates = _decompose_2axis(chain[0], chain[1], desired_axis)
             candidates += _decompose_2axis(chain[1], chain[0], desired_axis)
+
+        if heads:
+            candidates = [
+                {name: (-angle if name in heads else angle) for name, angle in c.items()}
+                for c in candidates
+            ]
 
     return candidates
 
@@ -734,6 +755,7 @@ def solve_orientation(
     best_solution = None
     best_cost = float("inf")
     best_error = float("inf")
+    best_angles = None
 
     for candidate in candidates:
         # Check limits
@@ -752,7 +774,8 @@ def solve_orientation(
         # Strategy depends on axis roles:
         #   All table: R.multVec(desired) ≈ Z
         #   All head:  R.multVec(Z) ≈ desired
-        #   Mixed:     self-consistency of decomposition math
+        #   Mixed:     R_table.multVec(desired) ≈ R_head.multVec(Z): the table turns the
+        #              part's axis to where the head points the tool
         error = float("inf")
         if len(chain) >= 2:
             all_table = all(ax.role == AxisRole.TABLE_ROTARY for ax in chain)
@@ -768,17 +791,11 @@ def solve_orientation(
                     target = FreeCAD.Vector(0, 0, 1)
                 error = (achieved - target).Length
             else:
-                # Mixed: self-consistency check (try both decomposition orders)
-                decomp_error = float("inf")
-                for first_ax, second_ax in [(chain[0], chain[1]), (chain[1], chain[0])]:
-                    second_ref, second_plane = _get_relangle_params(second_ax.rotation_vector)
-                    first_rot = FreeCAD.Rotation(first_ax.rotation_vector, candidate[first_ax.name])
-                    newvec = first_rot.multVec(desired_tool_axis)
-                    check_second = _relAngle(newvec, second_ref, second_plane)
-                    err = abs(_wrap_angle(check_second - candidate[second_ax.name]))
-                    if err < decomp_error:
-                        decomp_error = err
-                error = decomp_error
+                table = [ax for ax in chain if ax.role == AxisRole.TABLE_ROTARY]
+                head = [ax for ax in chain if ax.role == AxisRole.HEAD_ROTARY]
+                achieved = compute_rotation_matrix(head, candidate).multVec(FreeCAD.Vector(0, 0, 1))
+                target = compute_rotation_matrix(table, candidate).multVec(desired_tool_axis)
+                error = (achieved - target).Length
         elif len(chain) == 1:
             # Single axis: the _relAngle decomposition is direct, just
             # verify the candidate is an equivalent angle (base ± k*180/360)
@@ -794,11 +811,36 @@ def solve_orientation(
         # Compute cost
         cost = _compute_solution_cost(chain, candidate, current_state)
 
-        # Update best solution
-        if cost < best_cost or (abs(cost - best_cost) < 1e-9 and error < best_error):
+        # Update best solution. Costs and errors that differ by float noise
+        # are a tie: two placements of one plane can differ in their last
+        # bit, and that must not pick a different pose (C -90/A -30 against
+        # C +90/A +30 on a trunnion, say). The cost wraps angles, so C 0 and
+        # C -360 tie too. An exact tie goes to the least travel from where
+        # the axes are, then to the angles nearest zero, then to the angles
+        # themselves in chain order, so a plane always gets the same pose.
+        travel = sum(
+            abs(candidate[name] - current_state[name])
+            for name in candidate
+            if name in current_state
+        )
+        angles = (
+            round(travel, 6),
+            round(sum(abs(v) for v in candidate.values()), 6),
+            tuple(round(candidate.get(axis.name, 0.0), 6) for axis in chain),
+        )
+        if best_solution is None:
+            better = True
+        elif abs(cost - best_cost) > 1e-6:
+            better = cost < best_cost
+        elif abs(error - best_error) > 1e-9:
+            better = error < best_error
+        else:
+            better = angles < best_angles
+        if better:
             best_solution = candidate
             best_cost = cost
             best_error = error
+            best_angles = angles
 
     if best_solution is None:
         return SolveResult(

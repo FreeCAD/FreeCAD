@@ -811,6 +811,43 @@ the sketch plane's normal vector will be used</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>startMode</tabstop>
+  <tabstop>lineStartReference</tabstop>
+  <tabstop>buttonStartReference</tabstop>
+  <tabstop>startOffsetEdit</tabstop>
+  <tabstop>sidesMode</tabstop>
+  <tabstop>changeMode</tabstop>
+  <tabstop>lengthEdit</tabstop>
+  <tabstop>offsetEdit</tabstop>
+  <tabstop>taperEdit</tabstop>
+  <tabstop>buttonShape</tabstop>
+  <tabstop>lineShapeName</tabstop>
+  <tabstop>checkBoxAllFaces</tabstop>
+  <tabstop>buttonShapeFace</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+  <tabstop>buttonFace</tabstop>
+  <tabstop>lineFaceName</tabstop>
+  <tabstop>changeMode2</tabstop>
+  <tabstop>lengthEdit2</tabstop>
+  <tabstop>offsetEdit2</tabstop>
+  <tabstop>taperEdit2</tabstop>
+  <tabstop>buttonShape2</tabstop>
+  <tabstop>lineShapeName2</tabstop>
+  <tabstop>checkBoxAllFaces2</tabstop>
+  <tabstop>buttonShapeFace2</tabstop>
+  <tabstop>listWidgetReferences2</tabstop>
+  <tabstop>buttonFace2</tabstop>
+  <tabstop>lineFaceName2</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>directionCB</tabstop>
+  <tabstop>XDirectionEdit</tabstop>
+  <tabstop>YDirectionEdit</tabstop>
+  <tabstop>ZDirectionEdit</tabstop>
+  <tabstop>checkBoxAlongDirection</tabstop>
+  <tabstop>comboOperation</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

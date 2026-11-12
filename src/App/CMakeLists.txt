@@ -81,7 +81,6 @@ target_include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
-    fmt::fmt
 )
 
 if(BUILD_TRACY_FRAME_PROFILER)
@@ -307,6 +306,7 @@ SET(FreeCADApp_CPP_SRCS
     ${Document_CPP_SRCS}
     ${Properties_CPP_SRCS}
     Application.cpp
+    MainThreadSignal.cpp
     ApplicationDirectories.cpp
     ApplicationDirectoriesPyImp.cpp
     ApplicationPy.cpp

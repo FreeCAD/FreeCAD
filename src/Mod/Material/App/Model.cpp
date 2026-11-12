@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
+#include <format>
 #include <string>
 
 
@@ -114,10 +113,10 @@ void ModelProperty::validate(const ModelProperty& other) const
         throw InvalidProperty("Model names don't match");
     }
     if (getDisplayName() != other.getDisplayName()) {
-        Base::Console().log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
-        Base::Console().log("Remote display name '%s'\n",
-                            other.getDisplayName().toStdString().c_str());
-        throw InvalidProperty("Model display names don't match");
+        throw InvalidProperty(
+            std::format("Model display names don't match (local '{}', remote '{}')",
+                        getDisplayName().toStdString(),
+                        other.getDisplayName().toStdString()));
     }
     if (_propertyType != other._propertyType) {
         throw InvalidProperty("Model property types don't match");
@@ -136,9 +135,10 @@ void ModelProperty::validate(const ModelProperty& other) const
     }
 
     if (_columns.size() != other._columns.size()) {
-        Base::Console().log("Local property column count %d\n", _columns.size());
-        Base::Console().log("Remote property column count %d\n", other._columns.size());
-        throw InvalidProperty("Model property column counts don't match");
+        throw InvalidProperty(
+            std::format("Model property column counts don't match (local {}, remote {})",
+                        _columns.size(),
+                        other._columns.size()));
     }
     for (size_t i = 0; i < _columns.size(); i++) {
         _columns[i].validate(other._columns[i]);
@@ -247,7 +247,11 @@ void Model::validate(Model& other) const
         throw InvalidModel("Model property counts don't match");
     }
     for (auto& property : _properties) {
-        auto& remote = other._properties[property.first];
-        property.second.validate(remote);
+        const auto remote = other._properties.find(property.first);
+        if (remote == other._properties.end()) {
+            throw InvalidModel(std::format("Model property '{}' not found in remote",
+                                           property.first.toStdString()));
+        }
+        property.second.validate(remote->second);
     }
 }

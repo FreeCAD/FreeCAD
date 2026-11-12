@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-# Tester for Draft makePathArray - shapes on a path - with selected subobjects
+# Tester for Draft make_path_array - shapes on a path - with selected subobjects
 # Usage: in FC gui, select a "shape" document object (sphere, box, etc) (!select in
 # tree, not document view!!), then select edges from the "wire" object.
 
@@ -33,9 +33,9 @@ import Draft
 print("testPathArray started")
 items = 4  # count
 centretrans = FreeCAD.Vector(0, 0, 0)  # translation
-# centretrans = FreeCAD.Vector(10,10,10)                     # translation
+# centretrans = FreeCAD.Vector(10,10,10)  # translation
 orient = True  # align to curve
-# orient = False                                             # don't align to curve
+# orient = False  # don't align to curve
 
 # use this to test w/ path subelements
 s = FreeCADGui.Selection.getSelectionEx()
@@ -52,9 +52,9 @@ path = s[1].Object
 pathsubs = list(s[1].SubElementNames)
 print("testPathArray: pathsubs: ", pathsubs)
 
-# o = Draft.makePathArray(base,path,items)                                        # test with defaults
-o = Draft.makePathArray(
-    base, path, items, centretrans, orient, pathsubs
+# o = Draft.make_path_array(base, path, items)  # test with defaults
+o = Draft.make_path_array(
+    base, path, items, extra=centretrans, subelements=pathsubs, align=orient
 )  # test w/o orienting shapes
 
 print("testPathArray ended")

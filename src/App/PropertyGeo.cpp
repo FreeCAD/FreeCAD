@@ -583,6 +583,15 @@ void PropertyPlacement::getPaths(std::vector<ObjectIdentifier>& paths) const
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Yaw")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Pitch")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Roll")));
 }
 
 namespace

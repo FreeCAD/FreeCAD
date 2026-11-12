@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Final
 
 from Base.Metadata import export
@@ -26,17 +24,14 @@ class Edge(PyObjectBase):
     def intersectWithEdge(self, edge: Edge, /) -> list[tuple[float, float, float]]:
         """intersectWithEdge(Edge) -> list
         Get a list of intersection points with another edge."""
-        ...
 
     def isParallel(self, edge: Edge, /) -> bool:
         """isParallel(Edge) -> bool
         Checks if the two edges are parallel."""
-        ...
 
     def isCollinear(self, edge: Edge, /) -> bool:
         """isCollinear(Edge) -> bool
         Checks if the two edges are collinear."""
-        ...
 
     def unbound(self) -> None:
         """method unbound()
@@ -44,7 +39,6 @@ class Edge(PyObjectBase):
         free and is more or less a simple edge.
         After calling unbound() no topological operation will
         work!"""
-        ...
     Index: Final[int]
     """The index of this edge of the facet"""
 

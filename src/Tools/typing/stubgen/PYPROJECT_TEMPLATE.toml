@@ -32,6 +32,8 @@ Forum = "https://forum.freecad.org/"
 [tool.hatch.build.targets.sdist]
 ignore-vcs = true
 include = ["stubs/**", "pyproject.toml", "README.md"]
+sources = ["stubs"]
 
 [tool.hatch.build.targets.wheel]
-force-include = {{ "stubs" = "." }}
+include = ["*.pyi", "py.typed"]
+sources = ["stubs"]

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.TopoShape import TopoShape
@@ -32,24 +30,20 @@ class ShapeFix_Wireframe(ShapeFix_Root):
         """
         Clears all statuses
         """
-        ...
 
     def load(self, shape: TopoShape, /) -> None:
         """
         Loads a shape, resets statuses
         """
-        ...
 
     def fixWireGaps(self) -> bool:
         """
         Fixes gaps between ends of curves of adjacent edges
         """
-        ...
 
     def fixSmallEdges(self) -> bool:
         """
         Fixes small edges in shape by merging adjacent edges
         """
-        ...
 
     def shape(self) -> TopoShape: ...

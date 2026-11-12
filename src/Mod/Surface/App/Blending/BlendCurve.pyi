@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any
 
 from Base.BaseClass import PyObjectBase
@@ -26,12 +24,11 @@ class BlendCurve(PyObjectBase):
         """
         Return the BezierCurve that interpolate the input BlendPoints.
         """
-        ...
 
-    def setSize(self) -> Any:
+    def setSize(self, index: int, size: float, relative: bool, /) -> None:
         """
         Set the tangent size of the blendpoint at given index.
+
         If relative is true, the size is considered relative to the distance between the two blendpoints.
         myBlendCurve.setSize(idx, size, relative)
         """
-        ...

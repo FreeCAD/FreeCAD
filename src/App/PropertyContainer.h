@@ -332,6 +332,22 @@ public:
   virtual Property *getPropertyByName(const char* name) const;
 
   /**
+   * @brief Get the canonical property name.
+   *
+   * Some property containers may have alternative names for the same property.
+   * This method returns the canonical name of the property or an empty string
+   * if the property container has no knowledge of a canonical or alternative
+   * property name.
+   *
+   * @param[in] name The name of the property to find the canonical name for.
+   * @return The canonical name of the property, or an empty string if not found.
+   */
+  virtual std::string getCanonicalPropertyName(const char* /*name*/) const
+  {
+      return {};
+  }
+
+  /**
    * @brief Get the name of a property.
    *
    * @param[in] prop The property to get the name for.

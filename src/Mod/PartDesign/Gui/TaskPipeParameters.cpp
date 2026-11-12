@@ -160,9 +160,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
         profileShow = profileVP->isShow();
         profileVP->setVisible(true);
-        ui->profileBaseEdit->setText(
-            make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues())
-        );
+        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
     }
     // the auxiliary spine
     if (pipe->AuxiliarySpine.getValue()) {
@@ -264,7 +262,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 stateHandler->getSelectionMode()
                 == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove
             ) {
-                QString sub = QString::fromLatin1(msg.pSubName);
+                QString sub = QString::fromUtf8(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
                 }
@@ -798,7 +796,7 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                 stateHandler->getSelectionMode()
                 == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove
             ) {
-                QString sub = QString::fromLatin1(msg.pSubName);
+                QString sub = QString::fromUtf8(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
                 }

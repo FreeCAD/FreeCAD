@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
@@ -177,7 +174,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.",
+                    "The length of this wall.\nEditable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.",
                 ),
                 locked=True,
             )
@@ -188,7 +185,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.",
+                    "The width of this wall.\nIgnored if this wall is based on a solid or a face.",
                 ),
                 locked=True,
             )
@@ -234,7 +231,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid",
+                    "The height of this wall.\nKeep 0 to automatically match the height of the enclosing Level or Building.\nIgnored if this wall is based on a solid.",
                 ),
                 locked=True,
             )
@@ -256,7 +253,7 @@ class _Wall(ArchComponent.Component):
                 "Wall",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.",
+                    "The alignment of this wall on its base object, if applicable.",
                 ),
                 locked=True,
             )
@@ -1063,27 +1060,10 @@ class _Wall(ArchComponent.Component):
                     # in some corner case != getSortedClusters()
                     elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                         self.basewires = []
-                        skGeom = obj.Base.GeometryFacadeList
-                        skGeomEdges = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
-                        # Get ArchSketch edges to construct ArchWall
-                        # No need to test obj.ArchSketchData ...
-                        for ig, geom in enumerate(skGeom):
-                            # Construction mode edges should be ignored if
-                            # ArchSketchEdges, otherwise, ArchSketchEdges data
-                            # needs to take out those in Construction before
-                            # using as parameters.
-                            if (not obj.ArchSketchEdges and not geom.Construction) or str(
-                                ig
-                            ) in obj.ArchSketchEdges:
-                                # support Line, Arc, Circle, Ellipse for Sketch
-                                # as Base at the moment
-                                if isinstance(
-                                    geom.Geometry,
-                                    (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
-                                ):
-                                    skGeomEdgesI = geom.Geometry.toShape()
-                                    skGeomEdges.append(skGeomEdgesI)
+                        skGeomEdges = ArchSketchObject.getSketchDefiningEdges(
+                            obj.Base, obj.ArchSketchEdges
+                        )
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
@@ -1825,24 +1805,37 @@ if FreeCAD.GuiUp:
             self.length = loader.createWidget("Gui::QuantitySpinBox")
             FreeCADGui.ExpressionBinding(self.length).bind(self.obj, "Length")
             self.length.setProperty("value", self.obj.Length)
+            self.length.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Length"))
+            )
             layout.addRow(translate("Arch", "Length"), self.length)
 
             # Width
             self.width = loader.createWidget("Gui::QuantitySpinBox")
             FreeCADGui.ExpressionBinding(self.width).bind(self.obj, "Width")
             self.width.setProperty("value", self.obj.Width)
+            self.width.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Width"))
+            )
             layout.addRow(translate("Arch", "Width"), self.width)
 
             # Height
             self.height = loader.createWidget("Gui::QuantitySpinBox")
             FreeCADGui.ExpressionBinding(self.height).bind(self.obj, "Height")
             self.height.setProperty("value", self.obj.Height)
+            self.height.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty("Height"))
+            )
             layout.addRow(translate("Arch", "Height"), self.height)
 
+            alignTooltip = translate("App::Property", self.obj.getDocumentationOfProperty("Align"))
             self.alignLayout = QtGui.QHBoxLayout()
             self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
             self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
             self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
+            self.alignLeft.setToolTip(alignTooltip)
+            self.alignCenter.setToolTip(alignTooltip)
+            self.alignRight.setToolTip(alignTooltip)
             self.alignLayout.addWidget(self.alignLeft)
             self.alignLayout.addWidget(self.alignCenter)
             self.alignLayout.addWidget(self.alignRight)

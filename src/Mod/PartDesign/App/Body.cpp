@@ -328,13 +328,27 @@ void Body::setBaseProperty(App::DocumentObject* feature)
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
         // NULL is ok here, it just means we made the current one fiature the base solid
-        static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+        auto* pdFeature = static_cast<PartDesign::Feature*>(feature);
+        App::DocumentObject* oldBase = pdFeature->BaseFeature.getValue();
+        pdFeature->BaseFeature.setValue(prevSolidFeature);
+        pdFeature->onBaseFeatureRerouted(
+            oldBase,
+            prevSolidFeature,
+            PartDesign::Feature::BaseFeatureChange::Insertion
+        );
 
         // Reroute the next solid feature's BaseFeature property to this feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
         if (nextSolidFeature) {
             assert(nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()));
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
+            auto* nextPD = static_cast<PartDesign::Feature*>(nextSolidFeature);
+            App::DocumentObject* nextBase = nextPD->BaseFeature.getValue();
+            nextPD->BaseFeature.setValue(feature);
+            nextPD->onBaseFeatureRerouted(
+                nextBase,
+                feature,
+                PartDesign::Feature::BaseFeatureChange::Insertion
+            );
         }
     }
 }
@@ -353,7 +367,11 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
         // Check if the next feature is pointing to the one being deleted
         if (nextPD->BaseFeature.getValue() == feature) {
             nextPD->BaseFeature.setValue(prevSolidFeature);
-            nextPD->onBaseFeatureRerouted(feature, prevSolidFeature);
+            nextPD->onBaseFeatureRerouted(
+                feature,
+                prevSolidFeature,
+                PartDesign::Feature::BaseFeatureChange::Removal
+            );
         }
     }
 
@@ -384,16 +402,16 @@ App::DocumentObjectExecReturn* Body::execute()
 {
     Part::BodyBase::execute();
     /*
-    Base::Console().error("Body '%s':\n", getNameInDocument());
+    Base::Console().error("Body '{}':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
-    Base::Console().error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    Base::Console().error("   Tip: {}\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Group.getValues();
     Base::Console().error("   Group:\n");
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++)
-    { if (*m == NULL) continue; Base::Console().error("      %s", (*m)->getNameInDocument()); if
+    { if (*m == NULL) continue; Base::Console().error("      {}", (*m)->getNameInDocument()); if
     (Body::isSolidFeature(*m)) { App::DocumentObject* baseFeature =
     static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue(); Base::Console().error(", Base:
-    %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument()); } else {
+    {}\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument()); } else {
             Base::Console().error("\n");
         }
     }

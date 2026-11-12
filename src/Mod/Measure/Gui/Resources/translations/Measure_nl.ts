@@ -52,22 +52,6 @@
     </message>
   </context>
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="61"/>
-      <source>Element to measure</source>
-      <translation>Te meten element</translation>
-    </message>
-  </context>
-  <context>
-    <name>App::PropertyVector</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="68"/>
-      <source>The result location</source>
-      <translation type="unfinished">The result location</translation>
-    </message>
-  </context>
-  <context>
     <name>MeasureGui::QuickMeasure</name>
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
@@ -202,92 +186,92 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="137"/>
+      <location filename="../../TaskMeasure.cpp" line="138"/>
       <source>Measurement</source>
       <translation>Meting</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
-      <source>Show Delta</source>
-      <translation type="unfinished">Show Delta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMeasure.cpp" line="159"/>
+      <location filename="../../TaskMeasure.cpp" line="149"/>
       <source>Auto Save</source>
       <translation>Automatisch opslaan</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="163"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="168"/>
+      <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
       <translation>Toevoegende Selectie</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="174"/>
+      <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>Indien aangevinkt, wordt een nieuwe selectie toegevoegd aan de meting. Als uitgevinkt, moet de Ctrl-toets worden ingedrukt om een selectie toe te voegen aan de huidige meting, anders zal een nieuwe meting worden gestart</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="187"/>
+      <location filename="../../TaskMeasure.cpp" line="175"/>
       <source>Settings</source>
       <translation>Instellingen</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="199"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Auto</source>
       <translation>Automatisch</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="231"/>
+      <location filename="../../TaskMeasure.cpp" line="222"/>
       <source>Mode</source>
       <translation>Instelling</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="245"/>
+      <location filename="../../TaskMeasure.cpp" line="228"/>
       <source>Result</source>
       <translation>Resultaat</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="551"/>
+      <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
       <translation type="unfinished">%1 auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
       <translation type="unfinished">%1 start new measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 add to measurement</source>
       <translation type="unfinished">%1 add to measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="780"/>
+      <location filename="../../TaskMeasure.cpp" line="740"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="785"/>
+      <location filename="../../TaskMeasure.cpp" line="745"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="281"/>
+      <location filename="../../TaskMeasure.cpp" line="820"/>
+      <source>Show Delta</source>
+      <translation type="unfinished">Show Delta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="263"/>
       <source>Saves the measurement in the active document</source>
       <translation>Bewaart de meting in het actieve document</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="287"/>
+      <location filename="../../TaskMeasure.cpp" line="269"/>
       <source>Close</source>
       <translation>Sluiten</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="288"/>
+      <location filename="../../TaskMeasure.cpp" line="270"/>
       <source>Close the measurement task.</source>
       <translation>Sluit de meettaak.</translation>
     </message>
@@ -295,57 +279,9 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="280"/>
+      <location filename="../../TaskMeasure.cpp" line="262"/>
       <source>Save</source>
       <translation>Opslaan</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskMeasure</name>
-    <message>
-      <location filename="../../../InitGui.py" line="44"/>
-      <source>Center of mass</source>
-      <translation>Zwaartepunt massa</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="119"/>
-      <source>Distance</source>
-      <translation>Afstand</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="127"/>
-      <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="135"/>
-      <source>Angle</source>
-      <translation>Hoek</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="143"/>
-      <source>Length</source>
-      <translation>Lengte</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="151"/>
-      <source>Position</source>
-      <translation>Positie</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="159"/>
-      <source>Area</source>
-      <translation>Oppervlakte</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="167"/>
-      <source>Diameter</source>
-      <translation>Diameter</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="175"/>
-      <source>Radius</source>
-      <translation>Radius</translation>
     </message>
   </context>
   <context>
@@ -503,6 +439,54 @@
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
       <translation type="unfinished">Inertia around axis</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>Afstand</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation type="unfinished">Distance Free</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>Hoek</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>Lengte</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>Positie</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>Oppervlakte</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>Diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>Radius</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
   <context>

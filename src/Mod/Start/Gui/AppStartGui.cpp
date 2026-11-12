@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <QString>
-#include <QTimer>
+#include <QPointer>
 
 
 #include <App/Application.h>
@@ -68,52 +67,6 @@ public:
     }
 };
 
-class StartLauncher
-{
-public:
-    StartLauncher()
-    {
-        if (Gui::isInternalGuiTestRun()) {
-            return;
-        }
-
-        // QTimers don't fire until the event loop starts, which is our signal that the GUI is up
-        QTimer::singleShot(100, [this] { Launch(); });
-    }
-
-    void Launch()
-    {
-        if (Gui::isInternalGuiTestRun()) {
-            return;
-        }
-
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start"
-        );
-        bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
-        if (showOnStartup) {
-            Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
-            QTimer::singleShot(100, [this] { EnsureLaunched(); });
-        }
-    }
-
-    void EnsureLaunched()
-    {
-        if (Gui::isInternalGuiTestRun()) {
-            return;
-        }
-
-        // It's possible that "Start_Start" didn't result in the creation of an MDI window, if it
-        // was called to early. This polls the views to make sure the view was created, and if it
-        // was not, re-calls the command.
-        auto mw = Gui::getMainWindow();
-        auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
-        if (!existingView) {
-            Launch();
-        }
-    }
-};
-
 PyObject* initModule()
 {
     auto newModule = gsl::owner<Module*>(new Module);
@@ -125,9 +78,6 @@ PyObject* initModule()
 /* Python entry */
 PyMOD_INIT_FUNC(StartGui)
 {
-    static StartGui::StartLauncher* launcher = new StartGui::StartLauncher();
-    Q_UNUSED(launcher)
-
     Base::Console().log("Loading GUI of Start module… ");
     PyObject* mod = StartGui::initModule();
     auto manipulator = std::make_shared<StartGui::Manipulator>();
@@ -138,6 +88,25 @@ PyMOD_INIT_FUNC(StartGui)
 
     // register preferences pages
     new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp>(QT_TRANSLATE_NOOP("QObject", "Start"));
+
+    auto mw = Gui::getMainWindow();
+    QObject::connect(mw, &Gui::MainWindow::guiInitialized, mw, [mw] {
+        if (Gui::isInternalGuiTestRun()) {
+            return;
+        }
+
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Start"
+        );
+        if (hGrp->GetBool("ShowOnStartup", true)) {
+            // An initialization script may already have opened a document.
+            QPointer<Gui::MDIView> activeView = mw->activeWindow();
+            Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
+            if (activeView) {
+                mw->setActiveWindow(activeView);
+            }
+        }
+    });
 
     PyMOD_Return(mod);
 }

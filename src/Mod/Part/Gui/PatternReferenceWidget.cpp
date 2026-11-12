@@ -66,7 +66,8 @@ bool PatternReferenceWidget::isSelectReferenceMode() const
     if (userData == SelectReferenceUserData) {
         return true;
     }
-    if (userData == DefaultDirectionUserData || userData == ObjectDirectionUserData) {
+    if (userData == DefaultDirectionUserData || userData == ObjectDirectionUserData
+        || userData == NoDirectionUserData) {
         return false;
     }
 

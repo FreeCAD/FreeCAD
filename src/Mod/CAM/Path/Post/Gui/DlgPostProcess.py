@@ -173,7 +173,7 @@ class PostProcessDialog:
         dlg = self.dialog
         dlg.comboBoxMachine.blockSignals(True)
         dlg.comboBoxMachine.clear()
-        dlg.comboBoxMachine.addItem(translate("CAM_Post", "(none)"), userData=None)
+        dlg.comboBoxMachine.addItem(translate("CAM_Post", "(Legacy post-processor)"), userData=None)
 
         try:
             from Machine.models.machine import MachineFactory
@@ -247,7 +247,7 @@ class PostProcessDialog:
         container_layout = QtGui.QVBoxLayout(container)
         container_layout.setContentsMargins(0, 0, 0, 0)
 
-        section_widgets = build_output_options(machine, container_layout, context="CAM_Post")
+        section_widgets = build_output_options(machine, container_layout)
 
         # Flatten section_widgets into _machine_output_field_widgets
         self._machine_output_field_widgets = dict(section_widgets)

@@ -88,17 +88,17 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="121"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Złożenie</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Połączenia złożeń</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="125"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Złożenie</translation>
     </message>
@@ -132,7 +132,7 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2061"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
@@ -187,22 +187,22 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
       <translation>Aktualizuj przechowywane pozycje</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1869"/>
+      <location filename="../../../JointObject.py" line="1875"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Wybierz dwa elementy z dwóch oddzielnych części</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2063"/>
+      <location filename="../../../JointObject.py" line="2069"/>
       <source>Radius 1</source>
       <translation>Promień 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2065"/>
+      <location filename="../../../JointObject.py" line="2071"/>
       <source>Thread pitch</source>
       <translation>Skok gwintu</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2073"/>
       <source>Pitch radius</source>
       <translation>Promień nachylenia</translation>
     </message>
@@ -550,37 +550,37 @@ Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
       <translation>Nieznany format eksportu wideo</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="169"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Utwórz</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="185"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Aktywuj</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="219"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Wstaw</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Kotwienie</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="257"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Wiązania</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="273"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Narzędzia</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Symulacja</translation>
     </message>
@@ -1228,7 +1228,7 @@ Bryły (np. zawartości, elementy złączne, prymitywy) są pomijane.</translati
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="777"/>
       <source>Joints</source>
       <translation>Połączenia</translation>
     </message>

@@ -28,7 +28,7 @@
 #include <string>
 #include <utility>
 
-#include <fmt/format.h>
+#include <format>
 
 #include <FCGlobal.h>
 
@@ -114,9 +114,9 @@ public:
 
     /// Reports a mishap. Messages already reported since the last clear() are dropped.
     template<typename... Args>
-    static void report(fmt::format_string<Args...> format, Args&&... args)
+    static void report(std::format_string<Args...> format, Args&&... args)
     {
-        emit(fmt::format(format, std::forward<Args>(args)...));
+        emit(std::format(format, std::forward<Args>(args)...));
     }
 
     /// Forgets which messages have already been reported.

@@ -224,4 +224,53 @@ TEST_F(FeaturePipeTest, SketchProfileBinderSpine)
     ASSERT_NEAR(volume_expected_, volume_measured, 0.001);
 }
 
+TEST_F(FeaturePipeTest, BinderProfileSketchSpine)
+{
+    auto binderprofile = doc_->addObject<PartDesign::SubShapeBinder>("bind-profile");
+    binderprofile->Shape.setValue(sketch_circle_->Shape.getShape());
+    body_->addObject(binderprofile);
+
+    auto pipe = doc_->addObject<PartDesign::AdditivePipe>("pipe");
+    body_->addObject(pipe);
+
+    pipe->Spine.setValue(sketch_line_);
+    pipe->Profile.setValue(binderprofile);
+    doc_->recompute();
+#ifdef PIPE_SAVE_TEST_FCSTD
+    {
+        auto p = std::filesystem::temp_directory_path();
+        doc_->saveAs((p / "FeaturePipeTest-BinderProfileSketchSpine.FCStd").c_str());
+    }
+#endif
+    auto shape = pipe->Shape.getShape().getShape();
+    auto volume_measured = getVolume(shape);
+    ASSERT_NEAR(volume_expected_, volume_measured, 0.001);
+}
+
+TEST_F(FeaturePipeTest, BinderProfileBinderSpine)
+{
+    auto binderprofile = doc_->addObject<PartDesign::SubShapeBinder>("bind-profile");
+    binderprofile->Shape.setValue(sketch_circle_->Shape.getShape());
+    body_->addObject(binderprofile);
+
+    auto binderspine = doc_->addObject<PartDesign::SubShapeBinder>("bind-spine");
+    binderspine->Shape.setValue(sketch_line_->Shape.getShape());
+    body_->addObject(binderspine);
+
+    auto pipe = doc_->addObject<PartDesign::AdditivePipe>("pipe");
+    body_->addObject(pipe);
+
+    pipe->Spine.setValue(binderspine);
+    pipe->Profile.setValue(binderprofile);
+    doc_->recompute();
+#ifdef PIPE_SAVE_TEST_FCSTD
+    {
+        auto p = std::filesystem::temp_directory_path();
+        doc_->saveAs((p / "FeaturePipeTest-BinderProfileBinderSpine.FCStd").c_str());
+    }
+#endif
+    auto shape = pipe->Shape.getShape().getShape();
+    auto volume_measured = getVolume(shape);
+    ASSERT_NEAR(volume_expected_, volume_measured, 0.001);
+}
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

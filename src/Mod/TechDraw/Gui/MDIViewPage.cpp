@@ -754,11 +754,6 @@ QString MDIViewPage::defaultFileName()
 
 void MDIViewPage::saveSVG(std::string filename)
 {
-    bool screenMode = PreferencesGui::screenMode();
-    PreferencesGui::setScreenMode(false);
-    Base::ScopeGuard restoreScreenMode([screenMode]() {
-        PreferencesGui::setScreenMode(screenMode);
-    });
     auto vpp = getViewProviderPage();
     if (!vpp) {
         return;
@@ -787,12 +782,6 @@ void MDIViewPage::saveSVG()
 
 void MDIViewPage::saveDXF(std::string filename)
 {
-    bool screenMode = PreferencesGui::screenMode();
-    PreferencesGui::setScreenMode(false);
-    Base::ScopeGuard restoreScreenMode([screenMode]() {
-        PreferencesGui::setScreenMode(screenMode);
-    });
-
     PagePrinter::saveDXF(getViewProviderPage(), filename);
 }
 
@@ -815,12 +804,6 @@ void MDIViewPage::saveDXF()
 
 void MDIViewPage::savePDF(const std::string& filename) const
 {
-    bool screenMode = PreferencesGui::screenMode();
-    PreferencesGui::setScreenMode(false);
-    Base::ScopeGuard restoreScreenMode([screenMode]() {
-        PreferencesGui::setScreenMode(screenMode);
-    });
-    
     auto vpp = getViewProviderPage();
     if (!vpp) {
         return;

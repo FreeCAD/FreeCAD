@@ -725,7 +725,7 @@ void EditModeCoinManager::ParameterObserver::updateAxisTransparencyParameter(
     );
 
     int transparencyInt = hGrpp->GetInt("AxisTransparency", 30);
-    transparencyInt = Base::clamp(transparencyInt, 0, 100);
+    transparencyInt = std::clamp(transparencyInt, 0, 100);
 
     Client.drawingParameters.axisTransparency = static_cast<float>(transparencyInt) / 100.0f;
     Client.updateInventorColors();
@@ -742,7 +742,7 @@ void EditModeCoinManager::ParameterObserver::updateOccludedAxisTransparencyParam
     );
 
     int transparencyInt = hGrpp->GetInt("OccludedAxisTransparency", 90);
-    transparencyInt = Base::clamp(transparencyInt, 0, 100);
+    transparencyInt = std::clamp(transparencyInt, 0, 100);
 
     Client.drawingParameters.occludedAxisTransparency = static_cast<float>(transparencyInt) / 100.0f;
     Client.updateInventorColors();
@@ -908,7 +908,7 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
         Base::Console()
-            .developerError("EditModeCoinManager", "Malformed parameter string: %s\n", e.what());
+            .developerError("EditModeCoinManager", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -923,7 +923,7 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
                                          // the program is not terminated when calling the noexcept
                                          // destructor.
         Base::Console()
-            .developerError("EditModeCoinManager", "Malformed parameter string: %s\n", e.what());
+            .developerError("EditModeCoinManager", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -1743,6 +1743,9 @@ void EditModeCoinManager::createEditModeInventorNodes()
     pEditModeGeometryCoinManager->createEditModeInventorNodes();
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
+    // The axes stay degenerate at the origin until updateAxesLength() stretches them to the view
+    const SbVec3f unstretchedAxis[2] = {SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f)};
+
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
     editModeScenegraphNodes.pickStyleAxes = new SoPickStyle();
     editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::SHAPE;
@@ -1769,7 +1772,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     editModeScenegraphNodes.RootCrossHCoordinate = new SoCoordinate3;
     editModeScenegraphNodes.RootCrossHCoordinate->setName("RootCrossHCoordinate");
-    editModeScenegraphNodes.RootCrossHCoordinate->point.setNum(2);
+    editModeScenegraphNodes.RootCrossHCoordinate->point.setValues(0, 2, unstretchedAxis);
     visibleAxes->addChild(editModeScenegraphNodes.RootCrossHCoordinate);
 
     editModeScenegraphNodes.RootCrossHSet = new SoLineSet;
@@ -1787,7 +1790,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     editModeScenegraphNodes.RootCrossVCoordinate = new SoCoordinate3;
     editModeScenegraphNodes.RootCrossVCoordinate->setName("RootCrossVCoordinate");
-    editModeScenegraphNodes.RootCrossVCoordinate->point.setNum(2);
+    editModeScenegraphNodes.RootCrossVCoordinate->point.setValues(0, 2, unstretchedAxis);
     visibleAxes->addChild(editModeScenegraphNodes.RootCrossVCoordinate);
 
     editModeScenegraphNodes.RootCrossVSet = new SoLineSet;
@@ -1829,9 +1832,13 @@ void EditModeCoinManager::createEditModeInventorNodes()
     visibleOrigin->addChild(editModeScenegraphNodes.OriginPointSet);
 
     // pass for occluded transparency
+    SoGroup* occludedOverlaySkipBBox = new Gui::SoSkipBoundingGroup;
+    occludedOverlaySkipBBox->setName("OccludedOverlayRoot_SkipBBox");
+    editModeScenegraphNodes.EditRoot->addChild(occludedOverlaySkipBBox);
+
     auto* occludedOverlayRoot = new SoSeparator;
     occludedOverlayRoot->setName("OccludedOverlayRoot");
-    editModeScenegraphNodes.EditRoot->addChild(occludedOverlayRoot);
+    occludedOverlaySkipBBox->addChild(occludedOverlayRoot);
 
     auto* overlayPick = new SoPickStyle;
     overlayPick->style = SoPickStyle::UNPICKABLE;
@@ -1851,7 +1858,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // Occluded horizontal axis
     editModeScenegraphNodes.RootCrossHCoordinateOccluded = new SoCoordinate3;
     editModeScenegraphNodes.RootCrossHCoordinateOccluded->setName("RootCrossHCoordinateOccluded");
-    editModeScenegraphNodes.RootCrossHCoordinateOccluded->point.setNum(2);
+    editModeScenegraphNodes.RootCrossHCoordinateOccluded->point.setValues(0, 2, unstretchedAxis);
     occludedOverlayRoot->addChild(editModeScenegraphNodes.RootCrossHCoordinateOccluded);
 
     editModeScenegraphNodes.RootCrossMaterialsOccludedH = new SoMaterial;
@@ -1872,7 +1879,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // Occluded vertical axis
     editModeScenegraphNodes.RootCrossVCoordinateOccluded = new SoCoordinate3;
     editModeScenegraphNodes.RootCrossVCoordinateOccluded->setName("RootCrossVCoordinateOccluded");
-    editModeScenegraphNodes.RootCrossVCoordinateOccluded->point.setNum(2);
+    editModeScenegraphNodes.RootCrossVCoordinateOccluded->point.setValues(0, 2, unstretchedAxis);
     occludedOverlayRoot->addChild(editModeScenegraphNodes.RootCrossVCoordinateOccluded);
 
     editModeScenegraphNodes.RootCrossMaterialsOccludedV = new SoMaterial;
