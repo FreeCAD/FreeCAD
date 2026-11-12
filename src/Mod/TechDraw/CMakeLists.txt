@@ -180,6 +180,7 @@ endif(BUILD_GUI)
 SET(TDTest_SRCS
     TDTest/__init__.py
     TDTest/DrawHatchTest.py
+    TDTest/DrawPageSketchTest.py
     TDTest/DrawProjectionGroupTest.py
     TDTest/DrawViewAnnotationTest.py
     TDTest/DrawViewImageTest.py

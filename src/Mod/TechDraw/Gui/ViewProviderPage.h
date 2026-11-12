@@ -36,6 +36,7 @@
 
 #include <ViewProviderPageExtension.h>
 
+class SoGroup;
 
 namespace TechDraw
 {
@@ -95,6 +96,8 @@ public:
 
     /// Claim all the views for the page
     std::vector<App::DocumentObject*> claimChildren() const override;
+    std::vector<App::DocumentObject*> claimChildren3D() const override;
+    SoGroup* getChildRoot() const override;
 
     /// Is called by the tree if the user double click on the object
     bool doubleClicked() override;
@@ -113,6 +116,7 @@ public:
 // NOLINTBEGIN
     using Connection = fastsignals::scoped_connection;
     Connection connectGuiRepaint;
+    Connection connectChangedObject;
 // NOLINTEND
 
     void unsetEdit(int ModNum) override;
@@ -159,6 +163,7 @@ private:
     QGSPage* m_graphicsScene;
 
     bool m_frameToggle{false};      // replacement for ShowFrame property to avoid marking document changed
+    SoGroup* m_hiddenChildren;
 };
 
 }// namespace TechDrawGui
