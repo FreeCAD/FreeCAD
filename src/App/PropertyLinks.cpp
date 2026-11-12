@@ -5931,8 +5931,18 @@ void PropertyXLinkContainer::aboutToSetChildValue(App::Property& prop)
 {
     auto xlink = dynamic_cast<App::PropertyXLink*>(&prop);
     if (xlink && xlink->testFlag(LinkDetached)) {
-        auto obj = const_cast<App::DocumentObject*>(xlink->getValue());
+        auto obj = xlink->getValue();
         if (_Deps.erase(obj)) {
+            auto* owner = freecad_cast<DocumentObject*>(getContainer());
+            std::erase_if(_PropDeps, [this, obj, owner](const auto& entry) {
+                if (entry.first.second != obj) {
+                    return false;
+                }
+                if (!entry.second) {
+                    obj->_removeBackLinkProp(getName(), owner, entry.first.first.c_str());
+                }
+                return true;
+            });
             _onBreakLink(xlink->getValue());
             onRemoveDep(obj);
         }
