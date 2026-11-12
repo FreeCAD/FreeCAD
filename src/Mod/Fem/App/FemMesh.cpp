@@ -23,8 +23,6 @@
  ***************************************************************************/
 
 #include <Python.h>
-#include <algorithm>
-#include <cmath>
 #include <cstdlib>
 #include <memory>
 
@@ -33,11 +31,6 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
-#include <Geom_OffsetSurface.hxx>
-#include <Geom_Parabola.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
-#include <Geom_ToroidalSurface.hxx>
-#include <Geom_TrimmedCurve.hxx>
 #include <SMDS_MeshGroup.hxx>
 #include <SMESHDS_Group.hxx>
 #include <SMESHDS_GroupBase.hxx>
@@ -47,7 +40,6 @@
 #include <SMESH_Mesh.hxx>
 #include <SMESH_MeshEditor.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
-#include <Standard_Failure.hxx>
 #include <StdMeshers_Deflection1D.hxx>
 #include <StdMeshers_LocalLength.hxx>
 #include <StdMeshers_MaxElementArea.hxx>
@@ -57,19 +49,12 @@
 #include <StdMeshers_Quadrangle_2D.hxx>
 #include <StdMeshers_Regular_1D.hxx>
 #include <StdMeshers_StartEndLength.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Vertex.hxx>
-#include <gp.hxx>
-#include <gp_Parab.hxx>
 #include <gp_Pnt.hxx>
-#include <gp_Torus.hxx>
 
 #include <boost/assign/list_of.hpp>
 #include <boost/tokenizer.hpp>  //to simplify parsing input files we use the boost lib
@@ -85,6 +70,7 @@
 #include <Mod/Mesh/App/Core/Iterator.h>
 
 #include "FemMesh.h"
+#include "FemMeshNodeSearch.h"
 #include <FemMeshPy.h>
 
 #ifdef FC_USE_VTK
@@ -587,165 +573,11 @@ std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face& face) const
     return result;
 }
 
-namespace
-{
-
-/* Add cuts some boxes short : a torus patch by 0.3 on a fillet, its offset, a parabola placed
- * askew by 0.018. Those take the box of the whole torus and the parabola points furthest out
- */
-Bnd_Box boxOf(const TopoDS_Shape& shape)
-{
-    Bnd_Box box;
-    BRepBndLib::Add(shape, box, Standard_False);
-    try {
-        for (TopExp_Explorer ex(shape, TopAbs_FACE); ex.More(); ex.Next()) {
-            // Located already, trimmed and offset ones unwrapped down to the torus
-            Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(ex.Current()));
-            double offset = 0.0;
-            while (!surface.IsNull()) {
-                auto trimmed = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
-                auto shifted = Handle(Geom_OffsetSurface)::DownCast(surface);
-                if (!trimmed.IsNull()) {
-                    surface = trimmed->BasisSurface();
-                }
-                else if (!shifted.IsNull()) {
-                    offset += std::abs(shifted->Offset());
-                    surface = shifted->BasisSurface();
-                }
-                else {
-                    break;
-                }
-            }
-            auto toroid = Handle(Geom_ToroidalSurface)::DownCast(surface);
-            if (toroid.IsNull()) {
-                continue;
-            }
-            const gp_Torus torus = toroid->Torus();
-            const gp_Pnt centre = torus.Location();
-            const gp_Dir& axis = torus.Axis().Direction();
-            const double r = torus.MinorRadius() + offset;
-            // The ring of radius R lies across the axis, the tube adds r all round
-            double reach[3];
-            for (int i = 0; i < 3; ++i) {
-                const double along = axis.Coord(i + 1);
-                reach[i] = torus.MajorRadius() * std::sqrt(std::max(0.0, 1.0 - along * along)) + r;
-            }
-            box.Update(
-                centre.X() - reach[0],
-                centre.Y() - reach[1],
-                centre.Z() - reach[2],
-                centre.X() + reach[0],
-                centre.Y() + reach[1],
-                centre.Z() + reach[2]
-            );
-        }
-        /* Add bounds a curved face by its surface alone and an edge by its curve alone : a
-         * boolean may leave their edges and vertices off them, within their own tolerance
-         */
-        for (TopExp_Explorer ex(shape, TopAbs_EDGE); ex.More(); ex.Next()) {
-            const TopoDS_Edge& edge = TopoDS::Edge(ex.Current());
-            Bnd_Box curve;
-            BRepBndLib::Add(edge, curve, Standard_False);
-            box.Add(curve);
-            double first = 0.0;
-            double last = 0.0;
-            Handle(Geom_Curve) geometry = BRep_Tool::Curve(edge, first, last);
-            auto trimmed = Handle(Geom_TrimmedCurve)::DownCast(geometry);
-            if (!trimmed.IsNull()) {
-                geometry = trimmed->BasisCurve();
-            }
-            auto parabola = Handle(Geom_Parabola)::DownCast(geometry);
-            if (parabola.IsNull()) {
-                continue;
-            }
-            // P(t) = O + t^2 / 4F X + t Y, furthest along axis i where t X_i / 2F + Y_i = 0
-            const gp_Parab parab = parabola->Parab();
-            for (int i = 1; i <= 3; ++i) {
-                const double x = parab.XAxis().Direction().Coord(i);
-                if (std::abs(x) < gp::Resolution()) {
-                    continue;
-                }
-                const double t = -2.0 * parab.Focal() * parab.YAxis().Direction().Coord(i) / x;
-                if (t > std::min(first, last) && t < std::max(first, last)) {
-                    box.Add(parabola->Value(t));
-                }
-            }
-        }
-    }
-    catch (const Standard_Failure&) {
-        // An unreadable surface or curve : no box at all, every node gets measured
-        box.SetWhole();
-        return box;
-    }
-    for (TopExp_Explorer ex(shape, TopAbs_VERTEX); ex.More(); ex.Next()) {
-        box.Add(BRep_Tool::Pnt(TopoDS::Vertex(ex.Current())));
-    }
-    return box;
-}
-
-/* A boolean or a fillet leaves vertices and edges looser than their face : a node within
- * their own tolerance lies on them, and on the face as well
- */
-struct LooseParts
-{
-    LooseParts(const TopoDS_Shape& shape, double limit)
-    {
-        // A vertex comes once per edge and a seam twice per face, the map keeps one of each
-        TopTools_IndexedMapOfShape parts;
-        TopExp::MapShapes(shape, TopAbs_VERTEX, parts);
-        // Every vertex : a node the vertex search keeps, its faces and edges keep too
-        for (int i = 1; i <= parts.Extent(); ++i) {
-            const TopoDS_Vertex& vertex = TopoDS::Vertex(parts(i));
-            vertices.emplace_back(BRep_Tool::Pnt(vertex), BRep_Tool::Tolerance(vertex));
-        }
-        parts.Clear();
-        TopExp::MapShapes(shape, TopAbs_EDGE, parts);
-        for (int i = 1; i <= parts.Extent(); ++i) {
-            const TopoDS_Edge& edge = TopoDS::Edge(parts(i));
-            const double tolerance = BRep_Tool::Tolerance(edge);
-            if (tolerance > limit) {
-                edges.push_back({edge, boxOf(edge), tolerance});
-            }
-        }
-    }
-
-    bool hold(const gp_Pnt& point, const TopoDS_Shape& vertex) const
-    {
-        for (const auto& [at, tolerance] : vertices) {
-            // The vertex search keeps a node right at the tolerance, so do its faces and edges
-            if (point.SquareDistance(at) <= tolerance * tolerance) {
-                return true;
-            }
-        }
-        for (const auto& edge : edges) {
-            if (edge.box.IsOut(point)) {
-                continue;
-            }
-            BRepExtrema_DistShapeShape measure(edge.shape, vertex);
-            if (measure.IsDone() && measure.NbSolution() > 0 && measure.Value() < edge.tolerance) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    struct Edge
-    {
-        TopoDS_Edge shape;
-        Bnd_Box box;
-        double tolerance;
-    };
-    std::vector<std::pair<gp_Pnt, double>> vertices;
-    std::vector<Edge> edges;
-};
-
-}  // namespace
-
 std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
 {
     std::set<int> result;
 
-    Bnd_Box box = boxOf(solid);
+    Bnd_Box box = NodeSearch::boxOf(solid);
 
     // limit where the mesh node belongs to the solid
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
@@ -796,103 +628,14 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
 
 std::set<int> FemMesh::getNodesByFace(const TopoDS_Face& face) const
 {
-    std::set<int> result;
-
-    // https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=70#p221591
-    Bnd_Box box = boxOf(face);
     // limit where the mesh node belongs to the face:
-    double limit = BRep_Tool::Tolerance(face);
-    ShapeAnalysis_ShapeTolerance analysis;
-    box.Enlarge(analysis.Tolerance(face, 1));
-    const LooseParts loose(face, limit);
-
-    // get the current transform of the FemMesh
-    const Base::Matrix4D Mtrx(getTransform());
-
-    std::vector<const SMDS_MeshNode*> nodes;
-    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        nodes.push_back(aNode);
-    }
-
-#pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
-        double xyz[3];
-        aNode->GetXYZ(xyz);
-        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
-        // Apply the matrix to hold the BoundBox in absolute space.
-        vec = Mtrx * vec;
-
-        if (!box.IsOut(gp_Pnt(vec.x, vec.y, vec.z))) {
-            // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
-            TopoDS_Shape s = aBuilder.Vertex();
-            // measure distance
-            BRepExtrema_DistShapeShape measure(face, s);
-            const bool close = measure.IsDone() && measure.NbSolution() > 0
-                && measure.Value() < limit;
-
-            if (close || loose.hold(gp_Pnt(vec.x, vec.y, vec.z), s))
-#pragma omp critical
-            {
-                result.insert(aNode->GetID());
-            }
-        }
-    }
-
-    return result;
+    return NodeSearch::nodesCloserThan(*this, face, BRep_Tool::Tolerance(face));
 }
 
 std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge& edge) const
 {
-    std::set<int> result;
-
-    Bnd_Box box = boxOf(edge);
     // limit where the mesh node belongs to the edge:
-    double limit = BRep_Tool::Tolerance(edge);
-    ShapeAnalysis_ShapeTolerance analysis;
-    box.Enlarge(analysis.Tolerance(edge, 1));
-    const LooseParts loose(edge, limit);
-
-    // get the current transform of the FemMesh
-    const Base::Matrix4D Mtrx(getTransform());
-
-    std::vector<const SMDS_MeshNode*> nodes;
-    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        nodes.push_back(aNode);
-    }
-
-#pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
-        double xyz[3];
-        aNode->GetXYZ(xyz);
-        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
-        // Apply the matrix to hold the BoundBox in absolute space.
-        vec = Mtrx * vec;
-
-        if (!box.IsOut(gp_Pnt(vec.x, vec.y, vec.z))) {
-            // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
-            TopoDS_Shape s = aBuilder.Vertex();
-            // measure distance
-            BRepExtrema_DistShapeShape measure(edge, s);
-            const bool close = measure.IsDone() && measure.NbSolution() > 0
-                && measure.Value() < limit;
-
-            if (close || loose.hold(gp_Pnt(vec.x, vec.y, vec.z), s))
-#pragma omp critical
-            {
-                result.insert(aNode->GetID());
-            }
-        }
-    }
-
-    return result;
+    return NodeSearch::nodesCloserThan(*this, edge, BRep_Tool::Tolerance(edge));
 }
 
 std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex& vertex) const

@@ -121,6 +121,8 @@ SET(FemBase_SRCS
     FemAnalysis.h
     FemMesh.cpp
     FemMesh.h
+    FemMeshNodeSearch.cpp
+    FemMeshNodeSearch.h
     FemResultObject.cpp
     FemResultObject.h
     FemSolverObject.cpp
