@@ -40,7 +40,7 @@ namespace NodeSearch
 {
 
 /* Add cuts a torus patch and a placed parabola short and leaves out the edges and vertices off a
- * curved face : the box of the whole torus, the parabola points, the edges and vertices hold them
+ * curved face : the box of the patch, the parabola points, the edges and vertices hold them
  */
 Bnd_Box boxOf(const TopoDS_Shape& shape);
 

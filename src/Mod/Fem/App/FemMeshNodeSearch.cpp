@@ -45,8 +45,11 @@
 #include <BRepTopAdaptor_FClass2d.hxx>
 #include <BRep_Tool.hxx>
 #include <Extrema_ExtPS.hxx>
+#include <Geom_Circle.hxx>
 #include <Geom_Curve.hxx>
+#include <ElSLib.hxx>
 #include <Geom_OffsetSurface.hxx>
+#include <Geom_Plane.hxx>
 #include <Geom_Parabola.hxx>
 #include <Geom_RectangularTrimmedSurface.hxx>
 #include <Geom_Surface.hxx>
@@ -68,7 +71,10 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <gp.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Lin.hxx>
 #include <gp_Parab.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
@@ -88,18 +94,58 @@
 namespace Fem::NodeSearch
 {
 
+namespace
+{
+
+// The least and the most cos x takes for x from a to b
+std::pair<double, double> cosRange(double a, double b)
+{
+    const double turn = 2.0 * std::numbers::pi;
+    if (b - a >= turn) {
+        return {-1.0, 1.0};
+    }
+    double low = std::min(std::cos(a), std::cos(b));
+    double high = std::max(std::cos(a), std::cos(b));
+    if (std::ceil(a / turn) * turn <= b) {
+        high = 1.0;
+    }
+    if (std::ceil((a - std::numbers::pi) / turn) * turn + std::numbers::pi <= b) {
+        low = -1.0;
+    }
+    return {low, high};
+}
+
+std::pair<double, double> times(std::pair<double, double> x, std::pair<double, double> y)
+{
+    const std::array<double, 4> all {
+        x.first * y.first,
+        x.first * y.second,
+        x.second * y.first,
+        x.second * y.second
+    };
+    return {*std::min_element(all.begin(), all.end()), *std::max_element(all.begin(), all.end())};
+}
+
+}  // namespace
+
 /* Add cuts some boxes short : a torus patch by 0.3 on a fillet, its offset, a parabola placed
- * askew by 0.018. Those take the box of the whole torus and the parabola points furthest out
+ * askew by 0.018. Those get the box of the patch and the parabola points furthest along each axis
  */
 Bnd_Box boxOf(const TopoDS_Shape& shape)
 {
     Bnd_Box box;
     try {
-        BRepBndLib::Add(shape, box, Standard_False);
+        // An edge alone gets its box from the loop over the edges below
+        if (shape.ShapeType() != TopAbs_EDGE) {
+            BRepBndLib::Add(shape, box, Standard_False);
+        }
         for (TopExp_Explorer ex(shape, TopAbs_FACE); ex.More(); ex.Next()) {
+            const TopoDS_Face& face = TopoDS::Face(ex.Current());
             // Located already, trimmed and offset ones unwrapped down to the torus
-            Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(ex.Current()));
+            const Handle(Geom_Surface) outer = BRep_Tool::Surface(face);
+            Handle(Geom_Surface) surface = outer;
             double offset = 0.0;
+            double shift = 0.0;
             while (!surface.IsNull()) {
                 auto trimmed = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
                 auto shifted = Handle(Geom_OffsetSurface)::DownCast(surface);
@@ -108,6 +154,7 @@ Bnd_Box boxOf(const TopoDS_Shape& shape)
                 }
                 else if (!shifted.IsNull()) {
                     offset += std::abs(shifted->Offset());
+                    shift += shifted->Offset();
                     surface = shifted->BasisSurface();
                 }
                 else {
@@ -120,28 +167,96 @@ Bnd_Box boxOf(const TopoDS_Shape& shape)
             }
             const gp_Torus torus = toroid->Torus();
             const gp_Pnt centre = torus.Location();
-            const gp_Dir& axis = torus.Axis().Direction();
-            const double r = torus.MinorRadius() + offset;
-            // The ring of radius R lies across the axis, the tube adds r all round
-            double reach[3];
-            for (int i = 0; i < 3; ++i) {
-                const double along = axis.Coord(i + 1);
-                reach[i] = torus.MajorRadius() * std::sqrt(std::max(0.0, 1.0 - along * along)) + r;
+            const gp_Ax3& frame = torus.Position();
+            const double big = torus.MajorRadius();
+            const double r = torus.MinorRadius();
+            double u0 = 0.0;
+            double u1 = 0.0;
+            double v0 = 0.0;
+            double v1 = 0.0;
+            BRepTools::UVBounds(face, u0, u1, v0, v1);
+            /* P(u, v) = O + (R + r cos v) (cos u X + sin u Y) + r sin v Z, each factor bounded on
+             * the patch. An offset d makes it the torus of r + d or r - d, read back on the face
+             */
+            const gp_Vec alongX(frame.XDirection());
+            const gp_Vec alongY(frame.YDirection());
+            const gp_Vec alongZ(frame.Direction());
+            const auto onTorus = [&](double tube) {
+                const std::array<std::pair<double, double>, 3> probes {
+                    std::pair {u0, v0},
+                    std::pair {u1, v1},
+                    std::pair {0.5 * (u0 + u1), 0.5 * (v0 + v1)},
+                };
+                for (const auto& [u, v] : probes) {
+                    const gp_Vec ring = alongX * std::cos(u) + alongY * std::sin(u);
+                    const gp_Vec reach = ring * (big + tube * std::cos(v))
+                        + alongZ * (tube * std::sin(v));
+                    const double miss = outer->Value(u, v).Distance(centre.Translated(reach));
+                    if (miss > 1e-9 * (big + r + offset)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            /* The normal turns over where R + r cos v changes sign : on a spindle torus or a tube
+             * out of (0, R), the probes and the patch between them lie on different tubes
+             */
+            const auto layered = [&](double sign) {
+                const double tubeAfter = r + sign * shift;
+                return offset == 0.0 || (r < big && tubeAfter > 0.0 && tubeAfter < big);
+            };
+            // OCC folds nested offsets into one, a trimmed one too : one shift, two signs
+            std::pair<double, double> tube {r - offset, r + offset};
+            bool patch = true;
+            if (onTorus(r + shift) && layered(1.0)) {
+                tube = {r + shift, r + shift};
             }
-            box.Update(
-                centre.X() - reach[0],
-                centre.Y() - reach[1],
-                centre.Z() - reach[2],
-                centre.X() + reach[0],
-                centre.Y() + reach[1],
-                centre.Z() + reach[2]
-            );
+            else if (onTorus(r - shift) && layered(-1.0)) {
+                tube = {r - shift, r - shift};
+            }
+            else {
+                patch = false;
+            }
+            const auto ring = times(tube, cosRange(v0, v1));
+            const std::pair<double, double> rho {big + ring.first, big + ring.second};
+            const auto lift
+                = times(tube, cosRange(v0 - 0.5 * std::numbers::pi, v1 - 0.5 * std::numbers::pi));
+            double low[3];
+            double high[3];
+            for (int i = 0; i < 3; ++i) {
+                const double x = frame.XDirection().Coord(i + 1);
+                const double y = frame.YDirection().Coord(i + 1);
+                const double z = frame.Direction().Coord(i + 1);
+                // The ring of radius R lies across the axis, the tube adds r all round
+                const double whole = big * std::sqrt(std::max(0.0, 1.0 - z * z)) + r + offset;
+                // X_i cos u + Y_i sin u = a cos(u - phi)
+                const double phi = std::atan2(y, x);
+                const auto turn = cosRange(u0 - phi, u1 - phi);
+                const double amplitude = std::hypot(x, y);
+                const auto across = times(rho, {amplitude * turn.first, amplitude * turn.second});
+                const auto up = times(lift, {z, z});
+                low[i] = centre.Coord(i + 1) - whole;
+                high[i] = centre.Coord(i + 1) + whole;
+                if (patch) {
+                    low[i] = std::max(low[i], centre.Coord(i + 1) + across.first + up.first);
+                    high[i] = std::min(high[i], centre.Coord(i + 1) + across.second + up.second);
+                }
+            }
+            box.Update(low[0], low[1], low[2], high[0], high[1], high[2]);
         }
         /* Add bounds a curved face by its surface alone and an edge by its curve alone : a
          * boolean may leave their edges and vertices off them, within their own tolerance
          */
         for (TopExp_Explorer ex(shape, TopAbs_EDGE); ex.More(); ex.Next()) {
             const TopoDS_Edge& edge = TopoDS::Edge(ex.Current());
+            // A degenerate edge is its vertex at its tolerance, Add samples its pcurve
+            if (BRep_Tool::Degenerated(edge)) {
+                Bnd_Box pole;
+                pole.Add(BRep_Tool::Pnt(TopExp::FirstVertex(edge)));
+                pole.Enlarge(BRep_Tool::Tolerance(edge));
+                box.Add(pole);
+                continue;
+            }
             Bnd_Box curve;
             BRepBndLib::Add(edge, curve, Standard_False);
             box.Add(curve);
@@ -183,6 +298,27 @@ Bnd_Box boxOf(const TopoDS_Shape& shape)
 namespace
 {
 
+/* ExtPC gives up on a point on the axis of a circle : every point of it lies as far. From rho
+ * off the axis, none is nearer than |R - rho|. -1 for a curve that isn't a circle
+ */
+double circleGap(const Handle(Geom_Curve) & curve, const gp_Pnt& point, double* rho = nullptr)
+{
+    Handle(Geom_Curve) basis = curve;
+    auto trimmed = Handle(Geom_TrimmedCurve)::DownCast(basis);
+    if (!trimmed.IsNull()) {
+        basis = trimmed->BasisCurve();
+    }
+    auto circle = Handle(Geom_Circle)::DownCast(basis);
+    if (circle.IsNull()) {
+        return -1.0;
+    }
+    const gp_Circ circ = circle->Circ();
+    const double off = gp_Lin(circ.Axis()).Distance(point);
+    if (rho) {
+        *rho = off;
+    }
+    return std::abs(circ.Radius() - off);
+}
 
 // The old measure, BRepExtrema_DistShapeShape, kept as the last fallback
 bool isCloserThan(const TopoDS_Shape& shape, const gp_Pnt& point, double limit)
@@ -519,7 +655,38 @@ BoundaryParts::BoundaryParts(const TopoDS_Shape& shape, double limit, const Bnd_
         // Read once : the crease test, the feet and the seams all take them from here
         std::array<double, 4> bounds {};
         try {
-            BRepTools::UVBounds(face, bounds[0], bounds[1], bounds[2], bounds[3]);
+            Handle(Geom_Surface) basis = surface;
+            auto trimmed = Handle(Geom_RectangularTrimmedSurface)::DownCast(basis);
+            if (!trimmed.IsNull()) {
+                basis = trimmed->BasisSurface();
+            }
+            auto plane = Handle(Geom_Plane)::DownCast(basis);
+            if (!plane.IsNull() && !box.IsVoid() && !box.IsWhole()) {
+                /* A plane keeps no pcurves and UVBounds projects every edge on it again. Its 3D box
+                 * read in the plane holds the face
+                 */
+                double corner[6];
+                box.Get(corner[0], corner[1], corner[2], corner[3], corner[4], corner[5]);
+                const double huge = Precision::Infinite();
+                bounds = {huge, -huge, huge, -huge};
+                for (int k = 0; k < 8; ++k) {
+                    const gp_Pnt at(
+                        corner[(k & 1) ? 3 : 0],
+                        corner[(k & 2) ? 4 : 1],
+                        corner[(k & 4) ? 5 : 2]
+                    );
+                    double u = 0.0;
+                    double v = 0.0;
+                    ElSLib::Parameters(plane->Pln(), at, u, v);
+                    bounds[0] = std::min(bounds[0], u);
+                    bounds[1] = std::max(bounds[1], u);
+                    bounds[2] = std::min(bounds[2], v);
+                    bounds[3] = std::max(bounds[3], v);
+                }
+            }
+            else {
+                BRepTools::UVBounds(face, bounds[0], bounds[1], bounds[2], bounds[3]);
+            }
         }
         catch (...) {
             fast = false;
@@ -963,6 +1130,21 @@ bool BoundaryProbe::isNear(const gp_Pnt& point, double limit2)
             if (where == TopAbs_IN) {
                 return true;
             }
+            /* An OUT foot farther than closeOut from every edge it could end on never counts, no
+             * projection needed. A round hole keeps its centre in the box of its circle
+             */
+            if (where == TopAbs_OUT && !parts.faceEdges[f].empty()) {
+                Bnd_Box around;
+                around.Add(at);
+                around.Enlarge(closeOut);
+                bool clear = true;
+                for (const auto& side : parts.faceEdges[f]) {
+                    clear = clear && parts.edgeBoxes[side.first].IsOut(around);
+                }
+                if (clear) {
+                    continue;
+                }
+            }
             double gap = 0.0;
             const int on = footOnFace(f, at, u, v, &gap);
             if (on > 0 && (where == TopAbs_ON || gap <= closeOut)) {
@@ -983,7 +1165,11 @@ bool BoundaryProbe::isNear(const gp_Pnt& point, double limit2)
         }
         onEdges[e].Perform(vertex);
         if (!onEdges[e].IsDone()) {
-            unsure = true;
+            // No point of a circle is nearer than circleGap, the old measure isn't needed
+            const double gap = circleGap(parts.edgeCurves[e], point);
+            if (gap < 0.0 || gap * gap < reach2) {
+                unsure = true;
+            }
             continue;
         }
         const auto& [first, last] = parts.edgeRanges[e];
@@ -1084,7 +1270,12 @@ int BoundaryProbe::footOnFace(size_t f, const gp_Pnt& at, double u, double v, do
         std::vector<double> params {first, last};
         onEdges[e].Perform(vertex);
         const bool done = onEdges[e].IsDone();
-        if (!done) {
+        /* Within Confusion of a circle axis its ends lie as near as any of its points. ExtPC
+         * gives up a little farther on a small circle, those stay undone
+         */
+        double rho = 1.0;
+        if (!done
+            && !(circleGap(parts.edgeCurves[e], at, &rho) >= 0.0 && rho <= Precision::Confusion())) {
             undone.push_back(e);
         }
         for (int k = 1; done && k <= onEdges[e].NbExt(); ++k) {
@@ -1234,9 +1425,58 @@ std::set<int> nodesCloserThan(const FemMesh& mesh, const TopoDS_Shape& shape, do
         const Base::Vector3d vec = placement * Base::Vector3d(xyz[0], xyz[1], xyz[2]);
         return gp_Pnt(vec.x, vec.y, vec.z);
     };
-    // Setting up a probe outweighs measuring a few nodes : the threads take them 64 at a time
+    // A thread per 64 candidates at most : setting up a probe outweighs measuring a few nodes
     const int chunk = 64;
-    const std::vector<const SMDS_MeshNode*>& walk = meshNodes;
+    int most = 1;
+#ifdef _OPENMP
+    most = omp_get_max_threads();
+#endif
+    /* One pass counts the nodes in the box and lists them while they're at most 64 x threads, each
+     * thread up to that many. Past it the lists, a pointer a candidate, go and the whole mesh is
+     * walked again
+     */
+    const long long cap = static_cast<long long>(chunk) * most;
+    long long inBox = 0;
+    bool broken = false;
+    std::vector<const SMDS_MeshNode*> few;
+#pragma omp parallel reduction(+ : inBox)
+    {
+        std::vector<const SMDS_MeshNode*> mine;
+#pragma omp for schedule(static)
+        for (size_t i = 0; i < meshNodes.size(); ++i) {
+            // No exception can leave the loop : a failed list falls back on the whole mesh
+            try {
+                if (!box.IsOut(placed(meshNodes[i]))) {
+                    ++inBox;
+                    if (static_cast<long long>(mine.size()) < cap) {
+                        mine.push_back(meshNodes[i]);
+                    }
+                }
+            }
+            catch (...) {
+#pragma omp critical(nodeSearchList)
+                broken = true;
+            }
+        }
+#pragma omp critical(nodeSearchList)
+        {
+            try {
+                few.insert(few.end(), mine.begin(), mine.end());
+            }
+            catch (...) {
+                broken = true;
+            }
+        }
+    }
+    // No node in the box, no parts to read : a face far from the mesh costs its box only
+    if (inBox == 0 && !broken) {
+        return result;
+    }
+    const bool listed = !broken && inBox <= cap;
+    if (!listed) {
+        std::vector<const SMDS_MeshNode*>().swap(few);
+    }
+    const std::vector<const SMDS_MeshNode*>& walk = listed ? few : meshNodes;
 
     /* Same parts as BRepExtrema_DistShapeShape : face inside, edges and vertices. The extrema
      * are set up once per thread, a node only projects on them
@@ -1262,8 +1502,16 @@ std::set<int> nodesCloserThan(const FemMesh& mesh, const TopoDS_Shape& shape, do
     };
     // No exception can leave the region or the loop : the first one is kept and thrown after
     std::exception_ptr failure;
+    int threads = 1;
+#ifdef _OPENMP
+    threads = static_cast<int>(std::min<long long>(most, (inBox + chunk - 1) / chunk));
+#endif
+    // A failed pass counted nothing for sure : every thread walks the whole mesh
+    if (broken) {
+        threads = most;
+    }
 
-#pragma omp parallel
+#pragma omp parallel num_threads(threads)
     {
         std::optional<BoundaryProbe> probe;
         std::vector<int> kept;

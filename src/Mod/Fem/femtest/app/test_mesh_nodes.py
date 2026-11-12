@@ -22,6 +22,7 @@
 __title__ = "FEM mesh node search unit tests"
 
 import math
+import os
 import random
 import unittest
 
@@ -884,6 +885,28 @@ class TestMeshNodeSearch(unittest.TestCase):
                     expected[mesh.addNode(p.x, p.y, p.z)] = (offset < 1.0, p)
         wrong = self.wrong_nodes(expected, set(mesh.getNodesByFace(side)))
         self.assertEqual(wrong[:5], [], f"{len(wrong)} of {len(expected)} nodes wrong")
+
+    def test_more_nodes_than_the_search_lists(self):
+        # Past 64 x threads the lists go, one thread overflows its own up to 8 threads, linear past
+        top = next(f for f in Part.makeBox(10, 10, 10).Faces if f.BoundBox.ZMin > 9.9)
+        cores = os.cpu_count() or 1
+        count = 64 * cores * min(cores, 8) + 64
+        side = math.ceil(math.sqrt(count))
+        mesh = Fem.FemMesh()
+        on = set()
+        for i in range(count):
+            on.add(mesh.addNode(0.5 + 9 * (i % side) / side, 0.5 + 9 * (i // side) / side, 10))
+        for i in range(500):
+            mesh.addNode(5, 5, 20 + i)
+        self.assertEqual(set(mesh.getNodesByFace(top)), on)
+
+    def test_nodes_by_a_circle_below_the_tolerance(self):
+        # ExtPC gives up on the axis of a circle, one under the tolerance still holds its centre
+        ring = Part.makeCircle(5e-8)
+        mesh = Fem.FemMesh()
+        centre = mesh.addNode(0, 0, 0)
+        mesh.addNode(0, 0, 2e-7)
+        self.assertEqual(mesh.getNodesByEdge(ring), [centre])
 
     def test_nodes_by_a_face_of_any_orientation(self):
         # An Internal or External face has Internal edges too : a disc read that way had no boundary
