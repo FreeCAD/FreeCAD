@@ -1,7 +1,7 @@
-# SPD-License-Identifier: LGPL-2.1-or-later
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2014 Yorik van Havre <yorik@uncreated.net>
 # SPDX-FileCopyrightText: 2014 sliptonic <shopinthewoods@gmail.com>
-# SPDX-FileCopyrightText: 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>
+# SPDX-FileCopyrightText: 2022 Larry Woestman <LarryWoestman2@gmail.com>
 # SPDX-FileCopyrightText: 2024 Ondsel <development@ondsel.com>
 
 ################################################################################
