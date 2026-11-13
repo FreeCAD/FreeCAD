@@ -1131,6 +1131,40 @@ void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double*
 }
 
 
+namespace
+{
+// Precomputed quantities for evaluation of parallel and perpendicular constraints.
+struct ParamsForParallelAndPerpendicularConstraint
+{
+    double dx1, dy1, dx2, dy2;
+    double norm1;
+    double norm2;
+    double invNorm;
+
+    static constexpr double RegularizationLength = 1e-7;  // matches OCCT's default modelling
+                                                          // tolerance (Precision::Confusion)
+    ParamsForParallelAndPerpendicularConstraint(
+        double l1p1x,
+        double l1p1y,
+        double l1p2x,
+        double l1p2y,
+        double l2p1x,
+        double l2p1y,
+        double l2p2x,
+        double l2p2y
+    )
+        : dx1(l1p1x - l1p2x)
+        , dy1(l1p1y - l1p2y)
+        , dx2(l2p1x - l2p2x)
+        , dy2(l2p1y - l2p2y)
+        , norm1(dx1 * dx1 + dy1 * dy1 + RegularizationLength * RegularizationLength)
+        , norm2(dx2 * dx2 + dy2 * dy2 + RegularizationLength * RegularizationLength)
+        , invNorm(1. / std::sqrt(norm1 * norm2))
+    {}
+};
+}  // namespace
+
+
 // --------------------------------------------------------
 // Parallel
 ConstraintParallel::ConstraintParallel(Line& l1, Line& l2)
@@ -1154,49 +1188,56 @@ ConstraintType ConstraintParallel::getTypeId()
 
 void ConstraintParallel::rescale(double coef)
 {
-    double dx1 = (*l1p1x() - *l1p2x());
-    double dy1 = (*l1p1y() - *l1p2y());
-    double dx2 = (*l2p1x() - *l2p2x());
-    double dy2 = (*l2p1y() - *l2p2y());
-    scale = coef / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2));
+    // `scale` is only a weight now; the length normalization is evaluated in error() and
+    // grad() so that it follows the geometry while the solver moves the points.
+    scale = coef;
 }
 
 double ConstraintParallel::error()
 {
-    double dx1 = (*l1p1x() - *l1p2x());
-    double dy1 = (*l1p1y() - *l1p2y());
-    double dx2 = (*l2p1x() - *l2p2x());
-    double dy2 = (*l2p1y() - *l2p2y());
-    return scale * (dx1 * dy2 - dy1 * dx2);
+    ParamsForParallelAndPerpendicularConstraint
+        p(*l1p1x(), *l1p1y(), *l1p2x(), *l1p2y(), *l2p1x(), *l2p1y(), *l2p2x(), *l2p2y());
+    double cross = p.dx1 * p.dy2 - p.dy1 * p.dx2;
+    return scale * cross * p.invNorm;
 }
 
 double ConstraintParallel::grad(double* param)
 {
+    // first of all, check that we need to compute anything.
+    if (findParamInPvec(param) == -1) {
+        return 0.;
+    }
+
+    ParamsForParallelAndPerpendicularConstraint
+        p(*l1p1x(), *l1p1y(), *l1p2x(), *l1p2y(), *l2p1x(), *l2p1y(), *l2p2x(), *l2p2y());
+    const double cross = p.dx1 * p.dy2 - p.dy1 * p.dx2;
+
     double deriv = 0.;
+
     if (param == l1p1x()) {
-        deriv += (*l2p1y() - *l2p2y());  // = dy2
+        deriv += p.invNorm * (p.dy2 - cross * p.dx1 / p.norm1);
     }
     if (param == l1p2x()) {
-        deriv += -(*l2p1y() - *l2p2y());  // = -dy2
+        deriv += p.invNorm * (-p.dy2 + cross * p.dx1 / p.norm1);
     }
     if (param == l1p1y()) {
-        deriv += -(*l2p1x() - *l2p2x());  // = -dx2
+        deriv += p.invNorm * (-p.dx2 - cross * p.dy1 / p.norm1);
     }
     if (param == l1p2y()) {
-        deriv += (*l2p1x() - *l2p2x());  // = dx2
+        deriv += p.invNorm * (p.dx2 + cross * p.dy1 / p.norm1);
     }
 
     if (param == l2p1x()) {
-        deriv += -(*l1p1y() - *l1p2y());  // = -dy1
+        deriv += p.invNorm * (-p.dy1 - cross * p.dx2 / p.norm2);
     }
     if (param == l2p2x()) {
-        deriv += (*l1p1y() - *l1p2y());  // = dy1
+        deriv += p.invNorm * (p.dy1 + cross * p.dx2 / p.norm2);
     }
     if (param == l2p1y()) {
-        deriv += (*l1p1x() - *l1p2x());  // = dx1
+        deriv += p.invNorm * (p.dx1 - cross * p.dy2 / p.norm2);
     }
     if (param == l2p2y()) {
-        deriv += -(*l1p1x() - *l1p2x());  // = -dx1
+        deriv += p.invNorm * (-p.dx1 + cross * p.dy2 / p.norm2);
     }
 
     return scale * deriv;
@@ -1254,49 +1295,56 @@ ConstraintType ConstraintPerpendicular::getTypeId()
 
 void ConstraintPerpendicular::rescale(double coef)
 {
-    double dx1 = (*l1p1x() - *l1p2x());
-    double dy1 = (*l1p1y() - *l1p2y());
-    double dx2 = (*l2p1x() - *l2p2x());
-    double dy2 = (*l2p1y() - *l2p2y());
-    scale = coef / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2));
+    // `scale` is only a weight now; the length normalization is evaluated in error() and
+    // grad() so that it follows the geometry while the solver moves the points.
+    scale = coef;
 }
 
 double ConstraintPerpendicular::error()
 {
-    double dx1 = (*l1p1x() - *l1p2x());
-    double dy1 = (*l1p1y() - *l1p2y());
-    double dx2 = (*l2p1x() - *l2p2x());
-    double dy2 = (*l2p1y() - *l2p2y());
-    return scale * (dx1 * dx2 + dy1 * dy2);
+    ParamsForParallelAndPerpendicularConstraint
+        p(*l1p1x(), *l1p1y(), *l1p2x(), *l1p2y(), *l2p1x(), *l2p1y(), *l2p2x(), *l2p2y());
+    double dot = p.dx1 * p.dx2 + p.dy1 * p.dy2;
+    return scale * dot * p.invNorm;
 }
 
 double ConstraintPerpendicular::grad(double* param)
 {
+    // first of all, check that we need to compute anything.
+    if (findParamInPvec(param) == -1) {
+        return 0.;
+    }
+
+    ParamsForParallelAndPerpendicularConstraint
+        p(*l1p1x(), *l1p1y(), *l1p2x(), *l1p2y(), *l2p1x(), *l2p1y(), *l2p2x(), *l2p2y());
+    const double dot = p.dx1 * p.dx2 + p.dy1 * p.dy2;
+
     double deriv = 0.;
+
     if (param == l1p1x()) {
-        deriv += (*l2p1x() - *l2p2x());  // = dx2
+        deriv += p.invNorm * (p.dx2 - dot * p.dx1 / p.norm1);
     }
     if (param == l1p2x()) {
-        deriv += -(*l2p1x() - *l2p2x());  // = -dx2
+        deriv += p.invNorm * (-p.dx2 + dot * p.dx1 / p.norm1);
     }
     if (param == l1p1y()) {
-        deriv += (*l2p1y() - *l2p2y());  // = dy2
+        deriv += p.invNorm * (p.dy2 - dot * p.dy1 / p.norm1);
     }
     if (param == l1p2y()) {
-        deriv += -(*l2p1y() - *l2p2y());  // = -dy2
+        deriv += p.invNorm * (-p.dy2 + dot * p.dy1 / p.norm1);
     }
 
     if (param == l2p1x()) {
-        deriv += (*l1p1x() - *l1p2x());  // = dx1
+        deriv += p.invNorm * (p.dx1 - dot * p.dx2 / p.norm2);
     }
     if (param == l2p2x()) {
-        deriv += -(*l1p1x() - *l1p2x());  // = -dx1
+        deriv += p.invNorm * (-p.dx1 + dot * p.dx2 / p.norm2);
     }
     if (param == l2p1y()) {
-        deriv += (*l1p1y() - *l1p2y());  // = dy1
+        deriv += p.invNorm * (p.dy1 - dot * p.dy2 / p.norm2);
     }
     if (param == l2p2y()) {
-        deriv += -(*l1p1y() - *l1p2y());  // = -dy1
+        deriv += p.invNorm * (-p.dy1 + dot * p.dy2 / p.norm2);
     }
 
     return scale * deriv;

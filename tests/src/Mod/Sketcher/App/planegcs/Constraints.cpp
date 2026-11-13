@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <numbers>
 
@@ -177,4 +179,189 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
         1.0,
         0.005
     );
+}
+
+namespace
+{
+struct TestLinePair
+{
+    double x1, y1, x2, y2, x3, y3, x4, y4;
+    GCS::Line l1, l2;
+
+    TestLinePair(double ax, double ay, double bx, double by, double cx, double cy, double dx, double dy)
+        : x1(ax)
+        , y1(ay)
+        , x2(bx)
+        , y2(by)
+        , x3(cx)
+        , y3(cy)
+        , x4(dx)
+        , y4(dy)
+    {
+        l1.p1.x = &x1;
+        l1.p1.y = &y1;
+        l1.p2.x = &x2;
+        l1.p2.y = &y2;
+        l2.p1.x = &x3;
+        l2.p1.y = &y3;
+        l2.p2.x = &x4;
+        l2.p2.y = &y4;
+    }
+
+    std::array<double*, 8> params()
+    {
+        return {&x1, &y1, &x2, &y2, &x3, &y3, &x4, &y4};
+    }
+
+    double dx1() const
+    {
+        return x1 - x2;
+    }
+    double dy1() const
+    {
+        return y1 - y2;
+    }
+    double dx2() const
+    {
+        return x3 - x4;
+    }
+    double dy2() const
+    {
+        return y3 - y4;
+    }
+};
+
+// Central-difference step relative to the length of the second line. It must stay well below
+// that length so that the difference samples a smooth neighborhood; 1e-3 relative keeps the
+// truncation error near 1e-6. For a zero-length line it falls back to a step below the
+// regularization length.
+double finiteDifferenceStep(double length2)
+{
+    return length2 > 0.0 ? length2 / 1000.0 : 1e-10;
+}
+
+// Central-difference check of the analytic gradient for every parameter.
+void expectGradientMatchesFiniteDifference(GCS::Constraint& constraint, TestLinePair& lines, double step)
+{
+    auto params = lines.params();
+    for (std::size_t i = 0; i < params.size(); ++i) {
+        double* param = params[i];
+        const double analytic = constraint.grad(param);
+        const double value = *param;
+
+        *param = value + step;
+        const double errorPlus = constraint.error();
+        *param = value - step;
+        const double errorMinus = constraint.error();
+        *param = value;
+
+        const double numerical = (errorPlus - errorMinus) / (2 * step);
+        // 1e-4 covers the truncation error of the central difference at the regularization
+        // length while still rejecting the component-free quotient-rule variant, which is off
+        // by several percent at normal geometry and by orders of magnitude on short lines.
+        EXPECT_NEAR(analytic, numerical, 1e-4 * std::max(1.0, std::abs(analytic)))
+            << "parameter " << i << ", step " << step;
+    }
+}
+
+// The gradient must not contain a component along either line direction: changing a line's
+// length may not reduce the residual. This is the property the old frozen scale violated.
+void expectGradientHasNoLengthComponent(GCS::Constraint& constraint, TestLinePair& lines)
+{
+    const double dx1 = lines.dx1();
+    const double dy1 = lines.dy1();
+    const double dx2 = lines.dx2();
+    const double dy2 = lines.dy2();
+
+    const double alongFirst = constraint.grad(&lines.x1) * dx1 + constraint.grad(&lines.y1) * dy1
+        - constraint.grad(&lines.x2) * dx1 - constraint.grad(&lines.y2) * dy1;
+    const double alongSecond = constraint.grad(&lines.x3) * dx2 + constraint.grad(&lines.y3) * dy2
+        - constraint.grad(&lines.x4) * dx2 - constraint.grad(&lines.y4) * dy2;
+
+    EXPECT_NEAR(alongFirst, 0.0, 1e-9);
+    EXPECT_NEAR(alongSecond, 0.0, 1e-9);
+}
+}  // namespace
+
+TEST_F(ConstraintsTest, parallelGradientMatchesFiniteDifference)  // NOLINT
+{
+    for (double length2 : {1.0, 1e-3, 1e-6, 1e-9, 0.0}) {
+        TestLinePair lines(3, 4, 0, 0, length2, 2 * length2, 0, 0);
+        GCS::ConstraintParallel constraint(lines.l1, lines.l2);
+        expectGradientMatchesFiniteDifference(constraint, lines, finiteDifferenceStep(length2));
+    }
+}
+
+TEST_F(ConstraintsTest, perpendicularGradientMatchesFiniteDifference)  // NOLINT
+{
+    for (double length2 : {1.0, 1e-3, 1e-6, 1e-9, 0.0}) {
+        TestLinePair lines(3, 4, 0, 0, length2, 2 * length2, 0, 0);
+        GCS::ConstraintPerpendicular constraint(lines.l1, lines.l2);
+        expectGradientMatchesFiniteDifference(constraint, lines, finiteDifferenceStep(length2));
+    }
+}
+
+TEST_F(ConstraintsTest, residualFollowsGeometryChangesAfterConstruction)  // NOLINT
+{
+    // The old implementation normalized the residual once, in the constructor. Shrinking a
+    // line afterwards therefore made the error shrink with that line, so a collapsed sketch
+    // looked solved.
+    // Test constructs at the initial length, then shrink the second line and expect
+    // the residual to keep its angular value and the gradient to keep no length component.
+    struct Geometry
+    {
+        double x1, y1, x2, y2;  // first line at construction
+        double x3, y3, x4, y4;  // second line at construction
+    };
+    const Geometry geometries[] = {
+        {16, 0, 0, 0, 0.6 * 16, 0.8 * 16, 0, 0},
+        {3, 4, 0, 0, 1, 2, 0, 0},
+    };
+
+    for (const Geometry& geometry : geometries) {
+        const double dx1 = geometry.x1 - geometry.x2;
+        const double dy1 = geometry.y1 - geometry.y2;
+        const double length1 = std::hypot(dx1, dy1);
+        const double dx2 = geometry.x3 - geometry.x4;
+        const double dy2 = geometry.y3 - geometry.y4;
+        const double length2 = std::hypot(dx2, dy2);
+        const double ux = dx2 / length2;
+        const double uy = dy2 / length2;
+        const double expectedErrorParallel = std::abs(dx1 * dy2 - dy1 * dx2) / (length1 * length2);
+        const double expectedErrorPerpendicular = std::abs(dx1 * dx2 + dy1 * dy2)
+            / (length1 * length2);
+
+        for (double targetLength2 : {length2, 1.0, 1e-2, 1e-3, 1e-6}) {
+            TestLinePair lines(
+                geometry.x1,
+                geometry.y1,
+                geometry.x2,
+                geometry.y2,
+                geometry.x3,
+                geometry.y3,
+                geometry.x4,
+                geometry.y4
+            );
+            GCS::ConstraintParallel parallel(lines.l1, lines.l2);
+            GCS::ConstraintPerpendicular perpendicular(lines.l1, lines.l2);
+
+            lines.x3 = geometry.x4 + targetLength2 * ux;
+            lines.y3 = geometry.y4 + targetLength2 * uy;
+
+            // The regularization adds an O(e^2/L^2) length dependence, so the shortest line
+            // needs a wider tolerance.
+            const double tolerance = targetLength2 < 1e-5 ? 1e-2 : 1e-6;
+            EXPECT_NEAR(std::abs(parallel.error()), expectedErrorParallel, tolerance)
+                << "length1 " << length1 << ", length2 " << targetLength2;
+            EXPECT_NEAR(std::abs(perpendicular.error()), expectedErrorPerpendicular, tolerance)
+                << "length1 " << length1 << ", length2 " << targetLength2;
+
+            // The gradient may not reward shrinking a line. The regularized residual has an
+            // O(e^2/L^2) length dependence, so only check this where it is negligible.
+            if (targetLength2 >= 1e-2) {
+                expectGradientHasNoLengthComponent(parallel, lines);
+                expectGradientHasNoLengthComponent(perpendicular, lines);
+            }
+        }
+    }
 }

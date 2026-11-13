@@ -632,7 +632,7 @@ public:
 };
 
 // Parallel
-class ConstraintParallel: public Constraint
+class SketcherExport ConstraintParallel: public Constraint
 {
 private:
     double* l1p1x()
@@ -681,7 +681,7 @@ public:
 };
 
 // Perpendicular
-class ConstraintPerpendicular: public Constraint
+class SketcherExport ConstraintPerpendicular: public Constraint
 {
 private:
     double* l1p1x()

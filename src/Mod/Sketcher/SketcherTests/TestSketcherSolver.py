@@ -1215,6 +1215,74 @@ class TestSketcherSolver(unittest.TestCase):
             msg=msg or "The given shapes are not spaced by the expected distance.",
         )
 
+    def testDimensionEditUndoDoesNotCollapse(self):
+        """Editing a datum and undoing must not collapse the rectangle into a line.
+
+        The Parallel and Perpendicular residuals used to be normalized once per solve, so a
+        side that the solver shortened made the constraint error shrink towards zero and a
+        collapsed sketch looked solved.
+        See https://github.com/FreeCAD/FreeCAD/issues/33575
+        """
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "SketchCollapse")
+
+        geoList = [
+            Part.LineSegment(vec(0, 0), vec(16, 0)),
+            Part.LineSegment(vec(16, 0), vec(16, 8)),
+            Part.LineSegment(vec(16, 8), vec(0, 8)),
+            Part.LineSegment(vec(0, 8), vec(0, 0)),
+        ]
+        sketch.addGeometry(geoList, False)
+
+        conList = [
+            Sketcher.Constraint("Coincident", 0, 2, 1, 1),
+            Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+            Sketcher.Constraint("Coincident", 2, 2, 3, 1),
+            Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+            Sketcher.Constraint("Parallel", 3, 1),
+            Sketcher.Constraint("Parallel", 0, 2),
+            Sketcher.Constraint("Perpendicular", 2, 3),
+        ]
+        sketch.addConstraint(conList)
+
+        initial_width = 16.0
+        width = sketch.addConstraint(Sketcher.Constraint("Distance", 2, 1, 2, 2, initial_width))
+        sketch.renameConstraint(width, "a")
+        height = sketch.addConstraint(Sketcher.Constraint("Distance", 1, 1, 1, 2, 8.0))
+        sketch.setExpression(f"Constraints[{height}]", "Constraints.a / 2")
+        self.Doc.recompute()
+
+        def assertNotCollapsed():
+            self.assertSuccessfulSolve(sketch)
+            for geometry in sketch.Geometry:
+                self.assertGreater(geometry.length(), 1e-6)
+            self.assertEqual(sketch.DoF, 3)
+
+        def assertRectangleWidth(width_value):
+            # Check the solved geometry, not only that it did not collapse: the
+            # constraints make a rectangle. Sides 0 and 2 carry the width datum;
+            # sides 1 and 3 carry the height expression.
+            self.assertAlmostEqual(sketch.Geometry[0].length(), width_value, 6)
+            self.assertAlmostEqual(sketch.Geometry[2].length(), width_value, 6)
+            self.assertAlmostEqual(sketch.Geometry[1].length(), width_value / 2, 6)
+            self.assertAlmostEqual(sketch.Geometry[3].length(), width_value / 2, 6)
+
+        assertNotCollapsed()
+        assertRectangleWidth(initial_width)
+
+        for value in (4.0, 2.0, 1.0) * 10:
+            self.Doc.openTransaction("Edit dimension")
+            try:
+                sketch.setDatum(width, value)
+            finally:
+                self.Doc.commitTransaction()
+            self.Doc.recompute()
+            assertNotCollapsed()
+            assertRectangleWidth(value)
+
+            self.Doc.undo()
+            assertNotCollapsed()
+            assertRectangleWidth(initial_width)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("SketchSolverTest")
