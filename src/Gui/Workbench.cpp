@@ -770,6 +770,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewIvIssueCamPos"
           << "Std_AxisCross"
           << "Std_ToggleClipPlane"
+          << "Part_SectionAnalysis"
           << "Std_TextureMapping"
           << "Separator" << visu << "Std_ToggleNavigation"
           << "Std_RandomColor"
@@ -884,7 +885,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
           << "Separator" << "Std_DrawStyle" << "Separator"
-          << "Std_Measure" << "Std_MassProperties";
+          << "Std_Measure" << "Part_SectionAnalysis" << "Std_MassProperties";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
