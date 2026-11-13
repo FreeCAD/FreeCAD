@@ -29,6 +29,7 @@
 #include <vtkAlgorithmOutput.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkInformation.h>
+#include <vtkCallbackCommand.h>
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
@@ -840,6 +841,10 @@ FemPostSmoothFilterExtension::FemPostSmoothFilterExtension()
     RelaxationFactor.setConstraints(&relaxationRange);
 
     m_smooth = vtkSmartPointer<vtkSmoothPolyDataFilter>::New();
+    // Suppress unneeded error message when smoothing filter has an empty input
+    vtkNew<vtkCallbackCommand> noop;
+    noop->SetCallback([](vtkObject*, unsigned long, void*, void*) {});
+    m_smooth->AddObserver(vtkCommand::ErrorEvent, noop);
     // override default VTK values
     m_smooth->SetNumberOfIterations(EnableSmoothing.getValue() ? Iterations.getValue() : 0);
     m_smooth->SetBoundarySmoothing(BoundarySmoothing.getValue());
