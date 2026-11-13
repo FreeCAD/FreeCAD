@@ -749,9 +749,9 @@ protected:
      * sometimes removed a shape constraint, or a previously already existing constraint, instead of
      * an autoconstraint.
      */
-    void removeRedundantAutoConstraints()
+    void removeRedundantAutoConstraints(bool preserveExisting = false)
     {
-        if (!filterRedundantAutoConstraints(AutoConstraints)) {
+        if (!filterRedundantAutoConstraints(AutoConstraints, preserveExisting)) {
             // This exception stops the procedure here, which means that:
             // 1) Geometry (and constraints of the geometry in case of a multicurve shape)
             // are created 2) No autoconstrains are actually added 3) No widget mandated

@@ -652,6 +652,59 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             "Expected the rectangle to be created after accepting both OVPs",
         )
 
+    def test_polyline_ovp_on_axis_continues_after_dimensioning(self):
+        self.begin_sketch_edit_with_task_dialog()
+        view = FreeCADGui.ActiveDocument.ActiveView
+        view.viewTop()
+        view.getCameraNode().height.setValue(100.0)
+        viewport = view.graphicsView().viewport()
+
+        def screen_point(x, y):
+            return self.viewport_to_qpoint(
+                view, viewport, view.getPointOnScreen(FreeCAD.Vector(x, y, 0))
+            )
+
+        FreeCADGui.runCommand("Sketcher_CreatePolyline")
+        self.pump(250)
+        start = screen_point(13, 0)
+        end = screen_point(38, 0)
+        self.move(viewport, start)
+        self.click(viewport, start)
+        self.move(viewport, end)
+
+        for is_angle, value in ((False, "25"), (True, "0")):
+            spinbox = next(
+                box for box in self.visible_spinboxes() if ("°" in box.text()) == is_angle
+            )
+            self.focus_ovp_spinbox(spinbox)
+            spinbox.findChild(QtGui.QLineEdit).selectAll()
+            self.key_text(spinbox, value)
+            self.key_click(spinbox, QtCore.Qt.Key_Return, "\r")
+
+        self.assertEqual(self.sketch.GeometryCount, 1)
+        self.assertFalse(self.sketch.RedundantConstraints)
+        self.assertFalse(self.sketch.ConflictingConstraints)
+        constraint_types = [constraint.Type for constraint in self.sketch.Constraints]
+        self.assertIn("Distance", constraint_types)
+        self.assertIn("Horizontal", constraint_types)
+        first = self.sketch.Geometry[0]
+        self.assertAlmostEqual(first.length(), 25.0)
+        self.assertAlmostEqual(first.StartPoint.y, 0.0)
+        self.assertAlmostEqual(first.EndPoint.y, 0.0)
+
+        focus = QtGui.QApplication.focusWidget() or viewport
+        self.key_click(focus, QtCore.Qt.Key_Return, "\r")
+        self.assertEqual(self.sketch.GeometryCount, 1)
+
+        next_point = screen_point(48, 12)
+        self.move(viewport, next_point)
+        self.click(viewport, next_point)
+        self.assertEqual(self.sketch.GeometryCount, 2)
+        second = self.sketch.Geometry[1]
+        self.assertLess((second.StartPoint - first.EndPoint).Length, 1e-6)
+        self.assertGreater(second.EndPoint.y, 0.0)
+        self.cancel_drawing_tool(viewport)
+
     def test_clearing_committed_rectangle_ovp_releases_its_lock(self):
         """A cleared OVP must leave its committed state and resume live geometry input."""
 
