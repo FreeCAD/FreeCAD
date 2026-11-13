@@ -583,6 +583,25 @@ Set to 0 to redraw as fast as the graphics driver allows.</string>
           </property>
          </widget>
         </item>
+        <item row="7" column="0" colspan="2">
+         <widget class="Gui::PrefCheckBox" name="checkSectionCaps">
+          <property name="toolTip">
+           <string>Fill the clipped faces of solids in the part's own material, hatched and outlined.</string>
+          </property>
+          <property name="text">
+           <string>Section caps</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionCaps</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
