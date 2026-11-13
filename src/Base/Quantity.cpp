@@ -289,6 +289,13 @@ std::string Quantity::getUserString(double& factor, std::string& unitString) con
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
+std::string Quantity::getUserString(UnitsSchema* schema) const
+{
+    double dummy1 {};  // to satisfy GCC
+    std::string dummy2 {};
+    return schema->translate(*this, dummy1, dummy2);
+}
+
 std::string Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
     return schema->translate(*this, factor, unitString);

@@ -101,6 +101,13 @@ std::unique_ptr<UnitsSchema> UnitsApi::createSchema(const std::size_t num)
     return std::make_unique<UnitsSchema>(schemas->spec(num));
 }
 
+std::unique_ptr<UnitsSchema> UnitsApi::createOverrideSchema(const std::string_view& overrideSchemaName)
+{
+    return std::make_unique<UnitsSchema>(schemas->spec(
+        overrideSchemaName.empty() ? schemas->currentSchema()->getName() : overrideSchemaName
+    ));
+}
+
 void UnitsApi::setSchema(const std::string& name)
 {
     schemas->select(name);

@@ -40,6 +40,9 @@ class BaseExport UnitsApi
 
 public:
     static std::unique_ptr<UnitsSchema> createSchema(std::size_t num);
+    static std::unique_ptr<UnitsSchema> createOverrideSchema(
+        const std::string_view& overrideSchemaName
+    );
     static void setSchema(const std::string& name);
     static void setSchema(std::size_t num);
 
