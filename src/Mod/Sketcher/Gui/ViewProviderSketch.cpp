@@ -60,6 +60,7 @@
 #include <Base/Converter.h>
 #include <Base/ServiceProvider.h>
 #include <Base/Vector3D.h>
+#include <Base/Writer.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -123,6 +124,13 @@ bool isFiniteVector(const SbVec3f& vector)
 bool isFiniteVector(const Base::Vector3d& vector)
 {
     return std::isfinite(vector.x) && std::isfinite(vector.y) && std::isfinite(vector.z);
+}
+
+std::string savedContent(App::DocumentObject* obj)
+{
+    Base::StringWriter writer;
+    obj->Save(writer);
+    return writer.getString();
 }
 }  // namespace
 
@@ -667,6 +675,7 @@ ViewProviderSketch::ViewProviderSketch()
         "Object Style",
         (App::PropertyType)(App::Prop_None),
         "If true, this sketch will be colored based on user preferences. Turn it off to set color explicitly.");
+    TempoVis.setStatus(App::Property::NoModify, true);
 
     // TODO: This is part of a naive minimal implementation to substitute rendering order
     // Three equally visual layers to enable/disable layer.
@@ -4004,6 +4013,9 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 {
     ViewProvider2DObject::finishRestoring();
 
+    // Restoring the property status from the file clears NoModify
+    TempoVis.setStatus(App::Property::NoModify, true);
+
     // if AutoColor was not touched it means that the document is from older version of FreeCAD
     // that meaans that we need to run migration strategy and come up with a proper value
     if (!AutoColor.isTouched()) {
@@ -4288,6 +4300,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
             "setEdit: could not import Show module. Visibility automation will not work.\n");
     }
 
+    // Taken after hiding the sketch so that cancel can see whether anything really changed
+    sketchAtEditStart = savedContent(getObject());
+
     // start the edit dialog
     if (!sketchDlg) {
         sketchDlg = new TaskDlgEditSketch(this);
@@ -4543,10 +4558,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         selection.reset();
 
         if (editingCancelled) {
-            App::AutoTransaction trans(getDocument()->getDocument(), "Cancel sketch editing");
-            // Restore the object as it was when edit is set.
-            getObject()->restoreFromStream(sketchBackup);
-            getSketchObject()->purgeTouched();
+            // Restoring an unchanged sketch would only mark the document modified
+            if (savedContent(getObject()) != sketchAtEditStart) {
+                App::AutoTransaction trans(getDocument()->getDocument(), "Cancel sketch editing");
+                // Restore the object as it was when edit is set.
+                getObject()->restoreFromStream(sketchBackup);
+                getSketchObject()->purgeTouched();
+            }
         }
         else {
             App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");

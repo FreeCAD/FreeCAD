@@ -42,6 +42,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "SolverGeometryExtension.h"
 
 
 #undef DEBUG
@@ -167,13 +168,32 @@ SketchSolveStatus SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     // does not converge. We avoid marking a sketch as fully constrained when no convergence is
     // achieved.
     if (status == SketchSolveStatus::Success) {
-        FullyConstrained.setValue(lastDoF == 0);
+        if (FullyConstrained.getValue() != (lastDoF == 0)) {
+            FullyConstrained.setValue(lastDoF == 0);
+        }
         if (updateGeoAfterSolving) {
             // set the newly solved geometry
             std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
-            Part::PropertyGeometryList tmp;
-            tmp.setValues(std::move(geomlist));
-            Geometry.moveValues(std::move(tmp));
+            const auto& oldGeo = Geometry.getValues();
+            bool unchanged = oldGeo.size() == geomlist.size()
+                && std::equal(oldGeo.begin(), oldGeo.end(), geomlist.begin(), [](auto a, auto b) {
+                       return a->isSame(*b, Precision::Confusion(), Precision::Angular());
+                   });
+            if (unchanged) {
+                // nothing moved so only refresh the solver information
+                auto solverType = SolverGeometryExtension::getClassTypeId();
+                for (std::size_t i = 0; i < geomlist.size(); ++i) {
+                    if (geomlist[i]->hasExtension(solverType)) {
+                        oldGeo[i]->setExtension(geomlist[i]->getExtension(solverType).lock()->copy());
+                    }
+                    delete geomlist[i];
+                }
+            }
+            else {
+                Part::PropertyGeometryList tmp;
+                tmp.setValues(std::move(geomlist));
+                Geometry.moveValues(std::move(tmp));
+            }
         }
     }
 
@@ -723,6 +743,7 @@ int SketchObject::setVisibility(std::vector<int> constrIds, bool isVisible)
         return -1;
 
     std::vector<Constraint*> newVals(vals);
+    bool changed = false;
 
     for (auto cid : constrIds) {
         // clone the changed Constraint
@@ -730,7 +751,12 @@ int SketchObject::setVisibility(std::vector<int> constrIds, bool isVisible)
             Constraint* constNew = vals[cid]->clone();
             constNew->isVisible = isVisible;
             newVals[cid] = constNew;
+            changed = true;
         }
+    }
+
+    if (!changed) {
+        return 0;
     }
 
     this->Constraints.setValues(std::move(newVals));
