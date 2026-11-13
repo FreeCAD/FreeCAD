@@ -113,6 +113,68 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lbl_flux_distribution">
+           <property name="text">
+            <string>Distribution</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="cb_flux_distribution">
+           <property name="toolTip">
+            <string>Uniform flux, or flux given at points and interpolated on the faces</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lbl_table_source">
+           <property name="text">
+            <string>Table source</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cb_table_source"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="lbl_table_sheet">
+           <property name="text">
+            <string>Spreadsheet</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="cb_table_sheet">
+           <property name="toolTip">
+            <string>Columns x, y, z, flux, units in row 1 like x [mm]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="lbl_table_file">
+           <property name="text">
+            <string>CSV file</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="Gui::FileChooser" name="fc_table_file" native="true">
+           <property name="toolTip">
+            <string>Columns x, y, z, flux, units in the first line like x [mm]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QPlainTextEdit" name="pte_table_rows">
+           <property name="toolTip">
+            <string>One row per point: x, y, z, flux, each value with its unit</string>
+           </property>
+           <property name="placeholderText">
+            <string notr="true">0 mm, 0 mm, 0 mm, 1000 W/m^2</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -253,6 +315,11 @@
    <class>Gui::DoubleSpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/SpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

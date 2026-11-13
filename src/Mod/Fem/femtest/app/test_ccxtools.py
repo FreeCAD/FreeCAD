@@ -339,6 +339,108 @@ class TestCcxTools(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_heatflux_table(self):
+        from types import SimpleNamespace
+
+        import Fem
+        import ObjectsFem
+        from femsolver.calculix.calculixutils import define_masks
+        from femsolver.calculix.write_constraint_heatflux import face_centre
+        from femtools import loadtable
+
+        # The same points from rows, a CSV file and a spreadsheet, with mixed units
+        expected = [[0, 0, 0, 1000], [10, 0, 0, 3000], [10, 10, 0, 5000]]
+        rows = [
+            "0 mm, 0 mm, 0 mm, 1000 W/m^2",
+            "1 cm, 0 mm, 0 mm, 3 kW/m^2",
+            "1 cm, 1 cm, 0 mm, 5000 W/m^2",
+        ]
+        csv_path = join(testtools.get_fem_test_tmp_dir("ccxtools_heatflux_table"), "flux.csv")
+        with open(csv_path, "w", encoding="utf-8") as handle:
+            handle.write(
+                "x [mm], y [mm], z [mm], flux [W/m^2]\n0, 0, 0, 1000\n10, 0, 0, 3000\n10, 10, 0, 5000\n"
+            )
+        sheet = self.document.addObject("Spreadsheet::Sheet", "FluxTable")
+        for col, text in zip("ABCD", ("x [mm]", "y [mm]", "z [mm]", "flux [W/m^2]")):
+            sheet.set(f"{col}1", text)
+        for row, values in enumerate(
+            ([0, 0, 0, 1000], ["1 cm", 0, 0, "3 kW/m^2"], [10, 10, 0, 5000]), 2
+        ):
+            for col, value in zip("ABCD", values):
+                sheet.set(f"{col}{row}", str(value))
+        self.document.recompute()
+        for points in (
+            loadtable.points_from_rows(rows, "W/m^2"),
+            loadtable.points_from_csv(csv_path, "W/m^2"),
+            loadtable.points_from_sheet(sheet, "W/m^2"),
+        ):
+            self.assertEqual(points.tolist(), expected)
+
+        # Exact on the data points, the mean halfway between two of them
+        points = loadtable.points_from_rows(rows, "W/m^2")
+        self.assertEqual(loadtable.interpolate(points, points[:, :3]).tolist(), [1000, 3000, 5000])
+        self.assertAlmostEqual(loadtable.interpolate(points, [[5, 0, 0]], neighbours=2)[0], 2000)
+
+        # The face numbered in *DFLUX has to be that face of the element as written in the
+        # deck, checked against the C3D8 faces of the CalculiX manual
+        cube = Fem.FemMesh()
+        corners = [
+            (0, 0, 0),
+            (1, 0, 0),
+            (1, 1, 0),
+            (0, 1, 0),
+            (0, 0, 1),
+            (1, 0, 1),
+            (1, 1, 1),
+            (0, 1, 1),
+        ]
+        nodes = [cube.addNode(*map(float, corner)) for corner in corners]
+        element = cube.addVolume(nodes)
+        deck = join(testtools.get_fem_test_tmp_dir("ccxtools_heatflux_table"), "cube.inp")
+        cube.writeABAQUS(deck, 1, False)
+        with open(deck, encoding="utf-8") as handle:
+            lines = handle.read().splitlines()
+        row = lines[next(i for i, line in enumerate(lines) if line.startswith("*Element")) + 1]
+        written = [int(cell) for cell in row.split(",")[1:]]
+        getter = SimpleNamespace(
+            femmesh=cube,
+            femnodes_mesh=cube.Nodes,
+            femelement_table={element: list(cube.getElementNodes(element))},
+        )
+        solver = ObjectsFem.makeSolverCalculiXCcxTools(self.document)
+        masks = define_masks(solver)
+        ccx_faces = {1: (1, 2, 3, 4), 2: (5, 8, 7, 6), 3: (1, 5, 6, 2), 4: (2, 6, 7, 3)}
+        ccx_faces.update({5: (3, 7, 8, 4), 6: (4, 8, 5, 1)})
+        for number, face in ccx_faces.items():
+            points = [cube.Nodes[written[i - 1]] for i in face]
+            centre = tuple(sum(p[k] for p in points) / 4 for k in range(3))
+            self.assertEqual(tuple(face_centre(getter, masks, element, number)), centre)
+
+        # The writer itself, fed with [element, face] lists as the mesh sets getter gives them
+        import io
+
+        from femsolver.calculix.write_constraint_heatflux import write_meshdata_constraint
+
+        bottom = face_centre(getter, masks, element, 1)
+        top = face_centre(getter, masks, element, 2)
+        flux = ObjectsFem.makeConstraintHeatflux(self.document, "TableFlux")
+        flux.ConstraintType = "Flux"
+        flux.FluxDistribution = "Table"
+        flux.TableSource = "Property"
+        flux.TableRows = [
+            "{} mm, {} mm, {} mm, 1 mW/mm^2".format(*bottom),
+            "{} mm, {} mm, {} mm, 3 mW/mm^2".format(*top),
+        ]
+        femobj = {"HeatFluxFaces": [((flux, ("Face1",)), [[element, 1], [element, 2]], True)]}
+        written = io.StringIO()
+        write_meshdata_constraint(
+            written, femobj, flux, SimpleNamespace(meshdatagetter=getter, solver_obj=solver)
+        )
+        self.assertEqual(
+            written.getvalue().splitlines()[-2:], [f"{element},S1,1", f"{element},S2,3"]
+        )
+
+    # ********************************************************************************************
     def input_file_writing_test(
         self,
         base_name,
