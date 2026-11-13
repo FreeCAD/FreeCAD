@@ -28,7 +28,9 @@
 #include <array>
 #include <cmath>
 #include <cstdlib>
+#include <limits>
 #include <sstream>
+#include <boost/io/ios_state.hpp>
 #include <boost/regex.hpp>
 
 #include <APIHeaderSection_MakeHeader.hxx>
@@ -164,6 +166,7 @@
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "BRepMesh.h"
@@ -788,32 +791,77 @@ void TopoShape::importStep(const char* FileName)
 
 void TopoShape::importBrep(const char* FileName)
 {
-    try {
-        // read brep-file
-        BRep_Builder aBuilder;
-        TopoDS_Shape aShape;
-        BRepTools::Read(aShape, static_cast<Standard_CString>(FileName), aBuilder);
-        this->_Shape = aShape;
+    Base::ifstream file(Base::FileInfo(FileName), std::ios::in | std::ios::binary);
+    if (!file) {
+        throw Base::FileException("Cannot open file", FileName);
     }
-    catch (Standard_Failure& e) {
-        throw Base::CADKernelError(e.GetMessageString());
-    }
+    importBrep(file);
 }
+
+namespace
+{
+// OCCT 7.9+ can't read numbers over 31 characters, which older saves have for huge values
+std::string shortenLongNumbers(std::string text)
+{
+    constexpr std::size_t maxLength = 31;
+    std::string result;
+    std::size_t copied = 0;
+    std::size_t start = 0;
+    for (std::size_t end = 0; end <= text.size(); ++end) {
+        if (end < text.size() && text[end] != ' ' && text[end] != '\n' && text[end] != '\r'
+            && text[end] != '\t') {
+            continue;
+        }
+        if (end - start > maxLength) {
+            std::istringstream in(text.substr(start, end - start));
+            in.imbue(std::locale::classic());
+            double value {};
+            if (in >> value && in.eof()) {
+                std::ostringstream out;
+                out.imbue(std::locale::classic());
+                out.precision(std::numeric_limits<double>::max_digits10);
+                out << value;
+                result.append(text, copied, start - copied).append(out.str());
+                copied = end;
+            }
+        }
+        start = end + 1;
+    }
+    if (copied == 0) {
+        return text;
+    }
+    return result.append(text, copied);
+}
+}  // namespace
 
 void TopoShape::importBrep(std::istream& str, int indicator)
 {
+    (void)indicator;
+    std::istringstream brep;
+    // OCCT doesn't restore the stream locale when it throws
+    const std::locale locale = brep.getloc();
     try {
-        // read brep-file
+        std::ostringstream buffer;
+        buffer << str.rdbuf();
+        std::string text = shortenLongNumbers(std::move(buffer).str());
+        if (text.find_first_not_of(" \t\r\n") == std::string::npos) {
+            this->_Shape = TopoDS_Shape();
+            return;
+        }
+        brep.str(std::move(text));
+        // OCCT can loop forever on a broken file unless the stream throws
+        brep.exceptions(std::istream::failbit | std::istream::badbit);
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-        (void)indicator;
-        BRepTools::Read(aShape, str, aBuilder);
+        BRepTools::Read(aShape, brep, aBuilder);
         this->_Shape = aShape;
     }
     catch (Standard_Failure& e) {
+        brep.imbue(locale);
         throw Base::CADKernelError(e.GetMessageString());
     }
     catch (const std::exception& e) {
+        brep.imbue(locale);
         throw Base::CADKernelError(e.what());
     }
 }
@@ -953,6 +1001,9 @@ void TopoShape::exportBrep(std::ostream& out) const
         VERSION_2 = 2,
         VERSION_3 = 3
     };
+    // Fixed notation writes huge values with over 100 digits, too long for OCCT 7.9+ to read
+    boost::io::ios_flags_saver flags(out);
+    out.unsetf(std::ios::floatfield);
     BRepTools_ShapeSet SS(Standard_False);
     SS.SetFormatNb(VERSION_1);
     SS.Add(this->_Shape);

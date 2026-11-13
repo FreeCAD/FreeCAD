@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <gtest/gtest.h>
+#include <limits>
+#include <sstream>
+#include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepTools_ShapeSet.hxx>
+#include <Geom_CylindricalSurface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
+#include <gp_Ax3.hxx>
+#include <Precision.hxx>
+#include <TopoDS.hxx>
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>
 #include "src/App/InitApplication.h"
@@ -158,3 +170,123 @@ TEST_F(TopoShapeTest, TestGetSubshape)
 }
 
 // clang-format on
+
+namespace
+{
+// A face on a cylinder trimmed at +-Precision::Infinite(), saved as a 2e100 bound
+TopoDS_Shape makeInfiniteFace()
+{
+    Handle(Geom_CylindricalSurface) cylinder = new Geom_CylindricalSurface(gp_Ax3(), 3.0);
+    Handle(Geom_RectangularTrimmedSurface) surface = new Geom_RectangularTrimmedSurface(
+        cylinder,
+        0.5,
+        2.0,
+        -Precision::Infinite(),
+        Precision::Infinite()
+    );
+    return BRepBuilderAPI_MakeFace(surface, Precision::Confusion()).Face();
+}
+
+// The fixed notation Base::ZipWriter uses
+void setFixedNotation(std::ostream& out)
+{
+    out.precision(std::numeric_limits<double>::digits10 + 1);
+    out.setf(std::ios::fixed, std::ios::floatfield);
+}
+
+// Write the face the way older versions saved it
+void writeWithLongNumbers(std::ostream& out)
+{
+    TopoDS_Shape face = makeInfiniteFace();
+    setFixedNotation(out);
+    BRepTools_ShapeSet shapeSet(false);
+    shapeSet.SetFormatNb(1);
+    shapeSet.Add(face);
+    shapeSet.Write(out);
+    shapeSet.Write(face, out);
+}
+
+std::size_t longestToken(const std::string& text)
+{
+    std::istringstream in(text);
+    std::size_t longest = 0;
+    for (std::string token; in >> token;) {
+        longest = std::max(longest, token.size());
+    }
+    return longest;
+}
+
+double upperVBound(const Part::TopoShape& shape)
+{
+    double u1 {}, u2 {}, v1 {}, v2 {};
+    BRep_Tool::Surface(TopoDS::Face(shape.getShape()))->Bounds(u1, u2, v1, v2);
+    return v2;
+}
+}  // namespace
+
+TEST_F(TopoShapeTest, TestImportBrepWithLongNumbers)
+{
+    // Arrange
+    std::stringstream stream;
+    writeWithLongNumbers(stream);
+    ASSERT_GT(longestToken(stream.str()), 100U);
+    Part::TopoShape shape;
+    // Act
+    shape.importBrep(stream);
+    // Assert
+    ASSERT_FALSE(shape.isNull());
+    EXPECT_DOUBLE_EQ(upperVBound(shape), Precision::Infinite());
+}
+
+TEST_F(TopoShapeTest, TestExportBrepWithoutLongNumbers)
+{
+    // Arrange
+    std::stringstream stream;
+    setFixedNotation(stream);
+    Part::TopoShape shape;
+    // Act
+    Part::TopoShape(makeInfiniteFace()).exportBrep(stream);
+    shape.importBrep(stream);
+    // Assert
+    EXPECT_LE(longestToken(stream.str()), 31U);
+    EXPECT_EQ(stream.flags() & std::ios::floatfield, std::ios::fixed);
+    ASSERT_FALSE(shape.isNull());
+    EXPECT_DOUBLE_EQ(upperVBound(shape), Precision::Infinite());
+}
+
+TEST_F(TopoShapeTest, TestImportBrepFileWithLongNumbers)
+{
+    // Arrange
+    Base::FileInfo file(App::Application::getTempFileName());
+    {
+        Base::ofstream out(file, std::ios::out | std::ios::binary);
+        writeWithLongNumbers(out);
+    }
+    Part::TopoShape shape;
+    // Act
+    shape.importBrep(file.filePath().c_str());
+    file.deleteFile();
+    // Assert
+    ASSERT_FALSE(shape.isNull());
+    EXPECT_DOUBLE_EQ(upperVBound(shape), Precision::Infinite());
+}
+
+TEST_F(TopoShapeTest, TestImportBrepBlank)
+{
+    // Arrange
+    std::istringstream stream(" \n");
+    Part::TopoShape shape(makeInfiniteFace());
+    // Act
+    EXPECT_NO_THROW(shape.importBrep(stream));
+    // Assert
+    EXPECT_TRUE(shape.isNull());
+}
+
+TEST_F(TopoShapeTest, TestImportBrepBroken)
+{
+    // Arrange
+    std::istringstream stream("CASCADE Topology V1, (c) Matra-Datavision\nLocations 1\n1\nx\n");
+    Part::TopoShape shape;
+    // Act and Assert
+    EXPECT_THROW(shape.importBrep(stream), Base::CADKernelError);
+}
