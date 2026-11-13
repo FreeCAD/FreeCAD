@@ -34,16 +34,21 @@
 #include <utility>
 
 #include <Base/NumericFormatting.h>
+#include <Base/Version.h>
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
 #include "../NumericLocale.h"
 #include "Translator.h"
+#include "PseudoTranslator.h"
 
 using namespace Gui;
 
 namespace
 {
+constexpr auto pseudoLanguage = "English (Pseudo A)";
+constexpr auto pseudoLocale = "en-XA";
+
 Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int format)
 {
     switch (format) {
@@ -83,7 +88,9 @@ ResolvedNumericLocale resolveNumericLocale(const Translator& translator, const s
                 qtLocale = QLocale::c();
             }
             else if (!localeName.empty()) {
-                const QLocale candidate(QString::fromStdString(localeName));
+                const QLocale candidate(
+                    QString::fromStdString(localeName == pseudoLocale ? "en_US" : localeName)
+                );
                 if (candidate.language() != QLocale::C) {
                     qtLocale = candidate;
                 }
@@ -239,6 +246,9 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"                )] = "da";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                 )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"               )] = "en";
+    if (Base::FCVersionInfo::IsDevelopmentVersion()) {
+        d->mapLanguageTopLevelDomain[QT_TR_NOOP("English (Pseudo A)"    )] = pseudoLocale;
+    }
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"              )] = "fil";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"               )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"                )] = "fr";
@@ -318,6 +328,10 @@ TStringMap Translator::supportedLocales() const
 {
     if (!d->mapSupportedLocales.empty()) {
         return d->mapSupportedLocales;
+    }
+
+    if (Base::FCVersionInfo::IsDevelopmentVersion()) {
+        d->mapSupportedLocales.emplace(pseudoLanguage, pseudoLocale);
     }
 
     // List all *_*.qm files, and if any match a known locale,
@@ -475,12 +489,20 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 }
 
 /**
- * This method checks for newly added (internal) .qm files which might be added at runtime. This
- * e.g. happens if a plugin gets loaded at runtime. For each newly added files that supports the
- * currently set language a new translator object is created to load the file.
+ * Installs the runtime pseudo-translator or loads newly available .qm files for the active
+ * language, including translations added by workbenches loaded at runtime.
  */
 void Translator::refresh()
 {
+    if (d->activatedLanguage == pseudoLanguage) {
+        if (d->translators.empty()) {
+            auto translator = new PseudoTranslator;
+            d->translators.push_back(translator);
+            qApp->installTranslator(translator);
+        }
+        return;
+    }
+
     std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(
         d->activatedLanguage
     );
