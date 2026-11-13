@@ -162,6 +162,23 @@ class TestGuiDocument(unittest.TestCase):
 
         self.assertTrue(True)
 
+    def testIssue33181(self):
+        self.doc.addObject("App::FeaturePython", "Object")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = os.path.join(temp_dir, "hidden.FCStd")
+            self.doc.saveCopy(path)
+            hidden_doc = FreeCAD.openDocument(path, hidden=True, temporary=True)
+            try:
+                FreeCAD.setActiveDocument(self.doc.Name)
+                hidden_doc.restore()
+
+                gui = FreeCADGui.getDocument(hidden_doc.Name)
+                self.assertEqual(gui.mdiViewsOfType("Gui::View3DInventor"), [])
+                self.assertEqual(FreeCAD.ActiveDocument, self.doc)
+            finally:
+                FreeCAD.closeDocument(hidden_doc.Name)
+
     def testViewObjectRequiresMainThread(self):
         obj = self.doc.addObject("App::FeaturePython", "ThreadGuard")
 
