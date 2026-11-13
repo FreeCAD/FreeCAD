@@ -16,10 +16,6 @@
 namespace Part
 {
 
-inline const auto BASE_X_AXIS = gp_Ax2(gp_Pnt(), gp_Dir(1, 0, 0));
-inline const auto BASE_Y_AXIS = gp_Ax2(gp_Pnt(), gp_Dir(0, 1, 0));
-inline const auto BASE_Z_AXIS = gp_Ax2(gp_Pnt(), gp_Dir(0, 0, 1));
-
 std::optional<gp_Ax2> getAxis(
     const App::PropertyLinkSub& property,
     const App::DocumentObject* extendedObject
