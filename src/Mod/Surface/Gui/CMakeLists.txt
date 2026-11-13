@@ -6,10 +6,19 @@ set(SurfaceGui_LIBS
     FreeCADGui
 )
 
+set(Surface_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Surface_translation.qrc)
+
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+
+qt_create_resource_file(${Surface_TR_QRC} ${QM_SRCS})
+
 qt_add_resources(SurfaceGui_QRC_SRCS
     Resources/Surface.qrc
+    ${Surface_TR_QRC}
     OPTIONS ${FREECAD_RCC_OPTIONS}
 )
+
 
 SET(SurfaceGui_UIC_SRCS
     TaskFilling.ui

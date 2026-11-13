@@ -27,6 +27,9 @@
        <property name="text">
         <string>Support Surface</string>
        </property>
+       <property name="toolTip">
+         <string>Additional constraint for the surface</string>
+       </property>
       </widget>
      </item>
      <item>
@@ -40,9 +43,6 @@
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox">
-     <property name="toolTip">
-      <string>Edges that will limit the surface</string>
-     </property>
      <property name="title">
       <string>Boundary Edges</string>
      </property>
@@ -51,6 +51,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QToolButton" name="buttonEdgeAdd">
+          <property name="toolTip">
+            <string>Edges that will limit the surface</string>
+          </property>
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -130,12 +133,18 @@
         <property name="text">
          <string>Faces</string>
         </property>
+        <property name="toolTip">
+          <string>Select adjacent face to edge</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="1" colspan="2">
        <widget class="QComboBox" name="comboBoxFaces">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="toolTip">
+          <string>Select adjacent face to edge</string>
         </property>
        </widget>
       </item>
@@ -150,12 +159,18 @@
         <property name="text">
          <string>Continuity</string>
         </property>
+        <property name="toolTip">
+          <string>Desired continuity of the surface</string>
+        </property>
        </widget>
       </item>
       <item row="5" column="1" colspan="2">
        <widget class="QComboBox" name="comboBoxCont">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="toolTip">
+          <string>Desired continuity of the surface</string>
         </property>
        </widget>
       </item>
