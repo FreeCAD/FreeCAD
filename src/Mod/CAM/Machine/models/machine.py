@@ -28,6 +28,7 @@ from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Tuple, Callable
 from collections import namedtuple
 from enum import Enum
+from Constants import ToolChangeFormat  # defined in Constants, used here and re-exported
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -164,6 +165,10 @@ class ProcessingOptions:
     # Conversion and expansion of Path Objects. Does not affect final gcode generation
 
     early_tool_prep: bool = False  # Prepare tool before operation (affects postlist ordering)
+    assert_tool_prep: bool = (
+        False  # Write T# before every tool change to force tool prep. Useful for starting in the middle of a file.
+    )
+    tool_change_format: ToolChangeFormat = ToolChangeFormat.M6_T  # Dropdown of tool change formats
     filter_inefficient_moves: bool = False  # Collapse redundant G0 rapid move chains
     split_arcs: bool = False
     tool_change: bool = True  # Enable tool change commands
@@ -1230,6 +1235,8 @@ class Machine:
         # Processing options
         data["processing"] = {
             "early_tool_prep": self.processing.early_tool_prep,
+            "assert_tool_prep": self.processing.assert_tool_prep,
+            "tool_change_format": self.processing.tool_change_format.value,
             "filter_inefficient_moves": self.processing.filter_inefficient_moves,
             "split_arcs": self.processing.split_arcs,
             "tool_change": self.processing.tool_change,
@@ -1786,6 +1793,10 @@ class Machine:
         processing_data = data.get("processing", {})
         if processing_data:
             config.processing.early_tool_prep = processing_data.get("early_tool_prep", False)
+            config.processing.assert_tool_prep = processing_data.get("assert_tool_prep", False)
+            config.processing.tool_change_format = ToolChangeFormat(
+                processing_data.get("tool_change_format", ToolChangeFormat.M6_T.value)
+            )
             config.processing.filter_inefficient_moves = processing_data.get(
                 "filter_inefficient_moves", False
             )

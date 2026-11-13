@@ -30,6 +30,7 @@ numbers and the E end-of-file marker.
 """
 
 import Path
+import Constants
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory, VALID_SCOPES, property_scope
@@ -73,7 +74,7 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
         machine.output.precision.spindle = 0
         machine.output.duplicates.commands = True
         machine.output.duplicates.parameters = True
-        machine.processing.tool_change = False
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         machine.toolheads = [
             Toolhead(
                 name="Spindle",
@@ -409,7 +410,7 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
 
     def test_tool_change_block(self):
         """M05 before M6, M6 and T in one block, an XYZ move on the first rapid after."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 Z18", "G0 X5 Y5", "G1 Z-1 F100", "G0 Z18"])
         change = lines.index("M6T1")
         self.assertEqual("M05", lines[change - 1])
@@ -421,20 +422,20 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
         self.assert_line("G0Z18.000", lines)
 
     def test_tool_change_first_rapid_with_xy_is_left_alone(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 X5 Y5 Z18", "G0 Z18"])
         self.assert_line("G0X5.000Y5.000Z18.000", lines)
         self.assert_no_line("G0X0.000Y0.000Z18.000", lines)
 
     def test_xyz_move_after_tool_change_off(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.postprocessor_properties["xyz_move_after_tool_change"] = False
         lines = self.lines(["G0 Z18"])
         self.assert_line("G0Z18.000", lines)
         self.assert_no_line("G0X0.000Y0.000Z18.000", lines)
 
     def test_no_tool_length_offset_by_default(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 Z18"])
         self.assertFalse(any(line.startswith("G43") for line in lines), lines)
 
@@ -443,7 +444,7 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
         self.assertEqual(["L1.5", "L2"], lines)
 
     def test_spindle_wait_is_l_seconds(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.toolheads[0].toolhead_wait = 0.5
         lines = self.lines(["G0 Z18"])
         self.assertEqual("L0.5", lines[lines.index("M3S1000") + 1])
@@ -485,7 +486,7 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
         self.post._machine.output.formatting.line_numbers = True
         self.post._machine.output.formatting.line_number_start = 1
         self.post._machine.output.formatting.line_increment = 1
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.postprocessor_properties["pre_tool_change"] = (
             "M05\n/G0Z50\n(T)CHANGE TOOL$"
         )

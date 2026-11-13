@@ -71,7 +71,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
         machine.output.precision.spindle = 0
         machine.output.duplicates.commands = True
         machine.output.duplicates.parameters = True
-        machine.processing.tool_change = False
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         machine.toolheads = [
             Toolhead(
                 name="Spindle",
@@ -589,7 +589,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
 
     def test_tool_change_carries_spindle_speed(self):
         """M6 T1 followed by M3 S1000 becomes TOOL CALL 1 Z S1000 then M3."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.blocks([])
         index = lines.index("TOOL CALL 1 Z S1000")
         self.assertEqual("M3", lines[index + 1])
@@ -598,20 +598,20 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
         self.assert_no_block("M3 S1000", lines)
 
     def test_tool_change_uses_tool_axis(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.postprocessor_properties["tool_axis"] = "Y"
         lines = self.blocks([])
         self.assert_block("TOOL CALL 1 Y S1000", lines)
 
     def test_tool_change_without_spindle_speed(self):
         """A bare M6 gives a TOOL CALL without S."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.blocks(["M6 T3"])
         self.assert_block("TOOL CALL 3 Z", lines)
 
     def test_tool_change_suppressed(self):
         """Without tool changes the speed still reaches the spindle via TOOL CALL S."""
-        self.post._machine.processing.tool_change = False
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         self.post._machine.output.comments.enabled = True
         lines = self.blocks([])
         self.assertFalse(any(re.match(r"TOOL CALL \d", l) for l in lines), lines)
@@ -627,7 +627,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
 
     def test_spindle_speed_change_without_tool_change(self):
         """A new speed on M3 is a TOOL CALL S block before the M3."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.blocks(["M3 S2000", "M5", "M4 S2000"])
         index = lines.index("TOOL CALL S2000")
         self.assertEqual("M3", lines[index + 1])
@@ -636,7 +636,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
         self.assert_block("M4", lines)
 
     def test_spindle_same_speed_no_tool_call(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.blocks(["M3 S1000"])
         self.assertFalse(any(l.startswith("TOOL CALL S") for l in lines), lines)
         self.assertEqual(2, len([l for l in lines if l == "M3"]), lines)
@@ -773,7 +773,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
         self.post._machine.output.output_header = True
         self.post._machine.output.duplicates.commands = False
         self.post._machine.output.duplicates.parameters = False
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.processing.xy_before_z_after_tool_change = True
 
         tap = Path.Command(
