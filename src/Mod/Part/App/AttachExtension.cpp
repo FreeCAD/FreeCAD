@@ -797,6 +797,12 @@ void AttachExtension::updateAttacherVals(bool base) const
     if (!props.attachment) {
         return;
     }
+
+    auto* owner = getExtendedObject();
+    const char* rawName = owner ? owner->Label.getValue() : nullptr;
+    std::string owner_name = rawName ? rawName : std::string {};
+    attacher(base).setOwnerName(owner_name);
+
     attacher(base).setUp(
         *props.attachment,
         eMapMode(props.mapMode->getValue()),

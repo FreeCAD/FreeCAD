@@ -437,11 +437,17 @@ void AttachEngine::setUp(const AttachEngine& another)
     this->surfU = another.surfU;
     this->surfV = another.surfV;
     this->attachmentOffset = another.attachmentOffset;
+    this->ownerName = another.ownerName;
 }
 
 void AttachEngine::setOffset(const Base::Placement& offset)
 {
     this->attachmentOffset = offset;
+}
+
+void AttachEngine::setOwnerName(const std::string& owner_name)
+{
+    this->ownerName = owner_name;
 }
 
 Base::Placement AttachEngine::placementFactory(
@@ -1617,8 +1623,10 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             }
             if (pr.HasSymmetryAxis()) {
                 Base::Console().warning(
-                    "AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor has "
-                    "axis of symmetry. Second and third axes of inertia are undefined.\n"
+                    "AttachEngine3D::calculateAttachedPlacement:InertialCS ({}): inertia tensor "
+                    "has "
+                    "axis of symmetry. Second and third axes of inertia are undefined.\n",
+                    ownerName
                 );
                 // find defined axis, and use it as Z axis
                 // situation: we have two moments that are almost equal, and one
