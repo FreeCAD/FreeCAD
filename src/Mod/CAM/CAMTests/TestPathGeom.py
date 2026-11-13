@@ -1016,3 +1016,34 @@ class TestPathGeom(PathTestBase):
         self.assertRoughly(comb[1].Faces[0].Area, 36)
         self.assertRoughly(comb[2].Faces[0].Area, 20)  # face 2 absorbed by face 3
         self.assertRoughly(comb[3].Faces[0].Area, 25)
+
+    def testSortEdges(self):
+        """Part.__sortEdges__ outputs all edges in order, oriented, and marked Forward"""
+        p = [
+            Vector(0, 0, 0),
+            Vector(10, 0, 0),
+            Vector(10, 10, 0),
+            Vector(20, 10, 0),
+            Vector(20, 20, 0),
+            Vector(30, 20, 0),
+        ]
+        edges = [
+            Part.makeLine(p[0], p[1]),  # forward, marked forward
+            Part.makeLine(p[1], p[2]),  # forward, marked forward
+            Part.makeLine(p[2], p[3]).reversed(),  # forward, marked reversed
+            Part.makeLine(p[4], p[3]),  # reversed, marked forward
+            Part.makeLine(p[5], p[4]).reversed(),  # reversed, marked reversed
+        ]
+        shuffled = [edges[0], edges[3], edges[1], edges[4], edges[2]]
+
+        def check(p, sortedEdges):
+            self.assertEqual(len(sortedEdges), len(p) - 1)
+            for i, e in enumerate(sortedEdges):
+                self.assertEqual(e.Orientation, "Forward", f"edge {i}")
+                self.assertCoincide(e.firstVertex().Point, p[i])
+                self.assertCoincide(e.lastVertex().Point, p[i + 1])
+                self.assertCoincide(e.valueAt(e.FirstParameter), p[i])
+                self.assertCoincide(e.valueAt(e.LastParameter), p[i + 1])
+
+        check(p, Part.__sortEdges__(edges))
+        check(p, Part.__sortEdges__(shuffled))

@@ -198,7 +198,7 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
         xp.Next();
         ep.v2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
         ep.it = it;
-        ep.edge = *it;
+        ep.edge = TopoDS::Edge(it->Oriented(TopAbs_FORWARD));
         edge_points.push_back(ep);
     }
 
