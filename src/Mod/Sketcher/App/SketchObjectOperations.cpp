@@ -31,6 +31,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Base/Translation.h>
 
 #include <memory>
 

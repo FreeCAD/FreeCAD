@@ -26,6 +26,7 @@
 #include <TopTools_ListOfShape.hxx>
 
 #include <Base/Exception.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDefeaturing.h"

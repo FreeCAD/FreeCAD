@@ -96,7 +96,7 @@ public:
         bool sameType = false
     );
 
-    static QVector<Data::MappedElement> getRelatedElements(
+    static std::vector<Data::MappedElement> getRelatedElements(
         App::DocumentObject* obj,
         const char* name,
         HistoryTraceType sameType = HistoryTraceType::followTypeChange,
@@ -115,7 +115,7 @@ public:
      *
      * @return Return a vector of pair of new style and old style element names.
      */
-    static QVector<Data::MappedElement> getElementFromSource(
+    static std::vector<Data::MappedElement> getElementFromSource(
         App::DocumentObject* obj,
         const char* subname,
         App::DocumentObject* src,

@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
 

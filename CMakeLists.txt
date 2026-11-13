@@ -88,9 +88,6 @@ SetupYamlCpp()
 SetupZipIos()
 SetupClipper2()
 
-find_package(Qt6 REQUIRED COMPONENTS Core)
-set(FREECAD_QT_MAJOR_VERSION 6)
-
 find_package(ICU REQUIRED COMPONENTS uc i18n)
 find_package(cpptrace QUIET)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
@@ -118,7 +115,9 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     SetupEigen()
     # This file is included directly due to some cMake macros that are defined within.
     # If these macro definitions are embedded within another macro, it causes problems.
-    include(cMake/FreeCAD_Helpers/SetupQt.cmake)
+    if(FREECAD_HAS_QT)
+        include(cMake/FreeCAD_Helpers/SetupQt.cmake)
+    endif()
     SetupFreetype()
 
     if(BUILD_GUI)

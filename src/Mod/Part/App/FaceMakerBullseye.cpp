@@ -35,10 +35,10 @@
 #include <Standard_Failure.hxx>
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
-#include <QtGlobal>
 #include <TopExp.hxx>
 
 #include "FaceMakerBullseye.h"
+#include <Base/Translation.h>
 #include "FaceMakerCheese.h"
 
 #include "TopoShape.h"
@@ -57,12 +57,18 @@ void FaceMakerBullseye::setPlane(const gp_Pln& plane)
 
 std::string FaceMakerBullseye::getUserFriendlyName() const
 {
-    return {tr("Bull's-eye facemaker").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Bull's-eye facemaker")
+    );
 }
 
 std::string FaceMakerBullseye::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes with islands in them").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Supports making planar faces with holes with islands in them")
+    );
 }
 
 bool FaceMakerBullseye::WireInfo::operator<(const WireInfo& other) const
@@ -364,10 +370,13 @@ FaceMakerRing::FaceMakerRing()
 
 std::string FaceMakerRing::getUserFriendlyName() const
 {
-    return {tr("Ring facemaker").toStdString()};
+    return Base::Translation::translate("FaceMaker", QT_TRANSLATE_NOOP("FaceMaker", "Ring facemaker"));
 }
 
 std::string FaceMakerRing::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes and holes as faces").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Supports making planar faces with holes and holes as faces")
+    );
 }
