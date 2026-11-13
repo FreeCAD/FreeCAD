@@ -2,7 +2,7 @@
 
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
-from typing import Any, List, Dict, overload, Optional
+from typing import TYPE_CHECKING, TypedDict, NotRequired, Literal, overload
 
 
 @export(
@@ -50,44 +50,79 @@ class Metadata(PyObjectBase):
     DeveloperDocu: Metadata
     """
 
-    @overload
-    def __init__(self) -> None:
-        ...
+    if TYPE_CHECKING:
+        class _MaintainerDict(TypedDict):
+            """A maintainer info object."""
+            name: str
+            email: str
+
+        class _AuthorDict(TypedDict):
+            """An author info object."""
+            name: str
+            email: str
+
+        class _LicenseDict(TypedDict):
+            """A license info object."""
+            name: str
+            file: str
+
+        class _UrlDict(TypedDict):
+            """An url info object."""
+            location: str
+            type: Literal["website", "repository", "bugtracker", "readme", "documentation", "discussion", "unknown"]
+            branch: NotRequired[str]
+            """Only set if type is 'repository'."""
+
+        class _DependencyDict(TypedDict):
+            """A dependency info object."""
+            package: str
+            """Required. Must exactly match the contents of the 'name' element in the referenced package's package.xml file."""
+            version_lt: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions less than the stated version number."""
+            version_lte: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions less or equal than the stated version number."""
+            version_eq: NotRequired[str]
+            """Optional. The dependency to the package is restricted to a version equal than the stated version number."""
+            version_gt: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions greater than the stated version number."""
+            version_gte: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions greater or equal than the stated version number."""
+            condition: NotRequired[str]
+            """Optional. Conditional expression as documented in REP149."""
+            optional: NotRequired[bool]
+            type: NotRequired[Literal["automatic", "addon", "internal", "python"]]
 
     @overload
-    def __init__(self, metadata: "Metadata") -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
-    def __init__(self, file: str) -> None:
-        ...
-
+    def __init__(self, metadata: Metadata, /) -> None: ...
     @overload
-    def __init__(self, bytes: bytes) -> None:
-        ...
+    def __init__(self, file: str, /) -> None: ...
+    @overload
+    def __init__(self, bytes: bytes, /) -> None: ...
 
-    Name: str = ""
+    Name: str
     """String representing the name of this item."""
 
-    Version: str = ""
+    Version: str
     """String representing the version of this item in semantic triplet format."""
 
-    Date: str = ""
+    Date: str
     """String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)"""
 
-    Type: str = ""
+    Type: str
     """String representing the type of this item (text only, no markup allowed)."""
 
-    Description: str = ""
+    Description: str
     """String representing the description of this item (text only, no markup allowed)."""
 
-    Maintainer: List[Any] = []
+    Maintainer: list[_MaintainerDict]
     """List of maintainer objects with 'name' and 'email' string attributes."""
 
-    License: List[Any] = []
+    License: list[_LicenseDict]
     """List of applicable licenses as objects with 'name' and 'file' string attributes."""
 
-    Urls: List[Any] = []
+    Urls: list[_UrlDict]
     """
     List of URLs as objects with 'location' and 'type' string attributes, where type
     is one of:
@@ -96,15 +131,18 @@ class Metadata(PyObjectBase):
     * bugtracker
     * readme
     * documentation
+    * discussion
+    * unknown
+    If type is repository, also contains key 'branch'.
     """
 
-    Author: List[Any] = []
+    Author: list[_AuthorDict]
     """
     List of author objects, each with a 'name' and a (potentially empty) 'email'
     string attribute.
     """
 
-    Depend: List[Any] = []
+    Depend: list[_DependencyDict]
     """
     List of dependencies, as objects with the following attributes:
     * package
@@ -129,65 +167,65 @@ class Metadata(PyObjectBase):
         Optional. Conditional expression as documented in REP149.
     """
 
-    Conflict: List[Any] = []
+    Conflict: list[_DependencyDict]
     """List of conflicts, format identical to dependencies."""
 
-    Replace: List[Any] = []
+    Replace: list[_DependencyDict]
     """
     List of things this item is considered by its author to replace. The format is
     identical to dependencies.
     """
 
-    Tag: List[str] = []
+    Tag: list[str]
     """List of strings."""
 
-    Icon: str = ""
+    Icon: str
     """Relative path to an icon file."""
 
-    Classname: str = ""
+    Classname: str
     """
     String representing the name of the main Python class this item
     creates/represents.
     """
 
-    Subdirectory: str = ""
+    Subdirectory: str
     """
     String representing the name of the subdirectory this content item is located in.
     If empty, the item is in a directory named the same as the content item.
     """
 
-    File: List[Any] = []
+    File: list[str]
     """
     List of files associated with this item.
     The meaning of each file is implementation-defined.
     """
 
-    Content: Dict[str, List["Metadata"]] = {}
+    Content: dict[str, list[Metadata]]
     """
     Dictionary of lists of content items: defined recursively, each item is itself
     a Metadata object.
     See package.xml file format documentation for details.
     """
 
-    FreeCADMin: str = ""
+    FreeCADMin: str
     """
     String representing the minimum version of FreeCAD needed for this item.
     If unset it will be 0.0.0.
     """
 
-    FreeCADMax: str = ""
+    FreeCADMax: str
     """
     String representing the maximum version of FreeCAD needed for this item.
     If unset it will be 0.0.0.
     """
 
-    PythonMin: str = ""
+    PythonMin: str
     """
     String representing the minimum version of Python needed for this item.
     If unset it will be 0.0.0.
     """
 
-    def getLastSupportedFreeCADVersion(self) -> Optional[str]:
+    def getLastSupportedFreeCADVersion(self) -> str | None:
         """
         Search through all content package items, and determine if a maximum supported
         version of FreeCAD is set.
@@ -196,7 +234,7 @@ class Metadata(PyObjectBase):
         known versions).
         """
 
-    def getFirstSupportedFreeCADVersion(self) -> Optional[str]:
+    def getFirstSupportedFreeCADVersion(self) -> str | None:
         """
         Search through all content package items, and determine if a minimum supported
         version of FreeCAD is set.
@@ -214,7 +252,7 @@ class Metadata(PyObjectBase):
         recurse into Content items.
         """
 
-    def getGenericMetadata(self, name: str, /) -> List[Any]:
+    def getGenericMetadata(self, name: str, /) -> list[dict]:
         """
         Get the list of GenericMetadata objects with key 'name'.
         Generic metadata objects are Python objects with a string 'contents' and a
@@ -222,7 +260,7 @@ class Metadata(PyObjectBase):
         in the metadata file.
         """
 
-    def addContentItem(self, content_type: str, metadata: "Metadata", /) -> None:
+    def addContentItem(self, content_type: str, metadata: Metadata, /) -> None:
         """
         Add a new content item of type 'content_type' with metadata 'metadata'.
         """
@@ -276,36 +314,36 @@ class Metadata(PyObjectBase):
         Remove the Author.
         """
 
-    def addDepend(self, dependency: dict[str, Any], /) -> None:
+    def addDepend(self, dependency: _DependencyDict, /) -> None:
         """
         Add a new Dependency described by the given dictionary.
 
         See the `Depend` attribute for the recognized keys.
         """
 
-    def removeDepend(self, dependency: dict[str, Any], /) -> None:
+    def removeDepend(self, dependency: _DependencyDict, /) -> None:
         """
         Remove the Dependency described by the given dictionary.
 
         See the `Depend` attribute for the recognized keys.
         """
 
-    def addConflict(self, dependency: dict[str, Any], /) -> None:
+    def addConflict(self, dependency: _DependencyDict, /) -> None:
         """
         Add a new Conflict. See documentation for addDepend().
         """
 
-    def removeConflict(self, dependency: dict[str, Any], /) -> None:
+    def removeConflict(self, dependency: _DependencyDict, /) -> None:
         """
         Remove the Conflict. See documentation for removeDepend().
         """
 
-    def addReplace(self, dependency: dict[str, Any], /) -> None:
+    def addReplace(self, dependency: _DependencyDict, /) -> None:
         """
         Add a new Replace.
         """
 
-    def removeReplace(self, dependency: dict[str, Any], /) -> None:
+    def removeReplace(self, dependency: _DependencyDict, /) -> None:
         """
         Remove the Replace.
         """

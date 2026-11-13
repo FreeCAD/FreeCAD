@@ -21,7 +21,7 @@ class ApplicationDirectories(PyObjectBase):
         """
 
     @staticmethod
-    def migrateAllPaths(paths: list[str], /) -> list[str]:
+    def migrateAllPaths(paths: list[str] | tuple[str, ...], /) -> list[str]:
         """
         Migrate a set of versionable configuration directories from the given paths to a new version.
 

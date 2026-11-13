@@ -25,7 +25,7 @@ _DocumentObjectList: TypeAlias = list[DocumentObject | None]
 _DocumentObjectListInput: TypeAlias = Sequence[DocumentObject]
 _DocumentObjectSubLinkValue: TypeAlias = tuple[DocumentObject, list[str]] | None
 _DocumentObjectSubLinkInput: TypeAlias = (
-    DocumentObject | None | _DocumentObjectSubLinkPairInput
+    DocumentObject | _DocumentObjectSubLinkPairInput | None
 )
 _DocumentObjectSubLinkListItemInput: TypeAlias = (
     DocumentObject | _DocumentObjectSubLinkPairInput
@@ -44,7 +44,7 @@ _IntegerConstraintInput: TypeAlias = (
     int | dict[str, int] | tuple[int, int, int, int]
 )
 _FloatConstraintInput: TypeAlias = (
-    float | int | dict[str, float] | tuple[float, float, float, float]
+    float | dict[str, float] | tuple[float, float, float, float]
 )
 _VectorValue: TypeAlias = Base.Vector
 _VectorInput: TypeAlias = Base.Vector | tuple[float, float, float]
@@ -73,9 +73,9 @@ _XLinkValue: TypeAlias = (
 )
 _XLinkInput: TypeAlias = (
     DocumentObject
-    | None
     | tuple[DocumentObject, str | Sequence[str]]
     | list[DocumentObject | str | Sequence[str]]
+    | None
 )
 
 

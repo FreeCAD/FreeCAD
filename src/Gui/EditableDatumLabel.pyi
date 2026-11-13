@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from typing import Any, Callable, Optional, Tuple, overload
+from FreeCADGui import _View3DInventor, _View3DInventorViewer
+from PySide import QtCore
+from typing import overload
+from collections.abc import Callable
 
 from Base.Metadata import class_declarations, export
 from Base.Placement import Placement
@@ -25,12 +28,13 @@ class EditableDatumLabel(PyObjectBase):
     dimension and positioning workflows.
     """
 
-    @overload
+    @overload  # overload required, or else ubuntu build will fail
     def __init__(
         self,
-        viewer: Any,
+        /,
+        viewer: _View3DInventor | _View3DInventorViewer,
         placement: Placement,
-        color: Optional[Tuple[float, float, float]] = None,
+        color: tuple[float, float, float] | None = None,
         autoDistance: bool = False,
         avoidMouseCursor: bool = False,
     ) -> None:
@@ -62,8 +66,9 @@ class EditableDatumLabel(PyObjectBase):
 
     def startEdit(
         self,
+        /,
         value: float,
-        eventFilter: Optional[Any] = None,
+        eventFilter: QtCore.QObject | None = None,
         visibleToMouse: bool = False,
     ) -> None:
         """
@@ -108,7 +113,7 @@ class EditableDatumLabel(PyObjectBase):
         Update the label placement used for 3D positioning.
         """
 
-    def setColor(self, color: Optional[Tuple[float, float, float]], /) -> None:
+    def setColor(self, color: tuple[float, float, float] | list[float] | None, /) -> None:
         """
         Update the label color.
         """
@@ -194,27 +199,27 @@ class EditableDatumLabel(PyObjectBase):
         Return the current label function as `positioning`, `dimensioning`, or `forced`.
         """
 
-    def setValueChangedCallback(self, callback: Optional[Callable[[float], object]], /) -> None:
+    def setValueChangedCallback(self, callback: Callable[[float], object] | None, /) -> None:
         """
         Set a callback invoked whenever the current numeric value changes.
         """
 
-    def setEditingFinishedCallback(self, callback: Optional[Callable[[float], object]], /) -> None:
+    def setEditingFinishedCallback(self, callback: Callable[[float], object] | None, /) -> None:
         """
         Set a callback invoked when editing is accepted with Enter.
         """
 
-    def setEditingCanceledCallback(self, callback: Optional[Callable[[float], object]], /) -> None:
+    def setEditingCanceledCallback(self, callback: Callable[[float], object] | None, /) -> None:
         """
         Set a callback invoked when editing is canceled with Escape.
         """
 
-    def setParameterUnsetCallback(self, callback: Optional[Callable[[], object]], /) -> None:
+    def setParameterUnsetCallback(self, callback: Callable[[], object] | None, /) -> None:
         """
         Set a callback invoked when the current editor input becomes unset/invalid.
         """
 
-    def setFinishEditingCallback(self, callback: Optional[Callable[[], object]], /) -> None:
+    def setFinishEditingCallback(self, callback: Callable[[], object] | None, /) -> None:
         """
         Set a callback invoked for the "finish editing on all visible overlays" action.
         """

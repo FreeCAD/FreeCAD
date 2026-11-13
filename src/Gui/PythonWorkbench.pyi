@@ -2,7 +2,6 @@
 
 from Base.Metadata import deprecated, export
 from Workbench import Workbench
-from typing import Any, List
 
 @export(
     Twin="PythonBaseWorkbench",
@@ -70,7 +69,7 @@ class PythonWorkbench(Workbench):
         """
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="listMenus")
-    def ListMenus(self) -> List[Any]:
+    def ListMenus(self) -> list[str]:
         """
         deprecated -- use listMenus
         """
@@ -100,7 +99,7 @@ class PythonWorkbench(Workbench):
         """
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="listToolbars")
-    def ListToolbars(self) -> List[Any]:
+    def ListToolbars(self) -> list[str]:
         """
         deprecated -- use listToolbars
         """
@@ -118,7 +117,7 @@ class PythonWorkbench(Workbench):
         """
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="listCommandbars")
-    def ListCommandbars(self) -> List[Any]:
+    def ListCommandbars(self) -> list[str]:
         """
         deprecated -- use listCommandbars
         """

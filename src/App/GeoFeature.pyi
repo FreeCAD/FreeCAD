@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+# 'Placement' will be shadowed by auto-generated property from cpp.
+# Using "PlacementPy" won't help because replace happens before cpp insert.
+from FreeCAD import Base
+from App.ComplexGeoData import ComplexGeoData
 from DocumentObject import DocumentObject
 from Base.Metadata import deprecated
-from Base.Placement import Placement
-from typing import Any, Final, Optional
+from typing import Any, Final
 
 
 class GeoFeature(DocumentObject):
@@ -17,7 +20,7 @@ class GeoFeature(DocumentObject):
     to any particular property name.
     """
 
-    ElementMapVersion: Final[str] = ""
+    ElementMapVersion: Final[str]
     """Element map version"""
 
     def getPaths(self) -> Any:
@@ -32,7 +35,7 @@ class GeoFeature(DocumentObject):
         replacement="getGlobalPlacementOf",
         details="This method does not handle Links correctly.",
     )
-    def getGlobalPlacement(self) -> Placement:
+    def getGlobalPlacement(self) -> Base.Placement:
         """
         Deprecated: This function does not handle Links correctly. Use getGlobalPlacementOf instead.
 
@@ -43,7 +46,7 @@ class GeoFeature(DocumentObject):
         """
 
     @staticmethod
-    def getGlobalPlacementOf(targetObj: Any, rootObj: Any, subname: str, /) -> Placement:
+    def getGlobalPlacementOf(targetObj: DocumentObject, rootObj: DocumentObject, subname: str, /) -> Base.Placement:
         """
         Examples:
             obj = "part1"
@@ -60,7 +63,7 @@ class GeoFeature(DocumentObject):
         relationships.
         """
 
-    def getPropertyNameOfGeometry(self) -> Optional[str]:
+    def getPropertyNameOfGeometry(self) -> str | None:
         """
         Returns the property name of the actual geometry.
         For example for a Part feature it returns the value 'Shape', for a mesh feature the value
@@ -68,7 +71,7 @@ class GeoFeature(DocumentObject):
         If an object has no such property then None is returned.
         """
 
-    def getPropertyOfGeometry(self) -> Optional[Any]:
+    def getPropertyOfGeometry(self) -> ComplexGeoData | None:
         """
         Returns the property of the actual geometry.
         For example for a Part feature it returns its Shape property, for a Mesh feature its

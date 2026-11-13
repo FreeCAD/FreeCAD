@@ -7,6 +7,8 @@ with the helper aliases, workbench support classes, and module globals those
 signatures use.
 """
 
+# source: `Gui/ApplicationPy.cpp`, `Gui/Application.cpp`, `Gui/FreeCADGuiInit.py`, `Gui/WorkbenchPyImp.cpp`
+
 import FreeCAD as App
 from collections.abc import Sequence
 from enum import IntEnum
@@ -18,8 +20,8 @@ from FreeCAD import DocumentObject
 
 _Pathish: TypeAlias = str | bytes | bytearray
 _IconContent: TypeAlias = str | bytes | bytearray | memoryview
-_WorkbenchMenu: TypeAlias = str | Sequence[str]
-_WorkbenchCommands: TypeAlias = str | Sequence[str]
+_WorkbenchMenu: TypeAlias = str | list[str]
+_WorkbenchCommands: TypeAlias = str | list[str]
 
 module(
     Name="FreeCADGui",
@@ -222,6 +224,7 @@ class _WorkbenchBackend(Protocol):
     def name(self) -> str:
         """Return the internal backend name of the workbench."""
 
+# source: `Gui/FreeCADGuiInit.py` + `Gui/PythonWorkbench.pyi`
 class Workbench:
     """Base class for Python-defined GUI workbenches."""
 
@@ -281,6 +284,7 @@ class Workbench:
     def GetClassName(self) -> str:
         """Return the wrapped runtime class name."""
 
+# source: `Gui/FreeCADGuiInit.py`
 class InputHint:
     """One user-facing message together with the input sequence that triggers it."""
 
@@ -291,6 +295,7 @@ class InputHint:
     def __init__(self, message: str, *sequences: _InputSequence) -> None:
         """Create one input hint with one or more accepted input sequences."""
 
+# source: `Gui/FreeCADGuiInit.py`
 class _HintManager:
     """Controller for transient GUI input-hint overlays."""
 
@@ -443,7 +448,7 @@ def showObject(obj: DocumentObject, /) -> None:
 def open(fileName: _Pathish, /) -> None:
     """Open a macro, Inventor, VRML, or other GUI-supported file."""
 
-def insert(fileName: _Pathish, docName: str = "", /) -> None:
+def insert(fileName: _Pathish, docName: str = ..., /) -> None:
     """Insert a macro, Inventor, VRML, or GUI-supported file into a document.
 
     When ``docName`` is omitted, the active document is used.
@@ -480,11 +485,11 @@ def getMainWindow() -> _MainWindow:
     """Return the main application window wrapper."""
 
 @overload
-def activeView() -> object | None:
+def activeView() -> _MDIView | None:
     """Return the current active view, creating the default 3D view when needed."""
 
 @overload
-def activeView(typeName: str, /) -> object | None:
+def activeView(typeName: str, /) -> _MDIView | None:
     """Return the active view constrained to a specific FreeCAD view type name."""
 
 def activateView(typeName: str, create: bool, /) -> None:
@@ -499,7 +504,7 @@ def createViewer(views: Literal[1], name: str = ..., /) -> _View3DInventor:
     """Create one named 3D viewer explicitly."""
 
 @overload
-def createViewer(views: int, name: str = ..., /) -> _View3DInventor | _AbstractSplitView:
+def createViewer(views: int, name: str = ..., /) -> _AbstractSplitView:
     """Create a split-view layout when more than one view is requested."""
 
 def getMarkerIndex(marker: str, size: int = 9, /) -> int:

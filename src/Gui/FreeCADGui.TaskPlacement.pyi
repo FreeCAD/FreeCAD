@@ -2,6 +2,8 @@
 
 """Typed public method signatures for the ``FreeCADGui.TaskPlacement`` PyCXX type."""
 
+# source: `Gui/Placement.cpp`
+
 from collections.abc import Sequence
 
 from FreeCAD import DocumentObject, Placement
@@ -22,7 +24,10 @@ class TaskPlacement:
         """Bind the current placement to the selected object."""
 
     def setPlacementAndBindObject(
-        self, document_object: DocumentObject, property_name: str, /
+        self,
+        document_object: DocumentObject,
+        property_name: str,
+        /,
     ) -> None:
         """Bind the dialog directly to one object and placement property."""
 

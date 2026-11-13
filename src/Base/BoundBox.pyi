@@ -4,7 +4,7 @@ from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from Vector import Vector
 from Matrix import Matrix
-from typing import overload, Any, Final, Tuple, Union
+from typing import overload, Any, Final
 
 @export(
     TwinPointer="BoundBox3d",
@@ -60,60 +60,69 @@ class BoundBox(PyObjectBase):
     Licence: LGPL
     """
 
-    Center: Final[Any] = None
+    Center: Final[Vector]
     """Center point of the bounding box."""
 
-    XMax: float = 0.0
+    XMax: float
     """The maximum x boundary position."""
 
-    YMax: float = 0.0
+    YMax: float
     """The maximum y boundary position."""
 
-    ZMax: float = 0.0
+    ZMax: float
     """The maximum z boundary position."""
 
-    XMin: float = 0.0
+    XMin: float
     """The minimum x boundary position."""
 
-    YMin: float = 0.0
+    YMin: float
     """The minimum y boundary position."""
 
-    ZMin: float = 0.0
+    ZMin: float
     """The minimum z boundary position."""
 
-    XLength: Final[float] = 0.0
+    XLength: Final[float]
     """Length of the bounding box in x direction."""
 
-    YLength: Final[float] = 0.0
+    YLength: Final[float]
     """Length of the bounding box in y direction."""
 
-    ZLength: Final[float] = 0.0
+    ZLength: Final[float]
     """Length of the bounding box in z direction."""
 
-    DiagonalLength: Final[float] = 0.0
+    DiagonalLength: Final[float]
     """Diagonal length of the bounding box."""
 
     # fmt: off
     @overload
     def __init__(self) -> None: ...
+
     @overload
-    def __init__(self, boundBox: "BoundBox") -> None: ...
+    def __init__(self, boundBox: BoundBox, /) -> None: ...
+
     @overload
     def __init__(
         self,
         xMin: float,
-        yMin: float = 0,
-        zMin: float = 0,
-        xMax: float = 0,
-        yMax: float = 0,
-        zMax: float = 0,
-    ) -> None:        ...
+        yMin: float = 0.0,
+        zMin: float = 0.0,
+        xMax: float = 0.0,
+        yMax: float = 0.0,
+        zMax: float = 0.0,
+        /,
+    ) -> None: ...
+
     @overload
     def __init__(
         self,
-        min: Union[Vector, Tuple[float, float, float]],
-        max: Union[Vector, Tuple[float, float, float]],
-    ) -> None:        ...
+        min: tuple[float, float, float],
+        max: tuple[float, float, float],
+        /,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, min: Vector, max: Vector, /) -> None: ...
+
     # fmt: on
 
     def setVoid(self) -> None:
@@ -128,18 +137,21 @@ class BoundBox(PyObjectBase):
         """
 
     @overload
+    def add(self, minMax: BoundBox, /) -> None: ...
+    @overload
     def add(self, minMax: Vector, /) -> None: ...
     @overload
-    def add(self, minMax: Tuple[float, float, float], /) -> None: ...
+    def add(self, minMax: tuple[float, float, float], /) -> None: ...
     @overload
     def add(self, x: float, y: float, z: float, /) -> None: ...
-    def add(self, *args: Any, **kwargs: Any) -> None:
+    @overload
+    def add(self, /, *args: Any) -> None:
         """
         Increase the maximum values or decrease the minimum values of this BoundBox by
         replacing the current values with the given values, so the bounding box can grow
         but not shrink.
 
-        minMax : Base.Vector, tuple
+        minMax : Base.BoundBox, Base.Vector, tuple
             Values to enlarge at each direction.
         x : float
             Value to enlarge at x-direction.
@@ -159,7 +171,7 @@ class BoundBox(PyObjectBase):
         """
 
     @constmethod
-    def getEdge(self, index: int, /) -> Tuple[Vector, ...]:
+    def getEdge(self, index: int, /) -> tuple[Vector, Vector]:
         """
         Get the edge points of the given index.
         The index must be in the range of [0, 11].
@@ -168,11 +180,14 @@ class BoundBox(PyObjectBase):
         """
 
     @overload
-    def closestPoint(self, point: Union[Vector, Tuple[float, float, float]], /) -> Vector: ...
-    @overload
-    def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
     @constmethod
-    def closestPoint(self, *args: Any, **kwargs: Any) -> Vector:
+    def closestPoint(self, point: Vector | tuple[float, float, float], /) -> Vector: ...
+    @overload
+    @constmethod
+    def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
+    @overload
+    @constmethod
+    def closestPoint(self, /, *args: Any) -> Vector:
         """
         Get the closest point of the bounding box to the given point.
 
@@ -187,32 +202,28 @@ class BoundBox(PyObjectBase):
         """
 
     @overload
-    def intersect(self, boundBox2: "BoundBox", /) -> bool: ...
+    def intersect(self, boundBox2: BoundBox, /) -> bool: ...
     @overload
-    def intersect(
-        self,
-        base: Union[Vector, Tuple[float, float, float]],
-        dir: Union[Vector, Tuple[float, float, float]],
-        /,
-    ) -> bool: ...
-    def intersect(self, *args: Any) -> bool:
+    def intersect(self, base: Vector, dir: Vector, /) -> bool: ...
+    @overload
+    def intersect(self, /, *args: Any) -> bool:
         """
         Checks if the given object intersects with this bounding box. That can be
         another bounding box or a line specified by base and direction.
 
         boundBox2 : Base.BoundBox
-        base : Base.Vector, tuple
-        dir : Base.Vector, tuple
+        base : Base.Vector
+        dir : Base.Vector
         """
 
-    def intersected(self, boundBox2: "BoundBox", /) -> "BoundBox":
+    def intersected(self, boundBox2: BoundBox, /) -> BoundBox:
         """
         Returns the intersection of this and the given bounding box.
 
         boundBox2 : Base.BoundBox
         """
 
-    def united(self, boundBox2: "BoundBox", /) -> "BoundBox":
+    def united(self, boundBox2: BoundBox, /) -> BoundBox:
         """
         Returns the union of this and the given bounding box.
 
@@ -243,10 +254,11 @@ class BoundBox(PyObjectBase):
     @overload
     def move(self, displacement: Vector, /) -> None: ...
     @overload
-    def move(self, displacement: Tuple[float, float, float], /) -> None: ...
+    def move(self, displacement: tuple[float, float, float], /) -> None: ...
     @overload
     def move(self, x: float, y: float, z: float, /) -> None: ...
-    def move(self, *args: Any, **kwargs: Any) -> None:
+    @overload
+    def move(self, /, *args: Any) -> None:
         """
         Move the bounding box by the given values.
 
@@ -263,10 +275,11 @@ class BoundBox(PyObjectBase):
     @overload
     def scale(self, factor: Vector, /) -> None: ...
     @overload
-    def scale(self, factor: Tuple[float, float, float], /) -> None: ...
+    def scale(self, factor: tuple[float, float, float], /) -> None: ...
     @overload
     def scale(self, x: float, y: float, z: float, /) -> None: ...
-    def scale(self, *args: Any, **kwargs: Any) -> None:
+    @overload
+    def scale(self, /, *args: Any) -> None:
         """
         Scale the bounding box by the given values.
 
@@ -280,7 +293,7 @@ class BoundBox(PyObjectBase):
             Scale at z-direction.
         """
 
-    def transformed(self, matrix: Matrix, /) -> "BoundBox":
+    def transformed(self, matrix: Matrix, /) -> BoundBox:
         """
         Returns a new BoundBox containing the transformed rectangular cuboid
         represented by this BoundBox.
@@ -299,16 +312,17 @@ class BoundBox(PyObjectBase):
         """
 
     @overload
-    def isInside(self, object: Union[Vector, Tuple[float, float, float]], /) -> bool: ...
+    def isInside(self, object: Vector | tuple[float, float, float], /) -> bool: ...
     @overload
-    def isInside(self, object: "BoundBox", /) -> bool: ...
+    def isInside(self, object: BoundBox, /) -> bool: ...
     @overload
     def isInside(self, x: float, y: float, z: float, /) -> bool: ...
-    def isInside(self, *args: Any) -> bool:
+    @overload
+    def isInside(self, /, *args: Any) -> bool:
         """
         Check if a point or a bounding box is inside this bounding box.
 
-        object : Base.Vector, Base.BoundBox
+        object : Base.Vector, Base.BoundBox, tuple
             Object to check if it is inside this bounding box.
         x : float
             X-coordinate of the point to check.

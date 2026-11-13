@@ -1,11 +1,15 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from Base.Metadata import export
+from DocumentObject import DocumentObject
 from DocumentObjectExtension import DocumentObjectExtension
-from typing import Any, Final, List, Tuple, Optional, Union, overload
+from typing import Any, Final, overload
+from collections.abc import Sequence
 
 
-@export(Include="App/Link.h", )
+@export(
+    Include="App/Link.h",
+)
 class LinkBaseExtension(DocumentObjectExtension):
     """
     Link extension base class
@@ -13,10 +17,10 @@ class LinkBaseExtension(DocumentObjectExtension):
     Licence: LGPL
     """
 
-    LinkedChildren: Final[List[Any]] = []
+    LinkedChildren: Final[list[DocumentObject]]
     """Return a flattened (in case grouped by plain group) list of linked children"""
 
-    def configLinkProperty(self, *args, **kwargs) -> Any:
+    def configLinkProperty(self, /, *args: Any, **kwargs: Any) -> None:
         """
         Examples:
             Called with default names:
@@ -54,17 +58,12 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
 
     @overload
-    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str]]:
-        ...
-
+    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str], ...]: ...
     @overload
-    def getLinkPropertyInfo(self, index: int, /) -> tuple[str, str, str]:
-        ...
-
+    def getLinkPropertyInfo(self, index: int, /) -> tuple[str, str, str]: ...
     @overload
-    def getLinkPropertyInfo(self, name: str, /) -> tuple[str, str]:
-        ...
-
+    def getLinkPropertyInfo(self, name: str, /) -> tuple[str, str]: ...
+    @overload
     def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
         Overloads:
@@ -75,9 +74,12 @@ class LinkBaseExtension(DocumentObjectExtension):
 
     def setLink(
         self,
-        obj: Any,
-        subName: Optional[str] = None,
-        subElements: Optional[Union[str, Tuple[str, ...]]] = None,
+        obj: DocumentObject
+            | Sequence[DocumentObject | tuple[DocumentObject] | tuple[DocumentObject, str] | tuple[DocumentObject, str, list[str]]]
+            | dict[int, DocumentObject | tuple[DocumentObject] | tuple[DocumentObject, str] | tuple[DocumentObject, str, list[str]]]
+            | None,
+        subName: str | None = None,
+        subElements: str | tuple[str, ...] | None = None,
         /,
     ) -> None:
         """

@@ -150,6 +150,9 @@ def newDocument(
 def closeDocument(document: str | Document, /) -> None:
     """Close one document by name or object."""
 
+def saveDocument(document: str, /) -> None:
+    """Save document by name."""
+
 def writeRecoverySnapshotToTransientDir(
     document: Document,
     /,

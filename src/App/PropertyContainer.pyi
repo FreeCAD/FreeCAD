@@ -2,19 +2,26 @@
 
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
-from typing import Any, Final, Union, List, Optional
+from typing import Any, Final, Literal, overload
 
 
-@export(DisableNotify=True, )
+@export(
+    DisableNotify=True,
+)
 class PropertyContainer(Persistence):
     """
     App.PropertyContainer class.
     """
 
-    PropertiesList: Final[list] = []
+    PropertiesList: Final[list[str]] = []
     """A list of all property names."""
 
-    def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> Any:
+    @overload
+    def getPropertyByName(self, name: str, checkOwner: Literal[0, 1] = 0, /) -> Any: ...
+    @overload
+    def getPropertyByName(self, name: str, checkOwner: Literal[2] = 0, /) -> tuple[PropertyContainer, Any]: ...
+    @overload
+    def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> Any | tuple[PropertyContainer, Any]:
         """
         Returns the value of a named property. Note that the returned property may not
         always belong to this container (e.g. from a linked object).
@@ -27,7 +34,7 @@ class PropertyContainer(Persistence):
             2: return a tuple (owner, propertyValue).
         """
 
-    def getPropertyTouchList(self, name: str, /) -> tuple:
+    def getPropertyTouchList(self, name: str, /) -> tuple[int, ...]:
         """
         Returns a list of index of touched values for list type properties.
 
@@ -35,7 +42,7 @@ class PropertyContainer(Persistence):
             Property name.
         """
 
-    def getTypeOfProperty(self, name: str, /) -> list:
+    def getTypeOfProperty(self, name: str, /) -> list[str]:
         """
         Returns the type of a named property. This can be a list conformed by elements in
         (Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient, Input).
@@ -52,7 +59,7 @@ class PropertyContainer(Persistence):
             Property name.
         """
 
-    def setEditorMode(self, name: str, type: Union[int, List[str]], /) -> None:
+    def setEditorMode(self, name: str, type: int | list[str] | tuple[str, ...], /) -> None:
         """
         Set the behaviour of the property in the property editor.
 
@@ -64,7 +71,7 @@ class PropertyContainer(Persistence):
             If sequence, the available items are 'ReadOnly' and 'Hidden'.
         """
 
-    def getEditorMode(self, name: str, /) -> list:
+    def getEditorMode(self, name: str, /) -> list[str]:
         """
         Get the behaviour of the property in the property editor.
         It returns a list of strings with the current mode. If the list is empty there are no
@@ -96,7 +103,7 @@ class PropertyContainer(Persistence):
             Group name.
         """
 
-    def setPropertyStatus(self, name: str, val: Union[int, str, List[Union[str, int]]], /) -> None:
+    def setPropertyStatus(self, name: str, val: int | str | list[str | int] | tuple[str | int], /) -> None:
         """
         Set property status.
 
@@ -107,7 +114,7 @@ class PropertyContainer(Persistence):
             If the text start with '-' or the integer value is negative, then the status is cleared.
         """
 
-    def getPropertyStatus(self, name: str = "", /) -> list:
+    def getPropertyStatus(self, name: str = "", /) -> list[str | int]:
         """
         Get property status.
 
@@ -133,7 +140,7 @@ class PropertyContainer(Persistence):
             Documentation string.
         """
 
-    def getEnumerationsOfProperty(self, name: str, /) -> Optional[list]:
+    def getEnumerationsOfProperty(self, name: str, /) -> list[str] | None:
         """
         Return all enumeration strings of the property of this class or None if not a
         PropertyEnumeration.
@@ -143,7 +150,7 @@ class PropertyContainer(Persistence):
         """
 
     @constmethod
-    def dumpPropertyContent(self, Property: str, *, Compression: int = 3) -> bytearray:
+    def dumpPropertyContent(self, /, Property: str, *, Compression: int = 3) -> bytearray:
         """
         Dumps the content of the property, both the XML representation and the additional
         data files required, into a byte representation.

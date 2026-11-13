@@ -2,10 +2,14 @@
 
 """Typed public method signatures for the ``FreeCADGui._TaskDialog`` PyCXX type."""
 
+# source: `Gui/TaskView/TaskDialogPython.cpp`
+
+from PySide import QtWidgets
+
 class _TaskDialog:
     """Base wrapper for task-panel dialogs."""
 
-    def getDialogContent(self) -> list[object]:
+    def getDialogContent(self) -> list[QtWidgets.QWidget]:
         """Return the content widgets hosted by the dialog."""
 
     def getStandardButtons(self) -> int:
@@ -22,6 +26,12 @@ class _TaskDialog:
 
     def isAutoCloseOnTransactionChange(self) -> bool:
         """Return whether transaction changes auto-close the dialog."""
+
+    def setAutoCloseOnResetEdit(self, enabled: bool, /) -> None:
+        """Defines whether a task dialog must be closed if the document exits edit mode."""
+
+    def isAutoCloseOnResetEdit(self) -> bool:
+        """Checks if the task dialog will be closed when the document exits edit mode."""
 
     def setAutoCloseOnDeletedDocument(self, enabled: bool, /) -> None:
         """Set whether document deletion auto-closes the dialog."""
