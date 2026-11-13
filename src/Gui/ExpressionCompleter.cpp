@@ -1195,6 +1195,10 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
             }
         }
     }
+    // A bare unit symbol would be interpreted as a quantity, not a local property.
+    if (!noProperty && App::ExpressionParser::isTokenAUnit(path.section(u'.', 0, 0).toStdString())) {
+        path.prepend(u'.');
+    }
     return path;
 }
 
@@ -1221,6 +1225,15 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
             App::ObjectIdentifier ident = ObjectIdentifier::parse(currentObj.getObject(), path);
 
             std::vector<std::string> stringList = ident.getStringList();
+            // getStringList() omits an explicit object qualifier for properties of
+            // the current object. Keep it so qualified input uses the object subtree.
+            if (!ident.isLocalProperty() && ident.getDocumentObject() == currentObj.getObject()
+                && ident.getProperty()) {
+                const std::string objectName = ident.getDocumentObjectName().toString();
+                if (path.starts_with(objectName + '.')) {
+                    stringList.insert(stringList.begin(), objectName);
+                }
+            }
             if ((trailingDot || retry > 1) && !stringList.empty()) {
                 stringList.pop_back();
             }

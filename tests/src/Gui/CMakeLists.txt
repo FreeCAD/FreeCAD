@@ -33,6 +33,7 @@ add_executable(Gui_tests_run
 )
 
 # Qt tests
+setup_qt_test(ExpressionCompleter)
 setup_qt_test(ObjectSelection)
 setup_qt_test(TranslatorLocale)
 setup_qt_test(InputField)

@@ -4157,6 +4157,27 @@ std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
 namespace {
 std::tuple<int, int> getTokenAndStatus(const std::string & str)
 {
+    using namespace ExpressionParser;
+    // Property paths can be constructed while an expression is being parsed.
+    // Inspecting their names must not replace that parser's scanner state.
+    struct ScannerState
+    {
+        YY_BUFFER_STATE buffer = YY_CURRENT_BUFFER;
+        semantic_type value = yylval;
+        int savedColumn = column;
+        int savedLastColumn = last_column;
+
+        ~ScannerState()
+        {
+            if (buffer) {
+                yy_switch_to_buffer(buffer);
+            }
+            yylval = std::move(value);
+            column = savedColumn;
+            last_column = savedLastColumn;
+        }
+    } state;
+
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
     ExpressionParser::StringBufferCleaner cleaner(buf);
     int token = ExpressionParser::ExpressionParserlex();
@@ -4184,7 +4205,7 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
     int token{}, status{};
     std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && token == UNIT);
+    return (status == 0 && (token == UNIT || token == USUNIT));
 }
 
 #if defined(__clang__)

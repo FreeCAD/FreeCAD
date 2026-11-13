@@ -114,6 +114,8 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer* _owner,
         }
     }
     if (!property.empty()) {
+        // Unit-named properties need an explicit local reference when serialized.
+        localProperty = ExpressionParser::isTokenAUnit(property);
         addComponent(SimpleComponent(property));
         if (index != std::numeric_limits<int>::max()) {
             addComponent(ArrayComponent(index));
@@ -157,6 +159,7 @@ ObjectIdentifier::ObjectIdentifier(const Property& prop, int index)
 
     setDocumentObjectName(docObj);
 
+    localProperty = ExpressionParser::isTokenAUnit(prop.getName());
     addComponent(SimpleComponent(String(prop.getName())));
     if (index != std::numeric_limits<int>::max()) {
         addComponent(ArrayComponent(index));
