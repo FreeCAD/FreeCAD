@@ -405,7 +405,9 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         // Looks like an invalid data object that causes a crash with vtk9
         vtkUnstructuredGrid* dataGrid = vtkUnstructuredGrid::SafeDownCast(m_dataObject);
         if (dataGrid && (dataGrid->GetPiece() < 0 || dataGrid->GetNumberOfPoints() <= 0)) {
-            Base::Console().warning("PropertyPostDataObject::SaveDocFile: ignore empty vtkUnstructuredGrid\n");
+            Base::Console().warning(
+                "PropertyPostDataObject::SaveDocFile: ignore empty vtkUnstructuredGrid\n"
+            );
             return;
         }
     }
