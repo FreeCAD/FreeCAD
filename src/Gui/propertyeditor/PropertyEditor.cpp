@@ -25,6 +25,7 @@
 #include <utility>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
+#include <QAccessible>
 #include <QClipboard>
 #include <QCompleter>
 #include <QInputDialog>
@@ -58,6 +59,18 @@
 FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
+
+namespace
+{
+void refreshAccessibleTree(QTreeView* view)
+{
+    if (!QAccessible::isActive()) {
+        return;
+    }
+    QAccessibleTableModelChangeEvent event(view, QAccessibleTableModelChangeEvent::ModelReset);
+    QAccessible::updateAccessibility(&event);
+}
+}  // namespace
 
 PropertyEditor::PropertyEditor(QWidget* parent)
     : QTreeView(parent)
@@ -143,12 +156,14 @@ void PropertyEditor::onItemExpanded(const QModelIndex& index)
     for (int i = 0, c = item->childCount(); i < c; ++i) {
         setExpanded(propertyModel->index(i, 0, index), item->child(i)->isExpanded());
     }
+    refreshAccessibleTree(this);
 }
 
 void PropertyEditor::onItemCollapsed(const QModelIndex& index)
 {
     auto item = static_cast<PropertyItem*>(index.internalPointer());
     item->setExpanded(false);
+    refreshAccessibleTree(this);
 }
 
 void PropertyEditor::setAutomaticDocumentUpdate(bool v)
