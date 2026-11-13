@@ -52,11 +52,11 @@ QString expandText(const QString& text)
     // Preserve syntax consumed by formatters, rich text, shortcuts and resource loaders.
     static const QRegularExpression tokens(QStringLiteral(
         R"(%(?:\([^)]+\))?(?:\d+\$)?[-+#0 ']*(?:\d+|\*(?:\d+\$)?)?)"
-        R"((?:\.(?:\d+|\*(?:\d+\$)?))?(?:hh|ll|[hljztL])?[diuoxXfFeEgGaAcspnrbB])"
+        R"((?:\.(?:\d*|\*(?:\d+\$)?))?(?:hh|ll|[hljztL])?[diuoxXfFeEgGaAcspnrbB])"
         R"(|%(?:L?(?:\d+|n)|%)|\{(?:[^{}]|\{[^{}]*\})*\})"
         R"(|&(?:\#\d+;|\#x[\da-fA-F]+;|[a-zA-Z][a-zA-Z\d]+;|&|[^\s]))"
         R"(|\b(?:(?:Ctrl|Alt|Shift|Meta)\+)+(?:Page (?:Up|Down)|[a-zA-Z\d]+|[^\s]))"
-        R"(|\bF(?:[1-9]|[12]\d|3[0-5])\b|(?:https?://|mailto:|:/)[^\s<>"']+)"
+        R"(|\bF(?:[1-9]|[12]\d|3[0-5])\b|(?:https?://|mailto:|qrc:/|:/)[^\s<>"']+)"
     ));
     static const QString letters = QStringLiteral(
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"

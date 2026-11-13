@@ -138,6 +138,11 @@ private Q_SLOTS:
                  "%d",
                  "%r",
                  "%1.2f",
+                 "%.f",
+                 "%.e",
+                 "%9.f",
+                 "%.s",
+                 "%2$.f",
                  "%08.3lf",
                  "%2$.*f",
                  "%2$*3$.*4$f",
@@ -157,6 +162,8 @@ private Q_SLOTS:
                  "F1",
                  "https://freecad.org/Help",
                  ":/icons/edit.svg",
+                 "qrc:/icons/edit.svg",
+                 "qrc:///icons/edit.svg",
                  "mailto:info@example.org"
              }) {
             QTest::newRow(qPrintable(token))
@@ -195,6 +202,31 @@ private Q_SLOTS:
         if (preserved.contains(QStringLiteral("%1"))) {
             QVERIFY(result.arg(QStringLiteral("model.FCStd")).contains(QStringLiteral("model.FCStd")));
         }
+    }
+
+    void pseudoNonTokens_data()
+    {
+        QTest::addColumn<QString>("source");
+        QTest::addColumn<QString>("expected");
+
+        QTest::newRow("ampersand")
+            << QString("Labels & Attributes") << QString("[Ļááƀééļš & ÁÁţţŕííƀúúţééš]");
+        QTest::newRow("shift-action")
+            << QString("Shift horizontal") << QString("[Šĥííƒţ ĥóóŕíížóóńţááļ]");
+        QTest::newRow("parentheses")
+            << QString("Rotate the pattern (degrees)")
+            << QString("[Ŕóóţááţéé ţĥéé ṕááţţééŕń (ðééĝŕééééš)]");
+        QTest::newRow("comparison")
+            << QString("Engraver cutting edge angle must be < 180 degrees.")
+            << QString("[ÉÉńĝŕááṽééŕ çúúţţííńĝ ééðĝéé ááńĝļéé ḿúúšţ ƀéé < 180 ðééĝŕééééš.]");
+    }
+
+    void pseudoNonTokens()
+    {
+        QFETCH(QString, source);
+        QFETCH(QString, expected);
+        Gui::Translator::instance()->activateLanguage("English (Pseudo A)");
+        QCOMPARE(translated(source), expected);
     }
 
     void pseudoNumbers_data()
