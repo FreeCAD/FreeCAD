@@ -1,0 +1,30 @@
+﻿---
+# File created by FreeCAD 1.1.0 Revision: 39156 (Git)
+General:
+  UUID: "19483e7e-62e3-42f3-818a-18e919d5b7a8"
+  Name: "CFRP-HS-UD"
+  Author: "Tim Swait"
+  License: "CC-BY-4.0"
+  Description: "Generic unidirectional HS (High Strength) grade Carbon Fibre Reinforced Epoxy Composite."
+Models:
+  Orthotropic Linear Elastic:
+    UUID: "b19ccc6b-a431-418e-91c2-0ac8c649d146"
+    PoissonRatioXY: "0.28"
+    ShearModulusXY: "7170.00 MPa"
+    ShearModulusXZ: "7170.00 MPa"
+    ShearModulusYZ: "5000.00 MPa"
+    YoungsModulusX: "181.00 GPa"
+    YoungsModulusY: "10.30 GPa"
+    YoungsModulusZ: "10.30 GPa"
+  Density:
+    UUID: "454661e5-265b-4320-8e6f-fcf6223ac3af"
+    Density: "1600.00 kg/m^3"
+AppearanceModels:
+  Basic Rendering:
+    UUID: "f006c7e4-35b7-43d5-bbf9-c5d572309e6e"
+    AmbientColor: "(0.203922,0.203922,0.203922,1)"
+    DiffuseColor: "(0.207843,0.219608,0.231373,1)"
+    EmissiveColor: "(0, 0, 0, 1)"
+    Shininess: "0.6"
+    SpecularColor: "(0.533333, 0.533333, 0.533333, 1)"
+    Transparency: "0"
