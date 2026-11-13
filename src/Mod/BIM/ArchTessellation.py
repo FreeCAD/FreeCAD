@@ -320,8 +320,9 @@ class Tessellator(ABC):
         Combines a substrate with an overlay of line geometry (joint centerlines or hatch lines).
 
         If ``thickness`` is positive, the substrate is extruded into a solid and the lines are
-        placed just above its top face. Otherwise the lines float just above the flat substrate.
-        In both cases a small Z offset is added to prevent Z-fighting in the viewport.
+        placed just above its top face and just below its bottom face. Otherwise the lines float
+        just above and below the flat substrate. In both cases a small Z offset is added to prevent
+        Z-fighting in the viewport.
 
         Parameters
         ----------
@@ -337,12 +338,18 @@ class Tessellator(ABC):
         Part.Compound
         """
         local_normal = FreeCAD.Vector(0, 0, 1)
+        lines_top = lines.copy()
+        lines_bottom = lines.copy()
+
         if thickness > 0:
             body = substrate.extrude(local_normal * thickness)
-            lines.translate(local_normal * (thickness + VIEWPORT_Z_OFFSET))
-            return Part.makeCompound([body, lines])
-        lines.translate(local_normal * VIEWPORT_Z_OFFSET)
-        return Part.makeCompound([substrate, lines])
+            lines_top.translate(local_normal * (thickness + VIEWPORT_Z_OFFSET))
+            lines_bottom.translate(local_normal * (-VIEWPORT_Z_OFFSET))
+            return Part.makeCompound([body, lines_top, lines_bottom])
+
+        lines_top.translate(local_normal * VIEWPORT_Z_OFFSET)
+        lines_bottom.translate(local_normal * (-VIEWPORT_Z_OFFSET))
+        return Part.makeCompound([substrate, lines_top, lines_bottom])
 
     @abstractmethod
     def _compute_local(self, substrate):
