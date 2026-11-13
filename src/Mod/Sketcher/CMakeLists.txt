@@ -44,6 +44,7 @@ if(BUILD_GUI)
           SketcherTests/TestCarbonCopyModelTreeDragging.py
           SketcherTests/TestViewSectionGui.py
           SketcherTests/TestConvertToNURBSGui.py
+          SketcherTests/TestPasteSelectionGui.py
     )
 endif(BUILD_GUI)
 
