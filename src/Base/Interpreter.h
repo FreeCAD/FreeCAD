@@ -347,7 +347,8 @@ public:
      */
     //@{
     /// init the interpreter and returns the module search path
-    std::string init(int argc, char* argv[]);
+    /// \param home Python installation prefix; empty lets Python derive it from argv[0]
+    std::string init(int argc, char* argv[], const std::string& home = {});
     int runCommandLine(const char* prompt);
     void replaceStdOutput();
     static InterpreterSingleton& Instance();
