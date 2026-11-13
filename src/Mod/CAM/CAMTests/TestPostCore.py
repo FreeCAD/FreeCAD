@@ -1602,9 +1602,7 @@ class TestToolChangeFormatOutput(unittest.TestCase):
         )
         self.assertEqual(
             f"/{prefix}100 T6",
-            self._gcode(post, 
-                Path.Command("T6", {"N": 100}, {"blockdelete": "True"})
-            ).strip(),
+            self._gcode(post, Path.Command("T6", {"N": 100}, {"blockdelete": "True"})).strip(),
         )
 
     def test050_export2_tool_change_formats(self):
@@ -1629,6 +1627,7 @@ class TestToolChangeFormatOutput(unittest.TestCase):
             with self.subTest(fmt=fmt):
                 gcode = self._post(self._machine(fmt)).export2()[0][1]
                 self.assertEqual(lines, self._tool_lines(gcode), gcode)
+
     def test051_export2_early_tool_prep(self):
         """
         Test early tool prep end to end, T5 then T2.
@@ -1653,6 +1652,7 @@ class TestToolChangeFormatOutput(unittest.TestCase):
                 machine = self._machine(fmt, early=True, assert_prep=assert_prep)
                 gcode = self._post(machine).export2()[0][1]
                 self.assertEqual(lines, self._tool_lines(gcode), gcode)
+
     def test052_export2_line_numbers_with_tool_change(self):
         """
         Test that every tool change line is numbered, with the number first.
@@ -1680,6 +1680,7 @@ class TestToolChangeFormatOutput(unittest.TestCase):
                 self.assertEqual(len(patterns), len(lines), gcode)
                 for pattern, line in zip(patterns, lines):
                     self.assertRegex(line, "^" + pattern.format(n=prefix) + "$")
+
     def test060_tool_change_sanity_checks(self):
         """
         Test the warnings for tool change settings that do not work together.

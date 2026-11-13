@@ -959,7 +959,9 @@ class PostProcessor:
 
     def _tool_prep_postable(self, tool_number) -> Postable:
         """Standalone 'T<n>' command item."""
-        return self._make_postable("Command", Path.Command(f"{Constants.GCODE_BARE_T[0]}{int(tool_number)}"))
+        return self._make_postable(
+            "Command", Path.Command(f"{Constants.GCODE_BARE_T[0]}{int(tool_number)}")
+        )
 
     def _ends_with_tool_prep(self, item: Postable, tool_number) -> bool:
         """True if the item's last command is already 'T<tool_number>'."""
