@@ -3882,6 +3882,34 @@ UChar32 previousCodePoint(std::string_view input, const std::size_t position, st
     return codePoint;
 }
 
+// Checks whether a unit punctuation character at the end of a range
+// terminates a localized numeric token. Whitespace between the number
+// and the unit punctuation is allowed.
+bool endsWithUnitPunctuationAfterLocalizedDigit(
+    std::string_view input,
+    const std::size_t end,
+    const NumericLocaleContext& locale
+)
+{
+    std::size_t unitStart = 0;
+    const UChar32 unit = previousCodePoint(input, end, unitStart);
+    if (!isExpressionUnitPunctuation(unit)) {
+        return false;
+    }
+
+    std::size_t digitEnd = unitStart;
+    while (digitEnd > 0) {
+        std::size_t whitespaceStart = 0;
+        const UChar32 previous = previousCodePoint(input, digitEnd, whitespaceStart);
+        if (previous == U_SENTINEL || !u_isUWhiteSpace(previous)) {
+            break;
+        }
+        digitEnd = whitespaceStart;
+    }
+
+    return localizedDigitEndsAt(input, digitEnd, locale);
+}
+
 bool followsExpressionTokenContinuation(std::string_view input, const std::size_t position)
 {
     std::size_t start = 0;
@@ -3913,7 +3941,12 @@ bool startsExpressionNumber(
     // Base scans numeric tokens; App decides where expression grammar allows one to start.
     // In particular, identifier and cell-reference suffixes remain opaque to localization.
     if (followsExpressionTokenContinuation(input, position) && !isSignAt(position)) {
-        return false;
+        // Unit punctuation can separate two numeric tokens, as in feet-and-inches
+        // notation: 1'2,500". Do not treat the number after the punctuation as
+        // an identifier or unit-token continuation.
+        if (!endsWithUnitPunctuationAfterLocalizedDigit(input, position, locale)) {
+            return false;
+        }
     }
 
     const auto digitAt = [&](const std::size_t offset) {
@@ -3954,13 +3987,8 @@ bool startsExpressionNumber(
             }
 
             // Unit punctuation can also terminate a numeric token.
-            // Treat a sign following such punctuation as binary when
-            // the punctuation itself follows a localized digit.
-            std::size_t unitStart = 0;
-            const UChar32 unit = previousCodePoint(input, previous, unitStart);
-            if (
-                isExpressionUnitPunctuation(unit)
-                && localizedDigitEndsAt(input, unitStart, locale)) {
+            // Allow whitespace between the number and its unit marker.
+            if (endsWithUnitPunctuationAfterLocalizedDigit(input, previous, locale)) {
                 return false;
             }
 

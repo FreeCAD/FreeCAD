@@ -5,6 +5,8 @@
 #include <QtTest/QTest>
 
 #include <App/Application.h>
+#include <App/Document.h>
+#include <App/PropertyUnits.h>
 #include <Base/Quantity.h>
 
 #include "Gui/QuantitySpinBox.h"
@@ -143,6 +145,51 @@ private Q_SLOTS:
 
         QCOMPARE(spinBox->rawValue(), 12345.67);
         QVERIFY(spinBox->hasValidInput());
+    }
+
+    /*
+     * Regression test for quantities that are validated as expressions.
+     * See https://github.com/FreeCAD/FreeCAD/issues/33388.
+     *
+     * PR https://github.com/FreeCAD/FreeCAD/pull/30139 introduced consolidated
+     * place to verify quantities and expressions.  However, it verified
+     * quantities as expressions which caused it to handle "10/2 mm" as inverse
+     * length.
+     */
+    void test_quantityDivide()  // NOLINT
+    {
+        std::string docName = App::GetApplication().getUniqueDocumentName("test");
+        App::Document* doc = App::GetApplication().newDocument(docName.c_str(), "testUser");
+        App::DocumentObject* obj = doc->addObject("App::VarSet", "VarSet");
+        const App::Property* prop = obj->addDynamicProperty("App::PropertyLength", "Length");
+
+        TestPropertyUnitItem unitItem;
+        QWidget parent;
+        auto* editor = unitItem.createEditor(&parent, [] {});
+        auto* spinBox = qobject_cast<Gui::QuantitySpinBox*>(editor);
+        spinBox->bind(*prop);
+        QVERIFY(spinBox != nullptr);
+        if (!spinBox) {
+            return;
+        }
+
+        spinBox->setLocale(QLocale(QStringLiteral("en_US")));
+        unitItem.setEditorData(spinBox, QVariant::fromValue<Base::Quantity>(Base::Quantity(10.0, "mm")));
+        spinBox->show();
+        spinBox->setFocus();
+
+        auto* lineEdit = spinBox->findChild<QLineEdit*>();
+        QVERIFY(lineEdit != nullptr);
+        if (!lineEdit) {
+            return;
+        }
+        lineEdit->setText(QStringLiteral("10/2 mm"));
+        QTest::keyClick(spinBox, Qt::Key_Return);
+
+        QCOMPARE(spinBox->rawValue(), 5.00);
+        QVERIFY(spinBox->hasValidInput());
+
+        App::GetApplication().closeDocument(docName.c_str());
     }
 
 private:
