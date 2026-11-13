@@ -70,9 +70,8 @@ namespace e57
 
       /// Utility functions:
       bool isElementNameExtended( const ustring &elementName );
-      bool isElementNameLegal( const ustring &elementName, bool allowNumber = true );
       bool isPathNameLegal( const ustring &pathName );
-      void checkElementNameLegal( const ustring &elementName, bool allowNumber = true );
+      void checkElementNameLegal( const ustring &elementName );
 
       void pathNameCheckWellFormed( const ustring &pathName );
       void pathNameParse( const ustring &pathName, bool &isRelative, StringList &fields );

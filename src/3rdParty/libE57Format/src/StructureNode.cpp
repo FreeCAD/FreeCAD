@@ -217,15 +217,15 @@ int64_t StructureNode::childCount() const
 
 @details
 The @a pathName may be relative to this node, or absolute (starting with a "/"). The origin of the
-absolute path name is the root of the tree that contains this StructureNode. If this StructureNode
-is not attached to an ImageFile, the @a pathName origin root will not the root node of an ImageFile.
+absolute path name is the root of the tree that contains this StructureNode.
 
 @pre The destination ImageFile must be open (i.e. destImageFile().isOpen()).
 @post No visible state is modified.
 
 @return true if pathName is currently defined.
 
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
 @throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
@@ -233,7 +233,23 @@ is not attached to an ImageFile, the @a pathName origin root will not the root n
 */
 bool StructureNode::isDefined( const ustring &pathName ) const
 {
-   return impl_->isDefined( pathName );
+   try
+   {
+      bool defined = impl_->isDefined( pathName );
+
+      return defined;
+   }
+   catch ( const e57::E57Exception &e )
+   {
+      // Explicitly ignore the exception caused by requesting an extension field (e.g.
+      // "nor:normalX") when the extension is not yet registered.
+      if ( e.errorCode() == ErrorPathNameExtensionNotRegistered )
+      {
+         return false;
+      }
+
+      throw( e );
+   }
 }
 
 /*!
@@ -268,9 +284,7 @@ Node StructureNode::get( int64_t index ) const
 
 @param [in] pathName The absolute pathname, or pathname relative to this object, of the object to
 get. The @a pathName may be relative to this node, or absolute (starting with a "/"). The origin of
-the absolute path name is the root of the tree that contains this StructureNode. If this
-StructureNode is not attached to an ImageFile, the @a pathName origin root will not the root node of
-an ImageFile.
+the absolute path name is the root of the tree that contains this StructureNode.
 
 @pre The destination ImageFile must be open (i.e. destImageFile().isOpen()).
 @pre The @a pathName must be defined (i.e. isDefined(pathName)).
@@ -278,7 +292,9 @@ an ImageFile.
 
 @return A smart Node handle referencing the child node.
 
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
+@throw ::ErrorPathNameExtensionNotRegistered (n/c)
 @throw ::ErrorPathUndefined (n/c)
 @throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
@@ -299,8 +315,7 @@ object @a n will be given.
 
 @details
 The @a pathName may be relative to this node, or absolute (starting with a "/"). The origin of the
-absolute path name is the root of the tree that contains this StructureNode. If this StructureNode
-is not attached to an ImageFile, the @a pathName origin root will not the root node of an ImageFile.
+absolute path name is the root of the tree that contains this StructureNode.
 
 The path name formed from all element names in @a pathName except the last must exist. If the @a
 pathName identifies the child of a VectorNode, then the last element name in @a pathName must be
@@ -322,7 +337,9 @@ destImageFile() == n.destImageFile()).
 @post The @a pathName will be defined (i.e. isDefined(pathName)).
 
 @throw ::ErrorImageFileNotOpen (n/c)
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
+@throw ::ErrorPathNameExtensionNotRegistered (n/c)
 @throw ::ErrorPathUndefined (n/c)
 @throw ::ErrorSetTwice (n/c)
 @throw ::ErrorAlreadyHasParent (n/c)

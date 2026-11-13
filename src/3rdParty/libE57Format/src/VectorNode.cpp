@@ -258,8 +258,7 @@ int64_t VectorNode::childCount() const
 
 @details
 The @a pathName may be relative to this node, or absolute (starting with a "/"). The origin of the
-absolute path name is the root of the tree that contains this VectorNode. If this VectorNode is not
-attached to an ImageFile, the @a pathName origin root will not the root node of an ImageFile.
+absolute path name is the root of the tree that contains this VectorNode.
 
 The element names of child elements of VectorNodes are numbers, encoded as strings, starting at "0".
 
@@ -268,7 +267,8 @@ The element names of child elements of VectorNodes are numbers, encoded as strin
 
 @return true if pathName is currently defined.
 
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
 @throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
@@ -276,7 +276,23 @@ The element names of child elements of VectorNodes are numbers, encoded as strin
 */
 bool VectorNode::isDefined( const ustring &pathName ) const
 {
-   return impl_->isDefined( pathName );
+   try
+   {
+      bool defined = impl_->isDefined( pathName );
+
+      return defined;
+   }
+   catch ( const e57::E57Exception &e )
+   {
+      // Explicitly ignore the exception caused by requesting an extension field (e.g.
+      // "nor:normalX") when the extension is not yet registered.
+      if ( e.errorCode() == ErrorPathNameExtensionNotRegistered )
+      {
+         return false;
+      }
+
+      throw( e );
+   }
 }
 
 /*!
@@ -308,8 +324,7 @@ Node VectorNode::get( int64_t index ) const
 
 @details
 The @a pathName may be relative to this node, or absolute (starting with a "/"). The origin of the
-absolute path name is the root of the tree that contains this VectorNode. If this VectorNode is not
-attached to an ImageFile, the @a pathName origin root will not the root node of an ImageFile.
+absolute path name is the root of the tree that contains this VectorNode.
 
 The element names of child elements of VectorNodes are numbers, encoded as strings, starting at "0".
 
@@ -319,7 +334,9 @@ The element names of child elements of VectorNodes are numbers, encoded as strin
 
 @return A smart Node handle referencing the child node.
 
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
+@throw ::ErrorPathNameExtensionNotRegistered (n/c)
 @throw ::ErrorPathUndefined (n/c)
 @throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state

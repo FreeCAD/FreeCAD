@@ -41,7 +41,7 @@ project( E57Format
     LANGUAGES
         CXX
     VERSION
-        3.3.0
+        3.4.1
 )
 
 string( TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPERCASE )
@@ -63,7 +63,7 @@ endif()
 
 # propose a default installation directory
 if ( E57_BUILDING_SELF )
-    if( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
+    if ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
         string( REGEX REPLACE "/${PROJECT_NAME}" "" CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} )
         set( T_ ${PROJECT_NAME} )
         set( T_ ${T_}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} )
@@ -80,12 +80,12 @@ find_package( Threads REQUIRED )
 find_package( XercesC 3.2 REQUIRED )
 
 option( E57_BUILD_SHARED
-	"Compile E57Format as a shared library"
-	OFF
+        "Compile E57Format as a shared library"
+        OFF
 )
 
-if( BUILD_SHARED_LIBS )
-	set( E57_BUILD_SHARED ON )
+if ( BUILD_SHARED_LIBS )
+        set( E57_BUILD_SHARED ON )
 endif()
 
 #########################################################################################
@@ -109,12 +109,26 @@ option( E57_WRITE_CRAZY_PACKET_MODE "Compile library to enable reader-stressing 
 
 # Other compile options
 
-# Link-time optiomization
+# Link-time optimization
 # CMake forces "thin" LTO (see https://gitlab.kitware.com/cmake/cmake/-/issues/23136)
 # which is a problem if compiling statically for distribution (e.g. in a package manager).
 # Generally you will only want to turn this off for distributing static release builds.
 option( E57_RELEASE_LTO "Compile release library with link-time optimization" ON )
 
+# CRCpp
+option( E57_USE_EXTERNAL_CRCPP
+        "Use an external CRCpp package"
+        OFF
+)
+
+if ( E57_USE_EXTERNAL_CRCPP )
+        find_path(crcpp_INCLUDE_PATH CRC.h ${CMAKE_INCLUDE_PATH})
+        if ( crcpp_INCLUDE_PATH )
+            message( STATUS "[${PROJECT_NAME}] Using external CRCpp version from ${crcpp_INCLUDE_PATH}" )
+        else()
+            message( FATAL_ERROR "[${PROJECT_NAME}] E57_USE_EXTERNAL_CRCPP was enabled but CRC.h was not found" )
+        endif()
+endif()
 #########################################################################################
 
 set( REVISION_ID "${PROJECT_NAME}-${PROJECT_VERSION}-${${PROJECT_NAME}_BUILD_TAG}" )
@@ -142,7 +156,9 @@ include( E57ExportHeader )
 include( GitUpdate )
 
 # Main sources and includes
-add_subdirectory( extern/CRCpp )
+if ( NOT E57_USE_EXTERNAL_CRCPP )
+	add_subdirectory( extern/CRCpp )
+endif()
 add_subdirectory( include )
 add_subdirectory( src )
 

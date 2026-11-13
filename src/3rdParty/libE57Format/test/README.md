@@ -6,6 +6,9 @@ Testing uses the [GoogleTest](https://github.com/google/googletest) framework. T
 
 To turn testing on, set the CMake option `E57_BUILD_TEST` to ON.
 
+To use a packaged version of googletest, you can install googletest from your
+distribution and set `E57_USE_EXTERNAL_GTEST` to ON.
+
 ## Testing Data
 
 Currently, the testing data is found in another repo: [libE57Format-test-data](https://github.com/asmaloney/libE57Format-test-data).

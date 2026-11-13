@@ -149,8 +149,8 @@ transfer with a CompressedVectorNode.
 @pre The @a destImageFile must be open (i.e. destImageFile.isOpen() must be true).
 @pre The stride must be >= sizeof(*b)
 
-@throw ::ErrorBadAPIArgument (n/c)
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
 @throw ::ErrorBadBuffer (n/c)
 @throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
@@ -287,8 +287,8 @@ destroyed).
 @pre b.size() must be > 0.
 @pre The @a destImageFile must be open (i.e. destImageFile.isOpen() must be true).
 
-@throw ::ErrorBadAPIArgument (n/c)
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
 @throw ::ErrorBadBuffer (n/c)
 @throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
