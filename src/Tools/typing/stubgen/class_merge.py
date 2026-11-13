@@ -153,11 +153,9 @@ class PublicClassStubTransformer(ast.NodeTransformer):
 
     @staticmethod
     def ellipsis_body(doc: str | None = None) -> list[ast.stmt]:
-        body: list[ast.stmt] = []
         if doc:
-            body.append(ast.Expr(value=ast.Constant(value=doc)))
-        body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
-        return body
+            return [ast.Expr(value=ast.Constant(value=doc))]
+        return [ast.Expr(value=ast.Constant(value=Ellipsis))]
 
     def deprecated_property_nodes(
         self,
@@ -330,14 +328,14 @@ class PublicClassStubTransformer(ast.NodeTransformer):
         node.decorator_list = self.public_decorators(node.decorator_list)
         node.args = self.visit(node.args)
         node.returns = self.rewrite_annotation(node.returns)
-        node.body = [self.visit(item) for item in node.body]
+        node.body = [self.visit(node.body[0])]  # drop Ellipsis
         return node
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> ast.AsyncFunctionDef:
         node.decorator_list = self.public_decorators(node.decorator_list)
         node.args = self.visit(node.args)
         node.returns = self.rewrite_annotation(node.returns)
-        node.body = [self.visit(item) for item in node.body]
+        node.body = [self.visit(node.body[0])]  # drop Ellipsis
         return node
 
     def visit_arg(self, node: ast.arg) -> ast.arg:
