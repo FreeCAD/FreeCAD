@@ -371,6 +371,12 @@ def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0
         # use original edge if list is empty
         edges = [edge]
 
+    # split arcs (circles) with angle greater than pi
+    for i in reversed(range(len(edges))):
+        e = edges[i]
+        if isinstance(e.Curve, Part.Circle) and abs(e.LastParameter - e.FirstParameter) > math.pi:
+            edges[i : i + 1] = splitArcAt(e, e.valueAt((e.FirstParameter + e.LastParameter) / 2))
+
     if flip:
         edges.reverse()
 
@@ -481,7 +487,7 @@ def edgeForCmd(cmd, startPoint):
         B = xy(endPoint - center)
         d = -B.x * A.y + B.y * A.x
 
-        if isRoughly(d, 0, 0.005):
+        if isRoughly(d, 0):
             # Path.Log.debug(
             #    "Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z)
             # )
@@ -521,7 +527,7 @@ def edgeForCmd(cmd, startPoint):
             # Path.Log.debug("MidPoint:{}".format(midPoint))
             # Path.Log.debug("EndPoint:{}".format(endPoint))
 
-            if pointsCoincide(startPoint, endPoint, 0.001):
+            if pointsCoincide(startPoint, endPoint):
                 return Part.makeCircle(R, center, FreeCAD.Vector(0, 0, 1))
             else:
                 return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
