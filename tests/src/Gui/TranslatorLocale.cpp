@@ -38,7 +38,7 @@ public:
     }
 
 private:
-    bool eventFilter(QObject*, QEvent* event) override
+    bool eventFilter([[maybe_unused]] QObject* watched, QEvent* event) override
     {
         if (event->type() == QEvent::LanguageChange) {
             ++changes;
@@ -267,7 +267,7 @@ private Q_SLOTS:
                                 << QStringList {"<p>", "<b>", "</b>", "</p>"} << QString {};
         QTest::newRow("attributes")
             << QStringLiteral("<a href=\"https://freecad.org/help\" title=\"a > b\">Hello</a>")
-            << QStringList {"<a href=\"https://freecad.org/help\" title=\"a > b\">", "</a>"}
+            << QStringList {QStringLiteral("<a href=\"https://freecad.org/help\" title=\"a > b\">"), "</a>"}
             << QString {};
         QTest::newRow("entities") << QStringLiteral("<p>Hello</p><p>&amp; &#169; &#x3A9;</p>")
                                   << QStringList {"<p>", "</p>", "&amp;", "&#169;", "&#x3A9;"}
