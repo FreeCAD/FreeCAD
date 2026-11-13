@@ -83,6 +83,11 @@
 #include "CheckedFile.h"
 #include "StringFunctions.h"
 
+// Fallback
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 // #define E57_CHECK_FILE_DEBUG
 #ifdef E57_CHECK_FILE_DEBUG
 #include <cassert>
@@ -167,6 +172,16 @@ public:
    void read( char *buffer, uint64_t count )
    {
       const uint64_t start = cursorStream_;
+
+      // Written as ( count > streamSize_ - start ) rather than ( start + count > streamSize_ )
+      // so the check itself cannot overflow.
+      if ( start > streamSize_ || count > streamSize_ - start )
+      {
+         throw E57_EXCEPTION2( ErrorReadFailed, "pos=" + toString( start ) +
+                                                   " count=" + toString( count ) +
+                                                   " bufferSize=" + toString( streamSize_ ) );
+      }
+
       for ( uint64_t i = 0; i < count; ++i )
       {
          buffer[i] = stream_[start + i];
@@ -187,17 +202,20 @@ CheckedFile::CheckedFile( const ustring &fileName, Mode mode, ReadChecksumPolicy
    {
       case Read:
       {
-#if defined( _MSC_VER )
          constexpr int readFlags = O_RDONLY | O_BINARY;
-#else
-         constexpr int readFlags = O_RDONLY;
-#endif
 
          fd_ = open64( fileName_, readFlags, 0 );
 
          readOnly_ = true;
 
          physicalLength_ = lseek64( 0LL, SEEK_END );
+
+         if ( physicalLength_ % 1024 != 0 )
+         {
+            throw E57_EXCEPTION2( ErrorBadInputDataSize,
+                                  "file length is " + toString( physicalLength_ ) + " bytes" );
+         }
+
          lseek64( 0, SEEK_SET );
 
          logicalLength_ = physicalToLogical( physicalLength_ );
@@ -208,11 +226,10 @@ CheckedFile::CheckedFile( const ustring &fileName, Mode mode, ReadChecksumPolicy
       {
          // File truncated to zero length if already exists
 
-#if defined( _MSC_VER )
          constexpr int writeFlags = O_RDWR | O_CREAT | O_TRUNC | O_BINARY;
+#if defined( _MSC_VER )
          constexpr int writeMode = S_IREAD | S_IWRITE;
 #else
-         constexpr int writeFlags = O_RDWR | O_CREAT | O_TRUNC;
          constexpr int writeMode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 #endif
 
@@ -225,6 +242,12 @@ CheckedFile::CheckedFile( const ustring &fileName, Mode mode, ReadChecksumPolicy
 CheckedFile::CheckedFile( const char *input, uint64_t size, ReadChecksumPolicy policy ) :
    fileName_( "<StreamBuffer>" ), checkSumPolicy_( policy )
 {
+   if ( size % 1024 != 0 )
+   {
+      throw E57_EXCEPTION2( ErrorBadInputDataSize,
+                            "buffer length is " + toString( size ) + " bytes" );
+   }
+
    bufView_ = new BufferView( input, size );
 
    readOnly_ = true;

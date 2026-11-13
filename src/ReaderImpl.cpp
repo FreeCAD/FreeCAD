@@ -26,7 +26,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include <limits>
+
 #include "ReaderImpl.h"
+
 #include "Common.h"
 #include "StringFunctions.h"
 
@@ -481,6 +484,89 @@ namespace e57
             FloatNode( cylindricalRepresentation.get( "principalPointY" ) ).value();
          image2DHeader.cylindricalRepresentation.radius =
             FloatNode( cylindricalRepresentation.get( "radius" ) ).value();
+      }
+
+      // E57_LEICA_Camera_Distortion
+      // See: http://www.libe57.org/E57_LEICA_Camera_Distortion.txt
+      if ( imf_.extensionsLookupPrefix( "dist" ) && image.isDefined( "dist:distortion" ) )
+      {
+         const StructureNode distortion( image.get( "dist:distortion" ) );
+
+         auto &pcd = image2DHeader.pinholeCameraDistortionExt;
+         pcd = std::make_unique<Extension::PinholeCameraDistortion>();
+
+         if ( distortion.isDefined( "dist:CameraNumber" ) )
+         {
+            pcd->cameraNumber = IntegerNode( distortion.get( "dist:CameraNumber" ) ).value();
+         }
+
+         if ( distortion.isDefined( "dist:Type" ) )
+         {
+            pcd->type = StringNode( distortion.get( "dist:Type" ) ).value();
+         }
+
+         if ( distortion.isDefined( "dist:CV_K1" ) )
+         {
+            pcd->CV_K1 = FloatNode( distortion.get( "dist:CV_K1" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_K2" ) )
+         {
+            pcd->CV_K2 = FloatNode( distortion.get( "dist:CV_K2" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_K3" ) )
+         {
+            pcd->CV_K3 = FloatNode( distortion.get( "dist:CV_K3" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_K4" ) )
+         {
+            pcd->CV_K4 = FloatNode( distortion.get( "dist:CV_K4" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_K5" ) )
+         {
+            pcd->CV_K5 = FloatNode( distortion.get( "dist:CV_K5" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_K6" ) )
+         {
+            pcd->CV_K6 = FloatNode( distortion.get( "dist:CV_K6" ) ).value();
+         }
+
+         if ( distortion.isDefined( "dist:CV_P1" ) )
+         {
+            pcd->CV_P1 = FloatNode( distortion.get( "dist:CV_P1" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_P2" ) )
+         {
+            pcd->CV_P2 = FloatNode( distortion.get( "dist:CV_P2" ) ).value();
+         }
+
+         if ( distortion.isDefined( "dist:CV_CX" ) )
+         {
+            pcd->CV_CX = FloatNode( distortion.get( "dist:CV_CX" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_CY" ) )
+         {
+            pcd->CV_CY = FloatNode( distortion.get( "dist:CV_CY" ) ).value();
+         }
+
+         if ( distortion.isDefined( "dist:CV_FX" ) )
+         {
+            pcd->CV_FX = FloatNode( distortion.get( "dist:CV_FX" ) ).value();
+         }
+         if ( distortion.isDefined( "dist:CV_FY" ) )
+         {
+            pcd->CV_FY = FloatNode( distortion.get( "dist:CV_FY" ) ).value();
+         }
+
+         if ( distortion.isDefined( "dist:CV_HEIGHT" ) )
+         {
+            pcd->CV_HEIGHT =
+               static_cast<int32_t>( IntegerNode( distortion.get( "dist:CV_HEIGHT" ) ).value() );
+         }
+         if ( distortion.isDefined( "dist:CV_WIDTH" ) )
+         {
+            pcd->CV_WIDTH =
+               static_cast<int32_t>( IntegerNode( distortion.get( "dist:CV_WIDTH" ) ).value() );
+         }
       }
 
       return true;

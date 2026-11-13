@@ -11,9 +11,9 @@ jobs:
     name: Formatting Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Run clang-format style check
-        uses: jidicula/clang-format-action@v4.15.0
+        uses: jidicula/clang-format-action@v4.18.0
         with:
-          clang-format-version: '18'
+          clang-format-version: '20'
           exclude-regex: 'extern'
