@@ -333,7 +333,7 @@ void DlgSettingsGeneral::loadSettings()
 
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
-        if (!native.isEmpty()) {
+        if (!native.isEmpty() && it->second != "en-XA") {
             if (native[0].isLetter()) {
                 native[0] = native[0].toUpper();
             }

@@ -44,6 +44,116 @@ using namespace Gui;
 
 namespace
 {
+constexpr auto pseudoLanguage = "English (Pseudo A)";
+constexpr auto pseudoLocale = "en-XA";
+
+QString expandText(const QString& text)
+{
+    // Preserve syntax consumed by formatters, rich text, shortcuts and resource loaders.
+    static const QRegularExpression tokens(QStringLiteral(
+        R"(%(?:\([^)]+\))?(?:\d+\$)?[-+#0 ']*(?:\d+|\*(?:\d+\$)?)?)"
+        R"((?:\.(?:\d+|\*(?:\d+\$)?))?(?:hh|ll|[hljztL])?[diuoxXfFeEgGaAcspnrbB])"
+        R"(|%(?:L?(?:\d+|n)|%)|\{(?:[^{}]|\{[^{}]*\})*\})"
+        R"(|&(?:\#\d+;|\#x[\da-fA-F]+;|[a-zA-Z][a-zA-Z\d]+;|&|[^\s]))"
+        R"(|\b(?:(?:Ctrl|Alt|Shift|Meta)\+)+(?:Page (?:Up|Down)|[a-zA-Z\d]+|[^\s]))"
+        R"(|\bF(?:[1-9]|[12]\d|3[0-5])\b|(?:https?://|mailto:|:/)[^\s<>"']+)"
+    ));
+    static const QString letters = QStringLiteral(
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    );
+    static const QString accents = QStringLiteral(
+        "ÁƁÇÐÉƑĜĤÍĴĶĻḾŃÓṔǪŔŠŢÚṼŴẊÝŽáƀçðéƒĝĥíĵķļḿńóṕǫŕšţúṽŵẋýž"
+    );
+    static const QString vowels = QStringLiteral("AEIOUaeiou");
+
+    QString result;
+    bool changed = false;
+    qsizetype offset = 0;
+    auto matches = tokens.globalMatch(text);
+    auto append = [&](qsizetype end) {
+        for (; offset < end; ++offset) {
+            const auto ch = text.at(offset);
+            const auto index = letters.indexOf(ch);
+            if (index < 0) {
+                result += ch;
+                continue;
+            }
+
+            result += accents.at(index);
+            if (vowels.contains(ch)) {
+                result += accents.at(index);
+            }
+            changed = true;
+        }
+    };
+
+    while (matches.hasNext()) {
+        const auto match = matches.next();
+        append(match.capturedStart());
+        result += match.captured();
+        offset = match.capturedEnd();
+    }
+    append(text.size());
+    if (!changed) {
+        return text;
+    }
+
+    // Keep boundary whitespace outside the markers for concatenated labels.
+    qsizetype first = 0;
+    qsizetype last = result.size();
+    while (first < last && result.at(first).isSpace()) {
+        ++first;
+    }
+    while (last > first && result.at(last - 1).isSpace()) {
+        --last;
+    }
+    result.insert(last, QLatin1Char(']'));
+    result.insert(first, QLatin1Char('['));
+    return result;
+}
+
+class PseudoTranslator final: public QTranslator
+{
+    bool isEmpty() const override
+    {
+        // Qt needs a nonempty translator to send LanguageChange events.
+        return false;
+    }
+
+    QString translate(const char* context, const char* sourceText, const char*, int) const override
+    {
+        const auto text = QString::fromUtf8(sourceText);
+        const auto scope = QLatin1String(context);
+        // These translations are machine-readable, not labels.
+        if (scope == QLatin1String("QShortcut") || scope == QLatin1String("QKeySequence")
+            || text == QLatin1String("QT_LAYOUT_DIRECTION")) {
+            return text;
+        }
+
+        // Leave markup, embedded code and file-filter syntax outside the markers.
+        static const QRegularExpression markup(
+            QStringLiteral(
+                R"(<(?:style|script)\b[^>]*>[\s\S]*?</(?:style|script)\s*>)"
+                R"(|<!--[\s\S]*?-->|</?[a-zA-Z](?:[^<>"']|"[^"]*"|'[^']*')*>)"
+                R"(|<![^>]*>|<\?[^>]*\?>|\((?:[*?][^\s()]*\s*)+\)|;;)"
+            ),
+            QRegularExpression::CaseInsensitiveOption
+        );
+
+        QString result;
+        qsizetype offset = 0;
+        auto matches = markup.globalMatch(text);
+        while (matches.hasNext()) {
+            const auto match = matches.next();
+            result += expandText(text.mid(offset, match.capturedStart() - offset));
+            result += match.captured();
+            offset = match.capturedEnd();
+        }
+        result += expandText(text.mid(offset));
+        return result;
+    }
+};
+
 Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int format)
 {
     switch (format) {
@@ -83,7 +193,9 @@ ResolvedNumericLocale resolveNumericLocale(const Translator& translator, const s
                 qtLocale = QLocale::c();
             }
             else if (!localeName.empty()) {
-                const QLocale candidate(QString::fromStdString(localeName));
+                const QLocale candidate(
+                    QString::fromStdString(localeName == pseudoLocale ? "en_US" : localeName)
+                );
                 if (candidate.language() != QLocale::C) {
                     qtLocale = candidate;
                 }
@@ -239,6 +351,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"                )] = "da";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                 )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"               )] = "en";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English (Pseudo A)"    )] = pseudoLocale;
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"              )] = "fil";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"               )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"                )] = "fr";
@@ -319,6 +432,8 @@ TStringMap Translator::supportedLocales() const
     if (!d->mapSupportedLocales.empty()) {
         return d->mapSupportedLocales;
     }
+
+    d->mapSupportedLocales.emplace(pseudoLanguage, pseudoLocale);
 
     // List all *_*.qm files, and if any match a known locale,
     // report that locale as supported.
@@ -481,6 +596,15 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
  */
 void Translator::refresh()
 {
+    if (d->activatedLanguage == pseudoLanguage) {
+        if (d->translators.empty()) {
+            auto translator = new PseudoTranslator;
+            d->translators.push_back(translator);
+            qApp->installTranslator(translator);
+        }
+        return;
+    }
+
     std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(
         d->activatedLanguage
     );
