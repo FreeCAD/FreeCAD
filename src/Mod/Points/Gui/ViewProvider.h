@@ -29,6 +29,8 @@
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
+#include <App/PropertyGeo.h>
+#include <App/PropertyUnits.h>
 #include <Mod/Points/PointsGlobal.h>
 
 
@@ -39,6 +41,7 @@ class SoLocateHighlight;
 class SoCoordinate3;
 class SoNormal;
 class SoEventCallback;
+class SoClipPlane;
 
 namespace App
 {
@@ -85,6 +88,9 @@ public:
     ~ViewProviderPoints() override;
 
     App::PropertyFloatConstraint PointSize;
+    App::PropertyLength SliceLength;
+    App::PropertyPlacement SectionPlacement;
+    App::PropertyBool PointCloudSliceActive;
 
     /// set the viewing mode
     void setDisplayMode(const char* ModeName) override;
@@ -113,9 +119,11 @@ protected:
     SoMaterial* pcColorMat;
     SoNormal* pcPointsNormal;
     SoDrawStyle* pcPointStyle;
+    SoClipPlane* pcSliceClipPlane;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
+    void updateSliceClipPlaneFromProperties();
 };
 
 /**
