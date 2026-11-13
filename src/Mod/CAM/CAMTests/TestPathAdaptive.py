@@ -1323,6 +1323,11 @@ class TestPathAdaptive(PathTestBase):
         helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
         self.assertEqual(helixFeeds, {toolController.VertFeed.Value})
         self.assertEqual(dict(toolController.ExpressionEngine)["RampFeed"], "HorizFeed")
+        # The property editor lets legacy operations opt into RampFeed.
+        adaptive.HelixFeedVersion = 1
+        adaptive.recompute()
+        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.RampFeed.Value})
         self.assertTrue(adaptiveFeeds, "Expected adaptive clearing moves after migration")
         self.assertTrue(
             adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
@@ -1370,6 +1375,7 @@ class TestAdaptiveHelixFeedMigration(PathTestBase):
         PathAdaptive._initHelixFeedProperties(obj, legacy=True)
         self.assertEqual(obj.HelixFeedVersion, 0)
         self.assertNotIn("HelixFeedAuto", obj.PropertiesList)
+        self.assertEqual(obj.getEditorMode("HelixFeedVersion"), [])
         self.assertEqual(list(self.tc.ExpressionEngine), before)
         self.assertEqual(set(self.tc.PropertiesList), beforeProperties)
         self.assertEqual(self.tc.RampFeed.Value, beforeFeed)
@@ -1408,6 +1414,8 @@ class TestAdaptiveHelixFeedMigration(PathTestBase):
         PathAdaptive._initHelixFeedProperties(new, legacy=True)
         self.assertEqual(legacy.HelixFeedVersion, 0)
         self.assertEqual(new.HelixFeedVersion, 1)
+        self.assertEqual(legacy.getEditorMode("HelixFeedVersion"), [])
+        self.assertEqual(new.getEditorMode("HelixFeedVersion"), ["Hidden"])
         self.assertEqual(dict(self.tc.ExpressionEngine)["RampFeed"], "HorizFeed")
 
     def testDeferredControllerRestore(self):
@@ -1457,6 +1465,8 @@ class TestAdaptiveHelixFeedMigration(PathTestBase):
             self.doc.recompute()
             self.assertEqual(legacy.HelixFeedVersion, 0)
             self.assertEqual(new.HelixFeedVersion, 1)
+            self.assertEqual(legacy.getEditorMode("HelixFeedVersion"), [])
+            self.assertEqual(new.getEditorMode("HelixFeedVersion"), ["Hidden"])
             self.assertTrue(
                 any(cmd.Name.startswith("(Helix to depth:") for cmd in legacy.Path.Commands),
                 "The restored legacy operation should generate a helical entry",

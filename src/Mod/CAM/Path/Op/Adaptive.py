@@ -167,10 +167,10 @@ def _initHelixFeedProperties(obj, legacy=False):
             "App::PropertyInteger",
             "HelixFeedVersion",
             "AdaptiveHelixEntry",
-            "Adaptive helix feed migration version",
+            "Helix entry feed: 0 uses VertFeed for compatibility; 1 uses RampFeed",
         )
         obj.HelixFeedVersion = 0 if legacy else 1
-    obj.setEditorMode("HelixFeedVersion", 2)
+    obj.setEditorMode("HelixFeedVersion", 0 if obj.HelixFeedVersion == 0 else 2)
 
 
 def _applyFeedRate(commands, feedRate):
