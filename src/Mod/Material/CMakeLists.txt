@@ -249,6 +249,7 @@ SET(MachiningLib_Files
 
 SET(MaterialTestLib_Files
     "Resources/Materials/Test/Test Material.FCMat"
+    "Resources/Materials/Test/Test Thermal Arrays.FCMat"
 )
 
 SET(MaterialModel_Files
@@ -307,6 +308,7 @@ SET(MaterialModel_Files
     Resources/Models/Rendering/VectorRendering.yml
     "Resources/Models/Test/Test Model.yml"
     Resources/Models/Thermal/Thermal.yml
+    Resources/Models/Thermal/ThermalArrays.yml
 )
 
 set(MaterialTest_Files
