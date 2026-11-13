@@ -30,6 +30,7 @@
 #include <App/ImagePlane.h>
 #include <memory>
 #include <vector>
+#include <fastsignals/signal.h>
 
 class SbVec3f;
 class SoEventCallback;
@@ -136,9 +137,12 @@ private:
 
     void restore(const Base::Placement&);
     void restoreAngles(const Base::Rotation&);
+    void restoreFromPlacement(const Base::Placement&);
     void onPreview();
     void updateIcon();
     void updatePlacement();
+    void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
+    void resetEdit();
 
 private:
     void changeTransparency(int val);
@@ -150,6 +154,9 @@ private:
     QPointer<InteractiveScale> scale;
     App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
+    // Keeps the panel in sync when the dragger (or an undo) moves the image
+    fastsignals::scoped_connection connectChangedObject;
+    bool updatingPlacement = false;
 };
 
 class TaskImageDialog: public Gui::TaskView::TaskDialog
