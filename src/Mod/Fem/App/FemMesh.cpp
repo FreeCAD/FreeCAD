@@ -49,6 +49,7 @@
 #include <StdMeshers_Quadrangle_2D.hxx>
 #include <StdMeshers_Regular_1D.hxx>
 #include <StdMeshers_StartEndLength.hxx>
+#include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Solid.hxx>
@@ -69,6 +70,7 @@
 #include <Mod/Mesh/App/Core/Iterator.h>
 
 #include "FemMesh.h"
+#include "FemMeshNodeSearch.h"
 #include <FemMeshPy.h>
 
 #ifdef FC_USE_VTK
@@ -575,13 +577,13 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
 {
     std::set<int> result;
 
-    Bnd_Box box;
-    BRepBndLib::Add(solid, box);
+    Bnd_Box box = NodeSearch::boxOf(solid);
 
     // limit where the mesh node belongs to the solid
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
+    box.Enlarge(limit);
     Base::Console()
         .log("The limit if a node is in or out: {:.12f} in scientific: {:.4e} \n", limit, limit);
 
@@ -610,7 +612,6 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
             BRepExtrema_DistShapeShape measure(solid, s);
-            measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1) {
                 continue;
             }
@@ -627,108 +628,14 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
 
 std::set<int> FemMesh::getNodesByFace(const TopoDS_Face& face) const
 {
-    std::set<int> result;
-
-    Bnd_Box box;
-    BRepBndLib::Add(
-        face,
-        box,
-        Standard_False
-    );  // https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=70#p221591
     // limit where the mesh node belongs to the face:
-    double limit = BRep_Tool::Tolerance(face);
-    box.Enlarge(limit);
-
-    // get the current transform of the FemMesh
-    const Base::Matrix4D Mtrx(getTransform());
-
-    std::vector<const SMDS_MeshNode*> nodes;
-    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        nodes.push_back(aNode);
-    }
-
-#pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
-        double xyz[3];
-        aNode->GetXYZ(xyz);
-        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
-        // Apply the matrix to hold the BoundBox in absolute space.
-        vec = Mtrx * vec;
-
-        if (!box.IsOut(gp_Pnt(vec.x, vec.y, vec.z))) {
-            // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
-            TopoDS_Shape s = aBuilder.Vertex();
-            // measure distance
-            BRepExtrema_DistShapeShape measure(face, s);
-            measure.Perform();
-            if (!measure.IsDone() || measure.NbSolution() < 1) {
-                continue;
-            }
-
-            if (measure.Value() < limit)
-#pragma omp critical
-            {
-                result.insert(aNode->GetID());
-            }
-        }
-    }
-
-    return result;
+    return NodeSearch::nodesCloserThan(*this, face, BRep_Tool::Tolerance(face));
 }
 
 std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge& edge) const
 {
-    std::set<int> result;
-
-    Bnd_Box box;
-    BRepBndLib::Add(edge, box);
     // limit where the mesh node belongs to the edge:
-    double limit = BRep_Tool::Tolerance(edge);
-    box.Enlarge(limit);
-
-    // get the current transform of the FemMesh
-    const Base::Matrix4D Mtrx(getTransform());
-
-    std::vector<const SMDS_MeshNode*> nodes;
-    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        nodes.push_back(aNode);
-    }
-
-#pragma omp parallel for schedule(dynamic)
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const SMDS_MeshNode* aNode = nodes[i];
-        double xyz[3];
-        aNode->GetXYZ(xyz);
-        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
-        // Apply the matrix to hold the BoundBox in absolute space.
-        vec = Mtrx * vec;
-
-        if (!box.IsOut(gp_Pnt(vec.x, vec.y, vec.z))) {
-            // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
-            TopoDS_Shape s = aBuilder.Vertex();
-            // measure distance
-            BRepExtrema_DistShapeShape measure(edge, s);
-            measure.Perform();
-            if (!measure.IsDone() || measure.NbSolution() < 1) {
-                continue;
-            }
-
-            if (measure.Value() < limit)
-#pragma omp critical
-            {
-                result.insert(aNode->GetID());
-            }
-        }
-    }
-
-    return result;
+    return NodeSearch::nodesCloserThan(*this, edge, BRep_Tool::Tolerance(edge));
 }
 
 std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex& vertex) const
