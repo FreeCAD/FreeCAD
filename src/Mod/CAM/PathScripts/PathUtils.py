@@ -539,12 +539,18 @@ def findParentJob(obj):
         if (
             getattr(i, "Proxy", None)
             and i.Proxy.__module__ == jobModule
-            and obj in [i.Operations, i.Model, i.Stock, i.SetupSheet, i.Tools]
+            and obj in (i.Operations, i.Model, i.Stock, i.SetupSheet, i.Tools, i.Workplanes)
         ):
             return i
 
-        if (i.isDerivedFrom("App::DocumentObjectGroup") and obj in i.Group) or (
-            i.isDerivedFrom("Path::Feature") and obj == getattr(i, "Base", None)
+        if (
+            (i.isDerivedFrom("App::DocumentObjectGroup") and obj in i.Group)
+            or (i.isDerivedFrom("Path::Feature") and obj == getattr(i, "Base", None))
+            or (
+                i.isDerivedFrom("Path::Feature")
+                and getattr(i, "Proxy", None)
+                and "Path.Tool.Controller" in i.Proxy.__module__
+            )
         ):
             grandParent = findParentJob(i)
             if grandParent is not None:
