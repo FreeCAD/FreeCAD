@@ -56,6 +56,7 @@ namespace App::QuantityInputTest
 {
 
 const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
+const Base::NumericLocaleContext deDE {"de_DE", ",", ".", "+", "-", 3, 3, "0"};
 
 TEST(QuantityInput, QuantityInputUnitUsesDisplayedScaleAndSafeFallbacks)
 {
@@ -886,7 +887,7 @@ TEST(QuantityInput, SharedLocalizedInputCorpus)
     }
 }
 
-TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
+TEST(QuantityInput, UnitsPunctuationOperators)
 {
     tests::initApplication();
     ScopedExpressionOwner owner;
@@ -894,10 +895,61 @@ TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
     const QuantityConstraints constraints;
 
     for (const auto& [input, expected] : {
-             std::pair {"-1\" + 0.25\"", -19.05},
              std::pair {"-1\"+0.25\"", -19.05},
+             std::pair {"-1\" + 0.25\"", -19.05},
+             std::pair {"-1\" +0.25\"", -19.05},
+             std::pair {"-1 \" +0.25\"", -19.05},
              std::pair {"-1in+0.25\"", -19.05},
+             std::pair {"1,234.5 mm", 1234.5},
+             std::pair {"1'2,500\"", 63804.8},
          }) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Expression,
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+    }
+
+    for (const auto& [input, expected] :
+         {std::pair {"1.234,5 mm", 1234.5}, std::pair {"1'2,500\"", 368.3}}) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Expression,
+            path,
+            Base::Unit::Length,
+            deDE,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+    }
+}
+
+TEST(QuantityInput, UnaryOperators)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] :
+         {std::pair {"-1\"", -25.4},
+          std::pair {"+1\"", 25.4},
+          std::pair {"(-1\")", -25.4},
+          std::pair {"1\" + -0.25\"", 19.05},
+          std::pair {"1\"+-0.25\"", 19.05},
+          std::pair {"1\"+ -0.25\"", 19.05}}) {
         const auto result = interpretQuantityInput(
             input,
             QuantityInputGrammar::Expression,
