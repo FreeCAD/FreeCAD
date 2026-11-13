@@ -3587,9 +3587,13 @@ static std::map<std::string, FunctionExpression::Function> registered_functions;
 static int last_column;
 static int column;
 
+/// The token most recently returned by ExpressionParserFilteredLex().
+static int previousToken = 0;
+
 // show the parser the lexer method
-#define yylex ExpressionParserlex
+#define yylex ExpressionParserFilteredLex
 int ExpressionParserlex();
+static int ExpressionParserFilteredLex();
 
 #if defined(__clang__)
 # pragma clang diagnostic push
@@ -3604,6 +3608,7 @@ int ExpressionParserlex();
 // Parser, defined in Expression.y
 # define YYTOKENTYPE
 #include "Expression.tab.c"
+#undef yylex
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in Expression.l
@@ -3641,6 +3646,40 @@ private:
 # define strdup _strdup
 #endif
 
+static bool isAsciiIdentifier(const char* text)
+{
+    auto isIdentifierStart = [](char c) {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_';
+    };
+    if (!isIdentifierStart(*text)) {
+        return false;
+    }
+    for (++text; *text != '\0'; ++text) {
+        if (!isIdentifierStart(*text) && !(*text >= '0' && *text <= '9')) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * The lexer has no context, so names like "pi" and "e" always become CONSTANT and names
+ * like "N" and "kg" always become UNIT. A path component after '.' is always a name, and
+ * the grammar never accepts CONSTANT or UNIT there, so pass those on as IDENTIFIER. This
+ * makes "_math.pi" and "_self.N" parse; bare "pi" and "N" keep their meaning.
+ */
+static int ExpressionParserFilteredLex()
+{
+    int token = ExpressionParserlex();
+    if (previousToken == '.' && (token == CONSTANT || token == UNIT)
+        && isAsciiIdentifier(yytext)) {
+        yylval.string = yytext;
+        token = IDENTIFIER;
+    }
+    previousToken = token;
+    return token;
+}
+
 static void initParser(const App::DocumentObject *owner)
 {
     static bool has_registered_functions = false;
@@ -3651,6 +3690,7 @@ static void initParser(const App::DocumentObject *owner)
     App::ExpressionParser::DocumentObject = owner;
     labels = std::stack<std::string>();
     column = 0;
+    previousToken = 0;
     unitExpression = valueExpression = false;
 
     if (!has_registered_functions) {
@@ -3742,8 +3782,9 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
     int token;
 
     column = 0;
+    previousToken = 0;
     try {
-        while ( (token  = ExpressionParserlex()) != 0)
+        while ( (token  = ExpressionParserFilteredLex()) != 0)
             result.emplace_back(token, ExpressionParser::last_column, yytext);
     }
     catch (...) {

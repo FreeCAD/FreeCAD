@@ -51,6 +51,18 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 using namespace App;
 using namespace Base;
 
+namespace
+{
+/// Whether the expression parser reads @a name on its own as a constant or unit, e.g. "pi" or
+/// "N". Such a name only reads as a property when it follows a '.'.
+/// This runs the expression lexer, which is not reentrant, so it must not be reached from
+/// within ExpressionParser::parse().
+bool isReservedName(const std::string& name)
+{
+    return ExpressionParser::isTokenAConstant(name) || ExpressionParser::isTokenAUnit(name);
+}
+}  // namespace
+
 std::string App::quote(const std::string& input, bool toPython)
 {
     std::stringstream output;
@@ -313,6 +325,9 @@ const std::string& ObjectIdentifier::toString() const
         components[0].toString(s);
         s << '.';
     }
+    else if (subObjectName.getString().empty() && isReservedName(components[0].getName())) {
+        s << '.';
+    }
 
     if (!subObjectName.getString().empty()) {
         s << subObjectName.toString() << '.';
@@ -365,6 +380,9 @@ std::string ObjectIdentifier::toPersistentString() const
     }
     else if (result.propertyIndex > 0) {
         components[0].toString(s);
+        s << '.';
+    }
+    else if (subObjectName.getString().empty() && isReservedName(components[0].getName())) {
         s << '.';
     }
 
