@@ -27,8 +27,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Gui/Command.h>
-#include <type_traits>
-#include <typeinfo>
+#include <Gui/Macro.h>
 #include <boost/format.hpp>
 
 
@@ -465,6 +464,51 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         throw;
     }
 }
+
+// Helper to manage pending constraint commands
+class TransactionCommandQueue
+{
+public:
+    static std::vector<std::pair<Command::DoCmd_Type, std::string>>& getBuffer()
+    {
+        static thread_local std::vector<std::pair<Command::DoCmd_Type, std::string>> buffer;
+        return buffer;
+    }
+    static bool isBuffering()
+    {
+        return buffering;
+    }
+    static void setBuffering(bool val)
+    {
+        buffering = val;
+    }
+    static void reset()
+    {
+        getBuffer().clear();
+        setBuffering(false);
+    }
+    static void emit()
+    {
+        for (auto& [eType, element] : getBuffer()) {
+            if (eType == Command::Gui) {
+                Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, element.c_str());
+            }
+            else {
+                Gui::Application::Instance->macroManager()->addLine(MacroManager::App, element.c_str());
+            }
+        }
+        getBuffer().clear();
+        setBuffering(false);
+    }
+
+    static void push(Command::DoCmd_Type eType, std::string sCmd)
+    {
+        getBuffer().push_back({eType, sCmd});
+    }
+
+private:
+    inline static thread_local bool buffering = false;
+};
 
 /** Runs a command for accessing a view object's attribute or method
  * This function is an alternative to FCMD_VOBJ_CMD2
