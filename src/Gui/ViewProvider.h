@@ -674,6 +674,9 @@ public:
         Transform,
         Cutting,
         Color,
+        // TransformNoDialog: Transform's dragger alone, without its task panel, for a caller
+        // that has its own panel open
+        TransformNoDialog,
     };
 
 protected:
