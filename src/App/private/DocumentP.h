@@ -80,6 +80,10 @@ struct DocumentP
     std::unordered_map<long, DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
+    // Objects removed while recompute still holds raw pointers to them; they
+    // are destroyed once recompute is done with its object list.
+    std::vector<std::unique_ptr<DocumentObject>> pendingDestroy;
+    int deferDestroy {0};
     long lastObjectId {};
     DocumentObject* activeObject {nullptr};
     Transaction* activeUndoTransaction {nullptr};
