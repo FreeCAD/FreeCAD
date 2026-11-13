@@ -22,8 +22,12 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <cstdint>
+#include <deque>
 #include <limits>
 #include <set>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -51,8 +55,10 @@
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
+#include <Gui/ViewParams.h>
 
 #include "SoBrepFaceSet.h"
+#include "SoBrepHiddenSelection.h"
 #include "ViewProviderExt.h"
 
 using namespace PartGui;
@@ -152,6 +158,166 @@ static void renderOverlayFaces(
     faceSet->GLRender(action);
 
     state->pop();
+}
+
+// Draw faces only where other geometry is in front of them, as a faint tint.
+static void renderHiddenFaces(
+    SoGLRenderAction* action,
+    SoIndexedFaceSet* faceSet,
+    const std::vector<int32_t>& coordIndex,
+    const SbColor& color
+)
+{
+    if (!action || !faceSet || coordIndex.empty()) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoTextureEnabledElement::set(state, faceSet, false);
+    SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
+    SoOverrideElement::setMaterialBindingOverride(state, faceSet, true);
+
+    HiddenSelectionPass::applyDepthState(state);
+    // Pull the faces slightly towards the viewer, so the depth test fails where the selected
+    // face is itself in front: the normal pass pushed it back with the "Flat Lines" polygon
+    // offset, and its own edges are drawn over it.
+    SoPolygonOffsetElement::set(state, faceSet, -1.0f, -1.0f, SoPolygonOffsetElement::FILLED, TRUE);
+
+    SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+    SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+    SoLazyElement::setEmissive(state, &color);
+    const uint32_t packed = color.getPackedValue(HiddenSelectionPass::FaceTransparency);
+    SoLazyElement::setPacked(state, faceSet, 1, &packed, true);
+
+    faceSet->coordIndex.setNum(static_cast<int32_t>(coordIndex.size()));
+    faceSet->coordIndex.setValues(0, static_cast<int32_t>(coordIndex.size()), coordIndex.data());
+    faceSet->GLRender(action);
+
+    state->pop();
+}
+
+// Append the boundary of one face, given as the directed edges of its triangles, to out as
+// polylines terminated by -1. A boundary edge belongs to one triangle only. The edges are
+// chained into as few polylines as possible so a dash pattern runs on along curved outlines.
+static void appendBoundaryPolylines(
+    std::vector<int32_t>& out,
+    const std::vector<std::pair<int32_t, int32_t>>& edges
+)
+{
+    auto key = [](int32_t a, int32_t b) {
+        const auto lo = static_cast<uint32_t>(std::min(a, b));
+        const auto hi = static_cast<uint32_t>(std::max(a, b));
+        return (static_cast<uint64_t>(lo) << 32) | hi;
+    };
+
+    std::unordered_map<uint64_t, int> uses;
+    uses.reserve(edges.size());
+    for (const auto& [a, b] : edges) {
+        ++uses[key(a, b)];
+    }
+
+    std::vector<std::pair<int32_t, int32_t>> boundary;
+    for (const auto& [a, b] : edges) {
+        if (uses[key(a, b)] == 1) {
+            boundary.emplace_back(a, b);
+        }
+    }
+    if (boundary.empty()) {
+        return;
+    }
+
+    std::unordered_multimap<int32_t, std::size_t> byVertex;
+    byVertex.reserve(boundary.size() * 2);
+    for (std::size_t i = 0; i < boundary.size(); ++i) {
+        byVertex.emplace(boundary[i].first, i);
+        byVertex.emplace(boundary[i].second, i);
+    }
+
+    std::vector<bool> used(boundary.size(), false);
+    // The vertex at the other end of an unused boundary edge at vertex, or -1.
+    auto takeNext = [&](int32_t vertex) -> int32_t {
+        auto range = byVertex.equal_range(vertex);
+        for (auto it = range.first; it != range.second; ++it) {
+            const std::size_t i = it->second;
+            if (!used[i]) {
+                used[i] = true;
+                return boundary[i].first == vertex ? boundary[i].second : boundary[i].first;
+            }
+        }
+        return -1;
+    };
+
+    std::deque<int32_t> line;
+    for (std::size_t i = 0; i < boundary.size(); ++i) {
+        if (used[i]) {
+            continue;
+        }
+        used[i] = true;
+        line.assign({boundary[i].first, boundary[i].second});
+        for (int32_t next = takeNext(line.back()); next >= 0; next = takeNext(line.back())) {
+            line.push_back(next);
+        }
+        for (int32_t prev = takeNext(line.front()); prev >= 0; prev = takeNext(line.front())) {
+            line.push_front(prev);
+        }
+        out.insert(out.end(), line.begin(), line.end());
+        out.push_back(-1);
+    }
+}
+
+// The outlines of the given parts (faces), as polylines terminated by -1.
+static void buildOverlayOutline(
+    std::vector<int32_t>& out,
+    const int32_t* coordIndex,
+    int coordIndexCount,
+    const int32_t* partTriCounts,
+    int partCount,
+    const std::set<int>& parts
+)
+{
+    out.clear();
+    if (!coordIndex || coordIndexCount <= 0 || !partTriCounts || partCount <= 0 || parts.empty()) {
+        return;
+    }
+
+    std::vector<int32_t> face;
+    face.reserve(8);
+    std::vector<std::pair<int32_t, int32_t>> edges;
+
+    int pos = 0;
+    for (int part = 0; part < partCount && pos < coordIndexCount; ++part) {
+        const bool include = (parts.find(part) != parts.end());
+        const int tris = partTriCounts[part];
+        edges.clear();
+        for (int t = 0; t < tris && pos < coordIndexCount; ++t) {
+            while (pos < coordIndexCount && coordIndex[pos] < 0) {
+                pos++;
+            }
+            face.clear();
+            while (pos < coordIndexCount && coordIndex[pos] >= 0) {
+                face.push_back(coordIndex[pos]);
+                pos++;
+            }
+            if (pos < coordIndexCount && coordIndex[pos] < 0) {
+                pos++;
+            }
+            if (include && face.size() >= 3) {
+                for (std::size_t k = 0; k < face.size(); ++k) {
+                    const int32_t a = face[k];
+                    const int32_t b = face[(k + 1) % face.size()];
+                    if (a != b) {
+                        edges.emplace_back(a, b);
+                    }
+                }
+            }
+        }
+        if (include) {
+            appendBoundaryPolylines(out, edges);
+        }
+    }
 }
 
 static void expandPartMaterialIndexToFaceMaterialIndex(
@@ -451,6 +617,58 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
 }
 
+bool SoBrepFaceSet::hasHiddenSelection(const SelContextPtr& ctx) const
+{
+    // Only selected faces, not a whole selected object: its own hidden faces would tint the
+    // object over itself and wash out its shading.
+    return ctx && !ctx->selectionIndex.empty() && !ctx->isSelectAll();
+}
+
+void SoBrepFaceSet::renderHiddenSelection(SoGLRenderAction* action, SelContextPtr ctx)
+{
+    if (!hasHiddenSelection(ctx)) {
+        return;
+    }
+
+    const int32_t* partCounts = this->partIndex.getValues(0);
+    const int partCount = this->partIndex.getNum();
+    const int32_t* ci = this->coordIndex.getValues(0);
+    const int ciCount = this->coordIndex.getNum();
+
+    std::set<int> parts;
+    for (int idx : ctx->selectionIndex) {
+        if (idx >= 0 && idx < partCount) {
+            parts.insert(idx);
+        }
+    }
+    if (parts.empty()) {
+        return;
+    }
+
+    buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, false);
+    renderHiddenFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor);
+
+    // The outline only changes with the selection or the mesh, not with the view. The node id
+    // changes whenever a field of this node does, which covers a new mesh.
+    if (hiddenOutlineNodeId != getNodeId() || hiddenOutlineParts != parts) {
+        buildOverlayOutline(hiddenOutlineIndex, ci, ciCount, partCounts, partCount, parts);
+        hiddenOutlineParts = std::move(parts);
+        hiddenOutlineNodeId = getNodeId();
+    }
+
+    const float lineWidth = viewProvider
+        ? static_cast<float>(viewProvider->LineWidth.getValue())
+        : static_cast<float>(Gui::ViewParams::instance()->getDefaultShapeLineWidth());
+    HiddenSelectionPass::renderDashedLines(
+        action,
+        this,
+        hiddenOutlineIndex.data(),
+        static_cast<int>(hiddenOutlineIndex.size()),
+        ctx->selectionColor,
+        lineWidth
+    );
+}
+
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2)
 {
     // SoBrepFaceSet groups rendered triangles into topological faces via
@@ -686,6 +904,16 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     }
     if (ctx && (ctx->selectionIndex.empty() && ctx->highlightIndex < 0)) {
         ctx.reset();
+    }
+
+    // Selected faces hidden behind other geometry are drawn as a tint with a dashed outline in
+    // a delayed pass.
+    if (hiddenSelection.isHiddenPass(action)) {
+        renderHiddenSelection(action, ctx);
+        return;
+    }
+    if (hasHiddenSelection(ctx)) {
+        hiddenSelection.schedule(action);
     }
 
     auto state = action->getState();
