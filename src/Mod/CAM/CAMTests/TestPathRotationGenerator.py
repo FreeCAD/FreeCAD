@@ -45,18 +45,18 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
             min_limit=-360,
             max_limit=360,
             role=AxisRole.TABLE_ROTARY,
-            parent=None,
+            parent="A",
             sequence=0,
         )
 
-        # Add A axis (rotates about X)
+        # Add A axis (rotates about X), the cradle carrying C
         machine.rotary_axes["A"] = RotaryAxis(
             name="A",
             rotation_vector=FreeCAD.Vector(1, 0, 0),
             min_limit=-120,
             max_limit=120,
             role=AxisRole.TABLE_ROTARY,
-            parent="C",
+            parent=None,
             sequence=1,
         )
 
@@ -73,18 +73,18 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
             min_limit=-90,
             max_limit=90,
             role=AxisRole.HEAD_ROTARY,
-            parent=None,
+            parent="C",
             sequence=0,
         )
 
-        # Add C axis (rotates about Z)
+        # Add C axis (rotates about Z), carrying B
         machine.rotary_axes["C"] = RotaryAxis(
             name="C",
             rotation_vector=FreeCAD.Vector(0, 0, 1),
             min_limit=-360,
             max_limit=360,
             role=AxisRole.HEAD_ROTARY,
-            parent="B",
+            parent=None,
             sequence=1,
         )
 
@@ -250,6 +250,118 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         self.assertIn("B", result.angles, "Should return B angle")
         self.assertIn("C", result.angles, "Should return C angle")
         self.assertLess(result.error_norm, 1e-6)
+
+    def test31_axes_compose_as_mounted(self):
+        """
+        Each axis turns with the axis it is mounted on.
+
+        Expected behavior:
+            A table whose A carries its C is R_A · R_C; one whose C carries an A is R_C · R_A;
+            a head whose C carries its B is R_C · R_B. Two table axes mounted on neither are
+            taken as the tilt carrying the azimuth, and two tilts as the one listed last
+            carrying the other.
+        """
+        angles = {"A": 30.0, "B": 30.0, "C": 60.0}
+        a = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 30)
+        b = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 30)
+        c = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 60)
+
+        def matrix(machine):
+            chain = orientation.build_kinematic_chain(machine)
+            return orientation.compute_rotation_matrix(chain, angles)
+
+        c_on_a = self._create_table_table_machine()
+        self.assertTrue(matrix(c_on_a).isSame(a.multiply(c), 1e-9))
+        a_on_c = self._create_table_table_machine()
+        a_on_c.rotary_axes["A"].parent = "C"
+        a_on_c.rotary_axes["C"].parent = None
+        self.assertTrue(matrix(a_on_c).isSame(c.multiply(a), 1e-9))
+        self.assertTrue(matrix(self._create_head_head_machine()).isSame(c.multiply(b), 1e-9))
+        unmounted = self._create_table_table_machine()
+        unmounted.rotary_axes["C"].parent = None
+        self.assertTrue(matrix(unmounted).isSame(a.multiply(c), 1e-9))
+        tilts = Machine.create_AB_table_config()
+        tilts.rotary_axes["A"].parent = None
+        self.assertTrue(matrix(tilts).isSame(b.multiply(a), 1e-9), "B, listed last, carries A")
+
+    def test32_table_azimuth_carries_tilt(self):
+        """
+        A table whose C carries an A reaches only what A reaches.
+
+        Expected behavior:
+            With C turning about the tool's own axis above A, a plane A cannot tilt to Z is
+            out of reach, though a table whose A carries C reaches it; one A can tilt to Z is
+            solved, the angles turning its axis to Z as R_C · R_A does.
+        """
+        machine = self._create_table_table_machine()
+        machine.rotary_axes["A"].parent = "C"
+        machine.rotary_axes["C"].parent = None
+        aside = FreeCAD.Vector(0.5, 0.5, 0.7071).normalize()
+        self.assertTrue(
+            orientation.solve_orientation(self._create_table_table_machine(), aside).success
+        )
+        self.assertFalse(orientation.solve_orientation(machine, aside).success)
+
+        desired_axis = FreeCAD.Vector(0, 0.5, 0.866).normalize()
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, result.reason)
+        turned = (
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+            .multiply(FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), result.angles["A"]))
+            .multVec(desired_axis)
+        )
+        self.assertLess((turned - FreeCAD.Vector(0, 0, 1)).Length, 1e-6)
+
+    def test33_head_azimuth_carries_tilt(self):
+        """
+        A head whose C carries its B reaches a tilt B alone cannot.
+
+        Expected behavior:
+            A tool tilted toward Y is solved with C swinging B's tilt round, and R_C · R_B
+            points Z along it.
+        """
+        machine = self._create_head_head_machine()
+        desired_axis = FreeCAD.Vector(0, 0.7071, 0.7071).normalize()
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, result.reason)
+        tool = (
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+            .multiply(FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), result.angles["B"]))
+            .multVec(FreeCAD.Vector(0, 0, 1))
+        )
+        self.assertLess((tool - desired_axis).Length, 1e-6)
+
+    def test34_templates_compose_as_before(self):
+        """
+        The factory templates mount their axes as their math always assumed.
+
+        Expected behavior:
+            The A/C table, A carrying C, is R_A · R_C, the B/C head, C carrying B, R_C · R_B
+            and the A/B table, B carrying A, R_B · R_A; a B/C head pointing its tool along -Y
+            picks the one of its two equal poses with the lower C.
+        """
+        angles = {"A": 30.0, "B": 40.0, "C": 60.0}
+        a = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 30)
+        b = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 40)
+        c = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 60)
+        for machine, expected in (
+            (Machine.create_AC_table_config(), a.multiply(c)),
+            (Machine.create_BC_head_config(), c.multiply(b)),
+            (Machine.create_AB_table_config(), b.multiply(a)),
+        ):
+            chain = orientation.build_kinematic_chain(machine)
+            matrix = orientation.compute_rotation_matrix(chain, angles)
+            self.assertTrue(matrix.isSame(expected, 1e-9), machine.name)
+
+        result = orientation.solve_orientation(
+            Machine.create_BC_head_config(), FreeCAD.Vector(0, -1, 0)
+        )
+        self.assertTrue(result.success)
+        self.assertAlmostEqual(result.angles["B"], 90.0, places=6)
+        self.assertAlmostEqual(result.angles["C"], -90.0, places=6)
 
     def test40_mixed_machine(self):
         """

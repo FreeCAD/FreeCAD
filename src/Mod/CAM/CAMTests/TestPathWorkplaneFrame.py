@@ -66,7 +66,11 @@ def _machineCA():
 
     m = Machine(name="Test CA Machine")
     m.rotary_axes["C"] = RotaryAxis(
-        name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
+        name="C",
+        rotation_vector=Vector(0, 0, 1),
+        role=AxisRole.TABLE_ROTARY,
+        parent="A",
+        sequence=0,
     )
     m.rotary_axes["A"] = RotaryAxis(
         name="A",
@@ -74,7 +78,7 @@ def _machineCA():
         min_limit=-120,
         max_limit=120,
         role=AxisRole.TABLE_ROTARY,
-        parent="C",
+        parent=None,
         sequence=1,
     )
     return m
@@ -734,10 +738,10 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         self.assertEqual([i.item_type for i in items], ["rotation", "operation"])
 
         positions = dict(rotation.solve_orientation(self.machine, n).angles)
-        rotary = items[0].path.Commands[0]
-        self.assertEqual(rotary.Name, "G0")
+        self.assertEqual({c.Name for c in items[0].path.Commands}, {"G0"})
+        moved = {k: v for c in items[0].path.Commands for k, v in c.Parameters.items()}
         for axis, angle in positions.items():
-            self.assertAlmostEqual(rotary.Parameters[axis], angle, places=6)
+            self.assertAlmostEqual(moved[axis], angle, places=6)
 
         chain = rotation.build_kinematic_chain(self.machine)
         R = rotation.compute_rotation_matrix(chain, positions)
