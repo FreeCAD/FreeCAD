@@ -27,8 +27,8 @@ including support for angled rectangles and proper tool engagement.
 """
 
 import FreeCAD
+
 import Path
-import math
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -204,45 +204,29 @@ def spiral(
 
     tool_radius = tool_diameter / 2.0
     stepover_dist = tool_diameter * (stepover_percent / 100.0)
-    if stepover_dist > tool_diameter * 1.000001:
-        stepover_dist = tool_diameter
 
-    # Calculate adjusted stepover to guarantee center coverage
-    starting_inset = tool_radius - stepover_dist
-    limiting_half = min(primary_length, step_length) / 2.0
-    total_radial_distance = limiting_half - tool_radius - starting_inset
-
-    if total_radial_distance <= 0:
-        actual_stepover = stepover_dist
-    else:
-        number_of_intervals = math.ceil(total_radial_distance / stepover_dist)
-        actual_stepover = total_radial_distance / number_of_intervals
-
-    Path.Log.debug(
-        f"Spiral: adjusted stepover {stepover_dist:.4f} → {actual_stepover:.4f} mm, intervals={number_of_intervals if total_radial_distance > 0 else 0}"
-    )
-
-    # Standard initial_offset (preserves first engagement exactly)
     initial_offset = -tool_radius + stepover_dist
+    limiting_half = min(primary_length, step_length) / 2.0
 
     z = polygon.BoundBox.ZMin
 
     clockwise = milling_direction == "conventional"
 
+    def st_to_xy(s, t):
+        return origin + primary_vec * s + step_vec * t
+
     commands = []
     if Path.Geom.isGreaterEqual(initial_offset, limiting_half):
         # not enough area for spiral, create only one line instead
-        if primary_length > step_length:
-            min_s, min_t = min_t, min_s
-            max_s, max_t = max_t, max_s
-        p1 = (min_s + limiting_half, min_t + limiting_half)
-        p2 = (max_s - limiting_half, max_t - limiting_half)
+        s_mid = (max_s + min_s) / 2
+        p1 = st_to_xy(s_mid, min_t)
+        p2 = st_to_xy(s_mid, max_t)
         if not clockwise:
             p1, p2 = p2, p1
         if reverse:
             p1, p2 = p2, p1
-        commands.append(Path.Command("G0", {"X": p1[0], "Y": p1[1], "Z": z}))
-        commands.append(Path.Command("G1", {"X": p2[0], "Y": p2[1], "Z": z}))
+        commands.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "Z": z}))
+        commands.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "Z": z}))
         return commands
 
     start_corner_index = 0 if clockwise else 2
@@ -254,28 +238,20 @@ def spiral(
     else:
         order = [(start_corner_index - i) % 4 for i in range(4)]
 
-    k = 0
     first_move_done = False
-
+    current_offset = initial_offset - stepover_dist
     while True:
-        current_offset = initial_offset + k * actual_stepover
+        current_offset += stepover_dist
 
         s0 = min_s + current_offset
         s1 = max_s - current_offset
         t0 = min_t + current_offset
         t1 = max_t - current_offset
 
-        if Path.Geom.isGreaterEqual(s0, s1) or Path.Geom.isGreaterEqual(t0, t1):
-            break
-
         corners_st = [(s0, t0), (s1, t0), (s1, t1), (s0, t1)]
-
-        def st_to_xy(s, t):
-            return origin + primary_vec * s + step_vec * t
 
         start_idx = order[0]
         start_xy = st_to_xy(*corners_st[start_idx])
-        start_xy.z = z
 
         if not first_move_done:
             commands.append(Path.Command("G0", {"X": start_xy.x, "Y": start_xy.y, "Z": z}))
@@ -284,45 +260,30 @@ def spiral(
         # Sides 1-3: full
         for i in range(1, 4):
             c_xy = st_to_xy(*corners_st[order[i]])
-            c_xy.z = z
             commands.append(Path.Command("G1", {"X": c_xy.x, "Y": c_xy.y, "Z": z}))
 
         # Prepare transition to next layer (partial 4th side)
-        next_offset = current_offset + actual_stepover
-        s0n = min_s + next_offset
-        s1n = max_s - next_offset
-        t0n = min_t + next_offset
-        t1n = max_t - next_offset
+        while True:
+            next_offset = current_offset + stepover_dist
+            s0n = min_s + next_offset
+            s1n = max_s - next_offset
+            t0n = min_t + next_offset
+            t1n = max_t - next_offset
+            if Path.Geom.isGreaterEqual(s0n, s1n) or Path.Geom.isGreaterEqual(t0n, t1n):
+                # reduce stepover for last step
+                stepover_dist = (stepover_dist - max(s0n - s1n, t0n - t1n) / 2) / 2
+            else:
+                break
 
         if s0n < s1n and t0n < t1n:
-            # Determine which edge we are on for the 4th side and compute intersection
-            # the transition point on that edge
-            if clockwise:
-                if start_corner_index == 0:
-                    transition_xy = st_to_xy(s0, t0n)
-                elif start_corner_index == 1:
-                    transition_xy = st_to_xy(s1n, t0)
-                elif start_corner_index == 2:
-                    transition_xy = st_to_xy(s1, t1n)
-                else:
-                    transition_xy = st_to_xy(s0n, t1)
-            else:  # counter-clockwise
-                if start_corner_index == 0:
-                    transition_xy = st_to_xy(s0n, t0)
-                elif start_corner_index == 1:
-                    transition_xy = st_to_xy(s1, t0n)
-                elif start_corner_index == 2:
-                    transition_xy = st_to_xy(s1n, t1)
-                else:
-                    transition_xy = st_to_xy(s0, t1n)
+            v = start_xy - c_xy
+            d = FreeCAD.Vector(v).normalize() * stepover_dist
+            p = c_xy + v - d
+            commands.append(Path.Command("G1", {"X": p.x, "Y": p.y, "Z": z}))
 
-            transition_xy.z = z
-            commands.append(
-                Path.Command("G1", {"X": transition_xy.x, "Y": transition_xy.y, "Z": z})
-            )
-            k += 1
-        else:
-            # Final layer - close back to start
+        if Path.Geom.isLessEqual(s1 - s0, tool_diameter) or Path.Geom.isLessEqual(
+            t1 - t0, tool_diameter
+        ):  # Area cleared - close back to start
             commands.append(Path.Command("G1", {"X": start_xy.x, "Y": start_xy.y, "Z": z}))
             break
 

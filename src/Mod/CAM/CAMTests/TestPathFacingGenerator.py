@@ -1249,6 +1249,39 @@ class TestPathFacingGenerator(PathTestBase):
             "Spiral should move inward - later moves should be closer to center",
         )
 
+    def test_spiral_cleared_area(self):
+        wire = Part.makePolygon(
+            [
+                FreeCAD.Vector(0, 0, 0),
+                FreeCAD.Vector(114, 0, 0),
+                FreeCAD.Vector(114, 94, 0),
+                FreeCAD.Vector(0, 94, 0),
+                FreeCAD.Vector(0, 0, 0),
+            ]
+        )
+        d = 5
+        for i in range(1, 101):
+            commands = spiral_facing.spiral(polygon=wire, tool_diameter=d, stepover_percent=i)
+            dist = commands[-1].y - commands[-4].y
+            self.assertLessEqual(dist, d + 1e-6)
+
+    def test_spiral_one_line(self):
+        # not enough area for spiral, create only one line instead
+        wire = Part.makePolygon(
+            [
+                FreeCAD.Vector(-5, -5, 0),
+                FreeCAD.Vector(5, -5, 0),
+                FreeCAD.Vector(5, 5, 0),
+                FreeCAD.Vector(-5, 5, 0),
+                FreeCAD.Vector(-5, -5, 0),
+            ]
+        )
+        commands = spiral_facing.spiral(polygon=wire, tool_diameter=10, stepover_percent=100)
+        self.assertEqual(commands[-2].x, 0)
+        self.assertEqual(commands[-2].y, 5)
+        self.assertEqual(commands[-1].x, 0)
+        self.assertEqual(commands[-1].y, -5)
+
     # ------------------------------------------------------------------ #
     #  Boundary wire tests — verify facing_common functions handle        #
     #  non-rectangular (e.g. circular) wires from cylindrical stock.      #
