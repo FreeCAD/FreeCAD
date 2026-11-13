@@ -25,9 +25,11 @@
 
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Gui/MetaTypes.h>
 
+#include "Exceptions.h"
 #include "MaterialManager.h"
 #include "MaterialPy.h"
 #include "PropertyMaterial.h"
@@ -91,7 +93,19 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     // get the value of my Attribute
     auto uuid = reader.getAttribute<const char*>("uuid");
 
-    setValue(*MaterialManager::getManager().getMaterial(QString::fromLatin1(uuid)));
+    try {
+        setValue(*MaterialManager::getManager().getMaterial(QString::fromLatin1(uuid)));
+    }
+    catch (const MaterialNotFound&) {
+        Base::Console().warning(
+            "Material '{}' of {} not found, using the default material\n",
+            uuid,
+            getFullName()
+        );
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
 }
 
 const char* PropertyMaterial::getEditorName() const
