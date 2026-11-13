@@ -610,7 +610,6 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
             BRepExtrema_DistShapeShape measure(solid, s);
-            measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1) {
                 continue;
             }
@@ -664,7 +663,6 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face& face) const
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
             BRepExtrema_DistShapeShape measure(face, s);
-            measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1) {
                 continue;
             }
@@ -715,7 +713,6 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge& edge) const
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
             BRepExtrema_DistShapeShape measure(edge, s);
-            measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1) {
                 continue;
             }
