@@ -460,10 +460,18 @@ private:
                     else if (
                         (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                         && firstIndex >= 0
+                        // A distance to geometry that is not rotated (an axis, the root point,
+                        // external or unselected geometry) and a DistanceX/Y locking a point's
+                        // coordinate do not hold for a rotated copy.
+                        && (secondIndex >= 0 || cstr->Second == GeoEnum::GeoUndef)
+                        && !(
+                            cstr->Type != Distance && cstr->Second == GeoEnum::GeoUndef
+                            && cstr->FirstPos != PointPos::none
+                        )
                     ) {
                         if (!deleteOriginal && cloneConstraints
-                            && (cstr->First == cstr->Second || secondIndex < 0)) {  // only line
-                                                                                    // distances
+                            && (cstr->First == cstr->Second
+                                || cstr->Second == GeoEnum::GeoUndef)) {  // only line distances
                             if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, firstIndexi) != -1) {
                                 continue;
                             }
