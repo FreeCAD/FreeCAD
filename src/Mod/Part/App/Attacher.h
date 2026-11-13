@@ -35,6 +35,7 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 
@@ -414,6 +415,9 @@ public:  // enums
 
 public:  // members
     std::string docName;
+    /// Name of the object this engine works for, if known. It is added to the warnings
+    /// logged by the engine so that users can tell which object they belong to.
+    std::string ownerName;
     std::vector<std::string> objNames;
     std::vector<std::string> subnames;
     std::vector<std::string> shadowSubs;
@@ -436,6 +440,15 @@ public:  // members
                                                   // which modes support what selection
 
 protected:
+    /// Logs a warning. If ownerName is set, the message is prefixed with it, so that the
+    /// warning can be traced back to the object it belongs to.
+    template<typename... Args>
+    void logWarning(Base::FormatString<std::type_identity_t<Args>...> fmt, Args&&... args) const
+    {
+        const std::string message = std::format(fmt, std::forward<Args>(args)...);
+        Base::Console().warning("{}", ownerName.empty() ? message : ownerName + ": " + message);
+    }
+
     refTypeString cat(eRefType rt1)
     {
         refTypeString ret;
