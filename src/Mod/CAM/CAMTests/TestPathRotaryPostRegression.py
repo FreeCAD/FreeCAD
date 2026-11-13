@@ -344,14 +344,12 @@ class TestPathRotaryPostRegression(PathTestBase):
                 )
 
     # ------------------------------------------------------------------
-    # Split-mode tests (compound_moves=False simulation)
+    # Split-mode tests
     # ------------------------------------------------------------------
     #
-    # The Machine model already exposes ``compound_moves`` (default True).
-    # Wiring that flag to a Processor expansion stage is forward work; for
-    # regression today we exercise the split-move shape by pre-splitting
-    # compound XYZA into rotary-only G0 + linear-only G1 before posting and
-    # confirming each post echoes both forms cleanly.
+    # The post does not split compound XYZA moves itself, so they are pre-split
+    # into rotary-only G0 + linear-only G1, confirming each post echoes both
+    # forms cleanly.
 
     def test05_linuxcnc_split_emits_separate_axis_lines(self):
         """LinuxCNC posts split moves without merging or dropping the A line."""
