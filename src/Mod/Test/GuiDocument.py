@@ -382,6 +382,7 @@ class TestGuiDocument(unittest.TestCase):
             def closeEditor():
                 text_edit.document().setModified(False)
                 main_window.removeWindow(editor)
+                QtCore.QCoreApplication.sendPostedEvents(None, QtCore.QEvent.Type.DeferredDelete)
 
             self.addCleanup(closeEditor)
 
