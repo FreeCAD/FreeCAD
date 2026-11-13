@@ -36,6 +36,7 @@
 #include <QTextStream>
 #include <QTimerEvent>
 #include <QToolTip>
+#include <QWindow>
 #include <QScrollBar>
 
 #include <QPainterPath>
@@ -1158,6 +1159,19 @@ public:
 
         auto dock = qobject_cast<QDockWidget*>(srcWidget);
         if (dock && dock->isFloating()) {
+
+            // On Wayland, only the compositor can move windows.
+            const QString platform = QGuiApplication::platformName();
+            if (platform.startsWith(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+                if (QWindow* window = dock->windowHandle()) {
+                    window->startSystemMove();
+                }
+                if (auto titleBar = qobject_cast<OverlayTitleBar*>(OverlayTabWidget::_Dragging)) {
+                    titleBar->endDrag();
+                }
+                return;
+            }
+
             dock->move(pos - dragOffset);
         }
 
