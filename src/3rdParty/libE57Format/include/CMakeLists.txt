@@ -3,9 +3,10 @@
 
 target_sources( ${PROJECT_NAME}
 	PRIVATE
-		E57Exception.h
+	    E57Exception.h
 		E57Format.h
 		E57SimpleData.h
+		E57SimpleDataExtensions.h
 		E57SimpleReader.h
 		E57SimpleWriter.h
 		E57Version.h
@@ -16,6 +17,7 @@ target_sources( ${PROJECT_NAME}
 #		E57Format.h
 #		E57Exception.h
 #		E57SimpleData.h
+#		E57SimpleDataExtensions.h
 #		E57SimpleReader.h
 #		E57SimpleWriter.h
 #		E57Version.h

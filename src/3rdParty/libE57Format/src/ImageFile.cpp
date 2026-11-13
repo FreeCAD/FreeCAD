@@ -704,7 +704,8 @@ prefixed form, the prefix does not have to be declared in the ImageFile.
 
 @post No visible state is modified.
 
-@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathNameEmpty (n/c)
+@throw ::ErrorPathNameMalformed (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::isElementNameExtended

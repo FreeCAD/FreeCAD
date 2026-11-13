@@ -97,6 +97,11 @@ TEST( SimpleDataHeader, HeaderMinMaxDouble )
 // written, and read again. https://github.com/asmaloney/libE57Format/issues/126
 TEST( SimpleData, ReadWrite )
 {
+   if ( !TestData::Exists() )
+   {
+      GTEST_SKIP_( "(test data not available)" );
+   }
+
    e57::Reader *originalReader = nullptr;
    e57::E57Root originalFileHeader;
    e57::Data3D originalData3DHeader;
@@ -138,11 +143,12 @@ TEST( SimpleData, ReadWrite )
    }
 
    e57::Reader *copyReader = nullptr;
-   e57::E57Root copyFileHeader;
    e57::Data3D copyData3DHeader;
 
    // 3. Read in what we just wrote
    {
+      e57::E57Root copyFileHeader;
+
       E57_ASSERT_NO_THROW( copyReader = new e57::Reader( "./ColouredCubeDoubleCopy.e57", {} ) );
 
       ASSERT_TRUE( copyReader->GetE57Root( copyFileHeader ) );

@@ -653,6 +653,11 @@ TEST( SimpleWriter, MinMaxIssuesSphericalDouble )
 
 TEST( SimpleWriterData, VisualRefImage )
 {
+   if ( !TestData::Exists() )
+   {
+      GTEST_SKIP_( "(test data not available)" );
+   }
+
    e57::WriterOptions options;
    options.guid = "Visual Reference Image File GUID";
 

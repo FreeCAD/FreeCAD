@@ -506,28 +506,6 @@ namespace e57
       return ( prefix.length() > 0 );
    }
 
-   bool ImageFileImpl::isElementNameLegal( const ustring &elementName, bool allowNumber )
-   {
-#ifdef E57_VERBOSE
-      // cout << "isElementNameLegal elementName=""" << elementName << """" <<
-      // std::endl;
-#endif
-      try
-      {
-         checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
-
-         // Throws if elementName bad
-         checkElementNameLegal( elementName, allowNumber );
-      }
-      catch ( E57Exception & /*ex*/ )
-      {
-         return false;
-      }
-
-      // If get here, the name was good
-      return true;
-   }
-
    bool ImageFileImpl::isPathNameLegal( const ustring &pathName )
    {
 #ifdef E57_VERBOSE
@@ -549,7 +527,7 @@ namespace e57
       return true;
    }
 
-   void ImageFileImpl::checkElementNameLegal( const ustring &elementName, bool allowNumber )
+   void ImageFileImpl::checkElementNameLegal( const ustring &elementName )
    {
       // no checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__)
 
@@ -557,14 +535,14 @@ namespace e57
       ustring localPart;
 
       // Throws if bad elementName
-      elementNameParse( elementName, prefix, localPart, allowNumber );
+      elementNameParse( elementName, prefix, localPart, true );
 
       // If has prefix, it must be registered
       ustring uri;
 
       if ( prefix.length() > 0 && !extensionsLookupPrefix( prefix, uri ) )
       {
-         throw E57_EXCEPTION2( ErrorBadPathName,
+         throw E57_EXCEPTION2( ErrorPathNameExtensionNotRegistered,
                                "elementName=" + elementName + " prefix=" + prefix );
       }
    }
@@ -618,13 +596,7 @@ namespace e57
          // Get element name from in between '/', check valid
          ustring elementName = pathName.substr( start, slash - start );
 
-         if ( !isElementNameLegal( elementName ) )
-         {
-            throw E57_EXCEPTION2( ErrorBadPathName, std::string( "pathName=" )
-                                                       .append( pathName )
-                                                       .append( " elementName=" )
-                                                       .append( elementName ) );
-         }
+         checkElementNameLegal( elementName ); // throws if elementName bad
 
          // Add to list
          fields.push_back( elementName );
@@ -648,7 +620,7 @@ namespace e57
       // Empty relative path is not allowed
       if ( isRelative && fields.empty() )
       {
-         throw E57_EXCEPTION2( ErrorBadPathName, "pathName=" + pathName );
+         throw E57_EXCEPTION1( ErrorPathNameEmpty );
       }
 
 #ifdef E57_VERBOSE
@@ -712,7 +684,7 @@ namespace e57
       // Empty name is bad
       if ( len == 0 )
       {
-         throw E57_EXCEPTION2( ErrorBadPathName, "elementName=" + elementName );
+         throw E57_EXCEPTION1( ErrorPathNameEmpty );
       }
 
       unsigned char c = elementName[0];
@@ -727,7 +699,7 @@ namespace e57
 
             if ( c < '0' || c > '9' )
             {
-               throw E57_EXCEPTION2( ErrorBadPathName, "elementName=" + elementName );
+               throw E57_EXCEPTION2( ErrorPathNameMalformed, "elementName=" + elementName );
             }
          }
 
@@ -739,7 +711,7 @@ namespace e57
       // Don't allow ':' as first char.
       if ( c < 128 && !( ( 'a' <= c && c <= 'z' ) || ( 'A' <= c && c <= 'Z' ) || c == '_' ) )
       {
-         throw E57_EXCEPTION2( ErrorBadPathName, "elementName=" + elementName );
+         throw E57_EXCEPTION2( ErrorPathNameMalformed, "elementName=" + elementName );
       }
 
       // If each following char is ASCII (<128), check for legality
@@ -751,7 +723,7 @@ namespace e57
          if ( c < 128 && !( ( 'a' <= c && c <= 'z' ) || ( 'A' <= c && c <= 'Z' ) || c == '_' ||
                             c == ':' || ( '0' <= c && c <= '9' ) || c == '-' || c == '.' ) )
          {
-            throw E57_EXCEPTION2( ErrorBadPathName, "elementName=" + elementName );
+            throw E57_EXCEPTION2( ErrorPathNameMalformed, "elementName=" + elementName );
          }
       }
 
@@ -763,7 +735,7 @@ namespace e57
          // Check doesn't have two colons
          if ( elementName.find_first_of( ':', found + 1 ) != std::string::npos )
          {
-            throw E57_EXCEPTION2( ErrorBadPathName, "elementName=" + elementName );
+            throw E57_EXCEPTION2( ErrorPathNameMalformed, "elementName=" + elementName );
          }
 
          // Split element name at the colon
@@ -773,8 +745,9 @@ namespace e57
 
          if ( prefix.length() == 0 || localPart.length() == 0 )
          {
-            throw E57_EXCEPTION2( ErrorBadPathName, "elementName=" + elementName + " prefix=" +
-                                                       prefix + " localPart=" + localPart );
+            throw E57_EXCEPTION2( ErrorPathNameMalformed, "elementName=" + elementName +
+                                                             " prefix=" + prefix +
+                                                             " localPart=" + localPart );
          }
       }
       else

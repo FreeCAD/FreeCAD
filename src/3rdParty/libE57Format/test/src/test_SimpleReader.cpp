@@ -8,19 +8,6 @@
 #include "Helpers.h"
 #include "TestData.h"
 
-namespace
-{
-   void CheckFileHeader( const e57::E57Root &fileHeader )
-   {
-      // These are invariant.
-      // See ASTM Standard Table 12.
-
-      EXPECT_EQ( fileHeader.formatName, "ASTM E57 3D Imaging Data File" );
-      EXPECT_EQ( fileHeader.versionMajor, 1 );
-      EXPECT_EQ( fileHeader.versionMinor, 0 );
-   }
-}
-
 TEST( SimpleReader, PathError )
 {
    E57_ASSERT_THROW( e57::Reader( "./no-path/empty.e57", {} ) );
@@ -39,7 +26,7 @@ TEST( SimpleReaderData, Empty )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "Empty File GUID" );
 
    delete reader;
@@ -58,7 +45,7 @@ TEST( SimpleReaderData, ZeroPoints )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "Zero Points GUID" );
 
    e57::Data3D data3DHeader;
@@ -95,7 +82,7 @@ TEST( SimpleReaderData, ZeroPointsInvalid )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "{EC1A0DE4-F76F-44CE-E527-789EEB818347}" );
 
    e57::Data3D data3DHeader;
@@ -113,6 +100,39 @@ TEST( SimpleReaderData, ZeroPointsInvalid )
    delete reader;
 }
 
+// Check that we properly handle a file with a Data3D section which does not have a prototype
+TEST( SimpleReaderData, NoPrototype )
+{
+   e57::Reader *reader = nullptr;
+
+   E57_ASSERT_NO_THROW( reader =
+                           new e57::Reader( TestData::Path() + "/self/NoPrototype.e57", {} ) );
+
+   ASSERT_TRUE( reader->IsOpen() );
+   EXPECT_EQ( reader->GetImage2DCount(), 0 );
+   EXPECT_EQ( reader->GetData3DCount(), 1 );
+
+   e57::E57Root fileHeader;
+   ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
+
+   TestHelper::CheckFileHeader( fileHeader );
+   EXPECT_EQ( fileHeader.guid, "No Prototype File GUID" );
+
+   e57::Data3D data3DHeader;
+   E57_ASSERT_THROW( reader->ReadData3D( 0, data3DHeader ) );
+
+   delete reader;
+}
+
+// Checks that if a Data3D is marked as homogeneous, it does not crash if a prototype section
+// is missing.
+// https://github.com/asmaloney/libE57Format/pull/356
+TEST( SimpleReaderData, MultipleScansHomogeneousError )
+{
+   E57_ASSERT_THROW(
+      e57::Reader( TestData::Path() + "/self/MultipleScansHomogeneousError.e57", {} ) );
+}
+
 TEST( SimpleReaderData, InvalidCVHeader )
 {
    e57::Reader *reader = nullptr;
@@ -127,7 +147,7 @@ TEST( SimpleReaderData, InvalidCVHeader )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "InvalidCVHeader GUID" );
 
    e57::Data3D data3DHeader;
@@ -192,7 +212,7 @@ TEST( SimpleReaderData, ColouredCubeFloat )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "Coloured Cube File GUID" );
 
    e57::Data3D data3DHeader;
@@ -230,7 +250,7 @@ TEST( SimpleReaderData, ColouredCubeFloatToDouble )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "Coloured Cube File GUID" );
 
    e57::Data3D data3DHeader;
@@ -268,7 +288,7 @@ TEST( SimpleReaderData, BunnyDouble )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "{19AA90ED-145E-4B3B-922C-80BC00648844}" );
 
    e57::Data3D data3DHeader;
@@ -306,7 +326,7 @@ TEST( SimpleReaderData, BunnyInt32 )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "{991574D2-854C-4CEF-8CB8-D0132E4BCD0A}" );
 
    e57::Data3D data3DHeader;
@@ -344,7 +364,7 @@ TEST( SimpleReaderData, ColourRepresentation )
    e57::E57Root fileHeader;
    ASSERT_TRUE( reader->GetE57Root( fileHeader ) );
 
-   CheckFileHeader( fileHeader );
+   TestHelper::CheckFileHeader( fileHeader );
    EXPECT_EQ( fileHeader.guid, "6107aa44-6289-4e9c-80bd-f36cc3fbd44b" );
 
    e57::Data3D data3DHeader;

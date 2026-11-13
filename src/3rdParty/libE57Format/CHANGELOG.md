@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.1](https://github.com/asmaloney/libE57Format/releases/tag/v3.4.1) - 2026-09-20
+
+### Fixed
+
+- Prevent external entity resolution & disallow entity expansion when parsing XML. ([#358](https://github.com/asmaloney/libE57Format/pull/358)) (Thanks Gareth!)
+
+- Fix crash when passed an invalid E57 file where a homogeneous `Data3D` is missing the prototype or codecs section. ([#356](https://github.com/asmaloney/libE57Format/pull/356)) (Thanks Benjamin!)
+
+## [3.4.0](https://github.com/asmaloney/libE57Format/releases/tag/v3.4.0) - 2026-08-21
+
+### Added
+
+- {cmake} Allow the use of external CRCpp library. ([#346](https://github.com/asmaloney/libE57Format/pull/346)) (Thanks Benson & Elaine!)
+
+- {cmake} Allow the use of external googletest library. ([#343](https://github.com/asmaloney/libE57Format/pull/343)) (Thanks Tobias!)
+
+- E57Simple API: Add read and write support for the [DIST camera distortion extension](http://www.libe57.org/E57_LEICA_Camera_Distortion.txt). ([#320](https://github.com/asmaloney/libE57Format/pull/320)) (Thanks Vladislav!)
+
+### Changed
+
+- Add checks in _CheckedFile_ constructors for file/buffer size. It will now throw a new exception `ErrorBadInputDataSize` if the file size or data buffer size is not a multiple of 1024 (as required by the standard). ([#355](https://github.com/asmaloney/libE57Format/pull/355))
+
+- Add a check in _Node::type()_ to catch issues with improperly formed XML which are not caught by higher-level checks. This will throw a generic `ErrorInternal` exception. ([#351](https://github.com/asmaloney/libE57Format/pull/351))
+
+- `StructureNode::isDefine()` will no longer throw an exception when checking an extension field when the extension is unregistered. ([#333](https://github.com/asmaloney/libE57Format/pull/333)) (Thanks Niklas!)
+
+  Before this change:
+  - `isDefined( "foo" )` returned _true_ OR _false_
+  - `isDefined( "nor:normalX" )` returned _true_ OR _false_ (if the extension is registered) OR _caused an exception_ (if the extension is unregistered)
+
+  This is counterintuitive, so got rid of the exception case and now just return _false_ even if the extension is unregistered.
+
+### Fixed
+
+- {test} Fixed so tests can run properly even without the test data files. It will skip any tests which require the data files from [libE57Format-test-data](https://github.com/asmaloney/libE57Format-test-data). ([#354](https://github.com/asmaloney/libE57Format/pull/354))
+
+- Fixed out-of-bounds read when _CheckedFile_ passed a buffer which is not a multiple of 1024 bytes (as required by the standard). ([#352](https://github.com/asmaloney/libE57Format/pull/352)) (Thanks Conner!)
+
+- Fix crash when passed an invalid E57 file where _Data3D_ is missing the _prototype_ section. This will now throw an `ErrorBadPrototype` exception. ([#351](https://github.com/asmaloney/libE57Format/pull/351))
+
+- Fix missing O_BINARY when using MinGW compiler. ([#347](https://github.com/asmaloney/libE57Format/pull/347)) (Thanks Sjur!)
+
+- Add missing include for 32-bit architectures. ([#340](https://github.com/asmaloney/libE57Format/pull/340)) (Thanks Tobias!)
+
 ## [3.3.0](https://github.com/asmaloney/libE57Format/releases/tag/v3.3.0) - 2025-10-24
 
 ### Added

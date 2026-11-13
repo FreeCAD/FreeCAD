@@ -114,7 +114,10 @@ namespace e57
       /// conversion required to assign element value, but not requested
       ErrorConversionRequired = 36,
 
-      ErrorBadPathName = 37,            ///< E57 path name is not well formed
+      /// @deprecated Will be removed in 4.0. Use e57::ErrorPathNameEmpty,
+      /// e57::ErrorPathNameMalformed, or e57::ErrorPathNameExtensionNotRegistered.
+      ErrorBadPathName = 37, ///< E57 path name is not well formed
+
       ErrorNotImplemented = 38,         ///< functionality not implemented
       ErrorBadNodeDowncast = 39,        ///< bad downcast from Node to specific node type
       ErrorWriterNotOpen = 40,          ///< CompressedVectorWriter is no longer open
@@ -141,6 +144,13 @@ namespace e57
       /// Older versions of this library (and E57RefImpl) incorrectly set the "fileOffset" to 0
       /// when "recordCount" is 0. "fileOffset" must be greater than 0 (Table 9 in the standard).
       ErrorData3DReadInvalidZeroRecords = 53,
+
+      // These refine ErrorBadPathName
+      ErrorPathNameEmpty,                  ///< E57 path name is empty
+      ErrorPathNameMalformed,              ///< E57 path name is not well formed
+      ErrorPathNameExtensionNotRegistered, ///< E57 path name uses an unregistered extension
+
+      ErrorBadInputDataSize, ///< the file or buffer size is not a multiple of 1024 bytes
 
       /// @deprecated Will be removed in 4.0. Use e57::Success.
       E57_SUCCESS E57_DEPRECATED_ENUM( "Will be removed in 4.0. Use Success." ) = Success,
@@ -257,7 +267,8 @@ namespace e57
          "Will be removed in 4.0. Use ErrorConversionRequired." ) = ErrorConversionRequired,
       /// @deprecated Will be removed in 4.0. Use e57::ErrorBadPathName.
       E57_ERROR_BAD_PATH_NAME E57_DEPRECATED_ENUM(
-         "Will be removed in 4.0. Use ErrorBadPathName." ) = ErrorBadPathName,
+         "Will be removed in 4.0. Use ErrorPathNameEmpty, ErrorPathNameMalformed, or "
+         "ErrorPathNameExtensionNotRegistered." ) = ErrorBadPathName,
       /// @deprecated Will be removed in 4.0. Use e57::ErrorNotImplemented.
       E57_ERROR_NOT_IMPLEMENTED E57_DEPRECATED_ENUM(
          "Will be removed in 4.0. Use ErrorNotImplemented." ) = ErrorNotImplemented,

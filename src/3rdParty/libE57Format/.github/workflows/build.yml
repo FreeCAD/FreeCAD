@@ -92,12 +92,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       - name: Checkout Test Data
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           repository: 'asmaloney/libE57Format-test-data'
           path: libE57Format-test-data
@@ -116,7 +116,7 @@ jobs:
 
       - name: Install Dependencies (Windows)
         if: matrix.platform == 'windows'
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           channels: conda-forge,defaults
 
@@ -131,7 +131,7 @@ jobs:
           echo "ninja $(ninja --version)"
 
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1
+        uses: hendrikmuhs/ccache-action@v1.2
         with:
           max-size: '5G'
           key: ${{ matrix.os }}-${{ matrix.build_type }}
