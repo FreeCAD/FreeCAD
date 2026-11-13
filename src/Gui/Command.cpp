@@ -1711,6 +1711,36 @@ void PythonCommand::onActionInit()
 // PythonGroupCommand
 //===========================================================================
 
+namespace
+{
+// Same as GroupCommand::setup(): the tooltip of the group is the one of the active tool.
+// Action::setToolTip() builds the rich tooltip itself, so pass the plain help text and title
+// instead of an already formatted tooltip.
+void setActiveToolToolTip(Gui::Action* groupAction)
+{
+    auto* pcActionGroup = qobject_cast<Gui::ActionGroup*>(groupAction);
+    if (!pcActionGroup) {
+        return;
+    }
+    QList<QAction*> groupActions = pcActionGroup->actions();
+    int idx = pcActionGroup->property("defaultAction").toInt();
+    if (idx < 0 || idx >= groupActions.size()) {
+        return;
+    }
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::Command* cmd = rcCmdMgr.getCommandByName(
+        groupActions[idx]->property("CommandName").toByteArray()
+    );
+    if (cmd) {
+        const char* context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
+        pcActionGroup->setToolTip(
+            QApplication::translate(context, cmd->getToolTipText()),
+            QApplication::translate(context, cmd->getMenuText())
+        );
+    }
+}
+}  // namespace
+
 PythonGroupCommand::PythonGroupCommand(const char* name, PyObject* pcPyCommand)
     : Command(StringCache::New(name))
     , _pcPyCommand(pcPyCommand)
@@ -1768,6 +1798,10 @@ void PythonGroupCommand::activated(int iMsg)
         QAction* act = a[iMsg];
 
         setupCheckable(iMsg);
+
+        // ActionGroup::onActivated() copied the tooltip of the picked tool, which lacks the
+        // "<tool> (<group>:<index>)" command name shown for the default tool.
+        setActiveToolToolTip(_pcAction);
 
         Base::PyGILStateLocker lock;
         Py::Object cmd(_pcPyCommand);
@@ -1887,6 +1921,13 @@ Action* PythonGroupCommand::createAction()
         e.reportException();
     }
 
+    // if out of range then set to 0
+    if (defaultId < 0 || defaultId >= pcAction->actions().size()) {
+        defaultId = 0;
+    }
+    // Set before languageChange() so that the tooltip is the one of the default tool
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
     _pcAction = pcAction;
     languageChange();
 
@@ -1895,16 +1936,10 @@ Action* PythonGroupCommand::createAction()
     }
     else {
         QList<QAction*> a = pcAction->actions();
-        // if out of range then set to 0
-        if (defaultId < 0 || defaultId >= a.size()) {
-            defaultId = 0;
-        }
         if (a.size() > defaultId) {
             pcAction->setIcon(a[defaultId]->icon());
         }
     }
-
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
 
     return pcAction;
 }
@@ -1919,29 +1954,9 @@ void PythonGroupCommand::languageChange()
 
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    // Reapply setup to ensure group action tooltip includes shortcut
-    auto* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> groupActions = pcActionGroup->actions();
-    int idx = _pcAction->property("defaultAction").toInt();
-    if (idx >= 0 && idx < groupActions.size()) {
-        QAction* defaultAction = groupActions[idx];
-        Gui::Command* cmd = rcCmdMgr.getCommandByName(
-            defaultAction->property("CommandName").toByteArray()
-        );
-        if (cmd) {
-            const char* context = cmd->getName();
-            QString tip = QApplication::translate(context, cmd->getToolTipText());
-            _pcAction->setShortcut(cmd->getShortcut());
-            QString newTip = Gui::Action::createToolTip(
-                tip,
-                _pcAction->text(),
-                _pcAction->action()->font(),
-                _pcAction->shortcut().toString(),
-                cmd
-            );
-            _pcAction->setToolTip(newTip);
-        }
-    }
+    // The tooltip of the group is the one of the active tool, including its shortcut
+    setActiveToolToolTip(_pcAction);
+
     auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> actions = pcAction->actions();
     for (const auto& it : actions) {
