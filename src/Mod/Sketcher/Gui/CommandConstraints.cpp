@@ -3866,8 +3866,10 @@ protected:
             pnt2 = Obj->getPoint(selPoints[1].GeoId, selPoints[1].PosId);
         }
 
-        bool isHorizontal = std::abs(pnt1.y - pnt2.y) < Precision::Confusion();
-        bool isVertical = std::abs(pnt1.x - pnt2.x) < Precision::Confusion();
+        // Coincident points have no axis to prefer.
+        bool isCoincident = (pnt1 - pnt2).Length() < Precision::Confusion();
+        bool isHorizontal = !isCoincident && std::abs(pnt1.y - pnt2.y) < Precision::Confusion();
+        bool isVertical = !isCoincident && std::abs(pnt1.x - pnt2.x) < Precision::Confusion();
 
         double minX, minY, maxX, maxY;
         minX = min(pnt1.x, pnt2.x);
