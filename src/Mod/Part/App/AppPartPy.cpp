@@ -61,6 +61,7 @@
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <Standard_DomainError.hxx>
 #include <Standard_Version.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
@@ -241,9 +242,13 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
                 BRepLib::BuildCurves3d(pEI->edge);
                 const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
                 if (!curve.IsNull()) {
+                    // reverse the edge, preserving vertices
                     first = curve->ReversedParameter(first);
                     last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                    TopoDS_Vertex vFirst, vLast;
+                    TopExp::Vertices(pEI->edge, vFirst, vLast);
+                    TopoDS_Edge edgeReversed
+                        = BRepBuilderAPI_MakeEdge(curve->Reversed(), vLast, vFirst, last, first);
                     sorted.push_back(edgeReversed);
                 }
                 edges.erase(pEI->it);
@@ -257,9 +262,13 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
                 BRepLib::BuildCurves3d(pEI->edge);
                 const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
                 if (!curve.IsNull()) {
+                    // reverse the edge, preserving vertices
                     first = curve->ReversedParameter(first);
                     last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                    TopoDS_Vertex vFirst, vLast;
+                    TopExp::Vertices(pEI->edge, vFirst, vLast);
+                    TopoDS_Edge edgeReversed
+                        = BRepBuilderAPI_MakeEdge(curve->Reversed(), vLast, vFirst, last, first);
                     sorted.push_front(edgeReversed);
                 }
                 edges.erase(pEI->it);
