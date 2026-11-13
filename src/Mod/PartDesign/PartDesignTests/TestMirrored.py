@@ -91,6 +91,21 @@ class TestMirrored(unittest.TestCase):
         self.Doc.recompute()
         self.assertIn("Up-to-date", self.Mirrored.State)
 
+    def testNewObjectMovesTip(self):
+        """Body.newObject() of a Mirrored followed by setting Originals moves the Tip."""
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        box = body.newObject("PartDesign::AdditiveBox", "Box")
+        box.Length = box.Width = box.Height = 1
+        self.Doc.recompute()
+        mirrored = body.newObject("PartDesign::Mirrored", "Mirrored")
+        mirrored.Originals = [box]
+        mirrored.MirrorPlane = (self.Doc.XY_Plane, [""])
+        self.Doc.recompute()
+        self.assertEqual(body.Tip, mirrored)
+        self.assertEqual(mirrored.BaseFeature, box)
+        self.assertAlmostEqual(mirrored.Shape.Volume, 2.0)
+        self.assertAlmostEqual(body.Shape.Volume, 2.0)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestMirrored")

@@ -410,6 +410,14 @@ class TestLinearPattern(unittest.TestCase):
         # self.assertEqual(len(self.LinearPattern.Shape.ElementReverseMap), 170)
         self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
+    def testNewObjectMovesTip(self):
+        """Body.newObject() of a LinearPattern followed by setting Originals moves the Tip."""
+        pattern = self.makeSuppressionPattern()
+        body = pattern.getParentGeoFeatureGroup()
+        self.assertEqual(body.Tip, pattern)
+        self.assertEqual(pattern.BaseFeature.Name, "Box")
+        self.assertAlmostEqual(body.Shape.Volume, pattern.Shape.Volume)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument(self.Doc.Name)
