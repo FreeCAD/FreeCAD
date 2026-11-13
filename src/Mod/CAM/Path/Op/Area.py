@@ -92,6 +92,16 @@ class ObjectOp(PathOp.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "HandleMultipleFeatures",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Choose how to process multiple Base Geometry features.",
+            ),
+        )
+        obj.HandleMultipleFeatures = ("Individually", "Collectively")
 
         self.initAreaOp(obj)
 
@@ -143,6 +153,17 @@ class ObjectOp(PathOp.ObjectOp):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
             )
+        if not hasattr(obj, "HandleMultipleFeatures"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "HandleMultipleFeatures",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Choose how to process multiple Base Geometry features.",
+                ),
+            )
+            obj.HandleMultipleFeatures = ("Individually", "Collectively")
 
         self.areaOpOnDocumentRestored(obj)
 
@@ -479,8 +500,8 @@ class ObjectOp(PathOp.ObjectOp):
         # Sorting shapes
         if (
             len(shapes) > 1
-            and getattr(obj, "SortingMode", None) != "Manual"
-            and getattr(obj, "HandleMultipleFeatures", False) != "Collectively"
+            and obj.SortingMode != "Manual"
+            and obj.HandleMultipleFeatures != "Collectively"
         ):
             locations = []
             for s in shapes:
@@ -503,9 +524,9 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Combine similar tasks for Collectively HandleMultipleFeatures
         if (
-            obj.Proxy.__module__ == "Path.Op.Profile"
-            and len(shapes) > 1
-            and getattr(obj, "HandleMultipleFeatures", False) == "Collectively"
+            len(shapes) > 1
+            and obj.HandleMultipleFeatures == "Collectively"
+            and obj.Proxy.__module__ != "Path.Op.Pocket"  # Pocket3D has own Collectively
         ):
             keys = {(iH, desc) for _, iH, desc in shapes}
             collectively = []
