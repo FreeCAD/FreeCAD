@@ -213,9 +213,8 @@ private Q_SLOTS:
             << QString("Labels & Attributes") << QString("[Ļááƀééļš & ÁÁţţŕííƀúúţééš]");
         QTest::newRow("shift-action")
             << QString("Shift horizontal") << QString("[Šĥííƒţ ĥóóŕíížóóńţááļ]");
-        QTest::newRow("parentheses")
-            << QString("Rotate the pattern (degrees)")
-            << QString("[Ŕóóţááţéé ţĥéé ṕááţţééŕń (ðééĝŕééééš)]");
+        QTest::newRow("parentheses") << QString("Rotate the pattern (degrees)")
+                                     << QString("[Ŕóóţááţéé ţĥéé ṕááţţééŕń (ðééĝŕééééš)]");
         QTest::newRow("comparison")
             << QString("Engraver cutting edge angle must be < 180 degrees.")
             << QString("[ÉÉńĝŕááṽééŕ çúúţţííńĝ ééðĝéé ááńĝļéé ḿúúšţ ƀéé < 180 ðééĝŕééééš.]");
