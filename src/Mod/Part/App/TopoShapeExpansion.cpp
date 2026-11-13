@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <sstream>
 
@@ -773,7 +774,7 @@ void TopoShape::setupChild(
         child.tag = 0;
     }
     if (op) {
-        child.postfix = op;
+        child.postfix = Base::ByteBuffer::copy(Base::asBytes(op, std::strlen(op)));
     }
 }
 
@@ -1023,7 +1024,7 @@ std::vector<Data::ElementMap::MappedChildElements> TopoShape::createChildMap(
             child.elementMap = topoShape.elementMap();
             child.tag = topoShape.Tag;
             if (op) {
-                child.postfix = op;
+                child.postfix = Base::ByteBuffer::copy(Base::asBytes(op, std::strlen(op)));
             }
         }
     }
@@ -1087,7 +1088,7 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
                     child.elementMap = s.elementMap();
                     child.tag = s.Tag;
                     if (op) {
-                        child.postfix = op;
+                        child.postfix = Base::ByteBuffer::copy(Base::asBytes(op, std::strlen(op)));
                     }
                 }
             }
@@ -1745,7 +1746,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         }
                         name_type = 0;
                     }
-                    sids += other_info.sids;
+                    sids.insert(sids.end(), other_info.sids.begin(), other_info.sids.end());
                     // To avoid the name becoming to long, just put some limit here
                     if (++count == 4) {
                         break;
@@ -1921,7 +1922,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     }
                     auto res = names.emplace(name, prevElement);
                     if (res.second) {
-                        sids += sid;
+                        sids.insert(sids.end(), sid.begin(), sid.end());
                     }
                     else if (prevElement != res.first->second) {
                         // The seam edge will appear twice, which is normal. We
@@ -5452,7 +5453,8 @@ std::vector<Data::MappedName> TopoShape::decodeElementComboName(
     name.appendToBuffer(text, len, pos - len);
 
     if (this->Hasher) {
-        if (auto id = App::StringID::fromString(names.back().toRawBytes())) {
+        const auto rawBytes = names.back().toRawBytes();
+        if (auto id = App::StringID::fromString(rawBytes.view())) {
             if (App::StringIDRef sid = this->Hasher->getID(id)) {
                 names.pop_back();
                 names.emplace_back(sid);

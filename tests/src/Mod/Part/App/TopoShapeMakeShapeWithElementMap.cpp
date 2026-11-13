@@ -356,12 +356,3 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, findMakerOpInElementMap)
         //}
     }
 }
-
-std::string composeTagInfo(const MappedElement& element, const TopoShape& shape)
-{
-    std::string elementNameStr {element.name.constPostfix()};
-    std::string tagInfo = POSTFIX_TAG + std::to_string(shape.Tag);
-    tagInfo += ":" + std::to_string(elementNameStr.substr(0, elementNameStr.find(tagInfo)).length());
-
-    return tagInfo;
-}
