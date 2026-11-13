@@ -425,6 +425,18 @@ void QGIDatumLabel::updateChildren()
     m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle + tol_adj.y()/2.0, false);
     tol_adj = m_tolTextUnder->tightBoundingAdjust();
     m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() + tol_adj.y()/2.0, false);
+
+    if (showTextBackground()) {
+        m_dimText->setBackgroundOn(true);
+        m_tolTextOver->setBackgroundOn(true);
+        m_tolTextUnder->setBackgroundOn(true);
+        m_unitText->setBackgroundOn(true);
+    } else {
+        m_dimText->setBackgroundOn(false);
+        m_tolTextOver->setBackgroundOn(false);
+        m_tolTextUnder->setBackgroundOn(false);
+        m_unitText->setBackgroundOn(false);
+    }
 }
 
 Base::Vector2d QGIDatumLabel::getPosToCenterVec() const
@@ -592,6 +604,22 @@ void QGIDatumLabel::setSelectability(bool val)
     setFlag(ItemIsSelectable, val);
     setAcceptHoverEvents(val);
     setAcceptedMouseButtons(val ? Qt::AllButtons : Qt::NoButton);
+}
+
+bool QGIDatumLabel::showTextBackground()
+{
+    auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
+    if (!qgivd) {
+        return false;
+    }
+
+    auto* dim(dynamic_cast<TechDraw::DrawViewDimension*>(qgivd->getViewObject()));
+    if (!dim) {
+        return false;
+    }
+
+    auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim));
+    return vp && vp->ShowTextBackground.getValue();
 }
 
 }  // namespace TechDrawGui
