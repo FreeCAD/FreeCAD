@@ -30,6 +30,7 @@ import area
 import math
 import os
 import shutil
+import tempfile
 import time
 
 if FreeCAD.GuiUp:
@@ -1198,6 +1199,141 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(okAt10 and okAt5, "Path feeds extend excessively in +X")
 
+    def testHelixEntryUsesRampFeed(self):
+        """Verify the helical entry uses the tool controller's RampFeed."""
+
+        mainToolController = self.job.Tools.Group[0]
+        toolController = PathToolController.copyTC(mainToolController, self.job)
+        toolController.Label = "Adaptive ramp feed test controller"
+        # RampFeed defaults to an expression referencing HorizFeed. Clear it so
+        # the test can assign an independent value.
+        toolController.setExpression("RampFeed", None)
+        toolController.HorizFeed = 30.0
+        toolController.VertFeed = 10.0
+        toolController.RampFeed = 3.0
+
+        adaptive = PathAdaptive.Create("AdaptiveHelixRampFeedTest")
+        adaptive.Base = [(self.doc.Fusion, ["Face3"])]
+        adaptive.FinishingProfile = False
+        adaptive.HelixMaxRampAngle = 75.0
+        adaptive.StepOverPercent = 75.0
+        adaptive.UseOutline = False
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
+        adaptive.ToolController = toolController
+
+        _addViewProvider(adaptive)
+        adaptive.recompute()
+
+        def getEntryAndClearingFeeds(commands):
+            helixCommentIndex = next(
+                (
+                    index
+                    for index, command in enumerate(commands)
+                    if command.Name.startswith("(Helix to depth:")
+                ),
+                None,
+            )
+            self.assertIsNotNone(helixCommentIndex, "No helical entry was generated")
+            adaptiveCommentIndex = next(
+                (
+                    index
+                    for index, command in enumerate(commands)
+                    if index > helixCommentIndex and command.Name.startswith("(Adaptive - depth:")
+                ),
+                None,
+            )
+            self.assertIsNotNone(adaptiveCommentIndex, "No adaptive path was generated")
+            nextHelixCommentIndex = next(
+                (
+                    index
+                    for index, command in enumerate(commands)
+                    if index > adaptiveCommentIndex and command.Name.startswith("(Helix to depth:")
+                ),
+                len(commands),
+            )
+            cuttingMoves = Constants.GCODE_MOVE_STRAIGHT + Constants.GCODE_MOVE_ARC
+            helixFeeds = {
+                command.Parameters["F"]
+                for command in commands[helixCommentIndex + 1 : adaptiveCommentIndex]
+                if command.Name in cuttingMoves and "F" in command.Parameters
+            }
+            adaptiveFeeds = {
+                command.Parameters["F"]
+                for command in commands[adaptiveCommentIndex + 1 : nextHelixCommentIndex]
+                if command.Name in cuttingMoves and "F" in command.Parameters
+            }
+            return helixFeeds, adaptiveFeeds
+
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+
+        self.assertTrue(helixFeeds, "Expected feed moves in the helical entry")
+        self.assertEqual(
+            helixFeeds,
+            {toolController.RampFeed.Value},
+            "Helical entry moves should use the tool controller's RampFeed",
+        )
+        self.assertTrue(adaptiveFeeds, "Expected feed moves in the adaptive path")
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Adaptive moves should use the tool controller's horizontal and vertical feeds",
+        )
+        self.assertNotIn(
+            toolController.RampFeed.Value,
+            adaptiveFeeds,
+            "The adaptive clearing path should not use RampFeed",
+        )
+
+        # Changing RampFeed only affects the helical entry, not the clearing path.
+        toolController.RampFeed = 1.5
+        adaptive.recompute()
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(
+            helixFeeds,
+            {toolController.RampFeed.Value},
+            "Helical entry feed should follow changes to RampFeed",
+        )
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Changing RampFeed should not affect the adaptive clearing feeds",
+        )
+
+        # Conical entries include a connecting spiral, which also uses RampFeed.
+        adaptive.HelixConeAngle = 5.0
+        adaptive.recompute()
+        self.assertTrue(
+            any(cmd.Name.startswith("(Spiral to radius:") for cmd in adaptive.Path.Commands)
+        )
+        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.RampFeed.Value})
+        self.assertEqual(adaptive.HelixFeedVersion, 1)
+
+        # Legacy operations use VertFeed regardless of the controller's RampFeed.
+        adaptive.removeProperty("HelixFeedVersion")
+        adaptive.Proxy.opOnDocumentRestored(adaptive)
+        self.assertEqual(adaptive.HelixFeedVersion, 0)
+        adaptive.recompute()
+        self.assertEqual(adaptive.HelixFeedVersion, 0)
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.VertFeed.Value})
+        self.assertEqual(toolController.RampFeed.Value, 1.5)
+        adaptive.HelixConeAngle = 0.0
+        toolController.setExpression("RampFeed", "HorizFeed")
+        adaptive.recompute()
+        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.VertFeed.Value})
+        self.assertEqual(dict(toolController.ExpressionEngine)["RampFeed"], "HorizFeed")
+        # The property editor lets legacy operations opt into RampFeed.
+        adaptive.HelixFeedVersion = 1
+        adaptive.recompute()
+        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.RampFeed.Value})
+        self.assertTrue(adaptiveFeeds, "Expected adaptive clearing moves after migration")
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Migrated ramp feeds should not affect the adaptive clearing feeds",
+        )
+
     # POSSIBLY MISSING TESTS:
     # - Something for region ordering
     # - Known-edge cases: cones/spheres/cylinders (especially partials on edges
@@ -1207,6 +1343,136 @@ class TestPathAdaptive(PathTestBase):
 
 
 # Eclass
+
+
+class TestAdaptiveHelixFeedMigration(PathTestBase):
+    """Test Adaptive helix-feed migration and real-document restoration."""
+
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestAdaptiveHelixFeedMigration")
+        self.tc = self.doc.addObject("App::FeaturePython", "ToolController")
+        for name, value in (("HorizFeed", 10), ("VertFeed", 2), ("RampFeed", 10)):
+            self.tc.addProperty("App::PropertySpeed", name)
+            setattr(self.tc, name, value)
+        self.tc.setExpression("RampFeed", "HorizFeed")
+        self.doc.recompute()
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def operation(self, legacy=True):
+        obj = self.doc.addObject("App::FeaturePython", "Adaptive")
+        obj.addProperty("App::PropertyLink", "ToolController")
+        obj.ToolController = self.tc
+        PathAdaptive._initHelixFeedProperties(obj, legacy=legacy)
+        return obj
+
+    def testLegacyDefault(self):
+        obj = self.operation()
+        before = list(self.tc.ExpressionEngine)
+        beforeProperties = set(self.tc.PropertiesList)
+        beforeFeed = self.tc.RampFeed.Value
+        PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+        self.assertEqual(obj.HelixFeedVersion, 0)
+        self.assertNotIn("HelixFeedAuto", obj.PropertiesList)
+        self.assertEqual(obj.getEditorMode("HelixFeedVersion"), [])
+        self.assertEqual(list(self.tc.ExpressionEngine), before)
+        self.assertEqual(set(self.tc.PropertiesList), beforeProperties)
+        self.assertEqual(self.tc.RampFeed.Value, beforeFeed)
+
+    def testMissingRampFeed(self):
+        self.tc.removeProperty("RampFeed")
+        obj = self.operation()
+        self.assertEqual(obj.HelixFeedVersion, 0)
+        self.assertNotIn("RampFeed", self.tc.PropertiesList)
+
+    def testExplicitFeeds(self):
+        for expression, value in (
+            (None, 7),
+            (None, 10),
+            (None, 0),
+            ("VertFeed", 2),
+            ("HorizFeed / 2", 5),
+        ):
+            with self.subTest(expression=expression, value=value):
+                self.tc.setExpression("RampFeed", None)
+                self.tc.RampFeed = value
+                if expression:
+                    self.tc.setExpression("RampFeed", expression)
+                self.doc.recompute()
+                before = list(self.tc.ExpressionEngine)
+                obj = self.operation()
+                PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+                self.assertEqual(obj.HelixFeedVersion, 0)
+                self.assertEqual(self.tc.RampFeed.Value, value)
+                self.assertEqual(list(self.tc.ExpressionEngine), before)
+
+    def testNewOperationSharingController(self):
+        legacy = self.operation()
+        new = self.operation(legacy=False)
+        PathAdaptive._initHelixFeedProperties(legacy, legacy=True)
+        PathAdaptive._initHelixFeedProperties(new, legacy=True)
+        self.assertEqual(legacy.HelixFeedVersion, 0)
+        self.assertEqual(new.HelixFeedVersion, 1)
+        self.assertEqual(legacy.getEditorMode("HelixFeedVersion"), [])
+        self.assertEqual(new.getEditorMode("HelixFeedVersion"), ["Hidden"])
+        self.assertEqual(dict(self.tc.ExpressionEngine)["RampFeed"], "HorizFeed")
+
+    def testDeferredControllerRestore(self):
+        obj = self.operation()
+        obj.ToolController = None
+        PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+        self.assertEqual(obj.HelixFeedVersion, 0)
+        self.tc.setExpression("RampFeed", "VertFeed")
+        obj.ToolController = self.tc
+        PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+        self.assertEqual(obj.HelixFeedVersion, 0)
+
+    def testSaveRestore(self):
+        # Use real operation proxies so opening the file exercises the actual
+        # restoration hooks, not just persistence of properties on plain objects.
+        FreeCAD.closeDocument(self.doc.Name)
+        self.doc = FreeCAD.openDocument(
+            FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_adaptive.fcstd"
+        )
+        job = PathJob.Create("Job", [self.doc.Fusion], None)
+        job.GeometryTolerance = 0.001
+        self.tc = job.Tools.Group[0]
+        self.tc.HorizFeed = 10
+        self.tc.VertFeed = 2
+        self.tc.setExpression("RampFeed", "HorizFeed")
+        legacy = PathAdaptive.Create("LegacyAdaptive")
+        new = PathAdaptive.Create("NewAdaptive")
+        for obj in (legacy, new):
+            obj.Base = [(self.doc.Fusion, ["Face3"])]
+            obj.FinishingProfile = False
+            obj.UseOutline = False
+            obj.ToolController = self.tc
+            _addViewProvider(obj)
+        names = legacy.Name, new.Name
+        # Save a genuinely unmigrated operation. Do not recompute between
+        # removing the version property and writing the file.
+        legacy.removeProperty("HelixFeedVersion")
+        self.assertNotIn("HelixFeedVersion", legacy.PropertiesList)
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "AdaptiveHelixFeed.FCStd")
+            self.doc.saveAs(path)
+            FreeCAD.closeDocument(self.doc.Name)
+            self.doc = FreeCAD.openDocument(path)
+            legacy, new = (self.doc.getObject(name) for name in names)
+            legacy.touch()
+            new.touch()
+            self.doc.recompute()
+            self.assertEqual(legacy.HelixFeedVersion, 0)
+            self.assertEqual(new.HelixFeedVersion, 1)
+            self.assertEqual(legacy.getEditorMode("HelixFeedVersion"), [])
+            self.assertEqual(new.getEditorMode("HelixFeedVersion"), ["Hidden"])
+            self.assertTrue(
+                any(cmd.Name.startswith("(Helix to depth:") for cmd in legacy.Path.Commands),
+                "The restored legacy operation should generate a helical entry",
+            )
+            self.assertEqual(new.ToolController, legacy.ToolController)
+            self.assertEqual(dict(legacy.ToolController.ExpressionEngine)["RampFeed"], "HorizFeed")
 
 
 def getPathBoundaries(paths, zLevels):
