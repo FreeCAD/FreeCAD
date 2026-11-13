@@ -27,7 +27,6 @@ import unittest
 
 import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine
 import Constants
 import Path
 import Path.Post.Command as PathCommand
@@ -109,8 +108,6 @@ class TestFileNameGenerator(unittest.TestCase):
         cls.macro = FreeCAD.getUserMacroDir()
 
         # Create a simple geometry object for the job
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -784,8 +781,7 @@ class TestExport2Integration(unittest.TestCase):
         self.assertNotIn(" F", gcode)
 
         # Output G0 F's if asked
-
-        machine.processing.f_for_rapid_moves = True
+        machine.postprocessor_properties["f_for_rapid_moves"] = True
         post = self._create_postprocessor(machine)
 
         # convert_command_to_gcode level: no spurious F
@@ -798,11 +794,10 @@ class TestExport2Integration(unittest.TestCase):
         gcode = post.convert_command_to_gcode(cmd)
         self.assertIn(" F", gcode)
 
-        # Don't output G0 F's if they are zero (e.g. tool wasn't setup with rapid speed)
-
+        # set zero F if tool wasn't setup with rapid speed
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
-        self.assertNotIn(" F", gcode)
+        self.assertIn(" F0", gcode)
 
     def test003_arc_center_words_follow_the_plane(self):
         """K is dropped under G17, J under G18, I under G19. A plane word in a
@@ -849,6 +844,60 @@ class TestExport2Integration(unittest.TestCase):
         cmd = Path.Command("G9999", {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
         gcode = post.convert_command_to_gcode(cmd)
         self.assertIn("G9999", gcode)
+
+    def test005_feed_move_never_runs_at_rapid_feed(self):
+        """
+        A G1 must run at its own feed, never at the F of an earlier G0.
+
+        F is modal on the control: a G0 F also sets the feed of the next G1.
+        So after a G0 that writes F, the next G1 must write its F again,
+        also when duplicate parameters are off and the F is the same as before.
+
+        Path (F in mm/s):          Control (F in mm/min):
+            G1 Z-1 F100                G1 Z-1.000 F6000.000
+            G1 X10 F100                G1 X10.000
+            G0 Z5 F3000                G0 Z5.000 [F180000.000]
+            G0 X20 F3000               G0 X20.000
+            G1 Z-1 F100                G1 Z-1.000 F6000.000   <- must have F
+        """
+        commands = [
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            Path.Command("G1", {"Z": -1.0, "F": 100.0}),
+            Path.Command("G1", {"X": 10.0, "F": 100.0}),
+            Path.Command("G0", {"Z": 5.0, "F": 3000.0}),
+            Path.Command("G0", {"X": 20.0, "F": 3000.0}),
+            Path.Command("G1", {"Z": -1.0, "F": 100.0}),
+            Path.Command("G1", {"X": 30.0, "F": 100.0}),
+        ]
+        cut_feed = 6000.0  # 100 mm/s
+
+        for f_for_rapid_moves in (False, True):
+            for duplicates in (False, True):
+                with self.subTest(f_for_rapid_moves=f_for_rapid_moves, duplicates=duplicates):
+                    machine = self._create_machine(output_duplicate_parameters=duplicates)
+                    machine.postprocessor_properties["f_for_rapid_moves"] = f_for_rapid_moves
+                    with self._modify_operation_path(commands):
+                        gcode = self._run_export2(machine)[0][1]
+
+                    body = gcode.split("(TestProfile)")[-1]
+                    lines = [l.strip() for l in body.splitlines() if l.strip()[:2] in ("G0", "G1")]
+
+                    # Simulate the modal F of the control.
+                    modal_f = None
+                    cuts = 0
+                    for line in lines:
+                        for word in line.split():
+                            if word.startswith("F"):
+                                modal_f = float(word[1:])
+                        if line.startswith("G1"):
+                            cuts += 1
+                            self.assertEqual(
+                                modal_f,
+                                cut_feed,
+                                f"'{line}' runs at F{modal_f}, not F{cut_feed}:\n"
+                                + "\n".join(lines),
+                            )
+                    self.assertEqual(cuts, 4, "\n".join(lines))
 
     # ===== 010-019: Basic smoke tests =====
 
@@ -1380,14 +1429,13 @@ G1 X20.000 Y10.000 F6000.000
         lines = gcode.split("\n")
 
         for i, line in enumerate(lines):
-            if line.startswith("(Block-name:"):
-                if i + 2 < len(lines):
-                    self.assertEqual(
-                        lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
-                    )
-                    self.assertEqual(
-                        lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
-                    )
+            if line.startswith("(Block-name:") and i + 2 < len(lines):
+                self.assertEqual(
+                    lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
+                )
+                self.assertEqual(
+                    lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
+                )
 
     # ===== 110-119: _expand_tool_change tests =====
 
