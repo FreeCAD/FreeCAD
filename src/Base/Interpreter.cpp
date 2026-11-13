@@ -661,6 +661,21 @@ void initInterpreter(int argc, char* argv[])
         throw Base::RuntimeError("Failed to set config");
     }
 
+    // The isolated config ignores the environment, so apply the bytecode location explicitly
+# ifdef FC_OS_WIN32
+    const wchar_t* pycachePrefix = _wgetenv(L"PYTHONPYCACHEPREFIX");
+    if (pycachePrefix && *pycachePrefix) {
+        status = PyConfig_SetString(&config, &config.pycache_prefix, pycachePrefix);
+# else
+    const char* pycachePrefix = getenv("PYTHONPYCACHEPREFIX");
+    if (pycachePrefix && *pycachePrefix) {
+        status = PyConfig_SetBytesString(&config, &config.pycache_prefix, pycachePrefix);
+# endif
+        if (PyStatus_Exception(status)) {
+            throw Base::RuntimeError("Failed to set pycache prefix");
+        }
+    }
+
     status = Py_InitializeFromConfig(&config);
     if (PyStatus_Exception(status)) {
         throw Base::RuntimeError("Failed to init from config");
