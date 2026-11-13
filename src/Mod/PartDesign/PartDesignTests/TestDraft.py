@@ -21,9 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
 import unittest
 
 import FreeCAD
+import Part
 
 App = FreeCAD
 
@@ -78,6 +80,62 @@ class TestDraft(unittest.TestCase):
             self.Draft.Reversed = 0
             self.Doc.recompute()
         self.assertAlmostEqual(self.Draft.Shape.Volume, 1500)
+
+    def testDraftDoesNotKeepInvalidShape(self):
+        # Some OCCT versions build an invalid solid for this model. The feature
+        # must then report an error instead of keeping that shape.
+        halfSize = 25.0
+        radius = 4.0
+        inner = halfSize - radius
+        normal = App.Vector(0, 0, 1)
+
+        def arc(x, y, start):
+            circle = Part.Circle(App.Vector(x, y, 0), normal, radius)
+            return Part.ArcOfCircle(circle, start, start + math.pi / 2)
+
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Doc.recompute()
+        planes = {
+            feature.Role: feature
+            for feature in body.Origin.OriginFeatures
+            if feature.Role.endswith("_Plane")
+        }
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.AttachmentSupport = [(planes["XZ_Plane"], "")]
+        sketch.MapMode = "FlatFace"
+        sketch.addGeometry(
+            [
+                Part.LineSegment(App.Vector(-inner, -halfSize, 0), App.Vector(inner, -halfSize, 0)),
+                arc(inner, -inner, -math.pi / 2),
+                Part.LineSegment(App.Vector(halfSize, -inner, 0), App.Vector(halfSize, inner, 0)),
+                arc(inner, inner, 0),
+                Part.LineSegment(App.Vector(inner, halfSize, 0), App.Vector(-inner, halfSize, 0)),
+                arc(-inner, inner, math.pi / 2),
+                Part.LineSegment(App.Vector(-halfSize, inner, 0), App.Vector(-halfSize, -inner, 0)),
+                arc(-inner, -inner, math.pi),
+            ],
+            False,
+        )
+        pad = body.newObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        pad.Length = 250.0
+        self.Doc.recompute()
+
+        caps = [
+            "Face" + str(index + 1)
+            for index, face in enumerate(pad.Shape.Faces)
+            if face.Surface.TypeId == "Part::GeomPlane" and abs(face.normalAt(0, 0).y) > 0.99
+        ]
+        self.assertEqual(len(caps), 2)
+
+        draft = body.newObject("PartDesign::Draft", "Draft")
+        draft.Base = (pad, caps)
+        draft.Angle = 45.0
+        draft.NeutralPlane = (planes["XZ_Plane"], [""])
+        self.Doc.recompute()
+
+        if "Invalid" not in draft.State:
+            self.assertTrue(draft.Shape.isValid())
 
     def tearDown(self):
         # closing doc
