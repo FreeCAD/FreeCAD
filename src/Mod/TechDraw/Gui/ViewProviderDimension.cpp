@@ -114,7 +114,7 @@ ViewProviderDimension::ViewProviderDimension()
                       "Dimension will snap to position if true");
 
     // set this property for dimensions over hatched areas
-    ADD_PROPERTY_TYPE(ShowTextBackground, (false), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(ShowTextBackground, (true), group, App::Prop_None,
                       "Shows a background behind dimension text.");
 
    StackOrder.setValue(ZVALUE::DIMENSION);
