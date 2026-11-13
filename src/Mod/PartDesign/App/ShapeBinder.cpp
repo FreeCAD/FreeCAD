@@ -29,6 +29,7 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <Precision.hxx>
 
 
 #include <unordered_map>
@@ -128,7 +129,11 @@ bool ShapeBinder::hasPlacementChanged() const
 {
     Part::TopoShape shape(updatedShape());
     Base::Placement placement(shape.getTransform());
-    return this->Placement.getValue() != placement;
+    const Base::Placement current = this->Placement.getValue();
+    // Rotation::isSame(rot, tol) would ignore rotations up to 2 * sqrt(tol)
+    const Base::Rotation delta = current.getRotation().inverse() * placement.getRotation();
+    return !current.getPosition().IsEqual(placement.getPosition(), Precision::Confusion())
+        || Base::Vector3d(delta[0], delta[1], delta[2]).Length() > Precision::Angular();
 }
 
 App::DocumentObjectExecReturn* ShapeBinder::execute()
