@@ -30,6 +30,13 @@ class QLineEdit;
 namespace Gui
 {
 
+enum CommandModelRole
+{
+    CommandNameRole = Qt::UserRole,
+    CommandMenuTextRole = Qt::UserRole + 1,
+    CommandGroupRole = Qt::UserRole + 2,
+};
+
 /**
  * Command name auto completer.
  *
@@ -42,6 +49,11 @@ class GuiExport CommandCompleter: public QCompleter
     Q_OBJECT
 public:
     explicit CommandCompleter(QLineEdit* edit, QObject* parent = nullptr);
+
+    /// Enable or disable filtering of inactive commands
+    void setFilterInactive(bool filter);
+    /// Filter and order the command palette's commands by how well they match the text
+    void setSearchText(const QString& text);
 
 Q_SIGNALS:
     /// Triggered when a command is selected in the completer
