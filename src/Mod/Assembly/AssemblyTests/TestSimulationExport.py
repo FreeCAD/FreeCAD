@@ -44,7 +44,6 @@ def _msg(text, end="\n"):
     App.Console.PrintMessage(text + end)
 
 
-@unittest.skipIf(not App.GuiUp, "GUI tests require FreeCAD GUI mode")
 @unittest.skipIf(
     not VIDEO_EXPORT_AVAILABLE,
     "Video export tests require the PyAV & PIL Python package",
