@@ -39,6 +39,16 @@ class AssemblyObject(Part):
         """
 
     @constmethod
+    def resetSolver(self) -> None:
+        """
+        Re-read the SolverBackend preference and recreate the solver.
+
+        Call this after changing the solver preference to switch solvers
+        on already-open assemblies without re-opening the document.
+        """
+        ...
+
+    @constmethod
     def generateSimulation(self, simulationObject: DocumentObject, /) -> int:
         """
         Generate the simulation.

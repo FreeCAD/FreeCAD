@@ -21,10 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
-
 #pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <unordered_map>
 #include <vector>
 
@@ -34,16 +33,7 @@
 #include <App/Part.h>
 #include <App/PropertyLinks.h>
 
-#include <OndselSolver/enum.h>
-
-namespace MbD
-{
-class ASMTPart;
-class ASMTAssembly;
-class ASMTJoint;
-class ASMTMarker;
-class ASMTPart;
-}  // namespace MbD
+#include "Solver.h"
 
 namespace App
 {
@@ -90,15 +80,24 @@ public:
 
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
+
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
-    and redraw the joints Args : enableRedo : This store initial positions to enable undo while
-    being in an active transaction (joint creation).*/
+    and redraw the joints. Args: enableRedo stores initial positions to enable undo while being in
+    an active transaction (joint creation). */
     int solve(bool enableRedo = false);
+    /// Re-read the SolverBackend preference and recreate the solver + assembly.
+    /// Call after the preference changes to switch solvers on open assemblies.
+    void resetSolver();
     int generateSimulation(App::DocumentObject* sim);
     int updateForFrame(size_t index);
     size_t numberOfFrames();
-    void preDrag(std::vector<App::DocumentObject*> dragParts);
-    void doDragStep();
+    void preDrag(
+        std::vector<App::DocumentObject*> dragParts,
+        Base::Vector3d pickPoint,
+        Base::Vector3d cameraViewDir,
+        App::DocumentObject* movingJoint = nullptr
+    );
+    void doDragStep(Base::Vector3d mousePos3D);
     void postDrag();
     void savePlacementsForUndo();
     void undoSolve();
@@ -107,7 +106,6 @@ public:
     void exportAsASMT(std::string fileName);
     bool requiresRigidSolveForMove(const std::vector<App::DocumentObject*>& movedParts);
 
-    Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
@@ -118,29 +116,31 @@ public:
     // Make sure grounded joints reflect Placement read-only states
     void syncGroundedJoints();
 
-    // Ondsel Solver interface
-    std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
-    void create_mbdSimulationParameters(App::DocumentObject* sim);
-    std::shared_ptr<MbD::ASMTPart> makeMbdPart(
+    // Solver interface — these are the primary methods for building the solver representation.
+    // The names have been updated to remove the "Mbd" prefix; implementations delegate to the
+    // abstract Solver::Assembly / Solver::Part / Solver::AssemblySolver interfaces.
+    void createSimulationParameters(App::DocumentObject* sim);
+
+    std::shared_ptr<Solver::Part> makeSolverPart(
         std::string& name,
         Base::Placement plc = Base::Placement(),
         double mass = 1.0
     );
-    std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
-    // To help the solver, during dragging, we are bundling parts connected by a fixed joint.
-    // So several assembly components are bundled in a single ASMTPart.
-    // So we need to store the plc of each bundled object relative to the bundle origin (first obj
-    // of objectPartMap).
-    struct MbDPartData
+
+    std::shared_ptr<Solver::Part> getPart(App::DocumentObject* obj);
+
+    // To help the solver during dragging we bundle parts connected by a fixed joint into a
+    // single solver Part. We need to store the placement of each bundled object relative to
+    // the bundle origin (the first object in objectPartMap).
+    struct PartData
     {
-        std::shared_ptr<MbD::ASMTPart> part;
-        Base::Placement offsetPlc;  // This is the offset within the bundled parts
+        std::shared_ptr<Solver::Part> part;
+        Base::Placement offsetPlc;  // offset within the bundled part group
     };
-    MbDPartData getMbDData(App::DocumentObject* part);
-    std::shared_ptr<MbD::ASMTMarker> makeMbdMarker(std::string& name, Base::Placement& plc);
-    std::vector<std::shared_ptr<MbD::ASMTJoint>> makeMbdJoint(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint, JointType jointType);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistance(App::DocumentObject* joint);
+
+    PartData getPartData(App::DocumentObject* part);
+
+    // Returns the full ASMT marker path after creating and adding the marker to the part.
     std::string handleOneSideOfJoint(
         App::DocumentObject* joint,
         const char* propRefName,
@@ -153,6 +153,13 @@ public:
         std::string& markerNameJ
     );
     int slidingPartIndex(App::DocumentObject* joint);
+
+    std::shared_ptr<Solver::Joint> makeJointOnly(App::DocumentObject* joint);
+    void addJointLimitsAndMotions(App::DocumentObject* joint, std::shared_ptr<Solver::Joint> solverJoint);
+    std::shared_ptr<Solver::Joint> makeJointOfType(App::DocumentObject* joint, JointType jointType);
+    std::shared_ptr<Solver::Joint> makeJointDistance(App::DocumentObject* joint);
+
+    bool isJointValid(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup() const;
@@ -213,8 +220,6 @@ public:
 
     std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
 
-    bool isMbDJointValid(App::DocumentObject* joint);
-
     bool isEmpty() const;
     int numberOfComponents() const;
 
@@ -267,16 +272,18 @@ private:
     const std::vector<App::DocumentObject*>* getRigidMembers(App::DocumentObject* part) const;
     void syncActiveRigidGroupPlacements();
     void updateRigidPlacementCache();
-    void prepareMbdForIslandDrag(std::vector<App::DocumentObject*> dragParts);
+    void prepareForIslandDrag(std::vector<App::DocumentObject*> dragParts);
 
-    std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
+    std::shared_ptr<Solver::AssemblySolver> solver;
+    std::shared_ptr<Solver::Assembly> assembly;
 
-    std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
+    std::unordered_map<App::DocumentObject*, PartData> objectPartMap;
     std::unordered_map<App::DocumentObject*, App::DocumentObject*> rigidRepByPart;
     std::unordered_map<App::DocumentObject*, std::vector<App::DocumentObject*>> rigidMembersByRep;
     std::unordered_map<App::DocumentObject*, Base::Placement> rigidPlacementCache;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<App::DocumentObject*> draggedParts;
+    Base::Rotation dragCameraRotation;
     std::vector<App::DocumentObject*> motions;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
