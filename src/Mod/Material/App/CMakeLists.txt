@@ -42,6 +42,7 @@ generate_from_py(ModelProperty)
 generate_from_py(MaterialProperty)
 generate_from_py(Model)
 generate_from_py(UUIDs)
+generate_module_from_py(Materials)
 
 SET(MaterialsAPI_Files
     MaterialAPI/__init__.py
@@ -69,6 +70,8 @@ SET(Python_SRCS
     MaterialManagerPyImp.cpp
     MaterialProperty.pyi
     MaterialPropertyPyImp.cpp
+    Materials.module.pyi
+    MaterialsModulePyImp.cpp
     Material.pyi
     MaterialPyImp.cpp
     ModelManager.pyi
@@ -94,6 +97,8 @@ SET(Materials_SRCS
     MaterialFilter.h
     MaterialLibrary.cpp
     MaterialLibrary.h
+    MaterialObserverPython.cpp
+    MaterialObserverPython.h
     MaterialLoader.cpp
     MaterialLoader.h
     MaterialManager.cpp
