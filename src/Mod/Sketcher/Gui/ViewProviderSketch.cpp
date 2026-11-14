@@ -1218,6 +1218,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     }
     assert(isInEditMode());
 
+    const bool isDragRelease = Button == 1 && !pressed
+        && (Mode == STATUS_SKETCH_Drag || Mode == STATUS_SKETCH_DragConstraint);
+
     // Calculate 3d point to the mouse position
     SbLine line;
     if (!getProjectingLine(cursorPos, viewer, line)) {
@@ -1226,12 +1229,15 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     SbVec3f point = line.getPosition();
     SbVec3f normal = line.getDirection();
 
-    // use scoped_ptr to make sure that instance gets deleted in all cases
-    boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
-    EditModeCoinManager::PreselectionResult clickResult
-        = getPreselectionResultAtViewportPos(cursorPos, viewer);
-    EditModeCoinManager::PreselectionResult resolvedClickResult
-        = resolveClickPreselectionResult(clickResult, cursorPos, viewer);
+    boost::scoped_ptr<SoPickedPoint> pp;
+    EditModeCoinManager::PreselectionResult resolvedClickResult;
+    if (!isDragRelease) {
+        // use scoped_ptr to make sure that instance gets deleted in all cases
+        pp.reset(this->getPointOnRay(cursorPos, viewer));
+        EditModeCoinManager::PreselectionResult clickResult
+            = getPreselectionResultAtViewportPos(cursorPos, viewer);
+        resolvedClickResult = resolveClickPreselectionResult(clickResult, cursorPos, viewer);
+    }
 
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
@@ -1241,16 +1247,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     SbVec3f pos = point;
     Base::Vector3d selectionPoint = Base::convertTo<Base::Vector3d>(point);
 
+    // Object-derived picked points are appropriate for selection. During a drag
+    // release, however, the cursor-to-sketch-plane intersection is the authoritative
+    // input to snapping; an icon's picked point represents its center.
     if (resolvedClickResult.hasPickedPoint()) {
-        pos = Base::convertTo<SbVec3f>(resolvedClickResult.pickedPoint());
         selectionPoint = resolvedClickResult.pickedPoint();
+        pos = Base::convertTo<SbVec3f>(selectionPoint);
     }
     else if (pp) {
+        selectionPoint = Base::convertTo<Base::Vector3d>(pp->getPoint());
         const SoDetail* detail = pp->getDetail();
         if (detail && detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             pos = pp->getPoint();
         }
-        selectionPoint = Base::convertTo<Base::Vector3d>(pp->getPoint());
     }
     const bool hasSelectionPoint = resolvedClickResult.hasPickedPoint() || static_cast<bool>(pp);
 
