@@ -132,6 +132,7 @@ public:
     bool doMergeEdge = true;
     bool doOutline = false;
     bool doTightBound = true;
+    bool doOpenWiresOnly = false;
 
     std::string catchObject;
     int catchIteration {};
@@ -1960,7 +1961,7 @@ public:
     bool _findClosedWiresUpdateEdges(
         VertexInfo& currentVertex,
         gp_Pnt& pend,
-        EdgeInfo* currentInfo,
+        EdgeInfo*& currentInfo,
         int& currentIdx,
         const size_t stackEnd
     )
@@ -2903,6 +2904,12 @@ public:
     void buildClosedWire()
     {
         findClosedWires(true);
+        if (doOpenWiresOnly && !doOutline) {
+            // Edges without a closed wire are already known and are collected as open wires
+            // by build(). Splitting into tight bound wires would not change them.
+            builder.MakeCompound(compound);
+            return;
+        }
         findTightBound();
         exhaustTightBound();
         bool done = !doOutline;
@@ -3133,6 +3140,14 @@ void WireJoiner::setTightBound(bool enable)
     if (enable != pimpl->doTightBound) {
         NotDone();
         pimpl->doTightBound = enable;
+    }
+}
+
+void WireJoiner::setOpenWiresOnly(bool enable)
+{
+    if (enable != pimpl->doOpenWiresOnly) {
+        NotDone();
+        pimpl->doOpenWiresOnly = enable;
     }
 }
 
