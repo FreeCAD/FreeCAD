@@ -110,7 +110,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>Auto remove redundant constraints</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>AutoRemoveRedundants</cstring>
