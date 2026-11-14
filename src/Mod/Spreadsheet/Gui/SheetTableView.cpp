@@ -140,9 +140,15 @@ SheetTableView::SheetTableView(QWidget* parent)
         const auto& selection = selectionModel()->selectedRows();
         const auto& ranges = selectionRanges(selection, Qt::Vertical);
         if (ranges.size() <= 1) {
-            auto insertBefore = menu.addAction(tr("Insert %n Rows Above", "", selection.size()));
+            auto insertBefore = menu.addAction(
+                QIcon(":/icons/insert-row-above.svg"),
+                tr("Insert %n Rows Above", "", selection.size())
+            );
             connect(insertBefore, &QAction::triggered, [this] { insertRows(false); });
-            auto insertAfter = menu.addAction(tr("Insert %n Rows Below", "", selection.size()));
+            auto insertAfter = menu.addAction(
+                QIcon(":/icons/insert-row-below.svg"),
+                tr("Insert %n Rows Below", "", selection.size())
+            );
             connect(insertAfter, &QAction::triggered, [this] { insertRows(true); });
         }
         else {
@@ -160,9 +166,15 @@ SheetTableView::SheetTableView(QWidget* parent)
         const auto& selection = selectionModel()->selectedColumns();
         const auto& ranges = selectionRanges(selection, Qt::Horizontal);
         if (ranges.size() <= 1) {
-            auto insertAbove = menu.addAction(tr("Insert %n Columns Left", "", selection.size()));
+            auto insertAbove = menu.addAction(
+                QIcon(":/icons/insert-column-before.svg"),
+                tr("Insert %n Columns Left", "", selection.size())
+            );
             connect(insertAbove, &QAction::triggered, [this] { insertColumns(false); });
-            auto insertAfter = menu.addAction(tr("Insert %n Columns Right", "", selection.size()));
+            auto insertAfter = menu.addAction(
+                QIcon(":/icons/insert-column-after.svg"),
+                tr("Insert %n Columns Right", "", selection.size())
+            );
             connect(insertAfter, &QAction::triggered, [this] { insertColumns(true); });
         }
         else {

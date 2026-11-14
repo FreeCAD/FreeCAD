@@ -18,5 +18,9 @@
         <file>icons/SpreadsheetStyleBold.svg</file>
         <file>icons/SpreadsheetWorkbench.svg</file>
         <file>icons/SpreadsheetAlias.svg</file>
+        <file>icons/insert-column-before.svg</file>
+        <file>icons/insert-column-after.svg</file>
+        <file>icons/insert-row-above.svg</file>
+        <file>icons/insert-row-below.svg</file>
     </qresource>
 </RCC>
