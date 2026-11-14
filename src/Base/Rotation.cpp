@@ -808,6 +808,12 @@ bool Rotation::isIdentity(double tol) const
     return isSame(Rotation(), tol);
 }
 
+bool Rotation::isFinite() const
+{
+    return std::isfinite(quat[0]) && std::isfinite(quat[1]) && std::isfinite(quat[2])
+        && std::isfinite(quat[3]);
+}
+
 bool Rotation::isNull() const
 {
     return (
