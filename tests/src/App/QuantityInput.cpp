@@ -56,6 +56,7 @@ namespace App::QuantityInputTest
 {
 
 const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
+const Base::NumericLocaleContext deDE {"de_DE", ",", ".", "+", "-", 3, 3, "0"};
 
 TEST(QuantityInput, QuantityInputUnitUsesDisplayedScaleAndSafeFallbacks)
 {
@@ -164,7 +165,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
     EXPECT_EQ(
         interpretQuantityInput(
             "-",
-            QuantityInputGrammar::Quantity,
+            QuantityInputGrammar::QuantityFirst,
             path,
             Base::Unit::Length,
             enUs,
@@ -177,7 +178,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
     EXPECT_EQ(
         interpretQuantityInput(
             "-",
-            QuantityInputGrammar::Quantity,
+            QuantityInputGrammar::QuantityFirst,
             path,
             Base::Unit::Length,
             enUs,
@@ -190,7 +191,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
     EXPECT_EQ(
         interpretQuantityInput(
             "1e",
-            QuantityInputGrammar::Quantity,
+            QuantityInputGrammar::QuantityFirst,
             path,
             Base::Unit::Length,
             enUs,
@@ -203,7 +204,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
     EXPECT_EQ(
         interpretQuantityInput(
             "1e",
-            QuantityInputGrammar::Quantity,
+            QuantityInputGrammar::QuantityFirst,
             path,
             Base::Unit::Length,
             enUs,
@@ -218,7 +219,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
         EXPECT_EQ(
             interpretQuantityInput(
                 input,
-                QuantityInputGrammar::Quantity,
+                QuantityInputGrammar::QuantityFirst,
                 path,
                 Base::Unit::Length,
                 enUs,
@@ -231,7 +232,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
         EXPECT_EQ(
             interpretQuantityInput(
                 input,
-                QuantityInputGrammar::Quantity,
+                QuantityInputGrammar::QuantityFirst,
                 path,
                 Base::Unit::Length,
                 enUs,
@@ -247,7 +248,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
         EXPECT_EQ(
             interpretQuantityInput(
                 input,
-                QuantityInputGrammar::Quantity,
+                QuantityInputGrammar::QuantityFirst,
                 path,
                 Base::Unit::Length,
                 enUs,
@@ -260,7 +261,7 @@ TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
         EXPECT_EQ(
             interpretQuantityInput(
                 input,
-                QuantityInputGrammar::Quantity,
+                QuantityInputGrammar::QuantityFirst,
                 path,
                 Base::Unit::Length,
                 enUs,
@@ -280,7 +281,7 @@ TEST(QuantityInput, TrailingGroupingSeparatorFollowsTheInputPhase)
 
     const auto editing = interpretQuantityInput(
         "12,",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -293,7 +294,7 @@ TEST(QuantityInput, TrailingGroupingSeparatorFollowsTheInputPhase)
 
     const auto commit = interpretQuantityInput(
         "12,",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -312,7 +313,7 @@ TEST(QuantityInput, ReportsGroupingAndUnitDiagnostics)
 
     const auto malformed = interpretQuantityInput(
         "12,34,567 mm",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -325,7 +326,7 @@ TEST(QuantityInput, ReportsGroupingAndUnitDiagnostics)
 
     const auto plainSpace = interpretQuantityInput(
         "12 345 mm",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -340,7 +341,7 @@ TEST(QuantityInput, ReportsGroupingAndUnitDiagnostics)
     restricted.requiredUnit = Base::Unit::TimeSpan;
     const auto incompatible = interpretQuantityInput(
         "10 mm",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -358,7 +359,7 @@ TEST(QuantityInput, AcceptsGroupedQuantityAndNormalizesIt)
     const QuantityConstraints constraints;
     const auto result = interpretQuantityInput(
         "12,345.67 mm",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -429,14 +430,16 @@ TEST(QuantityInput, GrammarSelectionIsExplicit)
 
     const auto quantity = interpretQuantityInput(
         "1+2 mm",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
         InputPhase::Commit,
         constraints
     );
-    EXPECT_EQ(quantity.status, InputStatus::Invalid);
+    EXPECT_EQ(quantity.status, InputStatus::Acceptable);
+    ASSERT_TRUE(quantity.quantity);
+    EXPECT_DOUBLE_EQ(quantity.quantity->getValue(), 3.0);
 
     const auto expression = interpretQuantityInput(
         "1+2 mm",
@@ -453,7 +456,7 @@ TEST(QuantityInput, GrammarSelectionIsExplicit)
 
     const auto comment = interpretQuantityInput(
         "1 mm [original input 12,34,567]",
-        QuantityInputGrammar::Quantity,
+        QuantityInputGrammar::QuantityFirst,
         path,
         Base::Unit::Length,
         enUs,
@@ -502,7 +505,7 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
     const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3, "0"};
     const auto localizedPlus = interpretQuantityInput(
         "plus1 mm",
-        QuantityInputGrammar::Expression,
+        QuantityInputGrammar::Quantity,
         path,
         Base::Unit::Length,
         custom,
@@ -580,6 +583,52 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
     }
 }
 
+using Expected = std::variant<double, InputDiagnosticKind>;
+
+void checkWithGrammar(
+    std::string_view input,
+    const Expected& expected,
+    QuantityInputGrammar grammar,
+    const App::ObjectIdentifier& path,
+    const Base::Unit& unit,
+    const Base::NumericLocaleContext& locale,
+    InputPhase phase,
+    const QuantityConstraints& constraints
+)
+{
+    const auto result = interpretQuantityInput(input, grammar, path, unit, locale, phase, constraints);
+
+    if (const auto* value = std::get_if<double>(&expected)) {
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), *value);
+        EXPECT_EQ(result.quantity->getUnit(), unit);
+    }
+    else {
+        const auto kind = std::get<InputDiagnosticKind>(expected);
+        EXPECT_EQ(result.status, InputStatus::Invalid);
+        ASSERT_TRUE(result.diagnostic);
+        EXPECT_EQ(result.diagnostic->kind, kind);
+    }
+}
+
+void checkWithGrammars(
+    std::string_view input,
+    const Expected& expected,
+    std::initializer_list<QuantityInputGrammar> grammars,
+    const App::ObjectIdentifier& path,
+    const Base::Unit& unit,
+    const Base::NumericLocaleContext& locale,
+    InputPhase phase,
+    const QuantityConstraints& constraints
+)
+{
+    for (const auto grammar : grammars) {
+        SCOPED_TRACE(static_cast<int>(grammar));
+        checkWithGrammar(input, expected, grammar, path, unit, locale, phase, constraints);
+    }
+}
+
 TEST(QuantityInput, DefaultUnitAppliesToBareAdditiveTerms)
 {
     tests::initApplication();
@@ -599,42 +648,37 @@ TEST(QuantityInput, DefaultUnitAppliesToBareAdditiveTerms)
           std::pair {"(1 + 2) * 3 mm", 9.0},
           std::pair {"3 mm * (1 + 2)", 9.0},
           std::pair {"(4 - 1) / 3 * 6 mm", 6.0}}) {
-        const auto result = interpretQuantityInput(
+        checkWithGrammars(
             input,
-            QuantityInputGrammar::Expression,
+            expected,
+            {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
             path,
             Base::Unit::Length,
             enUs,
             InputPhase::Commit,
             constraints
         );
-        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
-        ASSERT_TRUE(result.quantity);
-        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
-        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
     }
 
-    const auto multiplied = interpretQuantityInput(
+    checkWithGrammars(
         "2 * 3 mm",
-        QuantityInputGrammar::Expression,
+        6.0,
+        {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
         path,
         Base::Unit::Length,
         enUs,
         InputPhase::Commit,
         constraints
     );
-    ASSERT_EQ(multiplied.status, InputStatus::Acceptable);
-    ASSERT_TRUE(multiplied.quantity);
-    EXPECT_DOUBLE_EQ(multiplied.quantity->getValue(), 6.0);
-    EXPECT_EQ(multiplied.quantity->getUnit(), Base::Unit::Length);
 
-    // A unit-bearing denominator is explicit expression syntax. Both forms are inverse length
-    // and therefore incompatible with this length field.
+    // A unit-bearing denominator has a different meaning in expression syntax compared to quantity
+    // syntax. The expression is inverse length, wherease the quantity is just a length.
     QuantityConstraints lengthConstraints;
     lengthConstraints.requiredUnit = Base::Unit::Length;
 
-    const auto dividedNumber = interpretQuantityInput(
+    checkWithGrammar(
         "1 / 2 mm",
+        InputDiagnosticKind::IncompatibleUnit,
         QuantityInputGrammar::Expression,
         path,
         Base::Unit::Length,
@@ -642,50 +686,49 @@ TEST(QuantityInput, DefaultUnitAppliesToBareAdditiveTerms)
         InputPhase::Commit,
         lengthConstraints
     );
-    EXPECT_EQ(dividedNumber.status, InputStatus::Invalid);
-    ASSERT_TRUE(dividedNumber.diagnostic);
-    EXPECT_EQ(dividedNumber.diagnostic->kind, InputDiagnosticKind::IncompatibleUnit);
+    checkWithGrammar(
+        "1 / 2 mm",
+        0.5,
+        QuantityInputGrammar::QuantityFirst,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        lengthConstraints
+    );
 
-    const auto dividedQuantity = interpretQuantityInput(
+    checkWithGrammars(
         "1 / (2 mm)",
-        QuantityInputGrammar::Expression,
+        InputDiagnosticKind::IncompatibleUnit,
+        {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
         path,
         Base::Unit::Length,
         enUs,
         InputPhase::Commit,
         lengthConstraints
     );
-    EXPECT_EQ(dividedQuantity.status, InputStatus::Invalid);
-    ASSERT_TRUE(dividedQuantity.diagnostic);
-    EXPECT_EQ(dividedQuantity.diagnostic->kind, InputDiagnosticKind::IncompatibleUnit);
 
-    const auto parenthesized = interpretQuantityInput(
+    checkWithGrammars(
         "(1 + 2) mm",
-        QuantityInputGrammar::Expression,
+        3.0,
+        {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
         path,
         Base::Unit::Length,
         enUs,
         InputPhase::Commit,
         lengthConstraints
     );
-    ASSERT_EQ(parenthesized.status, InputStatus::Acceptable);
-    ASSERT_TRUE(parenthesized.quantity);
-    EXPECT_DOUBLE_EQ(parenthesized.quantity->getValue(), 3.0);
-    EXPECT_EQ(parenthesized.quantity->getUnit(), Base::Unit::Length);
 
-    const auto dimensionless = interpretQuantityInput(
+    checkWithGrammars(
         "1 + 2",
-        QuantityInputGrammar::Expression,
+        3.0,
+        {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
         path,
         Base::Unit::One,
         enUs,
         InputPhase::Commit,
         constraints
     );
-    ASSERT_EQ(dimensionless.status, InputStatus::Acceptable);
-    ASSERT_TRUE(dimensionless.quantity);
-    EXPECT_DOUBLE_EQ(dimensionless.quantity->getValue(), 3.0);
-    EXPECT_EQ(dimensionless.quantity->getUnit(), Base::Unit::One);
 }
 
 TEST(QuantityInput, RejectsMalformedGroupingAfterExpressionOperand)
@@ -886,7 +929,7 @@ TEST(QuantityInput, SharedLocalizedInputCorpus)
     }
 }
 
-TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
+TEST(QuantityInput, UnitsPunctuationOperators)
 {
     tests::initApplication();
     ScopedExpressionOwner owner;
@@ -894,13 +937,85 @@ TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
     const QuantityConstraints constraints;
 
     for (const auto& [input, expected] : {
-             std::pair {"-1\" + 0.25\"", -19.05},
              std::pair {"-1\"+0.25\"", -19.05},
+             std::pair {"-1\" + 0.25\"", -19.05},
+             std::pair {"-1\" +0.25\"", -19.05},
+             std::pair {"-1 \" +0.25\"", -19.05},
              std::pair {"-1in+0.25\"", -19.05},
+             std::pair {"1,234.5 mm", 1234.5},
+             std::pair {"1'2,500\"", 63804.8},
+         }) {
+        checkWithGrammars(
+            input,
+            expected,
+            {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+
+    for (const auto& [input, expected] :
+         {std::pair {"1.234,5 mm", 1234.5}, std::pair {"1'2,500\"", 368.3}}) {
+        checkWithGrammars(
+            input,
+            expected,
+            {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
+            path,
+            Base::Unit::Length,
+            deDE,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+}
+
+TEST(QuantityInput, UnaryOperators)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] :
+         {std::pair {"-1\"", -25.4},
+          std::pair {"+1\"", 25.4},
+          std::pair {"(-1\")", -25.4},
+          std::pair {"1\" + -0.25\"", 19.05},
+          std::pair {"1\"+-0.25\"", 19.05},
+          std::pair {"1\"+ -0.25\"", 19.05}}) {
+        checkWithGrammars(
+            input,
+            expected,
+            {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+}
+
+TEST(QuantityInput, QuantityOrExpressionHasValueSemantics)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    QuantityConstraints constraints;
+    constraints.requiredUnit = Base::Unit::Length;
+
+    for (const auto& [input, expected] : {
+             std::pair {"10/2 mm", 5.0},
+             std::pair {"1 mm + 2", 3.0},
+             std::pair {"1 mm + 2 mm", 3.0},
+             std::pair {"10 mm / 2 mm", 5.0},
          }) {
         const auto result = interpretQuantityInput(
             input,
-            QuantityInputGrammar::Expression,
+            QuantityInputGrammar::QuantityFirst,
             path,
             Base::Unit::Length,
             enUs,
@@ -909,8 +1024,62 @@ TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
         );
         ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
         ASSERT_TRUE(result.quantity);
-        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected) << input;
         EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+        EXPECT_FALSE(result.expression) << input;
+    }
+
+    owner.setValue(2.0);
+    const auto reference = interpretQuantityInput(
+        "Value + 3 mm",
+        QuantityInputGrammar::Expression,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        constraints
+    );
+    ASSERT_EQ(reference.status, InputStatus::Acceptable);
+    ASSERT_TRUE(reference.quantity);
+    EXPECT_DOUBLE_EQ(reference.quantity->getValue(), 5.0);
+    EXPECT_TRUE(reference.expression);
+
+    const auto quantityPrecedence = interpretQuantityInput(
+        "10/2 mm",
+        QuantityInputGrammar::QuantityFirst,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        constraints
+    );
+    EXPECT_FALSE(quantityPrecedence.expression);
+}
+
+TEST(QuantityInput, QuantityOrExpressionAcceptsLocalizedUnarySigns)
+{
+    const ObjectIdentifier path;
+    const QuantityConstraints constraints;
+    const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3, "0"};
+
+    for (const auto& [input, expected] : {
+             std::pair {"+1 mm", 1.0},
+             std::pair {"plus1 mm", 1.0},
+             std::pair {"minus1 mm", -1.0},
+             std::pair {"1 + 2 mm", 3.0},
+         }) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::QuantityFirst,
+            path,
+            Base::Unit::Length,
+            custom,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected) << input;
     }
 }
 

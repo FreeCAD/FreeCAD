@@ -399,14 +399,59 @@ App::QuantityInputResult App::interpretQuantityInput(
         }
     }
 
-    if (grammar == QuantityInputGrammar::Quantity && hasAdditiveOperator(input, path, locale)) {
-        return invalid(InputDiagnosticKind::ExpressionSyntax, first);
-    }
-
+    /* We have a grammar for Quantity expressions and one for Expression
+     * expressions.  Expression expressions support variables (referencing
+     * properties) and are serialized in the document.
+     *
+     * Quantity expressions are never serialized and always evaluate to a
+     * value.  The value itself may be stored in a document.  Quantity
+     * expressions are a convenience for input fields to make user input
+     * easier.
+     *
+     * The syntax of the two types of expressions does not necessarily overlap.
+     * In particular, 1/2 mm is evaluated to 0.5 mm in an input field, but as
+     * an expression, it evaluates to 0.5 mm^{-1} because the unit binds
+     * stronger than the division, so it becomes 1 / (2 mm).
+     *
+     * This is unfortunate, but it does make sense that "informal" input 1/2 mm
+     * in an input field evaluates to 0.5 mm because this is likely what the
+     * user means in an input field and the expression is not stored anyway.
+     *
+     * The quantity parser cannot properly make a distinction between a binary
+     * + and a unary +.  Because of this and because of other potential parse
+     * failures, parsing quantity expressions may fall back to the expression
+     * parser with the goal to yield a valid value in most cases.  When it
+     * falls back to the expression syntax, potential differences in syntax
+     * such as the division have already been settled in quantity parsing at
+     * that point.
+     *
+     * All This gives us currently a QuantityInputGrammar::Quantity that exists
+     * mainly for testing purposes, a QuantityInputGrammar::Expression only for
+     * expressions, and a QuantityInputGrammar::QuantityFirst that first
+     * attempts the quantity parser and then falls back to the expression
+     * parser.
+     */
     Base::Quantity quantity;
     std::shared_ptr<Expression> parsedExpression;
+    bool quantityParse = grammar != QuantityInputGrammar::Expression;
     try {
-        if (grammar == QuantityInputGrammar::Expression) {
+        if (grammar == QuantityInputGrammar::QuantityFirst) {
+            // try QuantityFirst first
+            if (hasAdditiveOperator(input, path, locale)) {
+                quantityParse = false;
+            }
+            else {
+                try {
+                    quantity = Base::Quantity::parseUserInput(std::string(input), locale);
+                }
+                catch (const Base::ParserError&) {
+                    // Only syntax errors trigger fallback: keep unit/evaluation failures authoritative.
+                    quantityParse = false;
+                }
+            }
+        }
+        // Expression parser for expression syntax or if the quantity parser above failed.
+        if (!quantityParse) {
             const auto* owner = path.getOwner() ? path.getDocumentObject() : nullptr;
             const std::string inputString(input);
             auto parsed = App::ExpressionParser::parseUserInput(owner, inputString.c_str(), locale);
@@ -441,11 +486,17 @@ App::QuantityInputResult App::interpretQuantityInput(
                 }
                 quantity = number->getQuantity();
             }
-            if (!owner) {
+            if (!owner || (grammar == QuantityInputGrammar::QuantityFirst
+                           && parsedExpression->getDeps().empty())) {
+                // Direct arithmetic is a value edit. Keep formulas with document dependencies.
                 parsedExpression.reset();
             }
         }
-        else {
+        else if (grammar == QuantityInputGrammar::Quantity) {
+            // For quantities only
+            if (hasAdditiveOperator(input, path, locale)) {
+                return invalid(InputDiagnosticKind::ExpressionSyntax, first);
+            }
             quantity = Base::Quantity::parseUserInput(std::string(input), locale);
         }
     }
@@ -459,7 +510,7 @@ App::QuantityInputResult App::interpretQuantityInput(
         return invalid(InputDiagnosticKind::Evaluation);
     }
 
-    if (grammar == QuantityInputGrammar::Quantity && quantity.isDimensionless()
+    if (quantityParse && quantity.isDimensionless()
         && !implicitUnit.isDimensionless()) {
         quantity.setValue(quantity.getValue() * implicitUnit.getScale().getValue());
         quantity.setUnit(implicitUnit.getUnit());
