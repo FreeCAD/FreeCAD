@@ -8,7 +8,6 @@ from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.toolbit import ToolBit, ToolBitEndmill
 from Path.Tool.toolbit.serializers import (
     FCTBSerializer,
-    CamoticsToolBitSerializer,
     YamlToolBitSerializer,
 )
 from Path.Tool.assets.asset import Asset
@@ -62,54 +61,6 @@ class _BaseToolBitSerializerTestCase:
         dependencies = self.serializer_class.extract_dependencies(serialized_data)
         self.assertIsInstance(dependencies, list)
         self.assertEqual(len(dependencies), 0)
-
-
-class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
-    serializer_class = CamoticsToolBitSerializer
-
-    def test_serialize(self):
-        super().test_serialize()
-        serialized_data = self.serializer_class.serialize(self.test_tool_bit)
-        # Camotics specific assertions
-        expected_substrings = [
-            b'"units": "metric"',
-            b'"shape": "Cylindrical"',
-            b'"length": 15',
-            b'"diameter": 4.12',
-            b'"description": "Test Tool"',
-        ]
-        for substring in expected_substrings:
-            self.assertIn(substring, serialized_data)
-
-    def test_serialize_ball_end_shapes(self):
-        """A ball end and a lollipop both go to CAMotics as Ballnose."""
-        for bit_id in ("6mm_Ball_End", "250_Lollipop"):
-            with self.subTest(bit=bit_id):
-                serialized_data = self.serializer_class.serialize(
-                    self.assets.get(f"toolbit://{bit_id}")
-                )
-                self.assertIn(b'"shape": "Ballnose"', serialized_data)
-
-    def test_deserialize(self):
-        # Create a known serialized data string based on the Camotics format
-        camotics_data = (
-            b'{"units": "metric", "shape": "Cylindrical", "length": 15, '
-            b'"diameter": 4.12, "description": "Test Tool"}'
-        )
-        deserialized_bit = cast(
-            ToolBitEndmill,
-            self.serializer_class.deserialize(camotics_data, id="test_id", dependencies=None),
-        )
-
-        self.assertIsInstance(deserialized_bit, ToolBit)
-        self.assertEqual(deserialized_bit.label, "Test Tool")
-        self.assertEqual(
-            deserialized_bit.get_diameter(), FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length)
-        )
-        self.assertEqual(
-            deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
-        )
-        self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
 
 
 class TestFCTBSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):

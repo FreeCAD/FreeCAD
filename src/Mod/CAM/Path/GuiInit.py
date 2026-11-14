@@ -20,7 +20,6 @@
 ################################################################################
 
 import Path
-import subprocess
 
 LOGLEVEL = False
 
@@ -86,24 +85,6 @@ def Startup():
         from Path.Tool.Gui import Controller
 
         from PathScripts import PathUtilsGui
-
-        from packaging.version import Version, parse, InvalidVersion
-
-        # If camotics is installed and current enough, import the GUI
-        try:
-            import camotics
-
-            r = subprocess.run(
-                ["camotics", "--version"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            ).stderr.strip()
-
-            v = parse(r.decode("utf-8"))
-            if v >= Version("1.2.2"):
-                from Path.Main.Gui import Camotics
-        except (FileNotFoundError, ModuleNotFoundError, InvalidVersion):
-            pass
 
         Processed = True
     else:

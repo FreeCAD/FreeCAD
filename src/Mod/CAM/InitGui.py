@@ -106,8 +106,6 @@ class CAMWorkbench(Workbench):
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
         import PathCommands
-        import subprocess
-        from packaging.version import Version, parse
 
         FreeCADGui.addPreferencePage(
             AssetPreferences.AssetPreferencesPage,
@@ -233,23 +231,6 @@ class CAMWorkbench(Workbench):
             engravecmdlist.append("CAM_Flute")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
-            try:
-                r = subprocess.run(
-                    ["camotics", "--version"], capture_output=True, text=True
-                ).stderr.strip()
-                v = parse(r)
-
-                if v >= Version("1.2.2"):
-                    toolcmdlist.append("CAM_Camotics")
-            except (FileNotFoundError, ModuleNotFoundError):
-                pass
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to execute camotics command: {e}")
-            except ValueError as ve:
-                print(f"Version error: {ve}")
-            except Exception as ex:
-                print(f"An unexpected error occurred: {ex}")
-
             try:
                 try:
                     import ocl  # pylint: disable=unused-variable
