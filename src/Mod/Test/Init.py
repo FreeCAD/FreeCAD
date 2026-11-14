@@ -37,4 +37,5 @@ FreeCAD.__unit_test__ += [
     "UnicodeTests",
     "TestPythonSyntax",
     "TestCrashReporter",
+    "TestPropertyFlags",
 ]
