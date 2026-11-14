@@ -57,3 +57,12 @@ TEST_F(ApplicationTest, fCustomSyntaxEmptyIn)
     Spr exp {"", ""};
     EXPECT_EQ(res, exp);
 };
+
+TEST_F(ApplicationTest, processFilesSkipsArgumentThatIsNotAPath)
+{
+    // Python code passed in console mode, with a line longer than NAME_MAX
+    std::string code = "# " + std::string(300, 'x') + "\nprint('reached')";
+    std::list<std::string> processed;
+    EXPECT_NO_THROW(processed = App::Application::processFiles({code}));
+    EXPECT_TRUE(processed.empty());
+}
