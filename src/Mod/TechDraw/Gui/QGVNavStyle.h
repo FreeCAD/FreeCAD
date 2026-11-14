@@ -96,9 +96,6 @@ public:
     virtual void startClick(Qt::MouseButton b);
     virtual void stopClick();
 
-    virtual void placeBalloon(QPoint p);
-    virtual void balloonCursorMovement(QMouseEvent *event);
-
 protected:
     virtual void initialize();
     virtual void setAnchor();
