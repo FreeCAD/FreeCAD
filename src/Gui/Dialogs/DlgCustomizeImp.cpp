@@ -95,8 +95,14 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     // connections
     //
-    connect(buttonHelp, &QPushButton::clicked, getMainWindow(), &MainWindow::whatsThis);
+    connect(buttonHelp, &QPushButton::clicked, this, &DlgCustomizeImp::onButtonHelpClicked);
     connect(buttonClose, &QPushButton::clicked, this, &QDialog::close);
+}
+
+void DlgCustomizeImp::onButtonHelpClicked()
+{
+    // Ideally the button would consider the active tab and launch to the specific help doc.
+    Gui::getMainWindow()->showDocumentation(QStringLiteral("Interface_Customization"));
 }
 
 /**
