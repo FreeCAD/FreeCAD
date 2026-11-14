@@ -35,6 +35,7 @@ std::unique_ptr<XMLTranscoder> XMLTools::transcoder;  // NOLINT
 void XMLTools::initialize()
 {
     if (!transcoder) {
+        XMLPlatformUtils::Initialize();
         XMLTransService::Codes res {};
         transcoder.reset(
             XMLPlatformUtils::fgTransService
@@ -157,7 +158,10 @@ std::string XMLTools::escapeXml(const std::string& input)
 
 void XMLTools::terminate()
 {
-    transcoder.reset();
+    if (transcoder) {
+        transcoder.reset();
+        XMLPlatformUtils::Terminate();
+    }
 }
 
 void* XStrMemoryManager::allocate(XMLSize_t size)

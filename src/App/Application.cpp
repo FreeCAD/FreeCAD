@@ -46,6 +46,7 @@
 # include <utility>
 # include <set>
 # include <string>
+# include <string_view>
 # include <list>
 # include <algorithm>
 # include <iostream>
@@ -110,6 +111,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/UnitsModulePy.h>
 #include <Base/VectorPy.h>
+#include <Base/XMLTools.h>
 
 #include "Annotation.h"
 #include "Application.h"
@@ -1501,7 +1503,7 @@ ParameterManager * Application::GetParameterSet(const char* sName) const
     return it != mpcPramManager.end() ? it->second : nullptr;
 }
 
-const std::map<std::string,Base::Reference<ParameterManager>> &
+const std::map<std::string,Base::Reference<ParameterManager>,std::less<>> &
 Application::GetParameterSetList() const
 {
     return mpcPramManager;
@@ -1526,24 +1528,28 @@ void Application::RemoveParameterSet(const char* sName)
 
 Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* sName)
 {
-    std::string cName = sName, cTemp;
+    if (!sName) {
+        throw Base::ValueError("Application::GetParameterGroupByPath() called with null parameter name");
+    }
 
-    const std::string::size_type pos = cName.find(':');
+    const std::string_view cName = sName;
+
+    const std::string_view::size_type pos = cName.find(':');
 
     // is there a path separator ?
     if (pos == std::string::npos) {
         throw Base::ValueError("Application::GetParameterGroupByPath() no parameter set name specified");
     }
     // assigning the parameter set name
-    cTemp.assign(cName,0,pos);
-    cName.erase(0,pos+1);
+    const std::string_view cTemp = cName.substr(0, pos);
 
     // test if name is valid
     const auto It = mpcPramManager.find(cTemp);
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
-    return It->second->GetGroup(cName.c_str());
+    const std::string cPath(cName.substr(pos + 1));
+    return It->second->GetGroup(cPath.c_str());
 }
 
 void Application::addImportType(const char* filter, const char* moduleName)
@@ -2040,7 +2046,7 @@ void Application::destruct()
     auto& paramMgr = _pcSingleton->mpcPramManager;
     for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
-            if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
+            if (it.second->HasFileName() && !it.second->IgnoreSave()) {
                 Base::Console().log("Saving {}...\n", it.first);
                 it.second->SaveDocument();
                 Base::Console().log("Saving {}...done\n", it.first);
@@ -2071,7 +2077,7 @@ void Application::destruct()
     Base::ScriptFactorySingleton::Destruct();
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
-    ParameterManager::Terminate();
+    XMLTools::terminate();
     SafeMode::Destruct();
 }
 
@@ -2143,6 +2149,8 @@ void Application::init(int argc, char ** argv)
         Base::SystemHandler::installSegfaultHandler();
 
         initTypes();
+
+        XMLTools::initialize();
 
         initConfig(argc,argv);
 
@@ -3314,10 +3322,10 @@ void Application::LoadParameters()
 
     // create standard parameter sets
     _pcSysParamMngr = ParameterManager::Create();
-    _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
+    _pcSysParamMngr->SetFileName(mConfig["SystemParameter"]);
 
     _pcUserParamMngr = ParameterManager::Create();
-    _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
+    _pcUserParamMngr->SetFileName(mConfig["UserParameter"]);
 
     try {
         if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
