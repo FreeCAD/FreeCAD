@@ -24,6 +24,11 @@
 
 #pragma once
 
+#include <map>
+#include <set>
+
+#include <boost/uuid/uuid.hpp>
+
 #include <QPixmap>
 #include <QCoreApplication>
 
@@ -118,10 +123,6 @@ private:
     );
     static inline void drawLineExtensionAutoConstraintHint(
         ViewProviderSketch& vp,
-        const std::vector<Base::Vector2d>& HintCurve
-    );
-    static inline bool isLineExtensionAutoConstraintHintVisible(
-        const ViewProviderSketch& vp,
         const std::vector<Base::Vector2d>& HintCurve
     );
     static inline void drawEditMarkers(
@@ -289,7 +290,6 @@ protected:
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
     void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
     void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve) const;
-    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
         unsigned int augmentationlevel = 0
@@ -400,14 +400,15 @@ protected:
         const Base::Vector2d& Pos,
         AutoConstraint::TargetType type
     );
+    void seekPointAlignmentAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        AutoConstraint::TargetType type
+    );
 
     void resetLineExtensionAutoConstraintHint();
     void renderLineExtensionAutoConstraintHint() const;
 
-    bool isLineExtensionAutoConstraintHintVisible(
-        const Base::Vector2d& start,
-        const Base::Vector2d& end
-    ) const;
     bool getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const;
 
     void resetTangentAutoConstraintHint();
@@ -442,12 +443,27 @@ protected:
     int currentTransactionID {0};
 
 private:
+    struct AutoConstraintHintReference
+    {
+        int geoId {Sketcher::GeoEnum::GeoUndef};
+        Sketcher::PointPos posId {Sketcher::PointPos::none};
+        boost::uuids::uuid geometryTag {};
+
+        bool operator==(const AutoConstraintHintReference&) const = default;
+    };
+
+    AutoConstraintHintReference getHoveredHintReference(const PreselectionData& preselection) const;
+    bool isAutoConstraintHintReference(int geoId, Sketcher::PointPos posId) const;
+
+    // Preserve across continuous creation resets; geometry tags survive reindexing.
+    std::set<boost::uuids::uuid> geometryTagsAtToolStart;
+    std::map<boost::uuids::uuid, std::set<Sketcher::PointPos>> autoConstraintHintReferences;
+    AutoConstraintHintReference lastHoveredHintReference;
     LineExtensionAutoConstraintHint lineExtensionAutoConstraintHint;
     TangentAutoConstraintHint tangentAutoConstraintHint;
     int parallelPerpendicularRefGeoId {Sketcher::GeoEnum::GeoUndef};
     int parallelPerpendicularActiveHintLine {-1};
     bool parallelPerpendicularRefFromEndpoint {false};
-    int lastHoveredGeoId {Sketcher::GeoEnum::GeoUndef};
     QTimer* hoverTimer {nullptr};
 };
 
