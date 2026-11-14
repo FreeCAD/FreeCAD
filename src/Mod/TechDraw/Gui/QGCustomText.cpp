@@ -47,17 +47,12 @@ using namespace TechDrawGui;
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
     QGraphicsTextItem(parent),
     tightBounding(false),
-    m_colNormal(getNormalColor()),
-    m_background(new QGraphicsRectItem(this)),
-    m_backgroundState(false)
+    m_colNormal(getNormalColor())
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-
-    m_background->setFlag(QGraphicsItem::ItemStacksBehindParent);
-    m_background->hide();
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
@@ -179,7 +174,6 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     // Remove HasFocus state to prevent the dashed rectangle from being drawn
     myOption.state &= ~QStyle::State_HasFocus;
     myOption.state &= ~QStyle::State_Selected;
-    paintBackground();
 
 //    painter->setPen(Qt::green);
 //    painter->drawRect(alignmentRect());          //good for debugging
@@ -354,19 +348,6 @@ void QGCustomText::checkCursorChange()
     }
 
     m_lastCursor = currentCursor;
-}
-
-void  QGCustomText::paintBackground()
-{
-    if (!m_backgroundState) {
-        m_background->hide();
-        return;
-    }
-    m_background->setRect(tightBoundingRect());
-    QColor backgroundColor = PreferencesGui::pageQColor();
-    m_background->setBrush(QBrush(backgroundColor));
-    m_background->setPen(QPen(Qt::NoPen));
-    m_background->show();
 }
 
 #include <Mod/TechDraw/Gui/moc_QGCustomText.cpp>

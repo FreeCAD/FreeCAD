@@ -122,6 +122,7 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGraphicsRectItem* m_background;
     QGraphicsItemGroup* m_textItems;
     QGraphicsRectItem* m_frame;
     QColor m_colNormal;
@@ -129,8 +130,6 @@ private:
 
     DragState m_dragState;
     bool m_inhibitSnapOnPosChange{false};
-
-private:
 };
 
 }  // namespace TechDrawGui

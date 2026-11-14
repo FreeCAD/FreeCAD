@@ -75,6 +75,9 @@ QGIDatumLabel::QGIDatumLabel() : m_dragState(DragState::NoDrag)
     m_unitText->setTightBounding(true);
     m_unitText->setParentItem(m_textItems);
 
+    m_background = new QGraphicsRectItem(this);  // ?? m_textItems
+    m_background->setFlag(QGraphicsItem::ItemStacksBehindParent);
+
     m_frame = new QGraphicsRectItem();
     QPen framePen;
     framePen.setWidthF(Rez::guiX(0.5));
@@ -427,15 +430,13 @@ void QGIDatumLabel::updateChildren()
     m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() + tol_adj.y()/2.0, false);
 
     if (showTextBackground()) {
-        m_dimText->setBackgroundOn(true);
-        m_tolTextOver->setBackgroundOn(true);
-        m_tolTextUnder->setBackgroundOn(true);
-        m_unitText->setBackgroundOn(true);
+        QColor backgroundColor = PreferencesGui::pageQColor();
+        m_background->setBrush(QBrush(backgroundColor));
+        m_background->setPen(QPen(Qt::NoPen));
+        m_background->setRect(tightBoundingRect());
+        m_background->show();
     } else {
-        m_dimText->setBackgroundOn(false);
-        m_tolTextOver->setBackgroundOn(false);
-        m_tolTextUnder->setBackgroundOn(false);
-        m_unitText->setBackgroundOn(false);
+        m_background->hide();
     }
 }
 
