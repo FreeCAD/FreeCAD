@@ -359,8 +359,11 @@ void ViewProviderDocumentObject::show()
         return;
     }
 
-    // use this bit to check whether 'Visibility' must be adjusted
-    if (!Visibility.testStatus(App::Property::User2)) {
+    // use this bit to check whether 'Visibility' must be adjusted.
+    // PropertyBool::setValue signals even when the stored value does not
+    // change, and TouchDocument then marks the Gui document modified.
+    // Showing an object that is already visible must not ask the user to save.
+    if (!Visibility.testStatus(App::Property::User2) && !Visibility.getValue()) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
