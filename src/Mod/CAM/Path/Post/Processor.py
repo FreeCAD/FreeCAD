@@ -1843,8 +1843,10 @@ class PostProcessor:
         """Inject or remove bCNC block annotation commands.
 
         When OUTPUT_BCNC is True, injects bCNC block-name, block-expand,
-        and block-enable commands at the start of each operation's path,
+        and block-enable commands before each operation,
         and stores postamble commands for later insertion.
+
+        Returns the new postable list. The caller must keep the result.
 
         When OUTPUT_BCNC is False, removes any existing bCNC commands.
 
@@ -1873,7 +1875,7 @@ class PostProcessor:
                             Path.Command("(Block-enable: 1)", {}, {"bcnc": "block_meta"}),
                         ],
                     )
-                    return 1, [new_postable]
+                    return -1, [new_postable]
                 else:
                     return None, None
 
@@ -2932,11 +2934,10 @@ class PostProcessor:
                 section.extend(trailing)
 
     def _expand_bcnc_postamble(self, postables) -> None:
-        """Append bCNC postamble to the last section only.
+        """Append the bCNC postamble block header to each section.
 
-        bCNC postamble tracks global state across all sections; proper
-        per-section bCNC support in split mode requires per-section
-        tracking (future work).
+        Call this before _expand_trailing_lines, so that the block
+        contains the post_job and postamble lines.
         """
         if self._bcnc_postamble_commands:
             for _, sections in postables:
@@ -3029,6 +3030,8 @@ class PostProcessor:
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
+        # Before _expand_pre_item: the bCNC block header comes before the pre-operation lines
+        postables = self._expand_bcnc_commands(postables)
         postables = self._expand_pre_item(postables)
 
         self._expand_rapid_feed(postables)
@@ -3039,15 +3042,13 @@ class PostProcessor:
         self._expand_coolant_delay(postables)
         self._expand_translate_rapids(postables)
         self._expand_xy_before_z(postables)
-        self._expand_bcnc_commands(postables)
         self._expand_tool_change(postables)
 
         postables = self._expand_post_item(postables)
+        # Before _expand_trailing_lines: the bCNC block contains the post_job and postamble lines
+        self._expand_bcnc_postamble(postables)
         self._expand_trailing_lines(postables)
         self._expand_rotary_move(postables)
-
-        # must be last expansion
-        self._expand_bcnc_postamble(postables)
 
         # must be after all expansions
         self._optimize_duplicates_doubles(postables)

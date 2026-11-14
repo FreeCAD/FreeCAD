@@ -1437,6 +1437,33 @@ G1 X20.000 Y10.000 F6000.000
                     lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
                 )
 
+    def test104_bcnc_block_position(self):
+        """
+        Test that the bCNC block headers are in the correct position:
+            - each operation has a block header before its first move
+            - the post_amble block header is before the postamble lines
+        """
+        machine = self._create_machine(output_bcnc_comments=True, comments_enabled=False)
+        machine.postprocessor_properties["postamble"] = "M2"
+
+        results = self._run_export2(machine)
+        gcode = self._get_first_section_gcode(results)
+        lines = gcode.split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertGreater(len(names), 1, "Each operation should have a bCNC block header")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertEqual(names.count("(Block-name: post_amble)"), 1)
+
+        first_move = next(i for i, l in enumerate(lines) if l.startswith(("G0", "G1")))
+        self.assertLess(
+            lines.index(names[0]), first_move, "Operation block header should precede its moves"
+        )
+
+        post_amble = lines.index("(Block-name: post_amble)")
+        last_m2 = len(lines) - 1 - lines[::-1].index("M2")
+        self.assertLess(post_amble, last_m2, "post_amble block should precede the postamble")
+
     # ===== 110-119: _expand_tool_change tests =====
 
     def test110_tool_length_offset_enabled(self):
