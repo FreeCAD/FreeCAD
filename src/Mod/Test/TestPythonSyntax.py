@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 looooo
+
 # ***************************************************************************
 # *   Copyright (c) 2018 looooo <sppedflyer@gmail.com>                      *
 # *                                                                         *
@@ -21,32 +24,35 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import os
 import ast
 import unittest
+import warnings
+from pathlib import Path
+
 import FreeCAD as App
 
 
-def test_python_syntax(rootdir, whitelist=None):
+def test_python_syntax(rootdir: Path, whitelist=None):
     whitelist = whitelist or []
     log = []
-    for sub_dir, dirs, files in os.walk(rootdir):
-        for fn in files:
-            kargs = {}
-            kargs["encoding"] = "utf-8"
-            if (not fn in whitelist) and os.path.splitext(fn)[1] == ".py":
-                with open(os.path.join(sub_dir, fn), **kargs) as py_file:
-                    try:
+    for file in rootdir.rglob("*.py"):
+        if any(rootdir / directory in file.parents for directory in whitelist):
+            continue
+        if file.is_file():
+            with file.open(encoding="utf-8") as py_file:
+                try:
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("error", SyntaxWarning)
                         ast.parse(py_file.read())
-                    except SyntaxError as err:
-                        log.append(str(err).replace("<unknown>", os.path.join(sub_dir, fn)))
-    message = "\n\n" + "#" * 30 + "\n"
-    message += "{} python files are not parseable:\n\n".format(len(log))
+                except SyntaxError as err:
+                    log.append(str(err).replace("<unknown>", str(file)))
+    message = f"\n\n{'#' * 30}\n"
+    message += f"{len(log)} python files are not parseable:\n\n"
     for i, m in enumerate(log):
-        message += str(i + 1) + " " + m + "\n"
+        message += f"{i + 1} {m}\n"
     if log:
         raise RuntimeError(
-            "there are some files not parse-able with the used python-interpreter" + message
+            f"there are some files not parse-able with the used python-interpreter{message}"
         )
     else:
         return
@@ -54,18 +60,10 @@ def test_python_syntax(rootdir, whitelist=None):
 
 class PythonSyntaxTestCase(unittest.TestCase):
     """
-    Test Case to test python syntax of all python files in FreeCAD
+    Test that all python files in FreeCAD have valid syntax
     """
 
-    def setUp(self):
-        self.whitelist = []
-        self.whitelist += [
-            "ap203_configuration_controlled_3d_design_of_mechanical_parts_and_assemblies_mim_lf.py"
-        ]
-        self.whitelist += ["automotive_design.py"]
-        self.whitelist += ["ifc2x3.py"]
-        self.whitelist += ["ifc4.py"]
-
     def testAll(self):
-        mod_dir = os.path.join(App.getHomePath(), "Mod")
-        test_python_syntax(mod_dir, self.whitelist)
+        mod_dir = Path(App.getHomePath()) / "Mod"
+        whitelist = ["pivy"]  # 3rd-party code
+        test_python_syntax(mod_dir, whitelist=whitelist)
