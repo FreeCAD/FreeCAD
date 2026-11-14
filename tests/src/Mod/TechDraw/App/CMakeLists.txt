@@ -3,4 +3,5 @@
 add_executable(TechDraw_tests_run
         CosmeticExtension.cpp
         LineFormat.cpp
+        ViewPlacement.cpp
 )
