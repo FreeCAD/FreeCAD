@@ -51,6 +51,8 @@
 #include <format>
 #include <list>
 #include <ranges>
+#include <utility>
+#include <vector>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -107,6 +109,7 @@
 #include "SelectionModulePy.h"
 #include "SoQtOffscreenRendererPy.h"
 #include "SpaceMouseParameter.h"
+#include "SplashScreen.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
 #include "TaskView/TaskView.h"
@@ -533,12 +536,6 @@ Application::Application(bool GUIenabled)
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
         // NOLINTEND
-        // install the last active language
-        ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-        hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
-        QString lang = QLocale::languageToString(QLocale().language());
-        Translator::instance()->activateLanguage(
-            hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
         // Coin3d disables VBO support for some (typically very old) drivers and hardware.
@@ -2618,7 +2615,43 @@ void runEventLoop(GUISingleApplication& mainApp)
 }
 }  // namespace
 
-void Application::runApplication()
+namespace
+{
+int qtArgc = 0;                         // NOLINT
+std::vector<char*> qtArgv;              // NOLINT
+GUISingleApplication* qtApp = nullptr;  // NOLINT
+SplashScreen* splash = nullptr;         // NOLINT
+
+// Make sure that we use '.' as decimal point. See also
+// http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
+// and issue #0002891
+// http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
+void resetNumericLocale()
+{
+    setlocale(LC_NUMERIC, "C");
+}
+
+void showSplash()
+{
+    // when running in verbose mode no splasher
+    if ((App::Application::Config()["Verbose"] == "Strict")
+        || (App::Application::Config()["RunMode"] != "Gui") || Application::hiddenMainWindow()) {
+        return;
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+
+    if (hGrp->GetBool("ShowSplasher", true)) {
+        splash = new SplashScreen(Gui::SplashScreen::splashImage());
+        splash->setShowMessages(hGrp->GetBool("ShowSplasherMessages", true));
+        splash->show();
+    }
+}
+}  // namespace
+
+bool Application::startApplication()
 {
     StartupProcess::setupApplication();
 
@@ -2648,10 +2681,11 @@ void Application::runApplication()
     }
 
     // A new QApplication
-    Base::Console().log("Init: Creating Gui::Application and QApplication\n");
+    Base::Console().log("Init: Creating QApplication\n");
 
-    int argc = App::Application::GetARGC();
-    GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    qtArgc = App::Application::GetARGC();
+    qtArgv.assign(App::Application::GetARGV(), App::Application::GetARGV() + qtArgc + 1);
+    qtApp = new GUISingleApplication(qtArgc, qtArgv.data());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
     && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))
@@ -2661,15 +2695,12 @@ void Application::runApplication()
     }
 #endif
 
-    // Make sure that we use '.' as decimal point. See also
-    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
-    // and issue #0002891
-    // http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
-    setlocale(LC_NUMERIC, "C");
+    resetNumericLocale();
 
     // check if a single or multiple instances can run
-    if (onlySingleInstance(mainApp)) {
-        return;
+    if (onlySingleInstance(*qtApp)) {
+        destroyApplication();
+        return false;
     }
 
     setAppNameAndIcon();
@@ -2677,9 +2708,33 @@ void Application::runApplication()
     StartupProcess process;
     process.execute();
 
+    // Show the splash as soon as possible. It needs the image search paths and, as it
+    // contains translated text, the language.
+    activateLanguage();
+    showSplash();
+
+    return true;
+}
+
+void Application::destroyApplication()
+{
+    hideSplash(nullptr);
+    delete std::exchange(qtApp, nullptr);
+}
+
+void Application::runApplication()
+{
+    // also makes sure the splash does not outlive a failed startup
+    auto qtAppGuard = qScopeGuard([]() { destroyApplication(); });
+
+    Q_ASSERT(qtApp);  // created by startApplication()
+
+    resetNumericLocale();
     Application app(true);
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
+    // the splash processes events with each message, close it before the main window is gone
+    auto splashMainWindowGuard = qScopeGuard([]() { hideSplash(nullptr); });
 
     // Destroy deferred views while their GUI and Python owners are still alive.
     auto shutdownGuard = qScopeGuard([&app]() { app.shutdown(); });
@@ -2692,10 +2747,10 @@ void Application::runApplication()
     SoDebugError::setHandlerCallback(messageHandlerCoin, 0);
 #endif
 
-    StartupPostProcess postProcess(&mw, app, &mainApp);
+    StartupPostProcess postProcess(&mw, app, qtApp);
     postProcess.execute();
 
-    init3DMouse(&mw, &mainApp);
+    init3DMouse(&mw, qtApp);
 
     Instance->d->startingUp = false;
 
@@ -2709,7 +2764,10 @@ void Application::runApplication()
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
-    runEventLoop(mainApp);
+    // process the messages received from other instances while starting up
+    QTimer::singleShot(0, qtApp, SLOT(processMessages()));
+
+    runEventLoop(*qtApp);
 
     Base::Console().log("Finish: Event loop left\n");
 }
@@ -2721,7 +2779,7 @@ void Application::shutdown()
     QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 }
 
-void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
+void Application::init3DMouse(MainWindow* mainWindow, QApplication* app)
 {
     Instance->pNavlibInterface = nullptr;
 #ifdef USE_3DCONNEXION_NAVLIB
@@ -2745,7 +2803,7 @@ void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
 #endif
     if (!Instance->pNavlibInterface) {
         // initialize spaceball.
-        if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
+        if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(app)) {
             Base::Console().log("Init: Initializing 3D mouse event handling\n");
             fcApp->initSpaceball(mainWindow);
         }
@@ -2758,6 +2816,36 @@ bool Application::hiddenMainWindow()
     auto it = cfg.find("StartHidden");
 
     return it != cfg.end();
+}
+
+void Application::activateLanguage()
+{
+    ParameterGrp::handle hPGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    QString lang = QLocale::languageToString(QLocale().language());
+    Translator::instance()->activateLanguage(
+        hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str()
+    );
+}
+
+void Application::freezeSplash()
+{
+    if (splash) {
+        splash->setShowMessages(false);
+    }
+}
+
+void Application::hideSplash(QWidget* window)
+{
+    SplashScreen* s = std::exchange(splash, nullptr);
+    if (s && window) {
+        s->setAttribute(Qt::WA_DeleteOnClose);
+        s->finish(window);
+    }
+    else {
+        delete s;
+    }
 }
 
 bool Application::testStatus(Status pos) const
@@ -2827,7 +2915,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
     if (!qssFile.isEmpty()) {
         // Search for stylesheet in user-defined search paths.
-        // For qss they are set-up in runApplication() with the prefix "qss"
+        // For qss they are set-up in startApplication() with the prefix "qss"
         QString prefix(QLatin1String("qss:"));
 
         QFile f;

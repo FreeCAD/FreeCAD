@@ -22,6 +22,7 @@
 
 #include <format>
 #include <string_view>
+#include <utility>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
@@ -30,12 +31,13 @@
 #include <QFileInfo>
 #include <QFontDatabase>
 #include <QFontMetricsF>
-#include <QMutex>
 #include <QPainter>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QScopedValueRollback>
+#include <QStyle>
 #include <QThread>
-#include <QWaitCondition>
+#include <QTimer>
 #include <QWindow>
 
 #include <App/Application.h>
@@ -62,50 +64,10 @@ public:
     SplashObserver& operator=(const SplashObserver&) = delete;
     SplashObserver& operator=(SplashObserver&&) = delete;
 
-    explicit SplashObserver(QSplashScreen* splasher = nullptr)
+    explicit SplashObserver(SplashScreen* splasher = nullptr)
         : splash(splasher)
-        , alignment(Qt::AlignBottom | Qt::AlignLeft)
-        , textColor(Qt::black)
     {
         Base::Console().attachObserver(this);
-
-        // allow to customize text position and color
-        const std::map<std::string, std::string>& cfg = App::Application::Config();
-        auto al = cfg.find("SplashAlignment");
-        if (al != cfg.end()) {
-            QString alt = QString::fromLatin1(al->second.c_str());
-            int align = 0;
-            if (alt.startsWith(QLatin1String("VCenter"))) {
-                align = Qt::AlignVCenter;
-            }
-            else if (alt.startsWith(QLatin1String("Top"))) {
-                align = Qt::AlignTop;
-            }
-            else {
-                align = Qt::AlignBottom;
-            }
-
-            if (alt.endsWith(QLatin1String("HCenter"))) {
-                align += Qt::AlignHCenter;
-            }
-            else if (alt.endsWith(QLatin1String("Right"))) {
-                align += Qt::AlignRight;
-            }
-            else {
-                align += Qt::AlignLeft;
-            }
-
-            alignment = align;
-        }
-
-        // choose text color
-        auto tc = cfg.find("SplashTextColor");
-        if (tc != cfg.end()) {
-            QColor col(QString::fromStdString(tc->second));
-            if (col.isValid()) {
-                textColor = col;
-            }
-        }
     }
     ~SplashObserver() override
     {
@@ -138,33 +100,31 @@ public:
     }
     void Log(const std::string& text)
     {
-        QString msg(QString::fromStdString(text));
-        QRegularExpression rx;
         // ignore 'Init:' and 'Mod:' prefixes
-        rx.setPattern(QLatin1String("^\\s*(Init:|Mod:)\\s*"));
-        auto match = rx.match(msg);
+        static const QRegularExpression rxPrefix(QLatin1String("^\\s*(Init:|Mod:)\\s*"));
+        // ignore activation of commands
+        static const QRegularExpression rxCommand(
+            QLatin1String(R"(^\s*(\+App::|Create|CmdC:|CmdG:|Act:)\s*)")
+        );
+
+        QString msg(QString::fromStdString(text));
+        auto match = rxPrefix.match(msg);
         if (match.hasMatch()) {
             msg = msg.mid(match.capturedLength());
         }
         else {
-            // ignore activation of commands
-            rx.setPattern(QLatin1String(R"(^\s*(\+App::|Create|CmdC:|CmdG:|Act:)\s*)"));
-            match = rx.match(msg);
+            match = rxCommand.match(msg);
             if (match.hasMatch() && match.capturedStart() == 0) {
                 return;
             }
         }
 
-        splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
-        QMutex mutex;
-        QMutexLocker ml(&mutex);
-        QWaitCondition().wait(&mutex, 50);
+        msg.remove(QLatin1Char('\n'));
+        QMetaObject::invokeMethod(splash, [splash = splash, msg]() { splash->pushMessage(msg); });
     }
 
 private:
-    QSplashScreen* splash;
-    int alignment;
-    QColor textColor;
+    SplashScreen* splash;
 };
 
 /**
@@ -267,9 +227,77 @@ static QFont defaultSplashFont(const QFont& fallback)
  */
 SplashScreen::SplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
     : QSplashScreen(pixmap, f | Qt::NoDropShadowWindowHint)
+    , hAlignment(Qt::AlignLeft)
+    , vAlignment(Qt::AlignBottom)
+    , textColor(Qt::black)
 {
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
+    auto tc = cfg.find("SplashTextColor");
+    if (tc != cfg.end()) {
+        QColor col(QString::fromStdString(tc->second));
+        if (col.isValid()) {
+            textColor = col;
+        }
+    }
+
+    auto al = cfg.find("SplashAlignment");
+    const std::string alignment = al != cfg.end() ? al->second : std::string();
+    if (alignment.starts_with("Top")) {
+        vAlignment = Qt::AlignTop;
+    }
+    else if (alignment.starts_with("VCenter")) {
+        vAlignment = Qt::AlignVCenter;
+    }
+    if (alignment.ends_with("HCenter")) {
+        hAlignment = Qt::AlignHCenter;
+    }
+    else if (alignment.ends_with("Right")) {
+        hAlignment = Qt::AlignRight;
+    }
+
+    setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+
     // write the messages to splasher
     messages = new SplashObserver(this);
+}
+
+void SplashScreen::updateLayout()
+{
+    const QFontMetrics fm = fontMetrics();
+    const QPixmap pm = pixmap();
+    const qreal dpr = pm.devicePixelRatio();
+    const int height = qRound(pm.height() / dpr);
+    const int width = qRound(pm.width() / dpr);
+    const int margin = height / 50;
+    startX = width / 50;
+    maxWidth = width - 2 * startX;
+
+    if (vAlignment == Qt::AlignTop) {
+        startY = margin + fm.ascent();
+    }
+    else if (vAlignment == Qt::AlignVCenter) {
+        startY = (height + fm.ascent() - fm.descent()) / 2;
+    }
+    else {
+        startY = height - margin - fm.descent();
+    }
+
+    const int available = height / 4 - margin - fm.height();
+    lineCount = std::max(1, available / fm.lineSpacing() + 1);
+    if (lines.size() > lineCount) {
+        lines.resize(lineCount);
+    }
+
+    const int lastY = startY + static_cast<int>(lineCount - 1) * lineStep();
+    const int top = std::min(startY, lastY) - fm.ascent();
+    const int bottom = std::max(startY, lastY) + fm.descent();
+    textRect = QRect(0, top, width, bottom - top + 1);
+}
+
+int SplashScreen::lineStep() const
+{
+    const int spacing = fontMetrics().lineSpacing();
+    return vAlignment == Qt::AlignTop ? spacing : -spacing;
 }
 
 /** Destruction. */
@@ -280,8 +308,29 @@ SplashScreen::~SplashScreen()
 
 void SplashScreen::finish(QWidget* w)
 {
-    Q_UNUSED(w);
-    close();
+    // Stop listening now, the deferred delete may run from within a console notification
+    delete std::exchange(messages, nullptr);
+
+    // Unlike QSplashScreen::finish() do not wait for the window here, see show(). Close from the
+    // event loop once it is exposed instead, to leave no gap without any window on the screen.
+    QWindow* window = w ? w->windowHandle() : nullptr;
+    if (!window || window->isExposed()) {
+        close();
+        return;
+    }
+    window->installEventFilter(this);
+    // in case the window is never reported as exposed
+    constexpr int TimeOut = 1000;
+    QTimer::singleShot(TimeOut, this, &SplashScreen::close);
+}
+
+bool SplashScreen::eventFilter(QObject* o, QEvent* e)
+{
+    if (e->type() == QEvent::Expose && static_cast<QWindow*>(o)->isExposed()) {
+        o->removeEventFilter(this);
+        close();
+    }
+    return QSplashScreen::eventFilter(o, e);
 }
 
 bool SplashScreen::event(QEvent* e)
@@ -289,6 +338,9 @@ bool SplashScreen::event(QEvent* e)
     if (e->type() == QEvent::Show) {
         // Bypass QSplashScreen::event for Show events specifically
         return QWidget::event(e);  // NOLINT(bugprone-parent-virtual-call)
+    }
+    if (e->type() == QEvent::FontChange) {
+        updateLayout();
     }
     return QSplashScreen::event(e);
 }
@@ -321,12 +373,28 @@ void SplashScreen::show()
 }
 
 /**
- * Draws the contents of the splash screen using painter \a painter. The default
- * implementation draws the message passed by message().
+ * Draws the contents of the splash screen using painter.
  */
 void SplashScreen::drawContents(QPainter* painter)
 {
-    QSplashScreen::drawContents(painter);
+    const QScopedValueRollback<bool> guard(painting, true);
+    const QFontMetrics fm = fontMetrics();
+    const Qt::Alignment align = QStyle::visualAlignment(layoutDirection(), hAlignment);
+    const std::list<QString> visible = lines;
+    const int step = lineStep();
+    painter->setPen(textColor);
+    int y = startY;
+    // Painting may emit Qt messages, iterate over a copy
+    for (const auto& msg : visible) {
+        const QString str = fm.elidedText(msg, Qt::ElideRight, maxWidth);
+        int x = startX;
+        if (!(align & Qt::AlignLeft)) {
+            const int space = maxWidth - fm.horizontalAdvance(str);
+            x += (align & Qt::AlignRight) ? space : space / 2;
+        }
+        painter->drawText(x, y, str);
+        y += step;
+    }
 }
 
 void SplashScreen::setShowMessages(bool on)
@@ -335,6 +403,26 @@ void SplashScreen::setShowMessages(bool on)
     messages->bMsg = on;
     messages->bLog = on;
     messages->bWrn = on;
+}
+
+void SplashScreen::pushMessage(const QString& msg)
+{
+    lines.push_front(msg);
+    if (lines.size() > lineCount) {
+        lines.pop_back();
+    }
+
+    // Most messages come in bursts and only a few lines are visible, so repaint (which
+    // also processes events) at most once a frame (assume 60Hz).
+    constexpr qint64 FrameTime = 1000 / 60;
+    if (!painting && (!repaintTimer.isValid() || repaintTimer.elapsed() >= FrameTime)) {
+        repaintTimer.start();
+        QWidget::repaint(textRect);
+        QCoreApplication::processEvents();
+    }
+    else {
+        update(textRect);
+    }
 }
 
 QPixmap SplashScreen::splashImage()

@@ -24,7 +24,7 @@
 
 import FreeCAD as App
 
-translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 # add Import/Export types
 App.addImportType("Autodesk DXF 2D (*.dxf *.DXF)", "importDXF")
@@ -32,7 +32,9 @@ App.addImportType("SVG as geometry (*.svg *.SVG)", "importSVG")
 App.addImportType("Open CAD Format (*.oca *.OCA *.gcad *.GCAD)", "importOCA")
 App.addImportType("Common airfoil data (*.dat *.DAT)", "importAirfoilDAT")
 App.addExportType("Autodesk DXF 2D (*.dxf)", "importDXF")
-App.addTranslatableExportType(translate("FileFormat", "Flattened SVG"), ["svg"], "importSVG")
+App.addTranslatableExportType(
+    QT_TRANSLATE_NOOP("FileFormat", "Flattened SVG"), ["svg"], "importSVG"
+)
 App.addExportType("Open CAD (*.oca)", "importOCA")
 App.addImportType("Autodesk DWG 2D (*.dwg *.DWG)", "importDWG")
 App.addExportType("Autodesk DWG 2D (*.dwg)", "importDWG")

@@ -49,7 +49,7 @@ import FreeCAD
 # needed imports
 from femtools.migrate_app import FemMigrateApp
 
-translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 # migrate old FEM App objects
 sys.meta_path.append(FemMigrateApp())
@@ -61,11 +61,11 @@ FreeCAD.__unit_test__ += ["TestFemApp"]
 
 # add import and export file types
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh Python"), ["meshpy"], "feminout.importPyMesh"
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh Python"), ["meshpy"], "feminout.importPyMesh"
 )
 
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh TetGen"), ["poly"], "feminout.convert2TetGen"
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh TetGen"), ["poly"], "feminout.convert2TetGen"
 )
 
 # see FemMesh::read() and FemMesh::write() methods in src/Mod/Fem/App/FemMesh.cpp
@@ -74,20 +74,20 @@ FreeCAD.addImportType(
     "Fem",
 )
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh formats"),
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh formats"),
     ["dat", "inp", "med", "stl", "unv", "vtk", "vtu", "z88"],
     "Fem",
 )
 
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh Nastran"), ["bdf"], "feminout.exportNastranMesh"
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh Nastran"), ["bdf"], "feminout.exportNastranMesh"
 )
 
 FreeCAD.addImportType("FEM result CalculiX (*.frd *.FRD)", "feminout.importCcxFrdResults")
 
 FreeCAD.addImportType("FEM mesh Fenics (*.xml *.XML *.xdmf *.XDMF)", "feminout.importFenicsMesh")
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh Fenics"), ["xml", "xdmf"], "feminout.importFenicsMesh"
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh Fenics"), ["xml", "xdmf"], "feminout.importFenicsMesh"
 )
 
 FreeCAD.addImportType(
@@ -95,14 +95,14 @@ FreeCAD.addImportType(
     "feminout.importYamlJsonMesh",
 )
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh YAML/JSON"),
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh YAML/JSON"),
     ["meshyaml", "meshjson", "yaml", "json"],
     "feminout.importYamlJsonMesh",
 )
 
 FreeCAD.addImportType("FEM mesh Z88 (*.txt *.TXT)", "feminout.importZ88Mesh")
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "FEM mesh Z88"), ["txt"], "feminout.importZ88Mesh"
+    QT_TRANSLATE_NOOP("FileFormat", "FEM mesh Z88"), ["txt"], "feminout.importZ88Mesh"
 )
 
 FreeCAD.addImportType("FEM result Z88 displacements (*.txt *.TXT)", "feminout.importZ88O2Results")
@@ -113,7 +113,7 @@ if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
         "feminout.importVTKResults",
     )
     FreeCAD.addTranslatableExportType(
-        translate("FileFormat", "FEM result VTK"),
+        QT_TRANSLATE_NOOP("FileFormat", "FEM result VTK"),
         ["vtu", "vtp", "vts", "vtr", "vti", "vtm"],
         "feminout.importVTKResults",
     )
