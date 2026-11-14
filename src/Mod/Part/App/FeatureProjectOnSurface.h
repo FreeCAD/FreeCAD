@@ -75,6 +75,11 @@ private:
         const std::vector<TopoDS_Wire>& wires,
         const TopoDS_Face& supportFace
     ) const;
+    TopoDS_Face createFaceByClippingSource(
+        const TopoDS_Face& sourceFace,
+        const TopoDS_Face& supportFace,
+        const gp_Dir& direction
+    ) const;
     TopoDS_Shape createSolidIfHeight(const TopoDS_Face& face) const;
     std::vector<TopoDS_Wire> createWiresFromWires(
         const std::vector<TopoDS_Shape>& wires,
