@@ -24,6 +24,7 @@
 #pragma once
 
 #include <QCoreApplication>
+#include <QPointer>
 
 #include <Mod/Part/App/LinearPatternExtension.h>
 #include <Mod/Part/PartGlobal.h>
@@ -133,6 +134,7 @@ protected:
     void kickUpdateViewTimer() const;
     bool consumePendingUpdate();
     void cancelPendingUpdate();
+    void setupUpdateViewTimer(QObject* signalContext);
 
     void applyPatternParameters(App::DocumentObject* pattern) const;
 
@@ -171,8 +173,7 @@ protected:
 
 private:
     void bindPatternProperties();
-    void onUpdateViewTimer();
-    void setupUpdateViewTimer(QObject* signalContext);
+    void onUpdateViewTimer(const QPointer<QObject>& panel);
 
 private:
     PatternParametersWidget* parametersWidget = nullptr;
