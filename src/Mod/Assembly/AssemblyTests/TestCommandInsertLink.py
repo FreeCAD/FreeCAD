@@ -44,7 +44,6 @@ def _msg(text, end="\n"):
     App.Console.PrintMessage(text + end)
 
 
-@unittest.skipIf(not App.GuiUp, "GUI tests require FreeCAD GUI mode")
 class TestCommandInsertLink(AssemblyTestBase):
     """Unit tests for CommandInsertLink module."""
 
