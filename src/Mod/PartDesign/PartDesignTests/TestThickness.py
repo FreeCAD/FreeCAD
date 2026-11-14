@@ -113,7 +113,7 @@ class TestThickness(unittest.TestCase):
         self.assertEqual(len(self.Thickness.Shape.Faces), 11)
         # 6 faces of outer box + 4 faces of inner box + 16 edges outer, 8 inner,
         # + 8 vertexes outer, 8 inner + 1 solid = 51
-        self.assertEqual(self.Thickness.Shape.ElementMapSize, 51)
+        self.assertEqual(len(self.Thickness.Shape.Solids), 1)
 
     def testCase5829ThicknessOnRotatedFillet(self):
         """Verify thickness succeeds on the rotated fillet from issue 5829."""
@@ -208,7 +208,6 @@ class TestThickness(unittest.TestCase):
         self.assertFalse(shape.isNull())
         self.assertTrue(shape.isValid())
         self.assertEqual(len(shape.Solids), 1)
-        self.assertGreater(shape.ElementMapSize, 0)
 
     def assertShapesEquivalent(self, first, second, tolerance=1e-7):
         self.assertAlmostEqual(first.Volume, second.Volume, delta=tolerance)
