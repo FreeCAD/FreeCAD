@@ -116,6 +116,9 @@ public:
     double getDatumScale() const;
     void setDatumScale(double);
 
+    double getDatumPointSize() const;
+    void setDatumPointSize(double);
+
     double getDatumPlaneSize() const;
     void setDatumPlaneSize(double);
 
