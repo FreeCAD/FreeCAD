@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * 1"
 
 env:
-  TRANSLATION_REF: "releases/FreeCAD-26-3"
+  TRANSLATION_REF: "main"
 
 # Writes happen via the GH_TOKEN_FOR_CROWDIN_SYNC secret; GITHUB_TOKEN stays read-only.
 permissions:
