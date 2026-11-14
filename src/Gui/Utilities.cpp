@@ -26,12 +26,19 @@
 #include <QAbstractItemView>
 #include <QItemSelection>
 #include <QItemSelectionModel>
+#include <QGuiApplication>
+#include <QPalette>
+#include <QStyleHints>
 
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 
 #include "Utilities.h"
+#include <FCConfig.h>
+#ifdef FC_OS_MACOSX
+# include <CoreFoundation/CoreFoundation.h>
+#endif
 
 
 using namespace Gui;
@@ -42,6 +49,37 @@ bool Gui::isInternalGuiTestRun()
     return App::Application::Config()["RunMode"] == "Internal";
 }
 
+bool Gui::isSystemInDarkMode()
+{
+    // Auto-detect system setting and default to light mode
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    const auto scheme = QGuiApplication::styleHints()->colorScheme();
+    return scheme == Qt::ColorScheme::Dark;
+#elif QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    const QPalette defaultPalette;
+    const auto text = defaultPalette.color(QPalette::WindowText);
+    const auto window = defaultPalette.color(QPalette::Window);
+    return text.lightness() > window.lightness();
+#else
+# ifdef FC_OS_MACOSX
+    auto key = CFSTR("AppleInterfaceStyle");
+    if (auto value = CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication)) {
+        // If the value is "Dark", Dark Mode is enabled
+        if (CFGetTypeID(value) == CFStringGetTypeID()) {
+            if (CFStringCompare((CFStringRef)value, CFSTR("Dark"), kCFCompareCaseInsensitive)
+                == kCFCompareEqualTo) {
+                CFRelease(value);
+                return true;
+            }
+        }
+        CFRelease(value);
+    }
+# endif  // FC_OS_MACOSX
+#endif   // QT_VERSION >= 6.4+
+    return false;
+}
 
 ViewVolumeProjection::ViewVolumeProjection(const SbViewVolume& vv)
     : viewVolume(vv)

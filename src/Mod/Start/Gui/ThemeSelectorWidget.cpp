@@ -25,7 +25,6 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QString>
-#include <QStyleHints>
 #include <QToolButton>
 
 
@@ -38,44 +37,7 @@
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_MACOSX
-# include <CoreFoundation/CoreFoundation.h>
-#endif
-
 using namespace StartGui;
-
-
-static bool isSystemInDarkMode()
-{
-    // Auto-detect system setting and default to light mode
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
-    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
-    const auto scheme = QGuiApplication::styleHints()->colorScheme();
-    return scheme == Qt::ColorScheme::Dark;
-#elif QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
-    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
-    const QPalette defaultPalette;
-    const auto text = defaultPalette.color(QPalette::WindowText);
-    const auto window = defaultPalette.color(QPalette::Window);
-    return text.lightness() > window.lightness();
-#else
-# ifdef FC_OS_MACOSX
-    auto key = CFSTR("AppleInterfaceStyle");
-    if (auto value = CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication)) {
-        // If the value is "Dark", Dark Mode is enabled
-        if (CFGetTypeID(value) == CFStringGetTypeID()) {
-            if (CFStringCompare((CFStringRef)value, CFSTR("Dark"), kCFCompareCaseInsensitive)
-                == kCFCompareEqualTo) {
-                CFRelease(value);
-                return true;
-            }
-        }
-        CFRelease(value);
-    }
-# endif  // FC_OS_MACOSX
-#endif   // QT_VERSION >= 6.4+
-    return false;
-}
 
 
 static bool shouldHideClassicTheme()
@@ -204,7 +166,7 @@ void ThemeSelectorWidget::preselectThemeFromSystemSettings()
     );
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet", nullStyle));
     if (styleSheetName == QString::fromStdString(nullStyle)) {
-        auto theme = isSystemInDarkMode() ? Theme::Dark : Theme::Light;
+        auto theme = Gui::isSystemInDarkMode() ? Theme::Dark : Theme::Light;
         themeChanged(theme);
     }
 }
