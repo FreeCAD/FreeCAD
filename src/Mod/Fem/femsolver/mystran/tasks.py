@@ -75,7 +75,7 @@ class Prepare(run.Prepare):
 
         # get mesh set data
         # TODO see calculix tasks get mesh set data
-        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)  # pre check done already
         meshdatagetter = meshsetsgetter.MeshSetsGetter(
             self.analysis,
             self.solver,
