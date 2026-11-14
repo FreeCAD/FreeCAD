@@ -25,11 +25,16 @@
 
 #pragma once
 
+#include <functional>
+#include <vector>
+
 #include <QObject>
 
+#include <Gui/SoLabelNodes.h>
 #include <Mod/Measure/MeasureGlobal.h>
 #include "ViewProviderMeasureBase.h"
 
+#include <Inventor/SbBox2f.h>
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -42,11 +47,44 @@
 #include <Inventor/nodekits/SoSeparatorKit.h>
 
 
+class SoCallback;
 class SoCoordinate3;
 class SoIndexedLineSet;
 
 namespace MeasureGui
 {
+
+//! A frame label that moves down on the screen to keep clear of other labels
+class DimensionLabel: public Gui::SoFrameLabel
+{
+    using inherited = Gui::SoFrameLabel;
+
+    SO_NODE_HEADER(DimensionLabel);
+
+public:
+    using AnchorFunction = std::function<SbVec3f()>;
+
+    DimensionLabel();
+    static void initClass();
+    void avoidOverlapWith(DimensionLabel* label);
+    void avoidOverlapWith(Gui::SoFrameLabel* label, const AnchorFunction& anchorInWorld);
+    void clearObstacles();
+
+protected:
+    ~DimensionLabel() override;
+    void GLRender(SoGLRenderAction* action) override;
+
+private:
+    struct LaterLabel
+    {
+        Gui::SoFrameLabel* label;
+        AnchorFunction anchorInWorld;
+    };
+
+    std::vector<DimensionLabel*> earlierLabels {};
+    std::vector<LaterLabel> laterLabels {};
+    SbBox2f screenRect;  // in viewport pixels
+};
 
 class DimensionLinear: public SoSeparatorKit
 {
@@ -64,6 +102,12 @@ public:
     static void initClass();
     SbBool affectsState() const override;
     void setupDimension();
+    void avoidLabelOverlapWith(DimensionLinear* dimension);
+    void avoidLabelOverlapWith(
+        Gui::SoFrameLabel* label,
+        const DimensionLabel::AnchorFunction& anchorInWorld
+    );
+    void clearLabelObstacles();
 
     SoSFVec3f point1;
     SoSFVec3f point2;
@@ -80,6 +124,8 @@ protected:
 
 private:
     ~DimensionLinear() override;
+
+    DimensionLabel* label {nullptr};
 };
 
 
@@ -112,9 +158,12 @@ private:
     SoCoordinate3* pCoords;
     SoIndexedLineSet* pLines;
     SoSwitch* pDeltaDimensionSwitch;
+    SoCallback* pGlobalMatrixCallback;
 
     SoSFVec3f fieldPosition1;
     SoSFVec3f fieldPosition2;
+
+    SbMatrix globalMatrix {SbMatrix::identity()};
 
     SoSFFloat fieldDistance;
 
