@@ -584,6 +584,25 @@ get date suffix according to the specified format</string>
         </property>
        </widget>
       </item>
+      <item row="11" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefAskProjectInfoOnNewDocument">
+        <property name="toolTip">
+         <string>Shows the document information dialog when a new document is created</string>
+        </property>
+        <property name="text">
+         <string>Ask for document information when creating a new document</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AskProjectInfoOnNewDocument</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -679,7 +698,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Company</string>
+         <string>Company/Organization</string>
         </property>
        </widget>
       </item>
