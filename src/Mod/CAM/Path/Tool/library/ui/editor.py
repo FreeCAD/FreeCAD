@@ -601,7 +601,7 @@ class LibraryEditor(QWidget):
         Path.Log.info(f"IMPORT CHECK: toolbit_uri={toolbit_uri}")
         existing_toolbit = None
         try:
-            existing_toolbit = cam_assets.get(toolbit_uri, store=["local", "builtin"], depth=0)
+            existing_toolbit = cam_assets.get(toolbit_uri, depth=0)
             Path.Log.info(
                 f"IMPORT CHECK: Toolbit {toolbit.id} already exists, using existing reference"
             )
