@@ -256,6 +256,21 @@ std::string Base::formatNumericValue(
 
     icu::UnicodeString s;
     nf->format(value, s);
+
+    // A tiny negative value that rounds to zero would otherwise print as "-0.00".
+    // Let ICU decide whether the rounded result is zero, using this formatter's own
+    // precision and rounding mode, then format +0.0 so no sign is shown.
+    if (std::signbit(value)) {
+        icu::Formattable parsed;
+        UErrorCode parseStatus = U_ZERO_ERROR;
+        nf->parse(s, parsed, parseStatus);
+        const double rounded = U_SUCCESS(parseStatus) ? parsed.getDouble(parseStatus) : 1.0;
+        if (U_SUCCESS(parseStatus) && rounded == 0.0) {
+            s.remove();
+            nf->format(0.0, s);
+        }
+    }
+
     return toUtf8(s);
 }
 
