@@ -53,6 +53,29 @@ void Point::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
     cnt++;
 }
 
+//----------------Point3D
+int Point3D::PushOwnParams(VEC_pD& pvec) const
+{
+    int cnt = 0;
+    pvec.push_back(x);
+    cnt++;
+    pvec.push_back(y);
+    cnt++;
+    pvec.push_back(z);
+    cnt++;
+    return cnt;
+}
+
+void Point3D::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    x = pvec[cnt];
+    cnt++;
+    y = pvec[cnt];
+    cnt++;
+    z = pvec[cnt];
+    cnt++;
+}
+
 //----------------DeriVector2
 DeriVector2::DeriVector2(const Point& p, const double* derivparam)
     : x(*p.x)
@@ -115,6 +138,91 @@ double DeriVector2::crossProdZ(const DeriVector2& v2, double& dprd) const
 {
     dprd = dx * v2.y + x * v2.dy - dy * v2.x - y * v2.dx;
     return x * v2.y - y * v2.x;
+}
+
+//----------------DeriVector3
+DeriVector3::DeriVector3(const Point3D& p, const double* derivparam)
+    : x(*p.x)
+    , dx(0.0)
+    , y(*p.y)
+    , dy(0.0)
+    , z(*p.z)
+    , dz(0.0)
+{
+    if (derivparam == p.x) {
+        dx = 1.0;
+    }
+    if (derivparam == p.y) {
+        dy = 1.0;
+    }
+    if (derivparam == p.z) {
+        dz = 1.0;
+    }
+}
+
+double DeriVector3::length(double& dlength) const
+{
+    double l = length();
+    if (l == 0) {
+        dlength = 1.0;
+        return l;
+    }
+    dlength = (x * dx + y * dy + z * dz) / l;
+    return l;
+}
+
+DeriVector3 DeriVector3::getNormalized() const
+{
+    double l = length();
+    if (l == 0.0) {
+        return DeriVector3(0, 0, 0, dx, dy, dz);
+    }
+    DeriVector3 rtn;
+    rtn.x = x / l;
+    rtn.y = y / l;
+    rtn.z = z / l;
+    // first, simply scale the derivative accordingly.
+    rtn.dx = dx / l;
+    rtn.dy = dy / l;
+    rtn.dz = dz / l;
+    // next, remove the collinear part of dx,dy,dz (project derivative onto a normal)
+    double dsc = rtn.dx * rtn.x + rtn.dy * rtn.y + rtn.dz * rtn.z;  // scalar product d*v
+    rtn.dx -= dsc * rtn.x;                                          // subtract the projection
+    rtn.dy -= dsc * rtn.y;
+    rtn.dz -= dsc * rtn.z;
+    return rtn;
+}
+
+double DeriVector3::scalarProd(const DeriVector3& v2, double* dprd) const
+{
+    if (dprd) {
+        *dprd = dx * v2.x + x * v2.dx + dy * v2.y + y * v2.dy + dz * v2.z + z * v2.dz;
+    }
+    return x * v2.x + y * v2.y + z * v2.z;
+}
+
+DeriVector3 DeriVector3::divD(double val, double dval) const
+{
+    return {
+        x / val,
+        y / val,
+        z / val,
+        dx / val - x * dval / (val * val),
+        dy / val - y * dval / (val * val),
+        dz / val - z * dval / (val * val)
+    };
+}
+
+DeriVector3 DeriVector3::crossProd(const DeriVector3& v2) const
+{
+    return {
+        y * v2.z - z * v2.y,
+        z * v2.x - x * v2.z,
+        x * v2.y - y * v2.x,
+        dy * v2.z + y * v2.dz - dz * v2.y - z * v2.dy,
+        dz * v2.x + z * v2.dx - dx * v2.z - x * v2.dz,
+        dx * v2.y + x * v2.dy - dy * v2.x - y * v2.dx
+    };
 }
 
 DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const
@@ -1142,6 +1250,134 @@ void BSpline::setupFlattenedKnots()
             *(flattenedknots.end() - 1 - i) += period;
         }
     }
+}
+
+//----------------Curve3D
+DeriVector3 Curve3D::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const
+{
+    assert(false /*Curve3D::Value() is not implemented*/);
+    return {};
+}
+
+//----------------Line3D
+DeriVector3 Line3D::CalculateNormal(const Point3D& /*p*/, const double* /*derivparam*/) const
+{
+    // Line in 3D space does not have a unique normal vector without a reference plane.
+    return {};
+}
+
+DeriVector3 Line3D::Value(double u, double du, const double* derivparam) const
+{
+    DeriVector3 p1v(p1, derivparam);
+    DeriVector3 p2v(p2, derivparam);
+
+    DeriVector3 line_vec = p2v.subtr(p1v);
+    return p1v.sum(line_vec.multD(u, du));
+}
+
+int Line3D::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    cnt += p1.PushOwnParams(pvec);
+    cnt += p2.PushOwnParams(pvec);
+    return cnt;
+}
+
+void Line3D::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    p1.ReconstructOnNewPvec(pvec, cnt);
+    p2.ReconstructOnNewPvec(pvec, cnt);
+}
+
+Line3D* Line3D::Copy()
+{
+    return new Line3D(*this);
+}
+
+//----------------circle3D
+DeriVector3 Circle3D::CalculateNormal(const Point3D& p, const double* derivparam) const
+{
+    DeriVector3 cv(center, derivparam);
+    DeriVector3 pv(p, derivparam);
+
+    return cv.subtr(pv);
+}
+
+DeriVector3 Circle3D::Value(double u, double du, const double* derivparam) const
+{
+    DeriVector3 cv(center, derivparam);
+    DeriVector3 nhat = DeriVector3(normal, derivparam).getNormalized();
+    DeriVector3 xRaw(xAxis, derivparam);
+    double dotD = 0.0;
+    double dot = nhat.scalarProd(xRaw, &dotD);
+    DeriVector3 e1v = xRaw.subtr(nhat.multD(dot, dotD)).getNormalized();
+    DeriVector3 e2v = nhat.crossProd(e1v);
+
+    double r = *(this->rad);
+    double dr = (derivparam == this->rad) ? 1.0 : 0.0;
+
+    double si = std::sin(u);
+    double dsi = du * std::cos(u);
+    double co = std::cos(u);
+    double dco = du * (-std::sin(u));
+
+    DeriVector3 radial = e1v.multD(co, dco).sum(e2v.multD(si, dsi));
+    return cv.sum(radial.multD(r, dr));
+}
+
+int Circle3D::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    cnt += center.PushOwnParams(pvec);
+    pvec.push_back(rad);
+    cnt++;
+    cnt += normal.PushOwnParams(pvec);
+    cnt += xAxis.PushOwnParams(pvec);
+    return cnt;
+}
+
+void Circle3D::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    center.ReconstructOnNewPvec(pvec, cnt);
+    rad = pvec[cnt];
+    cnt++;
+    normal.ReconstructOnNewPvec(pvec, cnt);
+    xAxis.ReconstructOnNewPvec(pvec, cnt);
+}
+
+Circle3D* Circle3D::Copy()
+{
+    return new Circle3D(*this);
+}
+
+//----------------Arc3D
+int Arc3D::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    cnt += Circle3D::PushOwnParams(pvec);
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
+    pvec.push_back(startAngle);
+    cnt++;
+    pvec.push_back(endAngle);
+    cnt++;
+    return cnt;
+}
+
+void Arc3D::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    Circle3D::ReconstructOnNewPvec(pvec, cnt);
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
+    startAngle = pvec[cnt];
+    cnt++;
+    endAngle = pvec[cnt];
+    cnt++;
+}
+
+Arc3D* Arc3D::Copy()
+{
+    return new Arc3D(*this);
 }
 
 }  // namespace GCS
