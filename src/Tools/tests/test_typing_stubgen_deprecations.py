@@ -1,28 +1,16 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import ast
-import sys
 import tempfile
 import textwrap
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
-
-from src.Tools.typing.stubgen.class_merge import (  # noqa: E402
-    class_public_symbol,
-    known_stub_module_roots,
-    module_symbol_renames,
-    public_class_stub_source,
-    public_import_target_index,
-)
-from src.Tools.typing.stubgen.deprecation import structured_deprecation_message  # noqa: E402
-from src.Tools.typing.stubgen.model import BindingClass, BindingMethod  # noqa: E402
-from src.Tools.typing.stubgen.render import write_stub_file  # noqa: E402
-from src.Tools.typing.stubgen.source_inputs import (  # noqa: E402
-    parse_module_stub_signature_overrides,
-    parse_source_type_stub_signature_overrides,
-)
+from stubgen.api_extract import extract_curated_api_model_with_diagnostics
+from stubgen.deprecation import structured_deprecation_message
+from stubgen.render import render_module
+from stubgen.source_inputs import deprecated_message_from_decorator
+from stubgen.stub_support import collect_stub_support
 
 
 class TestTypingStubgenDeprecations(unittest.TestCase):
@@ -30,38 +18,14 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
         source = textwrap.dedent(source).lstrip()
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            stub_path = root / "src" / "App" / "Example.pyi"
+            source_dir = root / "src"
+            stub_path = source_dir / "FreeCAD.Example.pyi"
             stub_path.parent.mkdir(parents=True)
             stub_path.write_text(source, encoding="utf-8")
-
-            tree = ast.parse(source, filename=str(stub_path))
-            class_node = next(node for node in tree.body if isinstance(node, ast.ClassDef))
-            klass = BindingClass(
-                source="src/App/Example.pyi",
-                line=class_node.lineno,
-                class_name=class_node.name,
-                export_name=f"{class_node.name}Py",
-                python_name=f"FreeCAD.{class_node.name}",
-                public_names=[f"FreeCAD.{class_node.name}"],
-                base_class=None,
-                explicit_export=True,
-            )
-            module_classes = [klass]
-            module_name = "FreeCAD"
-            module_symbols = {
-                symbol
-                for item in module_classes
-                if (symbol := class_public_symbol(item, module_name)) is not None
-            }
-            return public_class_stub_source(
-                root,
-                klass,
-                module_name,
-                module_symbol_renames(module_classes, module_name),
-                module_symbols,
-                public_import_target_index(module_classes),
-                known_stub_module_roots(module_classes),
-            )
+            model, diagnostics = extract_curated_api_model_with_diagnostics(root, source_dir)
+            self.assertEqual(diagnostics, ())
+            support = collect_stub_support(root, source_dir, model)
+            return render_module(model.modules[0], support=support)
 
     def test_structured_metadata_validates_releases_and_punctuation(self) -> None:
         with self.assertRaisesRegex(ValueError, "later"):
@@ -75,6 +39,15 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
                 }
             ),
             "since FreeCAD 26.3 and will be removed in FreeCAD 27.2; Legacy compatibility API.",
+        )
+
+    def test_pep_702_positional_message_is_normalized(self) -> None:
+        node = ast.parse('@deprecated("Use replacement() instead.")\ndef old(): ...').body[0]
+        assert isinstance(node, ast.FunctionDef)
+
+        self.assertEqual(
+            deprecated_message_from_decorator(node.decorator_list[0]),
+            "Use replacement() instead.",
         )
 
     def test_public_class_stub_preserves_method_and_attribute_deprecations(self) -> None:
@@ -117,44 +90,18 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            stub_path = root / "src" / "App" / "Example.pyi"
+            source_dir = root / "src"
+            stub_path = source_dir / "FreeCAD.Example.pyi"
             stub_path.parent.mkdir(parents=True)
             stub_path.write_text(source, encoding="utf-8")
+            model, diagnostics = extract_curated_api_model_with_diagnostics(root, source_dir)
+            self.assertEqual(diagnostics, ())
+            support = collect_stub_support(root, source_dir, model)
+            stub = render_module(model.modules[0], support=support)
 
-            tree = ast.parse(source, filename=str(stub_path))
-            class_node = next(node for node in tree.body if isinstance(node, ast.ClassDef))
-            klass = BindingClass(
-                source="src/App/Example.pyi",
-                line=class_node.lineno,
-                class_name="Example",
-                export_name="ExamplePy",
-                python_name="FreeCAD.Example",
-                public_names=["FreeCAD.Example"],
-                base_class=None,
-                explicit_export=True,
-            )
-            module_name = "FreeCAD"
-            module_classes = [klass]
-            module_symbols = {
-                symbol
-                for klass in module_classes
-                if (symbol := class_public_symbol(klass, module_name)) is not None
-            }
-            stub = public_class_stub_source(
-                root,
-                klass,
-                module_name,
-                module_symbol_renames(module_classes, module_name),
-                module_symbols,
-                public_import_target_index(module_classes),
-                known_stub_module_roots(module_classes),
-            )
+        self.assertIn("from typing_extensions import deprecated", stub)
 
-        self.assertIsNotNone(stub)
-        assert stub is not None
-        self.assertIn("from typing_extensions import deprecated", stub.import_lines)
-
-        public_tree = ast.parse(stub.source)
+        public_tree = ast.parse(stub)
         public_class = next(node for node in public_tree.body if isinstance(node, ast.ClassDef))
         self.assertEqual(public_class.decorator_list, [])
         self.assertFalse(
@@ -209,10 +156,8 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
 
         self.assertIsNotNone(stub)
         assert stub is not None
-        self.assertIn("from typing_extensions import deprecated", stub.import_lines)
-        public_class = next(
-            node for node in ast.parse(stub.source).body if isinstance(node, ast.ClassDef)
-        )
+        self.assertIn("from typing_extensions import deprecated", stub)
+        public_class = next(node for node in ast.parse(stub).body if isinstance(node, ast.ClassDef))
         self.assertIsNotNone(
             self._function_with_decorator(public_class.body, "old_method", "deprecated")
         )
@@ -229,10 +174,8 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
 
         self.assertIsNotNone(stub)
         assert stub is not None
-        self.assertIn("from typing_extensions import deprecated", stub.import_lines)
-        public_class = next(
-            node for node in ast.parse(stub.source).body if isinstance(node, ast.ClassDef)
-        )
+        self.assertIn("from typing_extensions import deprecated", stub)
+        public_class = next(node for node in ast.parse(stub).body if isinstance(node, ast.ClassDef))
         self.assertTrue(self._has_decorator(public_class, "deprecated"))
 
     def test_module_stub_preserves_deprecated_function_decorators(self) -> None:
@@ -252,34 +195,12 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source_dir = root / "src"
-            stub_path = source_dir / "App" / "Example.module.pyi"
+            stub_path = source_dir / "Example.module.pyi"
             stub_path.parent.mkdir(parents=True)
             stub_path.write_text(source, encoding="utf-8")
-
-            parsed = parse_module_stub_signature_overrides(root, source_dir)
-            signature_group, _ = parsed[("Example", "old_function")]
-            self.assertEqual(
-                signature_group[0].deprecated_message,
-                "since FreeCAD 26.3 and will be removed in FreeCAD 27.2; use replacement() instead.",
-            )
-
-            method = self._binding_method(
-                source="src/App/Example.cpp",
-                context_kind="pycxx_module",
-                context_name="Example",
-                inferred_module="Example",
-                python_name="old_function",
-            )
-            out_path = root / "out" / "Example.pyi"
-            write_stub_file(
-                out_path,
-                [method],
-                stub_signature_overrides={
-                    (method.source, method.context_name, method.python_name): signature_group
-                },
-            )
-
-            public_tree = ast.parse(out_path.read_text(encoding="utf-8"), filename=str(out_path))
+            model, diagnostics = extract_curated_api_model_with_diagnostics(root, source_dir)
+            self.assertEqual(diagnostics, ())
+            public_tree = ast.parse(render_module(model.modules[0]))
 
         self.assertTrue(
             any(
@@ -316,35 +237,12 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source_dir = root / "src"
-            stub_path = source_dir / "Gui" / "FreeCADGui._Example.pyi"
+            stub_path = source_dir / "FreeCADGui._Example.pyi"
             stub_path.parent.mkdir(parents=True)
             stub_path.write_text(source, encoding="utf-8")
-
-            parsed = parse_source_type_stub_signature_overrides(root, source_dir)
-            signature_group, _ = parsed[("FreeCADGui", "_Example", "oldMethod")]
-            self.assertEqual(
-                signature_group[0].deprecated_message,
-                "since FreeCAD 26.3 and will be removed in FreeCAD 27.2; use newMethod instead.",
-            )
-
-            method = self._binding_method(
-                source="src/Gui/ExamplePy.cpp",
-                context_kind="python_type",
-                context_name="_Example",
-                inferred_module="FreeCADGui",
-                python_name="oldMethod",
-            )
-            out_path = root / "out" / "FreeCADGui._Example.pyi"
-            write_stub_file(
-                out_path,
-                [method],
-                class_name="_Example",
-                stub_signature_overrides={
-                    (method.source, method.context_name, method.python_name): signature_group
-                },
-            )
-
-            public_tree = ast.parse(out_path.read_text(encoding="utf-8"), filename=str(out_path))
+            model, diagnostics = extract_curated_api_model_with_diagnostics(root, source_dir)
+            self.assertEqual(diagnostics, ())
+            public_tree = ast.parse(render_module(model.modules[0]))
 
         self.assertTrue(
             any(
@@ -365,31 +263,6 @@ class TestTypingStubgenDeprecations(unittest.TestCase):
             "since FreeCAD 26.3 and will be removed in FreeCAD 27.2; use newMethod instead.",
         )
         self.assertEqual(ast.get_docstring(public_method), "Deprecated typed method.")
-
-    @staticmethod
-    def _binding_method(
-        *,
-        source: str,
-        context_kind: str,
-        context_name: str,
-        inferred_module: str | None,
-        python_name: str,
-    ) -> BindingMethod:
-        return BindingMethod(
-            family="pycxx_add_method",
-            source=source,
-            line=1,
-            table=None,
-            context_kind=context_kind,
-            context_name=context_name,
-            inferred_module=inferred_module,
-            method_kind="varargs",
-            python_name=python_name,
-            cxx_callable=f"dummy::{python_name}",
-            flags="",
-            doc="",
-            generated_source=False,
-        )
 
     @staticmethod
     def _function_with_decorator(
