@@ -84,6 +84,7 @@ class ArchWallGuiTools(GuiTools):
             pts = obj.Proxy.calc_endpoints(obj)
             pts[node_idx - 1] = obj.Placement.multVec(v)
             obj.Proxy.set_from_endpoints(obj, pts)
+            obj.Document.recompute()
 
 
 class ArchWindowGuiTools(GuiTools):
