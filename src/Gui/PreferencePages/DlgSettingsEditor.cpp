@@ -20,9 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <vector>
+#include <string>
 
 #include <QFontDatabase>
-
 
 #include <Base/Color.h>
 #include <Gui/PythonEditor.h>
@@ -30,7 +31,33 @@
 
 #include "DlgSettingsEditor.h"
 #include "ui_DlgSettingsEditor.h"
+#include "ThemeDefaults.h"
 
+namespace
+{
+const std::vector<std::string>& editorColors()
+{
+    static const std::vector<std::string> colors = {
+        "Text",
+        "Bookmark",
+        "Breakpoint",
+        "Keyword",
+        "Comment",
+        "Block comment",
+        "Number",
+        "String",
+        "Character",
+        "Class name",
+        "Define name",
+        "Operator",
+        "Python output",
+        "Python error",
+        "Current line highlight",
+    };
+    return colors;
+}
+constexpr const char* editorGroup = "BaseApp/Preferences/Editor";
+}  // namespace
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -308,21 +335,32 @@ void DlgSettingsEditor::loadSettings()
     ui->displayItems->setCurrentItem(ui->displayItems->topLevelItem(0));
 }
 
+void DlgSettingsEditor::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(editorGroup, editorColors());
+}
+
 void DlgSettingsEditor::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
+
     // reset the parameters in the "Editor" group
     for (const auto& [textType, textColor] : d->colormap) {
         hGrp->RemoveUnsigned(textType.toLatin1());
     }
     // reset "FontSize" parameter
     hGrp->RemoveInt("FontSize");
+
     // reset "Font" parameter
     hGrp->RemoveASCII("Font");
 
     // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
+
+    // apply theme specific default colors after the base reset
+    loadThemeDefaults();
+    loadSettings();
 }
 
 /**

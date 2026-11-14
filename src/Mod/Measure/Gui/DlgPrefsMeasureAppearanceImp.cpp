@@ -21,9 +21,29 @@
  *                                                                         *
  **************************************************************************/
 
+#include <string>
+#include <vector>
+#include <App/Application.h>
+#include <Base/Console.h>
 
+#include <Gui/PreferencePages/ThemeDefaults.h>
 #include "DlgPrefsMeasureAppearanceImp.h"
 #include "ui_DlgPrefsMeasureAppearanceImp.h"
+
+namespace
+{
+constexpr const char* measureGroup = "BaseApp/Preferences/Mod/Measure/Appearance";
+
+const std::vector<std::string>& measureColors()
+{
+    static const std::vector<std::string> colors = {
+        "DefaultTextColor",
+        "DefaultLineColor",
+        "DefaultTextBackgroundColor",
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace MeasureGui;
 
@@ -70,6 +90,22 @@ void DlgPrefsMeasureAppearanceImp::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgPrefsMeasureAppearanceImp::loadThemeDefaults()
+{
+    Gui::ThemeDefaults::applyColors(measureGroup, measureColors());
+}
+
+void DlgPrefsMeasureAppearanceImp::resetSettingsToDefaults()
+{
+    Gui::ThemeDefaults::removeColors(measureGroup, measureColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 #include <Mod/Measure/Gui/moc_DlgPrefsMeasureAppearanceImp.cpp>

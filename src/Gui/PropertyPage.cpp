@@ -33,6 +33,8 @@
 #include "PrefWidgets.h"
 #include "UiLoader.h"
 
+#include "PreferencePages/ThemeDefaults.h"
+
 
 using namespace Gui::Dialog;
 
@@ -208,6 +210,14 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefUnitSpinBox*>();
     savePrefWidgets<Gui::PrefQuantitySpinBox*>();
     savePrefWidgets<Gui::PrefCheckableGroupBox*>();
+}
+
+void PreferenceUiForm::resetSettingsToDefaults()
+{
+    PreferencePage::resetSettingsToDefaults();
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    ThemeDefaults::applyWidgetColors(this);
+    loadSettings();
 }
 
 QWidget* Gui::Dialog::PreferenceUiForm::form()
