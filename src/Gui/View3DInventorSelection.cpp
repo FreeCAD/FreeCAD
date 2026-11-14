@@ -31,6 +31,8 @@
 #include "Document.h"
 #include "SoFCUnifiedSelection.h"
 #include "View3DInventorSelection.h"
+#include "ViewProviderCoordinateSystem.h"
+#include "ViewProviderDatum.h"
 #include "ViewProviderDocumentObject.h"
 #include <App/Document.h>
 #include <App/GeoFeature.h>
@@ -40,6 +42,15 @@
 FC_LOG_LEVEL_INIT("3DViewerSelection", true, true)
 
 using namespace Gui;
+
+namespace
+{
+// Datums rely on their own transparency for translucent planes and label backgrounds.
+bool keepsOwnTransparency(ViewProvider* vp)
+{
+    return freecad_cast<ViewProviderDatum*>(vp) || freecad_cast<ViewProviderCoordinateSystem*>(vp);
+}
+}  // namespace
 
 View3DInventorSelection::View3DInventorSelection(SoFCUnifiedSelection* root)
     : selectionRoot(root)
@@ -56,6 +67,17 @@ View3DInventorSelection::View3DInventorSelection(SoFCUnifiedSelection* root)
     pcGroupOnTopPickStyle->setOverride(true);
     pcGroupOnTopPickStyle->setName("GroupOnTopPickStyle");
     pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
+
+    // Preselected objects in this group keep their own transparency, because
+    // it comes before the override material below.
+    {
+        auto selRoot = new SoFCSelectionRoot;
+        selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
+        pcGroupOnTopPreSelNoOverride = selRoot;
+        pcGroupOnTopPreSelNoOverride->setName("GroupOnTopPreSelNoOverride");
+        pcGroupOnTopPreSelNoOverride->ref();
+        pcGroupOnTop->addChild(pcGroupOnTopPreSelNoOverride);
+    }
 
     coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
     auto pcGroupOnTopMaterial = new SoMaterial;
@@ -89,6 +111,7 @@ View3DInventorSelection::~View3DInventorSelection()
     selectionRoot->unref();
     pcGroupOnTop->unref();
     pcGroupOnTopPreSel->unref();
+    pcGroupOnTopPreSelNoOverride->unref();
     pcGroupOnTopSel->unref();
 }
 
@@ -104,8 +127,10 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     if (Reason.Type == SelectionChanges::RmvPreselect
         || Reason.Type == SelectionChanges::RmvPreselectSignal) {
         SoSelectionElementAction action(SoSelectionElementAction::None, true);
-        action.apply(pcGroupOnTopPreSel);
-        coinRemoveAllChildren(pcGroupOnTopPreSel);
+        for (auto group : {pcGroupOnTopPreSel, pcGroupOnTopPreSelNoOverride}) {
+            action.apply(group);
+            coinRemoveAllChildren(group);
+        }
         objectsOnTopPreSel.clear();
         return;
     }
@@ -187,6 +212,9 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             }
         }
     }
+    if (Reason.Type == SelectionChanges::SetPreselect && keepsOwnTransparency(svp)) {
+        pcGroup = pcGroupOnTopPreSelNoOverride;
+    }
     int onTop;
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
@@ -202,6 +230,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         action.setHighlighted(true);
         action.setColor(selectionRoot->colorHighlight.getValue());
         action.apply(pcGroupOnTopPreSel);
+        action.apply(pcGroupOnTopPreSelNoOverride);
         if (!onTop) {
             onTop = 2;
         }
@@ -313,9 +342,11 @@ void View3DInventorSelection::clearGroupOnTop()
         objectsOnTopPreSel.clear();
         SoSelectionElementAction action(SoSelectionElementAction::None, true);
         action.apply(pcGroupOnTopPreSel);
+        action.apply(pcGroupOnTopPreSelNoOverride);
         action.apply(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopPreSel);
+        coinRemoveAllChildren(pcGroupOnTopPreSelNoOverride);
         FC_LOG("clear annotation");
     }
 }
