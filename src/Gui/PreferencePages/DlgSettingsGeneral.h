@@ -27,6 +27,8 @@
 
 #include <Gui/PropertyPage.h>
 #include <memory>
+#include <qnamespace.h>
+#include <qt6/QtWidgets/qcombobox.h>
 #include <string>
 
 class QTabWidget;
@@ -57,7 +59,7 @@ public:
     void resetSettingsToDefaults() override;
 
     void saveThemes();
-    void loadThemes();
+    void loadThemes(QComboBox* comboBox);
 
     static void attachObserver();
 
@@ -70,6 +72,7 @@ protected Q_SLOTS:
     void newPreferencePackDialogAccepted();
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
+    void onFollowSystemThemeCheckBoxChanged(Qt::CheckState checkState);
     void onThemeChanged(int index);
     void onLinkActivated(const QString& link);
 
