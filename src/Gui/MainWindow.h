@@ -25,9 +25,10 @@
 
 #include <QByteArray>
 #include <QEvent>
-#include <QMainWindow>
 #include <QMdiArea>
 #include <QString>
+
+#include <customtitlebarkit/CustomTitleBarWindow.h>
 
 #include "Window.h"
 #include "InputHint.h"
@@ -101,11 +102,16 @@ struct StatusBarItemSpec
  * a status bar and mainly a workspace for the MDI windows.
  * @author Werner Mayer
  */
-class GuiExport MainWindow: public QMainWindow
+class GuiExport MainWindow: public CustomTitleBarWindow
 {
     Q_OBJECT
 
 public:
+    bool isCustomTitleBar() const
+    {
+        return mode() == Mode::Custom;
+    }
+
     enum ConfirmSaveResult
     {
         Cancel = 0,

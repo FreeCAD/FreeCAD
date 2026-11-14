@@ -1,0 +1,15 @@
+# Build
+build/
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Generated
+include/customtitlebarkit/export.h
