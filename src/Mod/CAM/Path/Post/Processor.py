@@ -2025,7 +2025,7 @@ class PostProcessor:
         return [self._make_postable(f"Post: {label}", lines)]
 
     def _pose_change_postables(
-        self, strategy, placement, positions, declared, rotaries_move, fixture=None
+        self, strategy, placement, positions, declared, rotaries_move, fixture=None, before=None
     ):
         """What the machine does between one operation's pose and the next.
 
@@ -2039,6 +2039,10 @@ class PostProcessor:
         depends on the coordinate system: a plane command is relative to
         the active fixture, and a control will not change fixtures under a
         declared plane.
+
+        The rotaries move one sequence number at a time, lowest first, and
+        axes that share a number move together. before is where they are, as
+        rounded angles; a group already there is left out.
 
         When the rotaries move, the machine's pre- and post-rotary blocks
         wrap the whole of it. That is where the moves that bring the tool
@@ -2060,12 +2064,20 @@ class PostProcessor:
             items.extend(self._plane_postables("TWP_CANCEL"))
         if fixture:
             items.append(self._fixture_postable(fixture))
-        if positions and not control_positions:
+        if positions and rotaries_move and not control_positions:
+            groups = {}
+            for name, angle in positions.items():
+                groups.setdefault(self._machine.rotary_axes[name].sequence, {})[name] = angle
+            moves = [
+                group
+                for _, group in sorted(groups.items())
+                if before is None or any(round(v, 6) != before.get(k) for k, v in group.items())
+            ]
             items.append(
                 Postable(
                     item_type="rotation",
                     label="Rotary positioning",
-                    path=Path.Path([Path.Command("G0", positions)]),
+                    path=Path.Path([Path.Command("G0", move) for move in moves]),
                     source=None,
                     data={"pose_change": True},
                 )
@@ -2304,7 +2316,13 @@ class PostProcessor:
                     rotaries_move = pose is None or angles != pose[1]
                     new_items.extend(
                         self._pose_change_postables(
-                            strategy, placement, positions, declared, rotaries_move, fixture_change
+                            strategy,
+                            placement,
+                            positions,
+                            declared,
+                            rotaries_move,
+                            fixture_change,
+                            dict(pose[1]) if pose else None,
                         )
                     )
                     if fixture_change:
@@ -3733,18 +3751,6 @@ class PostProcessor:
         # Format parameters with clean, stateless implementation
         parameter_order = list(self.values.get("PARAMETER_ORDER", Constants.PARAMETER_ORDER))
 
-        # Suppress commands where all parameters were removed by duplicate suppression
-        # or parameter_order exclusion (e.g., Z suppression for wire EDM).
-        # A bare move (G0, G1, G2, G3) or dwell (G4) with no parameters is meaningless.
-        if (
-            command_name
-            in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC + Constants.GCODE_DWELL
-        ):
-            non_N_params = {**params}
-            non_N_params.pop("N", None)
-            if len(non_N_params) == 0:
-                return None
-
         # An arc's center is given in its plane. The center word along the
         # plane's normal, K on a G17 arc, J on G18, I on G19, says nothing
         # (a helix carries its pitch in the axis word), and LinuxCNC and Fanuc
@@ -3755,6 +3761,7 @@ class PostProcessor:
             plane = self.machine_state.Plane if self.machine_state else "G17"
             normal_word = Constants.ARC_CENTER_WORD_NORMAL_TO_PLANE.get(plane)
 
+        words_emitted = 0
         for parameter in parameter_order:
             if parameter == normal_word:
                 continue
@@ -3777,6 +3784,18 @@ class PostProcessor:
 
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
+                words_emitted += 1
+
+        # Suppress commands where all parameters were removed by duplicate suppression
+        # or parameter_order exclusion (e.g., Z suppression for wire EDM).
+        # A bare move, canned cycle or dwell with no parameters is meaningless.
+        if words_emitted == 0 and command_name in (
+            Constants.GCODE_MOVE_LINE
+            + Constants.GCODE_MOVE_ARC
+            + Constants.GCODE_DRILL_COMMANDS
+            + Constants.GCODE_DWELL
+        ):
+            return None
 
         # Nothing left to emit, e.g. a modal command whose parameters were all
         # suppressed as duplicates.

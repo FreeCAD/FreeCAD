@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Gui.ViewProviderExtension import ViewProviderExtension
 from typing import Any, Final
@@ -50,14 +48,12 @@ class ViewProviderPreviewExtension(ViewProviderExtension):
         """
         Show or hide the preview in the 3D view.
         """
-        ...
 
     @constmethod
     def isPreviewEnabled(self) -> bool:
         """
         Returns if the preview is currently shown.
         """
-        ...
 
     def updatePreview(self) -> None:
         """
@@ -69,7 +65,6 @@ class ViewProviderPreviewExtension(ViewProviderExtension):
         Never call this from inside an updatePreview hook - it dispatches back
         into that hook and recurses.
         """
-        ...
 
     def updatePreviewShape(self, shape: Any, node: Any, /) -> None:
         """
@@ -78,4 +73,3 @@ class ViewProviderPreviewExtension(ViewProviderExtension):
 
         Raises TypeError if node is not an SoPreviewShape.
         """
-        ...

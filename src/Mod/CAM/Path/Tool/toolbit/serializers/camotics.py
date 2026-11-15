@@ -32,9 +32,7 @@ from ...assets.uri import AssetUri
 from ...assets.asset import Asset
 
 SHAPEMAP = {
-    "ballend": "Ballnose",
     "endmill": "Cylindrical",
-    "taperedballnose": "Ballnose",
     "v-bit": "Conical",
     "vbit": "Conical",
     "chamfer": "Snubnose",
@@ -84,7 +82,10 @@ class CamoticsToolBitSerializer(AssetSerializer):
         toolitem["diameter"] = asset.get_diameter().Value or 2
         toolitem["description"] = asset.label
         toolitem["length"] = asset.get_length().Value or 10
-        toolitem["shape"] = SHAPEMAP.get(asset.get_shape_name(), "Cylindrical")
+        if asset._tool_bit_shape.ball_end:
+            toolitem["shape"] = "Ballnose"
+        else:
+            toolitem["shape"] = SHAPEMAP.get(asset.get_shape_name().lower(), "Cylindrical")
         return json.dumps(toolitem).encode("ascii", "ignore")
 
     @classmethod

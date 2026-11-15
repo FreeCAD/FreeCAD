@@ -72,6 +72,8 @@ def _caclulateCutMode(direction, side):
 class ObjectHelix(PathCircularHoleBase.ObjectOp):
     """Proxy class for Helix operations."""
 
+    keepsHoleSteps = True
+
     @classmethod
     def helixOpPropertyEnumerations(self, dataType="data"):
         """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
@@ -672,10 +674,22 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         obj.Direction = _caclulatePathDirection(obj)
 
+        # a step over a smaller one stops at its own floor, or at the Final Depth when that is higher
+        for hole in holes:
+            hole["final"] = obj.FinalDepth.Value
+            at = (hole["x"], hole["y"])
+            steps = [
+                h["d"]
+                for h in holes
+                if h is not hole and Path.Geom.pointsCoincide((h["x"], h["y"]), at)
+            ]
+            if steps and min(steps) < hole["d"]:
+                hole["final"] = max(hole["final"], hole["bottom"])
+
         args = {
             "edge": None,
             "outer_radius": None,
-            "pitch": obj.HelixMaxPitch.Value or safeHeight - obj.FinalDepth.Value,
+            "pitch": None,
             "step": obj.StepOver * tooldiameter / 100,
             "inner_radius": None,
             "retract_height": safeHeight,
@@ -701,6 +715,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 dirAngleRad = math.radians(obj.RotationAngle.Value)
 
             args["dir_angle_rad"] = dirAngleRad
+            finalDepth = hole["final"]
+            args["pitch"] = obj.HelixMaxPitch.Value or safeHeight - finalDepth
 
             if obj.OverrideProfileDiameter.Value:
                 hole["d"] = obj.OverrideProfileDiameter.Value
@@ -762,7 +778,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 continue
 
             # Split depth by step down
-            work_distance = obj.StartDepth.Value - obj.FinalDepth.Value
+            work_distance = obj.StartDepth.Value - finalDepth
             iters = Path.Geom.ceil(work_distance / obj.StepDown.Value)
             centerTop = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             centerBottom = FreeCAD.Vector(centerTop.x, centerTop.y, centerTop.z)
@@ -774,9 +790,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     )
                 else:
                     self.commandlist.append(Path.Command(f"(hole {hole_index + 1})"))
-                centerBottom.z = max(centerTop.z - obj.StepDown.Value, obj.FinalDepth.Value)
-                if isRoughly(centerBottom.z, obj.FinalDepth.Value):
-                    centerBottom.z = obj.FinalDepth.Value
+                centerBottom.z = max(centerTop.z - obj.StepDown.Value, finalDepth)
+                if isRoughly(centerBottom.z, finalDepth):
+                    centerBottom.z = finalDepth
 
                 if obj.StartConeFromBottom:
                     args["edge"] = Part.makeLine(centerBottom, centerTop)

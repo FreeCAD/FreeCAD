@@ -403,8 +403,6 @@ M30
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         glines = gcode.splitlines()
-        print("Testing drilling")
-        print(gcode)
         # Every hole is its own G98 ... G80 group: the G0 between holes ends
         # the modal cycle, so each G83 carries its full Q/R parameters again.
         expected = [
@@ -457,8 +455,6 @@ M30
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         glines = gcode.splitlines()
-        print("Testing drilling")
-        print(gcode)
         # Every hole is its own G98 ... G80 group: the G0 between holes ends
         # the modal cycle, so each G73 carries its full Q/R parameters again.
         expected = [

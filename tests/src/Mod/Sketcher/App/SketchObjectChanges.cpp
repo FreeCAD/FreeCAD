@@ -239,6 +239,103 @@ TEST_F(SketchObjectTest, testSplitEllipse)
     EXPECT_TRUE(solverUpdated);
 }
 
+TEST_F(SketchObjectTest, testSplitEllipseKeepsInternalGeometry)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    int geoId = getObject()->addGeometry(&ellipse);
+    getObject()->exposeInternalGeometry(geoId);
+    int numInternal = countConstraintsOfType(getObject(), Sketcher::InternalAlignment);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(numInternal, 4);
+    const auto constraints = getObject()->Constraints.getValues();
+    int numAligned = std::count_if(constraints.begin(), constraints.end(), [&geoId](const auto* constr) {
+        return constr->Type == Sketcher::InternalAlignment && constr->Second == geoId;
+    });
+    EXPECT_EQ(numAligned, numInternal);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfHyperbolaKeepsInternalGeometry)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola arcOfHyperbola;
+    setupArcOfHyperbola(arcOfHyperbola);
+    Base::Vector3d splitPoint = arcOfHyperbola.pointAtParameter(
+        (arcOfHyperbola.getFirstParameter() + arcOfHyperbola.getLastParameter()) / 2
+    );
+    int geoId = getObject()->addGeometry(&arcOfHyperbola);
+    getObject()->exposeInternalGeometry(geoId);
+    int numInternal = countConstraintsOfType(getObject(), Sketcher::InternalAlignment);
+    int highestBefore = getObject()->getHighestCurveIndex();
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_GT(numInternal, 0);
+    // The arc is split into two pieces, the internal geometry stays with the first one
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), highestBefore + 1);
+    const auto constraints = getObject()->Constraints.getValues();
+    int numAligned = std::count_if(constraints.begin(), constraints.end(), [&geoId](const auto* constr) {
+        return constr->Type == Sketcher::InternalAlignment && constr->Second == geoId;
+    });
+    EXPECT_EQ(numAligned, numInternal);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfHyperbolaKeepsPiecesEqual)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola arcOfHyperbola;
+    setupArcOfHyperbola(arcOfHyperbola);
+    double firstParam = arcOfHyperbola.getFirstParameter();
+    double lastParam = arcOfHyperbola.getLastParameter();
+    int geoId = getObject()->addGeometry(&arcOfHyperbola);
+    getObject()->exposeInternalGeometry(geoId);
+    getObject()->solve();
+    int dofBefore = getObject()->getLastDoF();
+
+    // Act
+    getObject()->split(
+        geoId,
+        arcOfHyperbola.pointAtParameter(firstParam + (lastParam - firstParam) / 3)
+    );
+    int secondPiece = getObject()->getHighestCurveIndex();
+    const auto* piece = getObject()->getGeometry<Part::GeomArcOfHyperbola>(secondPiece);
+    getObject()->split(
+        secondPiece,
+        piece->pointAtParameter((piece->getFirstParameter() + piece->getLastParameter()) / 2)
+    );
+    auto result = getObject()->solve();
+
+    // Assert
+    EXPECT_EQ(result, Sketcher::SketchSolveStatus::Success);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::Equal), 2);
+    EXPECT_EQ(getObject()->getLastDoF(), dofBefore + 2);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfCircleAddsNoEqual)
+{
+    // Arrange
+    Part::GeomArcOfCircle arcOfCircle;
+    setupArcOfCircle(arcOfCircle);
+    int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Act
+    int result = getObject()->split(geoId, Base::Vector3d(-2.0, 3.1, 0.0));
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::Equal), 0);
+}
+
 TEST_F(SketchObjectTest, testSplitArcOfCircle)
 {
     // Arrange

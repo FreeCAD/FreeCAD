@@ -24,6 +24,7 @@
 import pathlib
 
 import Draft
+import Part
 import FreeCAD
 import Path
 import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
@@ -239,3 +240,52 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.assertEqual("CCW", expected_direction, msg)
         else:
             raise NotImplementedError("Cannot determine direction for arbitrary paths")
+
+
+class TestPathHelixSteppedHole(PathTestUtils.PathTestBase):
+    """A counterbore over its hole: both steps are cut, each to its own depth."""
+
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestPathHelixSteppedHole")
+        block = Part.makeBox(40, 40, 20).cut(Part.makeCylinder(7, 5, FreeCAD.Vector(20, 20, 15)))
+        body = self.doc.addObject("Part::Feature", "Block")
+        body.Shape = block.cut(Part.makeCylinder(4, 20, FreeCAD.Vector(20, 20, 0))).removeSplitter()
+        self.doc.recompute()
+        self.job = PathJob.Create("Job", [body])
+        self.job.Tools.Group[0].Tool.Diameter = 6
+        self.model = self.job.Model.Group[0]
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def testBothStepsCut(self):
+        """Verify the bore and the counterbore over it are both kept and cut to their own depths"""
+        faces = list(enumerate(self.model.Shape.Faces, 1))
+        bore = next(i for i, f in faces if Path.Geom.isRoughly(f.BoundBox.XLength, 8))
+        floor = next(
+            i
+            for i, f in faces
+            if Path.Geom.isRoughly(f.BoundBox.ZMin, 15)
+            and Path.Geom.isRoughly(f.BoundBox.ZLength, 0)
+        )
+        op = PathHelix.Create("Helix")
+        op.Base = [(self.model, [f"Face{bore}", f"Face{floor}"])]
+        for prop in ("StartDepth", "FinalDepth", "StepDown"):
+            op.setExpression(prop, None)
+        op.StartDepth = 20
+        op.StepDown = 20
+
+        # the Final Depth at the bore's bottom, partway down the bore, or at the counterbore's floor
+        for final, bore in ((0, 0), (5, 5), (15, 15)):
+            with self.subTest(final=final):
+                op.FinalDepth = final
+                self.doc.recompute()
+                self.assertEqual(op.Disabled, [])
+                # the tool radius is 3: the bore's arcs run 1 from the axis, the counterbore's 3-4
+                bottoms = {}
+                for cmd in (c for c in op.Path.Commands if c.Name in ("G2", "G3")):
+                    off = FreeCAD.Vector(cmd.x - 20, cmd.y - 20, 0).Length
+                    step = "bore" if off < 2 else "counterbore"
+                    bottoms[step] = min(bottoms.get(step, cmd.z), cmd.z)
+                self.assertRoughly(bottoms["bore"], bore)
+                self.assertRoughly(bottoms["counterbore"], 15)

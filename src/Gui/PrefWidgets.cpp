@@ -151,7 +151,7 @@ void PrefWidget::onRestore()
 
 void PrefWidget::failedToSave(const QString& name) const
 {
-    QByteArray objname = name.toLatin1();
+    QByteArray objname = name.toUtf8();
     if (objname.isEmpty()) {
         objname = "Undefined";
     }
@@ -160,7 +160,7 @@ void PrefWidget::failedToSave(const QString& name) const
 
 void PrefWidget::failedToRestore(const QString& name) const
 {
-    QByteArray objname = name.toLatin1();
+    QByteArray objname = name.toUtf8();
     if (objname.isEmpty()) {
         objname = "Undefined";
     }

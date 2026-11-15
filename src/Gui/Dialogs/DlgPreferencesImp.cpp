@@ -834,9 +834,9 @@ void DlgPreferencesImp::restoreDefaults()
         mgr->Clear();
 
         // Restore the default preferences template if any
-        const char* templatePath = App::Application::getUserParameterTemplatePath();
-        if (templatePath) {
-            mgr->LoadDocument(templatePath);
+        const std::string templatePath = App::Application::getUserParameterTemplatePath();
+        if (!templatePath.empty()) {
+            mgr->LoadDocument(templatePath.c_str());
             restartRequired = true;  // the reloaded preferences are not applied until restart.
         }
 
@@ -928,7 +928,7 @@ void DlgPreferencesImp::applyChanges()
                     ui->groupWidgetStack->setCurrentIndex(i);
                     pagesStackWidget->setCurrentIndex(j);
 
-                    QMessageBox::warning(this, tr("Wrong Parameter"), QString::fromLatin1(e.what()));
+                    QMessageBox::warning(this, tr("Wrong Parameter"), QString::fromUtf8(e.what()));
 
                     this->invalidParameter = true;
 

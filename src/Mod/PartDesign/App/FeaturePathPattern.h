@@ -24,6 +24,7 @@ public:
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
     bool deleteOriginalTransformation() const override;
     bool hasOriginalTransformation() const override;
+    std::optional<gp_Ax2> getAxis(const App::PropertyLinkSub& property) const override;
 };
 
 }  // namespace PartDesign

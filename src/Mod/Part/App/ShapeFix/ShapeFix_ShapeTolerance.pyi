@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShape import TopoShape
@@ -33,7 +31,6 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
         """
         limitTolerance(shape, tmin, [tmax=0, ShapeEnum=SHAPE])
         """
-        ...
 
     @overload
     def setTolerance(self, shape: TopoShape, precision: float, /) -> None: ...
@@ -45,4 +42,3 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
         """
         setTolerance(shape, precision, [ShapeEnum=SHAPE])
         """
-        ...

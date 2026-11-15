@@ -10,11 +10,11 @@ namespace ZVALUE {
     const int HATCH = 30;
     const int SECTIONFACE = 40;
     const int SECTIONHATCH = 41;
+    const int SECTIONLINE = 45;
     const int HIGHLIGHT = 50;
     const int HIDEDGE = 60;
     const int EDGE = 70;
     const int VERTEX = 80;
-    const int SECTIONLINE = 90;
     const int MATTING = 100;
     const int DIMENSION = 110;
     const int BALLOON = 120;

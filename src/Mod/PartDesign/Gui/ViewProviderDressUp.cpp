@@ -102,7 +102,7 @@ bool ViewProviderDressUp::setEdit(int ModNum)
                     "%1 misses a base feature.\n"
                     "This feature is broken and cannot be edited."
                 )
-                    .arg(QString::fromLatin1(dressUp->getNameInDocument()))
+                    .arg(QString::fromUtf8(dressUp->getNameInDocument()))
             );
             return false;
         }

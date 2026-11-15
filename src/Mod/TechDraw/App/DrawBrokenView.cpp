@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LGPL-2-or-later
+// SPDX-License-Identifier: LGPL-2.0-or-later
 
 /***************************************************************************
  *   Copyright (c) 2024 WandererFan <wandererfan@gmail.com>                *

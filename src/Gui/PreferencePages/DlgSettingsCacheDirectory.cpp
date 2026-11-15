@@ -203,7 +203,7 @@ void ApplicationCache::setLimit(qint64 value)
  */
 bool ApplicationCache::periodicCheckOfSize() const
 {
-    QString vendor = QString::fromLatin1(App::Application::Config()["ExeVendor"].c_str());
+    QString vendor = QString::fromStdString(App::Application::Config()["ExeVendor"]);
     QString application = QString::fromStdString(App::Application::getExecutableName());
 
     QSettings settings(vendor, application);

@@ -24,65 +24,51 @@ class Voronoi(BaseClass):
     @constmethod
     def numCells(self) -> int:
         """Return number of cells"""
-        ...
 
     @constmethod
     def numEdges(self) -> int:
         """Return number of edges"""
-        ...
 
     @constmethod
     def numVertices(self) -> int:
         """Return number of vertices"""
-        ...
 
     def addPoint(self, point: Vector, /) -> None:
         """add given point to input collection"""
-        ...
 
     def addSegment(self, point1: Vector, point2: Vector, /) -> None:
         """add given segment to input collection"""
-        ...
 
     def construct(self) -> None:
         """constructs the voronoi diagram from the input collections"""
-        ...
 
     def colorExterior(self, color: int, callback: Any = ..., /) -> None:
         """assign given color to all exterior edges and vertices"""
-        ...
 
     def colorTwins(self, color: int, /) -> None:
         """assign given color to all twins of edges (which one is considered a twin is arbitrary)"""
-        ...
 
     def colorColinear(self, color: int, degree: float = ..., /) -> None:
         """assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)"""
-        ...
 
     def resetColor(self, color: int, /) -> None:
         """assign color 0 to all elements with the given color"""
-        ...
 
     @constmethod
     def getPoints(self, z: float = ..., /) -> list[Vector]:
         """Get list of all input points."""
-        ...
 
     @constmethod
     def numPoints(self) -> int:
         """Return number of input points"""
-        ...
 
     @constmethod
     def getSegments(self, z: float = ..., /) -> list[tuple[Vector, Vector]]:
         """Get list of all input segments."""
-        ...
 
     @constmethod
     def numSegments(self) -> int:
         """Return number of input segments"""
-        ...
     Cells: Final[list]
     """List of all cells of the voronoi diagram"""
 

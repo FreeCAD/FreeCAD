@@ -114,7 +114,7 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
             auto dvp = freecad_cast<TechDraw::DrawViewPart*>(fView);
             if (dvp && TechDraw::DrawView::isProjGroupItem(dvp)) {
                 auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
-                QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
+                QString type = QString::fromUtf8(projItemPtr->Type.getValueAsString());
 
                 if (type == QStringLiteral("Front")) {
                     gView->alignTo(m_origin, QStringLiteral("None"));

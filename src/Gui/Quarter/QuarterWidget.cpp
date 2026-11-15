@@ -161,6 +161,9 @@ public:
         surfaceFormat.setOption(QSurfaceFormat::DebugContext);
 #endif
         setFormat(surfaceFormat);
+
+        // Don't delete the framebuffer before the polygon select tool can read it
+        setUpdateBehavior(QOpenGLWidget::PartialUpdate);
     }
     ~CustomGLWidget() override = default;
 

@@ -235,8 +235,15 @@ void TaskPatternParameters::setupPathPatternParameterUI(
     App::PropertyLength* spacing,
     App::PropertyLength* startOffset,
     App::PropertyLength* endOffset,
+    App::PropertyDistance* cyclicOffset,
     App::PropertyBool* reversePath,
-    App::PropertyBool* align
+    App::PropertyBool* align,
+    App::PropertyLinkSub* tangentAxis,
+    App::PropertyBool* flipTangentAxis,
+    App::PropertyLinkSub* verticalAxis,
+    App::PropertyBool* flipVerticalAxis,
+    App::PropertyInteger* originPointIndex,
+    App::PropertyBool* relativeToFirst
 )
 {
     pathParametersWidget = new PatternPathParametersWidget(parent);
@@ -244,21 +251,65 @@ void TaskPatternParameters::setupPathPatternParameterUI(
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(pathParametersWidget);
 
-    pathParametersWidget
-        ->bindProperties(path, count, spacingMode, spacing, startOffset, endOffset, reversePath, align);
+    fillDirectionCombo(
+        pathParametersWidget->getTangentAxisWidget()->dirLinks,
+        Part::LinearPatternDirection::First,
+        true
+    );
+    fillDirectionCombo(
+        pathParametersWidget->getVerticalAxisWidget()->dirLinks,
+        Part::LinearPatternDirection::Second,
+        true
+    );
+
+    pathParametersWidget->bindProperties(
+        path,
+        count,
+        spacingMode,
+        spacing,
+        startOffset,
+        endOffset,
+        cyclicOffset,
+        reversePath,
+        align,
+        tangentAxis,
+        flipTangentAxis,
+        verticalAxis,
+        flipVerticalAxis,
+        originPointIndex,
+        relativeToFirst
+    );
 
     QObject::connect(
-        pathParametersWidget,
-        &PatternPathParametersWidget::requestReferenceSelection,
+        pathParametersWidget->getPathWidget(),
+        &PartGui::PatternReferenceWidget::requestReferenceSelection,
         signalContext,
         [this]() {
-            activeDirectionWidget = pathParametersWidget;
+            activeDirectionWidget = pathParametersWidget->getPathWidget();
             onReferenceSelectionRequested();
         }
     );
     QObject::connect(
-        pathParametersWidget,
-        &PatternPathParametersWidget::parametersChanged,
+        pathParametersWidget->getTangentAxisWidget(),
+        &PartGui::PatternReferenceWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = pathParametersWidget->getTangentAxisWidget();
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        pathParametersWidget->getVerticalAxisWidget(),
+        &PartGui::PatternReferenceWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = pathParametersWidget->getVerticalAxisWidget();
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        pathParametersWidget->getPathWidget(),
+        &PartGui::PatternReferenceWidget::parametersChanged,
         signalContext,
         [this]() { onPatternParametersChanged(); }
     );
@@ -426,10 +477,17 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         std::vector<std::string> subnames;
         App::DocumentObject* object = nullptr;
         pathParametersWidget->getPath(object, subnames);
-        if (object) {
-            const std::string path = patternReferenceCommand(object, subnames);
-            FCMD_OBJ_CMD(pattern, "Path = " << path.c_str());
-        }
+        FCMD_OBJ_CMD(pattern, "Path = " << patternReferenceCommand(object, subnames));
+        pathParametersWidget->getTangentAxisWidget()->getAxis(object, subnames);
+        std::string direction = buildDirectionReferencePythonString(object, subnames);
+        FCMD_OBJ_CMD(pattern, "TangentAxis = " << direction.c_str());
+        FCMD_OBJ_CMD(pattern, "FlipTangentAxis = " << pathParametersWidget->getFlipTangentAxis());
+        pathParametersWidget->getVerticalAxisWidget()->getAxis(object, subnames);
+        direction = buildDirectionReferencePythonString(object, subnames);
+        FCMD_OBJ_CMD(pattern, "VerticalAxis = " << direction.c_str());
+        FCMD_OBJ_CMD(pattern, "FlipVerticalAxis = " << pathParametersWidget->getFlipVerticalAxis());
+        FCMD_OBJ_CMD(pattern, "RelativeToFirst = " << pathParametersWidget->getRelativeToFirst());
+        FCMD_OBJ_CMD(pattern, "OriginPointIndex = " << pathParametersWidget->getOriginPointIndex());
         pathParametersWidget->applyQuantitySpinboxes();
         return;
     }

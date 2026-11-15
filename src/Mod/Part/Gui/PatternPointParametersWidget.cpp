@@ -28,7 +28,7 @@ PatternPointParametersWidget::PatternPointParametersWidget(QWidget* parent)
     connect(ui->relativeToFirst, &QCheckBox::toggled, this, [this](bool newValue) {
         if (!blockUpdate && relativeToFirstProperty) {
             relativeToFirstProperty->setValue(newValue);
-            ui->originPointIndex->setEnabled(!ui->relativeToFirst->isChecked());
+            updateVisibility();
             Q_EMIT parametersChanged();
         }
     });
@@ -71,12 +71,12 @@ void PatternPointParametersWidget::getPointObject(
 
 bool PatternPointParametersWidget::getRelativeToFirst() const
 {
-    return relativeToFirstProperty ? relativeToFirstProperty->getValue() : false;
+    return ui->relativeToFirst->isChecked();
 }
 
-long PatternPointParametersWidget::getOriginPointIndex() const
+int PatternPointParametersWidget::getOriginPointIndex() const
 {
-    return originPointIndexProperty ? originPointIndexProperty->getValue() : 0;
+    return ui->originPointIndex->value();
 }
 
 void PatternPointParametersWidget::updatePointObjectButton()
@@ -91,4 +91,9 @@ void PatternPointParametersWidget::updatePointObjectButton()
         text = QString::fromLatin1(pointObjectProperty->getValue()->getNameInDocument());
     }
     ui->pointObjectButton->setText(text);
+}
+
+void PatternPointParametersWidget::updateVisibility()
+{
+    ui->originPointIndex->setVisible(ui->relativeToFirst->isChecked());
 }

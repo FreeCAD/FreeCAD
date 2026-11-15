@@ -547,7 +547,7 @@ protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
         QString key = QStringLiteral("%1_%2x%3")
-                          .arg(QString::fromLatin1(name))
+                          .arg(QString::fromUtf8(name))
                           .arg(size.width())
                           .arg(size.height());
         QPixmap icon;
@@ -1351,7 +1351,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         EditDatumDialog(tid, this->sketchView, it->ConstraintNbr).exec(false);
     }
     else if (it->constraintType() == Sketcher::Text) {
-        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr, this);
         editDialog->exec();
         delete editDialog;
     }
@@ -1521,7 +1521,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
     else if (ui->filterBox->checkState() == Qt::Checked && specialFilterMode == SpecialFilterType::Associated) {
         int geoid = Sketcher::GeoEnum::GeoUndef;
         Sketcher::PointPos pointpos = Sketcher::PointPos::none;
-        QString expr = QString::fromLatin1(msg.pSubName);
+        QString expr = QString::fromUtf8(msg.pSubName);
         getSelectionGeoId(expr, geoid, pointpos);
 
         if (geoid != Sketcher::GeoEnum::GeoUndef

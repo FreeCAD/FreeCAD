@@ -263,6 +263,26 @@ The public stub generator flattens class-body `if TYPE_CHECKING:` attribute
 blocks into ordinary class members in the emitted stubs, so the published stub
 surface stays clean.
 
+### Name collisions / Name shadowing
+
+Whenever a type name collides with an existing class property like:
+
+```py
+class ComplexGeoData(Persistence):
+	BoundBox: Final[BoundBox]
+	Placement: Placement
+```
+
+rename the import with a "Py" suffix, such as:
+
+```py
+from Base.BoundBox import BoundBox as BoundBoxPy
+from Base.Placement import Placement as PlacementPy
+```
+
+Other renaming patterns will not work as intended, e.g., `_BoundBox` will be simply ignored.
+Always check the generated stubs with a type checker for missing types.
+
 ## Maintenance Notes
 
 Use `src/Tools/typing/generate_stubs.py` in scripts and documentation. Do not

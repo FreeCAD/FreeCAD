@@ -16,6 +16,11 @@
 namespace Part
 {
 
+std::optional<gp_Ax2> getAxis(
+    const App::PropertyLinkSub& property,
+    const App::DocumentObject* extendedObject
+);
+
 class PartExport CircularPatternExtension: public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::CircularPatternExtension);
@@ -41,8 +46,8 @@ public:
     static const App::PropertyIntegerConstraint::Constraints intSymmetry;
 
 protected:
-    gp_Ax2 getRotation() const;
-    virtual gp_Ax2 getRotation(const App::PropertyLinkSub& property) const;
+    gp_Ax2 getAxis() const;
+    virtual std::optional<gp_Ax2> getAxis(const App::PropertyLinkSub& property) const;
 };
 
 }  // namespace Part

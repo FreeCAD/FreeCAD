@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import Any
@@ -29,35 +27,29 @@ class Geometry2d(PyObjectBase):
         """
         Performs the symmetrical transformation of this geometric object.
         """
-        ...
 
     def rotate(self, point: Any, angle: float, /) -> None:
         """
         Rotates this geometric object at angle Ang (in radians) around a point.
         """
-        ...
 
     def scale(self, point: Any, factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor.
         """
-        ...
 
     def transform(self, matrix: Any, /) -> None:
         """
         Applies a transformation to this geometric object.
         """
-        ...
 
     def translate(self, offset: Any, /) -> None:
         """
         Translates this geometric object.
         """
-        ...
 
     @constmethod
     def copy(self) -> "Geometry2d":
         """
         Create a copy of this geometry.
         """
-        ...

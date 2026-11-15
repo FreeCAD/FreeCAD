@@ -36,7 +36,6 @@
 #include <Gui/Notifications.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
 #include "Utils.h"

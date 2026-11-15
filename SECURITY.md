@@ -30,3 +30,10 @@ FreeCAD implements security fixes to the current release series, and to the curr
 To report a vulnerability use GitHub's security reporting tool:
 https://github.com/FreeCAD/FreeCAD/security/advisories/new
 
+Please note that if your report concerns a crash in FreeCAD without a demonstrated exploit, we ask that you report it
+as a normal [Issue](https://github.com/FreeCAD/FreeCAD/issues/new/choose) instead. We do not request CVEs for crashes
+that don't lead to a real security impact, such as arbitrary code execution, disclosure of personal information, or
+unauthorized access to files or network resources. Security reports are deliberately visible to only a small number of
+maintainers, so a crash filed here reaches far fewer developers, and will generally be fixed more slowly, than one filed
+as a public Issue.
+

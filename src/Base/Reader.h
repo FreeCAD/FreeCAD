@@ -333,6 +333,7 @@ protected:
     //@{
     void startCDATA() override;
     void endCDATA() override;
+    void startDTD(const XMLCh* const name, const XMLCh* const publicId, const XMLCh* const systemId) override;
     //@}
 
     /** @name Document handler */

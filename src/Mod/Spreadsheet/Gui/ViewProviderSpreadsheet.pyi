@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from typing import Any
 
@@ -24,12 +23,9 @@ class ViewProviderSpreadsheet(ViewProviderDocumentObject):
 
     def getView(self) -> Any | None:
         """Get access to the sheet view"""
-        ...
 
     def showSheetMdi(self) -> None:
         """Create (if necessary) and switch to the Spreadsheet MDI."""
-        ...
 
     def exportAsFile(self) -> None:
         """Export the sheet as a file."""
-        ...

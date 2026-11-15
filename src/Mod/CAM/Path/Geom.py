@@ -235,10 +235,15 @@ def isVertical(obj):
             return isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
         if isinstance(obj.Curve, (Part.Circle, Part.Ellipse)):
             return isHorizontal(obj.Curve.Axis)
-        if isinstance(obj.Curve, (Part.BezierCurve, Part.BSplineCurve)):
-            # the current assumption is that
-            # a curve is vertical if its end points are vertical
-            return isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
+        if isinstance(obj.Curve, Part.BezierCurve):
+            return isVertical(obj.Curve.toBSpline(*obj.ParameterRange).toShape())
+        if isinstance(obj.Curve, Part.BSplineCurve):
+            if plane := obj.findPlane():
+                return isHorizontal(plane.Axis)
+            trimmed_curve = obj.Curve.trim(*obj.ParameterRange)
+            tol = min(0.1 * obj.Length, 0.1)
+            curves = trimmed_curve.toBiArcs(tol)
+            return all(isVertical(c.toShape()) for c in curves)
 
         Path.Log.info(
             translate("PathGeom", "edge %s not handled, assuming not vertical") % type(obj.Curve)
@@ -936,7 +941,8 @@ def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
     # Make boundbox face with offset and cut incoming faces from it
     bboxFace = makeBoundBoxFace(allFaces.BoundBox, offset, z)
     cut = bboxFace.cut(faces, tol)
-    horizontal = Part.makeFace(cut.Wires[1:], "Part::FaceMakerBullseye").Faces
+    wires = [w for w in cut.Wires[1:] if w.isClosed()]  # exclude open wires from "bad" shape
+    horizontal = Part.makeFace(wires, "Part::FaceMakerBullseye").Faces
 
     # restore order
     if keepOrder and len(horizontal) > 1:

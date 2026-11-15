@@ -91,9 +91,9 @@ QString linkedSelectionLabel(const SelectionChanges& msg)
 
     return QStringLiteral("%1#%2.%3")
         .arg(
-            QLatin1String(msg.pOriginalMsg->pObjectName),
-            QLatin1String(msg.pObjectName),
-            QLatin1String(msg.pSubName)
+            QString::fromUtf8(msg.pOriginalMsg->pObjectName),
+            QString::fromUtf8(msg.pObjectName),
+            QString::fromUtf8(msg.pSubName)
         );
 }
 

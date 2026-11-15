@@ -314,10 +314,10 @@ void DlgExtrusion::onSelectEdgeClicked()
                     continue;
                 }
                 features_to_hide.append(QStringLiteral("App.ActiveDocument."));
-                features_to_hide.append(QString::fromLatin1(obj->getNameInDocument()));
+                features_to_hide.append(QString::fromUtf8(obj->getNameInDocument()));
                 features_to_hide.append(QStringLiteral(", \n"));
             }
-            QByteArray code_2 = code.arg(features_to_hide).toLatin1();
+            QByteArray code_2 = code.arg(features_to_hide).toUtf8();
             Base::Interpreter().runString(code_2.constData());
         }
         catch (Base::PyException& e) {
@@ -511,7 +511,7 @@ void DlgExtrusion::findShapes()
         if (canExtrude(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0, QString::fromUtf8(obj->Label.getValue()));
-            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            item->setData(0, Qt::UserRole, QString::fromUtf8(obj->getNameInDocument()));
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp) {
                 item->setIcon(0, vp->getIcon());
@@ -701,9 +701,9 @@ void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
         lnk.setValue(nullptr);
     }
     else {
-        QStringList parts = text.split(QChar::fromLatin1(':'));
+        QStringList parts = text.split(u':');
         App::DocumentObject* obj = App::GetApplication().getActiveDocument()->getObject(
-            parts[0].toLatin1()
+            parts[0].toUtf8()
         );
         if (!obj) {
             throw Base::ValueError(tr("Object not found: %1").arg(parts[0]).toUtf8().constData());
@@ -714,7 +714,7 @@ void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
         }
         else if (parts.size() == 2) {
             std::vector<std::string> subs;
-            subs.emplace_back(parts[1].toLatin1().constData());
+            subs.emplace_back(parts[1].toUtf8().constData());
             lnk.setValue(obj, subs);
         }
     }
@@ -737,9 +737,9 @@ void DlgExtrusion::setAxisLink(const App::PropertyLinkSub& lnk)
 void DlgExtrusion::setAxisLink(const char* objname, const char* subname)
 {
     if (objname && strlen(objname) > 0) {
-        QString txt = QString::fromLatin1(objname);
+        QString txt = QString::fromUtf8(objname);
         if (subname && strlen(subname) > 0) {
-            txt = txt + QStringLiteral(":") + QString::fromLatin1(subname);
+            txt = txt + QStringLiteral(":") + QString::fromUtf8(subname);
         }
         ui->txtLink->setText(txt);
     }
@@ -758,7 +758,7 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
 
     std::vector<App::DocumentObject*> objects;
     for (auto item : items) {
-        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toUtf8());
         if (!obj) {
             // The object has been removed from the document (e.g. by undo) while the
             // item is still highlighted in the tree.
@@ -1100,7 +1100,7 @@ void DlgExtrusion::onDeletedObject(const App::DocumentObject& obj)
     if (!name) {
         return;
     }
-    const QString objName = QString::fromLatin1(name);
+    const QString objName = QString::fromUtf8(name);
 
     {
         const QSignalBlocker blocker(ui->treeWidget);
@@ -1113,7 +1113,7 @@ void DlgExtrusion::onDeletedObject(const App::DocumentObject& obj)
     }
 
     const QString axisLink = ui->txtLink->text();
-    if (axisLink == objName || axisLink.startsWith(objName + QLatin1Char(':'))) {
+    if (axisLink == objName || axisLink.startsWith(objName + u':')) {
         const QSignalBlocker blocker(ui->txtLink);
         ui->txtLink->clear();
     }

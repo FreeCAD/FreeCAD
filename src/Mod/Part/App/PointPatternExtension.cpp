@@ -42,13 +42,13 @@ PointPatternExtension::PointPatternExtension()
         App::Prop_None,
         "Moves all transformations relative to the first one."
     );
-    OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
+    updatePropertyStatus();
 }
 
 void PointPatternExtension::extensionOnChanged(const App::Property* prop)
 {
     if (prop == &RelativeToFirst) {
-        OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
+        updatePropertyStatus();
     }
     App::DocumentObjectExtension::extensionOnChanged(prop);
 }
@@ -93,7 +93,9 @@ std::list<gp_Trsf> PointPatternExtension::calculateTransformations() const
         throw Base::ValueError("Point object does not contain vertices");
     }
 
-    const int originIndex = RelativeToFirst.getValue() ? 0 : OriginPointIndex.getValue();
+    const int originIndex = RelativeToFirst.getValue()
+        ? 0
+        : ((OriginPointIndex.getValue() % points.size()) + points.size()) % points.size();
     if (originIndex < 0 || static_cast<std::size_t>(originIndex) >= points.size()) {
         throw Base::ValueError("Origin point index is out of range");
     }
@@ -126,4 +128,9 @@ std::list<gp_Trsf> PointPatternExtension::calculateTransformations() const
 short PointPatternExtension::extensionMustExecute()
 {
     return PointObject.isTouched() || OriginPointIndex.isTouched() || RelativeToFirst.isTouched();
+}
+
+void PointPatternExtension::updatePropertyStatus()
+{
+    OriginPointIndex.setStatus(App::Property::Hidden, !RelativeToFirst.getValue());
 }

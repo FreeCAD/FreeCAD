@@ -496,7 +496,7 @@ public:
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
                     }
                     else {
-                        res = QString::fromLatin1(obj->getNameInDocument());
+                        res = QString::fromUtf8(obj->getNameInDocument());
                     }
                     if (sep && !noProperty) {
                         res += QLatin1Char('.');
@@ -548,7 +548,7 @@ public:
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
                     }
                     else {
-                        res = QString::fromLatin1(obj->getNameInDocument());
+                        res = QString::fromUtf8(obj->getNameInDocument());
                     }
                     if (sep && !noProperty) {
                         res += QLatin1Char('.');
@@ -1189,7 +1189,7 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
     QString path = static_cast<ExpressionCompleterModel*>(m)->pathFromIndex(index);
     if (completionPrefix().startsWith(u'.')) {
         if (const auto obj = currentObj.getObject()) {
-            const QString objectName = QString::fromLatin1(obj->getNameInDocument());
+            const QString objectName = QString::fromUtf8(obj->getNameInDocument());
             if (path.startsWith(objectName + u'.')) {
                 path.remove(0, objectName.size());
             }
@@ -1262,7 +1262,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                 if (const auto obj = currentObj.getObject()) {
                     // Use the existing object subtree to restrict leading-dot references to
                     // local properties. pathFromIndex() restores the leading dot on insertion.
-                    resultList.prepend(QString::fromLatin1(obj->getNameInDocument()));
+                    resultList.prepend(QString::fromUtf8(obj->getNameInDocument()));
                 }
             }
             FC_TRACE("split path " << path << " -> " << resultList.join(u'/').toUtf8().constData());

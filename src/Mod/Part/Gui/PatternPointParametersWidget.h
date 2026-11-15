@@ -31,9 +31,10 @@ public:
     void updateUI();
     void getPointObject(App::DocumentObject*& object, std::vector<std::string>& subnames) const;
     bool getRelativeToFirst() const;
-    long getOriginPointIndex() const;
+    int getOriginPointIndex() const;
 
 private:
+    void updateVisibility();
     void updatePointObjectButton();
 
     std::unique_ptr<Ui_PatternPointParametersWidget> ui;

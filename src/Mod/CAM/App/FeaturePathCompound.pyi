@@ -19,8 +19,6 @@ class FeaturePathCompound(DocumentObject):
 
     def addObject(self, obj: DocumentObject, /) -> None:
         """Add an object to the group"""
-        ...
 
     def removeObject(self, obj: DocumentObject, /) -> None:
         """Remove an object from the group"""
-        ...

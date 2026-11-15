@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.ShapeFix_Root import ShapeFix_Root
 from Part.GeometrySurface import GeometrySurface
@@ -72,19 +70,16 @@ class ShapeFix_Face(ShapeFix_Root):
         """
         Initializes by face
         """
-        ...
 
     def fixWireTool(self):
         """
         Returns tool for fixing wires
         """
-        ...
 
     def clearModes(self) -> None:
         """
         Sets all modes to default
         """
-        ...
 
     def add(self, wire: TopoShapeWire, /) -> None:
         """
@@ -92,7 +87,6 @@ class ShapeFix_Face(ShapeFix_Root):
         Wire is added without taking into account orientation of face
         (as if face were FORWARD)
         """
-        ...
 
     def fixOrientation(self) -> bool:
         """
@@ -104,7 +98,6 @@ class ShapeFix_Face(ShapeFix_Root):
         any case (supposing that natural bound will be added).
         Returns True if wires were reversed
         """
-        ...
 
     def fixAddNaturalBound(self) -> bool:
         """
@@ -115,7 +108,6 @@ class ShapeFix_Face(ShapeFix_Root):
         (sphere or torus) and none of wires is left-oriented
         Returns True if natural boundary was added
         """
-        ...
 
     def fixMissingSeam(self) -> bool:
         """
@@ -125,7 +117,6 @@ class ShapeFix_Face(ShapeFix_Root):
         missing seam edge
         Returns True if missing seam was added
         """
-        ...
 
     def fixSmallAreaWire(self, remove_small: bool, /) -> bool:
         """
@@ -133,26 +124,22 @@ class ShapeFix_Face(ShapeFix_Root):
         100*Precision.PConfusion(). Removes these wires if they are internal.
         Returns True if at least one small wire removed, False nothing is done.
         """
-        ...
 
     def fixLoopWire(self) -> tuple[bool, list]:
         """
         Detects if wire has a loop and fixes this situation by splitting on the few parts.
         """
-        ...
 
     def fixIntersectingWires(self) -> bool:
         """
         Detects and fixes the special case when face has more than one wire
         and this wires have intersection point
         """
-        ...
 
     def fixWiresTwoCoincidentEdges(self) -> bool:
         """
         If wire contains two coincidence edges it must be removed
         """
-        ...
 
     def fixPeriodicDegenerated(self) -> bool:
         """
@@ -162,23 +149,19 @@ class ShapeFix_Face(ShapeFix_Root):
         of the surface. Initial wire gets consistent orientation.
         Must be used in couple and before FixMissingSeam routine
         """
-        ...
 
     def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """
-        ...
 
     def face(self) -> TopoShapeFace:
         """
         Returns a face which corresponds to the current state
         """
-        ...
 
     def result(self) -> Union[TopoShapeFace, TopoShapeShell]:
         """
         Returns resulting shape (Face or Shell if split)
         To be used instead of face() if FixMissingSeam involved
         """
-        ...

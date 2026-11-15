@@ -258,6 +258,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     showProgressMessage(getNameInDocument(), "is making detail shape");
 
     Base::Vector3d dirDetail = dvp->Direction.getValue();
+    Base::Vector3d dirXDetail = dvp->XDirection.getValue();
     double radius = getFudgeRadius();
 
     //make a copy of the input shape so we don't inadvertently change it
@@ -295,6 +296,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
     gp_Pnt gpnt(toolPlaneOrigin.x, toolPlaneOrigin.y, toolPlaneOrigin.z);
     gp_Dir gdir(dirDetail.x, dirDetail.y, dirDetail.z);
+    gp_Dir gxdir = Base::convertTo<gp_Dir>(dirXDetail);
 
     TopoDS_Face extrusionFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
@@ -303,7 +305,8 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     TopoDS_Shape tool;
     if (Preferences::mattingStyle()) {
         //square mat
-        gp_Pln gpln(gpnt, gdir);
+        gp_Ax3 csPln(gpnt, gdir, gxdir);
+        gp_Pln gpln(csPln);
         BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
         extrusionFace = mkFace.Face();
         if (extrusionFace.IsNull()) {

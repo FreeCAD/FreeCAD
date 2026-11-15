@@ -4318,7 +4318,8 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
         return;
     }
 
-    if (isAnimationEnabled()) {
+    // A duration of 0 means no animation, the camera is set directly below
+    if (isAnimationEnabled() && duration != 0) {
         startAnimation(
             orientation,
             camera->position.getValue(),

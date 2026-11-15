@@ -1,25 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 Werner Mayer
+# SPDX-FileCopyrightText: 2016 Eivind Kvedalen
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
-# *   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# ***************************************************************************/
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import os
 import math
@@ -718,6 +717,48 @@ class SpreadsheetCases(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
+
+    def testNumericLiteralIsStableAcrossSaveRestore(self):
+        """Numeric literals retain their value and type across save and restore."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        values = {
+            "A1": "9030000.000000002",
+            "A2": "1.23456789e-9",
+            "A3": "1.234567891234567",
+            "A4": "42",
+        }
+        for address, value in values.items():
+            sheet.set(address, value)
+        self.doc.recompute()
+
+        contents_before = {address: sheet.getContents(address) for address in values}
+        values_before = {address: sheet.get(address) for address in values}
+        types_before = {address: sheet.getTypeIdOfProperty(address) for address in values}
+        self.assertEqual(values_before["A1"], float(values["A1"]))
+        self.assertEqual(types_before["A1"], "App::PropertyFloat")
+        self.assertEqual(types_before["A2"], "App::PropertyFloat")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = os.path.join(temp_dir, "numeric-literals.FCStd")
+            self.doc.saveAs(path)
+            FreeCAD.closeDocument(self.doc.Name)
+            self.doc = FreeCAD.openDocument(path)
+
+        sheet = self.doc.getObject("Spreadsheet")
+        self.assertEqual(
+            {address: sheet.getContents(address) for address in values},
+            contents_before,
+        )
+        self.assertEqual(
+            {address: sheet.get(address) for address in values},
+            values_before,
+        )
+        self.assertEqual(
+            {address: sheet.getTypeIdOfProperty(address) for address in values},
+            types_before,
+        )
+        self.assertEqual(sheet.getContents("A1"), "9030000")
+        self.assertEqual(sheet.getContents("A2"), "1.23456789e-09")
 
     def testRelationalOperators(self):
         """Test relational operators"""

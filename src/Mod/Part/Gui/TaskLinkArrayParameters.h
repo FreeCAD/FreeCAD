@@ -89,7 +89,11 @@ private:
     Base::Placement getArrayPlacement() const;
 
     App::DocumentObject* getPatternObject() const override;
-    void fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection direction) override;
+    void fillDirectionCombo(
+        Gui::ComboLinks& combo,
+        Part::LinearPatternDirection direction,
+        bool allowEmpty = false
+    ) override;
     void onReferenceSelectionRequested() override;
     void onPatternParametersChanged() override;
     void setupPatternTransaction() override;

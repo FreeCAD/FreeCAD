@@ -210,7 +210,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()),
-            QString::fromLatin1(e.what()));
+            QString::fromUtf8(e.what()));
     }
 }
 // clang-format on

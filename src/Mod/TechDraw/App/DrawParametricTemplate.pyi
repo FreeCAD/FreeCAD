@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Final
 
 from Base.Metadata import export
@@ -23,7 +21,6 @@ class DrawParametricTemplate(DrawTemplate):
 
     def drawLine(self, x1: float, y1: float, x2: float, y2: float, /) -> None:
         """Draw a line"""
-        ...
 
     GeometryCount: Final[int]
     """Number of geometry in template"""

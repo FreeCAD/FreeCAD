@@ -24,11 +24,13 @@
 
 
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <gp.hxx>
 #include <gp_Pln.hxx>
 
 
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/OCCError.h>
+#include <Mod/Part/App/BaseGeometry.h>
 #include "DatumCS.h"
 
 using namespace PartDesign;
@@ -45,7 +47,7 @@ CoordinateSystem::CoordinateSystem()
     this->setAttacher(new AttachEngine3D);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a
     // dependency of Sketcher on the PartDesign module
-    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+    BRepBuilderAPI_MakeFace builder(Part::BaseGeometry::XY_PLANE);
     if (!builder.IsDone()) {
         return;
     }
@@ -94,13 +96,13 @@ App::DocumentObject* CoordinateSystem::getSubObject(
         return const_cast<CoordinateSystem*>(this);
     }
 
-    gp_Dir dir(0, 0, 1);
+    gp_Dir dir = gp::DZ();
     if (subname) {
         if (strcmp(subname, "X") == 0) {
-            dir = gp_Dir(1, 0, 0);
+            dir = gp::DX();
         }
         else if (strcmp(subname, "Y") == 0) {
-            dir = gp_Dir(0, 1, 0);
+            dir = gp::DY();
         }
     }
 

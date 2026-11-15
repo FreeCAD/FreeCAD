@@ -331,7 +331,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
         updateUI();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Wrong Selection"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Wrong Selection"), QString::fromUtf8(e.what()));
     }
 }
 
@@ -468,7 +468,7 @@ bool TaskDlgFemConstraintForce::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
 

@@ -570,16 +570,13 @@ void TaskMultiTransformParameters::finishAdd(std::string& newFeatName)
         // Note: Inserts always happen before the specified iterator so in order to append at the
         // end we need to use push_back() and append()
         transformFeatures.push_back(newFeature);
-        ui->listTransformFeatures->addItem(QString::fromLatin1(newFeature->Label.getValue()));
+        ui->listTransformFeatures->addItem(QString::fromUtf8(newFeature->Label.getValue()));
         ui->listTransformFeatures->setCurrentRow(row + 1, QItemSelectionModel::ClearAndSelect);
     }
     else {
         // Note: The feature tree always seems to append to the end, no matter what we say here
         transformFeatures.insert(transformFeatures.begin() + row + 1, newFeature);
-        ui->listTransformFeatures->insertItem(
-            row + 1,
-            QString::fromLatin1(newFeature->Label.getValue())
-        );
+        ui->listTransformFeatures->insertItem(row + 1, QString::fromUtf8(newFeature->Label.getValue()));
         ui->listTransformFeatures->setCurrentRow(row + 1, QItemSelectionModel::ClearAndSelect);
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);

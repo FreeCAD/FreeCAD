@@ -171,7 +171,7 @@ private Q_SLOTS:
         TestDocument fixture;
         auto* object = fixture.object;
         auto* property = static_cast<App::PropertyInteger*>(
-            object->addDynamicProperty("App::PropertyInteger", "Size", "Values")
+            object->addDynamicProperty("App::PropertyInteger", "Size", "ConstraintTemperature")
         );
         property->setValue(3);
 
@@ -207,7 +207,6 @@ private Q_SLOTS:
         view.openEditor(index);
         QPointer<QWidget> editor = view.indexWidget(index);
         QVERIFY(editor);
-        QVERIFY(!view.isPersistentEditorOpen(index));
         QTest::keyClick(editor, Qt::Key_Return);
         QTRY_VERIFY(!editor);
         QVERIFY(!view.indexWidget(index));

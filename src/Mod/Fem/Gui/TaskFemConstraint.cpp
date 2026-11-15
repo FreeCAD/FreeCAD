@@ -258,7 +258,7 @@ bool TaskDlgFemConstraint::accept()
     }
     catch (const Base::Exception& e) {
         ConstraintView->getDocument()->abortCommand();
-        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
 

@@ -31,6 +31,7 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
+#include <gp.hxx>
 #include <gp_Ax2.hxx>
 #include <Law_Function.hxx>
 #include <Precision.hxx>
@@ -125,6 +126,22 @@ App::DocumentObjectExecReturn* Pipe::execute()
         return App::DocumentObject::StdReturn;
     }
 
+    auto getSectionShape =
+        [this](App::DocumentObject* feature, const std::vector<std::string>& subs) -> Part::TopoShape {
+        if (!feature || !feature->isDerivedFrom<Part::Part2DObject>()) {
+            return getTopoShapeVerifiedFace(false, false, feature, subs);
+        }
+
+        // use the entire sketch unless a single vertex is selected
+        auto subName = subs.empty() ? "" : subs.front();
+        if (subName.compare(0, 6, "Vertex") == 0) {
+            return static_cast<Part::Part2DObject*>(feature)->Shape.getShape().getSubTopoShape(
+                subName.c_str()
+            );
+        }
+        return getTopoShapeVerifiedFace(false, false, feature, {});
+    };
+
     std::vector<std::vector<Part::TopoShape>> wiresections;
 
     auto addWiresToWireSections = [](TopoShape& section,
@@ -181,7 +198,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         // setup the profile section
-        Part::TopoShape profileShape = getTopoShapeVerifiedFace(false, false);
+        Part::TopoShape profileShape = getSectionShape(Profile.getValue(), Profile.getSubValues());
         if (profileShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain profile shape")
@@ -260,8 +277,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 }
 
                 // if the section is an object's face then take just the face
-                Part::TopoShape shape
-                    = getTopoShapeVerifiedFace(false, false, subSet.first, subSet.second);
+                Part::TopoShape shape = getSectionShape(subSet.first, subSet.second);
                 if (shape.isNull()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain section shape")
@@ -594,7 +610,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS
     const Base::Vector3d& bVec = Binormal.getValue();
     switch (Mode.getValue()) {
         case 1:
-            mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1), gp_Dir(1, 0, 0)));
+            mkPipeShell.SetMode(gp_Ax2(gp::Origin(), gp::DZ(), gp::DX()));
             break;
         case 2:
             mkPipeShell.SetMode(true);

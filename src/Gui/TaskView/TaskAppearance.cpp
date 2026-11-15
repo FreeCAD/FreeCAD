@@ -160,7 +160,7 @@ void TaskAppearance::onChangeModeActivated(const QString& s)
         App::Property* prop = It->getPropertyByName("DisplayMode");
         if (prop && prop->is<App::PropertyEnumeration>()) {
             auto Display = static_cast<App::PropertyEnumeration*>(prop);
-            Display->setValue((const char*)s.toLatin1());
+            Display->setValue((const char*)s.toUtf8());
         }
     }
 }
@@ -228,13 +228,14 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
             std::vector<std::string> value = display->getEnumVector();
             if (it == views.begin()) {
                 for (const auto& jt : value) {
-                    commonModes << QLatin1String(jt.c_str());
+                    commonModes << QString::fromStdString(jt);
                 }
             }
             else {
                 for (const auto& jt : value) {
-                    if (commonModes.contains(QLatin1String(jt.c_str()))) {
-                        modes << QLatin1String(jt.c_str());
+                    const QString mode = QString::fromStdString(jt);
+                    if (commonModes.contains(mode)) {
+                        modes << mode;
                     }
                 }
 
@@ -253,7 +254,7 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
         App::Property* prop = view->getPropertyByName("DisplayMode");
         if (prop && prop->is<App::PropertyEnumeration>()) {
             auto display = static_cast<App::PropertyEnumeration*>(prop);
-            QString activeMode = QString::fromLatin1(display->getValueAsString());
+            QString activeMode = QString::fromUtf8(display->getValueAsString());
             int index = ui->changeMode->findText(activeMode);
             if (index != -1) {
                 ui->changeMode->setCurrentIndex(index);

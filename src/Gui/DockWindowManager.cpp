@@ -338,7 +338,7 @@ QDockWidget* DockWindowManager::getDockContainer(const char* name) const
 {
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end();
          ++it) {
-        if ((*it)->objectName() == QLatin1String(name)) {
+        if ((*it)->objectName() == QString::fromUtf8(name)) {
             return (*it);
         }
     }

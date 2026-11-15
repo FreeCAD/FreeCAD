@@ -208,9 +208,10 @@ class ExplodedView:
                 # changes from previous steps.
                 current_placement = calculated_placements.get(obj.Name, obj.Placement)
 
-                # The part's shape is already placed, so its BBox.Center is the
-                # correct global starting position for the explosion line.
-                start_pos = obj.Shape.BoundBox.Center
+                # Apply previous moves to the original bounding box center.
+                start_pos = (current_placement * obj.Placement.inverse()).multVec(
+                    obj.Shape.BoundBox.Center
+                )
 
                 if move.MoveType == "Radial":
                     obj_com, obj_size = UtilsAssembly.getComAndSize(obj)
@@ -321,9 +322,10 @@ class ViewProviderExplodedView:
         return self.app_obj.Group
 
     def doubleClicked(self, vobj):
-        task = Gui.Control.activeTaskDialog()
-        if task:
-            task.reject()
+        # Issue #32494: re-opening while a task is live re-applies explosion moves
+        # and openCommand may commit the create/edit transaction into the assembly.
+        if Gui.Control.activeDialog():
+            return True
 
         assembly = vobj.Object.Proxy.getAssembly(vobj.Object)
 

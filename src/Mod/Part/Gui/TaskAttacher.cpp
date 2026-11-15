@@ -89,7 +89,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     }
 
     if (obj->isDerivedFrom<App::DatumElement>() || obj->isDerivedFrom<Part::Datum>()) {
-        return QString::fromLatin1(obj->getNameInDocument());
+        return QString::fromUtf8(obj->getNameInDocument());
     }
 
     // Hide the TNP string from the user. ie show "Body.Pad.Face6"  and not :
@@ -97,9 +97,9 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     App::ElementNamePair el;
     App::GeoFeature::resolveElement(obj, sub.c_str(), el, true);
 
-    return QString::fromLatin1(obj->getNameInDocument())
+    return QString::fromUtf8(obj->getNameInDocument())
         + (sub.length() > 0 ? QStringLiteral(":") : QString())
-        + QString::fromLatin1(el.oldName.c_str());
+        + QString::fromUtf8(el.oldName.c_str());
 }
 
 void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames)
@@ -131,7 +131,7 @@ TaskAttacher::TaskAttacher(
     QString text,
     TaskAttacher::VisibilityFunction visFunc
 )
-    : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap(picture.toUtf8()), text, true, parent)
     , SelectionObserver(ViewProvider, true, Gui::ResolveMode::NoResolve)
     , ViewProvider(ViewProvider)
     , ui(new Ui_TaskAttacher)
@@ -360,7 +360,7 @@ const QString makeHintText(std::set<eRefType> hint)
     for (auto t : hint) {
         QString tText;
         tText = AttacherGui::getShapeTypeText(t);
-        result += QString::fromLatin1(result.size() == 0 ? "" : "/") + tText;
+        result += QString::fromUtf8(result.size() == 0 ? "" : "/") + tText;
     }
 
     return result;
@@ -418,7 +418,7 @@ bool TaskAttacher::updatePreview()
         errMessage = QCoreApplication::translate("Exception", err.what());
     }
     catch (Standard_Failure& err) {
-        errMessage = tr("OCC error: %1").arg(QString::fromLatin1(err.GetMessageString()));
+        errMessage = tr("OCC error: %1").arg(QString::fromUtf8(err.GetMessageString()));
     }
     catch (...) {
         errMessage = tr("unknown error");
@@ -949,7 +949,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         parts.push_back(QStringLiteral(""));
     }
     // Check whether this is the name of an App::Plane or Part::Datum feature
-    App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
+    App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toUtf8());
     if (!obj) {
         return;
     }
@@ -1003,7 +1003,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
 
             // none of Edge/Vertex/Face. May be empty string.
             // Feed in whatever user supplied, even if invalid.
-            ss << part.toLatin1().constData();
+            ss << part.toUtf8().constData();
             return ss.str();
         };
 
@@ -1424,20 +1424,20 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                       "del(tvObj)"
                 )
                       .arg(
-                          QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
-                          QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                          QString::fromLatin1(editSubName.c_str()),
-                          QString::fromLatin1(postfix.c_str())
+                          QString::fromStdString(Gui::Command::getObjectCmd(vp->getObject())),
+                          QString::fromStdString(Gui::Command::getObjectCmd(editObj)),
+                          QString::fromStdString(editSubName),
+                          QString::fromStdString(postfix)
                       );
-            Gui::Command::runCommand(Gui::Command::Gui, code.toLatin1().constData());
+            Gui::Command::runCommand(Gui::Command::Gui, code.toUtf8().constData());
         }
         else if (!postfix.empty()) {
             QString code = QStringLiteral(
                                "_tv_%1.restore()\n"
                                "del(_tv_%1)"
             )
-                               .arg(QString::fromLatin1(postfix.c_str()));
-            Gui::Command::runCommand(Gui::Command::Gui, code.toLatin1().constData());
+                               .arg(QString::fromStdString(postfix));
+            Gui::Command::runCommand(Gui::Command::Gui, code.toUtf8().constData());
         }
     };
 

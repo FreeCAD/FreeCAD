@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
@@ -23,4 +21,3 @@ class GeometryExtension(PyObjectBase):
     @constmethod
     def copy(self) -> "GeometryExtension":
         """Create a copy of this geometry extension."""
-        ...

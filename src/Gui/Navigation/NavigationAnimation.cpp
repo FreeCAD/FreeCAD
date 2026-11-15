@@ -64,7 +64,7 @@ FixedTimeAnimation::FixedTimeAnimation(
 {
     setDuration(duration);
     setStartValue(0.0);
-    setEndValue(duration * 1.0);
+    setEndValue(1.0);
     setEasingCurve(easingCurve);
 }
 
@@ -90,8 +90,7 @@ void FixedTimeAnimation::initialize()
     // Convert post-multiplication axis to a pre-multiplication axis
     navigation->getCamera()->orientation.getValue().inverse().multVec(rotationAxisPost, rotationAxis);
 
-    angularVelocity = angle / duration();
-    linearVelocity = targetTranslation / duration();
+    targetAngle = angle;
 }
 
 /**
@@ -104,8 +103,9 @@ void FixedTimeAnimation::update(const QVariant& value)
         return;
     }
 
-    float angle = value.toFloat() * angularVelocity;
-    SbVec3f translation = value.toFloat() * linearVelocity;
+    const float progress = value.toFloat();
+    const float angle = progress * targetAngle;
+    const SbVec3f translation = progress * targetTranslation;
 
     SbRotation rotation(rotationAxis, angle - prevAngle);
 
