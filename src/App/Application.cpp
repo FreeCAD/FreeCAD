@@ -2129,6 +2129,7 @@ void initExceptions()
 
 void Application::init(int argc, char ** argv)
 {
+    const bool isPythonModule = Py_IsInitialized() != 0;
     try {
         // Establish the initial Base snapshot before application or GUI preferences can override it.
         Base::publishNumericLocaleContext(
@@ -2136,7 +2137,12 @@ void Application::init(int argc, char ** argv)
         );
 
         Base::SystemHandler::installNewHandler();
-        Base::SystemHandler::installSegfaultHandler();
+        if (!isPythonModule) {
+            Base::SystemHandler::installSegfaultHandler();
+        }
+        else {
+            Base::SystemHandler::installExceptionTranslator();
+        }
 
         initTypes();
 
@@ -2144,7 +2150,9 @@ void Application::init(int argc, char ** argv)
 
         // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
         // things that might crash...
-        initCrashReporter();
+        // An external Python interpreter owns its process-wide signal handlers,
+        // but can still inspect reports from previous runs.
+        initCrashReporter(!isPythonModule);
 
         initApplication();
         initExceptions();
@@ -3025,13 +3033,15 @@ void Application::SaveEnv(const char* s)
     }
 }
 
-void Application::initCrashReporter()
+void Application::initCrashReporter(bool installHandlers)
 {
     // Make sure anything that escapes doesn't abort startup: this is non-fatal
     try {
         const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
-        Base::CrashReporter::Writer::prewarm();
-        Base::CrashReporter::Writer::install(crashReportsDirectory);
+        if (installHandlers) {
+            Base::CrashReporter::Writer::prewarm();
+            Base::CrashReporter::Writer::install(crashReportsDirectory);
+        }
         Base::CrashReporter::Manager::scan(
             crashReportsDirectory,
             {},

@@ -51,13 +51,26 @@
 #  define OSD_SIGNAL_THROW(Type, msg) Type::NewInstance(msg)->Jump()
 # endif
 #endif
-#include <Base/SystemHandler.h>
 
 using namespace Part;
 
 // NOLINTBEGIN(concurrency-mt-unsafe, cppcoreguidelines-pro-type-member-init)
 #if defined(__GNUC__) && defined(FC_OS_LINUX)
 static OSD_SignalMode OSD_WasSetSignal = OSD_SignalMode_AsIs;  // NOLINT
+// SIGSEGV must be last because it uses a different handler.
+constexpr static auto aSignalTypes = std::to_array(
+    {SIGFPE,
+     SIGHUP,
+     SIGINT,
+     SIGQUIT,
+     SIGILL,
+     SIGBUS,
+# ifdef SIGSYS
+     SIGSYS,
+# endif
+     SIGSEGV}
+);
+static std::array<struct sigaction, aSignalTypes.size()> aPreviousActions {};  // NOLINT
 
 static void SegvHandler(const int theSignal, siginfo_t* theSigInfo, const Standard_Address /*theContext*/)
 {
@@ -149,16 +162,12 @@ static void setSignal(OSD_SignalMode theSignalMode)
     }
 
     // Prepare signal descriptors
-    struct sigaction anActSet;
-    struct sigaction anActDfl;
-    struct sigaction anActOld;
+    struct sigaction anActSet {};
     sigemptyset(&anActSet.sa_mask);
-    sigemptyset(&anActDfl.sa_mask);
-    sigemptyset(&anActOld.sa_mask);
 # ifdef SA_RESTART
-    anActSet.sa_flags = anActDfl.sa_flags = anActOld.sa_flags = SA_RESTART;
+    anActSet.sa_flags = SA_RESTART;
 # else
-    anActSet.sa_flags = anActDfl.sa_flags = anActOld.sa_flags = 0;
+    anActSet.sa_flags = 0;
 # endif
 # ifdef SA_SIGINFO
     anActSet.sa_flags = anActSet.sa_flags | SA_SIGINFO;
@@ -166,13 +175,9 @@ static void setSignal(OSD_SignalMode theSignalMode)
 # else
     anActSet.sa_handler = throw_exc;
 # endif
-    anActDfl.sa_handler = SIG_DFL;
-
-    // Set signal handlers; NB: SIGSEGV must be the last one!
-    const int NBSIG = 8;
-    constexpr static std::array<int, NBSIG> aSignalTypes
-        = {SIGFPE, SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGBUS, SIGSYS, SIGSEGV};
-    for (int aSignalType : aSignalTypes) {
+    for (std::size_t i = 0; i < aSignalTypes.size(); ++i) {
+        const int aSignalType = aSignalTypes[i];
+        struct sigaction& anActOld = aPreviousActions[i];
         // SIGSEGV has special handler
         if (aSignalType == SIGSEGV) {
 # ifdef SA_SIGINFO
@@ -188,7 +193,7 @@ static void setSignal(OSD_SignalMode theSignalMode)
             retcode = sigaction(aSignalType, &anActSet, &anActOld);
         }
         else if (theSignalMode == OSD_SignalMode_Unset) {
-            retcode = sigaction(aSignalType, &anActDfl, &anActOld);
+            retcode = sigaction(aSignalType, &anActOld, nullptr);
         }
         if (theSignalMode == OSD_SignalMode_SetUnhandled && retcode == 0
             && anActOld.sa_handler != SIG_DFL) {
@@ -228,8 +233,6 @@ SignalException::~SignalException()
     if (enabled && currentSignalMode == OSD_SignalMode_Set) {
         currentSignalMode = OSD_SignalMode_Unset;
         setSignal(currentSignalMode);
-        // this is the default handler
-        Base::SystemHandler::installSegfaultHandler();
     }
 #endif
 }
