@@ -998,7 +998,7 @@ private:
 
     /* Private Init, Destruct, and Access methods */
     static void initConfig(int argc, char ** argv);
-    static void initCrashReporter();
+    static void initCrashReporter(bool installHandlers);
     static void initApplication();
     static void logStatus();
     // the one and only pointer to the application object
