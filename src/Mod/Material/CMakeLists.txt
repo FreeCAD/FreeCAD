@@ -249,6 +249,7 @@ SET(MachiningLib_Files
 SET(MaterialTestLib_Files
     "Resources/Materials/Test/Test Electrical Arrays.FCMat"
     "Resources/Materials/Test/Test Material.FCMat"
+    "Resources/Materials/Test/Test Radiation Arrays.FCMat"
     "Resources/Materials/Test/Test Thermal Arrays.FCMat"
 )
 
@@ -308,6 +309,8 @@ SET(MaterialModel_Files
     Resources/Models/Rendering/TextureRendering.yml
     Resources/Models/Rendering/VectorRendering.yml
     "Resources/Models/Test/Test Model.yml"
+    Resources/Models/Thermal/Radiation.yml
+    Resources/Models/Thermal/RadiationArrays.yml
     Resources/Models/Thermal/Thermal.yml
     Resources/Models/Thermal/ThermalArrays.yml
 )
