@@ -241,6 +241,43 @@ class TestHole(unittest.TestCase):
         self.Doc.recompute()
         self.assertEqual(len(self.Hole.Shape.Faces), 7)
 
+    def testThreadDesignationPrioritizesDiameter(self):
+        self.Hole.Diameter = 3.3
+        self.Hole.ThreadType = "ISOMetricProfile"
+        # M3x0.5 has a closer pitch to the initial M1x0.25 entry,
+        # but M3.5x0.6 has the closest diameter.
+        self.assertEqual(self.Hole.ThreadSize, "M3.5x0.6")
+        self.assertAlmostEqual(self.Hole.ThreadDiameter.Value, 3.5)
+
+    def testThreadDesignationPreservesPitch(self):
+        self.Hole.ThreadType = "ISOMetricFineProfile"
+        self.Hole.Threaded = True
+        self.Hole.Depth = 5
+        self.Hole.DrillPoint = "Flat"
+        for designation, drill_diameter in (("M8x0.75", 7.25), ("M8x1.0", 7.0)):
+            with self.subTest(designation=designation):
+                self.Hole.ThreadSize = designation
+                # Refreshing the type must not reset the pitch to the first
+                # available entry for this diameter.
+                self.Hole.ThreadType = "ISOMetricFineProfile"
+                self.Doc.recompute()
+                self.assertEqual(self.Hole.ThreadSize, designation)
+                self.assertAlmostEqual(self.Hole.Diameter.Value, drill_diameter)
+                self.assertTrue(self.Hole.Shape.isValid())
+                self.assertAlmostEqual(
+                    self.Hole.Shape.Volume, 10**3 - pi * (drill_diameter / 2) ** 2 * 5
+                )
+
+    def testThreadDesignationSwitchesStandard(self):
+        self.Hole.ThreadType = "ISOMetricProfile"
+        self.Hole.ThreadSize = "M8x1.25"
+        self.Hole.ThreadType = "ISOMetricFineProfile"
+        self.assertEqual(self.Hole.ThreadSize, "M8x0.75")
+        self.assertAlmostEqual(self.Hole.ThreadDiameter.Value, 8)
+        self.Hole.ThreadType = "ISOMetricProfile"
+        self.assertEqual(self.Hole.ThreadSize, "M8x1.25")
+        self.assertAlmostEqual(self.Hole.ThreadDiameter.Value, 8)
+
     def testThreadEnums(self):
         """Test thread enums for correct order"""
         # Due to the savefile use of indexes and not strings

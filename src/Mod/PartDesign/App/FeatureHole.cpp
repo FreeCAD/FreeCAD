@@ -23,8 +23,12 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+#include <cmath>
 #include <cstring>
+#include <iterator>
 #include <limits>
+#include <utility>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Cylinder.hxx>
@@ -1281,31 +1285,14 @@ void Hole::findClosestDesignation()
     if (oldSizeIndex >= 0 && oldSizeIndex < static_cast<int>(options.size())) {
         targetPitch = options[oldSizeIndex].pitch;
     }
-    size_t bestIndex = 0;
-    if (targetPitch == 0.0) {
-        // If pitch is unknown, prioritize the closest diameter
-        double bestDiameterDiff = std::numeric_limits<double>::infinity();
-        for (size_t i = 0; i < options.size(); ++i) {
-            double dDiff = std::abs(options[i].diameter - diameter);
-            if (dDiff < bestDiameterDiff) {
-                bestDiameterDiff = dDiff;
-                bestIndex = i;
-            }
-        }
-    }
-    else {
-        // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
-        double bestMetric = std::numeric_limits<double>::infinity();
-        for (size_t i = 0; i < options.size(); ++i) {
-            double dDiff = options[i].diameter - diameter;
-            double pDiff = options[i].pitch - targetPitch;
-            double metric = std::hypot(dDiff, pDiff);
-            if (metric < bestMetric) {
-                bestMetric = metric;
-                bestIndex = i;
-            }
-        }
-    }
+    // Match diameter first, then pitch. If pitch is unknown, keep the first
+    // entry among equally close diameters.
+    const auto bestIt = std::ranges::min_element(options, {}, [&](const auto& option) {
+        const double dDiff = std::abs(option.diameter - diameter);
+        const double pDiff = targetPitch == 0.0 ? 0.0 : std::abs(option.pitch - targetPitch);
+        return std::make_pair(dDiff, pDiff);
+    });
+    const auto bestIndex = bestIt == options.end() ? 0 : std::distance(options.begin(), bestIt);
 
     ThreadSize.setValue(static_cast<int>(bestIndex));
 }
