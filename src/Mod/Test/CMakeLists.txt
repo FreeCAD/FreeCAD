@@ -5,26 +5,26 @@
 SET(Test_SRCS
     __init__.py
     Init.py
-    BaseTests.py
-    FreeCADInitTests.py
+    TestBase.py
+    TestFreeCADInit.py
     AutoSaverStress.py
     RunAutoSaverStress.py
-    Document.py
-    GuiDocument.py
-    Metadata.py
-    StringHasher.py
-    Menu.py
-    Recompute.py
-    GuiRecompute.py
+    TestDocument.py
+    TestGuiDocument.py
+    TestMetadata.py
+    TestStringHasher.py
+    TestMenu.py
+    TestRecompute.py
+    TestGuiRecompute.py
     TestApp.py
     TestLinkSuppression.py
     TestIntPairList.py
     TestGui.py
     TestGroupVisibilityRestoreGui.py
     TestPySideUic.py
-    UnicodeTests.py
-    UnitTests.py
-    Workbench.py
+    TestUnicode.py
+    TestUnits.py
+    TestWorkbench.py
     unittestgui.py
     testmakeWireString.py
     TestCrashReporter.py

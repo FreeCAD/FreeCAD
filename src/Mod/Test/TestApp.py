@@ -114,10 +114,10 @@ def testAll():
 
 
 def testUnit():
-    TestText(unittest.TestLoader().loadTestsFromName("UnitTests"))
+    TestText(unittest.TestLoader().loadTestsFromName("TestUnits"))
 
 
 def testDocument():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("Document"))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestDocument"))
     TestText(suite)

@@ -27,7 +27,7 @@ import FreeCAD
 import FreeCADGui as Gui
 
 
-from Recompute import createPartDesignSketch
+from TestRecompute import createPartDesignSketch
 
 
 class FineGrainedRecomputeCasesGui(unittest.TestCase):
