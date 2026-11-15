@@ -284,6 +284,9 @@ bool ViewProviderDatum::setEdit(int ModNum)
 
         return true;
     }
+    else if (ModNum == ViewProvider::Transform) {
+        return ViewProviderGeometryObject::setEdit(ModNum);
+    }
     else {
         return ViewProvider::setEdit(ModNum);
     }

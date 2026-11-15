@@ -52,15 +52,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
 
-    /// @name Suppress ViewProviderGeometryObject's behaviour
-    ///@{
-    bool setEdit(int) override
-    {
-        return false;
-    }
-    void unsetEdit(int) override
-    {}
-    ///@}
+    /// Origin-owned datums are fixed; standalone datums support Transform.
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     void setTemporaryScale(double factor);
     void resetTemporarySize();

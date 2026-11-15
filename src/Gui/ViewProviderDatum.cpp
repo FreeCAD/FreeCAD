@@ -152,6 +152,27 @@ void ViewProviderDatum::resetTemporarySize()
     soScale->scaleFactor = sz;
 }
 
+bool ViewProviderDatum::setEdit(int ModNum)
+{
+    if (ModNum != ViewProvider::Transform) {
+        return false;
+    }
+
+    auto* feat = static_cast<App::DatumElement*>(getObject());
+    if (feat && feat->isOriginFeature()) {
+        return false;
+    }
+
+    return ViewProviderGeometryObject::setEdit(ModNum);
+}
+
+void ViewProviderDatum::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Transform) {
+        ViewProviderGeometryObject::unsetEdit(ModNum);
+    }
+}
+
 void ViewProviderDatum::onChanged(const App::Property* prop)
 {
     ViewProviderGeometryObject::onChanged(prop);
