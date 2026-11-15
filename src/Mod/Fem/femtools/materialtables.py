@@ -44,6 +44,7 @@ TABLES = {
     "SpecificHeatTable": ("ThermalProperties", ("SpecificHeat",)),
     "ExpansionTable": ("ThermalProperties", ("ThermalExpansionCoefficient",)),
     "ElectricalConductivityTable": ("ElectricalProperties", ("ElectricalConductivity",)),
+    "EmissivityTable": ("RadiationProperties", ("Emissivity",)),
 }
 
 # Units the values of a row are checked against, "" for a ratio, and a row to show the form
@@ -53,6 +54,7 @@ ROW_FORMS = {
     "SpecificHeatTable": (("J/kg/K",), "293.15 K, 385 J/kg/K"),
     "ExpansionTable": (("1/K",), "293.15 K, 1.65e-05 1/K"),
     "ElectricalConductivityTable": (("S/m",), "293.15 K, 5.96e+07 S/m"),
+    "EmissivityTable": (("",), "293.15 K, 0.3"),
 }
 
 # A cell starts with a number, the parser reads a bare unit as 1 of it and an empty cell as DBL_MIN

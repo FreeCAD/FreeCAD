@@ -148,6 +148,16 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyStringList",
+                name="EmissivityTable",
+                group="Temperature Tables",
+                doc="Emissivity of the surface against temperature,\n"
+                + "each row 'temperature, emissivity'",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="MaterialName",
                 group="Material",

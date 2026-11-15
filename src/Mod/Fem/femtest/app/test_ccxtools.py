@@ -395,6 +395,29 @@ class TestCcxTools(unittest.TestCase):
             self.assertIn(f"Copper, {table}: can't read the row '{row}'", str(caught.exception))
 
     # ********************************************************************************************
+    def test_card_emissivity_refused(self):
+        import ObjectsFem
+        from femexamples.thermomech_bimetal import setup
+
+        setup(self.document, "ccxtools", test_mode=True)
+        radiation = ObjectsFem.makeConstraintHeatflux(self.document, "Radiation")
+        radiation.ConstraintType = "Radiation"
+        radiation.References = [(self.document.BooleanFragments, "Face3")]
+        radiation.Emissivity = 0.9
+        self.document.Analysis.addObject(radiation)
+        self.document.recompute()
+        fea = ccxtools.FemToolsCcx(
+            self.document.Analysis, self.document.CalculiXCcxTools, test_mode=True
+        )
+        fea.update_objects()
+        refusal = "Radiation takes its emissivity from the material card"
+        self.assertNotIn(refusal, fea.check_prerequisites())
+        # The writer still writes the constraint's emissivity, the card's would be dropped
+        radiation.EmissivitySource = "Material"
+        fea.update_objects()
+        self.assertIn(refusal, fea.check_prerequisites())
+
+    # ********************************************************************************************
     def input_file_writing_test(
         self,
         base_name,

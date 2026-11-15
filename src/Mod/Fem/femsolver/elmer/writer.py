@@ -99,6 +99,11 @@ class Writer:
         self._handledObjects = set()
         self._solverIds = None
         self._unwrittenTables = {}
+        # Radiating faces with the card's emissivity, face -> (constraint, cavity)
+        self._cardEmissivity = {}
+        self._cardEmissivityLow = {}
+        # Radiating faces with the constraint's own, face -> (constraint, cavity, value)
+        self._constraintEmissivity = {}
         self._handleUnits()
         self._handleConstants()
         self.scanning_file = "scanning.dat"
@@ -188,6 +193,7 @@ class Writer:
         # Judged on what reaches the sif, a later material can put a scalar over a table
         written = self._writtenTables()
         self.checkElectricalTables(written)
+        cavityNotes = self.checkCardEmissivity()
         self._writeSif()
         self._writeStartinfo()
         # Told once the input is written, a refused or failed write announces nothing
@@ -203,8 +209,162 @@ class Writer:
             )
             if skipped and note not in notes:
                 notes.append(note)
-        for note in notes + self.solverOrderNotes():
+        for note in notes + cavityNotes + self.solverOrderNotes():
             Console.PrintWarning(f"{note}\n")
+
+    def bodiesOfFace(self, name):
+        """The bodies a boundary of the meshed shape belongs to, Solids or Faces in 2D"""
+        shape = self.getMesh().Shape.Shape
+        try:
+            element = shape.getElement(name)
+        except (IndexError, ValueError):
+            return []
+        if shape.Solids:
+            return [
+                f"Solid{i + 1}"
+                for i, solid in enumerate(shape.Solids)
+                if any(element.isSame(face) for face in solid.Faces)
+            ]
+        return [
+            f"Face{i + 1}"
+            for i, face in enumerate(shape.Faces)
+            if any(element.isSame(edge) for edge in face.Edges)
+        ]
+
+    def cardEmissivityFace(self, face, label, cavity):
+        # The last constraint written on a face wins, as in the sif, its checks wait for the end
+        self._cardEmissivity[face] = (label, cavity)
+        self._constraintEmissivity.pop(face, None)
+        section = self._builder.getBoundarySection(face)
+        if section is not None and "Emissivity" in section:
+            del section["Emissivity"]
+
+    def constraintEmissivityFace(self, face, emissivity, label, cavity):
+        self._constraintEmissivity[face] = (label, cavity, emissivity)
+        self._cardEmissivity.pop(face, None)
+        self.boundary(face, "Emissivity", emissivity)
+
+    def cardEmissivityBodies(self):
+        """The bodies a face taking its emissivity from the card belongs to"""
+        return {body for face in self._cardEmissivity for body in self.bodiesOfFace(face)}
+
+    def dropMaterial(self, body, key):
+        # A later card without the key must not leave the value of the card it replaced
+        section = self._builder.getBodySection(body, sifio.MATERIAL)
+        if section is not None and key in section:
+            del section[key]
+
+    def cardEmissivity(self, obj, name):
+        """The emissivity of a material card as an Elmer value, table first, None without one"""
+        rows = materialtables.sorted_rows(
+            getattr(obj, "EmissivityTable", []), "EmissivityTable", obj.Label
+        )
+        values = [cells[0].Value for _t, cells in rows]
+        # A card can hold the model with its value left empty
+        scalar = str(obj.Material.get("Emissivity", "")).strip()
+        if scalar and not rows:
+            try:
+                values = [float(scalar)]
+            except ValueError:
+                raise WriteError(
+                    f"{obj.Label}: can't read the emissivity '{scalar}' for {name}, write a "
+                    "number between 0 and 1 such as 0.3."
+                ) from None
+        for value in values:
+            if not 0.0 <= value <= 1.0:
+                raise WriteError(
+                    f"{obj.Label}: the emissivity {value:g} for {name} is outside 0 to 1, "
+                    "check the card."
+                )
+        # Kept for the cavity check, a later card without emissivity clears it
+        self._cardEmissivityLow.pop(name, None)
+        if values:
+            self._cardEmissivityLow[name] = min(values)
+        if rows:
+            return self.convertTable(obj, "EmissivityTable", "", "emissivity")
+        return values[0] if values else None
+
+    def checkCardEmissivity(self):
+        # No Emissivity on the boundary nor in the material, Elmer reads zero and the face goes dark
+        notes = []
+        tables = False
+        # The winning constraint of each face only, its own value under the card's bounds
+        for face, (label, cavity, emissivity) in self._constraintEmissivity.items():
+            if not 0.0 <= emissivity <= 1.0:
+                raise WriteError(
+                    f"{label}: the emissivity {emissivity:g} for {face} is outside 0 to 1, "
+                    "check the constraint."
+                )
+            if cavity and emissivity <= 0.0:
+                raise WriteError(
+                    f"{label}: {face} is in a cavity with an emissivity of 0, Elmer divides by "
+                    "it. Give it a small positive value."
+                )
+        for face, (label, cavity) in self._cardEmissivity.items():
+            bodies = self.bodiesOfFace(face)
+            if not bodies:
+                raise WriteError(
+                    f"{label}: {face} bounds no body of the mesh, the card of its body can't "
+                    "be found. Reference a face of a solid, an edge of a face in 2D."
+                )
+            heated = [body for body in bodies if body in self.heatBodies()]
+            if not heated:
+                raise WriteError(
+                    f"{label}: {face} takes its emissivity from the material card of "
+                    f"{' and '.join(bodies)}, which no Heat equation covers. Add the body to a "
+                    "Heat equation, or set EmissivitySource to Constraint."
+                )
+            found = {}
+            for body in heated:
+                material = self._builder.getBodySection(body, sifio.MATERIAL)
+                if material is not None and "Emissivity" in material.keys():
+                    found[body] = material["Emissivity"]
+            if not found:
+                raise WriteError(
+                    f"{label}: {face} takes its emissivity from the material card, and the card "
+                    f"of {' and '.join(heated)} has none. Give the card an emissivity, or set "
+                    "EmissivitySource to Constraint."
+                )
+            # Between 2 bodies Elmer reads the first parent holding it, GetParentMatProp
+            if len({str(value) for value in found.values()}) > 1:
+                raise WriteError(
+                    f"{label}: {face} lies between {' and '.join(found)}, whose cards give "
+                    "different emissivities. Set EmissivitySource to Constraint for this face."
+                )
+            # RadiationFactors.F90 divides by the emissivity of a cavity face, zero gives NaN
+            if cavity and any(self._cardEmissivityLow.get(body, 1.0) <= 0.0 for body in found):
+                raise WriteError(
+                    f"{label}: {face} is in a cavity and its card gives an emissivity of 0, "
+                    "Elmer divides by it. Give it a small positive value."
+                )
+            tables = tables or (
+                cavity and any(isinstance(v, TemperatureTable) for v in found.values())
+            )
+        if not tables:
+            return notes
+        # Gebhart factors stay those of the initial temperature unless updated, RadiationFactors.F90
+        # MainUtils.F90 reads this spelling only to skip a first pass at an emissivity of 0.5
+        for body in self._builder.getBodyNames():
+            equation = self._builder.getBodySection(body, sifio.EQUATION)
+            if equation is None or "Active Solvers" not in equation:
+                continue
+            for solver in equation["Active Solvers"]:
+                if "Procedure" in solver and solver["Procedure"] == "HeatSolve/HeatSolver":
+                    solver["Update Gebhart Factors"] = True
+        steady = self.solver.SimulationType == "Steady State"
+        if steady and self.solver.SteadyStateMaxIterations < 2:
+            notes.append(
+                "A cavity emissivity varies with temperature and the factors are only updated "
+                "between steady state iterations: raise Steady State Max Iterations, with one "
+                "they stay those of the initial temperature."
+            )
+        elif not steady:
+            notes.append(
+                "A cavity emissivity varies with temperature and the factors are updated once "
+                "per time step, at the temperature of the previous step: keep the steps short "
+                "where the temperature moves fast."
+            )
+        return notes
 
     def _handleUnits(self):
         # Elmer solver writer no longer uses FreeCAD unit system
@@ -726,7 +886,11 @@ class Writer:
     def convertTable(self, obj, table, unit, quantity):
         """A FEM material table as an Elmer value, None when the table is empty"""
         rows = materialtables.sorted_rows(getattr(obj, table, []), table, obj.Label)
-        points = [(temperature, self.convert(cells[0], unit)) for temperature, cells in rows]
+        # A ratio has no unit to convert, emissivity
+        points = [
+            (temperature, self.convert(cells[0], unit) if unit else cells[0].Value)
+            for temperature, cells in rows
+        ]
         return temperature_table(points, f"{obj.Label} {quantity}")
 
     def electricalConductivityTable(self, obj):

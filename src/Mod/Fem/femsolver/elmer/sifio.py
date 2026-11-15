@@ -131,6 +131,9 @@ class Builder:
             return None
         return section[key]
 
+    def getBoundarySection(self, boundary):
+        return self._boundaries.get(boundary)
+
     def simulation(self, key, attr):
         self._simulation[key] = attr
 

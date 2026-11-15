@@ -363,6 +363,15 @@ class TestSolverElmer(unittest.TestCase):
         printed = self.printed_warnings(w.write_solver_input, writer.WriteError)
         self.assertEqual([text for text in printed if "table covers" in text], [])
 
+    def sif_section(self, sif, kind, name):
+        """The block of the sif section of that kind whose Name is name, empty when absent"""
+        import re
+
+        for block in re.findall(rf"^{kind} \d+\n.*?^End$", sif, re.M | re.S):
+            if f'Name = String "{name}"' in block:
+                return block
+        return ""
+
     def printed_warnings(self, action, expected_error=None):
         """The warnings the writer printed while running action"""
         printed = []
@@ -674,6 +683,215 @@ class TestSolverElmer(unittest.TestCase):
         w = writer.Writer(self.document.SolverElmer, working_dir)
         printed = self.printed_warnings(w.write_solver_input)
         self.assertEqual([t for t in printed if "Elmer yet" in t], [])
+
+    # ********************************************************************************************
+    def test_card_emissivity(self):
+        fcc_print("")
+        import ObjectsFem
+        from femexamples.ccx_cantilever_faceload import setup
+
+        setup(self.document, "elmer", test_mode=True)
+        ObjectsFem.makeEquationHeat(self.document, self.document.SolverElmer)
+        material = self.document.FemMaterial
+        values = dict(material.Material)
+        values.update(
+            {
+                "Density": "8960 kg/m^3",
+                "ThermalConductivity": "401 W/m/K",
+                "SpecificHeat": "385 J/kg/K",
+            }
+        )
+        material.Material = values
+        material.EmissivityTable = ["1500 K, 0.6", "500 K, 0.2"]
+        radiation = ObjectsFem.makeConstraintHeatflux(self.document, "Radiation")
+        radiation.References = [(self.document.Box, "Face2")]
+        radiation.ConstraintType = "Radiation"
+        radiation.Emissivity = 0.9
+        radiation.AmbientTemp = 300.0
+        self.document.Analysis.addObject(radiation)
+        working_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + "card_emissivity")
+
+        def write():
+            self.document.recompute()
+            w = writer.Writer(self.document.SolverElmer, working_dir)
+            printed = self.printed_warnings(w.write_solver_input)
+            with open(join(working_dir, self.infilename + self.ending), encoding="utf-8") as fh:
+                return fh.read(), printed
+
+        # The constraint keeps its own emissivity, the card one isn't written
+        sif, printed = write()
+        self.assertIn("Emissivity = Real 0.9", sif)
+        self.assertNotIn("Emissivity = Variable", sif)
+        # From the card the boundary has none, the body's material carries the table
+        radiation.EmissivitySource = "Material"
+        sif, printed = write()
+        self.assertNotIn("Emissivity", self.sif_section(sif, "Boundary Condition", "Face2"))
+        self.assertIn("Emissivity = Variable", self.sif_section(sif, "Material", "CalculiX-Steel"))
+        self.assert_table_written(
+            join(working_dir, self.infilename + self.ending),
+            "Emissivity",
+            ["0 0.2", "500 0.2", "1500 0.6", "1000000 0.6"],
+        )
+        self.assertIn("FemMaterial emissivity: the table covers 500 K to 1500 K", "".join(printed))
+        self.assertNotIn("Update Gebhart Factors", sif)
+        # In a cavity the factors follow the temperature only when updated, between iterations
+        radiation.CavityRadiation = True
+        sif, printed = write()
+        self.assertIn("Update Gebhart Factors = Logical True", sif)
+        self.assertEqual(len([t for t in printed if "Steady State Max Iterations" in t]), 1)
+        self.document.SolverElmer.SteadyStateMaxIterations = 5
+        sif, printed = write()
+        self.assertIn("Update Gebhart Factors = Logical True", sif)
+        self.assertEqual([t for t in printed if "Steady State Max Iterations" in t], [])
+        # A single value from the card doesn't vary, nothing to update
+        material.EmissivityTable = []
+        values["Emissivity"] = "0.3"
+        material.Material = values
+        sif, printed = write()
+        self.assertIn("Emissivity = Real 0.3", sif)
+        self.assertNotIn("Update Gebhart Factors", sif)
+        # A later card without emissivity takes the body, the first one's value must not stay
+        default = ObjectsFem.makeMaterialSolid(self.document, "DefaultMaterial")
+        default.Material = dict(values, Emissivity="")
+        self.document.Analysis.addObject(default)
+        self.document.recompute()
+        w = writer.Writer(self.document.SolverElmer, working_dir)
+        with self.assertRaises(writer.WriteError) as caught:
+            w.write_solver_input()
+        self.assertIn("Face2 takes its emissivity from the material card", str(caught.exception))
+        self.document.Analysis.removeObject(default)
+        self.document.removeObject(default.Name)
+        # An emissivity is between 0 and 1
+        material.EmissivityTable = ["500 K, 0.2", "1500 K, 1.6"]
+        self.document.recompute()
+        w = writer.Writer(self.document.SolverElmer, working_dir)
+        with self.assertRaises(writer.WriteError) as caught:
+            w.write_solver_input()
+        self.assertIn("outside 0 to 1", str(caught.exception))
+
+    # ********************************************************************************************
+    def test_card_emissivity_cases(self):
+        fcc_print("")
+        import Materials
+        import ObjectsFem
+        from femexamples.ccx_cantilever_faceload import setup
+
+        # The test card gives its rows sorted, the empty cell dropped, and its scalar
+        card = Materials.MaterialManager().getMaterial("1243c74e-c1d2-4b7d-ba4d-f48ee2c50a2a")
+        rows = materialtables.rows_from_material(card, "EmissivityTable")
+        self.assertEqual(rows, ["1500.0 K, 0.6", "500.0 K, 0.2"])
+        self.assertAlmostEqual(float(card.Properties["Emissivity"]), 0.3, places=6)
+
+        setup(self.document, "elmer", test_mode=True)
+        heat = ObjectsFem.makeEquationHeat(self.document, self.document.SolverElmer)
+        material = self.document.FemMaterial
+        values = dict(material.Material)
+        values.update(
+            {
+                "Density": "8960 kg/m^3",
+                "ThermalConductivity": "401 W/m/K",
+                "SpecificHeat": "385 J/kg/K",
+            }
+        )
+        material.Material = values
+        material.EmissivityTable = rows
+        first = ObjectsFem.makeConstraintHeatflux(self.document, "First")
+        first.References = [(self.document.Box, "Face2")]
+        first.ConstraintType = "Radiation"
+        first.Emissivity = 0.9
+        self.document.Analysis.addObject(first)
+        working_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + "card_emissivity_cases")
+
+        def write(error=None):
+            self.document.recompute()
+            w = writer.Writer(self.document.SolverElmer, working_dir)
+            if error:
+                with self.assertRaises(writer.WriteError) as caught:
+                    w.write_solver_input()
+                self.assertIn(error, str(caught.exception))
+                return None, []
+            printed = self.printed_warnings(w.write_solver_input)
+            with open(join(working_dir, self.infilename + self.ending), encoding="utf-8") as fh:
+                return fh.read(), printed
+
+        # On one face the last constraint written wins, as in the sif
+        second = ObjectsFem.makeConstraintHeatflux(self.document, "Second")
+        second.References = [(self.document.Box, "Face2")]
+        second.ConstraintType = "Radiation"
+        second.EmissivitySource = "Material"
+        self.document.Analysis.addObject(second)
+        sif, printed = write()
+        boundary = self.sif_section(sif, "Boundary Condition", "Face2")
+        self.assertNotIn("Emissivity", boundary)
+        self.assertIn("Emissivity = Variable", self.sif_section(sif, "Material", "CalculiX-Steel"))
+        first.EmissivitySource, second.EmissivitySource = "Material", "Constraint"
+        second.Emissivity = 0.9
+        sif, printed = write()
+        boundary = self.sif_section(sif, "Boundary Condition", "Face2")
+        self.assertIn("Emissivity = Real 0.9", boundary)
+        self.assertNotIn("Emissivity", self.sif_section(sif, "Material", "CalculiX-Steel"))
+        # The constraint's own value is held to the same bounds, a new one starts at 0
+        second.Emissivity = 1.5
+        write("the emissivity 1.5 for Face2 is outside 0 to 1")
+        second.Emissivity = 0.0
+        sif, printed = write()
+        self.assertIn("Emissivity = Real 0.0", sif)
+        second.CavityRadiation = True
+        write("Face2 is in a cavity with an emissivity of 0")
+        # Only the constraint that wins the face is judged, in either order
+        first.EmissivitySource, second.EmissivitySource = "Constraint", "Material"
+        first.Emissivity, first.CavityRadiation = 0.0, True
+        sif, printed = write()
+        self.assertIn("Emissivity = Variable Temperature", sif)
+        first.EmissivitySource, first.Emissivity, first.CavityRadiation = "Material", 0.9, False
+        self.document.Analysis.removeObject(second)
+        self.document.removeObject(second.Name)
+        # A transient cavity updates its factors once per step
+        first.CavityRadiation = True
+        self.document.SolverElmer.SimulationType = "Transient"
+        sif, printed = write()
+        self.assertIn("Update Gebhart Factors = Logical True", sif)
+        self.assertEqual(len([t for t in printed if "once per time step" in t]), 1)
+        self.document.SolverElmer.SimulationType = "Steady State"
+        # A zero emissivity is a mirror to the room but a division by zero in a cavity
+        material.EmissivityTable = ["500 K, 0", "1500 K, 0.6"]
+        write("Elmer divides by it")
+        first.CavityRadiation = False
+        sif, printed = write()
+        self.assertIn("Emissivity = Variable Temperature", sif)
+        # The card's scalar is read as a number
+        material.EmissivityTable = []
+        material.Material = dict(values, Emissivity="0,3")
+        write("can't read the emissivity '0,3'")
+        material.Material = dict(values, Emissivity="0.3")
+        # An edge bounds no body in 3D, the reference is wrong and not the card
+        first.References = [(self.document.Box, "Edge1")]
+        write("Edge1 bounds no body of the mesh")
+        first.References = [(self.document.Box, "Face2")]
+        # A body no Heat equation covers has no emissivity written
+        heat.References = [(self.document.Box, "Solid2")]
+        write("which no Heat equation covers")
+
+    # ********************************************************************************************
+    def test_card_emissivity_between_bodies(self):
+        # Between 2 bodies Elmer reads the first parent holding the emissivity
+        w = writer.Writer.__new__(writer.Writer)
+        w._builder = writer.sifio.Builder()
+        w._cardEmissivity = {"Face7": ("Radiation", False)}
+        w._cardEmissivityLow = {"Solid1": 0.2, "Solid2": 0.8}
+        w._constraintEmissivity = {}
+        w.bodiesOfFace = lambda face: ["Solid1", "Solid2"]
+        w.heatBodies = lambda: ["Solid1", "Solid2"]
+        w._builder.material("Solid1", "Emissivity", 0.2)
+        w._builder.material("Solid2", "Emissivity", 0.8)
+        with self.assertRaises(writer.WriteError) as caught:
+            w.checkCardEmissivity()
+        self.assertIn("Face7 lies between Solid1 and Solid2", str(caught.exception))
+        # The same value on both sides, or one card only, isn't ambiguous
+        w._builder.material("Solid2", "Emissivity", 0.2)
+        self.assertEqual(w.checkCardEmissivity(), [])
+        del w._builder.getBodySection("Solid2", writer.sifio.MATERIAL)["Emissivity"]
+        self.assertEqual(w.checkCardEmissivity(), [])
 
     # ********************************************************************************************
     def test_temperature_table_rules(self):

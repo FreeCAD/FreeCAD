@@ -134,7 +134,13 @@ class Heatwriter:
                         self.write.boundary(name, "Heat Flux", flux)
                     elif obj.ConstraintType == "Radiation":
                         temp = obj.AmbientTemp.getValueAs("K").Value
-                        self.write.boundary(name, "Emissivity", obj.Emissivity)
+                        # From the card the boundary keeps none, Elmer reads the body's material
+                        if obj.EmissivitySource == "Material":
+                            self.write.cardEmissivityFace(name, obj.Label, obj.CavityRadiation)
+                        else:
+                            self.write.constraintEmissivityFace(
+                                name, obj.Emissivity, obj.Label, obj.CavityRadiation
+                            )
                         if obj.CavityRadiation:
                             self.write.boundary(name, "Radiation", "Diffuse Gray")
                             if obj.ClosedCavity:
@@ -216,6 +222,8 @@ class Heatwriter:
             refTemp = float(tempObj.InitialTemperature.getValueAs("K"))
             for name in bodies:
                 self.write.material(name, "Reference Temperature", refTemp)
+        # Bodies under a radiation constraint that takes its emissivity from the card
+        emitting = self.write.cardEmissivityBodies()
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
             refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
@@ -247,6 +255,12 @@ class Heatwriter:
                         )
                     capacity = self.write.convert(m["SpecificHeat"], "L^2/(T^2*O)")
                 self.write.material(name, "Heat Capacity", capacity)
+                if name in emitting:
+                    emissivity = self.write.cardEmissivity(obj, name)
+                    if emissivity is None:
+                        self.write.dropMaterial(name, "Emissivity")
+                    else:
+                        self.write.material(name, "Emissivity", emissivity)
 
 
 ##  @}
