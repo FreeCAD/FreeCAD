@@ -27,15 +27,12 @@
 
 #include "FeatureRefine.h"
 
-#include <QCoreApplication>
-
 /// Base class of all additive features in PartDesign
 namespace PartDesign
 {
 
 class PartDesignExport FeatureAddSub: public PartDesign::FeatureRefine
 {
-    Q_DECLARE_TR_FUNCTIONS(PartDesign::FeatureAddSub)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAddSub);
 
 public:

@@ -42,10 +42,9 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
-#include <QtGlobal>
-
 
 #include "FaceMakerCheese.h"
+#include <Base/Translation.h>
 
 
 using namespace Part;
@@ -254,12 +253,15 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
 
 std::string FaceMakerCheese::getUserFriendlyName() const
 {
-    return {tr("Cheese facemaker").toStdString()};
+    return Base::Translation::translate("FaceMaker", QT_TRANSLATE_NOOP("FaceMaker", "Cheese facemaker"));
 }
 
 std::string FaceMakerCheese::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes, but no islands inside holes").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Supports making planar faces with holes, but no islands inside holes")
+    );
 }
 
 void FaceMakerCheese::Build_Essence()

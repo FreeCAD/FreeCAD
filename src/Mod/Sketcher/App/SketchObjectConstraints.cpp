@@ -24,9 +24,8 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <limits>
-
-#include <QCoreApplication>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -35,6 +34,7 @@
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/Translation.h>
 #include <Base/Vector3D.h>
 
 #include <memory>
@@ -143,22 +143,20 @@ SketchSolveStatus SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasPartialRedundancies) {
-        QString uniqueName = QString::fromLatin1(this->getNameInDocument());
-        QString userLabel = QString::fromUtf8(Label.getValue());
+        const std::string label = Label.getValue();
+        std::string name = this->getNameInDocument();
 
-        QString ref;
-        if (uniqueName == userLabel) {
-            ref = uniqueName;
-        } else {
-            ref = QStringLiteral("%1 (%2)").arg(uniqueName).arg(userLabel);
+        if (name != label) {
+            name = std::format("{} ({})", name, label);
         }
 
-        QString msg = QCoreApplication::translate(
+        const std::string message = Base::Translation::format(
             "Notifications",
-            "\"%1\" has partially redundant constraint(s)."
-        ).arg(ref);
+            QT_TRANSLATE_NOOP("Notifications", "\"{}\" has partially redundant constraint(s)."),
+            name
+        );
 
-        Base::Console().warning(this->getFullLabel(), "{}\n", msg.toStdString());
+        Base::Console().warning(this->getFullLabel(), "{}\n", message);
     }
 
     lastSolveTime = solvedSketch.getSolveTime();

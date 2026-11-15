@@ -39,9 +39,6 @@
 #include <string>
 #include <vector>
 
-// Qt
-#include <QDateTime>
-
 // Boost
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>

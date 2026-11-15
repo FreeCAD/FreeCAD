@@ -37,6 +37,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureFillet.h"

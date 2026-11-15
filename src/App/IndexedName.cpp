@@ -24,11 +24,16 @@
 
 // NOLINTNEXTLINE
 
+#include <algorithm>
+#include <cctype>
+#include <charconv>
 #include <cstdlib>
+#include <cstring>
+#include <memory>
+#include <string_view>
 #include <unordered_set>
 
 #include "IndexedName.h"
-#include "ByteArray.h"
 
 using namespace Data;
 
@@ -39,38 +44,21 @@ inline bool isInvalidChar(char test)
 }
 
 /// Get the integer suffix of name. Returns a tuple of (suffix, suffixPosition). Calling code
-/// should check to ensure that suffixPosition is not equal to nameLength (in which case there was
+/// should check to ensure that suffixPosition is not equal to name.size() (in which case there was
 /// no suffix).
 ///
 /// \param name The name to check
-/// \param nameLength The length of the string in name
 /// \returns An integer pair of the suffix itself and the position of that suffix in name
-std::pair<int, int> getIntegerSuffix(const char* name, int nameLength)
+std::pair<int, int> getIntegerSuffix(std::string_view name)
 {
-    int suffixPosition {nameLength - 1};
-
-    for (; suffixPosition >= 0; --suffixPosition) {
-        // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-        // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-        if (!isdigit(name[suffixPosition])) {
-            break;
-        }
-    }
-    ++suffixPosition;
+    const auto it = std::find_if_not(name.rbegin(), name.rend(), [](char c) {
+        return std::isdigit(static_cast<unsigned char>(c));
+    });
+    const auto suffixPosition = static_cast<int>(name.rend() - it);
     int suffix {0};
-    if (suffixPosition < nameLength) {
-        // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-        // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-        suffix = std::atoi(name + suffixPosition);
-    }
+    const auto digits = name.substr(suffixPosition);
+    std::from_chars(digits.data(), std::to_address(digits.end()), suffix);
     return std::make_pair(suffix, suffixPosition);
-}
-
-IndexedName::IndexedName(const QByteArray& data)
-    : type("")
-    , index(0)
-{
-    set(data.constData(), data.size());
 }
 
 void IndexedName::set(const char* name,
@@ -79,22 +67,22 @@ void IndexedName::set(const char* name,
                       bool allowOthers)
 {
     // Storage for names that we weren't given external storage for
-    static std::unordered_set<ByteArray, ByteArrayHasher> NameSet;
+    static std::unordered_set<std::string> NameSet;
 
     if (length < 0) {
         length = static_cast<int>(std::strlen(name));
     }
+    const std::string_view nameView(name, length);
     // Name typically ends with an integer: find that integer
-    auto [suffix, suffixPosition] = getIntegerSuffix(name, length);
+    auto [suffix, suffixPosition] = getIntegerSuffix(nameView);
     if (suffixPosition < length) {
         this->index = suffix;
     }
 
     // Make sure that every character is either an ASCII letter (upper or lowercase), or an
     // underscore. If any other character appears, reject the entire string.
-    // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-    if (std::any_of(name, name + suffixPosition, isInvalidChar)) {
+    const auto typePart = nameView.substr(0, suffixPosition);
+    if (std::ranges::any_of(typePart, isInvalidChar)) {
         this->type = "";
         this->index = 0;
         return;
@@ -103,7 +91,7 @@ void IndexedName::set(const char* name,
     // If a list of allowedNames was provided, see if our set name matches one of those
     // allowedNames: if it does, reference that memory location and return.
     for (const auto* typeName : allowedNames) {
-        if (std::strncmp(name, typeName, suffixPosition) == 0) {
+        if (typePart == typeName) {
             this->type = typeName;
             return;
         }
@@ -112,12 +100,8 @@ void IndexedName::set(const char* name,
     // If the type was NOT in the list of allowedNames, but the caller has set the allowOthers flag
     // to true, then add the new type to the static NameSet (if it is not already there).
     if (allowOthers) {
-        auto res = NameSet.insert(ByteArray(QByteArray::fromRawData(name, suffixPosition)));
-        if (res.second /*The insert succeeded (the type was new)*/) {
-            // Make sure that the data in the set is a unique (unshared) copy of the text
-            res.first->ensureUnshared();
-        }
-        this->type = res.first->bytes.constData();
+        auto res = NameSet.insert(std::string(name, suffixPosition));
+        this->type = res.first->c_str();
     }
     else {
         // The passed-in type is not in the allowed list, and allowOthers was not true, so don't

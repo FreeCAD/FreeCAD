@@ -50,6 +50,7 @@
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>

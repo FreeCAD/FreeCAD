@@ -38,6 +38,7 @@
 #include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <cctype>
 #include <regex>
 
 #include "Dialogs/DlgExpressionInput.h"
@@ -436,8 +437,10 @@ void DlgExpressionInput::textChanged()
     try {
         if (text.endsWith(u'.') && ui->expression->textCursor().position() == text.size()) {
             App::ExpressionTokenizer tokenizer;
-            const QString prefix = tokenizer.perform(text, text.size());
-            if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(u'.')) {
+            const std::string textUtf8 = text.toStdString();
+            const std::string prefix = tokenizer.perform(textUtf8, textUtf8.size());
+            if (prefix.size() > 1 && !std::isdigit(static_cast<unsigned char>(prefix.front()))
+                && prefix.back() == '.') {
                 // Treat member access as unfinished input, but still validate numeric input.
                 message.clear();
                 ui->msg->clear();

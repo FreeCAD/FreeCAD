@@ -26,6 +26,7 @@
 #include "Metadata.h"
 
 #include <Base/FileInfo.h>
+#include <Base/PathUtils.h>
 #include <Base/Tools.h>
 
 // inclusion of the generated files (generated out of MetadataPy.xml)
@@ -335,7 +336,7 @@ Py::List MetadataPy::getLicense() const
     for (const auto& lic : licenses) {
         Py::Dict pyLicense;
         pyLicense["name"] = Py::String(lic.name);
-        pyLicense["file"] = Py::String(lic.file.string());
+        pyLicense["file"] = Py::String(Base::pathToPortableUtf8(lic.file));
         pyLicenses.append(pyLicense);
     }
     return pyLicenses;
@@ -353,8 +354,8 @@ void MetadataPy::setLicense(Py::List args)
     for (const auto& l : licenses) {
         Py::Dict pyLicense(l);
         std::string name = pyLicense["name"].str();
-        std::string path = pyLicense["file"].str();
-        getMetadataPtr()->addLicense(App::Meta::License(name, path));
+        const std::string path = pyLicense["file"].str();
+        getMetadataPtr()->addLicense(App::Meta::License(name, Base::pathFromUtf8(path)));
     }
 }
 
@@ -365,7 +366,9 @@ PyObject* MetadataPy::addLicense(PyObject* args)
     if (!PyArg_ParseTuple(args, "ss", &shortCode, &path)) {
         throw Py::Exception();
     }
-    getMetadataPtr()->addLicense(App::Meta::License(shortCode, path));
+    getMetadataPtr()->addLicense(
+        App::Meta::License(shortCode, Base::pathFromUtf8(path))
+    );
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -377,7 +380,9 @@ PyObject* MetadataPy::removeLicense(PyObject* args)
     if (!PyArg_ParseTuple(args, "ss", &shortCode, &path)) {
         throw Py::Exception();
     }
-    getMetadataPtr()->removeLicense(App::Meta::License(shortCode, path));
+    getMetadataPtr()->removeLicense(
+        App::Meta::License(shortCode, Base::pathFromUtf8(path))
+    );
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -787,7 +792,7 @@ PyObject* MetadataPy::removeTag(PyObject* args)
 
 Py::String MetadataPy::getIcon() const
 {
-    return Py::String(getMetadataPtr()->icon().string());
+    return Py::String(Base::pathToPortableUtf8(getMetadataPtr()->icon()));
 }
 
 void MetadataPy::setIcon(Py::String args)
@@ -796,7 +801,7 @@ void MetadataPy::setIcon(Py::String args)
     if (!PyArg_Parse(args.ptr(), "s", &name)) {
         throw Py::Exception();
     }
-    getMetadataPtr()->setIcon(name);
+    getMetadataPtr()->setIcon(Base::pathFromUtf8(name));
 }
 
 Py::String MetadataPy::getClassname() const
@@ -815,7 +820,7 @@ void MetadataPy::setClassname(Py::String args)
 
 Py::String MetadataPy::getSubdirectory() const
 {
-    return Py::String(getMetadataPtr()->subdirectory().string());
+    return Py::String(Base::pathToPortableUtf8(getMetadataPtr()->subdirectory()));
 }
 
 void MetadataPy::setSubdirectory(Py::String args)
@@ -824,7 +829,7 @@ void MetadataPy::setSubdirectory(Py::String args)
     if (!PyArg_Parse(args.ptr(), "s", &name)) {
         throw Py::Exception();
     }
-    getMetadataPtr()->setSubdirectory(name);
+    getMetadataPtr()->setSubdirectory(Base::pathFromUtf8(name));
 }
 
 Py::List MetadataPy::getFile() const
@@ -832,7 +837,7 @@ Py::List MetadataPy::getFile() const
     auto files = getMetadataPtr()->file();
     Py::List pyFiles;
     for (const auto& f : files) {
-        pyFiles.append(Py::String(f.string()));
+        pyFiles.append(Py::String(Base::pathToPortableUtf8(f)));
     }
     return pyFiles;
 }
@@ -848,7 +853,7 @@ void MetadataPy::setFile(Py::List args)
     Py::List files(list);
     for (const auto& file : files) {
         Py::String pyFile(file);
-        getMetadataPtr()->addFile(pyFile.as_std_string());
+        getMetadataPtr()->addFile(Base::pathFromUtf8(pyFile.as_std_string()));
     }
 }
 
@@ -858,7 +863,7 @@ PyObject* MetadataPy::addFile(PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &file)) {
         throw Py::Exception();
     }
-    getMetadataPtr()->addFile(file);
+    getMetadataPtr()->addFile(Base::pathFromUtf8(file));
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -869,7 +874,7 @@ PyObject* MetadataPy::removeFile(PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &file)) {
         throw Py::Exception();
     }
-    getMetadataPtr()->removeFile(file);
+    getMetadataPtr()->removeFile(Base::pathFromUtf8(file));
     Py_INCREF(Py_None);
     return Py_None;
 }

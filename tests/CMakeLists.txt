@@ -8,7 +8,9 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set(CMAKE_AUTOMOC ON)
+if(FREECAD_HAS_QT)
+    set(CMAKE_AUTOMOC ON)
+endif()
 
 # With BUILD_DYNAMIC_LINK_PYTHON OFF the FreeCAD libraries do not link against Python: they
 # resolve the Python symbols at load time from the executable hosting them. A test runner must

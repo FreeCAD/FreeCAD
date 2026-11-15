@@ -33,6 +33,7 @@
 
 
 #include <Base/Exception.h>
+#include <Base/Translation.h>
 #include "FeatureThickness.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)

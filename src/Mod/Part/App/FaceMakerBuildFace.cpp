@@ -50,6 +50,7 @@
 #include <cmath>
 
 #include <Base/Console.h>
+#include <Base/Translation.h>
 
 FC_LOG_LEVEL_INIT("FaceMakerBuildFace", true, true)
 
@@ -57,14 +58,22 @@ TYPESYSTEM_SOURCE(Part::FaceMakerBuildFace, Part::FaceMakerPublic)
 
 std::string Part::FaceMakerBuildFace::getUserFriendlyName() const
 {
-    return tr("BuildFace facemaker").toStdString();
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "BuildFace facemaker")
+    );
 }
 
 std::string Part::FaceMakerBuildFace::getBriefExplanation() const
 {
-    return tr("Splits edges at intersections and finds all bounded face regions. "
-              "Handles arbitrary overlapping geometry.")
-        .toStdString();
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP(
+            "FaceMaker",
+            "Splits edges at intersections and finds all bounded face regions. "
+            "Handles arbitrary overlapping geometry."
+        )
+    );
 }
 
 void Part::FaceMakerBuildFace::setPlane(const gp_Pln& plane)

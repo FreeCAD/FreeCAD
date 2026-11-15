@@ -5,8 +5,9 @@
 
 #include <cmath>
 
-#include "Base/Quantity.h"
 #include "Base/NumericFormatting.h"
+#include "Base/Quantity.h"
+#include "Base/Type.h"
 
 #include "App/Application.h"
 #include "App/Document.h"
@@ -72,6 +73,9 @@ protected:
 
     void SetUp() override
     {
+        if (Base::Type::fromName("Sketcher::SketchObject").isBad()) {
+            GTEST_SKIP() << "Sketcher module is unavailable";
+        }
         docName = App::GetApplication().getUniqueDocumentName("test");
         thisDoc = App::GetApplication().newDocument(docName.c_str(), "testUser");
         thisObj = thisDoc->addObject("App::GeoFeature", "Sketch");

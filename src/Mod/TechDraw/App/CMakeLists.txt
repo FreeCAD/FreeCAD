@@ -15,6 +15,7 @@ list(APPEND TechDrawLIBS
     ${QtConcurrent_LIBRARIES}
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
+    ${QtXml_LIBRARIES}
 )
 
 generate_from_py(DrawHatch)
@@ -286,6 +287,7 @@ target_include_directories(
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}
     ${QtWidgets_INCLUDE_DIRS}
+    ${QtXml_INCLUDE_DIRS}
 )
 
 target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})

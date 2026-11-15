@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <string>
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>

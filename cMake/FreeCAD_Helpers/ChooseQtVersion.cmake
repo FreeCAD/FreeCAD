@@ -1,0 +1,127 @@
+# ADAPTED FOR FREECAD FROM VTK'S vtkQt.cmake
+# ORIGINAL VTK COPYRIGHT NOTICE FOLLOWS (BSD 3-CLAUSE)
+#
+# /*=========================================================================
+#
+#   Program:   Visualization Toolkit
+#   Module:    Copyright.txt
+#
+# Copyright (c) 1993-2015 Ken Martin, Will Schroeder, Bill Lorensen
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#  * Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#
+#  * Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+#  * Neither name of Ken Martin, Will Schroeder, or Bill Lorensen nor the names
+#    of any contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# =========================================================================*/
+
+
+# FREECAD_QT_VERSION is used to choose between Qt6 or no Qt support.
+
+# If it is set to Auto(default), FreeCAD finds and uses the
+# version installed on the system. If it is None, Qt support is disabled.
+
+# The output variable is FREECAD_QT_MAJOR_VERSION, which will be 6 when Qt is enabled.
+
+function(_freecad_select_qt_major_version out_var)
+  unset(${out_var} PARENT_SCOPE)
+
+  if (FREECAD_QT_VERSION STREQUAL "None")
+    return()
+  endif()
+
+  if (NOT FREECAD_QT_VERSION STREQUAL "Auto")
+    if (NOT FREECAD_QT_VERSION IN_LIST freecad_supported_qt_versions)
+      message(FATAL_ERROR
+        "Supported Qt versions are \"${freecad_supported_qt_versions}\". But "
+        "FREECAD_QT_VERSION is set to ${FREECAD_QT_VERSION}.")
+    endif ()
+    set(${out_var} "${FREECAD_QT_VERSION}" PARENT_SCOPE)
+    return()
+  endif()
+
+  find_package(Qt6 QUIET COMPONENTS ${FREECAD_QT_BASE_COMPONENTS})
+  if (Qt6_FOUND)
+    set(${out_var} 6 PARENT_SCOPE)
+    return()
+  endif()
+
+endfunction()
+
+macro(ChooseQtVersion)
+  set(freecad_supported_qt_versions "Auto" 6 "None")
+  set(FREECAD_QT_BASE_COMPONENTS Core Concurrent Network Xml LinguistTools)
+  set(FREECAD_HAS_QT OFF)
+
+  # The following `if` check can be removed once CMake 3.21 is required and
+  # the policy CMP0126 is set to NEW.
+  if (NOT DEFINED FREECAD_QT_VERSION)
+    set(FREECAD_QT_VERSION "Auto" CACHE
+      STRING "Expected Qt major version. Valid values are Auto, 6, None.")
+    set_property(CACHE FREECAD_QT_VERSION PROPERTY STRINGS "${freecad_supported_qt_versions}")
+  endif()
+
+  if (BUILD_GUI AND FREECAD_QT_VERSION STREQUAL "None")
+    message(FATAL_ERROR
+      "BUILD_GUI requires Qt, but FREECAD_QT_VERSION is set to None. Either "
+      "configure with -DBUILD_GUI=OFF (see the \"core-no-qt\" preset) or set "
+      "FREECAD_QT_VERSION to Auto or 6.")
+  endif()
+
+  set(_FREECAD_QT_REQUIRED OFF)
+  if (BUILD_GUI OR (NOT FREECAD_QT_VERSION STREQUAL "Auto" AND NOT FREECAD_QT_VERSION STREQUAL "None"))
+    set(_FREECAD_QT_REQUIRED ON)
+  endif()
+
+  if (FREECAD_LIBPACK_USE AND NOT FREECAD_QT_VERSION STREQUAL "None")
+    find_file(FREECAD_LIBPACK_CHECKFILE_VERSION NAMES FREECAD_LIBPACK_VERSION PATHS ${FREECAD_LIBPACK_DIR} NO_DEFAULT_PATH)
+    if(FREECAD_LIBPACK_CHECKFILE_VERSION)
+      file(READ ${FREECAD_LIBPACK_CHECKFILE_VERSION} FREECAD_LIBPACK_VERSION)
+      message(STATUS "LibPack: read version file and got ${FREECAD_LIBPACK_VERSION}")
+      if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
+        message(STATUS "Using Qt6 directory from LibPack in ${FREECAD_LIBPACK_DIR}/lib/cmake/Qt6")
+        set(Qt6_DIR ${FREECAD_LIBPACK_DIR}/lib/cmake/Qt6)
+        set(FREECAD_QT_VERSION 6)
+      else()
+        message(ERROR ": Unrecognized LibPack version ${FREECAD_LIBPACK_CHECKFILE_VERSION}")
+      endif()
+    endif()
+  endif()
+
+  _freecad_select_qt_major_version(_FREECAD_QT_VERSION)
+
+  if (NOT DEFINED _FREECAD_QT_VERSION)
+    if (_FREECAD_QT_REQUIRED)
+      message(FATAL_ERROR
+        "Could not find a valid Qt6 installation. Consider setting Qt6_DIR (as needed).")
+    endif()
+    unset(FREECAD_QT_MAJOR_VERSION CACHE)
+    message(STATUS "Qt not found; Qt-dependent support is disabled")
+  else()
+    set(FREECAD_HAS_QT ON)
+    set(FREECAD_QT_MAJOR_VERSION "${_FREECAD_QT_VERSION}" CACHE INTERNAL
+      "Major version number for the Qt installation used.")
+    message(STATUS  "Compiling with Qt ${FREECAD_QT_MAJOR_VERSION}")
+  endif()
+endmacro()
