@@ -29,6 +29,7 @@
 #include <gp_Pnt.hxx>
 
 #include "FeatureFilling.h"
+#include "ShapeUtils.h"
 
 
 using namespace Surface;
@@ -141,7 +142,7 @@ void Filling::addConstraints(
 
             if (obj && obj->isDerivedFrom<Part::Feature>()) {
                 // get the sub-edge of the part's shape
-                const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
+                const Part::TopoShape shape = getTopoShapeInFeatureCoordinates(obj, this);
                 TopoDS_Shape edge = shape.getSubShape(sub.c_str());
                 if (!edge.IsNull() && edge.ShapeType() == TopAbs_EDGE) {
                     GeomAbs_Shape cont = static_cast<GeomAbs_Shape>(contvals[index]);
@@ -220,7 +221,7 @@ void Filling::addConstraints(
             App::DocumentObject* obj = face_obj[index];
             const std::string& sub = face_sub[index];
             if (obj && obj->isDerivedFrom<Part::Feature>()) {
-                const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
+                const Part::TopoShape shape = getTopoShapeInFeatureCoordinates(obj, this);
                 TopoDS_Shape face = shape.getSubShape(sub.c_str());
                 if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
                     GeomAbs_Shape cont = static_cast<GeomAbs_Shape>(contvals[index]);
@@ -244,7 +245,7 @@ void Filling::addConstraints(BRepFill_Filling& builder, const App::PropertyLinkS
         App::DocumentObject* obj = it.first;
         std::vector<std::string> sub = it.second;
         if (obj && obj->isDerivedFrom<Part::Feature>()) {
-            const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
+            const Part::TopoShape shape = getTopoShapeInFeatureCoordinates(obj, this);
             for (const auto& jt : sub) {
                 TopoDS_Shape subShape = shape.getSubShape(jt.c_str());
                 if (!subShape.IsNull() && subShape.ShapeType() == TopAbs_VERTEX) {
@@ -281,7 +282,7 @@ App::DocumentObjectExecReturn* Filling::execute()
         // Load the initial surface if set
         App::DocumentObject* initFace = InitialFace.getValue();
         if (initFace && initFace->isDerivedFrom<Part::Feature>()) {
-            const Part::TopoShape& shape = static_cast<Part::Feature*>(initFace)->Shape.getShape();
+            const Part::TopoShape shape = getTopoShapeInFeatureCoordinates(initFace, this);
             std::vector<std::string> subNames = InitialFace.getSubValues();
             for (const auto& it : subNames) {
                 TopoDS_Shape subShape = shape.getSubShape(it.c_str());
