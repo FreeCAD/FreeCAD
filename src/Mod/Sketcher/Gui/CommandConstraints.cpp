@@ -2342,6 +2342,9 @@ public:
 
     void deactivated() override
     {
+        if (cstrIndexes.empty()) {
+            removeExternalReferences();
+        }
         abortCommand();
         externalReferences.clear();
         skipReleaseAfterExternalSelection = false;
@@ -2372,7 +2375,7 @@ public:
         skipReleaseAfterExternalSelection = false;
 
         if (hasBeenAborted()) {
-            resetTool();
+            resetTool(true);
             return;
         }
 
@@ -2580,7 +2583,7 @@ public:
     {
         if (!cstrIndexes.empty()) {
             // if a constraint is being made, then we cancel the dimension but not the tool.
-            resetTool();
+            resetTool(true);
             sketchgui->draw(false, false); // Redraw
         }
         else {
@@ -2906,7 +2909,7 @@ protected:
     void finalizeCommand()
     {
         if (hasBeenAborted()) {
-            resetTool();
+            resetTool(true);
             return;
         }
 
@@ -4050,8 +4053,40 @@ protected:
         cstrIndexes.clear();
     }
 
-    void resetTool()
+    void removeExternalReferences()
     {
+        std::vector<int> externalGeoIds;
+        for (const auto& reference : externalReferences) {
+            const int geoId = findExternalReference(Obj, reference.source, reference.subName);
+            if (geoId != GeoEnum::GeoUndef) {
+                externalGeoIds.push_back(GeoEnum::RefExt - geoId);
+            }
+        }
+
+        if (externalGeoIds.empty()) {
+            return;
+        }
+
+        std::ranges::sort(externalGeoIds, [](int lhs, int rhs) { return lhs > rhs; });
+        externalGeoIds.erase(
+            std::ranges::unique(externalGeoIds).begin(), externalGeoIds.end());
+
+        std::ostringstream stream;
+        for (size_t index = 0; index < externalGeoIds.size(); ++index) {
+            if (index != 0) {
+                stream << ",";
+            }
+            stream << externalGeoIds[index];
+        }
+
+        Gui::cmdAppObjectArgs(Obj, "delExternals([%s])", stream.str().c_str());
+    }
+
+    void resetTool(bool removeExternalReferences = false)
+    {
+        if (removeExternalReferences) {
+            this->removeExternalReferences();
+        }
         abortCommand();
         externalReferences.clear();
         skipReleaseAfterExternalSelection = false;
