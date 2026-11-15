@@ -25,16 +25,16 @@
 
 # Base system tests
 FreeCAD.__unit_test__ += [
-    "BaseTests",
-    "FreeCADInitTests",
-    "UnitTests",
-    "Document",
+    "TestBase",
+    "TestFreeCADInit",
+    "TestUnits",
+    "TestDocument",
     "TestLinkSuppression",
     "TestIntPairList",
-    "Metadata",
-    "Recompute",
-    "StringHasher",
-    "UnicodeTests",
+    "TestMetadata",
+    "TestRecompute",
+    "TestStringHasher",
+    "TestUnicode",
     "TestPythonSyntax",
     "TestCrashReporter",
 ]

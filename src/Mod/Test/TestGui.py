@@ -79,8 +79,8 @@ class TestDocCmd:
     def Activated(self):
         import QtUnitGui
 
-        QtUnitGui.addTest("Document")
-        QtUnitGui.setTest("Document")
+        QtUnitGui.addTest("TestDocument")
+        QtUnitGui.setTest("TestDocument")
 
     def GetResources(self):
         return {
@@ -96,8 +96,8 @@ class TestBaseCmd:
     def Activated(self):
         import QtUnitGui
 
-        QtUnitGui.addTest("BaseTests")
-        QtUnitGui.setTest("BaseTests")
+        QtUnitGui.addTest("TestBase")
+        QtUnitGui.setTest("TestBase")
 
     def GetResources(self):
         return {
@@ -129,7 +129,7 @@ class TestDocTextCmd:
     "Document test commando object"
 
     def Activated(self):
-        TestApp.TestText("Document")
+        TestApp.TestText("TestDocument")
 
     def GetResources(self):
         return {
@@ -143,7 +143,7 @@ class TestBaseTextCmd:
     "Base test commando object"
 
     def Activated(self):
-        TestApp.TestText("BaseTests")
+        TestApp.TestText("TestBase")
 
     def GetResources(self):
         return {
@@ -181,7 +181,7 @@ class TestCreateMenuCmd:
     "Base test commando object"
 
     def Activated(self):
-        TestApp.TestText("Menu.MenuCreateCases")
+        TestApp.TestText("TestMenu.MenuCreateCases")
 
     def GetResources(self):
         return {
@@ -195,7 +195,7 @@ class TestDeleteMenuCmd:
     "Base test commando object"
 
     def Activated(self):
-        TestApp.TestText("Menu.MenuDeleteCases")
+        TestApp.TestText("TestMenu.MenuDeleteCases")
 
     def GetResources(self):
         return {
