@@ -25,6 +25,7 @@
 
 import FreeCAD, FreeCADGui, os, unittest
 import tempfile
+import importlib.util
 
 from PySide import QtWidgets, QtCore
 from PySide.QtWidgets import QApplication
@@ -46,23 +47,30 @@ class WorkbenchTestCase(unittest.TestCase):
         wbs = FreeCADGui.listWorkbenches()
         # this gives workbenches a possibility to detect that we're under test environment
         FreeCAD.TestEnvironment = True
+        self.addCleanup(delattr, FreeCAD, "TestEnvironment")
         for i in wbs:
-            try:
-                print("Activate workbench '{}'".format(i))
-                cobj = CallableCheckWarning()
-                QtCore.QTimer.singleShot(500, cobj)
-                if FreeCADGui.activeWorkbench().name() != i:
-                    success = FreeCADGui.activateWorkbench(i)
-                else:
-                    # Cannot test activation of an already-active workbench
-                    success = True
-                FreeCAD.Console.PrintLog(
-                    "Active: " + FreeCADGui.activeWorkbench().name() + " Expected: " + i + "\n"
-                )
-                self.assertTrue(success, "Test on activating workbench {0} failed".format(i))
-            except Exception as e:
-                self.fail("Loading of workbench '{0}' failed: {1}".format(i, e))
-        del FreeCAD.TestEnvironment
+            with self.subTest(workbench=i):
+                if (
+                    i == "FemWorkbench"
+                    and "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__
+                    and importlib.util.find_spec("vtkmodules") is None
+                ):
+                    continue
+                try:
+                    print("Activate workbench '{}'".format(i))
+                    cobj = CallableCheckWarning()
+                    QtCore.QTimer.singleShot(500, cobj)
+                    if FreeCADGui.activeWorkbench().name() != i:
+                        success = FreeCADGui.activateWorkbench(i)
+                    else:
+                        # Cannot test activation of an already-active workbench
+                        success = True
+                    FreeCAD.Console.PrintLog(
+                        "Active: " + FreeCADGui.activeWorkbench().name() + " Expected: " + i + "\n"
+                    )
+                    self.assertTrue(success, "Test on activating workbench {0} failed".format(i))
+                except Exception as e:
+                    self.fail("Loading of workbench '{0}' failed: {1}".format(i, e))
 
     def testHandler(self):
         import __main__
