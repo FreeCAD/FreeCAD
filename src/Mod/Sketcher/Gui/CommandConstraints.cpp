@@ -1504,10 +1504,12 @@ public:
 
         Gui::Selection().clearSelection();
         skipReleaseAfterExternalSelection = true;
+        // Not selected in view: the external is removed again if the tool is cancelled
         return selectGeometry(selIdPair,
                               selectionType,
                               "ExternalEdge" + std::to_string(GeoEnum::RefExt + 1 - externalGeoId),
-                              lastOnSketchPos);
+                              lastOnSketchPos,
+                              false);
     }
 
     bool releaseButton(Base::Vector2d onSketchPos) override
@@ -1584,10 +1586,16 @@ public:
             selSeq.clear();
             resetOngoingSequences();
             Gui::Selection().clearSelection();
+            if (hasPendingExternalGeometry()) {
+                abortCommand();
+                tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
+            }
             updateHint();
             return true;
         }
-        return selectGeometry(selIdPair, newSelType, ss.str(), onSketchPos);
+        const bool selectInView =
+            selIdPair.GeoId > GeoEnum::RefExt || !hasPendingExternalGeometry();
+        return selectGeometry(selIdPair, newSelType, ss.str(), onSketchPos, selectInView);
     }
 
     std::list<Gui::InputHint> getToolHints() const override {
@@ -2002,15 +2010,18 @@ protected:
     bool selectGeometry(const SelIdPair& selIdPair,
                         SelType selectionType,
                         const std::string& selectionName,
-                        Base::Vector2d onSketchPos)
+                        Base::Vector2d onSketchPos,
+                        bool selectInView = true)
     {
         selSeq.push_back(selIdPair);
-        Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                      sketchgui->getSketchObject()->getNameInDocument(),
-                                      selectionName.c_str(),
-                                      onSketchPos.x,
-                                      onSketchPos.y,
-                                      0.f);
+        if (selectInView) {
+            Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                          sketchgui->getSketchObject()->getNameInDocument(),
+                                          selectionName.c_str(),
+                                          onSketchPos.x,
+                                          onSketchPos.y,
+                                          0.f);
+        }
         _tempOnSequences.clear();
         allowedSelTypes = 0;
         for (int token : ongoingSequences) {
@@ -2037,6 +2048,14 @@ protected:
         return true;
     }
 
+    // Picked external geometry stays uncommitted until a constraint commits it
+    bool hasPendingExternalGeometry() const
+    {
+        return currentTransactionID != 0
+            && sketchgui->getSketchObject()->getDocument()->getBookedTransactionID()
+            == currentTransactionID;
+    }
+
     int materializeExternalReference(App::DocumentObject* source, const std::string& subName)
     {
         const int existingGeoId =
@@ -2045,11 +2064,13 @@ protected:
             return existingGeoId;
         }
 
+        const bool hasPendingPick = hasPendingExternalGeometry();
         try {
-            openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+            if (!hasPendingPick) {
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+            }
             const int externalGeoId =
                 addProjectedExternalReference(sketchgui->getSketchObject(), source, subName);
-            commitCommand();
             if (externalGeoId != GeoEnum::GeoUndef) {
                 return externalGeoId;
             }
@@ -2058,7 +2079,9 @@ protected:
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry"));
-            abortCommand();
+            if (!hasPendingPick) {
+                abortCommand();
+            }
             return GeoEnum::GeoUndef;
         }
 
