@@ -128,6 +128,8 @@ class TestFemCommon(unittest.TestCase):
                 except ModuleNotFoundError as error:
                     if mod == "femtools.tokrules" and error.name == "ply":
                         self.skipTest("PLY is not available")
+                    if error.name == "vtkmodules":
+                        self.skipTest("VTK Python bindings are not available")
                     if (
                         error.name == "vtkmodules" or (error.name or "").startswith("vtkmodules.")
                     ) and "BUILD_FEM_VTK_PYTHON" not in FreeCAD.__cmake__:
