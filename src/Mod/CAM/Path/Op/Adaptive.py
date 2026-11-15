@@ -174,12 +174,20 @@ def _initHelixFeedProperties(obj, legacy=False):
 
 
 def _applyFeedRate(commands, feedRate):
-    """Apply the entry feed unchanged to every milling move."""
+    """Apply the entry feed to milling moves, preserving straight plunge feeds."""
+    start = FreeCAD.Vector()
     for command in commands:
-        if command.Name in Constants.GCODE_MOVE_MILL:
+        if command.Name not in Constants.GCODE_MOVE_ALL:
+            continue
+        end = Path.Geom.commandEndPoint(command, start)
+        isPlunge = command.Name in Constants.GCODE_MOVE_STRAIGHT and Path.Geom.pointsCoincide(
+            Path.Geom.xy(start), Path.Geom.xy(end)
+        )
+        if command.Name in Constants.GCODE_MOVE_MILL and not isPlunge:
             parameters = command.Parameters
             parameters["F"] = feedRate
             command.Parameters = parameters
+        start = end
 
 
 def GenerateGCode(op, obj, adaptiveResults):

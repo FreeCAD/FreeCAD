@@ -1253,11 +1253,32 @@ class TestPathAdaptive(PathTestBase):
                 len(commands),
             )
             cuttingMoves = Constants.GCODE_MOVE_STRAIGHT + Constants.GCODE_MOVE_ARC
-            helixFeeds = {
-                command.Parameters["F"]
-                for command in commands[helixCommentIndex + 1 : adaptiveCommentIndex]
-                if command.Name in cuttingMoves and "F" in command.Parameters
-            }
+            helixFeeds = set()
+            start = FreeCAD.Vector()
+            plungeCount = 0
+            for index, command in enumerate(commands[:adaptiveCommentIndex]):
+                if command.Name not in Constants.GCODE_MOVE_ALL:
+                    continue
+                params = command.Parameters
+                end = FreeCAD.Vector(
+                    params.get("X", start.x), params.get("Y", start.y), params.get("Z", start.z)
+                )
+                if index > helixCommentIndex and command.Name in cuttingMoves and "F" in params:
+                    if (
+                        command.Name in Constants.GCODE_MOVE_STRAIGHT
+                        and end.x == start.x
+                        and end.y == start.y
+                    ):
+                        self.assertEqual(
+                            params["F"],
+                            toolController.VertFeed.Value,
+                            "Straight plunges before the helix should retain VertFeed",
+                        )
+                        plungeCount += 1
+                    else:
+                        helixFeeds.add(params["F"])
+                start = end
+            self.assertGreater(plungeCount, 0, "Expected a straight plunge before the helix")
             adaptiveFeeds = {
                 command.Parameters["F"]
                 for command in commands[adaptiveCommentIndex + 1 : nextHelixCommentIndex]
@@ -1326,7 +1347,7 @@ class TestPathAdaptive(PathTestBase):
         # The property editor lets legacy operations opt into RampFeed.
         adaptive.HelixFeedVersion = 1
         adaptive.recompute()
-        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
         self.assertEqual(helixFeeds, {toolController.RampFeed.Value})
         self.assertTrue(adaptiveFeeds, "Expected adaptive clearing moves after migration")
         self.assertTrue(
