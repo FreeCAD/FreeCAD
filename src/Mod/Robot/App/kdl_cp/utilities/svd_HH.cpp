@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
 // Version: 1.0
@@ -132,7 +130,7 @@ namespace KDL
             }
             maxarg1=anorm;
             maxarg2=(fabs(w(i))+fabs(tmp(i)));
-            anorm = maxarg1 > maxarg2 ?	maxarg1 : maxarg2;
+            anorm = maxarg1 > maxarg2 ? maxarg1 : maxarg2;
         }
         /* Accumulation of right-hand transformations. */
         for (i=cols-1;i>=0;i--) {

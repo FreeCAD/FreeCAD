@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
+// Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
-// Maintainer: Dominick Vanthienen <ruben dot smits at mech dot kuleuven dot be>
+// Author: Dominick Vanthienen <dominick dot vanthienen at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -25,8 +23,6 @@
 
 namespace KDL
 {
-    using namespace Eigen;
-
     JntSpaceInertiaMatrix::JntSpaceInertiaMatrix()
     {
     }
@@ -71,12 +67,12 @@ namespace KDL
 
     unsigned int JntSpaceInertiaMatrix::rows()const
     {
-        return data.rows();
+        return static_cast<unsigned int>(data.rows());
     }
 
     unsigned int JntSpaceInertiaMatrix::columns()const
     {
-        return data.cols();
+        return static_cast<unsigned int>(data.cols());
     }
     
 
@@ -114,12 +110,11 @@ namespace KDL
     {
         if(src1.rows()!=src2.rows()||src1.columns()!=src2.columns())
             return false;
-        return src1.data.isApprox(src2.data,eps);
+        return (src1.data-src2.data).isZero(eps);
     }
 
-    bool operator==(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2){return Equal(src1,src2,epsilon);}
+    bool operator==(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2){return Equal(src1,src2);}
     //bool operator!=(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2){return Equal(src1,src2);}
-
 }
 
 

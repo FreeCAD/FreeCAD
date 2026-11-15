@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 /***************************************************************************
   tag: Peter Soetens  Mon May 10 19:10:36 CEST 2004  velocityprofile_dirac.cxx
 
@@ -44,7 +42,7 @@ namespace KDL {
     }
 
     void VelocityProfile_Dirac::
-	SetProfileDuration(double pos1,double pos2,double duration)
+    SetProfileDuration(double pos1,double pos2,double duration)
     {
         SetProfile(pos1,pos2);
         t = duration;
@@ -55,10 +53,15 @@ namespace KDL {
     }
 
     double VelocityProfile_Dirac::Pos(double time) const {
-        if ( t == 0 )
-            return time == 0 ? p1 : p2;
-        else
+        if ( t == 0 ) {
+            return time <= 0 ? p1 : p2;
+        } else if (time < 0) {
+            return p1;
+        } else if (time <= t) {
             return p1 + (( p2 - p1)/t)*time;
+        } else {
+            return p2;
+        }
     }
 
     double VelocityProfile_Dirac::Vel(double time) const {
@@ -72,8 +75,9 @@ namespace KDL {
         return 0;
     }
 
-    double VelocityProfile_Dirac::Acc(double /*time*/) const {
+    double VelocityProfile_Dirac::Acc(double time) const {
         throw Error_MotionPlanning_Incompatible();
+        return 0;
     }
 
 

@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
 // Version: 1.0
@@ -21,7 +19,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDLCHAINFKSOLVERPOS_RECURSIVE_HPP
+#define KDLCHAINFKSOLVERPOS_RECURSIVE_HPP
 
 #include "chainfksolver.hpp"
 
@@ -41,9 +40,14 @@ namespace KDL {
         ~ChainFkSolverPos_recursive();
 
         virtual int JntToCart(const JntArray& q_in, Frame& p_out, int segmentNr=-1);
+        virtual int JntToCart(const JntArray& q_in, std::vector<Frame>& p_out, int segmentNr=-1);
+
+        virtual void updateInternalDataStructures() {};
 
     private:
-        const Chain chain;
+        const Chain& chain;
     };
 
 }
+
+#endif

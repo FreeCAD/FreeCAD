@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Copyright  (C)  2007  Ruben Smits <ruben dot smits at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
-// Maintainer: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Author: Ruben Smits <ruben dot smits at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -24,7 +22,6 @@
 #include "chain.hpp"
 
 namespace KDL {
-    using namespace std;
 
     Chain::Chain():
             nrOfJoints(0),
@@ -57,7 +54,7 @@ namespace KDL {
     {
         segments.push_back(segment);
         nrOfSegments++;
-        if(segment.getJoint().getType()!=Joint::None)
+        if(segment.getJoint().getType()!=Joint::Fixed)
             nrOfJoints++;
     }
 
@@ -68,6 +65,11 @@ namespace KDL {
     }
 
     const Segment& Chain::getSegment(unsigned int nr)const
+    {
+        return segments[nr];
+    }
+
+    Segment& Chain::getSegment(unsigned int nr)
     {
         return segments[nr];
     }

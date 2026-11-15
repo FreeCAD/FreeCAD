@@ -7,7 +7,8 @@
  *      Author: rubensmits
  */
 
-#pragma once
+#ifndef TREEJNTTOJACSOLVER_HPP_
+#define TREEJNTTOJACSOLVER_HPP_
 
 #include "tree.hpp"
 #include "jacobian.hpp"
@@ -35,3 +36,5 @@ private:
 };
 
 }//End of namespace
+
+#endif /* TREEJNTTOJACSOLVER_H_ */

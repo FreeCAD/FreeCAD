@@ -55,7 +55,7 @@
 //                    2) EulerZYX,EulerZYZ,RPY word followed by a vector, e.g. :
 //                        Eulerzyx[10,20,30]
 //                   (ANGLES are always expressed in DEGREES for I/O)
-//                   (ANGLES are always expressed in RADIANS for internal representation)
+//                   (ANGELS are always expressed in RADIANS for internal representation)
 //                    3) Rot [1,2,3] [20]  Rotates around axis [1,2,3] with an angle
 //                   of 20 degrees.
 //                    4) Identity          returns identity rotation matrix.
@@ -75,7 +75,8 @@
 //
  *
  ****************************************************************************/
-#pragma once
+#ifndef FRAMES_IO_H
+#define FRAMES_IO_H
 
 #include "utilities/utility_io.h"
 #include "frames.hpp"
@@ -111,3 +112,5 @@ namespace KDL {
 
 
 } // namespace Frame
+
+#endif

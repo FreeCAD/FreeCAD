@@ -20,15 +20,10 @@
 
 namespace KDL {
 
-    using namespace std;
-
-
-void Trajectory_Stationary::Write(ostream& os) const {
-	os << "STATIONARY[ " << duration << endl;
-	os << pos << endl;
+void Trajectory_Stationary::Write(std::ostream& os) const {
+    os << "STATIONARY[ " << duration << std::endl;
+    os << pos << std::endl;
 	os << "]";
 }
 
-
 }
-

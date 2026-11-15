@@ -21,16 +21,15 @@
  *      $Id: rframes.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
-// clazy:excludeall=rule-of-two-soft
 
-#pragma once
+#ifndef KDL_FRAMEVEL_H
+#define KDL_FRAMEVEL_H
 
 #include "utilities/utility.h"
 #include "utilities/rall1d.h"
 #include "utilities/traits.h"
 
 #include "frames.hpp"
-
 
 
 namespace KDL {
@@ -54,7 +53,7 @@ IMETHOD void posrandom(doubleVel& F) {
 	posrandom(F.grad);
 }
 
-} //namespace KDL
+}
 
 template <>
 struct Traits<KDL::doubleVel> {
@@ -83,6 +82,7 @@ IMETHOD bool Equal(const TwistVel& a,const TwistVel& b,double eps=epsilon);
 IMETHOD bool Equal(const Twist& a,const TwistVel& b,double eps=epsilon);
 IMETHOD bool Equal(const TwistVel& a,const Twist& b,double eps=epsilon);
 
+
 class VectorVel
 // = TITLE
 //     An VectorVel is a Vector and its first derivative
@@ -106,7 +106,7 @@ public:
     IMETHOD VectorVel& operator -= (const VectorVel& arg);
     IMETHOD static VectorVel Zero();
     IMETHOD void ReverseSign();
-    IMETHOD doubleVel Norm() const;
+    IMETHOD doubleVel Norm(double eps=epsilon) const;
     IMETHOD friend VectorVel operator + (const VectorVel& r1,const VectorVel& r2);
     IMETHOD friend VectorVel operator - (const VectorVel& r1,const VectorVel& r2);
     IMETHOD friend VectorVel operator + (const Vector& r1,const VectorVel& r2);
@@ -130,12 +130,19 @@ public:
     IMETHOD friend bool Equal(const VectorVel& r1,const VectorVel& r2,double eps);
     IMETHOD friend bool Equal(const Vector& r1,const VectorVel& r2,double eps);
     IMETHOD friend bool Equal(const VectorVel& r1,const Vector& r2,double eps);
+
+    IMETHOD friend bool operator==(const VectorVel& r1,const VectorVel& r2);
+    IMETHOD friend bool operator!=(const VectorVel& r1,const VectorVel& r2);
+    IMETHOD friend bool operator==(const Vector& r1,const VectorVel& r2);
+    IMETHOD friend bool operator!=(const Vector& r1,const VectorVel& r2);
+    IMETHOD friend bool operator==(const VectorVel& r1,const Vector& r2);
+    IMETHOD friend bool operator!=(const VectorVel& r1,const Vector& r2);
+
     IMETHOD friend VectorVel operator - (const VectorVel& r);
     IMETHOD friend doubleVel dot(const VectorVel& lhs,const VectorVel& rhs);
     IMETHOD friend doubleVel dot(const VectorVel& lhs,const Vector& rhs);
     IMETHOD friend doubleVel dot(const Vector& lhs,const VectorVel& rhs);
 };
-
 
 
 class RotationVel
@@ -187,13 +194,18 @@ public:
     IMETHOD friend bool Equal(const Rotation& r1,const RotationVel& r2,double eps);
     IMETHOD friend bool Equal(const RotationVel& r1,const Rotation& r2,double eps);
 
+    IMETHOD friend bool operator==(const RotationVel& r1,const RotationVel& r2);
+    IMETHOD friend bool operator!=(const RotationVel& r1,const RotationVel& r2);
+    IMETHOD friend bool operator==(const Rotation& r1,const RotationVel& r2);
+    IMETHOD friend bool operator!=(const Rotation& r1,const RotationVel& r2);
+    IMETHOD friend bool operator==(const RotationVel& r1,const Rotation& r2);
+    IMETHOD friend bool operator!=(const RotationVel& r1,const Rotation& r2);
+
     IMETHOD TwistVel Inverse(const TwistVel& arg) const;
     IMETHOD TwistVel Inverse(const Twist& arg) const;
     IMETHOD TwistVel operator * (const TwistVel& arg) const;
     IMETHOD TwistVel operator * (const Twist& arg) const;
 };
-
-
 
 
 class FrameVel
@@ -241,14 +253,18 @@ public:
     IMETHOD friend bool Equal(const Frame& r1,const FrameVel& r2,double eps);
     IMETHOD friend bool Equal(const FrameVel& r1,const Frame& r2,double eps);
 
+    IMETHOD friend bool operator==(const FrameVel& a,const FrameVel& b);
+    IMETHOD friend bool operator!=(const FrameVel& a,const FrameVel& b);
+    IMETHOD friend bool operator==(const Frame& a,const FrameVel& b);
+    IMETHOD friend bool operator!=(const Frame& a,const FrameVel& b);
+    IMETHOD friend bool operator==(const FrameVel& a,const Frame& b);
+    IMETHOD friend bool operator!=(const FrameVel& a,const Frame& b);
+
     IMETHOD TwistVel  Inverse(const TwistVel& arg) const;
     IMETHOD TwistVel  Inverse(const Twist& arg) const;
     IMETHOD TwistVel operator * (const TwistVel& arg) const;
     IMETHOD TwistVel operator * (const Twist& arg) const;
 };
-
-
-
 
 
 //very similar to Wrench class.
@@ -312,6 +328,13 @@ public:
      IMETHOD friend bool Equal(const TwistVel& a,const TwistVel& b,double eps);
      IMETHOD friend bool Equal(const Twist& a,const TwistVel& b,double eps);
      IMETHOD friend bool Equal(const TwistVel& a,const Twist& b,double eps);
+
+     IMETHOD friend bool operator==(const TwistVel& a,const TwistVel& b);
+     IMETHOD friend bool operator!=(const TwistVel& a,const TwistVel& b);
+     IMETHOD friend bool operator==(const Twist& a,const TwistVel& b);
+     IMETHOD friend bool operator!=(const Twist& a,const TwistVel& b);
+     IMETHOD friend bool operator==(const TwistVel& a,const Twist& b);
+     IMETHOD friend bool operator!=(const TwistVel& a,const Twist& b);
 
 // = Conversion to other entities
      IMETHOD Twist GetTwist() const;
@@ -385,8 +408,65 @@ IMETHOD void posrandom(FrameVel& F) {
 	posrandom(F.p);
 }
 
-} // namespace KDL
-
 #ifdef KDL_INLINE
 #include "framevel.inl"
+#endif
+
+} // namespace KDL
+
+template<> struct std::hash<KDL::doubleVel>
+{
+    std::size_t operator()(KDL::doubleVel const& dv) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, dv.value());
+        KDL::hash_combine(seed, dv.deriv());
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::VectorVel>
+{
+    std::size_t operator()(KDL::VectorVel const& vv) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, vv.p);
+        KDL::hash_combine(seed, vv.v);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::RotationVel>
+{
+    std::size_t operator()(KDL::RotationVel const& rv) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, rv.R);
+        KDL::hash_combine(seed, rv.w);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::FrameVel>
+{
+    std::size_t operator()(KDL::FrameVel const& fv) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, fv.M);
+        KDL::hash_combine(seed, fv.p);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::TwistVel>
+{
+    std::size_t operator()(KDL::TwistVel const& tv) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, tv.vel);
+        KDL::hash_combine(seed, tv.rot);
+        return seed;
+    }
+};
+
 #endif

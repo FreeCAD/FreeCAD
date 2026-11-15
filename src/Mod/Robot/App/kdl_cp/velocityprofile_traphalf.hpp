@@ -45,7 +45,8 @@
  *      Experimental
  ****************************************************************************/
 
-#pragma once
+#ifndef KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
+#define KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
 
 #include "velocityprofile.hpp"
 
@@ -66,7 +67,7 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 		// For "running" a motion profile :
 		double a1,a2,a3; // coef. from ^0 -> ^2 of first part
 		double b1,b2,b3; // of 2nd part
-		double c1,c2,c3; // of 3th part
+		double c1,c2,c3; // of 3rd part
 		double duration;
 		double t1,t2;
 
@@ -83,9 +84,9 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 	public:
 
 		/**
-		 * \param _maxvel maximal velocity of the motion profile (positive)
-		 * \param _maxacc maximal acceleration of the motion profile (positive)
-		 * \param _starting this value is true when initial velocity is zero
+		 * \param maxvel maximal velocity of the motion profile (positive)
+		 * \param maxacc maximal acceleration of the motion profile (positive)
+		 * \param starting this value is true when initial velocity is zero
 		 *        and ending velocity is maxvel, is false for the reverse
 		 */
 		VelocityProfile_TrapHalf(double _maxvel=0,double _maxacc=0,bool _starting=true);
@@ -132,3 +133,6 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 
 
 }
+
+
+#endif

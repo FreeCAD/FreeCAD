@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_HPP
+#define KDL_CHAIN_IKSOLVERVEL_PINV_HPP
 
 #include "chainiksolver.hpp"
 #include "chainjnttojacsolver.hpp"
@@ -41,7 +42,6 @@ namespace KDL
     class ChainIkSolverVel_pinv : public ChainIkSolverVel
     {
     public:
-        static const int E_SVD_FAILED = -100; //! Child SVD failed
         /// solution converged but (pseudo)inverse is singular
         static const int E_CONVERGE_PINV_SINGULAR = +100;
 
@@ -79,7 +79,7 @@ namespace KDL
          * not (yet) implemented.
          *
          */
-        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return -1;};
+        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return (error = E_NOT_IMPLEMENTED);};
 
         /**
          * Retrieve the number of singular values of the jacobian that are < eps;
@@ -97,9 +97,12 @@ namespace KDL
         /// @copydoc KDL::SolverI::strError()
         virtual const char* strError(const int error) const;
 
+        /// @copydoc KDL::SolverI::updateInternalDataStructures
+        virtual void updateInternalDataStructures();
     private:
-        const Chain chain;
+        const Chain& chain;
         ChainJntToJacSolver jnt2jac;
+        unsigned int nj;
         Jacobian jac;
         SVD_HH svd;
         std::vector<JntArray> U;
@@ -113,3 +116,5 @@ namespace KDL
 
     };
 }
+#endif
+

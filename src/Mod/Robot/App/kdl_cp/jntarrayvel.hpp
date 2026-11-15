@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_JNTARRAYVEL_HPP
+#define KDL_JNTARRAYVEL_HPP
 
 #include "utilities/utility.h"
 #include "jntarray.hpp"
@@ -73,3 +74,5 @@ namespace KDL
     };
 
 }
+
+#endif

@@ -37,7 +37,8 @@
  * \par history
  *   - changed layout of the comments to accommodate doxygen
  */
-#pragma once
+#ifndef ERROR_STACK_H
+#define ERROR_STACK_H
 
 #include "utility.h"
 #include "utility_io.h"
@@ -66,3 +67,6 @@ void IOTracePopStr(char* buffer,int size);
 
 
 }
+
+#endif
+

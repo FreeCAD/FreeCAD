@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_CHAIN_IKSOLVER_HPP
+#define KDL_CHAIN_IKSOLVER_HPP
 
 #include "chain.hpp"
 #include "frames.hpp"
@@ -55,6 +56,7 @@ namespace KDL {
         virtual int CartToJnt(const JntArray& q_init, const Frame& p_in, JntArray& q_out)=0;
 
         virtual ~ChainIkSolverPos(){};
+        virtual void updateInternalDataStructures()=0;
     };
 
     /**
@@ -89,7 +91,7 @@ namespace KDL {
         virtual int CartToJnt(const JntArray& q_init, const FrameVel& v_in, JntArrayVel& q_out)=0;
 
         virtual ~ChainIkSolverVel(){};
-
+        virtual void updateInternalDataStructures()=0;
     };
 
     /**
@@ -159,8 +161,11 @@ namespace KDL {
         virtual int CartTojnt(const JntArray& q_init, const Frame& p_in, const JntArray& qdot_in, const Twist& a_in,
                          JntArray& q_out, JntArray& qdotdot_out)=0;
 
+        virtual void updateInternalDataStructures()=0;
         virtual ~ChainIkSolverAcc(){};
     };
 
 
 }//end of namespace KDL
+
+#endif

@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
+// Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
-// Maintainer: Dominick Vanthienen <ruben dot smits at mech dot kuleuven dot be>
+// Author: Dominick Vanthienen <dominick dot vanthienen at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -21,7 +19,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_JNTSPACEINERTIAMATRIX_HPP
+#define KDL_JNTSPACEINERTIAMATRIX_HPP
 
 #include "frames.hpp"
 #include "jacobian.hpp"
@@ -64,7 +63,7 @@ class MyTask : public RTT::TaskContext
    ** use j here
    }
 };
-\endcode
+/endcode
 
      */
 
@@ -200,9 +199,9 @@ class MyTask : public RTT::TaskContext
      * for this purpose.
      * J*q = t
      *
-     * @param src J: Inertia Matrix (6x6)
-     * @param vec q: Jacobian (6x1)
-     * @param dest t: Twist (6x1)
+     * @param jac J
+     * @param src q
+     * @param dest t
      * @post dest==Twist::Zero() if 0==src.rows() (ie src is empty)
      */
     void Multiply(const JntSpaceInertiaMatrix& src, const JntArray& vec, JntArray& dest);
@@ -210,9 +209,9 @@ class MyTask : public RTT::TaskContext
     /**
      * Function to set all the values of the array to 0
      *
-     * @param mat
+     * @param array
      */
-    void SetToZero(JntSpaceInertiaMatrix& mat);
+    void SetToZero(JntSpaceInertiaMatrix& matrix);
 
     /**
      * Function to check if two matrices are the same with a
@@ -229,3 +228,5 @@ class MyTask : public RTT::TaskContext
     bool operator==(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2);
 
 }
+
+#endif

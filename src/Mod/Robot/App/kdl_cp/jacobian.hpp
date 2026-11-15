@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_JACOBIAN_HPP
+#define KDL_JACOBIAN_HPP
 
 #include "frames.hpp"
 #include <Eigen/Core>
@@ -30,7 +31,8 @@ namespace KDL
 {
     // Equal is friend function, but default arguments for friends are forbidden (§8.3.6.4)
     class Jacobian;
-    bool Equal(const Jacobian& a,const Jacobian& b,double eps);
+    bool Equal(const Jacobian& a,const Jacobian& b,double eps=epsilon);
+    void SetToZero(Jacobian& jac);
 
 
     class Jacobian
@@ -84,3 +86,5 @@ namespace KDL
 
 
 }
+
+#endif

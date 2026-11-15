@@ -1,15 +1,12 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
-#pragma once
+#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_GIVENS_HPP
+#define KDL_CHAIN_IKSOLVERVEL_PINV_GIVENS_HPP
 
 #include "chainiksolver.hpp"
 #include "chainjnttojacsolver.hpp"
 
 #include <Eigen/Core>
-
-using namespace Eigen;
 
 namespace KDL
 {
@@ -25,6 +22,7 @@ namespace KDL
     class ChainIkSolverVel_pinv_givens : public ChainIkSolverVel
     {
     public:
+
         /**
          * Constructor of the solver
          *
@@ -40,14 +38,20 @@ namespace KDL
          * not (yet) implemented.
          *
          */
-        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return -1;};
+        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return (error = E_NOT_IMPLEMENTED);};
+
+        /// @copydoc KDL::SolverI::updateInternalDataStructures
+        virtual void updateInternalDataStructures();
+
     private:
-        const Chain chain;
+        const Chain& chain;
+        unsigned int nj;
         ChainJntToJacSolver jnt2jac;
         Jacobian jac;
         bool transpose,toggle;
         unsigned int m,n;
-        MatrixXd jac_eigen,U,V,B;
-        VectorXd S,tempi,tempj,UY,SUY,qdot_eigen,v_in_eigen;
+        Eigen::MatrixXd jac_eigen,U,V,B;
+        Eigen::VectorXd S,tempi,UY,SUY,qdot_eigen,v_in_eigen;
     };
 }
+#endif

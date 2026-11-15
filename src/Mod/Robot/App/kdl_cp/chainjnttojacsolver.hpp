@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_CHAINJNTTOJACSOLVER_HPP
+#define KDL_CHAINJNTTOJACSOLVER_HPP
 
 #include "solveri.hpp"
 #include "frames.hpp"
@@ -33,16 +34,12 @@ namespace KDL
 {
     /**
      * @brief  Class to calculate the jacobian of a general
-     * KDL::Chain, it is used by other solvers. It should not be used
-     * outside of KDL.
-     *
-     *
+     * KDL::Chain, it is used by other solvers.
      */
 
     class ChainJntToJacSolver : public SolverI
     {
     public:
-        static const int E_JAC_FAILED = -100; //! Jac solver failed
 
         explicit ChainJntToJacSolver(const Chain& chain);
         virtual ~ChainJntToJacSolver();
@@ -54,21 +51,26 @@ namespace KDL
          *
          * @param q_in input joint positions
          * @param jac output jacobian
-         *
-         * @return always returns 0
+         * @param seg_nr The final segment to compute
+         * @return success/error code
          */
-        virtual int JntToJac(const JntArray& q_in, Jacobian& jac, int segmentNR=-1);
-        
+        virtual int JntToJac(const JntArray& q_in, Jacobian& jac, int seg_nr=-1);
+
+        /**
+         *
+         * @param locked_joints new values for locked joints
+         * @return success/error code
+         */
         int setLockedJoints(const std::vector<bool> locked_joints);
 
-        /// @copydoc KDL::SolverI::strError()
-        virtual const char* strError(const int error) const;
+        /// @copydoc KDL::SolverI::updateInternalDataStructures
+        virtual void updateInternalDataStructures();
 
     private:
-        const Chain chain;
+        const Chain& chain;
         Twist t_tmp;
         Frame T_tmp;
         std::vector<bool> locked_joints_;
-        unsigned int nr_of_unlocked_joints_;
     };
 }
+#endif

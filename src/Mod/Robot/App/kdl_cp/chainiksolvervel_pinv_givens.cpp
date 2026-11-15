@@ -28,23 +28,40 @@ namespace KDL
 {
     ChainIkSolverVel_pinv_givens::ChainIkSolverVel_pinv_givens(const Chain& _chain):
         chain(_chain),
+        nj(chain.getNrOfJoints()),
         jnt2jac(chain),
-        jac(chain.getNrOfJoints()),
-        transpose(chain.getNrOfJoints()>6),toggle(true),
-        m(max(6,chain.getNrOfJoints())),
-        n(min(6,chain.getNrOfJoints())),
+        jac(nj),
+        transpose(nj>6),toggle(true),
+        m(static_cast<unsigned int>(max(6,nj))),
+        n(static_cast<unsigned int>(min(6,nj))),
         jac_eigen(m,n),
-        U(MatrixXd::Identity(m,m)),
-        V(MatrixXd::Identity(n,n)),
+        U(Eigen::MatrixXd::Identity(m,m)),
+        V(Eigen::MatrixXd::Identity(n,n)),
         B(m,n),
         S(n),
         tempi(m),
-        tempj(m),
-        UY(VectorXd::Zero(6)),
-        SUY(VectorXd::Zero(chain.getNrOfJoints())),
-        qdot_eigen(chain.getNrOfJoints()),
+        UY(Eigen::VectorXd::Zero(6)),
+        SUY(Eigen::VectorXd::Zero(nj)),
+        qdot_eigen(nj),
         v_in_eigen(6)
     {
+    }
+
+    void ChainIkSolverVel_pinv_givens::updateInternalDataStructures() {
+        nj = chain.getNrOfJoints();
+        jnt2jac.updateInternalDataStructures();
+        jac.resize(nj);
+        transpose = (nj > 6);
+        m = static_cast<unsigned int>(max(6,nj));
+        n = static_cast<unsigned int>(min(6,nj));
+        jac_eigen.conservativeResize(m,n);
+        U.conservativeResizeLike(Eigen::MatrixXd::Identity(m,m));
+        V.conservativeResizeLike(Eigen::MatrixXd::Identity(n,n));
+        B.conservativeResize(m,n);
+        S.conservativeResize(n);
+        tempi.conservativeResize(m);
+        SUY.conservativeResizeLike(Eigen::VectorXd::Zero(nj));
+        qdot_eigen.conservativeResize(nj);
     }
 
     ChainIkSolverVel_pinv_givens::~ChainIkSolverVel_pinv_givens()
@@ -54,9 +71,17 @@ namespace KDL
 
     int ChainIkSolverVel_pinv_givens::CartToJnt(const JntArray& q_in, const Twist& v_in, JntArray& qdot_out)
     {
+        if (nj != chain.getNrOfJoints())
+            return (error = E_NOT_UP_TO_DATE);
+
+        if (nj != q_in.rows() || nj != qdot_out.rows())
+            return (error = E_SIZE_MISMATCH);
+
         toggle=!toggle;
 
-        jnt2jac.JntToJac(q_in,jac);
+        error = jnt2jac.JntToJac(q_in,jac);
+        if (E_NOERROR > error )
+            return error;
 
         for(unsigned int i=0;i<6;i++)
             v_in_eigen(i)=v_in(i);
@@ -68,8 +93,7 @@ namespace KDL
                 else
                     jac_eigen(i,j)=jac(i,j);
         }
-        int ret = svd_eigen_Macie(jac_eigen,U,S,V,B,tempi,1e-15,toggle);
-        //std::cout<<"# sweeps: "<<ret<<std::endl;
+        svd_eigen_Macie(jac_eigen,U,S,V,B,tempi,1e-15,toggle);
 
         if(transpose)
             UY.noalias() = V.transpose() * v_in_eigen;
@@ -86,6 +110,7 @@ namespace KDL
                 alpha = 0.0;
             SUY(i)= alpha * wi;
         }
+
         if(transpose)
             qdot_eigen.noalias() = U * SUY;
         else
@@ -94,8 +119,6 @@ namespace KDL
         for (unsigned int j=0;j<chain.getNrOfJoints();j++)
             qdot_out(j)=qdot_eigen(j);
 
-        return ret;
-
+        return (error = E_NOERROR);
     }
-
 }

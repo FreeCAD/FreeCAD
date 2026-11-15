@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Copyright  (C)  2007  Ruben Smits <ruben dot smits at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
-// Maintainer: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Author: Ruben Smits <ruben dot smits at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -21,7 +19,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_JOINT_HPP
+#define KDL_JOINT_HPP
 
 #include "frames.hpp"
 #include <string>
@@ -45,12 +44,12 @@ namespace KDL {
      */
     class Joint {
     public:
-        typedef enum { RotAxis,RotX,RotY,RotZ,TransAxis,TransX,TransY,TransZ,None} JointType;
+        typedef enum { RotAxis,RotX,RotY,RotZ,TransAxis,TransX,TransY,TransZ,Fixed,None=Fixed} JointType;
         /**
          * Constructor of a joint.
          *
          * @param name of the joint
-         * @param type type of the joint, default: Joint::None
+         * @param type type of the joint, default: Joint::Fixed
          * @param scale scale between joint input and actual geometric
          * movement, default: 1
          * @param offset offset between joint input and actual
@@ -60,12 +59,12 @@ namespace KDL {
          * @param stiffness 1D stiffness along the joint axis,
          * default: 0
          */
-        explicit Joint(const std::string& name, const JointType& type=None,const double& scale=1,const double& offset=0,
+        explicit Joint(const std::string& name, const JointType& type=Fixed,const double& scale=1,const double& offset=0,
               const double& inertia=0,const double& damping=0,const double& stiffness=0);
         /**
          * Constructor of a joint.
          *
-         * @param type type of the joint, default: Joint::None
+         * @param type type of the joint, default: Joint::Fixed
          * @param scale scale between joint input and actual geometric
          * movement, default: 1
          * @param offset offset between joint input and actual
@@ -75,22 +74,21 @@ namespace KDL {
          * @param stiffness 1D stiffness along the joint axis,
          * default: 0
          */
-        explicit Joint(const JointType& type=None,const double& scale=1,const double& offset=0,
+        explicit Joint(const JointType& type=Fixed,const double& scale=1,const double& offset=0,
                const double& inertia=0,const double& damping=0,const double& stiffness=0);
         /**
          * Constructor of a joint.
          *
          * @param name of the joint
-         * @param _origin the origin of the joint
-         * @param _axis the axis of the joint
-         * @param type type of the joint
-         * @param _scale scale between joint input and actual geometric
+         * @param origin the origin of the joint
+         * @param axis the axis of the joint
+         * @param scale scale between joint input and actual geometric
          * movement, default: 1
-         * @param _offset offset between joint input and actual
+         * @param offset offset between joint input and actual
          * geometric input, default: 0
-         * @param _inertia 1D inertia along the joint axis, default: 0
-         * @param _damping 1D damping along the joint axis, default: 0
-         * @param _stiffness 1D stiffness along the joint axis,
+         * @param inertia 1D inertia along the joint axis, default: 0
+         * @param damping 1D damping along the joint axis, default: 0
+         * @param stiffness 1D stiffness along the joint axis,
          * default: 0
          */
         Joint(const std::string& name, const Vector& _origin, const Vector& _axis, const JointType& type, const double& _scale=1, const double& _offset=0,
@@ -98,16 +96,15 @@ namespace KDL {
         /**
          * Constructor of a joint.
          *
-         * @param _origin the origin of the joint
-         * @param _axis the axis of the joint
-         * @param type type of the joint
-         * @param _scale scale between joint input and actual geometric
+         * @param origin the origin of the joint
+         * @param axis the axis of the joint
+         * @param scale scale between joint input and actual geometric
          * movement, default: 1
-         * @param _offset offset between joint input and actual
+         * @param offset offset between joint input and actual
          * geometric input, default: 0
-         * @param _inertia 1D inertia along the joint axis, default: 0
-         * @param _damping 1D damping along the joint axis, default: 0
-         * @param _stiffness 1D stiffness along the joint axis,
+         * @param inertia 1D inertia along the joint axis, default: 0
+         * @param damping 1D damping along the joint axis, default: 0
+         * @param stiffness 1D stiffness along the joint axis,
          * default: 0
          */
         Joint(const Vector& _origin, const Vector& _axis, const JointType& type, const double& _scale=1, const double& _offset=0,
@@ -131,16 +128,16 @@ namespace KDL {
          */
         Twist twist(const double& qdot)const;
 
-        /**                                                                     
-         * Request the Vector corresponding to the axis of a revolute joint.    
-         *                                                                      
-         * @return Vector. e.g (1,0,0) for RotX etc.                            
+        /**
+         * Request the Vector corresponding to the axis of a revolute joint.
+         *
+         * @return Vector. e.g (1,0,0) for RotX etc.
          */
         Vector JointAxis() const;
 
-        /**                                                                     
-         * Request the Vector corresponding to the origin of a revolute joint.    
-         *                                                                      
+        /**
+         * Request the Vector corresponding to the origin of a revolute joint.
+         *
          * @return Vector
          */
         Vector JointOrigin() const;
@@ -163,8 +160,8 @@ namespace KDL {
         {
             return type;
         };
-      
-        /** 
+
+        /**
          * Request the stringified type of the joint.
          *
          * @return const string
@@ -188,12 +185,82 @@ namespace KDL {
                 return "TransY";
             case TransZ:
                 return "TransZ";
-            case None:
-                return "None";
+            case Fixed:
+                return "Fixed";
             default:
-                return "None";
+                return "Fixed";
             }
         };
+
+        /**
+         * Request the scale of the joint.
+         *
+         * @return const reference to the scale of the joint
+         */
+        const double& getScale() const
+        {
+            return scale;
+        }
+
+        /**
+         * Request the offset of the joint.
+         *
+         * @return const reference to the offset of the joint
+         */
+        const double& getOffset() const
+        {
+            return offset;
+        }
+
+        /**
+         * Request the inertia of the joint.
+         *
+         * @return const reference to the inertia of the joint
+         */
+        const double& getInertia() const
+        {
+            return inertia;
+        };
+
+        /**
+         * Request the damping of the joint.
+         *
+         * @return const reference to the damping of the joint
+         */
+        const double& getDamping() const
+        {
+            return damping;
+        };
+
+        /**
+         * Request the stiffness of the joint.
+         *
+         * @return const reference to the stiffness of the joint
+         */
+        const double& getStiffness() const
+        {
+            return stiffness;
+        };
+
+        /**
+         * Request the axis of the joint.
+         *
+         * @return const reference to the axis of the joint
+         */
+        const Vector& getAxis() const
+        {
+            return axis;
+        }
+
+        /**
+         * Request the origin of the joint.
+         *
+         * @return const reference to the origin of the joint
+         */
+        const Vector& getOrigin() const
+        {
+            return origin;
+        }
 
         virtual ~Joint();
 
@@ -208,16 +275,16 @@ namespace KDL {
 
         // variables for RotAxis joint
         Vector axis, origin;
-        mutable Frame  joint_pose;
-        mutable double q_previous;
+        mutable Frame  joint_pose; // Deprecated, but keeping for ABI compatibility
+        mutable double q_previous; // Deprecated, but keeping for ABI compatibility
 
-
-      
       class joint_type_exception: public std::exception{
-	const char* what() const throw() override{
-	  return "Joint Type exception";}
+	virtual const char* what() const throw(){
+	  return "Joint Type excption";}
       } joint_type_ex;
 
     };
 
 } // end of namespace KDL
+
+#endif

@@ -43,7 +43,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#pragma once
+#ifndef MOTIONPROFILE_RECT_H
+#define MOTIONPROFILE_RECT_H
 
 #include "velocityprofile.hpp"
 
@@ -86,3 +87,6 @@ namespace KDL {
 	};
 
 }
+
+
+#endif

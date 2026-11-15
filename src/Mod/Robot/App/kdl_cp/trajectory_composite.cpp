@@ -20,12 +20,8 @@
 
 namespace KDL {
 
-    using namespace std;
-
-
     Trajectory_Composite::Trajectory_Composite():duration(0.0)
     {
-        path = new Path_Composite(); // FreeCAD change
     }
 
     double Trajectory_Composite::Duration() const{
@@ -95,8 +91,6 @@ namespace KDL {
         vt.insert(vt.end(),elem);
         duration += elem->Duration();
         vd.insert(vd.end(),duration);
-        if (path)
-            path->Add(elem->GetPath(),false); // FreeCAD change
     }
 
     void Trajectory_Composite::Destroy() {
@@ -106,23 +100,19 @@ namespace KDL {
         }
         vt.erase(vt.begin(),vt.end());
         vd.erase(vd.begin(),vd.end());
-        
-        delete path; // FreeCAD change
-        path = nullptr; // FreeCAD change
     }
 
     Trajectory_Composite::~Trajectory_Composite() {
         Destroy();
     }
 
-
-    void Trajectory_Composite::Write(ostream& os) const {
-        os << "COMPOSITE[ " << vt.size() << endl;
+    void Trajectory_Composite::Write(std::ostream& os) const {
+        os << "COMPOSITE[ " << vt.size() << std::endl;
         unsigned int i;
         for (i=0;i<vt.size();i++) {
             vt[i]->Write(os);
         }
-        os << "]" << endl;
+        os << "]" << std::endl;
     }
 
     Trajectory* Trajectory_Composite::Clone() const{
@@ -132,17 +122,5 @@ namespace KDL {
         }
         return comp;
     }
-    
-    // FreeCAD change
-    Path* Trajectory_Composite::GetPath()
-    {
-        return path;
-    }
 
-    VelocityProfile* Trajectory_Composite::GetProfile()
-    {
-        return nullptr;
-    }
 }
-
-

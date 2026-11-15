@@ -7,15 +7,14 @@
  *      Author: rubensmits
  */
 
-#pragma once
+#ifndef TREEIKSOLVERVEL_WDLS_HPP_
+#define TREEIKSOLVERVEL_WDLS_HPP_
 
 #include "treeiksolver.hpp"
 #include "treejnttojacsolver.hpp"
 #include <Eigen/Core>
 
 namespace KDL {
-
-    using namespace Eigen;
 
     class TreeIkSolverVel_wdls: public TreeIkSolverVel {
     public:
@@ -48,8 +47,8 @@ namespace KDL {
          * it gets an infinite weight in the norm computation.  For
          * more detailed explanation : vincent.padois@upmc.fr
          */
-        void setWeightJS(const MatrixXd& Mq);
-        const MatrixXd& getWeightJS() const {return Wq;}
+        void setWeightJS(const Eigen::MatrixXd& Mq);
+        const Eigen::MatrixXd& getWeightJS() const {return Wq;}
         
         /*
          * Set the task space weighting matrix
@@ -74,8 +73,8 @@ namespace KDL {
          * weighted norm sqrt(|x_dot-Jq_dot|'*(M_x^2)*|x_dot-Jq_dot|).
          * For more detailed explanation : vincent.padois@upmc.fr
          */
-        void setWeightTS(const MatrixXd& Mx);
-        const MatrixXd& getWeightTS() const {return Wy;}
+        void setWeightTS(const Eigen::MatrixXd& Mx);
+        const Eigen::MatrixXd& getWeightTS() const {return Wy;}
 
         void setLambda(const double& lambda);
         double getLambda () const {return lambda;}
@@ -85,9 +84,11 @@ namespace KDL {
         TreeJntToJacSolver jnttojacsolver;
         Jacobians jacobians;
         
-        MatrixXd J, Wy, Wq, J_Wq, Wy_J_Wq, U, V, Wy_U, Wq_V;
-        VectorXd t, Wy_t, qdot, tmp, S;
+        Eigen::MatrixXd J, Wy, Wq, J_Wq, Wy_J_Wq, U, V, Wy_U, Wq_V;
+        Eigen::VectorXd t, Wy_t, qdot, tmp, S;
         double lambda;
     };
     
 }
+
+#endif /* TREEIKSOLVERVEL_WDLS_HPP_ */

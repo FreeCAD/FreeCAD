@@ -18,7 +18,8 @@
  *      $Id: rrframes_io.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
-#pragma once
+#ifndef RRFRAMES_IO
+#define RRFRAMES_IO
 
 #include "utilities/utility_io.h"
 #include "utilities/rall2d_io.h"
@@ -53,3 +54,7 @@ inline std::ostream& operator << (std::ostream& os,const TwistAcc& r) {
 
 
 } // namespace Frame
+
+
+
+#endif

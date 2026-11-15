@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 /***************************************************************************** 
  *  \author 
  *  	Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
@@ -22,7 +20,8 @@
  */
 
 
-#pragma once
+#ifndef KDL_UTILITY_H
+#define KDL_UTILITY_H
 
 #include "kdl-config.h"
 #include <cstdlib>
@@ -82,10 +81,6 @@ namespace KDL {
 #ifndef __GNUC__
     //only real solution : get Rall1d and varia out of namespaces.
     #pragma warning (disable:4786)
-    #pragma warning (disable:4244)
-    #pragma warning (disable:4267)
-    #pragma warning (disable:4800)
-    #pragma warning (disable:4996)
 
     inline double sin(double a) {
         return ::sin(a);
@@ -132,9 +127,9 @@ namespace KDL {
     }
 #endif  
 
-
-
-
+#if (__cplusplus > 199711L)
+using std::isnan;
+#endif
 
 /** 
  * Auxiliary class for argument types (Trait-template class )
@@ -183,6 +178,12 @@ extern int          MAXLENFILENAME;
 
 //! the value of pi
 extern const double PI;
+
+//! the value of pi/2
+extern const double PI_2;
+
+//! the value of pi/4
+extern const double PI_4;
 
 //! the value pi/180
 extern const double deg2rad;
@@ -294,3 +295,7 @@ inline double addDelta(double a,double da,double dt) {
 
 
 }
+
+
+
+#endif

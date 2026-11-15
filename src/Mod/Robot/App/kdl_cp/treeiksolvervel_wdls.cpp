@@ -10,21 +10,19 @@
 #include "treeiksolvervel_wdls.hpp"
 #include "utilities/svd_eigen_HH.hpp"
 
-namespace KDL {
-    using namespace std;
-    
+namespace KDL {    
     TreeIkSolverVel_wdls::TreeIkSolverVel_wdls(const Tree& tree_in, const std::vector<std::string>& endpoints) :
         tree(tree_in), jnttojacsolver(tree),
-        J(MatrixXd::Zero(6 * endpoints.size(), tree.getNrOfJoints())),
-        Wy(MatrixXd::Identity(J.rows(),J.rows())),
-        Wq(MatrixXd::Identity(J.cols(),J.cols())),
+        J(Eigen::MatrixXd::Zero(6 * endpoints.size(), tree.getNrOfJoints())),
+        Wy(Eigen::MatrixXd::Identity(J.rows(),J.rows())),
+        Wq(Eigen::MatrixXd::Identity(J.cols(),J.cols())),
         J_Wq(J.rows(),J.cols()),Wy_J_Wq(J.rows(),J.cols()),
-        U(MatrixXd::Identity(J.rows(),J.cols())),
-        V(MatrixXd::Identity(J.cols(),J.cols())),
+        U(Eigen::MatrixXd::Identity(J.rows(),J.cols())),
+        V(Eigen::MatrixXd::Identity(J.cols(),J.cols())),
         Wy_U(J.rows(),J.rows()),Wq_V(J.cols(),J.cols()),
-        t(VectorXd::Zero(J.rows())), Wy_t(VectorXd::Zero(J.rows())),
-        qdot(VectorXd::Zero(J.cols())),
-        tmp(VectorXd::Zero(J.cols())),S(VectorXd::Zero(J.cols())),
+        t(Eigen::VectorXd::Zero(J.rows())), Wy_t(Eigen::VectorXd::Zero(J.rows())),
+        qdot(Eigen::VectorXd::Zero(J.cols())),
+        tmp(Eigen::VectorXd::Zero(J.cols())),S(Eigen::VectorXd::Zero(J.cols())),
         lambda(0)
     {
         
@@ -37,11 +35,11 @@ namespace KDL {
     TreeIkSolverVel_wdls::~TreeIkSolverVel_wdls() {
     }
     
-    void TreeIkSolverVel_wdls::setWeightJS(const MatrixXd& Mq) {
+    void TreeIkSolverVel_wdls::setWeightJS(const Eigen::MatrixXd& Mq) {
         Wq = Mq;
     }
     
-    void TreeIkSolverVel_wdls::setWeightTS(const MatrixXd& Mx) {
+    void TreeIkSolverVel_wdls::setWeightTS(const Eigen::MatrixXd& Mx) {
         Wy = Mx;
     }
     
@@ -91,9 +89,9 @@ namespace KDL {
         Wq_V.noalias() = Wq * V;
         
         // tmp = (Si*Wy*U'*y),
-        for (auto i = 0; i < J.cols(); i++) {
+        for (unsigned int i = 0; i < J.cols(); i++) {
             double sum = 0.0;
-            for (auto j = 0; j < J.rows(); j++) {
+            for (unsigned int j = 0; j < J.rows(); j++) {
                 if (i < Wy_t.rows())
                     sum += U(j, i) * Wy_t(j);
                 else

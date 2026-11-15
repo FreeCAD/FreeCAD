@@ -21,10 +21,10 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_TREE_HPP
+#define KDL_TREE_HPP
 
-// This file comes along with oce but not with occ.
-//#include "config.h"
+#include "config.h"
 
 #include "segment.hpp"
 #include "chain.hpp"
@@ -33,7 +33,7 @@
 #include <map>
 
 #ifdef KDL_USE_NEW_TREE_INTERFACE
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #endif //#ifdef KDL_USE_NEW_TREE_INTERFACE
 
 namespace KDL
@@ -43,8 +43,8 @@ namespace KDL
 #ifdef KDL_USE_NEW_TREE_INTERFACE
     //We use smart pointers for managing tree nodes for now because
     //c++11 and unique_ptr support is not ubiquitous
-    typedef std::shared_ptr<TreeElement> TreeElementPtr;
-    typedef std::shared_ptr<const TreeElement> TreeElementConstPtr;
+    typedef boost::shared_ptr<TreeElement> TreeElementPtr;
+    typedef boost::shared_ptr<const TreeElement> TreeElementConstPtr;
     typedef std::map<std::string, TreeElementPtr> SegmentMap;
     typedef TreeElementPtr TreeElementType;
 
@@ -131,7 +131,7 @@ namespace KDL
 
         /**
          * Adds a complete chain to the end of the segment with
-         * hook_name as segment_name. 
+         * hook_name as segment_name.
          *
          * @param hook_name name of the segment to connect the chain with.
          *
@@ -141,7 +141,7 @@ namespace KDL
 
         /**
          * Adds a complete tree to the end of the segment with
-         * hookname as segment_name. 
+         * hookname as segment_name.
          *
          * @param tree Tree to add
          * @param hook_name name of the segment to connect the tree with
@@ -190,19 +190,32 @@ namespace KDL
           return segments.find(root_name);
         };
 
-        /**
-         * Request the chain of the tree between chain_root and chain_tip.  The chain_root
-         * and chain_tip can be in different branches of the tree, the chain_root can be
-         * an ancestor of chain_tip, and chain_tip can be an ancestor of chain_root.
-         *
-         * @param chain_root the name of the root segment of the chain
-         * @param chain_tip the name of the tip segment of the chain
-         * @param chain the resulting chain
-         *
-         * @return success or failure
-         */
-      bool getChain(const std::string& chain_root, const std::string& chain_tip, Chain& chain)const;
+          /**
+           * Request the chain of the tree between chain_root and chain_tip.  The chain_root
+           * and chain_tip can be in different branches of the tree, the chain_root can be
+           * an ancestor of chain_tip, and chain_tip can be an ancestor of chain_root.
+           *
+           * @param chain_root the name of the root segment of the chain
+           * @param chain_tip the name of the tip segment of the chain
+           * @param chain the resulting chain
+           *
+           * @return success or failure
+           */
+        bool getChain(const std::string& chain_root, const std::string& chain_tip, Chain& chain)const;
 
+
+
+          /**
+           * Extract a tree having segment_name as root. Only child segments of
+           * segment_name are added to the new tree.
+           *
+           * @param segment_name the name of the segment to be used as root
+           * of the new tree
+           * @param tree the resulting sub-tree
+           *
+           * @return success or failure
+           */
+        bool getSubTree(const std::string& segment_name, Tree& tree)const;
 
         const SegmentMap& getSegments()const
         {
@@ -213,3 +226,4 @@ namespace KDL
 
     };
 }
+#endif

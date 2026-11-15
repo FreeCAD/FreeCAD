@@ -49,7 +49,7 @@ int TreeJntToJacSolver::JntToJac(const JntArray& q_in, Jacobian& jac, const std:
         T_total = T_local * T_total;
         
         //get the twist of the segment:
-        if (GetTreeElementSegment(it->second).getJoint().getType() != Joint::None) {
+        if (GetTreeElementSegment(it->second).getJoint().getType() != Joint::Fixed) {
             Twist t_local = GetTreeElementSegment(it->second).twist(q_in(q_nr), 1.0);
             //transform the endpoint of the local twist to the global endpoint:
             t_local = t_local.RefPoint(T_total.p - T_local.p);

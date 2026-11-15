@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_RIGIDBODYINERTIA_HPP
+#define KDL_RIGIDBODYINERTIA_HPP
 
 #include "frames.hpp"
 
@@ -72,7 +73,15 @@ namespace KDL {
         double getMass() const{
             return m;
         };
-        
+
+        /**
+         * Get the spatial momentum of the rigid body
+         */
+        const Vector& getSpatialMomentum() const
+        {
+            return h;
+        }
+
         /**
          * Get the center of gravity of the rigid body
          */
@@ -128,3 +137,6 @@ namespace KDL {
 
 
 }//namespace
+
+
+#endif
