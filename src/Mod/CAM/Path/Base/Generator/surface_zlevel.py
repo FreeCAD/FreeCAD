@@ -264,7 +264,27 @@ def fill_selected(base_property):
         return []
 
     Path.Log.debug(f"Generated {len(fill_holes_masks)} mask(s).")
-    return _fuse_coplanar_masks(fill_holes_masks)
+    return _fuse_coplanar_masks([(z, _facing_up(mask)) for z, mask in fill_holes_masks])
+
+
+def _facing_up(cap):
+    """
+    The cap with every face's normal pointing up (+Z).
+
+    A cap built from a rim wire takes the wire's direction, which mirrored
+    geometry (a PartDesign Mirrored, a mirrored pattern) reverses: such caps
+    face down. Path.Area then fails on them when they are fused with the
+    rest.
+    """
+    faces = []
+    for face in cap.Faces:
+        u0, u1, v0, v1 = face.ParameterRange
+        if face.normalAt((u0 + u1) / 2, (v0 + v1) / 2).z < 0:
+            face = face.reversed()
+        faces.append(face)
+    if cap.ShapeType == "Face" and len(faces) == 1:
+        return faces[0]
+    return Part.makeCompound(faces)
 
 
 def _process_isolated_face(face, z_level):
