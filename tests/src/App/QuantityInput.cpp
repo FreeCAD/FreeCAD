@@ -1162,4 +1162,99 @@ TEST(QuantityInput, Trigonometry)
     }
 }
 
+TEST(QuantityInput, DivideAndPlus)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] : {
+             std::pair {"1+2 mm", 3.0},
+             std::pair {"10/2 mm + 1 mm", 6.0},
+             std::pair {"10/2mm+1mm", 6.0},
+             std::pair {"1 mm + 10/2 mm", 6.0},
+             std::pair {"1mm+10/2mm", 6.0},
+         }) {
+        checkWithGrammar(
+            input,
+            expected,
+            QuantityInputGrammar::QuantityFirst,
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+}
+
+TEST(QuantityInput, UnaryAndBinaryAdditiveOperators)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] : {
+             std::pair {"+1 mm", 1.0},
+             std::pair {"-1 mm", -1.0},
+             std::pair {"1+2 mm", 3.0},
+             std::pair {"1-2 mm", -1.0},
+             std::pair {"1+-2 mm", -1.0},
+             std::pair {"1 mm + 2 mm", 3.0},
+             std::pair {"1 mm - 2 mm", -1.0},
+             std::pair {"1 mm + -2 mm", -1.0},
+             std::pair {"1 mm - -2 mm", 3.0},
+             std::pair {"-1 mm + 2 mm", 1.0},
+             std::pair {"1 mm + 2 mm + 3 mm + 4 mm", 10.0},
+             std::pair {"1 cm - 2 mm + 3 mm", 11.0},
+             std::pair {"10/2 mm - 1 mm", 4.0},
+             std::pair {"1'6\"", 457.2},
+             std::pair {"-1'6\"", -457.2},
+             std::pair {"-1' 6\"", -457.2},
+         }) {
+        checkWithGrammar(
+            input,
+            expected,
+            QuantityInputGrammar::QuantityFirst,
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+}
+
+TEST(QuantityInput, AdditiveTermsKeepQuantitySemantics)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+    const QuantityInputUnit inch {Base::Unit::Length, "in"};
+
+    for (const auto& [input, expected] : {
+             std::pair {"1 + 5 mm", 30.4},
+             std::pair {"1 + 10/2 mm", 30.4},
+             std::pair {"10/2 mm + 1", 30.4},
+             std::pair {"10/2 mm + 1 mm", 6.0},
+         }) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::QuantityFirst,
+            path,
+            inch,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected) << input;
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+    }
+}
+
 }  // namespace App::QuantityInputTest
