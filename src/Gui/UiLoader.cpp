@@ -132,7 +132,8 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "except Exception:\n"
         << "    from io import StringIO\n"
         << "\n"
-        << "uiFile = \"" << file.c_str() << "\"\n"
+        << "uiFile = \"" << file.c_str()
+        << "\"\n"
         // PySide 6.12 defaults to only looking for pyside6-uic beside sys.executable,
         // which won't work for portable installations.
         << "if __version_info__ >= (6, 12):\n"
