@@ -34,7 +34,6 @@
 #include <utility>
 
 #include <Base/NumericFormatting.h>
-#include <Base/Version.h>
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
@@ -246,9 +245,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"                )] = "da";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                 )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"               )] = "en";
-    if (Base::FCVersionInfo::IsDevelopmentVersion()) {
-        d->mapLanguageTopLevelDomain[QT_TR_NOOP("English (Pseudo A)"    )] = pseudoLocale;
-    }
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English (Pseudo A)"    )] = pseudoLocale;
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"              )] = "fil";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"               )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"                )] = "fr";
@@ -330,9 +327,7 @@ TStringMap Translator::supportedLocales() const
         return d->mapSupportedLocales;
     }
 
-    if (Base::FCVersionInfo::IsDevelopmentVersion()) {
-        d->mapSupportedLocales.emplace(pseudoLanguage, pseudoLocale);
-    }
+    d->mapSupportedLocales.emplace(pseudoLanguage, pseudoLocale);
 
     // List all *_*.qm files, and if any match a known locale,
     // report that locale as supported.

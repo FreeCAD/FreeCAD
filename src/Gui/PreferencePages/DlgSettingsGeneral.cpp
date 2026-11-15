@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
+#include <Base/Version.h>
 
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -319,6 +320,11 @@ void DlgSettingsGeneral::loadSettings()
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
+    if (!Base::FCVersionInfo::IsDevelopmentVersion()) {
+        // hides it from the setting combobox but allows the user to activate
+        // this even in release builds via python
+        std::erase_if(list, [](const auto& entry) { return entry.second == "en-XA"; });
+    }
     ui->Languages->clear();
     ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
