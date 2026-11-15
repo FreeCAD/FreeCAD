@@ -1103,24 +1103,63 @@ TEST(QuantityInput, AlphaNumericIds)
     const auto path = App::ObjectIdentifier(*owner);
     const QuantityConstraints constraints;
 
-    std::string input = "Größ+2";
-
-    const auto result = interpretQuantityInput(
-        input,
+    checkWithGrammar(
+        "Größ+2",
+        7.0,
         QuantityInputGrammar::Expression,
         path,
-        Base::Unit::Length,
+        Base::Unit::One,
         enUs,
         InputPhase::Commit,
         constraints
     );
-    ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
-    ASSERT_TRUE(result.quantity);
-    EXPECT_DOUBLE_EQ(result.quantity->getValue(), 7.0);
-    EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
 
     App::GetApplication().closeDocument(docName.c_str());
 }
 
+TEST(QuantityInput, Trigonometry)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] : {
+             std::pair {"sin(90)", 1.0},
+             std::pair {"sin(90) + 0", 1.0},
+             std::pair {"cos(180)", -1.0},
+             std::pair {"tan(45)", 1.0},
+             std::pair {"sinh(1)", 1.1752011936438014},
+             std::pair {"cosh(0)", 1.0},
+         }) {
+        checkWithGrammars(
+            input,
+            expected,
+            {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+
+    for (const auto& [input, expected] : {
+             std::pair {"asin(1)", 90.0},
+             std::pair {"acos(-1)", 180.0},
+             std::pair {"atan(1)", 45.0},
+         }) {
+        checkWithGrammars(
+            input,
+            expected,
+            {QuantityInputGrammar::Expression, QuantityInputGrammar::QuantityFirst},
+            path,
+            Base::Unit::Angle,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    }
+}
 
 }  // namespace App::QuantityInputTest
