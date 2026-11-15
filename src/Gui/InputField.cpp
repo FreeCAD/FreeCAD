@@ -321,7 +321,7 @@ void InputField::newInput(const QString& text)
 
     // Commit the expression and value only after parsing, evaluation, unit validation, and range
     // handling have all succeeded.
-    if (result.expression) {
+    if (isBound()) {
         setExpression(result.expression);
     }
     actQuantity = res;
@@ -347,7 +347,7 @@ void InputField::commitInput()
         return;
     }
 
-    if (result.expression) {
+    if (isBound()) {
         setExpression(result.expression);
     }
     auto quantity = *result.quantity;
