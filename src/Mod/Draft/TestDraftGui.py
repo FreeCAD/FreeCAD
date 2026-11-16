@@ -103,6 +103,14 @@ from drafttests.test_pivy import DraftPivy as DraftTestGui03
 from drafttests.test_dimension_gui import DraftGuiDimension as DraftTestGui04
 from drafttests.test_manual_input_gui import DraftGuiManualInput as DraftTestGui05
 from drafttests.test_lines_gui import DraftGuiLines as DraftTestGui06
+# from drafttests.test_dxf_gui import DraftGuiDXF as DraftTestGui07
+# from drafttests.test_selection_tools_gui import DraftGuiSelectionTools as DraftTestGui09
+# from drafttests.test_tray_gui import DraftGuiTray as DraftTestGui11
+# from drafttests.test_mouse_delay_gui import DraftGuiMouseDelay as DraftTestGui12
+# from drafttests.test_layers_gui import DraftGuiLayersManager as DraftTestGui13
+# from drafttests.test_groups_gui import DraftGuiGroups as DraftTestGui14
+from drafttests.test_scale_edit_gui import DraftGuiScaleEdit as DraftTestGui15
+from drafttests.test_trimex_gui import DraftTrimexGui as DraftTestGui16
 
 # Use the modules so that code checkers don't complain (flake8)
 True if DraftTestGui01 else False
@@ -111,3 +119,11 @@ True if DraftTestGui03 else False
 True if DraftTestGui04 else False
 True if DraftTestGui05 else False
 True if DraftTestGui06 else False
+# True if DraftTestGui07 else False
+# True if DraftTestGui09 else False
+# True if DraftTestGui11 else False
+# True if DraftTestGui12 else False
+# True if DraftTestGui13 else False
+# True if DraftTestGui14 else False
+True if DraftTestGui15 else False
+True if DraftTestGui16 else False
