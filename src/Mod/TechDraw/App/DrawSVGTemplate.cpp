@@ -92,10 +92,6 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         }
     }
 
-    if (prop == &Language && !isRestoring()) {
-        processTemplate();
-    }
-
     TechDraw::DrawTemplate::onChanged(prop);
 }
 

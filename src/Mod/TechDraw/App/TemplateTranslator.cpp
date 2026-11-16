@@ -87,6 +87,7 @@ QStringList TemplateTranslator::getAllKeys() const
         QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Scale:"),
         QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Sheet:"),
         QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Title, supplementary title:"),
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Title:"),
         QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Issue date:"),
         QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Created by:"),
         QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Approved by:"),
