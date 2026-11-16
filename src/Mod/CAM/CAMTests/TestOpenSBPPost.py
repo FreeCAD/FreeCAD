@@ -1060,7 +1060,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.assertIn("G4 ", gcode, gcode)
 
     def test_empty_path(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post.apply_configuration_bundle()
 
         self.profile_op.Path = Path.Path([])
