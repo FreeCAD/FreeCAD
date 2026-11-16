@@ -1195,9 +1195,9 @@ Om alternativet inte är markerat sorteras de efter namn.</translation>
       <translation>Annars kommer alla ändringar att gå förlorade.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Confirm Delete</source>
       <translation>Bekräfta borttagning</translation>
     </message>

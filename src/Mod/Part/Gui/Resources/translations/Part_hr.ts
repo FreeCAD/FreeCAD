@@ -4381,22 +4381,32 @@ Check one or more edge entities first.</source>
       <translation>Maksimalno kutno odstupanje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation type="unfinished">Applies these tessellation settings to all objects in currently open documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation type="unfinished">Apply to Open Documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation>Odstupanje</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Postavljanje premaleg odstupanja uzrokuje dulje trajanje popločavanja i time zamrzava ili usporava GUI.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>Otklon kuta</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Postavljanje premaleg kuta odstupanja uzrokuje dulje trajanje popločavanja i time zamrzava ili usporava GUI.</translation>
     </message>
@@ -5070,7 +5080,7 @@ u suprotnom koristit će se normalni vektor ravnine skice
       <translation>Odaberite oblik za zrcaljenje.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>Ne postoji takav dokument '%1'.</translation>
     </message>
@@ -6586,7 +6596,7 @@ Nastaviti?</translation>
       <translation>Unesite udaljenost:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>Izgled po licu</translation>
     </message>
@@ -7437,7 +7447,7 @@ Skalira odabrani oblik</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nije moguće odrediti sjecište krivulje. Pokušajte dodati podudarno ograničenje između vrhova krivulje koju namjeravate obrubiti.</translation>
     </message>

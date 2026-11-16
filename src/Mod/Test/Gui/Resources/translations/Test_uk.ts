@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
       <source>&amp;Start</source>
-      <translation>&amp;Старт</translation>
+      <translation>&amp;Запустити</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="99"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;About</source>
-      <translation>&amp;Про</translation>
+      <translation>&amp;Про програму</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="182"/>
       <source>Progress</source>
-      <translation>Прогрес</translation>
+      <translation>Перебіг</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="201"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
-      <translation>Помилка</translation>
+      <translation>Невдачі</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="235"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
-      <translation>Збої та помилки</translation>
+      <translation>Невдачі та помилки</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="288"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="305"/>
       <source>Idle</source>
-      <translation>Бездіяльний</translation>
+      <translation>Очікування</translation>
     </message>
   </context>
   <context>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../UnitTestImp.cpp" line="172"/>
       <source>Help</source>
-      <translation>Допомога</translation>
+      <translation>Довідка</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="173"/>
@@ -122,27 +122,29 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Введіть ім'я викликається об'єкта при виклику якого, буде повертатися TestCase.
-Клацніть 'Запуск' і, тест буде запущений.
+      <translation>Введіть назву об'єкта, що викликається, який під час виклику повертає TestCase.
+Натисніть 'Запустити', і створений так тест буде виконано.
 
-Зробіть подвійне клацання на помилку в деревовидному списку для додаткової інформації про неї, включаючи стек викликів.</translation>
+Двічі клацніть помилку в дереві, щоб побачити докладнішу інформацію про неї, зокрема трасування стека.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="187"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>Про Модульний Тест FreeCAD</translation>
+      <translation>Про модульні тести FreeCAD</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="188"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Copyright (c) Вернер Майер (Werner Mayer) FreeCAD UnitTest є частиною FreeCAD і підтримує написання Unit Tests для тих власних модулів.</translation>
+      <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest — частина FreeCAD, що підтримує написання модульних тестів для власних модулів.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation>Помилки скопійовані в буфер обміну</translation>
+      <translation>Помилки скопійовано в буфер обміну</translation>
     </message>
   </context>
 </TS>

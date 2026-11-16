@@ -325,17 +325,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2888"/>
+      <location filename="../../Command.cpp" line="2848"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2889"/>
+      <location filename="../../Command.cpp" line="2849"/>
       <source>Apply Changes to Pipeline</source>
       <translation>החל שינויים על Pipeline</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2890"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
       <translation>מחיל שינויים על פרמטרים ישירות ולא על חישוב מחדש בלבד</translation>
     </message>
@@ -343,27 +343,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2212"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="2213"/>
       <source>Region Clip Filter</source>
       <translation>מסנן קליפ אזור</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2254"/>
+      <location filename="../../Command.cpp" line="2214"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
       <translation>מגדיר מסנן קליפ המשתמש בפונקציות כדי להגדיר את האזור החתוך</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2738"/>
       <source>Select a pipeline.</source>
       <translation>בחר צינור.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2777"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Wrong selection</source>
       <translation>בחירה לא נכונה</translation>
     </message>
@@ -371,17 +371,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2251"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2292"/>
+      <location filename="../../Command.cpp" line="2252"/>
       <source>Function Cut Filter</source>
       <translation>פונקציה Cut Filter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2253"/>
       <source>Cuts the data along an implicit function</source>
       <translation>חותך את הנתונים לאורך פונקציה מרומזת</translation>
     </message>
@@ -389,17 +389,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2288"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2329"/>
+      <location filename="../../Command.cpp" line="2289"/>
       <source>Line Clip Filter</source>
       <translation>מסנן קו קליפ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2330"/>
+      <location filename="../../Command.cpp" line="2290"/>
       <source>Defines a clip filter which clips a field along a line</source>
       <translation>מגדיר מסנן קליפים אשר חותך שדה לאורך קו</translation>
     </message>
@@ -407,17 +407,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2365"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2366"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Data at Point Clip Filter</source>
       <translation>מסנן נתונים ב-Point Clip</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2367"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Defines a clip filter which clips a field data at point</source>
       <translation>מגדיר מסנן קליפים אשר חותך נתוני שדה בנקודה</translation>
     </message>
@@ -425,37 +425,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2590"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2591"/>
       <source>Filter Functions</source>
       <translation>פונקציות סינון</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Functions for use in postprocessing filter</source>
       <translation>פונקציות לשימוש במסנן לאחר עיבוד</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2830"/>
+      <location filename="../../Command.cpp" line="2790"/>
       <source>Plane</source>
       <translation>מישור</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2840"/>
+      <location filename="../../Command.cpp" line="2800"/>
       <source>Sphere</source>
       <translation>ספרה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2850"/>
+      <location filename="../../Command.cpp" line="2810"/>
       <source>Cylinder</source>
       <translation>צילינדר</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Box</source>
       <translation>קוּפסָה</translation>
     </message>
@@ -463,65 +463,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2099"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>עובי [מ"מ]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>מתח [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2151"/>
+      <location filename="../../Command.cpp" line="2111"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>מתחים ליניאריים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2157"/>
+      <location filename="../../Command.cpp" line="2117"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>קְרוּם</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2163"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>ממברנה וכיפוף</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2169"/>
+      <location filename="../../Command.cpp" line="2129"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>סַך הַכֹּל</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2363"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2404"/>
+      <location filename="../../Command.cpp" line="2364"/>
       <source>Stress Linearization Plot</source>
       <translation>עלילת לינאריזציה של מתח</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2405"/>
+      <location filename="../../Command.cpp" line="2365"/>
       <source>Defines a stress linearization plot</source>
       <translation>מגדיר עלילת ליניאריזציה של מתח</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2444"/>
-      <location filename="../../Command.cpp" line="2455"/>
+      <location filename="../../Command.cpp" line="2404"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Select a clip filter which clips a stress field along a line</source>
       <translation>בחר מסנן קליפ שחותך שדה מתח לאורך קו</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2443"/>
-      <location filename="../../Command.cpp" line="2454"/>
+      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2414"/>
       <source>Wrong selection</source>
       <translation>בחירה לא נכונה</translation>
     </message>
@@ -529,27 +529,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2889"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2930"/>
+      <location filename="../../Command.cpp" line="2890"/>
       <source>Post Pipeline From Result</source>
       <translation>פרסם צינור מתוך תוצאה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2931"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>יוצר צינור שלאחר עיבוד מאובייקט תוצאה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3015"/>
+      <location filename="../../Command.cpp" line="2975"/>
       <source>Wrong selection type</source>
       <translation>סוג בחירה שגוי</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3016"/>
+      <location filename="../../Command.cpp" line="2976"/>
       <source>Select a result object.</source>
       <translation>בחר אובייקט תוצאה.</translation>
     </message>
@@ -557,17 +557,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2483"/>
+      <location filename="../../Command.cpp" line="2443"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2484"/>
+      <location filename="../../Command.cpp" line="2444"/>
       <source>Scalar Clip Filter</source>
       <translation>מסנן קליפס סקלארי</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2485"/>
+      <location filename="../../Command.cpp" line="2445"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
       <translation>מגדיר מסנן קליפים אשר חותך שדה עם ערך סקלארי</translation>
     </message>
@@ -575,17 +575,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2520"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2521"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Warp Filter</source>
       <translation>מסנן עיוות</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2522"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
       <translation>מעוות את הגיאומטריה לאורך שדה וקטור בגורם מסוים</translation>
     </message>
@@ -699,17 +699,17 @@
       <translation>צור ערכת אלמנטים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2063"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Create filter</source>
       <translation>צור מסנן</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>Create function</source>
       <translation>צור פונקציה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2984"/>
+      <location filename="../../Command.cpp" line="2944"/>
       <source>Create pipeline from result</source>
       <translation>צור צינור מהתוצאה</translation>
     </message>
@@ -794,22 +794,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2832"/>
+      <location filename="../../Command.cpp" line="2792"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>צור פונקציית מישור, המוגדרת על ידי המקור והנורמלי שלה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2842"/>
+      <location filename="../../Command.cpp" line="2802"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>צור פונקציית כדור, המוגדרת על ידי המרכז והרדיוס שלה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2852"/>
+      <location filename="../../Command.cpp" line="2812"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>צור פונקציית צילינדר, המוגדרת על ידי המרכז, הציר והרדיוס שלה</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2822"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>צור פונקציית תיבה, המוגדרת על ידי המרכז, האורך, הרוחב והגובה שלה</translation>
     </message>
@@ -2763,9 +2763,9 @@ that "MAXGS" needs to be increased.</source>
       <translation>לחץ כניסה</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>לחץ</translation>
     </message>
@@ -2906,10 +2906,10 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>פרמטר</translation>
@@ -3035,16 +3035,6 @@ Note: has no effect if a solid was selected</source>
       <translation>האם תנאי הגבול מגדיר פוטנציאל קבוע</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation>קירוב שדה רחוק בהנחה של סימטריה כדורית</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation>שדה רחוק</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>קבוע פוטנציאל</translation>
@@ -3058,6 +3048,59 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>רכיב רגיל של שדה תזוזה חשמלי</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>קיבול</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>דיריכלה</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>להגדיר פוטנציאל סקלרי ופוטנציאל וקטור מגנטי</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <source>Real</source>
+      <translation>רִיאָל</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <source>Imaginary</source>
+      <translation>דִמיוֹנִי</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>סקלר</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>חלק דמיוני של פוטנציאל סקלרי</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation>קירוב שדה רחוק בהנחה של סימטריה כדורית</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation>שדה רחוק</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3098,49 +3141,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation>חלק דמיוני של צפיפות השטף המגנטי רכיב z</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>קיבול</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>דיריכלה</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>להגדיר פוטנציאל סקלרי ופוטנציאל וקטור מגנטי</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <source>Real</source>
-      <translation>רִיאָל</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <source>Imaginary</source>
-      <translation>דִמיוֹנִי</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>סקלר</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>חלק דמיוני של פוטנציאל סקלרי</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3221,13 +3221,13 @@ Note: has no effect if a solid was selected</source>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>מילימטר</translation>
     </message>
@@ -3248,11 +3248,59 @@ Note: has no effect if a solid was selected</source>
       <translation>קוטר חיצוני</translation>
     </message>
     <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation>הגדר את גודל הרשת בתוך ומחוץ לצורה, עם עובי שכבת מעבר אפשרי</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation>גודל רשת בתוך הצורה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>גודל בפנים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation>גודל רשת מחוץ לצורה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>גודל בחוץ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation>עובי שכבת המעבר בין גדלי רשת פנימה/חוצה (נוסף מחוץ לצורה)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="109"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
-      <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>עובי</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>תיבה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>ספרה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>צילינדר</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
@@ -3328,12 +3376,12 @@ Note: has no effect if a solid was selected</source>
       <translation>רגיל לגבול</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
@@ -3345,9 +3393,9 @@ Note: has no effect if a solid was selected</source>
       <translation>מקור חום</translation>
     </message>
     <message>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>מצב</translation>
     </message>
@@ -3436,9 +3484,9 @@ with harmonic/oscillating driving current</source>
       <translation>בחר מצב מותאם אישית כדי לאפשר צפיפות זרם וקטורית</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
       <source>X</source>
@@ -3455,9 +3503,9 @@ with harmonic/oscillating driving current</source>
       <translation>חלק דמיוני של רכיב x-צפיפות זרם</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/MeshManipulate.ui" line="599"/>
       <source>Y</source>
@@ -3474,9 +3522,9 @@ with harmonic/oscillating driving current</source>
       <translation>חלק דמיוני של רכיב y של צפיפות זרם</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/MeshManipulate.ui" line="604"/>
       <source>Z</source>
@@ -3518,21 +3566,252 @@ with harmonic/oscillating driving current</source>
       <translation>גודל אלמנט מקסימלי</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
       <source>Form</source>
       <translation>טופס</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <source>Field</source>
+      <translation>שָׂדֶה</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <source>Frames</source>
+      <translation>מסגרות</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>שדה אחד לכל מסגרת</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>מַדָד</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>שדה X</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <source>Y field</source>
+      <translation>שדה Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>שדה Y אחד לכל מסגרת</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>יוצר רשת מובנית בנפח המונחה על ידי המשטחים הטרנססופיים שלה.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <source>Diagram</source>
+      <translation>תַרשִׁים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>בחר כל מספר של כרכים בעלי 5 או 6 צדדים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <source>Icon</source>
+      <translation>סמלון</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>כל משטחי הנפח חייבים להיות טרנססופיים. אם למשטחים יש סוגי רשת שונים (מרובעים לעומת משולשים) יש לשלב את הנפח גם עם אלמנטים מעורבים מופעלים.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>אלמנטי רשת מעורבים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>אם מופעל, כל הקצוות והמשטחים השייכים לכרכים שנבחרו שאין להם הגדרה טרנססופית כבר הופכים לטרנססופיים באופן אוטומטי.
+השתמש בהגדרות של עקומה טרנססופית ומשטח אסטרטגיים כדי להנחות את האלגוריתם האוטומטי.
+
+הערות:
+1. עקומות המוגדרות על ידי המשתמש מתפשטות לקצוות הנגדיים של הפנים, על כל הפרצופים שנבחרו.
+2. עובד עם כל מספר של אמצעי אחסון, מחוברים או לא מחוברים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>יישום אוטומטי של משטחים ועיקולים טרנססופיים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>צמתים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation>הֲפָצָה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>קבוע</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation>מַכָּה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation>Bump Inverted</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation>הִתקַדְמוּת</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation>התקדמות הפוכה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>מִשׁטָח</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation>שלב מחדש</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>הגדר את גודל אלמנט הרשת בהתבסס על המרחק לגאומטריות ההתייחסות שנבחרו.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>גודל רשת כאשר מרחק = מרחק מקסימום</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>מרחק שבו גודל הרשת יהיה SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>גודל</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>גודל רשת כאשר המרחק &lt; מרחק מינימלי</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <source>Distance</source>
+      <translation>מֶרְחָק</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>מרחק שעד אליו גודל הרשת יהיה SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>שִׁרבּוּב</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>גודל דגימה</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>מספר נקודות הדגימה המשמשות להבדלת עקומות ומשטחים. עבור משטחים, זהו גודל הדגימה לכל כיוון.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>מגדיר אם אינטרפולציה של גודל רשת בין SizeMinimum לSizeMaximum צריכה להיות פונקציה ליניארית או סיגמואידית</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>ליניארי</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
@@ -3582,127 +3861,30 @@ with harmonic/oscillating driving current</source>
       <translation>...</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>שָׂדֶה</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation>הגדרות תצוגה מקדימה של חידוד גלובלי</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <source>Frames</source>
-      <translation>מסגרות</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>מאפשר באופן אוטומטי את ההדמיה של גודל רשת החידוד בעת פתיחת דו-שיח של משימות חידוד.</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>שדה אחד לכל מסגרת</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>הפעלה אוטומטית בפתיחה</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <source>Index</source>
-      <translation>מַדָד</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>קובע עד כמה רשת התצוגה המקדימה עדינה. מספר גדול יותר פירושו רשת עדינה יותר (רכיבי רשת קטנים יותר)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>שדה X</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <source>Y field</source>
-      <translation>שדה Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>שדה Y אחד לכל מסגרת</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>הגדר את גודל אלמנט הרשת בהתבסס על המרחק לגאומטריות ההתייחסות שנבחרו.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>גודל רשת כאשר מרחק = מרחק מקסימום</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>מרחק שבו גודל הרשת יהיה SizeMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>גודל</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>גודל רשת כאשר המרחק &lt; מרחק מינימלי</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <source>Distance</source>
-      <translation>מֶרְחָק</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>מרחק שעד אליו גודל הרשת יהיה SizeMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <source>Diagram</source>
-      <translation>תַרשִׁים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>שִׁרבּוּב</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>גודל דגימה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>מספר נקודות הדגימה המשמשות להבדלת עקומות ומשטחים. עבור משטחים, זהו גודל הדגימה לכל כיוון.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>מגדיר אם אינטרפולציה של גודל רשת בין SizeMinimum לSizeMaximum צריכה להיות פונקציה ליניארית או סיגמואידית</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>ליניארי</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>תצוגה מקדימה של עדינות הרשת</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
@@ -3715,37 +3897,9 @@ with harmonic/oscillating driving current</source>
       <translation>מספר צמתים בקצה</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <source>Progression</source>
-      <translation>הִתקַדְמוּת</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
       <source>Invert</source>
       <translation>הפוך</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <source>Nodes</source>
-      <translation>צמתים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <source>Bump</source>
-      <translation>מַכָּה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <source>Constant</source>
-      <translation>קבוע</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
@@ -3756,6 +3910,130 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
       <translation>מקדם לקצב צמיחת בליטה/התקדמות</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>גרור את החידוד שיש לשנות לאובייקט Manipulate בעץ המסמכים</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>סוג</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>לְהַגבִּיל</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>סַף</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>מְמוּצָע</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>מִדרוֹן</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>עַקמוּמִיוּת</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>לאפלסיאן</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>הגבל את היישום של חידוד הילד לרכיבי ההתייחסות שנבחרו.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>כלול את הגבול של רכיבי ההתייחסות שנבחרו</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>כלול גבול</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>החל סף על ערך חידודי הצאצא</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>גודל פלט</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>ערך קלט</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>אינטרפולציה לינארית</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>עצור בכניסה מקסימלית</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>מחשב את הערך הממוצע של חידוד ילד G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>דֶלתָא</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>דלתא במשוואה הנ"ל</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>חשב את שיפוע ההפרש הסופי של חידוד הילד G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>סוּג</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -3773,17 +4051,6 @@ with harmonic/oscillating driving current</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;בחר פנים בודדות עם יותר מ-4 קצוות ובנוסף בחר את 3 או 4 הצמתים הפיניים.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <source>Icon</source>
-      <translation>סמלון</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
       <translation>הקצוות המנוגדים (או החוטים בין נקודות הפינה) חייבים להיות בעלי מספר שווה של צמתי רשת. הדרך הקלה ביותר להשיג זאת היא באמצעות עקומות טרנססופיות.</translation>
@@ -3793,12 +4060,6 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
       <translation>הגדר אם המשולשים על פני השטח ישולבו מחדש לארבעה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <source>Recombine</source>
-      <translation>שלב מחדש</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
@@ -3832,30 +4093,6 @@ Notes:
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
       <translation>החל אוטומטית עקומות טרנססופיות</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <source>Distribution</source>
-      <translation>הֲפָצָה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <source>Bump Inverted</source>
-      <translation>Bump Inverted</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <source>Progression Inverted</source>
-      <translation>התקדמות הפוכה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type</source>
-      <translation>סוג</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
@@ -4008,243 +4245,6 @@ Example: "F2 + Sin(z)"</source>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
       <translation>משתמש בשדה נתונים מצינור שלאחר עיבוד FEM כגודל רשת. זה מאפשר להתאים את הרשת בהתאם להתנהגות הפיזית של התוצאה.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings</source>
-      <translation>הגדרות תצוגה מקדימה של חידוד גלובלי</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation>מאפשר באופן אוטומטי את ההדמיה של גודל רשת החידוד בעת פתיחת דו-שיח של משימות חידוד.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation>הפעלה אוטומטית בפתיחה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation>קובע עד כמה רשת התצוגה המקדימה עדינה. מספר גדול יותר פירושו רשת עדינה יותר (רכיבי רשת קטנים יותר)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation>תצוגה מקדימה של עדינות הרשת</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation>גרור את החידוד שיש לשנות לאובייקט Manipulate בעץ המסמכים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation>לְהַגבִּיל</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation>סַף</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation>מְמוּצָע</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation>מִדרוֹן</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>עַקמוּמִיוּת</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation>לאפלסיאן</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>הגבל את היישום של חידוד הילד לרכיבי ההתייחסות שנבחרו.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation>כלול את הגבול של רכיבי ההתייחסות שנבחרו</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation>כלול גבול</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation>החל סף על ערך חידודי הצאצא</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation>גודל פלט</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation>ערך קלט</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation>אינטרפולציה לינארית</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation>עצור בכניסה מקסימלית</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation>מחשב את הערך הממוצע של חידוד ילד G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation>דֶלתָא</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation>דלתא במשוואה הנ"ל</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation>חשב את שיפוע ההפרש הסופי של חידוד הילד G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation>סוּג</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation>הגדר את גודל הרשת בתוך ומחוץ לצורה, עם עובי שכבת מעבר אפשרי</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation>גודל רשת בתוך הצורה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation>גודל בפנים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation>גודל רשת מחוץ לצורה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation>גודל בחוץ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation>עובי שכבת המעבר בין גדלי רשת פנימה/חוצה (נוסף מחוץ לצורה)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>תיבה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>ספרה</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>צילינדר</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation>יוצר רשת מובנית בנפח המונחה על ידי המשטחים הטרנססופיים שלה.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation>בחר כל מספר של כרכים בעלי 5 או 6 צדדים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation>כל משטחי הנפח חייבים להיות טרנססופיים. אם למשטחים יש סוגי רשת שונים (מרובעים לעומת משולשים) יש לשלב את הנפח גם עם אלמנטים מעורבים מופעלים.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation>אלמנטי רשת מעורבים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>אם מופעל, כל הקצוות והמשטחים השייכים לכרכים שנבחרו שאין להם הגדרה טרנססופית כבר הופכים לטרנססופיים באופן אוטומטי.
-השתמש בהגדרות של עקומה טרנססופית ומשטח אסטרטגיים כדי להנחות את האלגוריתם האוטומטי.
-
-הערות:
-1. עקומות המוגדרות על ידי המשתמש מתפשטות לקצוות הנגדיים של הפנים, על כל הפרצופים שנבחרו.
-2. עובד עם כל מספר של אמצעי אחסון, מחוברים או לא מחוברים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation>יישום אוטומטי של משטחים ועיקולים טרנססופיים</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>מִשׁטָח</translation>
     </message>
   </context>
   <context>
@@ -6111,28 +6111,28 @@ normal vector of the face is used as direction</source>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2021"/>
+      <location filename="../../Command.cpp" line="1981"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>שגיאה: ניתן להחיל מסנן רק על אובייקט בודד.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2022"/>
-      <location filename="../../Command.cpp" line="2034"/>
+      <location filename="../../Command.cpp" line="1982"/>
+      <location filename="../../Command.cpp" line="1994"/>
       <source>The filter could not be set up.</source>
       <translation>לא ניתן היה להגדיר את המסנן.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2033"/>
+      <location filename="../../Command.cpp" line="1993"/>
       <source>Error: no post processing object selected.</source>
       <translation>שגיאה: לא נבחר אובייקט לאחר עיבוד.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2052"/>
+      <location filename="../../Command.cpp" line="2012"/>
       <source>Error: Object not in a post processing group</source>
       <translation>שגיאה: האובייקט אינו בקבוצה לאחר עיבוד</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2053"/>
+      <location filename="../../Command.cpp" line="2013"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
       <translation>לא ניתן היה להגדיר את המסנן: אובייקט אינו בקבוצה שלאחר עיבוד.</translation>
     </message>
@@ -6564,7 +6564,7 @@ Please select a result type first.</source>
       <translation>אין אובייקט תוצאה</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="168"/>
       <source>
 
 Correct module found in: 
@@ -6573,31 +6573,31 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="176"/>
       <source>
 
 Should this module be loaded instead?</source>
       <translation>האם יש לטעון את המודול הזה במקום זאת?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="193"/>
       <source>
 
 No matching module was found in the current Python path.</source>
       <translation>לא נמצא מודול תואם בנתיב הפייתון הנוכחי.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>VTK Python module conflict</source>
       <translation>התנגשות מודול VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>VTK Python Module Conflict</source>
       <translation>קונפליקט מודול VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="226"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>פונקציונליות זו אינה זמינה עקב התנגשות מודול VTK Python</translation>
     </message>
@@ -6702,8 +6702,8 @@ No matching module was found in the current Python path.</source>
       <translation>באיזה חלק של וקטור שדה Y להשתמש עבור ציר Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <location filename="../../../femobjects/post_extract1D.py" line="66"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>ציין אם השדה יחולץ עבור כל מסגרת זמינה</translation>
     </message>
@@ -6723,14 +6723,14 @@ No matching module was found in the current Python path.</source>
       <translation>ערוך {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="58"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <source>Show Plot</source>
       <translation>הצג עלילה</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="61"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <source>Show Data</source>
       <translation>הצג נתונים</translation>
     </message>
@@ -6949,17 +6949,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1669"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1670"/>
       <source>Electromagnetic Equations</source>
       <translation>משוואות אלקטרומגנטיות</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
+      <location filename="../../Command.cpp" line="1671"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>משוואות אלקטרומגנטיות לפותר אלמר</translation>
     </message>
@@ -6967,17 +6967,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2557"/>
+      <location filename="../../Command.cpp" line="2517"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2558"/>
+      <location filename="../../Command.cpp" line="2518"/>
       <source>Contours Filter</source>
       <translation>מסנן קווי מתאר</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2559"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Defines a contours filter that displays iso contours</source>
       <translation>מגדיר מסנן קווי מתאר המציג קווי מתאר ISO</translation>
     </message>
@@ -7059,17 +7059,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1886"/>
+      <location filename="../../Command.cpp" line="1850"/>
       <source>Mechanical Equations</source>
       <translation>משוואות מכניות</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1887"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>משוואות מכניות לפותר אלמר</translation>
     </message>
@@ -7409,11 +7409,11 @@ No matching module was found in the current Python path.</source>
       <translation>מחק אלמנטים</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1481"/>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <location filename="../../TaskCreateElementSet.cpp" line="253"/>
       <location filename="../../TaskCreateElementSet.cpp" line="512"/>
       <location filename="../../TaskCreateElementSet.cpp" line="609"/>
-      <location filename="../../Command.cpp" line="1481"/>
       <source>Wrong selection</source>
       <translation>בחירה לא נכונה</translation>
     </message>
@@ -7822,9 +7822,9 @@ Leave blank to use default Python executable</source>
     <name>TaskPostGlyph</name>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>צורת הגליף</translation>
     </message>
@@ -7866,10 +7866,10 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>באיזה שדה וקטור משתמשים כדי לכוון את הגליפים</translation>
     </message>
@@ -7880,9 +7880,9 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>ללא</translation>
     </message>
@@ -7904,9 +7904,9 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>מכפיל קבוע שהגליפים עוברים קנה מידה</translation>
     </message>
@@ -7922,8 +7922,8 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>אם נתוני קנה המידה הם וקטור מאפיין זה מחליט אם הגליף משתנה לפי גודל וקטור או לפי רכיבים בודדים</translation>
     </message>
@@ -8084,17 +8084,17 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2554"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Calculator Filter</source>
       <translation>מסנן מחשבון</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>Creates a new field from current data</source>
       <translation>יוצר שדה חדש מנתונים נוכחיים</translation>
     </message>
@@ -8102,17 +8102,17 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="3036"/>
+      <location filename="../../Command.cpp" line="2996"/>
       <source>Fem</source>
       <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3037"/>
+      <location filename="../../Command.cpp" line="2997"/>
       <source>Pipeline Branch</source>
       <translation>סניף צינור</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3038"/>
+      <location filename="../../Command.cpp" line="2998"/>
       <source>Branches the pipeline into a new path</source>
       <translation>מסעף את הצינור לנתיב חדש</translation>
     </message>
@@ -8510,9 +8510,9 @@ Leave blank to use default Python executable</source>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>טופס</translation>
     </message>
@@ -8730,99 +8730,26 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>SolverElmer</name>
+    <name>FemToolsCcx</name>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>פותר אלמר בקרת</translation>
+      <location filename="../../../femtools/ccxtools.py" line="423"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>אין או שגוי CalculiX ccx בינארי</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>ספריית עבודה</translation>
+      <location filename="../../../femtools/ccxtools.py" line="457"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>FEM: שגוי ccx בינארי</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>לִכתוֹב</translation>
+      <location filename="../../../femtools/ccxtools.py" line="470"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>FEM: CalculiX ccx בינארי '{}' לא נמצא. אנא הגדר את הנתיב הבינארי של CalculiX ccx בלשונית העדפות FEM CalculiX.</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>עריכה</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>נתיב לספריית עבודה. השאר ריק כדי להשתמש בהעדפות המשתמש</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>פרמטרים של פותר</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>סוג סימולציה</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>זמן</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>גרסת פותר</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>Solver Z88 Control</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>ספריית עבודה</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>לִכתוֹב</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>עריכה</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>נתיב לספריית עבודה. השאר ריק כדי להשתמש בהעדפות המשתמש</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>פרמטרים של פותר</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>סוג פותר</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>זמן</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>גרסת פותר</translation>
+      <location filename="../../../femtools/ccxtools.py" line="482"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>FEM: פלט '{}' של CalculiX ccx '{}' אינו מכיל את הביטוי הצפוי '{}'. יש כמה בעיות בעת הפעלת הקובץ הבינארי ccx. בדוק אם ccx פועל באופן עצמאי ללא FreeCAD.</translation>
     </message>
   </context>
   <context>
@@ -8982,29 +8909,6 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="423"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>אין או שגוי CalculiX ccx בינארי</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="457"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>FEM: שגוי ccx בינארי</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="470"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: CalculiX ccx בינארי '{}' לא נמצא. אנא הגדר את הנתיב הבינארי של CalculiX ccx בלשונית העדפות FEM CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="482"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: פלט '{}' של CalculiX ccx '{}' אינו מכיל את הביטוי הצפוי '{}'. יש כמה בעיות בעת הפעלת הקובץ הבינארי ccx. בדוק אם ccx פועל באופן עצמאי ללא FreeCAD.</translation>
-    </message>
-  </context>
-  <context>
     <name>self.sel_master</name>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
@@ -9021,11 +8925,99 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <name>SolverZ88</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="645"/>
-      <source>Input Error</source>
-      <translation>שגיאה בקלט</translation>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>Solver Z88 Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>ספריית עבודה</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>לִכתוֹב</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>עריכה</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>נתיב לספריית עבודה. השאר ריק כדי להשתמש בהעדפות המשתמש</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>פרמטרים של פותר</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>סוג פותר</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>זמן</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>גרסת פותר</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>פותר אלמר בקרת</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>ספריית עבודה</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>לִכתוֹב</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>עריכה</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>נתיב לספריית עבודה. השאר ריק כדי להשתמש בהעדפות המשתמש</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>פרמטרים של פותר</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>סוג סימולציה</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>זמן</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>גרסת פותר</translation>
     </message>
   </context>
   <context>
@@ -9042,25 +9034,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="811"/>
-      <source>Input Error</source>
-      <translation>שגיאה בקלט</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="357"/>
-      <source>Input Error</source>
-      <translation>שגיאה בקלט</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="123"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="634"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>
@@ -9074,25 +9050,33 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="651"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="336"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="394"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="811"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1158"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="123"/>
+      <source>Input Error</source>
+      <translation>שגיאה בקלט</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="408"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>
@@ -9106,17 +9090,49 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="634"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1158"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="408"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="357"/>
+      <source>Input Error</source>
+      <translation>שגיאה בקלט</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="651"/>
+      <source>Input Error</source>
+      <translation>שגיאה בקלט</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="471"/>
+      <source>Input Error</source>
+      <translation>שגיאה בקלט</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="645"/>
+      <source>Input Error</source>
+      <translation>שגיאה בקלט</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="394"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>
@@ -9133,22 +9149,6 @@ Leave blank to use default Python executable</source>
     <name>FemGui::TaskDlgPost</name>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="405"/>
-      <source>Input Error</source>
-      <translation>שגיאה בקלט</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="471"/>
-      <source>Input Error</source>
-      <translation>שגיאה בקלט</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="336"/>
       <source>Input Error</source>
       <translation>שגיאה בקלט</translation>
     </message>

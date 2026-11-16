@@ -325,17 +325,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2888"/>
+      <location filename="../../Command.cpp" line="2848"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2889"/>
+      <location filename="../../Command.cpp" line="2849"/>
       <source>Apply Changes to Pipeline</source>
       <translation>ນຳໃຊ້ການປ່ຽນແປງກັບໄພພ໌ລາຍ (Pipeline)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2890"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
       <translation>ນຳໃຊ້ການປ່ຽນແປງກັບພາຣາມິເຕີໂດຍກົງ ແລະ ບໍ່ແມ່ນສະເພາະຕອນຄຳນວນໃໝ່ເທົ່ານັ້ນ</translation>
     </message>
@@ -343,27 +343,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2212"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="2213"/>
       <source>Region Clip Filter</source>
       <translation>ຕົວຕອງການຕັດຂອບເຂດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2254"/>
+      <location filename="../../Command.cpp" line="2214"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
       <translation>ກຳນົດຕົວຕອງການຕັດທີ່ໃຊ້ຟັງຊັນເພື່ອລະບຸຂອບເຂດທີ່ຖືກຕັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2738"/>
       <source>Select a pipeline.</source>
       <translation>ເລືອກໄພພ໌ລາຍ (Pipeline) ອັນໜຶ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2777"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -371,17 +371,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2251"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2292"/>
+      <location filename="../../Command.cpp" line="2252"/>
       <source>Function Cut Filter</source>
       <translation>ຕົວຕອງການຕັດດ້ວຍຟັງຊັນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2253"/>
       <source>Cuts the data along an implicit function</source>
       <translation>ຕັດຂໍ້ມູນຕາມຟັງຊັນອິມພລິສິດ (Implicit Function)</translation>
     </message>
@@ -389,17 +389,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2288"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2329"/>
+      <location filename="../../Command.cpp" line="2289"/>
       <source>Line Clip Filter</source>
       <translation>ຕົວຕອງການຕັດຕາມເສັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2330"/>
+      <location filename="../../Command.cpp" line="2290"/>
       <source>Defines a clip filter which clips a field along a line</source>
       <translation>ກຳນົດຕົວຕອງການຕັດທີ່ຕັດຟິວ (Field) ຕາມເສັ້ນໃດໜຶ່ງ</translation>
     </message>
@@ -407,17 +407,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2365"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2366"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Data at Point Clip Filter</source>
       <translation>ຕົວຕອງການຕັດຂໍ້ມູນຢູ່ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2367"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Defines a clip filter which clips a field data at point</source>
       <translation>ກຳນົດຕົວຕອງການຕັດທີ່ຕັດຂໍ້ມູນຟິວຢູ່ຈຸດໃດໜຶ່ງ</translation>
     </message>
@@ -425,37 +425,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2590"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2591"/>
       <source>Filter Functions</source>
       <translation>ຟັງຊັນການຕອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Functions for use in postprocessing filter</source>
       <translation>ຟັງຊັນສຳລັບໃຊ້ໃນຕົວຕອງການປະມວນຜົນຂັ້ນສຸດທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2830"/>
+      <location filename="../../Command.cpp" line="2790"/>
       <source>Plane</source>
       <translation>ໜ້າພຽງ (Plane)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2840"/>
+      <location filename="../../Command.cpp" line="2800"/>
       <source>Sphere</source>
       <translation>ໜ່ວຍມົນ (Sphere)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2850"/>
+      <location filename="../../Command.cpp" line="2810"/>
       <source>Cylinder</source>
       <translation>ຮູບຊົງກະບອກ (Cylinder)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Box</source>
       <translation>ກ່ອງ (Box)</translation>
     </message>
@@ -463,65 +463,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2099"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>ຄວາມໜາ [ມມ]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>ຄວາມເຄັ້ນ [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2151"/>
+      <location filename="../../Command.cpp" line="2111"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>ຄວາມເຄັ້ນແບບລີເນຍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2157"/>
+      <location filename="../../Command.cpp" line="2117"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>ເມັມເບຣນ (Membrane)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2163"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>ເມັມເບຣນ ແລະ ການດັດງໍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2169"/>
+      <location filename="../../Command.cpp" line="2129"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>ທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2363"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2404"/>
+      <location filename="../../Command.cpp" line="2364"/>
       <source>Stress Linearization Plot</source>
       <translation>ແຜນພູມຄວາມເຄັ້ນແບບລີເນຍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2405"/>
+      <location filename="../../Command.cpp" line="2365"/>
       <source>Defines a stress linearization plot</source>
       <translation>ກຳນົດແຜນພູມຄວາມເຄັ້ນແບບລີເນຍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2444"/>
-      <location filename="../../Command.cpp" line="2455"/>
+      <location filename="../../Command.cpp" line="2404"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Select a clip filter which clips a stress field along a line</source>
       <translation>ເລືອກຕົວຕອງການຕັດທີ່ຕັດຟິວຄວາມເຄັ້ນຕາມເສັ້ນໃດໜຶ່ງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2443"/>
-      <location filename="../../Command.cpp" line="2454"/>
+      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2414"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -529,27 +529,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2889"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2930"/>
+      <location filename="../../Command.cpp" line="2890"/>
       <source>Post Pipeline From Result</source>
       <translation>ສ້າງໄພພ໌ລາຍຈາກຜົນລັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2931"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>ສ້າງໄພພ໌ລາຍການປະມວນຜົນຂັ້ນສຸດທ້າຍຈາກວັດຖຸຜົນລັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3015"/>
+      <location filename="../../Command.cpp" line="2975"/>
       <source>Wrong selection type</source>
       <translation>ປະເພດການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3016"/>
+      <location filename="../../Command.cpp" line="2976"/>
       <source>Select a result object.</source>
       <translation>ເລືອກວັດຖຸຜົນລັດອັນໜຶ່ງ.</translation>
     </message>
@@ -557,17 +557,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2483"/>
+      <location filename="../../Command.cpp" line="2443"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2484"/>
+      <location filename="../../Command.cpp" line="2444"/>
       <source>Scalar Clip Filter</source>
       <translation>ຕົວຕອງການຕັດແບບສະກາລາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2485"/>
+      <location filename="../../Command.cpp" line="2445"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
       <translation>ກຳນົດຕົວຕອງການຕັດທີ່ຕັດຟິວດ້ວຍຄ່າສະກາລາໃດໜຶ່ງ</translation>
     </message>
@@ -575,17 +575,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2520"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2521"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Warp Filter</source>
       <translation>ຕົວຕອງການບິດບ້ຽວ (Warp Filter)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2522"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
       <translation>ບິດບ້ຽວເລຂາຄະນິດຕາມຟິວເວັກເຕີດ້ວຍຕົວຄູນໃດໜຶ່ງ</translation>
     </message>
@@ -699,17 +699,17 @@
       <translation>ສ້າງກຸ່ມອົງປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2063"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Create filter</source>
       <translation>ສ້າງຕົວຕອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>Create function</source>
       <translation>ສ້າງຟັງຊັນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2984"/>
+      <location filename="../../Command.cpp" line="2944"/>
       <source>Create pipeline from result</source>
       <translation>ສ້າງໄພພ໌ລາຍຈາກຜົນລັດ</translation>
     </message>
@@ -794,22 +794,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2832"/>
+      <location filename="../../Command.cpp" line="2792"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>ສ້າງຟັງຊັນໜ້າພຽງ, ໂດຍກຳນົດຈາກຈຸດກຳເນີດ ແລະ ເວັກເຕີແນວຕັ້ງ (Normal)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2842"/>
+      <location filename="../../Command.cpp" line="2802"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>ສ້າງຟັງຊັນໜ່ວຍມົນ, ໂດຍກຳນົດຈາກຈຸດໃຈກາງ ແລະ ລັດສະໝີ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2852"/>
+      <location filename="../../Command.cpp" line="2812"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>ສ້າງຟັງຊັນຮູບຊົງກະບອກ, ໂດຍກຳນົດຈາກຈຸດໃຈກາງ, ແກນ ແລະ ລັດສະໝີ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2822"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>ສ້າງຟັງຊັນຮູບກ່ອງ, ໂດຍກຳນົດຈາກຈຸດໃຈກາງ, ຄວາມຍາວ, ຄວາມກວ້າງ ແລະ ຄວາມສູງ</translation>
     </message>
@@ -2745,9 +2745,9 @@ that "MAXGS" needs to be increased.</source>
       <translation>ຄວາມດັນຂາເຂົ້າ</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>ຄວາມດັນ (Pressure)</translation>
     </message>
@@ -2888,10 +2888,10 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>ພາຣາມີເຕີ</translation>
@@ -3017,16 +3017,6 @@ Note: has no effect if a solid was selected</source>
       <translation>ບໍ່ວ່າເງື່ອນໄຂຂອບເຂດຈະກຳນົດສັກຄົງທີ່ຫຼືບໍ່</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation>ການປະມານສະໜາມໄກ ໂດຍສົມມຸດຄວາມສົມມາດແບບຊົງກົມ</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation>ສະໜາມໄກ (Far field)</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>ຄ່າສັກຄົງທີ່</translation>
@@ -3040,6 +3030,59 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>ອົງປະກອບປົກກະຕິຂອງສະໜາມການຍ້າຍທີ່ທາງໄຟຟ້າ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>ຄວາມເກັບປະຈຸ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>ດິຣິເກລ (Dirichlet)</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>ເພື່ອ ກຳນົດສັກສະກາລາ ແລະ ສັກເວັກເຕີແມ່ເຫຼັກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <source>Real</source>
+      <translation>ຈິງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <source>Imaginary</source>
+      <translation>ຈິນຕະພາບ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>ສະກາລາ (Scalar)</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>ພາກສ່ວນຈິນຕະພາບຂອງສັກສະກາລາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation>ການປະມານສະໜາມໄກ ໂດຍສົມມຸດຄວາມສົມມາດແບບຊົງກົມ</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation>ສະໜາມໄກ (Far field)</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3080,49 +3123,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation>ພາກສ່ວນຈິນຕະພາບຂອງອົງປະກອບ z ຂອງຄວາມໜາແໜ້ນຟລັກແມ່ເຫຼັກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>ຄວາມເກັບປະຈຸ</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>ດິຣິເກລ (Dirichlet)</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>ເພື່ອ ກຳນົດສັກສະກາລາ ແລະ ສັກເວັກເຕີແມ່ເຫຼັກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <source>Real</source>
-      <translation>ຈິງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <source>Imaginary</source>
-      <translation>ຈິນຕະພາບ</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>ສະກາລາ (Scalar)</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>ພາກສ່ວນຈິນຕະພາບຂອງສັກສະກາລາ</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3203,13 +3203,13 @@ Note: has no effect if a solid was selected</source>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>ມມ</translation>
     </message>
@@ -3230,11 +3230,59 @@ Note: has no effect if a solid was selected</source>
       <translation>ເສັ້ນຜ່ານສູນກາງພາຍນອກ</translation>
     </message>
     <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation>ກຳນົດຂະໜາດຕາໜ່າງທັງພາຍໃນ ແລະ ພາຍນອກຂອງຮູບຊົງ, ພ້ອມທັງຄວາມໜາຂອງຊັ້ນປ່ຽນຖ່າຍທີ່ອາດເປັນໄປໄດ້</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation>ຂະໜາດຕາໜ່າງພາຍໃນຮູບຊົງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>ຂະໜາດພາຍໃນ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation>ຂະໜາດຕາໜ່າງພາຍນອກຮູບຊົງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>ຂະໜາດພາຍນອກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation>ຄວາມໜາຂອງຊັ້ນປ່ຽນຖ່າຍລະຫວ່າງຂະໜາດຕາໜ່າງ ພາຍໃນ/ພາຍນອກ (ເພີ່ມຢູ່ພາຍນອກຂອງຮູບຊົງ)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="109"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
-      <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>ຄວາມໜາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>ໜ່ວຍມົນ (Sphere)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>ຮູບຊົງກະບອກ (Cylinder)</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
@@ -3310,12 +3358,12 @@ Note: has no effect if a solid was selected</source>
       <translation>ຕັ້ງສາກກັບຂອບເຂດ</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
@@ -3327,9 +3375,9 @@ Note: has no effect if a solid was selected</source>
       <translation>ແຫຼ່ງກຳເນີດຄວາມຮ້ອນ</translation>
     </message>
     <message>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>ໂໝດ</translation>
     </message>
@@ -3418,9 +3466,9 @@ with harmonic/oscillating driving current</source>
       <translation>ເລືອກໂໝດກຳນົດເອງເພື່ອເປີດໃຊ້ຄວາມໜາແໜ້ນກະແສແບບເວັກເຕີ</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
       <source>X</source>
@@ -3437,9 +3485,9 @@ with harmonic/oscillating driving current</source>
       <translation>ພາກສ່ວນຈິນຕະພາບຂອງອົງປະກອບ x ຂອງຄວາມໜາແໜ້ນກະແສ</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/MeshManipulate.ui" line="599"/>
       <source>Y</source>
@@ -3456,9 +3504,9 @@ with harmonic/oscillating driving current</source>
       <translation>ພາກສ່ວນຈິນຕະພາບຂອງອົງປະກອບ y ຂອງຄວາມໜາແໜ້ນກະແສ</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/MeshManipulate.ui" line="604"/>
       <source>Z</source>
@@ -3500,21 +3548,252 @@ with harmonic/oscillating driving current</source>
       <translation>ຂະໜາດອົງປະກອບສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
       <source>Form</source>
       <translation>ຟອມ</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <source>Field</source>
+      <translation>ຟິວ (Field)</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <source>Frames</source>
+      <translation>ເຟຣມ (Frames)</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>ໜຶ່ງຟິວສຳລັບແຕ່ລະເຟຣມ</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>ດັດສະນີ (Index)</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>ຟິວ X</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <source>Y field</source>
+      <translation>ຟິວ Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>ໜຶ່ງຟິວ Y ສຳລັບແຕ່ລະເຟຣມ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>ສ້າງເມຊ (Mesh) ແບບມີໂຄງສ້າງໃນບໍລິມາດ ໂດຍໃຊ້ພື້ນຜິວແບບທຣານສ໌ຟີໄນ (transfinite) ເປັນຕົວນຳທາງ.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <source>Diagram</source>
+      <translation>ແຜນວາດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>ເລືອກບໍລິມາດທີ່ມີ 5 ຫຼື 6 ດ້ານ ໃນຈຳນວນໃດກໍໄດ້</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <source>Icon</source>
+      <translation>ໄອຄອນ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>ພື້ນຜິວບໍລິມາດທັງໝົດຕ້ອງເປັນແບບທຣານສ໌ຟີໄນ (transfinite). ຖ້າພື້ນຜິວມີປະເພດເມຊທີ່ແຕກຕ່າງກັນ (ສີ່ຫຼ່ຽມ vs ສາມຫຼ່ຽມ), ບໍລິມາດນັ້ນຕ້ອງຖືກສ້າງເມຊໂດຍເປີດໃຊ້ງານອົງປະກອບແບບປະສົມ.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>ອົງປະກອບເມຊແບບປະສົມ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>ຖ້າເປີດໃຊ້ງານ, ເສັ້ນຂອບ ແລະ ພື້ນຜິວທັງໝົດທີ່ຢູ່ໃນບໍລິມາດທີ່ເລືອກ ເຊິ່ງຍັງບໍ່ມີການກຳນົດແບບທຣານສ໌ຟີໄນ (transfinite) ຈະກາຍເປັນແບບທຣານສ໌ຟີໄນໂດຍອັດຕະໂນມັດ.
+ໃຊ້ການກຳນົດເສັ້ນໂຄ້ງ ແລະ ພື້ນຜິວແບບທຣານສ໌ຟີໄນໃນຕຳແໜ່ງທີ່ເໝາະສົມເພື່ອຊ່ວຍນຳທາງອັນກໍຣິທຶມອັດຕະໂນມັດ.
+
+ໝາຍເຫດ:
+1. ເສັ້ນໂຄ້ງທີ່ຜູ້ໃຊ້ກຳນົດຈະສົ່ງຜົນໄປຍັງເສັ້ນຂອບກົງກັນຂ້າມຂອງໜ້າພຽງ, ໃນທຸກໆໜ້າທີ່ເລືອກ.
+2. ໃຊ້ໄດ້ກັບບໍລິມາດຈຳນວນເທົ່າໃດກໍໄດ້, ບໍ່ວ່າຈະເຊື່ອມຕໍ່ກັນ ຫຼື ບໍ່ກໍຕາມ </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>ນຳໃຊ້ພື້ນຜິວ ແລະ ເສັ້ນໂຄ້ງແບບທຣານສ໌ຟີໄນໂດຍອັດຕະໂນມັດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>ໂນດ (Nodes)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation>ການກະຈາຍ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>ຄົງທີ່</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation>ນູນ (Bump)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation>ນູນແບບປີ້ນຄືນ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation>ການເພີ່ມຂຶ້ນ (Progression)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation>ການເພີ່ມຂຶ້ນແບບປີ້ນຄືນ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>ໜ້າພຽງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation>ລວມຄືນໃໝ່ (Recombine)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>ກຳນົດຂະໜາດອົງປະກອບຕາໜ່າງ (mesh) ອີງຕາມໄລຍະຫ່າງຂອງເລຂາຄະນິດອ້າງອີງທີ່ເລືອກ.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>ຂະໜາດເມຊ ເມື່ອໄລຍະທາງ = DistanceMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>ໄລຍະທາງທີ່ຂະໜາດເມຊຈະເປັນ SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>ຂະໜາດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>ຂະໜາດເມຊ ເມື່ອໄລຍະທາງ &lt; DistanceMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <source>Distance</source>
+      <translation>ໄລຍະຫ່າງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>ໄລຍະທາງທີ່ຂະໜາດເມຊຈະເປັນ SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>ການແຊກຄ່າ (Interpolation)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>ຂະໜາດການຊຸ່ມຕົວຢ່າງ (Sampling size)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>ຈຳນວນຈຸດຊຸ່ມຕົວຢ່າງທີ່ໃຊ້ເພື່ອແຍກເສັ້ນໂຄ້ງ ແລະ ໜ້າພຽງ. ສຳລັບໜ້າພຽງ, ມັນແມ່ນຂະໜາດການຊຸ່ມຕົວຢ່າງຕໍ່ທິດທາງ.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>ກຳນົດວ່າການແຊກຄ່າຂອງຂະໜາດຕາໜ່າງລະຫວ່າງ SizeMinimum ແລະ SizeMaximum ຄວນເປັນແບບເສັ້ນຊື່ ຫຼື ຟັງຊັນ sigmoid</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>ເສັ້ນຊື່ (Linear)</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
@@ -3564,127 +3843,30 @@ with harmonic/oscillating driving current</source>
       <translation>…</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>ຟິວ (Field)</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation>ການຕັ້ງຄ່າການສະແດງຕົວຢ່າງການປັບປຸງຄວາມລະອຽດທົ່ວໂລກ</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <source>Frames</source>
-      <translation>ເຟຣມ (Frames)</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>ເປີດໃຊ້ການສະແດງພາບຂະໜາດເມຊທີ່ປັບປຸງແລ້ວໂດຍອັດຕະໂນມັດ ເມື່ອເປີດກ່ອງໂຕ້ຕອບໜ້າວຽກການປັບປຸງຄວາມລະອຽດ.</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>ໜຶ່ງຟິວສຳລັບແຕ່ລະເຟຣມ</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>ເປີດໃຊ້ງານອັດຕະໂນມັດເມື່ອເປີດ</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <source>Index</source>
-      <translation>ດັດສະນີ (Index)</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>ກຳນົດວ່າເມຊຕົວຢ່າງຈະມີຄວາມລະອຽດສໍ່າໃດ. ຕົວເລກທີ່ໃຫຍ່ກວ່າໝາຍເຖິງເມຊທີ່ລະອຽດກວ່າ (ອົງປະກອບເມຊນ້ອຍລົງ)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>ຟິວ X</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <source>Y field</source>
-      <translation>ຟິວ Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>ໜຶ່ງຟິວ Y ສຳລັບແຕ່ລະເຟຣມ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>ກຳນົດຂະໜາດອົງປະກອບຕາໜ່າງ (mesh) ອີງຕາມໄລຍະຫ່າງຂອງເລຂາຄະນິດອ້າງອີງທີ່ເລືອກ.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>ຂະໜາດເມຊ ເມື່ອໄລຍະທາງ = DistanceMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>ໄລຍະທາງທີ່ຂະໜາດເມຊຈະເປັນ SizeMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>ຂະໜາດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>ຂະໜາດເມຊ ເມື່ອໄລຍະທາງ &lt; DistanceMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <source>Distance</source>
-      <translation>ໄລຍະຫ່າງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>ໄລຍະທາງທີ່ຂະໜາດເມຊຈະເປັນ SizeMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <source>Diagram</source>
-      <translation>ແຜນວາດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>ການແຊກຄ່າ (Interpolation)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>ຂະໜາດການຊຸ່ມຕົວຢ່າງ (Sampling size)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>ຈຳນວນຈຸດຊຸ່ມຕົວຢ່າງທີ່ໃຊ້ເພື່ອແຍກເສັ້ນໂຄ້ງ ແລະ ໜ້າພຽງ. ສຳລັບໜ້າພຽງ, ມັນແມ່ນຂະໜາດການຊຸ່ມຕົວຢ່າງຕໍ່ທິດທາງ.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>ກຳນົດວ່າການແຊກຄ່າຂອງຂະໜາດຕາໜ່າງລະຫວ່າງ SizeMinimum ແລະ SizeMaximum ຄວນເປັນແບບເສັ້ນຊື່ ຫຼື ຟັງຊັນ sigmoid</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>ເສັ້ນຊື່ (Linear)</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>ຄວາມລະອຽດຂອງເມຊຕົວຢ່າງ</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
@@ -3697,37 +3879,9 @@ with harmonic/oscillating driving current</source>
       <translation>ຈຳນວນໂນດເທິງເສັ້ນຂອບ</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <source>Progression</source>
-      <translation>ການເພີ່ມຂຶ້ນ (Progression)</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
       <source>Invert</source>
       <translation>ປີ້ນຄືນ (Invert)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <source>Nodes</source>
-      <translation>ໂນດ (Nodes)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <source>Bump</source>
-      <translation>ນູນ (Bump)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <source>Constant</source>
-      <translation>ຄົງທີ່</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
@@ -3738,6 +3892,132 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
       <translation>ສຳປະສິດສຳລັບອັດຕາການເຕີບໂຕຂອງ bump/progression</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>ລາກສ່ວນທີ່ປັບປຸງຄຸນນະພາບທີ່ຕ້ອງການປ່ຽນແປງເຂົ້າໃນວັດຖຸ Manipulate ຢູ່ໃນໂຄງສ້າງເອກະສານ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>ປະເພດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>ຈຳກັດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>ຄ່າຂີດຈຳກັດ (Threshold)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>ຄ່າສະເລ່ຍ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>ຄວາມລາດຊັນ (Gradient)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>ຄວາມໂຄ້ງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>Laplacian</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>ຈຳກັດການນຳໃຊ້ການປັບປຸງຄຸນນະພາບລູກ (child refinement) ໃຫ້ກັບອົງປະກອບອ້າງອີງທີ່ເລືອກ.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>ລວມເອົາຂອບເຂດຂອງອົງປະກອບອ້າງອີງທີ່ເລືອກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>ລວມຂອບເຂດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>ນຳໃຊ້ຄ່າຂີດຈຳກັດໃຫ້ກັບຄ່າຂອງການປັບປຸງຄຸນນະພາບລູກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>ຂະໜາດຜົນອອກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>ຄ່າຂາເຂົ້າ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>ການແຊກຄ່າແບບເສັ້ນຊື່</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>ຢຸດຢູ່ທີ່ຄ່າຂາເຂົ້າສູງສຸດ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>ຄິດໄລ່ຄ່າສະເລ່ຍຂອງການປັບປຸງຄຸນນະພາບລູກ G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>ເດວຕ້າ (Delta)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>Delta ໃນສົມຜົນທີ່ກ່າວມາຂ້າງເທິງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>ຄິດໄລ່ຄວາມລາດຊັນຂອງຜົນຕ່າງສິ້ນສຸດ (finite difference gradient) ຂອງການປັບປຸງຄຸນນະພາບລູກ G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>ປະເພດ (Kind)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -3755,17 +4035,6 @@ with harmonic/oscillating driving current</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ເລືອກໜ້າພຽງດຽວທີ່ມີຫຼາຍກວ່າ 4 ເສັ້ນຂອບ ແລະ ເລືອກໂນດມຸມ 3 ຫຼື 4 ຈຸດເພີ່ມເຕີມ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <source>Icon</source>
-      <translation>ໄອຄອນ</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
       <translation>ເສັ້ນຂອບທີ່ຢູ່ກົງກັນຂ້າມ (ຫຼື ເສັ້ນລະຫວ່າງຈຸດມຸມ) ຕ້ອງມີຈຳນວນໂນດເມຊເທົ່າກັນ. ວິທີທີ່ງ່າຍທີ່ສຸດຄືການໃຊ້ເສັ້ນໂຄ້ງແບບທຣານສ໌ຟີໄນ (transfinite curves).</translation>
@@ -3775,12 +4044,6 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
       <translation>ກຳນົດວ່າຈະລວມຮູບສາມຫຼ່ຽມເທິງພື້ນຜິວໃຫ້ເປັນຮູບສີ່ຫຼ່ຽມຫຼືບໍ່</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <source>Recombine</source>
-      <translation>ລວມຄືນໃໝ່ (Recombine)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
@@ -3814,30 +4077,6 @@ Notes:
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
       <translation>ນຳໃຊ້ເສັ້ນໂຄ້ງ transfinite ແບບອັດຕະໂນມັດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <source>Distribution</source>
-      <translation>ການກະຈາຍ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <source>Bump Inverted</source>
-      <translation>ນູນແບບປີ້ນຄືນ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <source>Progression Inverted</source>
-      <translation>ການເພີ່ມຂຶ້ນແບບປີ້ນຄືນ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type</source>
-      <translation>ປະເພດ</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
@@ -3990,245 +4229,6 @@ Example: "F2 + Sin(z)"</source>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
       <translation>ໃຊ້ຟິວຂໍ້ມູນຈາກ FEM postprocessing pipeline ເປັນຂະໜາດເມຊ. ສິ່ງນີ້ຊ່ວຍໃຫ້ທ່ານສາມາດປັບແຕ່ງເມຊຕາມພຶດຕິກຳທາງກາຍະພາບຂອງຜົນລັດໄດ້.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings</source>
-      <translation>ການຕັ້ງຄ່າການສະແດງຕົວຢ່າງການປັບປຸງຄວາມລະອຽດທົ່ວໂລກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation>ເປີດໃຊ້ການສະແດງພາບຂະໜາດເມຊທີ່ປັບປຸງແລ້ວໂດຍອັດຕະໂນມັດ ເມື່ອເປີດກ່ອງໂຕ້ຕອບໜ້າວຽກການປັບປຸງຄວາມລະອຽດ.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation>ເປີດໃຊ້ງານອັດຕະໂນມັດເມື່ອເປີດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation>ກຳນົດວ່າເມຊຕົວຢ່າງຈະມີຄວາມລະອຽດສໍ່າໃດ. ຕົວເລກທີ່ໃຫຍ່ກວ່າໝາຍເຖິງເມຊທີ່ລະອຽດກວ່າ (ອົງປະກອບເມຊນ້ອຍລົງ)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation>ຄວາມລະອຽດຂອງເມຊຕົວຢ່າງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation>ລາກສ່ວນທີ່ປັບປຸງຄຸນນະພາບທີ່ຕ້ອງການປ່ຽນແປງເຂົ້າໃນວັດຖຸ Manipulate ຢູ່ໃນໂຄງສ້າງເອກະສານ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation>ຈຳກັດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation>ຄ່າຂີດຈຳກັດ (Threshold)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation>ຄ່າສະເລ່ຍ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation>ຄວາມລາດຊັນ (Gradient)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>ຄວາມໂຄ້ງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation>Laplacian</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>ຈຳກັດການນຳໃຊ້ການປັບປຸງຄຸນນະພາບລູກ (child refinement) ໃຫ້ກັບອົງປະກອບອ້າງອີງທີ່ເລືອກ.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation>ລວມເອົາຂອບເຂດຂອງອົງປະກອບອ້າງອີງທີ່ເລືອກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation>ລວມຂອບເຂດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation>ນຳໃຊ້ຄ່າຂີດຈຳກັດໃຫ້ກັບຄ່າຂອງການປັບປຸງຄຸນນະພາບລູກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation>ຂະໜາດຜົນອອກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation>ຄ່າຂາເຂົ້າ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation>ການແຊກຄ່າແບບເສັ້ນຊື່</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation>ຢຸດຢູ່ທີ່ຄ່າຂາເຂົ້າສູງສຸດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation>ຄິດໄລ່ຄ່າສະເລ່ຍຂອງການປັບປຸງຄຸນນະພາບລູກ G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation>ເດວຕ້າ (Delta)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation>Delta ໃນສົມຜົນທີ່ກ່າວມາຂ້າງເທິງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation>ຄິດໄລ່ຄວາມລາດຊັນຂອງຜົນຕ່າງສິ້ນສຸດ (finite difference gradient) ຂອງການປັບປຸງຄຸນນະພາບລູກ G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation>ປະເພດ (Kind)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation>ກຳນົດຂະໜາດຕາໜ່າງທັງພາຍໃນ ແລະ ພາຍນອກຂອງຮູບຊົງ, ພ້ອມທັງຄວາມໜາຂອງຊັ້ນປ່ຽນຖ່າຍທີ່ອາດເປັນໄປໄດ້</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation>ຂະໜາດຕາໜ່າງພາຍໃນຮູບຊົງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation>ຂະໜາດພາຍໃນ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation>ຂະໜາດຕາໜ່າງພາຍນອກຮູບຊົງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation>ຂະໜາດພາຍນອກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation>ຄວາມໜາຂອງຊັ້ນປ່ຽນຖ່າຍລະຫວ່າງຂະໜາດຕາໜ່າງ ພາຍໃນ/ພາຍນອກ (ເພີ່ມຢູ່ພາຍນອກຂອງຮູບຊົງ)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>ໜ່ວຍມົນ (Sphere)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>ຮູບຊົງກະບອກ (Cylinder)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation>ສ້າງເມຊ (Mesh) ແບບມີໂຄງສ້າງໃນບໍລິມາດ ໂດຍໃຊ້ພື້ນຜິວແບບທຣານສ໌ຟີໄນ (transfinite) ເປັນຕົວນຳທາງ.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation>ເລືອກບໍລິມາດທີ່ມີ 5 ຫຼື 6 ດ້ານ ໃນຈຳນວນໃດກໍໄດ້</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation>ພື້ນຜິວບໍລິມາດທັງໝົດຕ້ອງເປັນແບບທຣານສ໌ຟີໄນ (transfinite). ຖ້າພື້ນຜິວມີປະເພດເມຊທີ່ແຕກຕ່າງກັນ (ສີ່ຫຼ່ຽມ vs ສາມຫຼ່ຽມ), ບໍລິມາດນັ້ນຕ້ອງຖືກສ້າງເມຊໂດຍເປີດໃຊ້ງານອົງປະກອບແບບປະສົມ.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation>ອົງປະກອບເມຊແບບປະສົມ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>ຖ້າເປີດໃຊ້ງານ, ເສັ້ນຂອບ ແລະ ພື້ນຜິວທັງໝົດທີ່ຢູ່ໃນບໍລິມາດທີ່ເລືອກ ເຊິ່ງຍັງບໍ່ມີການກຳນົດແບບທຣານສ໌ຟີໄນ (transfinite) ຈະກາຍເປັນແບບທຣານສ໌ຟີໄນໂດຍອັດຕະໂນມັດ.
-ໃຊ້ການກຳນົດເສັ້ນໂຄ້ງ ແລະ ພື້ນຜິວແບບທຣານສ໌ຟີໄນໃນຕຳແໜ່ງທີ່ເໝາະສົມເພື່ອຊ່ວຍນຳທາງອັນກໍຣິທຶມອັດຕະໂນມັດ.
-
-ໝາຍເຫດ:
-1. ເສັ້ນໂຄ້ງທີ່ຜູ້ໃຊ້ກຳນົດຈະສົ່ງຜົນໄປຍັງເສັ້ນຂອບກົງກັນຂ້າມຂອງໜ້າພຽງ, ໃນທຸກໆໜ້າທີ່ເລືອກ.
-2. ໃຊ້ໄດ້ກັບບໍລິມາດຈຳນວນເທົ່າໃດກໍໄດ້, ບໍ່ວ່າຈະເຊື່ອມຕໍ່ກັນ ຫຼື ບໍ່ກໍຕາມ </translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation>ນຳໃຊ້ພື້ນຜິວ ແລະ ເສັ້ນໂຄ້ງແບບທຣານສ໌ຟີໄນໂດຍອັດຕະໂນມັດ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>ໜ້າພຽງ</translation>
     </message>
   </context>
   <context>
@@ -6093,28 +6093,28 @@ normal vector of the face is used as direction</source>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2021"/>
+      <location filename="../../Command.cpp" line="1981"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>ຂໍ້ຜິດພາດ: ຕົວຕອງສາມາດນຳໃຊ້ໄດ້ກັບວັດຖຸດຽວເທົັ້ນນັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2022"/>
-      <location filename="../../Command.cpp" line="2034"/>
+      <location filename="../../Command.cpp" line="1982"/>
+      <location filename="../../Command.cpp" line="1994"/>
       <source>The filter could not be set up.</source>
       <translation>ບໍ່ສາມາດຕັ້ງຄ່າຕົວຕອງໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2033"/>
+      <location filename="../../Command.cpp" line="1993"/>
       <source>Error: no post processing object selected.</source>
       <translation>ຂໍ້ຜິດພາດ: ບໍ່ມີວັດຖຸການປະມວນຜົນຂັ້ນສຸດທ້າຍທີ່ຖືກເລືອກ.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2052"/>
+      <location filename="../../Command.cpp" line="2012"/>
       <source>Error: Object not in a post processing group</source>
       <translation>ຂໍ້ຜິດພາດ: ວັດຖຸບໍ່ໄດ້ຢູ່ໃນກຸ່ມການປະມວນຜົນຂັ້ນສຸດທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2053"/>
+      <location filename="../../Command.cpp" line="2013"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
       <translation>ບໍ່ສາມາດຕັ້ງຄ່າຕົວຕອງໄດ້: ວັດຖຸບໍ່ໄດ້ຢູ່ໃນກຸ່ມການປະມວນຜົນຂັ້ນສຸດທ້າຍ.</translation>
     </message>
@@ -6546,7 +6546,7 @@ Please select a result type first.</source>
       <translation>ບໍ່ມີວັດຖຸຜົນລັດ</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="168"/>
       <source>
 
 Correct module found in: 
@@ -6557,7 +6557,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="176"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6566,7 +6566,7 @@ Should this module be loaded instead?</source>
 ຄວນໂຫລດໂມດູນນີ້ແທນຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="193"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6575,17 +6575,17 @@ No matching module was found in the current Python path.</source>
 ບໍ່ພົບໂມດູນທີ່ກົງກັນໃນ Python path ປັດຈຸບັນ.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>VTK Python module conflict</source>
       <translation>ໂມດູນ VTK Python ຂັດແຍ້ງກັນ</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>VTK Python Module Conflict</source>
       <translation>ໂມດູນ VTK Python ຂັດແຍ້ງກັນ</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="226"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>ຟັງຊັນນີ້ບໍ່ສາມາດໃຊ້ງານໄດ້ເນື່ອງຈາກໂມດູນ VTK Python ຂັດແຍ້ງກັນ</translation>
     </message>
@@ -6690,8 +6690,8 @@ No matching module was found in the current Python path.</source>
       <translation>ສ່ວນໃດຂອງເວັກເຕີຟິວ Y ທີ່ຈະໃຊ້ສຳລັບແກນ Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <location filename="../../../femobjects/post_extract1D.py" line="66"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>ລະບຸວ່າຈະໃຫ້ສະກັດຟິວສຳລັບທຸກໆເຟຣມທີ່ມີຫຼືບໍ່</translation>
     </message>
@@ -6711,14 +6711,14 @@ No matching module was found in the current Python path.</source>
       <translation>ແກ້ໄຂ {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="58"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <source>Show Plot</source>
       <translation>ສະແດງກຣາບ (Plot)</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="61"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <source>Show Data</source>
       <translation>ສະແດງຂໍ້ມູນ</translation>
     </message>
@@ -6937,17 +6937,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1669"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1670"/>
       <source>Electromagnetic Equations</source>
       <translation>ສົມຜົນໄຟຟ້າແມ່ເຫຼັກ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
+      <location filename="../../Command.cpp" line="1671"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>ສົມຜົນໄຟຟ້າແມ່ເຫຼັກສຳລັບຕົວແກ້ໄຂ Elmer</translation>
     </message>
@@ -6955,17 +6955,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2557"/>
+      <location filename="../../Command.cpp" line="2517"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2558"/>
+      <location filename="../../Command.cpp" line="2518"/>
       <source>Contours Filter</source>
       <translation>ຕົວຕອງເສັ້ນຄອນທົວ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2559"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Defines a contours filter that displays iso contours</source>
       <translation>ກຳນົດຕົວຕອງເສັ້ນຄອນທົວທີ່ສະແດງ iso contours</translation>
     </message>
@@ -7047,17 +7047,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1886"/>
+      <location filename="../../Command.cpp" line="1850"/>
       <source>Mechanical Equations</source>
       <translation>ສົມຜົນກົນລະສາດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1887"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>ສົມຜົນກົນລະສາດສຳລັບຕົວແກ້ໄຂ Elmer</translation>
     </message>
@@ -7397,11 +7397,11 @@ No matching module was found in the current Python path.</source>
       <translation>ລຶບອົງປະກອບອອກ</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1481"/>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <location filename="../../TaskCreateElementSet.cpp" line="253"/>
       <location filename="../../TaskCreateElementSet.cpp" line="512"/>
       <location filename="../../TaskCreateElementSet.cpp" line="609"/>
-      <location filename="../../Command.cpp" line="1481"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -7811,9 +7811,9 @@ Leave blank to use default Python executable</source>
     <name>TaskPostGlyph</name>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>ຮູບແບບຂອງກລິບ (Glyph)</translation>
     </message>
@@ -7855,10 +7855,10 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>ຟິວເວັກເຕີໃດທີ່ໃຊ້ໃນການກຳນົດທິດທາງຂອງກລິບ</translation>
     </message>
@@ -7869,9 +7869,9 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
@@ -7893,9 +7893,9 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>ຕົວຄູນຄົງທີ່ທີ່ໃຊ້ໃນການປັບຂະໜາດຂອງກລິບ</translation>
     </message>
@@ -7911,8 +7911,8 @@ Leave blank to use default Python executable</source>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>ຖ້າຂໍ້ມູນມາດຕາສ່ວນເປັນເວັກເຕີ, ຄຸນສົມບັດນີ້ຈະຕັດສິນວ່າກລິບຈະຖືກປັບຂະໜາດຕາມຂະໜາດຂອງເວັກເຕີ ຫຼື ຕາມແຕ່ລະອົງປະກອບ</translation>
     </message>
@@ -8073,17 +8073,17 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2554"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Calculator Filter</source>
       <translation>ຕົວຕອງການຄິດໄລ່</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>Creates a new field from current data</source>
       <translation>ສ້າງຟິວໃໝ່ຈາກຂໍ້ມູນປັດຈຸບັນ</translation>
     </message>
@@ -8091,17 +8091,17 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="3036"/>
+      <location filename="../../Command.cpp" line="2996"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3037"/>
+      <location filename="../../Command.cpp" line="2997"/>
       <source>Pipeline Branch</source>
       <translation>ສາຂາທໍ່ສົ່ງຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3038"/>
+      <location filename="../../Command.cpp" line="2998"/>
       <source>Branches the pipeline into a new path</source>
       <translation>ແຍກທໍ່ສົ່ງຂໍ້ມູນອອກເປັນເສັ້ນທາງໃໝ່</translation>
     </message>
@@ -8499,9 +8499,9 @@ Leave blank to use default Python executable</source>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>ຟອມ</translation>
     </message>
@@ -8719,99 +8719,26 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>SolverElmer</name>
+    <name>FemToolsCcx</name>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>ການຄວບຄຸມຕົວແກ້ບັນຫາ Elmer</translation>
+      <location filename="../../../femtools/ccxtools.py" line="423"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>ບໍ່ມີ ຫຼື ໄຟລ໌ ccx ຂອງ CalculiX ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>ໂຟນເດີເຮັດວຽກ</translation>
+      <location filename="../../../femtools/ccxtools.py" line="457"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>FEM: ໄຟລ໌ ccx ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>ຂຽນ</translation>
+      <location filename="../../../femtools/ccxtools.py" line="470"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>FEM: ບໍ່ພົບໄຟລ໌ ccx ຂອງ CalculiX '{}'. ກະລຸນາຕັ້ງເສັ້ນທາງໄຟລ໌ ccx ໃນແຖບການຕັ້ງຄ່າ FEM ຂອງ CalculiX.</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>ແກ້ໄຂ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>ເສັ້ນທາງໄປຫາໂຟນເດີເຮັດວຽກ. ປະຫວ່າງໄວ້ເພື່ອໃຊ້ຄ່າທີ່ຜູ້ໃຊ້ຕັ້ງໄວ້</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>ພາຣາມິເຕີຂອງຕົວແກ້ບັນຫາ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>ປະເພດການຈໍາລອງ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>ເວລາ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>ເວີຊັນຂອງຕົວແກ້ບັນຫາ</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>ການຄວບຄຸມຕົວແກ້ບັນຫາ Z88</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>ໂຟນເດີເຮັດວຽກ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>ຂຽນ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>ແກ້ໄຂ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>ເສັ້ນທາງໄປຫາໂຟນເດີເຮັດວຽກ. ປະຫວ່າງໄວ້ເພື່ອໃຊ້ຄ່າທີ່ຜູ້ໃຊ້ຕັ້ງໄວ້</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>ພາຣາມິເຕີຂອງຕົວແກ້ບັນຫາ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>ປະເພດຕົວແກ້ບັນຫາ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>ເວລາ</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>ເວີຊັນຂອງຕົວແກ້ບັນຫາ</translation>
+      <location filename="../../../femtools/ccxtools.py" line="482"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>FEM: ຜົນຈາກ CalculiX ccx '{}' ຄື '{}' ບໍ່ມີຂໍ້ຄວາມທີ່ຕ້ອງການ '{}'. ມີບັນຫາບາງຢ່າງໃນການເປີດໃຊ້ ccx. ກະລຸນາກວດສອບວ່າ ccx ສາມາດເຮັດວຽກເອງໄດ້ໂດຍບໍ່ຜ່ານ FreeCAD ຫຼື ບໍ່.</translation>
     </message>
   </context>
   <context>
@@ -8971,29 +8898,6 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="423"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>ບໍ່ມີ ຫຼື ໄຟລ໌ ccx ຂອງ CalculiX ບໍ່ຖືກຕ້ອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="457"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>FEM: ໄຟລ໌ ccx ບໍ່ຖືກຕ້ອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="470"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: ບໍ່ພົບໄຟລ໌ ccx ຂອງ CalculiX '{}'. ກະລຸນາຕັ້ງເສັ້ນທາງໄຟລ໌ ccx ໃນແຖບການຕັ້ງຄ່າ FEM ຂອງ CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="482"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: ຜົນຈາກ CalculiX ccx '{}' ຄື '{}' ບໍ່ມີຂໍ້ຄວາມທີ່ຕ້ອງການ '{}'. ມີບັນຫາບາງຢ່າງໃນການເປີດໃຊ້ ccx. ກະລຸນາກວດສອບວ່າ ccx ສາມາດເຮັດວຽກເອງໄດ້ໂດຍບໍ່ຜ່ານ FreeCAD ຫຼື ບໍ່.</translation>
-    </message>
-  </context>
-  <context>
     <name>self.sel_master</name>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
@@ -9010,11 +8914,99 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <name>SolverZ88</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="645"/>
-      <source>Input Error</source>
-      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>ການຄວບຄຸມຕົວແກ້ບັນຫາ Z88</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>ໂຟນເດີເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>ຂຽນ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>ແກ້ໄຂ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>ເສັ້ນທາງໄປຫາໂຟນເດີເຮັດວຽກ. ປະຫວ່າງໄວ້ເພື່ອໃຊ້ຄ່າທີ່ຜູ້ໃຊ້ຕັ້ງໄວ້</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>ພາຣາມິເຕີຂອງຕົວແກ້ບັນຫາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>ປະເພດຕົວແກ້ບັນຫາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>ເວລາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>ເວີຊັນຂອງຕົວແກ້ບັນຫາ</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>ການຄວບຄຸມຕົວແກ້ບັນຫາ Elmer</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>ໂຟນເດີເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>ຂຽນ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>ແກ້ໄຂ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>ເສັ້ນທາງໄປຫາໂຟນເດີເຮັດວຽກ. ປະຫວ່າງໄວ້ເພື່ອໃຊ້ຄ່າທີ່ຜູ້ໃຊ້ຕັ້ງໄວ້</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>ພາຣາມິເຕີຂອງຕົວແກ້ບັນຫາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>ປະເພດການຈໍາລອງ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>ເວລາ</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>ເວີຊັນຂອງຕົວແກ້ບັນຫາ</translation>
     </message>
   </context>
   <context>
@@ -9031,25 +9023,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="811"/>
-      <source>Input Error</source>
-      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="357"/>
-      <source>Input Error</source>
-      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="123"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="634"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
@@ -9063,25 +9039,33 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="651"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="336"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="394"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="811"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1158"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="123"/>
+      <source>Input Error</source>
+      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="408"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
@@ -9095,17 +9079,49 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="634"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1158"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="408"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="357"/>
+      <source>Input Error</source>
+      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="651"/>
+      <source>Input Error</source>
+      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="471"/>
+      <source>Input Error</source>
+      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="645"/>
+      <source>Input Error</source>
+      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="394"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
@@ -9122,22 +9138,6 @@ Leave blank to use default Python executable</source>
     <name>FemGui::TaskDlgPost</name>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="405"/>
-      <source>Input Error</source>
-      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="471"/>
-      <source>Input Error</source>
-      <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="336"/>
       <source>Input Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>

@@ -135,8 +135,8 @@
     <message>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Dönüştür</translation>
     </message>
@@ -1100,12 +1100,12 @@ sol ya da sağ tıklarken fareyi yukarı veya aşağı hareket ettirin</translat
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="183"/>
       <source>Export Configuration</source>
-      <translation type="unfinished">Export Configuration</translation>
+      <translation>Yapılandırmayı Dışa Aktar</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
       <source>Pack Already Exists</source>
-      <translation type="unfinished">Pack Already Exists</translation>
+      <translation>Paket Zaten Var</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -2856,7 +2856,7 @@ Set to 0 to redraw as fast as the graphics driver allows.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="567"/>
       <source> FPS</source>
-      <translation type="unfinished"> FPS</translation>
+      <translation> FPS</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="594"/>
@@ -4748,7 +4748,7 @@ Tercih sistemi, genel tercihlerde ayarlanmış olandır.</translation>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1168"/>
+      <location filename="../Placement.cpp" line="1173"/>
       <source>Placement</source>
       <translation>Yerleşim</translation>
     </message>
@@ -5833,7 +5833,7 @@ Tüm değişiklikler kaydedilsin mi?</translation>
     <message>
       <location filename="../EditorView.cpp" line="688"/>
       <source>%1 search</source>
-      <translation type="unfinished">%1 search</translation>
+      <translation>%1 ara</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="690"/>
@@ -5915,22 +5915,22 @@ Tüm değişiklikler kaydedilsin mi?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="956"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Dokunun YA DA farenin sol düğmesini tıklatın.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="958"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Ekranı iki parmağınızla sürükleyin VEYA farenin sağ düğmesine basın.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="960"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Ekranı tek parmakla sürükleyin YA DA sol fare düğmesine basın. Sketcher ve diğer düzenleme kiplerinde buna ek olarak Alt tuşunu basılı tutun.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="965"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>İki parmakla yakınlaştırma/uzaklaştırma yapın (ekrana iki parmak koyup birbirinden uzaklaştırın veya birbirine yaklaştırın) YA DA fare tekerleğini çevirin YA DA klavyeden PgUp/PgDown kullanın.</translation>
     </message>
@@ -5978,15 +5978,15 @@ Tüm değişiklikler kaydedilsin mi?</translation>
       <translation>Bit Eşlem</translation>
     </message>
     <message>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
+      <source>Export Graph</source>
+      <translation>Grafiği Dışa Aktar</translation>
+    </message>
+    <message>
       <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation>Grafiği dışa aktar</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="765"/>
-      <location filename="../GraphvizView.cpp" line="411"/>
-      <source>Export Graph</source>
-      <translation>Grafiği Dışa Aktar</translation>
     </message>
   </context>
   <context>
@@ -6580,21 +6580,21 @@ How do you want to proceed?</source>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="977"/>
       <source>object %1 (%2):
 </source>
-      <translation type="unfinished">object %1 (%2):
+      <translation>obje %1 (%2):
 </translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="984"/>
       <source>property %1
 </source>
-      <translation type="unfinished">property %1
+      <translation>özellik %1
 </translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="996"/>
       <source>document %1:
 </source>
-      <translation type="unfinished">document %1:
+      <translation>döküman %1:
 </translation>
     </message>
     <message>
@@ -6840,30 +6840,30 @@ Tüm verileri kaydetmeden çıkılsın mı?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="871"/>
+      <location filename="../Action.cpp" line="887"/>
       <source>Open...</source>
       <translation>Aç...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="872"/>
-      <location filename="../Action.cpp" line="873"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="889"/>
       <source>Open a document or import files.</source>
       <translation type="unfinished">Open a document or import files.</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="888"/>
-      <location filename="../Action.cpp" line="897"/>
+      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="913"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Son Dosyaları Temizle</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="898"/>
+      <location filename="../Action.cpp" line="914"/>
       <source>Clear the list of recent files?</source>
       <translation>Son dosyaların listesini temizleyin?</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="973"/>
+      <location filename="../Action.cpp" line="989"/>
       <source>Open file %1</source>
       <translation>Dosyayı aç %1</translation>
     </message>
@@ -6871,12 +6871,12 @@ Tüm verileri kaydetmeden çıkılsın mı?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1148"/>
+      <location filename="../Action.cpp" line="1164"/>
       <source>none</source>
       <translation>hiçbiri</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1166"/>
+      <location filename="../Action.cpp" line="1182"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>%1 makrosunu çalıştır (düzenlemek için Shift+tıklayın) klavye kısayolu: %2</translation>
     </message>
@@ -6934,7 +6934,7 @@ Tüm verileri kaydetmeden çıkılsın mı?</translation>
     <message>
       <location filename="../EditorView.cpp" line="970"/>
       <source>No results</source>
-      <translation type="unfinished">No results</translation>
+      <translation>Sonuç yok</translation>
     </message>
   </context>
   <context>
@@ -7428,12 +7428,17 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <message>
       <location filename="Translator.cpp" line="276"/>
       <source>Lao</source>
-      <translation type="unfinished">Lao</translation>
+      <translation>Lao Dili</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="277"/>
       <source>Hebrew</source>
-      <translation type="unfinished">Hebrew</translation>
+      <translation>İbranice</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="280"/>
+      <source>Persian</source>
+      <translation type="unfinished">Persian</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="239"/>
@@ -7748,12 +7753,12 @@ Başka bir dizin belirlemek ister misiniz?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="732"/>
+      <location filename="../Action.cpp" line="748"/>
       <source>Selects the '%1' workbench</source>
       <translation>'%1' çalışma tezgâhını seçer</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="760"/>
+      <location filename="../Action.cpp" line="776"/>
       <source>Select the '%1' workbench</source>
       <translation>'%1' çalışma tezgâhını seçin</translation>
     </message>
@@ -8169,13 +8174,6 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
       <translation>Belge Birleştirme</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <source>%1 document</source>
-      <translation>%1 belge</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="687"/>
       <source>Cannot merge document with itself.</source>
       <translation>Belge kendisiyle birleştirilemez.</translation>
@@ -8580,7 +8578,7 @@ Use 'Save As…' to preserve the original file.
     <message>
       <location filename="../Document.cpp" line="1594"/>
       <source>an unknown older version of FreeCAD</source>
-      <translation type="unfinished">an unknown older version of FreeCAD</translation>
+      <translation>FreeCAD'ın bilinmeyen daha eski bir versiyonu</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1595"/>
@@ -8622,6 +8620,13 @@ Use 'Save As…' to preserve the original file.
       <location filename="../Document.cpp" line="1732"/>
       <source>Save document under new filename…</source>
       <translation>Belgeyi yeni bir dosya adıyla kaydet…</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
+      <source>%1 document</source>
+      <translation>%1 belge</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1865"/>
@@ -9017,8 +9022,8 @@ her türlü değişiklik kaybolacaktır.
       <translation>Kaplamayı aç/kapat</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <location filename="../OverlayManager.cpp" line="1131"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <source>Toggle floating window</source>
       <translation>Yüzen pencereyi aç/kapat</translation>
     </message>
@@ -9204,6 +9209,11 @@ her türlü değişiklik kaybolacaktır.
       <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
     </message>
     <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Parça</translation>
+    </message>
+    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation>Görüntü Düzlemini Düzenle</translation>
@@ -9217,11 +9227,6 @@ her türlü değişiklik kaybolacaktır.
       <location filename="../FileDialog.cpp" line="301"/>
       <source>All Files</source>
       <translation>Tüm Dosyalar</translation>
-    </message>
-    <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Parça</translation>
     </message>
   </context>
   <context>
@@ -9546,8 +9551,8 @@ her türlü değişiklik kaybolacaktır.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <source>Unnamed</source>
       <translation>İsimsiz</translation>
     </message>
@@ -14767,49 +14772,6 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Nesne</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Türüne göre filtre</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>3B görünüm seçimini tüm nesne hiyerarşisiyle eşzamanlar</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Alt-nesne seçimini eşzamanla</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Ara</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Yukarıdaki sonuçları filtrelemek için bir arama modeli</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Sıfırla</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Temizle</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14912,17 +14874,69 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
+    <name>Gui::Dialog::DlgDocumentObject</name>
     <message>
-      <location filename="../FileDialog.cpp" line="579"/>
-      <source>Save As</source>
-      <translation>Farklı Kaydet</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Nesne</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="715"/>
-      <location filename="../FileDialog.cpp" line="811"/>
-      <source>Open</source>
-      <translation>Aç</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Türüne göre filtre</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>3B görünüm seçimini tüm nesne hiyerarşisiyle eşzamanlar</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Alt-nesne seçimini eşzamanla</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Ara</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Yukarıdaki sonuçları filtrelemek için bir arama modeli</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Sıfırla</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Temizle</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1067"/>
+      <source>Experimental</source>
+      <translation>Deneysel</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1073"/>
+      <source>Development preview</source>
+      <translation type="unfinished">Development preview</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1074"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
     </message>
   </context>
   <context>
@@ -14964,16 +14978,17 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
+    <name>FileDialog</name>
     <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Alt panelleri aç/kapat</translation>
+      <location filename="../FileDialog.cpp" line="579"/>
+      <source>Save As</source>
+      <translation>Farklı Kaydet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
+      <source>Open</source>
+      <translation>Aç</translation>
     </message>
   </context>
   <context>
@@ -14987,32 +15002,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
       <translation>Değer</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOpenGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
-      <source>&amp;Open…</source>
-      <translation>&amp;Aç…</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
-      <source>Opens a document or imports files</source>
-      <translation>Bir belgeyi açar veya dosyaları içe aktarır</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSaveGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="966"/>
-      <source>Save</source>
-      <translation>Kaydet</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="967"/>
-      <source>Saves the active document</source>
-      <translation>Etkin belgeyi kaydeder</translation>
     </message>
   </context>
   <context>
@@ -15060,26 +15049,42 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Command</name>
+    <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../Command.cpp" line="1067"/>
-      <source>Experimental</source>
-      <translation>Deneysel</translation>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Alt panelleri aç/kapat</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
-      <source>EXPERIMENTAL: this command may change.</source>
-      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation type="unfinished">Toggles the bottom dock panels</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdOpenGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="85"/>
+      <source>&amp;Open…</source>
+      <translation>&amp;Aç…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1073"/>
-      <source>Development preview</source>
-      <translation type="unfinished">Development preview</translation>
+      <location filename="../CommandDoc.cpp" line="86"/>
+      <source>Opens a document or imports files</source>
+      <translation>Bir belgeyi açar veya dosyaları içe aktarır</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <source>Save</source>
+      <translation>Kaydet</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1074"/>
-      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
+      <location filename="../CommandDoc.cpp" line="967"/>
+      <source>Saves the active document</source>
+      <translation>Etkin belgeyi kaydeder</translation>
     </message>
   </context>
   <context>

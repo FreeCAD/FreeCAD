@@ -81,7 +81,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation>Точка початку</translation>
+      <translation>Початок координат</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,8 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation>Зберігає останній вибір користувача щодо того, чи застосовувати налаштування CopyOnChange до всіх посилань, які ведуть до одного й того ж сконфігурованого об’єкта</translation>
+      <translation>Зберігає останній вибір користувача щодо того, чи застосовувати налаштування CopyOnChange до всіх посилань,
+що посилаються на той самий конфігурований об'єкт</translation>
     </message>
   </context>
 </TS>

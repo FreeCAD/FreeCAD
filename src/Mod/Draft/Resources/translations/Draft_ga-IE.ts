@@ -1085,10 +1085,10 @@ will be moved to the center of the view.</source>
       <translation>Leithead líne</translation>
     </message>
     <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="202"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1450,9 +1450,9 @@ Athraíonn an socrú seo an mhaoin Aistrigh.</translation>
       <translation>Plána oibre réamhshocraithe</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <location filename="../ui/preferences-draft.ui" line="14"/>
       <location filename="../ui/preferences-draft.ui" line="20"/>
-      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <source>General</source>
       <translation>Ginearálta</translation>
     </message>
@@ -2156,8 +2156,8 @@ Is é an luach seo fad uasta na coda.</translation>
       <translation>OCA</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
       <source>Import Options</source>
       <translation>Roghanna Iompórtála</translation>
     </message>
@@ -2464,8 +2464,8 @@ a chruthú in ionad réada Dréachta nó Cuid. Sáraíonn sé seo an socrú 'Iom
       <translation>Cruthaigh sceitsí</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>Roghanna Easpórtála</translation>
     </message>
@@ -3082,9 +3082,9 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
     </message>
     <message>
       <location filename="../../DraftGui.py" line="834"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
       <location filename="../../draftguitools/gui_scale.py" line="229"/>
       <location filename="../../draftguitools/gui_rotate.py" line="292"/>
-      <location filename="../../draftguitools/gui_move.py" line="221"/>
       <source>Copy</source>
       <translation>Cóipeáil</translation>
     </message>
@@ -3630,29 +3630,29 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Socraigh scála anótála saincheaptha i bhformáid x:x, x=x</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="944"/>
-      <location filename="../../draftutils/utils.py" line="1135"/>
-      <location filename="../../draftutils/groups.py" line="101"/>
-      <location filename="../../draftfunctions/cut.py" line="60"/>
+      <location filename="../../draftmake/make_label.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="179"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
-      <location filename="../../draftmake/make_text.py" line="95"/>
-      <location filename="../../draftmake/make_text.py" line="181"/>
-      <location filename="../../draftmake/make_layer.py" line="57"/>
-      <location filename="../../draftmake/make_layer.py" line="150"/>
-      <location filename="../../draftmake/make_label.py" line="202"/>
-      <location filename="../../draftmake/make_pointarray.py" line="92"/>
       <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_pointarray.py" line="92"/>
       <location filename="../../draftmake/make_dimension.py" line="267"/>
       <location filename="../../draftmake/make_dimension.py" line="356"/>
       <location filename="../../draftmake/make_dimension.py" line="484"/>
       <location filename="../../draftmake/make_dimension.py" line="605"/>
+      <location filename="../../draftmake/make_text.py" line="95"/>
+      <location filename="../../draftmake/make_text.py" line="181"/>
+      <location filename="../../draftmake/make_layer.py" line="57"/>
+      <location filename="../../draftmake/make_layer.py" line="150"/>
+      <location filename="../../draftfunctions/cut.py" line="60"/>
+      <location filename="../../draftutils/groups.py" line="101"/>
+      <location filename="../../draftutils/utils.py" line="1135"/>
+      <location filename="../../draftutils/gui_utils.py" line="944"/>
       <source>No active document. Aborting.</source>
       <translation>Gan aon doiciméad gníomhach. Ag cur as oifig.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="952"/>
       <location filename="../../draftutils/groups.py" line="137"/>
+      <location filename="../../draftutils/gui_utils.py" line="952"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Ionchur mícheart: níl réad {} sa cháipéis.</translation>
     </message>
@@ -3805,10 +3805,10 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>%1 pointe téacs piocadh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
       <location filename="../../draftguitools/gui_lines.py" line="95"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
       <source>Pick first point</source>
       <translation>Roghnaigh an chéad phointe</translation>
     </message>
@@ -3816,38 +3816,6 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <location filename="../../draftguitools/gui_dimensions.py" line="514"/>
       <source>Edges do not intersect!</source>
       <translation>Ní thrasnaíonn imill a chéile!</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="596"/>
-      <source>%1 pick dimension position</source>
-      <translation>%1 suíomh toise roghnaithe</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="598"/>
-      <source>%1 select edge</source>
-      <translation>%1 roghnaigh imeall</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="615"/>
-      <source>%1 pick next dimension point</source>
-      <translation>%1 roghnaigh an chéad phointe toise eile</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
-      <location filename="../../draftguitools/gui_edit.py" line="391"/>
-      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
-      <source>%1 finish</source>
-      <translation>Críoch %1</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="623"/>
-      <source>%1 pick first dimension point</source>
-      <translation>%1 roghnaigh an chéad phointe toise</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="632"/>
-      <source>%1 pick second dimension point</source>
-      <translation>%1 roghnaigh an dara pointe toise</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="184"/>
@@ -3887,8 +3855,6 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Polalíne</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="153"/>
-      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <location filename="../../draftguitools/gui_beziers.py" line="158"/>
       <location filename="../../draftguitools/gui_beziers.py" line="161"/>
       <location filename="../../draftguitools/gui_lines.py" line="240"/>
@@ -3896,6 +3862,8 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <location filename="../../draftguitools/gui_lines.py" line="266"/>
       <location filename="../../draftguitools/gui_lines.py" line="274"/>
       <location filename="../../draftguitools/gui_lines.py" line="285"/>
+      <location filename="../../draftguitools/gui_splines.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <source>Pick next point</source>
       <translation>Roghnaigh an chéad phointe eile</translation>
     </message>
@@ -3972,6 +3940,18 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Roghnaigh pointe deiridh</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_move.py" line="195"/>
+      <location filename="../../draftguitools/gui_scale.py" line="126"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="245"/>
+      <source>No valid subelements selected</source>
+      <translation>Níl aon fho-eilimintí bailí roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="223"/>
+      <source>Move</source>
+      <translation>Bog</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
       <translation>%1 pointe tosaigh roghnaithe</translation>
@@ -3982,30 +3962,18 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>%1 pointe deiridh piocadh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="126"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="245"/>
-      <location filename="../../draftguitools/gui_move.py" line="195"/>
-      <source>No valid subelements selected</source>
-      <translation>Níl aon fho-eilimintí bailí roghnaithe</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="223"/>
-      <source>Move</source>
-      <translation>Bog</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="90"/>
       <location filename="../../draftguitools/gui_arcs.py" line="94"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="90"/>
       <source>Pick center point</source>
       <translation>Roghnaigh pointe lárnach</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="208"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="219"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="282"/>
       <location filename="../../draftguitools/gui_arcs.py" line="269"/>
       <location filename="../../draftguitools/gui_arcs.py" line="286"/>
       <location filename="../../draftguitools/gui_arcs.py" line="430"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="208"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="219"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="282"/>
       <source>Pick radius</source>
       <translation>Roghnaigh ga</translation>
     </message>
@@ -4102,14 +4070,14 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Coinnigh %1 imeall roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <location filename="../../draftguitools/gui_arcs.py" line="490"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <source>%1 pick center</source>
       <translation>%1 ionad piocadh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="314"/>
       <location filename="../../draftguitools/gui_arcs.py" line="492"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="314"/>
       <source>%1 pick radius</source>
       <translation>%1 ga piocála</translation>
     </message>
@@ -4160,16 +4128,16 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Cruthaigh Arc ó 3 Phointe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="658"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="222"/>
       <location filename="../../draftguitools/gui_lines.py" line="318"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="222"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="658"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <location filename="../../draftguitools/gui_lines.py" line="322"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <source>%1 pick second point</source>
       <translation>%1 roghnaigh an dara pointe</translation>
     </message>
@@ -4192,6 +4160,13 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
       <translation>%1 rith Bog, Rothlaigh nó Scálaigh ar fho-eilimintí</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
+      <location filename="../../draftguitools/gui_edit.py" line="391"/>
+      <source>%1 finish</source>
+      <translation>Críoch %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="298"/>
@@ -4337,9 +4312,9 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Cruthaigh Pointe</translation>
     </message>
     <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <source>%1 pick point</source>
       <translation>%1 pointe piocadh</translation>
     </message>
@@ -4903,6 +4878,31 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Imeall ró-ghearr!</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="596"/>
+      <source>%1 pick dimension position</source>
+      <translation>%1 suíomh toise roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="598"/>
+      <source>%1 select edge</source>
+      <translation>%1 roghnaigh imeall</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="615"/>
+      <source>%1 pick next dimension point</source>
+      <translation>%1 roghnaigh an chéad phointe toise eile</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="623"/>
+      <source>%1 pick first dimension point</source>
+      <translation>%1 roghnaigh an chéad phointe toise</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="632"/>
+      <source>%1 pick second dimension point</source>
+      <translation>%1 roghnaigh an dara pointe toise</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_stretch.py" line="80"/>
       <source>Select an object to stretch</source>
       <translation>Roghnaigh réad le síneadh</translation>
@@ -5440,24 +5440,24 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Ionchur mícheart: níl an path_object sa cháipéis.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_label.py" line="318"/>
       <location filename="../../draftmake/make_patharray.py" line="195"/>
       <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_patharray.py" line="273"/>
       <location filename="../../draftmake/make_patharray.py" line="354"/>
       <location filename="../../draftmake/make_polararray.py" line="123"/>
-      <location filename="../../draftmake/make_layer.py" line="189"/>
-      <location filename="../../draftmake/make_label.py" line="318"/>
       <location filename="../../draftmake/make_orthoarray.py" line="139"/>
+      <location filename="../../draftmake/make_layer.py" line="189"/>
       <source>Wrong input: must be a number.</source>
       <translation>Ionchur mícheart: ní mór gur uimhir í.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_label.py" line="210"/>
       <location filename="../../draftmake/make_patharray.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="253"/>
       <location filename="../../draftmake/make_patharray.py" line="260"/>
       <location filename="../../draftmake/make_polararray.py" line="135"/>
       <location filename="../../draftmake/make_circulararray.py" line="165"/>
-      <location filename="../../draftmake/make_label.py" line="210"/>
       <location filename="../../draftmake/make_dimension.py" line="273"/>
       <location filename="../../draftmake/make_dimension.py" line="279"/>
       <location filename="../../draftmake/make_dimension.py" line="286"/>
@@ -5507,9 +5507,9 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Ionchur: ní mór líon na n-eilimintí a bheith 1 ar a laghad. Tá sé socraithe go 1.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_text.py" line="113"/>
       <location filename="../../draftmake/make_label.py" line="218"/>
       <location filename="../../draftmake/make_pointarray.py" line="119"/>
+      <location filename="../../draftmake/make_text.py" line="113"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Ionchur mícheart: ní mór gur socrúchán, veicteoir, nó rothlú é.</translation>
     </message>
@@ -5544,10 +5544,10 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Ionchur mícheart: ní mór lipéad_cineál a bheith ar cheann de na nithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_text.py" line="101"/>
-      <location filename="../../draftmake/make_text.py" line="105"/>
       <location filename="../../draftmake/make_label.py" line="286"/>
       <location filename="../../draftmake/make_label.py" line="290"/>
+      <location filename="../../draftmake/make_text.py" line="101"/>
+      <location filename="../../draftmake/make_text.py" line="105"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>Ionchur mícheart: ní mór gur liosta teaghrán nó teaghrán aonair é.</translation>
     </message>
@@ -5693,16 +5693,16 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Ionchur mícheart: ní mór uimhir idir 0 agus 100 a bheith ann.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
       <location filename="../../draftviewproviders/view_base.py" line="470"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="208"/>
       <location filename="../../draftviewproviders/view_base.py" line="475"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="208"/>
       <source>Flatten</source>
       <translation>Leacaigh</translation>
     </message>
@@ -6146,14 +6146,14 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
       <translation>Gan aon aghaidheanna bailí don haiste</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
-      <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
-      <translation>Coinníonn sé an luach socraithe le linn ionchuir 3T. Díghlasálann an deilbhín glasála nó cliceáil faoi dhó an réimse.</translation>
-    </message>
-    <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
       <translation>Sábháil Radharc Ceamara</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
+      <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
+      <translation>Coinníonn sé an luach socraithe le linn ionchuir 3T. Díghlasálann an deilbhín glasála nó cliceáil faoi dhó an réimse.</translation>
     </message>
   </context>
   <context>
@@ -6342,8 +6342,8 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
       <translation>Ar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <location filename="../../draftobjects/label.py" line="326"/>
+      <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
@@ -7059,20 +7059,20 @@ comhleá nó Bréagach le haghaidh cumaisc</translation>
       <translation>Ga an chiorcail</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="61"/>
-      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
       <location filename="../../draftobjects/polygon.py" line="67"/>
+      <location filename="../../draftobjects/ellipse.py" line="64"/>
+      <location filename="../../draftobjects/circle.py" line="61"/>
       <source>Create a face</source>
       <translation>Cruthaigh aghaidh</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="64"/>
-      <location filename="../../draftobjects/bspline.py" line="57"/>
-      <location filename="../../draftobjects/wire.py" line="90"/>
       <location filename="../../draftobjects/rectangle.py" line="70"/>
-      <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
       <location filename="../../draftobjects/polygon.py" line="70"/>
+      <location filename="../../draftobjects/circle.py" line="64"/>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <location filename="../../draftobjects/wire.py" line="90"/>
       <source>The area of this object</source>
       <translation>Achar an réada seo</translation>
     </message>
@@ -7097,16 +7097,16 @@ comhleá nó Bréagach le haghaidh cumaisc</translation>
       <translation>Conas is gá an polagán a tharraingt ón gciorcal rialaithe</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="78"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/polygon.py" line="61"/>
+      <location filename="../../draftobjects/wire.py" line="78"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Ga le húsáid chun na coirnéil a líonadh</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="81"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
       <location filename="../../draftobjects/polygon.py" line="64"/>
+      <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>Méid an chamfer le tabhairt do na coirnéil</translation>
     </message>
@@ -7116,8 +7116,8 @@ comhleá nó Bréagach le haghaidh cumaisc</translation>
       <translation>An réad bonn a dhúblófar.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
       <location filename="../../draftobjects/patharray.py" line="228"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>An réad ar a ndáilfear na cóipeanna. Caithfidh 'Imill' a bheith ann.</translation>
     </message>
@@ -7132,18 +7132,18 @@ comhleá nó Bréagach le haghaidh cumaisc</translation>
       <translation>Fachtóir rothlaithe an eagair casta.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
-      <location filename="../../draftobjects/array.py" line="325"/>
       <location filename="../../draftobjects/patharray.py" line="262"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
+      <location filename="../../draftobjects/array.py" line="325"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Taispeáin na heilimintí eagar aonair (i gcás eagar Nasc amháin)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
-      <location filename="../../draftobjects/pointarray.py" line="118"/>
-      <location filename="../../draftobjects/array.py" line="148"/>
       <location filename="../../draftobjects/patharray.py" line="269"/>
+      <location filename="../../draftobjects/pointarray.py" line="118"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
+      <location filename="../../draftobjects/array.py" line="148"/>
       <source>The placement for each array element</source>
       <translation>An socrúchán do gach eilimint eagar</translation>
     </message>
@@ -7266,8 +7266,8 @@ Agus stíl shábháilte á húsáid, beidh cuid de na hairíonna radhairc inléi
 ní bheidh siad in-eagarthóireacht ach tríd an stíl a athrú tríd an uirlis 'Eagarthóir stíl anótála'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="101"/>
       <location filename="../../draftobjects/patharray.py" line="220"/>
+      <location filename="../../draftobjects/array.py" line="101"/>
       <source>The base object that will be duplicated</source>
       <translation>An réad bunúsach a dhúblófar</translation>
     </message>
@@ -7381,10 +7381,10 @@ Otherwise the copies will have the same orientation as the original Base object.
 - Ciorclach: cuireann sé na cóipeanna i gciorcail chomhlárnacha timpeall an réada bhunúsaigh.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
-      <location filename="../../draftobjects/pointarray.py" line="86"/>
-      <location filename="../../draftobjects/array.py" line="129"/>
       <location filename="../../draftobjects/patharray.py" line="255"/>
+      <location filename="../../draftobjects/pointarray.py" line="86"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
+      <location filename="../../draftobjects/array.py" line="129"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>Sonraíonn sé seo an gcaithfear na cóipeanna a chumasc le chéile má bhíonn siad i dteagmháil lena chéile (níos moille)</translation>
     </message>
@@ -8102,18 +8102,18 @@ Fág bán le haghaidh réamhshocrú an chórais.
 Úsáid 'arch' chun nótaíocht arch SAM a fhorchur</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="67"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="80"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="67"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="80"/>
       <source>Arrow size</source>
       <translation>Méid na saighe</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="72"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="85"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="72"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="85"/>
       <source>Arrow type</source>
       <translation>Cineál saighead</translation>
     </message>

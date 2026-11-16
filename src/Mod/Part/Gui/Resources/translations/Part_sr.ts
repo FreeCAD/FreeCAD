@@ -1198,22 +1198,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2390"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2399"/>
+      <location filename="../../Command.cpp" line="2391"/>
       <source>Box Selection</source>
       <translation>Правоугаони избор</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2392"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>Изабери елементе у 3Д погледу правоугаоним избором</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Box selection</source>
       <translation>Правоугаони избор</translation>
     </message>
@@ -1221,17 +1221,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="2312"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2313"/>
       <source>Check Geometry</source>
       <translation>Провери Геометрију</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2322"/>
+      <location filename="../../Command.cpp" line="2314"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>Проналази грешке на изабраним облицима</translation>
     </message>
@@ -1239,17 +1239,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2346"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2347"/>
       <source>Appearance per &amp;Face</source>
       <translation>Офарбај појединачне странице</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2348"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>Офарбај појединачне странице изабраног објекта</translation>
     </message>
@@ -1257,17 +1257,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1401"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Boolean Operation</source>
       <translation>Буловe oперацијe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1409"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation>Примени булову операцију на изабране облике</translation>
     </message>
@@ -1330,17 +1330,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1701"/>
       <source>Shape Builder</source>
       <translation>Градитељ облика</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1703"/>
       <source>Advanced utility to create shapes</source>
       <translation>Напредна алатка за прављење облика</translation>
     </message>
@@ -1348,17 +1348,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1612"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Chamfer</source>
       <translation>Обaрање ивица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>Обори изабране ивице неког облика</translation>
     </message>
@@ -1384,17 +1384,17 @@
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="817"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="822"/>
+      <location filename="../../Command.cpp" line="818"/>
       <source>Compound Tools</source>
       <translation>Алатке за састављање</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="823"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Compound tools for working with multiple shapes</source>
       <translation>Алатке за састављање намењене за рад са више облика</translation>
     </message>
@@ -1420,17 +1420,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1921"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1922"/>
       <source>Offset</source>
       <translation>Одмак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1929"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Алати за одмицање облика (конструисање паралелних облика)</translation>
     </message>
@@ -1456,17 +1456,17 @@
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="932"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="933"/>
       <source>Compound</source>
       <translation>Састављени објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Compounds the selected shapes</source>
       <translation>Направи састављени објекат од изабраних облика</translation>
     </message>
@@ -1493,17 +1493,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
+      <location filename="../../Command.cpp" line="1661"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1668"/>
+      <location filename="../../Command.cpp" line="1662"/>
       <source>Cross-Sections</source>
       <translation>Попречни пресеци</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Creates cross-sections</source>
       <translation>Направи попречне пресеке</translation>
     </message>
@@ -1584,17 +1584,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1140"/>
+      <location filename="../../Command.cpp" line="1134"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1141"/>
+      <location filename="../../Command.cpp" line="1135"/>
       <source>Export CAD File</source>
       <translation>Извези CAD датотеку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>Exports to a CAD file</source>
       <translation>Извези у CAD датотеку</translation>
     </message>
@@ -1602,17 +1602,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Extrude</source>
       <translation>Извлачење</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>Извуци изабрану скицу или профил</translation>
     </message>
@@ -1620,17 +1620,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1583"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Fillet</source>
       <translation>Заобљење</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1585"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>Заобли изабране ивице облика</translation>
     </message>
@@ -1656,17 +1656,17 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="1070"/>
+      <location filename="../../Command.cpp" line="1064"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1071"/>
+      <location filename="../../Command.cpp" line="1065"/>
       <source>Import CAD File</source>
       <translation>Увези CAD датотеку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1067"/>
       <source>Imports a CAD file</source>
       <translation>Увези CAD датотеку</translation>
     </message>
@@ -1674,17 +1674,17 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Import Curve Network</source>
       <translation>Увези мрежу кривих</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Imports a curve network</source>
       <translation>Увези мрежу кривих</translation>
     </message>
@@ -1692,17 +1692,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>Loft</source>
       <translation>По пресецима</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Lofts the selected profiles</source>
       <translation>Направи облик извлачењем изабраних пресека једног у други</translation>
     </message>
@@ -1710,17 +1710,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>Face From Wires</source>
       <translation>Страница помоћу ивица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1498"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>Направи страницу од изабраних жичаних елемената или скице</translation>
     </message>
@@ -1728,17 +1728,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1239"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1246"/>
+      <location filename="../../Command.cpp" line="1240"/>
       <source>Convert to Solid</source>
       <translation>Претвори у пуно тело</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1247"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Претвори изабрану љуску или састављени објекат у пуно тело</translation>
     </message>
@@ -1746,17 +1746,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1633"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1640"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Mirror</source>
       <translation>Симетрично пресликавање</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1641"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Mirrors the selected shape</source>
       <translation>Симетрично пресликај изабрани облик</translation>
     </message>
@@ -1764,17 +1764,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1795"/>
+      <location filename="../../Command.cpp" line="1789"/>
       <source>3D Offset</source>
       <translation>3Д одмак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1796"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>Offsets shapes in 3D</source>
       <translation>Одмакни облик у 3Д</translation>
     </message>
@@ -1782,17 +1782,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1855"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>2D Offset</source>
       <translation>2D одмак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1863"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>Одмакни облик у 2Д</translation>
     </message>
@@ -1854,17 +1854,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2420"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2429"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>Project on Surface</source>
       <translation>Пројицирај</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2430"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1896,17 +1896,17 @@ of the projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1333"/>
       <source>Reverse Shapes</source>
       <translation>Окрени нормале</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1340"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Окрени оријентацију нормала страница изабраног облика</translation>
     </message>
@@ -1914,17 +1914,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1550"/>
       <source>Revolve</source>
       <translation>Обрни</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Revolves the selected shape</source>
       <translation>Обрни изабрани облик око осе</translation>
     </message>
@@ -1932,17 +1932,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Ruled Surface</source>
       <translation>Правоизводна површ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2178"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>Направи правоизводну површ између два жичана елемента</translation>
     </message>
@@ -1950,17 +1950,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1000"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1001"/>
+      <location filename="../../Command.cpp" line="995"/>
       <source>Section</source>
       <translation>Пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1002"/>
+      <location filename="../../Command.cpp" line="996"/>
       <source>Sections 2 selected shapes</source>
       <translation>Пресек 2 изабрана облика</translation>
     </message>
@@ -2041,17 +2041,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1765"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1766"/>
+      <location filename="../../Command.cpp" line="1760"/>
       <source>Sweep</source>
       <translation>По водиљи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1767"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>Sweeps profiles along a wire</source>
       <translation>Направи облик извлачењем пресека по водиљи</translation>
     </message>
@@ -2059,27 +2059,27 @@ of the projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2021"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2022"/>
       <source>Thickness</source>
       <translation>Танкозидни објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2031"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>Направи танкозидно пуно тео</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2090"/>
+      <location filename="../../Command.cpp" line="2082"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2091"/>
+      <location filename="../../Command.cpp" line="2083"/>
       <source>Selected shape is not a solid</source>
       <translation>Изабрани облик није пуно тело</translation>
     </message>
@@ -2145,97 +2145,97 @@ of the projection.</source>
       <translation>Унија</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../Command.cpp" line="972"/>
       <source>Compound</source>
       <translation>Састављени објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1029"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Section</source>
       <translation>Пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1095"/>
       <source>Import Part</source>
       <translation>Увези део</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Import Curve Net</source>
       <translation>Увези мрежу кривих</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1352"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Reverse</source>
       <translation>Обрнуто</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1515"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Make face</source>
       <translation>Направи страницу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1821"/>
+      <location filename="../../Command.cpp" line="1815"/>
       <source>Make Offset</source>
       <translation>Направи одмак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1889"/>
+      <location filename="../../Command.cpp" line="1883"/>
       <source>Make 2D Offset</source>
       <translation>Направи 2D одмак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2090"/>
       <source>Make Thickness</source>
       <translation>Направи танкозидни објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2287"/>
+      <location filename="../../Command.cpp" line="2279"/>
       <source>Create ruled surface</source>
       <translation>Направи правоизводну површ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2651"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Circular Link Array</source>
       <translation>Прстенасто умножавање спона</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2686"/>
+      <location filename="../../Command.cpp" line="2678"/>
       <source>Path Link Array</source>
       <translation>Умножавање спона по водиљи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2721"/>
+      <location filename="../../Command.cpp" line="2713"/>
       <source>Point Link Array</source>
       <translation>Умножавање спона по тачкама</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2756"/>
+      <location filename="../../Command.cpp" line="2748"/>
       <source>Linear Link Array</source>
       <translation>Правоугаоно умножавање спона</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2791"/>
+      <location filename="../../Command.cpp" line="2783"/>
       <source>Polar Link Array</source>
       <translation>Поларно умножавање спона</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2819"/>
+      <location filename="../../Command.cpp" line="2811"/>
       <source>Add coordinate system</source>
       <translation>Направи координатни систем</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2858"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Add datum plane</source>
       <translation>Направи помоћну раван</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2892"/>
+      <location filename="../../Command.cpp" line="2884"/>
       <source>Add datum line</source>
       <translation>Направи помоћну праву</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2926"/>
+      <location filename="../../Command.cpp" line="2918"/>
       <source>Add datum point</source>
       <translation>Направи помоћну тачку</translation>
     </message>
@@ -4376,22 +4376,32 @@ Check one or more edge entities first.</source>
       <translation>Максимални угаони отклон</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation>Примени ова подешавања одступања на све објекте у тренутно отвореним документима</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation>Примени на све отворене документе</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Задавање премалог одступања узрокује да апроксимација траје дуже и на тај начин се замрзава или успорава GUI (Графичко радно окружење).</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>Максимални угаони отклон</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Задавање премалог одступања угла узрокује да апроксимација траје дуже и на тај начин се замрзава или успорава GUI (Графичко радно окружење).</translation>
     </message>
@@ -5063,7 +5073,7 @@ the sketch plane's normal vector will be used</source>
       <translation>Изабери облик за симетрично пресликавање.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>Нема таквог документа "%1".</translation>
     </message>
@@ -6165,7 +6175,7 @@ in the 3D view for the sweep path.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
-      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../Command.cpp" line="1014"/>
       <source>Select 2 shapes</source>
       <translation>Изабери 2 облика</translation>
     </message>
@@ -6173,11 +6183,11 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="337"/>
       <location filename="../../Command.cpp" line="414"/>
       <location filename="../../Command.cpp" line="514"/>
-      <location filename="../../Command.cpp" line="956"/>
-      <location filename="../../Command.cpp" line="1019"/>
-      <location filename="../../Command.cpp" line="2281"/>
-      <location filename="../../Command.cpp" line="2552"/>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="2273"/>
+      <location filename="../../Command.cpp" line="2544"/>
+      <location filename="../../Command.cpp" line="2554"/>
       <source>Wrong Selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -6201,39 +6211,39 @@ Continue?</source>
       <translation>За одређивање уније изабери најмање два облика или изабери једно састављено тело које садржи два или више облика.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="951"/>
       <source>Select at least one shape</source>
       <translation>Изабери најмање један објекат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1084"/>
-      <location filename="../../Command.cpp" line="1154"/>
+      <location filename="../../Command.cpp" line="1078"/>
+      <location filename="../../Command.cpp" line="1148"/>
       <source>STEP with colors</source>
       <translation>STEP са бојама</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1086"/>
-      <location filename="../../Command.cpp" line="1156"/>
+      <location filename="../../Command.cpp" line="1080"/>
+      <location filename="../../Command.cpp" line="1150"/>
       <source>IGES with colors</source>
       <translation>IGES са бојама</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1199"/>
       <source>All CAD Files</source>
       <translation>Све CAD датотеке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2545"/>
       <source>Select at most one object to array.</source>
       <translation>Изабери један објекат за умножавање.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Select one object from the active document.</source>
       <translation>Изабери један објекат из активног документа.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2282"/>
+      <location filename="../../Command.cpp" line="2274"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>Изабери или 2 ивице или 2 жичана елемента.</translation>
     </message>
@@ -6574,7 +6584,7 @@ Continue?</source>
       <translation>Унеси растојање:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>Офарбај појединачне странице</translation>
     </message>
@@ -7192,17 +7202,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Scale</source>
       <translation>Размера</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Scales the selected shape</source>
       <translation>Скалирај изабрани облик</translation>
     </message>
@@ -7364,17 +7374,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2807"/>
+      <location filename="../../Command.cpp" line="2799"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2808"/>
+      <location filename="../../Command.cpp" line="2800"/>
       <source>Coordinate System</source>
       <translation>Координатни систем</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2809"/>
+      <location filename="../../Command.cpp" line="2801"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>Направи координатни систем који је могуће везати за неки други објекат</translation>
     </message>
@@ -7382,17 +7392,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2985"/>
+      <location filename="../../Command.cpp" line="2977"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2986"/>
+      <location filename="../../Command.cpp" line="2978"/>
       <source>Datums</source>
       <translation>Помоћни елементи</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2988"/>
+      <location filename="../../Command.cpp" line="2980"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Направи помоћни објекат (координатни систем, раван, праву или тачку) који је могуће везати за неки други објекат</translation>
     </message>
@@ -7400,7 +7410,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Није могуће одредити пресечну тачку кривих. Покушај да додаш ограничење подударности између тачака кривих где намераваш да направиш заобљење.</translation>
     </message>
@@ -7408,17 +7418,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2846"/>
+      <location filename="../../Command.cpp" line="2838"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2847"/>
+      <location filename="../../Command.cpp" line="2839"/>
       <source>Datum Plane</source>
       <translation>Помоћна раван</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2848"/>
+      <location filename="../../Command.cpp" line="2840"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Направи помоћну раван коју је могуће везати за неки други објекат</translation>
     </message>
@@ -7426,17 +7436,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2880"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2881"/>
+      <location filename="../../Command.cpp" line="2873"/>
       <source>Datum Line</source>
       <translation>Помоћна линија</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2882"/>
+      <location filename="../../Command.cpp" line="2874"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Направи помоћну праву коју је могуће везати за неки други објекат</translation>
     </message>
@@ -7444,17 +7454,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2914"/>
+      <location filename="../../Command.cpp" line="2906"/>
       <source>Part</source>
       <translation>Делови</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2915"/>
+      <location filename="../../Command.cpp" line="2907"/>
       <source>Datum Point</source>
       <translation>Помоћна тачка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2916"/>
+      <location filename="../../Command.cpp" line="2908"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Направи помоћну тачку коју је могуће везати за неки други објекат</translation>
     </message>
@@ -7637,12 +7647,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2464"/>
+      <location filename="../../Command.cpp" line="2456"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>Исеци пресек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2465"/>
+      <location filename="../../Command.cpp" line="2457"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>Помоћу булове операције пресек направи нови објекат од свих видљивих облика и изабраних равни координатног система</translation>
     </message>
@@ -7663,12 +7673,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartCmdVertexSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="193"/>
+      <location filename="../../CommandFilter.cpp" line="185"/>
       <source>Vertex Selection</source>
       <translation>Избор темена</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="194"/>
+      <location filename="../../CommandFilter.cpp" line="186"/>
       <source>Only allows the selection of vertices</source>
       <translation>Дозволи само избор темена</translation>
     </message>
@@ -7676,12 +7686,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartCmdEdgeSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="218"/>
+      <location filename="../../CommandFilter.cpp" line="210"/>
       <source>Edge Selection</source>
       <translation>Избор ивице</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="219"/>
+      <location filename="../../CommandFilter.cpp" line="211"/>
       <source>Only allows the selection of edges</source>
       <translation>Дозволи само избор ивица</translation>
     </message>
@@ -7689,12 +7699,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartCmdFaceSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="243"/>
+      <location filename="../../CommandFilter.cpp" line="235"/>
       <source>Face Selection</source>
       <translation>Избор странице</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="244"/>
+      <location filename="../../CommandFilter.cpp" line="236"/>
       <source>Only allows the selection of faces</source>
       <translation>Дозволи само избор страница</translation>
     </message>
@@ -7702,12 +7712,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="273"/>
+      <location filename="../../CommandFilter.cpp" line="265"/>
       <source>No Selection Filters</source>
       <translation>Нема филтра избора</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="274"/>
+      <location filename="../../CommandFilter.cpp" line="266"/>
       <source>Clears all selection filters</source>
       <translation>Обриши све филтре избора</translation>
     </message>
@@ -7838,78 +7848,6 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>PartGui::PatternPointParametersWidget</name>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
-      <source>Point object</source>
-      <translation>Објекат тачка</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
-      <source>Select Point Object</source>
-      <translation>Изабери објекат Тачку</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
-      <source>Relative to first</source>
-      <translation>Релативно у односу на први</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
-      <source>Origin point index</source>
-      <translation>Која тачка је почетна</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternCircularParametersWidget</name>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
-      <source>Circular Pattern</source>
-      <translation>Кружно умножавање</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
-      <source>Axis</source>
-      <translation>Оса</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
-      <source>Radial distance</source>
-      <translation>Радијално растојање</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
-      <source>Tangential distance</source>
-      <translation>Тангенцијално растојање</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
-      <source>Concentric circles</source>
-      <translation>Концентричне кружнице</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
-      <source>Symmetry</source>
-      <translation>Симетричност</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
-      <source>Start at selected shape</source>
-      <translation>Почни од изабраног облика</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
-      <source>Binormal axis</source>
-      <translation>Бинормала</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
-      <source>Flip binormal direction</source>
-      <translation>Обрни смер бинормале</translation>
-    </message>
-  </context>
-  <context>
     <name>PartGui::PatternPathParametersWidget</name>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="17"/>
@@ -8014,6 +7952,54 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation>Кружно умножавање</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Оса</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Радијално растојање</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Тангенцијално растојање</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation>Концентричне кружнице</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Симетричност</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation>Почни од изабраног облика</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation>Бинормала</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation>Обрни смер бинормале</translation>
+    </message>
+  </context>
+  <context>
     <name>TaskLinkArrayParameters</name>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
@@ -8027,24 +8013,161 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>PartGui::TaskPatternParameters</name>
+    <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="147"/>
-      <source>Direction 2</source>
-      <translation>Правац 2</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
+      <source>Point object</source>
+      <translation>Објекат тачка</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
+      <source>Select Point Object</source>
+      <translation>Изабери објекат Тачку</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
+      <source>Relative to first</source>
+      <translation>Релативно у односу на први</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
+      <source>Origin point index</source>
+      <translation>Која тачка је почетна</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::PatternInstanceControls</name>
+    <name>Part::FaceMakerUnified</name>
     <message>
-      <location filename="../../PatternInstanceControls.cpp" line="226"/>
-      <source>Restores this instance</source>
-      <translation>Обнови ову инстанцу</translation>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>Уједињени творац страница</translation>
     </message>
     <message>
-      <location filename="../../PatternInstanceControls.cpp" line="231"/>
-      <source>Suppresses this instance</source>
-      <translation>Игнориши ову инстанцу</translation>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>Обрађује затворене контуре сложене једне у друге, преклапајуће контуре и закривљене странице</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation>BuildFace творац страница</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation>Дели ивице на местима пресека и све ограничене области које пронађе претвара у странице. Подржава произвољну геометрију која се преклапа.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayCircular</name>
+    <message>
+      <location filename="../../Command.cpp" line="2628"/>
+      <source>Part</source>
+      <translation>Делови</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2629"/>
+      <source>Circular Link Array</source>
+      <translation>Прстенасто умножавање спона</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2630"/>
+      <source>Creates a concentric circular array of linked objects</source>
+      <translation>Направи умножавање спона неког објекта по концентричним кружницама</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPath</name>
+    <message>
+      <location filename="../../Command.cpp" line="2663"/>
+      <source>Part</source>
+      <translation>Делови</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2664"/>
+      <source>Path Link Array</source>
+      <translation>Умножавање спона по водиљи</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2665"/>
+      <source>Creates an array of linked objects along a path</source>
+      <translation>Направи умножавање по путањи спона неког објекта</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPoint</name>
+    <message>
+      <location filename="../../Command.cpp" line="2698"/>
+      <source>Part</source>
+      <translation>Делови</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2699"/>
+      <source>Point Link Array</source>
+      <translation>Умножавање спона по тачкама</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2700"/>
+      <source>Creates an array of linked objects at each point of a sketch or shape</source>
+      <translation>Направи умножавање спона неког објекта по тачкама скице или облика</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayLinear</name>
+    <message>
+      <location filename="../../Command.cpp" line="2733"/>
+      <source>Part</source>
+      <translation>Делови</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2734"/>
+      <source>Linear Link Array</source>
+      <translation>Правоугаоно умножавање спона</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2735"/>
+      <source>Creates a linear array of linked objects</source>
+      <translation>Направи правоугаоно умножавање спона неког објекта</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPolar</name>
+    <message>
+      <location filename="../../Command.cpp" line="2768"/>
+      <source>Part</source>
+      <translation>Делови</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2769"/>
+      <source>Polar Link Array</source>
+      <translation>Поларно умножавање спона</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2770"/>
+      <source>Creates a polar array of linked objects</source>
+      <translation>Направи поларно умножавање спона неког објекта</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrays</name>
+    <message>
+      <location filename="../../Command.cpp" line="2941"/>
+      <source>Part</source>
+      <translation>Делови</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2942"/>
+      <source>Link Arrays</source>
+      <translation>Умножавање спона</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2943"/>
+      <source>Creates link arrays</source>
+      <translation>Направи умножавање спона</translation>
     </message>
   </context>
   <context>
@@ -8153,137 +8276,24 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>CmdPartLinkArrayCircular</name>
+    <name>PartGui::PatternInstanceControls</name>
     <message>
-      <location filename="../../Command.cpp" line="2636"/>
-      <source>Part</source>
-      <translation>Делови</translation>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation>Обнови ову инстанцу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2637"/>
-      <source>Circular Link Array</source>
-      <translation>Прстенасто умножавање спона</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2638"/>
-      <source>Creates a concentric circular array of linked objects</source>
-      <translation>Направи умножавање спона неког објекта по концентричним кружницама</translation>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation>Игнориши ову инстанцу</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartLinkArrayPath</name>
+    <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../Command.cpp" line="2671"/>
-      <source>Part</source>
-      <translation>Делови</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2672"/>
-      <source>Path Link Array</source>
-      <translation>Умножавање спона по водиљи</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2673"/>
-      <source>Creates an array of linked objects along a path</source>
-      <translation>Направи умножавање по путањи спона неког објекта</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrayPoint</name>
-    <message>
-      <location filename="../../Command.cpp" line="2706"/>
-      <source>Part</source>
-      <translation>Делови</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2707"/>
-      <source>Point Link Array</source>
-      <translation>Умножавање спона по тачкама</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2708"/>
-      <source>Creates an array of linked objects at each point of a sketch or shape</source>
-      <translation>Направи умножавање спона неког објекта по тачкама скице или облика</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrayLinear</name>
-    <message>
-      <location filename="../../Command.cpp" line="2741"/>
-      <source>Part</source>
-      <translation>Делови</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2742"/>
-      <source>Linear Link Array</source>
-      <translation>Правоугаоно умножавање спона</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2743"/>
-      <source>Creates a linear array of linked objects</source>
-      <translation>Направи правоугаоно умножавање спона неког објекта</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrayPolar</name>
-    <message>
-      <location filename="../../Command.cpp" line="2776"/>
-      <source>Part</source>
-      <translation>Делови</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2777"/>
-      <source>Polar Link Array</source>
-      <translation>Поларно умножавање спона</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2778"/>
-      <source>Creates a polar array of linked objects</source>
-      <translation>Направи поларно умножавање спона неког објекта</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrays</name>
-    <message>
-      <location filename="../../Command.cpp" line="2949"/>
-      <source>Part</source>
-      <translation>Делови</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2950"/>
-      <source>Link Arrays</source>
-      <translation>Умножавање спона</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2951"/>
-      <source>Creates link arrays</source>
-      <translation>Направи умножавање спона</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerBuildFace</name>
-    <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation>BuildFace творац страница</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Дели ивице на местима пресека и све ограничене области које пронађе претвара у странице. Подржава произвољну геометрију која се преклапа.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>Уједињени творац страница</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Обрађује затворене контуре сложене једне у друге, преклапајуће контуре и закривљене странице</translation>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
+      <source>Direction 2</source>
+      <translation>Правац 2</translation>
     </message>
   </context>
 </TS>

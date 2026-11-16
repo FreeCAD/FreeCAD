@@ -4388,22 +4388,32 @@ Check one or more edge entities first.</source>
       <translation>Найбольшае вуглавое адхіленне</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation>Прымяняе налады брукаванне да ўсіх аб'ектах у адкрытых у дадзены момант дакументах</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation>Прымяніць да адкрытых дакументаў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Задаць занадта малое адхіленне прыводзіць да таго, што брукаванне займае больш часу і, такім чынам, прыводзіць да завісання ці запаволення працы графічнага інтэрфейсу.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>Вугал адхілення</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Задаць занадта малы вугал адхілення прыводзіць да таго, што брукаванне займае больш часу і, такім чынам, прыводзіць да завісання ці запаволення працы графічнага інтэрфейсу.</translation>
     </message>
@@ -5077,7 +5087,7 @@ the sketch plane's normal vector will be used</source>
       <translation>Абраць фігуру для сіметрыі.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>Адсутнічае такі дакумент '%1'.</translation>
     </message>
@@ -6588,7 +6598,7 @@ Continue?</source>
       <translation>Увядзіце адлегласць:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>Знешні выгляд для кожнай грані</translation>
     </message>
@@ -7417,7 +7427,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Немагчыма разлічыць скрыжаванне крывых.
 Паспрабуйце дадаць абмежаванні супадзенняў паміж вяршынямі крывых, якія вы збіраецеся акругліць.</translation>

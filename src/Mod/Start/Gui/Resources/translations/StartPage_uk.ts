@@ -21,7 +21,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation>Ці параметри (та багато інших) можна буде змінити пізніше у налаштуваннях.</translation>
+      <translation>Ці параметри (та багато інших) можна змінити пізніше в налаштуваннях.</translation>
     </message>
   </context>
   <context>
@@ -47,17 +47,17 @@
     <message>
       <location filename="../../Manipulator.cpp" line="45"/>
       <source>Start</source>
-      <translation>На початкову</translation>
+      <translation>Початкова сторінка</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation>&amp;Стартова сторінка</translation>
+      <translation>&amp;Початкова сторінка</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation>Показати початкову сторінку</translation>
+      <translation>Показує початкову сторінку</translation>
     </message>
   </context>
   <context>
@@ -75,12 +75,12 @@
     <message>
       <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
-      <translation>2D креслення</translation>
+      <translation>2D-креслення</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
-      <translation>Створює 2D документ чернетки</translation>
+      <translation>Створює документ 2D-креслення</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="527"/>
@@ -95,12 +95,12 @@
     <message>
       <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>Створити новий пустий FreeCAD документ</translation>
+      <translation>Створює новий порожній файл FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation>Відкриває наявний файл CAD або 3D модель</translation>
+      <translation>Відкриває наявний файл CAD або 3D-модель</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="521"/>
@@ -110,17 +110,17 @@
     <message>
       <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation>Створення тіла за допомогою робочого середовища Part Design</translation>
+      <translation>Створює тіло в робочому середовищі Part Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
-      <translation>Створення збірного проекту</translation>
+      <translation>Створює проєкт збірки</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
-      <translation>Створення архітектурного проекту</translation>
+      <translation>Створює архітектурний проєкт</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="516"/>
@@ -145,7 +145,7 @@
     <message>
       <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation>Не показувати цю Початкову сторінку знову (запускати з порожнім екраном)</translation>
+      <translation>Більше не показувати початкову сторінку (запускати з порожнім екраном)</translation>
     </message>
   </context>
   <context>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Шукаєте більше тем? Ви можете отримати їх за допомогою &lt;a href="freecad:Std_AddonMgr"&gt;Менеджеру додатків&lt;/a&gt;.</translation>
+      <translation>Шукаєте більше тем? Їх можна отримати через &lt;a href="freecad:Std_AddonMgr"&gt;менеджер доповнень&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
@@ -234,13 +234,13 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation>Не обов’язкова власна тека, яка буде відображатися на Початковій сторінці.
-Декілька тек можна додати використовуючи ";;" для розділення шляхів.</translation>
+      <translation>Необов'язкова власна тека для показу на початковій сторінці.
+Кілька тек можна додати, розділяючи шляхи символами ";;".</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation>Показувати файли прикладів на початковій сторінці</translation>
+      <translation>Показує файли прикладів на початковій сторінці</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
@@ -255,7 +255,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation>Закрити стартову сторінку після завантаження</translation>
+      <translation>Закривати початкову сторінку після завантаження</translation>
     </message>
   </context>
   <context>

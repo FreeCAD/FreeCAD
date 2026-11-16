@@ -4207,7 +4207,7 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchStructure.py" line="1610"/>
       <location filename="../../bimcommands/BimPanel.py" line="211"/>
-      <location filename="../../bimcommands/BimWall.py" line="504"/>
+      <location filename="../../bimcommands/BimWall.py" line="506"/>
       <source>Length</source>
       <translation>Länge</translation>
     </message>
@@ -4221,7 +4221,7 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchStructure.py" line="484"/>
       <location filename="../../ArchStructure.py" line="1611"/>
       <location filename="../../bimcommands/BimPanel.py" line="218"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <location filename="../../bimcommands/BimWall.py" line="513"/>
       <source>Width</source>
       <translation>Breite</translation>
     </message>
@@ -4232,7 +4232,7 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchStructure.py" line="491"/>
       <location filename="../../ArchStructure.py" line="1612"/>
       <location filename="../../ArchRoof.py" line="1086"/>
-      <location filename="../../bimcommands/BimWall.py" line="518"/>
+      <location filename="../../bimcommands/BimWall.py" line="520"/>
       <source>Height</source>
       <translation>Höhe</translation>
     </message>
@@ -4982,7 +4982,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     <message>
       <location filename="../../ArchWindow.py" line="1752"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../bimcommands/BimWall.py" line="534"/>
+      <location filename="../../bimcommands/BimWall.py" line="536"/>
       <source>Offset</source>
       <translation>Versatz</translation>
     </message>
@@ -5053,7 +5053,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Fachwerkbinder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="113"/>
+      <location filename="../../bimcommands/BimTruss.py" line="114"/>
       <source>Create Truss</source>
       <translation>Fachwerkbinder erstellen</translation>
     </message>
@@ -5509,7 +5509,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
       <translation>Vorhangfassade erstellen</translation>
     </message>
@@ -6056,7 +6056,7 @@ Geschoß-Erstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Center</source>
       <translation>Zentrum</translation>
     </message>
@@ -6171,8 +6171,8 @@ Gebäudeerstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="107"/>
-      <location filename="../../bimcommands/BimWall.py" line="407"/>
-      <location filename="../../bimcommands/BimWall.py" line="655"/>
+      <location filename="../../bimcommands/BimWall.py" line="409"/>
+      <location filename="../../bimcommands/BimWall.py" line="657"/>
       <source>Create Wall</source>
       <translation>Wand erstellen</translation>
     </message>
@@ -6182,45 +6182,45 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Erster Punkt der Wand</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="483"/>
+      <location filename="../../bimcommands/BimWall.py" line="485"/>
       <source>Wall Presets</source>
       <translation>Wand-Voreinstellungen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="489"/>
+      <location filename="../../bimcommands/BimWall.py" line="491"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Diese Liste zeigt alle Multimaterial-Objekte dieses Dokuments an. Objekte erstellen um Wandtypen zu definieren.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="541"/>
+      <location filename="../../bimcommands/BimWall.py" line="543"/>
       <source>Baseline</source>
       <translation>Basislinie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="547"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>No baseline</source>
       <translation>Keine Basislinie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="548"/>
+      <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>Draft line</source>
       <translation>Draft-Linie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="549"/>
+      <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Sketch</source>
       <translation>Skizze</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="525"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Alignment</source>
       <translation>Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1836"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Left</source>
       <translation>Links</translation>
     </message>
@@ -6236,13 +6236,13 @@ Gebäudeerstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1802"/>
-      <location filename="../../bimcommands/BimWall.py" line="478"/>
+      <location filename="../../bimcommands/BimWall.py" line="480"/>
       <source>Wall Options</source>
       <translation>Wand-Optionen</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1838"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
@@ -13868,7 +13868,7 @@ Soll fortgefahren werden?</translation>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Wall Trace</source>
       <translation>Wand Verlauf</translation>
     </message>

@@ -6,17 +6,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="20"/>
       <source>Edge Constraints</source>
-      <translation type="unfinished">Edge Constraints</translation>
+      <translation>Обмеження за ребрами</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected edges</translation>
+      <translation>Змушує поверхню проходити через вибрані ребра</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation type="unfinished">Non-Boundary Edges</translation>
+      <translation>Немежові ребра</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>Межі</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>Опорна поверхня</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>Ребра, що обмежуватимуть поверхню</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation type="unfinished">Boundary Edges</translation>
+      <translation>Межові ребра</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation type="unfinished">Drag the items to reorder the list</translation>
+      <translation>Перетягуйте елементи, щоб змінити порядок у списку</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>Ребра перерізів</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation type="unfinished">Constrains the surface to follow the selected sectional edges</translation>
+      <translation>Змушує поверхню проходити вздовж вибраних ребер перерізів</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Порядок у списку можна змінити перетягуванням&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>Кунса</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
       <source>Curved</source>
-      <translation>Криві</translation>
+      <translation>Вигнуте</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation type="unfinished">Flip orientation</translation>
+      <translation>Перевернути орієнтацію</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="384"/>
@@ -193,17 +193,17 @@
       <location filename="../../TaskGeomFillSurface.cpp" line="385"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="393"/>
       <source>The tool requires two, three or four edges</source>
-      <translation type="unfinished">The tool requires two, three or four edges</translation>
+      <translation>Інструменту потрібно два, три або чотири ребра</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="392"/>
       <source>Too less edges</source>
-      <translation>Занадто мало ребер</translation>
+      <translation>Замало ребер</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="404"/>
       <source>Invalid object</source>
-      <translation>Неприпустимий об'єкт</translation>
+      <translation>Некоректний об'єкт</translation>
     </message>
   </context>
   <context>
@@ -211,17 +211,17 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation type="unfinished">Vertex Constraints</translation>
+      <translation>Обмеження за вершинами</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected vertices</translation>
+      <translation>Змушує поверхню проходити через вибрані вершини</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation type="unfinished">Non-Boundary Vertices</translation>
+      <translation>Немежові вершини</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="59"/>
       <source>Remove Vertex</source>
-      <translation>Вилучити вершину</translation>
+      <translation>Видалити вершину</translation>
     </message>
   </context>
   <context>
@@ -239,12 +239,12 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="14"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Крива сполучення</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="20"/>
       <source>Start Edge</source>
-      <translation type="unfinished">Start Edge</translation>
+      <translation>Початкове ребро</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
@@ -273,7 +273,7 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
       <source>End Edge</source>
-      <translation type="unfinished">End Edge</translation>
+      <translation>Кінцеве ребро</translation>
     </message>
   </context>
   <context>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Surface Cut</source>
-      <translation type="unfinished">Surface Cut</translation>
+      <translation>Розрізати поверхню</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Cuts one shape using another</source>
-      <translation type="unfinished">Cuts one shape using another</translation>
+      <translation>Розрізає одну форму іншою</translation>
     </message>
   </context>
   <context>
@@ -319,9 +319,9 @@
       <source>Creates a surface from a series of selected boundary edges.
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
-      <translation type="unfinished">Creates a surface from a series of selected boundary edges.
-Additionally, the surface may be constrained by edges and
-vertices that are not on the boundary.</translation>
+      <translation>Створює поверхню з послідовності вибраних межових ребер.
+Крім того, поверхню можна обмежити ребрами й
+вершинами, що не лежать на межі.</translation>
     </message>
   </context>
   <context>
@@ -336,17 +336,17 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Створити криву сполучення</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Extend surface</source>
-      <translation type="unfinished">Extend surface</translation>
+      <translation>Подовжити поверхню</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="410"/>
       <source>Edit blending curve</source>
-      <translation type="unfinished">Edit blending curve</translation>
+      <translation>Редагувати криву сполучення</translation>
     </message>
   </context>
   <context>
@@ -359,12 +359,12 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation type="unfinished">Fill Boundary Curves</translation>
+      <translation>Заповнити межові криві</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Creates a surface from 2, 3, or 4 boundary edges</source>
-      <translation type="unfinished">Creates a surface from 2, 3, or 4 boundary edges</translation>
+      <translation>Створює поверхню з 2, 3 або 4 межових ребер</translation>
     </message>
   </context>
   <context>
@@ -383,8 +383,8 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a mesh object.</translation>
+      <translation>Створює апроксимовану криву на поверхні сітки.
+Ця команда працює лише з об'єктом сітки.</translation>
     </message>
   </context>
   <context>
@@ -397,12 +397,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Крива сполучення</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Joins 2 edges with continuity</source>
-      <translation type="unfinished">Joins 2 edges with continuity</translation>
+      <translation>З'єднує 2 ребра з неперервністю</translation>
     </message>
   </context>
   <context>
@@ -415,12 +415,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Extend Face</source>
-      <translation type="unfinished">Extend Face</translation>
+      <translation>Подовжити грань</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
       <source>Extrapolates the selected face or surface at its boundaries with its local U and V parameters</source>
-      <translation type="unfinished">Extrapolates the selected face or surface at its boundaries with its local U and V parameters</translation>
+      <translation>Екстраполює вибрану грань або поверхню за її межі за локальними параметрами U і V</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Select a single face</source>
-      <translation type="unfinished">Select a single face</translation>
+      <translation>Виберіть одну грань</translation>
     </message>
   </context>
   <context>
@@ -451,7 +451,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Creates a surface from a series of sectional edges</source>
-      <translation type="unfinished">Creates a surface from a series of sectional edges</translation>
+      <translation>Створює поверхню з послідовності ребер перерізів</translation>
     </message>
   </context>
   <context>
@@ -464,16 +464,16 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
-      <translation>Неприпустимий об'єкт</translation>
+      <translation>Некоректний об'єкт</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>Ребро має %n суміжну грань</numerusform>
+        <numerusform>Ребро має %n суміжні грані</numerusform>
+        <numerusform>Ребро має %n суміжних граней</numerusform>
+        <numerusform>Ребро має %n суміжних граней</numerusform>
       </translation>
     </message>
     <message>
@@ -484,16 +484,16 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Ребро не має суміжних граней</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="63"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation type="unfinished">Edit Filling</translation>
+      <translation>Редагувати заповнення</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
@@ -503,7 +503,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation type="unfinished">Edit Sections</translation>
+      <translation>Редагувати перерізи</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -521,16 +521,16 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
-      <translation>Неприпустимий об'єкт</translation>
+      <translation>Некоректний об'єкт</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>Ребро має %n суміжну грань</numerusform>
+        <numerusform>Ребро має %n суміжні грані</numerusform>
+        <numerusform>Ребро має %n суміжних граней</numerusform>
+        <numerusform>Ребро має %n суміжних граней</numerusform>
       </translation>
     </message>
     <message>
@@ -541,7 +541,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Ребро не має суміжних граней</translation>
     </message>
   </context>
   <context>
@@ -554,7 +554,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
-      <translation>Неприпустимий об'єкт</translation>
+      <translation>Некоректний об'єкт</translation>
     </message>
   </context>
 </TS>

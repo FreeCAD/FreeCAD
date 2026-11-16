@@ -382,11 +382,6 @@
       <translation>Очистить цвет фона</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Пересчитать ячейки</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Вставка строк</translation>
@@ -397,18 +392,23 @@
       <translation>Удаление строк</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <source>Remove Columns</source>
-      <translation>Удалить столбцы</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Вставка столбцов</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Пересчитать ячейки</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation>Удалить столбцы</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Очистка ячеек</translation>
     </message>

@@ -27,16 +27,16 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Вкажіть тут спеціальну URL-адресу або теку, де розташовані файли довідки.
-Ви можете легко завантажити документацію для автономного використання за допомогою Менеджера
-додатків, встановивши додаток &quot;offline-documentation&quot;. Якщо це поле залишити
-порожнім, FreeCAD автоматично шукатиме файли довідки в типовому розташуванні
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Вкажіть тут власну URL-адресу або теку, де розташовані файли довідки.
+Документацію для автономного використання легко завантажити через менеджер
+доповнень, встановивши доповнення "offline-documentation". Якщо це
+поле залишити порожнім, FreeCAD автоматично шукатиме файли довідки в
+типовому розташуванні ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
       <source>Custom location</source>
-      <translation>Спеціальне розташування</translation>
+      <translation>Власне розташування</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
@@ -62,9 +62,9 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Вкажіть тут спеціальну URL-адресу або теку, де розташовані файли довідки.
-Документацію можна завантажити для автономного використання через Менеджер додатків, встановивши
-додаток &quot;offline-documentation&quot;. Якщо це поле залишити порожнім, FreeCAD
+      <translation>Вкажіть тут власну URL-адресу або теку, де розташовані файли довідки.
+Документацію для автономного використання можна завантажити через менеджер доповнень, встановивши
+доповнення "offline-documentation". Якщо це поле залишити порожнім, FreeCAD
 автоматично шукатиме файли довідки в типовому розташуванні
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
@@ -77,8 +77,8 @@ automatically search for the help files at the default location
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation>Сторінки документації будуть отримані з офіційної
-FreeCADwiki за адресою https://wiki.freecad.org</translation>
+      <translation>Сторінки документації буде отримано з офіційної
+вікі FreeCAD за адресою https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>
@@ -86,10 +86,10 @@ FreeCADwiki за адресою https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Сторінки документації будуть отримані з автоматичного перетворення Markdown
-вікі FreeCAD, що розміщене в обліковому записі GitHub FreeCAD. Це можна стилізувати за допомогою
-спеціальної таблиці стилів нижче, і це може виглядати краще, ніж варіант з вікі. Для отримання
-оптимальних результатів слід встановити модуль Python &apos;Markdown&apos; або &apos;Pandoc&apos;.</translation>
+      <translation>Сторінки документації буде отримано з автоматичного перетворення в Markdown
+вікі FreeCAD, розміщеного в обліковому записі FreeCAD на GitHub. Її можна оформити
+власною таблицею стилів нижче, і вона може виглядати краще за варіант із вікі. Для найкращого
+результату слід встановити модуль Python 'Markdown' або 'Pandoc'.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
@@ -125,20 +125,20 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation>Документація відкривається в закріплюваному діалоговому вікні в FreeCAD, що дозволяє одночасно працювати в 3D-виду.
-Вимагає компонента PySide QtWebengineWidgets.</translation>
+      <translation>Документація відкривається в закріплюваному діалоговому вікні у FreeCAD, що дає змогу одночасно працювати в 3D-виді.
+Потрібен компонент PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation>Спеціальна таблиця стилів</translation>
+      <translation>Власна таблиця стилів</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation>Вкажіть шлях до альтернативного CSS-файлу для стилізації сторінок Markdown.
-Застосовується лише якщо вибрано Markdown вище.</translation>
+      <translation>Вкажіть шлях до альтернативного CSS-файлу для оформлення сторінок Markdown.
+Діє, лише якщо вище вибрано Markdown.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -148,7 +148,7 @@ This only applies if Markdown is selected above.</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
-      <translation>В окремому вбудованому діалоговому вікні</translation>
+      <translation>В окремому закріплюваному діалозі</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="241"/>
@@ -161,12 +161,12 @@ This only applies if Markdown is selected above.</source>
     <message>
       <location filename="../../Help.py" line="74"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>Не вдалося отримати вміст цієї сторінки. Перевірте налаштування в меню Редагувати → Параметри → Загальні → Довідка</translation>
+      <translation>Не вдалося отримати вміст цієї сторінки. Перевірте налаштування в меню Редагування → Налаштування → Загальні → Довідка</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>Не вдалося визначити розташування файлів довідки. Перевірте налаштування в меню Редагувати → Параметри → Загальні → Довідка</translation>
+      <translation>Не вдалося визначити розташування файлів довідки. Перевірте налаштування в меню Редагування → Налаштування → Загальні → Довідка</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -176,7 +176,7 @@ This only applies if Markdown is selected above.</source>
     <message>
       <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation>У вашій системі не встановлено засіб візуалізації Markdown, тому ця сторінка довідки відображається як є. Будь ласка, встановіть модулі Python Markdown або Pandoc, щоб покращити відображення цієї сторінки.</translation>
+      <translation>У системі не встановлено засобу відображення Markdown, тому цю сторінку довідки показано як є. Встановіть модуль Python Markdown або Pandoc, щоб покращити відображення сторінки.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="118"/>

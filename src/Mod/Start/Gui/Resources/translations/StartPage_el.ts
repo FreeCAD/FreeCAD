@@ -11,7 +11,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
-      <translation>Καλώς Ορίσατε στο %1</translation>
+      <translation>Καλώς ορίσατε στο %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="97"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Unit System</source>
-      <translation>Μονάδα συστήματος</translation>
+      <translation>Σύστημα μονάδων</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="240"/>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation>Εμφανίζει την Αρχική Σελίδα</translation>
+      <translation>Εμφανίζει την αρχική σελίδα</translation>
     </message>
   </context>
   <context>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
-      <translation>Άνοιγμα Αρχείου</translation>
+      <translation>Άνοιγμα αρχείου</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="523"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
-      <translation>Άδειο Αρχείο</translation>
+      <translation>Κενό αρχείο</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="518"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
-      <translation>FreeCAD Σκούρο</translation>
+      <translation>FreeCAD Σκοτεινό</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
@@ -187,7 +187,7 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD Σκούρο</translation>
+      <translation>FreeCAD Σκοτεινό</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
@@ -271,12 +271,12 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Δημιουργία:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Τροποποίηση:</translation>
     </message>
   </context>
 </TS>

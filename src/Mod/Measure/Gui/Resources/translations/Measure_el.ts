@@ -314,27 +314,27 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
       <source>Select…</source>
-      <translation type="unfinished">Select…</translation>
+      <translation>Επιλογή…</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="137"/>
       <source>mm, kg, kg*mm^2</source>
-      <translation type="unfinished">mm, kg, kg*mm^2</translation>
+      <translation>mm, kg, kg*mm^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="142"/>
       <source>m, kg, kg*m^2</source>
-      <translation type="unfinished">m, kg, kg*m^2</translation>
+      <translation>m, kg, kg*m^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="147"/>
       <source>in, lb, lb*in^2</source>
-      <translation type="unfinished">in, lb, lb*in^2</translation>
+      <translation>in, lb, lb*in^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="152"/>
       <source>ft, lb, lb*ft^2</source>
-      <translation type="unfinished">ft, lb, lb*ft^2</translation>
+      <translation>ft, lb, lb*ft^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="172"/>
@@ -447,67 +447,6 @@
     </message>
   </context>
   <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="355"/>
-      <source>Parameters</source>
-      <translation>Παράμετροι</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="358"/>
-      <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="361"/>
-      <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
-      <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="444"/>
-      <source>Close</source>
-      <translation>Κλείσιμο</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="447"/>
-      <source>Save</source>
-      <translation>Αποθήκευση</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="451"/>
-      <source>Reset</source>
-      <translation>Επαναφορά</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1236"/>
-      <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskMeasure</name>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="121"/>
@@ -553,6 +492,67 @@
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
       <translation type="unfinished">Geometric Center</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation type="unfinished">Mass Properties</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="355"/>
+      <source>Parameters</source>
+      <translation>Παράμετροι</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="358"/>
+      <source>Physical Properties</source>
+      <translation type="unfinished">Physical Properties</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="361"/>
+      <source>Center of Gravity</source>
+      <translation type="unfinished">Center of Gravity</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <source>Center of Volume</source>
+      <translation type="unfinished">Center of Volume</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
+      <source>Inertia</source>
+      <translation type="unfinished">Inertia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="444"/>
+      <source>Close</source>
+      <translation>Κλείσιμο</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="447"/>
+      <source>Save</source>
+      <translation>Αποθήκευση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="451"/>
+      <source>Reset</source>
+      <translation>Επαναφορά</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
+      <source> (Average)</source>
+      <translation type="unfinished"> (Average)</translation>
     </message>
   </context>
 </TS>
