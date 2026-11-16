@@ -31,7 +31,7 @@ and pins the tilted-work-plane program under both rotation strategies.
 
 import re
 import unittest
-
+import Constants
 import FreeCAD
 import Path
 from CAMTests import PathTestUtils
@@ -88,7 +88,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         machine.output.precision.spindle = 0
         machine.output.duplicates.commands = True
         machine.output.duplicates.parameters = True
-        machine.processing.tool_change = False
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         machine.toolheads = [
             Toolhead(
                 name="Spindle",
@@ -250,7 +250,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         self.assert_line("G2 X0.000 Y0.000 F600.000 I-5.000 J0.000", lines)
 
     def test_spindle_speed_is_an_integer(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines([])
         self.assert_line("M3 S1000", lines)
 
@@ -281,7 +281,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         self.assert_line("G4 P1.500", lines)
 
     def test_spindle_wait_dwell_is_in_milliseconds(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.toolheads[0].spindle_wait = 2.0
         lines = self.lines([])
         index = lines.index("M3 S1000")
@@ -404,7 +404,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
     # ------------------------------------------------------------------
 
     def test_tool_change_sequence(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines([])
         start = lines.index("M05")
         self.assertEqual(
@@ -413,7 +413,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         )
 
     def test_tool_length_offset_macro_form(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.postprocessor_properties["tool_length_offset_macro"] = True
         lines = self.lines([])
         index = lines.index("M6 T1")
@@ -422,7 +422,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         self.assert_no_line("G43 H1", lines)
 
     def test_tool_length_offset_suppressed(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.output.output_tool_length_offset = False
         lines = self.lines([])
         self.assert_no_line("G43 H1", lines)
@@ -497,7 +497,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         self.post._machine.output.duplicates.commands = False
         self.post._machine.output.duplicates.parameters = False
         self.post._machine.output.formatting.line_numbers = True
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.processing.filter_inefficient_moves = True
         self.post._machine.postprocessor_properties["program_number"] = 7
         self.post._machine.postprocessor_properties["uppercase_output"] = True
@@ -549,7 +549,7 @@ def _machine_ac(strategy):
     machine.output.precision.axis = 3
     machine.output.precision.feed = 3
     machine.output.precision.spindle = 0
-    machine.processing.tool_change = False
+    machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
     machine.postprocessor_properties["uppercase_output"] = False
     return machine
 
@@ -639,7 +639,7 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
         import Path.Tool.Controller as PathToolController
 
         machine = _machine_ac(RotationStrategy.TWP)
-        machine.processing.tool_change = True
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         plane = self._plane()
         first = self._op("First", plane)
         second = self._op("Second", plane)
@@ -695,7 +695,7 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
         machine = Machine.create_3axis_config()
         machine.output.output_header = False
         machine.output.comments.enabled = False
-        machine.processing.tool_change = False
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         with self.assertRaisesRegex(CAMValueError, "rotary axes"):
             self._export(machine)
 
