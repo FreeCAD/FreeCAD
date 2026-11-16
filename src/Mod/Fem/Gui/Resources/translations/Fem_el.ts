@@ -1459,7 +1459,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Προειδοποιήσεις</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
@@ -3579,7 +3579,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
       <source>…</source>
-      <translation type="unfinished">…</translation>
+      <translation>…</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
@@ -6562,7 +6562,7 @@ Please select a result type first.</translation>
       <translation>Κανένα αντικείμενο αποτελέσματος</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="168"/>
       <source>
 
 Correct module found in: 
@@ -6573,7 +6573,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="176"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6582,7 +6582,7 @@ Should this module be loaded instead?</source>
 Should this module be loaded instead?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="193"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6591,17 +6591,17 @@ No matching module was found in the current Python path.</source>
 No matching module was found in the current Python path.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>VTK Python module conflict</source>
       <translation type="unfinished">VTK Python module conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>VTK Python Module Conflict</source>
       <translation type="unfinished">VTK Python Module Conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="226"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
     </message>

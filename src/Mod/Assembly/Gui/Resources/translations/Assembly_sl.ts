@@ -73,12 +73,12 @@
       <translation>Vaš podsestav je trenutno gibljiv. To ga bo naredilo togega.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>Ni relevantno</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>Ni podprto</translation>
     </message>
@@ -567,32 +567,32 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>Simulacija</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation type="unfinished">Radial Translation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>Zasuk</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation>Premik</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation type="unfinished">Angle of this exploded-view move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation type="unfinished">Distance of this exploded-view move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation type="unfinished">Edit placement</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation type="unfinished">The object to ground</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation type="unfinished">The objects moved by the move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation type="unfinished">This is the movement of the move. The end placement is the result of the start placement * this placement.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>Vrsta premika</translation>
     </message>
@@ -1636,24 +1636,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1677,6 +1659,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation type="unfinished">Restore Snapshot</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation type="unfinished">Create Rigid Group</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

@@ -4226,7 +4226,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchStructure.py" line="1610"/>
       <location filename="../../bimcommands/BimPanel.py" line="211"/>
-      <location filename="../../bimcommands/BimWall.py" line="504"/>
+      <location filename="../../bimcommands/BimWall.py" line="506"/>
       <source>Length</source>
       <translation>Luzera</translation>
     </message>
@@ -4240,7 +4240,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="484"/>
       <location filename="../../ArchStructure.py" line="1611"/>
       <location filename="../../bimcommands/BimPanel.py" line="218"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <location filename="../../bimcommands/BimWall.py" line="513"/>
       <source>Width</source>
       <translation>Zabalera</translation>
     </message>
@@ -4251,7 +4251,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="491"/>
       <location filename="../../ArchStructure.py" line="1612"/>
       <location filename="../../ArchRoof.py" line="1086"/>
-      <location filename="../../bimcommands/BimWall.py" line="518"/>
+      <location filename="../../bimcommands/BimWall.py" line="520"/>
       <source>Height</source>
       <translation>Altuera</translation>
     </message>
@@ -5001,7 +5001,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1752"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../bimcommands/BimWall.py" line="534"/>
+      <location filename="../../bimcommands/BimWall.py" line="536"/>
       <source>Offset</source>
       <translation>Desplazamendua</translation>
     </message>
@@ -5072,7 +5072,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Zurajea</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="113"/>
+      <location filename="../../bimcommands/BimTruss.py" line="114"/>
       <source>Create Truss</source>
       <translation>Sortu zurajea</translation>
     </message>
@@ -5528,7 +5528,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
       <translation>Sortu errezel-pareta</translation>
     </message>
@@ -6078,7 +6078,7 @@ Solairuaren sorrera utzi egin da.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Center</source>
       <translation>Zentroa</translation>
     </message>
@@ -6193,8 +6193,8 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="107"/>
-      <location filename="../../bimcommands/BimWall.py" line="407"/>
-      <location filename="../../bimcommands/BimWall.py" line="655"/>
+      <location filename="../../bimcommands/BimWall.py" line="409"/>
+      <location filename="../../bimcommands/BimWall.py" line="657"/>
       <source>Create Wall</source>
       <translation>Sortu pareta</translation>
     </message>
@@ -6204,45 +6204,45 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation type="unfinished">First Point of Wall</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="483"/>
+      <location filename="../../bimcommands/BimWall.py" line="485"/>
       <source>Wall Presets</source>
       <translation type="unfinished">Wall Presets</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="489"/>
+      <location filename="../../bimcommands/BimWall.py" line="491"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Zerrenda honek dokumentuko material anitzeko objektu guztiak erakusten ditu. Sortu batzuk pareta motak definitzeko.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="541"/>
+      <location filename="../../bimcommands/BimWall.py" line="543"/>
       <source>Baseline</source>
       <translation type="unfinished">Baseline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="547"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>No baseline</source>
       <translation type="unfinished">No baseline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="548"/>
+      <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>Draft line</source>
       <translation type="unfinished">Draft line</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="549"/>
+      <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Sketch</source>
       <translation type="unfinished">Sketch</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="525"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Alignment</source>
       <translation>Lerrokatzea</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1836"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Left</source>
       <translation>Ezkerrekoa</translation>
     </message>
@@ -6258,13 +6258,13 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1802"/>
-      <location filename="../../bimcommands/BimWall.py" line="478"/>
+      <location filename="../../bimcommands/BimWall.py" line="480"/>
       <source>Wall Options</source>
       <translation type="unfinished">Wall Options</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1838"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Right</source>
       <translation>Eskuinekoa</translation>
     </message>
@@ -13890,7 +13890,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Wall Trace</source>
       <translation type="unfinished">Wall Trace</translation>
     </message>

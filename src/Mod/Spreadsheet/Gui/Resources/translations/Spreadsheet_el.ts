@@ -382,11 +382,6 @@
       <translation type="unfinished">Clear background color</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation type="unfinished">Recompute Cells</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Εισαγωγή Γραμμών</translation>
@@ -397,18 +392,23 @@
       <translation>Αφαίρεση Γραμμών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Εισαγωγή Στηλών</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation type="unfinished">Recompute Cells</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation type="unfinished">Remove Columns</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Εκκαθάριση Κελιών</translation>
     </message>

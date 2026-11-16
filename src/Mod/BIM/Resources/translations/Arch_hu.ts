@@ -403,10 +403,10 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Maradjak bejelentkezve a FreeCAD munkamenetek közt</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
       <location filename="../ui/dialogExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Párbeszédablak</translation>
@@ -427,9 +427,9 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Csak kijelölt objektumok</translation>
     </message>
     <message>
+      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
-      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <source>Only visible BIM objects</source>
       <translation>Csak látható BIM objektumok</translation>
     </message>
@@ -450,8 +450,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
-      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <source>Select All</source>
       <translation>Mindent kijelöl</translation>
     </message>
@@ -466,8 +466,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>IFC tulajdonságok</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Kiválasztott tulajdonság/tulajdonság készlet törlése</translation>
     </message>
@@ -497,20 +497,20 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>A teljes FreeCAD paraméteres adatok kényszerített exportálása</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by</source>
       <translation>Rendezési feltétel</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <location filename="../ui/dialogIfcElements.ui" line="47"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <source>Alphabetical</source>
       <translation>Betűrendes</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="56"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <source>IFC type</source>
       <translation>IFC típus</translation>
     </message>
@@ -520,8 +520,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Anyag</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="70"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <source>Model structure</source>
       <translation>Modell felépítése</translation>
     </message>
@@ -561,8 +561,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Megakadályozza a további felszólításokat új FreeCAD dokumentumok létrehozásakor. Az új dokumentumok automatikusan nem lesznek IFC-vé konvertálva, de a konverzió később lehetséges ezzel: Eszközök → IFC terv készítése.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
       <translation>Ne kérdezd újra</translation>
     </message>
@@ -738,8 +738,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="55"/>
-      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
+      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
@@ -769,17 +769,17 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Hozzárendelés</translation>
     </message>
     <message>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>Mégse</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
-      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -840,9 +840,9 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
+      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
-      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
@@ -1685,8 +1685,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Megállít</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <location filename="../ui/ArchNest.ui" line="177"/>
+      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <source>Preview</source>
       <translation>Előnézet</translation>
     </message>
@@ -1701,9 +1701,9 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Tűrési osztály</translation>
     </message>
     <message>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Anyag</translation>
     </message>
@@ -1719,8 +1719,8 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Csak alfanumerikus karaktereket tartalmazhat, szóközök nélkül. Használja a CamelCase gépelést a szóközök automatikus definiálásához</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <location filename="../ui/dialogWindows.ui" line="189"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
@@ -2105,15 +2105,10 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
       <translation>Az IfcRectangleProfileDef exportálása le van tiltva? (Csak Revit)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
+      <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
       <translation>Űrlap</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Elevation</source>
-      <translation>Emelkedés</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2186,6 +2181,11 @@ p, li { white-space: pre-wrap; }
       <translation>Elem</translation>
     </message>
     <message>
+      <location filename="../ui/dialogViews.ui" line="69"/>
+      <source>Elevation</source>
+      <translation>Emelkedés</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>2D nézetek</translation>
@@ -2254,8 +2254,8 @@ p, li { white-space: pre-wrap; }
       <translation>Címke</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="74"/>
       <location filename="../ui/dialogWindows.ui" line="175"/>
+      <location filename="../ui/dialogViews.ui" line="74"/>
       <source>Height</source>
       <translation>Magasság</translation>
     </message>
@@ -3159,8 +3159,8 @@ például 3 mag egy 4-magos CPU esetében.
 ha összeomlás lép fel, amikor több mag van beállítva.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="135"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
+      <location filename="../ui/preferences-ifc.ui" line="135"/>
       <source>Import Options</source>
       <translation>Importálás beállítások</translation>
     </message>
@@ -3290,9 +3290,9 @@ This will slow down the import, but one can watch the import.</source>
 Ez lelassítja az importálást, de meg lehet nézni az importálást.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>Nézetbe illesztés az importáláskor</translation>
     </message>
@@ -3377,9 +3377,9 @@ Netgen használata esetén győződjön meg arról, hogy az elérhető.</transla
       <translation>Mozaik</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>Exportálás beállítások</translation>
     </message>
@@ -3614,8 +3614,8 @@ Figyelmeztetés: Az IFC szabvány megköveteli, hogy minden fájlban legalább e
       <translation>IFC exportálás</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General Options</source>
       <translation>Általános beállítások</translation>
     </message>
@@ -3761,14 +3761,14 @@ Az alapértelmezett sablon a következő helyen található:
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../Arch.py" line="2576"/>
       <location filename="../../ArchStructure.py" line="450"/>
+      <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>Gerenda</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2580"/>
       <location filename="../../ArchStructure.py" line="451"/>
+      <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>Oszlop</translation>
     </message>
@@ -3799,8 +3799,8 @@ Az alapértelmezett sablon a következő helyen található:
       <translation>Következő pont</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../ArchStructure.py" line="461"/>
+      <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>Kategória</translation>
@@ -3973,9 +3973,9 @@ Az alapértelmezett sablon a következő helyen található:
     <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../ArchStructure.py" line="468"/>
-      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWindow.py" line="447"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <source>Preset</source>
       <translation>Előre beállított</translation>
     </message>
@@ -4058,6 +4058,20 @@ Az alapértelmezett sablon a következő helyen található:
       <location filename="../../ArchCoveringGui.py" line="995"/>
       <source>The length of the tiles</source>
       <translation>A csempék hossza</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="996"/>
+      <location filename="../../ArchCoveringGui.py" line="1077"/>
+      <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchStructure.py" line="1610"/>
+      <location filename="../../ArchPanel.py" line="576"/>
+      <location filename="../../ArchWall.py" line="1814"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
+      <location filename="../../ArchPrecast.py" line="1719"/>
+      <location filename="../../bimcommands/BimWall.py" line="506"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <source>Length</source>
+      <translation>Hossz</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1001"/>
@@ -4211,41 +4225,27 @@ Az alapértelmezett sablon a következő helyen található:
       <translation>%1+%2 hozzáad síkbeli lapot vagy objektumot</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1719"/>
-      <location filename="../../ArchWall.py" line="1814"/>
-      <location filename="../../ArchCoveringGui.py" line="996"/>
-      <location filename="../../ArchCoveringGui.py" line="1077"/>
-      <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../ArchCommands.py" line="1361"/>
-      <location filename="../../ArchStructure.py" line="477"/>
-      <location filename="../../ArchStructure.py" line="1610"/>
-      <location filename="../../bimcommands/BimPanel.py" line="211"/>
-      <location filename="../../bimcommands/BimWall.py" line="504"/>
-      <source>Length</source>
-      <translation>Hossz</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1217"/>
-      <location filename="../../ArchPrecast.py" line="1720"/>
-      <location filename="../../ArchWall.py" line="1823"/>
+      <location filename="../../ArchWindow.py" line="1212"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchStructure.py" line="484"/>
       <location filename="../../ArchStructure.py" line="1611"/>
+      <location filename="../../ArchPanel.py" line="577"/>
+      <location filename="../../ArchWall.py" line="1823"/>
+      <location filename="../../ArchPrecast.py" line="1720"/>
+      <location filename="../../bimcommands/BimWall.py" line="513"/>
       <location filename="../../bimcommands/BimPanel.py" line="218"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Width</source>
       <translation>Szélesség</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1220"/>
-      <location filename="../../ArchPrecast.py" line="1721"/>
-      <location filename="../../ArchWall.py" line="1832"/>
+      <location filename="../../ArchWindow.py" line="1215"/>
       <location filename="../../ArchStructure.py" line="491"/>
       <location filename="../../ArchStructure.py" line="1612"/>
+      <location filename="../../ArchWall.py" line="1832"/>
+      <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1086"/>
-      <location filename="../../bimcommands/BimWall.py" line="518"/>
+      <location filename="../../bimcommands/BimWall.py" line="520"/>
       <source>Height</source>
       <translation>Magasság</translation>
     </message>
@@ -4265,14 +4265,14 @@ Az alapértelmezett sablon a következő helyen található:
       <translation>Hosszúság és szélesség cseréje</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="617"/>
       <location filename="../../ArchStructure.py" line="1091"/>
+      <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Ez a háló egy érvénytelen szilárd test</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="319"/>
       <location filename="../../ArchStructure.py" line="1195"/>
+      <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Felületlétrehozás hibával tért vissza</translation>
     </message>
@@ -4323,16 +4323,16 @@ Az alapértelmezett sablon a következő helyen található:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="295"/>
-      <location filename="../../bimcommands/BimTruss.py" line="80"/>
       <location filename="../../bimcommands/BimWall.py" line="154"/>
+      <location filename="../../bimcommands/BimTruss.py" line="80"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
       <source>%1 pick first point</source>
       <translation>%1 első pont kiválasztása</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="297"/>
-      <location filename="../../bimcommands/BimTruss.py" line="82"/>
       <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimTruss.py" line="82"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
       <source>%1 pick next point</source>
       <translation>%1 következő pont kiválasztása</translation>
@@ -4472,12 +4472,6 @@ Az alapértelmezett sablon a következő helyen található:
       <translation>Profil létrehozása</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="76"/>
-      <location filename="../../bimcommands/BimPanel.py" line="126"/>
-      <source>%1 pick point</source>
-      <translation>%1 pont kiválasztása</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimProfile.py" line="92"/>
       <source>Profile Settings</source>
       <translation>Szelvény beállítások</translation>
@@ -4565,8 +4559,8 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Ajtó</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1223"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
+      <location filename="../../ArchWindow.py" line="1218"/>
       <source>Opening</source>
       <translation>Nyílás</translation>
     </message>
@@ -4825,150 +4819,155 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Könyöklő magassága</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1120"/>
-      <location filename="../../ArchWindow.py" line="1777"/>
+      <location filename="../../ArchWindow.py" line="1115"/>
+      <location filename="../../ArchWindow.py" line="1772"/>
       <source>Invert Opening Direction</source>
       <translation>Nyitási irány megfordítása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1135"/>
-      <location filename="../../ArchWindow.py" line="1780"/>
+      <location filename="../../ArchWindow.py" line="1130"/>
+      <location filename="../../ArchWindow.py" line="1775"/>
       <source>Invert Hinge Position</source>
       <translation>Zsanér pozíció megfordítása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1197"/>
+      <location filename="../../ArchWindow.py" line="1192"/>
       <source>This window has no defined opening</source>
       <translation>Ennek az ablakban nincs meghatározva a nyitása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1537"/>
-      <location filename="../../ArchWindow.py" line="1588"/>
-      <source>Get selected edge</source>
-      <translation>Kiválasztott élt kapja</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1690"/>
-      <source>Unable to create component</source>
-      <translation>Nem sikerült létrehozni egy összetevőt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
-      <source>Hole wire</source>
-      <translation>Drótháló furat</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1736"/>
-      <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation>A kiszolgáló objektumon lévő furat meghatározásához használt drótháló száma. A nulla értékkel automatikusan a legnagyobb dróthálót fogadja el</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
-      <source>Pick Selected</source>
-      <translation>Véletlenszerűen kiválasztott</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1743"/>
-      <source>Create/Update Component</source>
-      <translation>Összetevő Létrehozás/frissítés</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1747"/>
-      <source>Create new Component</source>
-      <translation>Új összetevő létrehozása</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1751"/>
-      <source>Frame depth</source>
-      <translation>Keret mélység</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1753"/>
-      <source>Hinge/Track</source>
-      <translation>Zsanér/csúszka</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1762"/>
-      <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
-      <translation>Ha ez bejelölt, az ablak keret tulajdonságának értéke hozzá lesz adva a itt megadott értékhez</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1770"/>
-      <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
-      <translation>Ha ez bejelölt, az ablak eltolás tulajdonságának értéke hozzá lesz adva a itt megadott értékhez</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
-      <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchSectionPlane.py" line="1805"/>
-      <location filename="../../ArchComponent.py" line="2467"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchAxis.py" line="999"/>
-      <source>Remove</source>
-      <translation>Törlés</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1212"/>
+      <location filename="../../ArchWindow.py" line="1207"/>
       <location filename="../../bimcommands/BimWindow.py" line="396"/>
       <source>Window Options</source>
       <translation>Ablak beállítások</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchWindow.py" line="1532"/>
+      <location filename="../../ArchWindow.py" line="1583"/>
+      <source>Get selected edge</source>
+      <translation>Kiválasztott élt kapja</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1685"/>
+      <source>Unable to create component</source>
+      <translation>Nem sikerült létrehozni egy összetevőt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>Window Elements</source>
       <translation>Ablak elemei</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1724"/>
+      <source>Hole wire</source>
+      <translation>Drótháló furat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1731"/>
+      <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
+      <translation>A kiszolgáló objektumon lévő furat meghatározásához használt drótháló száma. A nulla értékkel automatikusan a legnagyobb dróthálót fogadja el</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1732"/>
+      <source>Pick Selected</source>
+      <translation>Véletlenszerűen kiválasztott</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1738"/>
+      <source>Create/Update Component</source>
+      <translation>Összetevő Létrehozás/frissítés</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1742"/>
+      <source>Create new Component</source>
+      <translation>Új összetevő létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1746"/>
+      <source>Frame depth</source>
+      <translation>Keret mélység</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1748"/>
+      <source>Hinge/Track</source>
+      <translation>Zsanér/csúszka</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1757"/>
+      <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
+      <translation>Ha ez bejelölt, az ablak keret tulajdonságának értéke hozzá lesz adva a itt megadott értékhez</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1765"/>
+      <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
+      <translation>Ha ez bejelölt, az ablak eltolás tulajdonságának értéke hozzá lesz adva a itt megadott értékhez</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1769"/>
+      <source>Retrieves the selected edge</source>
+      <translation>Visszaadja a kijelölt élt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="954"/>
+      <location filename="../../ArchWindow.py" line="1733"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
+      <location filename="../../ArchAxis.py" line="999"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <source>Remove</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
       <location filename="../../ArchSpace.py" line="949"/>
+      <location filename="../../ArchWindow.py" line="1734"/>
       <location filename="../../ArchComponent.py" line="2468"/>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchAxis.py" line="1000"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1740"/>
+      <location filename="../../ArchWindow.py" line="1735"/>
       <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchSectionPlane.py" line="1592"/>
+      <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchComponent.py" line="1975"/>
+      <location filename="../../ArchAxis.py" line="831"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchAxis.py" line="831"/>
+      <location filename="../../ArchReference.py" line="717"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
       <source>Base 2D object</source>
       <translation>2D forrásobjektum</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1740"/>
       <location filename="../../ArchWindow.py" line="1745"/>
-      <location filename="../../ArchWindow.py" line="1750"/>
       <source>Wires</source>
       <translation>Drótvázak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1746"/>
+      <location filename="../../ArchWindow.py" line="1741"/>
       <location filename="../../ArchComponent.py" line="2475"/>
       <source>Components</source>
       <translation>Összetevők</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1748"/>
+      <location filename="../../ArchWindow.py" line="1743"/>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1749"/>
+      <location filename="../../ArchWindow.py" line="1744"/>
       <location filename="../../ArchComponent.py" line="2543"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
@@ -4976,45 +4975,40 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Típus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1774"/>
-      <source>Retrieves the selected edge</source>
-      <translation>Visszaadja a kijelölt élt</translation>
-    </message>
-    <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1752"/>
+      <location filename="../../ArchWindow.py" line="1747"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../bimcommands/BimWall.py" line="534"/>
+      <location filename="../../bimcommands/BimWall.py" line="536"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1754"/>
+      <location filename="../../ArchWindow.py" line="1749"/>
       <source>Opening mode</source>
       <translation>Nyitás módja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1755"/>
+      <location filename="../../ArchWindow.py" line="1750"/>
       <source>+ Frame property</source>
       <translation>+ Keret tulajdonság</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1763"/>
+      <location filename="../../ArchWindow.py" line="1758"/>
       <source>+ Offset property</source>
       <translation>+ Eltolás tulajdonság</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1771"/>
+      <location filename="../../ArchWindow.py" line="1766"/>
       <source>Get Selected Edge</source>
       <translation>Kiválasztott él megőrzése</translation>
     </message>
@@ -5039,10 +5033,10 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Jelöljön ki legalább egy tengelyt</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchComponent.py" line="2474"/>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../ArchAxis.py" line="998"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
+      <location filename="../../Arch.py" line="102"/>
       <source>Axes</source>
       <translation>Tengelyek</translation>
     </message>
@@ -5052,10 +5046,10 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Tengely rendszer összetevők</translation>
     </message>
     <message>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>Sikeresen kiírva</translation>
     </message>
@@ -5065,7 +5059,7 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Kereszttartó</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="113"/>
+      <location filename="../../bimcommands/BimTruss.py" line="114"/>
       <source>Create Truss</source>
       <translation>Kereszttartó létrehozás</translation>
     </message>
@@ -5166,9 +5160,9 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Több részből álló anyag létrehozás</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
+      <location filename="../../Arch.py" line="540"/>
       <source>Material</source>
       <translation>Anyag</translation>
     </message>
@@ -5264,8 +5258,8 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Tartomány eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="504"/>
       <location filename="../../ArchGrid.py" line="488"/>
+      <location filename="../../Arch.py" line="504"/>
       <source>Grid</source>
       <translation>Rács</translation>
     </message>
@@ -5416,8 +5410,8 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Szint</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1724"/>
       <location filename="../../ArchCoveringGui.py" line="913"/>
+      <location filename="../../ArchPrecast.py" line="1724"/>
       <source>Rotation</source>
       <translation>Forgatás</translation>
     </message>
@@ -5436,6 +5430,12 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>Panel létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <source>%1 pick point</source>
+      <translation>%1 pont kiválasztása</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="197"/>
@@ -5463,8 +5463,8 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Számítási hiba ennél az alakzatnál</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="563"/>
       <location filename="../../ArchStructure.py" line="1994"/>
+      <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>Nem tudtam formát számítani</translation>
     </message>
@@ -5521,7 +5521,7 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
       <translation>Függönyfal létrehozás</translation>
     </message>
@@ -5634,6 +5634,18 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <translation>Nem sikerült lekérdezni az objektum értékét</translation>
     </message>
     <message>
+      <location filename="../../ArchSchedule.py" line="987"/>
+      <location filename="../../ArchSchedule.py" line="1011"/>
+      <source>Operation</source>
+      <translation>Művelet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="936"/>
+      <location filename="../../ArchCommands.py" line="1454"/>
+      <source>Export CSV File</source>
+      <translation>CSV fájl exportálás</translation>
+    </message>
+    <message>
       <location filename="../../ArchSchedule.py" line="771"/>
       <source>Remove Spreadsheet</source>
       <translation>Táblázat eltávolítása</translation>
@@ -5647,18 +5659,6 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
       <location filename="../../ArchSchedule.py" line="899"/>
       <source>Import CSV File</source>
       <translation>CSV fájl importálás</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="987"/>
-      <location filename="../../ArchSchedule.py" line="1011"/>
-      <source>Operation</source>
-      <translation>Művelet</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1454"/>
-      <location filename="../../ArchSchedule.py" line="936"/>
-      <source>Export CSV File</source>
-      <translation>CSV fájl exportálás</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="963"/>
@@ -5678,17 +5678,17 @@ Ha a futás = 0, akkor a futást úgy számítják ki, hogy a magasság megegyez
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2544"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>Érték</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <source>Unit</source>
       <translation>Egység</translation>
     </message>
@@ -5780,13 +5780,13 @@ Szint létrehozása megszakítva.</translation>
       <translation>van egy érvénytelen alakzat</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
-      <location filename="../../ArchComponent.py" line="1171"/>
       <source>has a null shape</source>
       <translation>van egy nulla alakja</translation>
     </message>
@@ -5818,8 +5818,157 @@ Szint létrehozása megszakítva.</translation>
       <translation>Hibás alaptípus</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1982"/>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation type="unfinished">Solar Diagrams</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>Hely</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation type="unfinished">The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>Szélesség</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation type="unfinished">The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>Hosszúság</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation type="unfinished">The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation type="unfinished">Time zone</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation type="unfinished">The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation type="unfinished">North offset</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation type="unfinished">Diagrams</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation type="unfinished">Solar Diagram</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation type="unfinished">Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>Iránytű</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation type="unfinished">Shows a compass rose overlay on the site,
+oriented according to the north offset.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation type="unfinished">Sun Position</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation type="unfinished">Shows a sphere and ray indicating the sun position
+for the selected date and time.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation type="unfinished">The day and month for which the sun position is shown.
+The year is ignored.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>Dátum</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation type="unfinished">The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation type="unfinished">Hour</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation type="unfinished">Show Hour Labels</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation type="unfinished">Shows text labels at key hours along the sun path arc</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation type="unfinished">Solar calculations require the ladybug or pysolar Python module,
+which was not found.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation type="unfinished">Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</translation>
+    </message>
+    <message>
       <location filename="../../ArchSite.py" line="1594"/>
+      <location filename="../../ArchComponent.py" line="1982"/>
       <source>Toggle Subcomponents</source>
       <translation>Részösszetevők kapcsolása</translation>
     </message>
@@ -6070,9 +6219,9 @@ A felületértékek 0-ra lesznek állítva.
       <translation>Sík átméretezése a fenti listában szereplő objektumokra</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../ArchWall.py" line="1837"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
@@ -6082,8 +6231,8 @@ A felületértékek 0-ra lesznek állítva.
       <translation>Sík középpontja a fenti listában szereplő objektumokon</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
+      <location filename="../../Arch.py" line="232"/>
       <source>Building</source>
       <translation>Épület</translation>
     </message>
@@ -6187,8 +6336,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="107"/>
-      <location filename="../../bimcommands/BimWall.py" line="407"/>
-      <location filename="../../bimcommands/BimWall.py" line="655"/>
+      <location filename="../../bimcommands/BimWall.py" line="409"/>
+      <location filename="../../bimcommands/BimWall.py" line="657"/>
       <source>Create Wall</source>
       <translation>Fal létrehozás</translation>
     </message>
@@ -6198,68 +6347,52 @@ Building creation aborted.</source>
       <translation type="unfinished">First Point of Wall</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="483"/>
+      <location filename="../../bimcommands/BimWall.py" line="485"/>
       <source>Wall Presets</source>
       <translation>Előre beállított falak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="489"/>
+      <location filename="../../bimcommands/BimWall.py" line="491"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Ez a lista a dokumentumban szereplő összes többmátrixos objektumot tartalmazza.
 Hozzon létre többet a faltípusok meghatározásához.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="541"/>
+      <location filename="../../bimcommands/BimWall.py" line="543"/>
       <source>Baseline</source>
       <translation type="unfinished">Baseline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="547"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>No baseline</source>
       <translation>Nincs alapvonal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="548"/>
+      <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>Draft line</source>
       <translation>Tervrajz vonal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="549"/>
+      <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Sketch</source>
       <translation>Vázlat</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="525"/>
+      <location filename="../../ArchWall.py" line="1860"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Alignment</source>
       <translation>Igazítás</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1836"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Left</source>
       <translation>Bal</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="642"/>
-      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
-      <translation type="unfinished">Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1428"/>
-      <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
-      <translation type="unfinished">No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1802"/>
-      <location filename="../../bimcommands/BimWall.py" line="478"/>
-      <source>Wall Options</source>
-      <translation type="unfinished">Wall Options</translation>
-    </message>
-    <message>
       <location filename="../../ArchWall.py" line="1838"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Right</source>
       <translation>Jobb</translation>
     </message>
@@ -6278,6 +6411,22 @@ Hozzon létre többet a faltípusok meghatározásához.</translation>
       <location filename="../../ArchWall.py" line="720"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Hiba: Nem lehet módosítani ennek a falnak a forrásobjektumát</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="642"/>
+      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
+      <translation type="unfinished">Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1428"/>
+      <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
+      <translation type="unfinished">No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1802"/>
+      <location filename="../../bimcommands/BimWall.py" line="480"/>
+      <source>Wall Options</source>
+      <translation type="unfinished">Wall Options</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="2082"/>
@@ -6493,13 +6642,23 @@ Hozzon létre többet a faltípusok meghatározásához.</translation>
       <translation>Kamera nézet mentése</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="1219"/>
+      <source>Active working plane set to Top</source>
+      <translation type="unfinished">Active working plane set to Top</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1224"/>
+      <source>Active working plane set to {self.Object.Label}</source>
+      <translation type="unfinished">Active working plane set to {self.Object.Label}</translation>
+    </message>
+    <message>
       <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>New Group</source>
       <translation>Új csoport</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <location filename="../../ArchMaterial.py" line="100"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Alpontok ábécé szerinti újrarendezése</translation>
     </message>
@@ -6509,14 +6668,44 @@ Hozzon létre többet a faltípusok meghatározásához.</translation>
       <translation>Feljebb klónozni a szintet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1219"/>
-      <source>Active working plane set to Top</source>
-      <translation type="unfinished">Active working plane set to Top</translation>
+      <location filename="../../ArchCurtainWall.py" line="725"/>
+      <source>Vertical Sections</source>
+      <translation type="unfinished">Vertical Sections</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1224"/>
-      <source>Active working plane set to {self.Object.Label}</source>
-      <translation type="unfinished">Active working plane set to {self.Object.Label}</translation>
+      <location filename="../../ArchCurtainWall.py" line="726"/>
+      <source>Horizontal Sections</source>
+      <translation type="unfinished">Horizontal Sections</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="727"/>
+      <source>Vertical Mullion Width</source>
+      <translation type="unfinished">Vertical Mullion Width</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="730"/>
+      <source>Vertical Mullion Height</source>
+      <translation type="unfinished">Vertical Mullion Height</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Horizontal Mullion Width</source>
+      <translation type="unfinished">Horizontal Mullion Width</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="738"/>
+      <source>Horizontal Mullion Height</source>
+      <translation type="unfinished">Horizontal Mullion Height</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="740"/>
+      <source>Panel Thickness</source>
+      <translation type="unfinished">Panel Thickness</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Refine</source>
+      <translation>Finomít</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="64"/>
@@ -6576,235 +6765,6 @@ Hozzon létre többet a faltípusok meghatározásához.</translation>
       <location filename="../../ArchSql.py" line="2320"/>
       <source>Query is valid, but found 0 objects.</source>
       <translation type="unfinished">Query is valid, but found 0 objects.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="725"/>
-      <source>Vertical Sections</source>
-      <translation type="unfinished">Vertical Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="726"/>
-      <source>Horizontal Sections</source>
-      <translation type="unfinished">Horizontal Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="727"/>
-      <source>Vertical Mullion Width</source>
-      <translation type="unfinished">Vertical Mullion Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="730"/>
-      <source>Vertical Mullion Height</source>
-      <translation type="unfinished">Vertical Mullion Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Horizontal Mullion Width</source>
-      <translation type="unfinished">Horizontal Mullion Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="738"/>
-      <source>Horizontal Mullion Height</source>
-      <translation type="unfinished">Horizontal Mullion Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="740"/>
-      <source>Panel Thickness</source>
-      <translation type="unfinished">Panel Thickness</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Refine</source>
-      <translation>Finomít</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation type="unfinished">Solar Diagrams</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>Hely</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation type="unfinished">The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>Szélesség</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation type="unfinished">The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>Hosszúság</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation type="unfinished">The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation type="unfinished">Time zone</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation type="unfinished">The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation type="unfinished">North offset</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation type="unfinished">Diagrams</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation type="unfinished">Solar Diagram</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation type="unfinished">Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>Iránytű</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation type="unfinished">Shows a compass rose overlay on the site,
-oriented according to the north offset.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation type="unfinished">Sun Position</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation type="unfinished">Shows a sphere and ray indicating the sun position
-for the selected date and time.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation type="unfinished">The day and month for which the sun position is shown.
-The year is ignored.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>Dátum</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation type="unfinished">The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation type="unfinished">Hour</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation type="unfinished">Show Hour Labels</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation type="unfinished">Shows text labels at key hours along the sun path arc</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation type="unfinished">Solar calculations require the ladybug or pysolar Python module,
-which was not found.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation type="unfinished">Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation type="unfinished">Height Start</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation type="unfinished">Height End</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation type="unfinished">Strut Height</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation type="unfinished">Strut Width</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation type="unfinished">Rod Sections</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation type="unfinished">Rod Size</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation type="unfinished">Rod Mode</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation type="unfinished">Rod Type</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="884"/>
@@ -7322,6 +7282,46 @@ The ladybug or pysolar Python module is required.</translation>
       <translation type="unfinished">BIM SQL Cheatsheet</translation>
     </message>
     <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation type="unfinished">Height Start</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation type="unfinished">Height End</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation type="unfinished">Strut Height</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation type="unfinished">Strut Width</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation type="unfinished">Rod Sections</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation type="unfinished">Rod Size</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation type="unfinished">Rod Mode</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation type="unfinished">Rod Type</translation>
+    </message>
+    <message>
       <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation type="unfinished">Create Sketch</translation>
@@ -7402,6 +7402,18 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Alap forgás a szerszámtengely körül (csak akkor használható, ha a BasePerpendicularTool igaz)</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="780"/>
+      <location filename="../../ArchPanel.py" line="85"/>
+      <source>The length of this element, if not based on a profile</source>
+      <translation>Ennek az elemnek a hossza, ha nem profilon áll</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchPanel.py" line="95"/>
+      <source>The width of this element, if not based on a profile</source>
+      <translation>Ennek az elemnek a szélessége, ha nem profilon áll</translation>
+    </message>
+    <message>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
@@ -7409,27 +7421,15 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</so
 Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="85"/>
-      <location filename="../../ArchStructure.py" line="780"/>
-      <source>The length of this element, if not based on a profile</source>
-      <translation>Ennek az elemnek a hossza, ha nem profilon áll</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="95"/>
-      <location filename="../../ArchStructure.py" line="790"/>
-      <source>The width of this element, if not based on a profile</source>
-      <translation>Ennek az elemnek a szélessége, ha nem profilon áll</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="272"/>
-      <location filename="../../ArchPanel.py" line="209"/>
       <location filename="../../ArchStructure.py" line="812"/>
+      <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Ennek az objektumnak az aktuális kihúzás iránya (automatikus (0,0,0) aktuális megtartása)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="101"/>
       <location filename="../../ArchStructure.py" line="820"/>
+      <location filename="../../ArchPrecast.py" line="101"/>
       <source>The structural nodes of this element</source>
       <translation>Ennek az elemnek a szerkezeti csomópontjai</translation>
     </message>
@@ -7444,8 +7444,8 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>A középtengely és az egyenes csomópontok közti eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="197"/>
       <location filename="../../ArchStructure.py" line="851"/>
+      <location filename="../../ArchPanel.py" line="197"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Ennek az ibjektumnak a felület szelvényéhez használt felületlétrehozó típus</translation>
     </message>
@@ -7456,8 +7456,8 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>Az alap Építészeti vázlat élei (vagy élcsoportja) vannak kiválasztva, amelyeket az adott  BIM alakjának létrehozásához használni kell (ahelyett, hogy alapértelmezés szerint az alapforma összes élét használná). Az értékek az él- vagy csoportindexszámokként vannak megadva.</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="547"/>
       <location filename="../../ArchStructure.py" line="904"/>
+      <location filename="../../ArchStairs.py" line="547"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>Válassza ki a felhasználói definiált tulajdonságkészletet, amelyet a variáns alakzat létrehozásához használ, ugyanazzal az ÉpítészetVázlattal </translation>
     </message>
@@ -7528,15 +7528,15 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>Ehhez az eszközhöz szükséges elektromos áram Wattban</translation>
     </message>
     <message>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="235"/>
       <location filename="../../Arch.py" line="317"/>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Ennek az épületnek a típusa</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>Ennek az objektumnak a magassága</translation>
     </message>
@@ -7551,26 +7551,26 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>Ennek a szintnek a (0,0,0) pont szintje</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>Ennek a szintnek a számított alapterülete</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="266"/>
       <location filename="../../ArchComponent.py" line="250"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>Egy lehetséges leírás ehhez az összetevőhöz</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="274"/>
       <location filename="../../ArchComponent.py" line="258"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>Egy lehetséges címke ehhez az összetevőhöz</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="282"/>
       <location filename="../../ArchSectionPlane.py" line="1049"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Ennek az objektumnak a formája</translation>
     </message>
@@ -7590,8 +7590,8 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>A MaterialName:SolidIndexesList térkép, amely az objektum más fájlokból történő hivatkozása során használandó szilárd indexű anyagnevek</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="548"/>
       <location filename="../../ArchSectionPlane.py" line="1221"/>
+      <location filename="../../ArchBuildingPart.py" line="548"/>
       <source>The line width of this object</source>
       <translation>Ennek az objektumnak a vonalvastagsága</translation>
     </message>
@@ -7889,20 +7889,20 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>Egy URL-cím ami leképzett weboldalon jeleníti meg ezt az oldalt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Ehhez az objektumhoz csatolt egyéb formák</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Ebből az objektumból kivált egyéb formák</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Ennek az objektumnak az XY síkra vetített vetületének területe</translation>
     </message>
@@ -7937,8 +7937,8 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>A modell (0,0,0) eredetű és a geo-koordináták által megjelölt pont közötti választható eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="88"/>
       <location filename="../../ArchSite.py" line="744"/>
+      <location filename="../../ArchIFC.py" line="88"/>
       <source>The type of this object</source>
       <translation>Ennek az objektumnka a típusa</translation>
     </message>
@@ -8263,7 +8263,7 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>Kijelzi a magassági nyitó szintek szimbólumait, ha rendelkezésre állnak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1444"/>
+      <location filename="../../ArchWindow.py" line="1439"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>A furatokat meghatározó dróthálók száma. A 0 érték azt jelenti, hogy automatikus</translation>
     </message>
@@ -9144,8 +9144,8 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <translation>Ha Igaz, az egyes objektumokkal rendelkező további sorok hozzáadódnak az eredményekhez</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="1041"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>Ennek az objektumnak az elhelyezése</translation>
     </message>
@@ -9670,10 +9670,15 @@ Ignored if this wall is based on a solid.</translation>
       <translation>Válassza ki a Felhasználó által meghatározott tulajdonságkészleteket, amelyeket az ÉpítészetVázlattal azonos ÉpítészetVázlat formavariánsok, rétegek létrehozásához kell használni </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="863"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>Az alap ArchSketch (ha használják) adatainak (pl. szélességek, igazítások, eltolások) használata a fal tulajdonságai helyett</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
@@ -9822,11 +9827,6 @@ Ignored if this wall is based on a solid.</translation>
       <location filename="../../ArchCovering.py" line="346"/>
       <source>The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</source>
       <translation type="unfinished">The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation type="unfinished">Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="483"/>
@@ -10814,14 +10814,14 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <source>Label</source>
       <translation>Címke</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>IFC type</source>
       <translation>IFC típus</translation>
     </message>
@@ -10831,8 +10831,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Anyag</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <location filename="../../nativeifc/__init__.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>Az IfcOpenShell nem található ezen a rendszeren. Az IFC-támogatás letiltva</translation>
     </message>
@@ -11230,38 +11230,6 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Új anyag</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
-      <source>Merge Duplicates</source>
-      <translation>Ismétlődők egyesítése</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
-      <source>Delete Unused</source>
-      <translation>Törölje a felhasználatlanokat</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="105"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
-      <source>Rename</source>
-      <translation>Átnevezés</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
-      <source>Duplicate</source>
-      <translation>Másolás</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
-      <source>Merge To…</source>
-      <translation>Összeolvaszt…</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
-      <source>Delete</source>
-      <translation>Törlés</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimMaterial.py" line="85"/>
       <source>Select Material</source>
       <translation type="unfinished">Select Material</translation>
@@ -11280,6 +11248,38 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <location filename="../../bimcommands/BimMaterial.py" line="138"/>
       <source>New Multi-Material</source>
       <translation type="unfinished">New Multi-Material</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
+      <source>Merge Duplicates</source>
+      <translation>Ismétlődők egyesítése</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
+      <source>Delete Unused</source>
+      <translation>Törölje a felhasználatlanokat</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <source>Rename</source>
+      <translation>Átnevezés</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
+      <source>Duplicate</source>
+      <translation>Másolás</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
+      <source>Merge To…</source>
+      <translation>Összeolvaszt…</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <source>Delete</source>
+      <translation>Törlés</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="234"/>
@@ -11544,8 +11544,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>A sablon sikeresen betöltődött a jelenlegi dokumentumba</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="153"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <source>New Group</source>
       <translation>Új csoport</translation>
     </message>
@@ -12200,8 +12200,8 @@ Kérem, ellenőrizze a FreeCAD telepítését, vagy adjon meg egyéni sablont az
       <translation>Törli a szemetesből az összes olyan objektumot, amelyet más nem használ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="35"/>
+      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <source>Empty Trash</source>
       <translation>Lomtár ürítése</translation>
     </message>
@@ -13535,28 +13535,6 @@ Ha több oldal áll rendelkezésre, válaszd ki a nézetet és az oldalt a paran
     </message>
   </context>
   <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1497"/>
-      <source>Unsupported Base</source>
-      <translation type="unfinished">Unsupported Base</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1502"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation type="unfinished">The base of this wall is not a single straight line.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1509"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</translation>
-    </message>
-  </context>
-  <context>
     <name>BIMStatusWidget</name>
     <message>
       <location filename="../../BimStatus.py" line="105"/>
@@ -13671,6 +13649,28 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1497"/>
+      <source>Unsupported Base</source>
+      <translation type="unfinished">Unsupported Base</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1502"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation type="unfinished">The base of this wall is not a single straight line.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1509"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_ArcTools</name>
     <message>
       <location filename="../../InitGui.py" line="239"/>
@@ -13764,6 +13764,19 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_Offset2D</name>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
@@ -13774,6 +13787,19 @@ Do you want to proceed?</translation>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
       <translation type="unfinished">Utility to offset planar shapes</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Fuse</name>
+    <message>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
+      <source>Union</source>
+      <translation>Egyesítés</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
+      <source>Creates a union of several shapes</source>
+      <translation type="unfinished">Creates a union of several shapes</translation>
     </message>
   </context>
   <context>
@@ -13790,29 +13816,11 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
-    <name>BIM_Ungroup</name>
+    <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation type="unfinished">Remove From Group</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation type="unfinished">Removes this object from its parent group</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ExtrudeFace</name>
-    <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
-      <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
-      <source>Extrudes a selected face into a solid</source>
-      <translation type="unfinished">Extrudes a selected face into a solid</translation>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
+      <source>Wall Trace</source>
+      <translation>Fal vonalvezetése</translation>
     </message>
   </context>
   <context>
@@ -13842,32 +13850,6 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
-    <name>BIM_LinkMake</name>
-    <message>
-      <location filename="../../bimcommands/BimLink.py" line="15"/>
-      <source>Make Link</source>
-      <translation>Hivatkozás létrehozása</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimLink.py" line="19"/>
-      <source>Creates a Link to the selected object and immediately enables moving it</source>
-      <translation>Létrehoz egy hivatkozást a kiválasztott objektumra, és lehetővé teszi annak azonnali áthelyezését</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_Fuse</name>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="34"/>
-      <source>Union</source>
-      <translation>Egyesítés</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="35"/>
-      <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_Covering</name>
     <message>
       <location filename="../../bimcommands/BimCovering.py" line="58"/>
@@ -13881,11 +13863,29 @@ Do you want to proceed?</translation>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_ExtrudeFace</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
-      <source>Wall Trace</source>
-      <translation>Fal vonalvezetése</translation>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
+      <source>Extrude Face</source>
+      <translation type="unfinished">Extrude Face</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
+      <source>Extrudes a selected face into a solid</source>
+      <translation type="unfinished">Extrudes a selected face into a solid</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_LinkMake</name>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
+      <source>Make Link</source>
+      <translation>Hivatkozás létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
+      <source>Creates a Link to the selected object and immediately enables moving it</source>
+      <translation>Létrehoz egy hivatkozást a kiválasztott objektumra, és lehetővé teszi annak azonnali áthelyezését</translation>
     </message>
   </context>
 </TS>

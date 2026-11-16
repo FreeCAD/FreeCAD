@@ -931,8 +931,8 @@ så att självskärning undviks.</translation>
       <translation>Skapa boolesk operation</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Lägg till en kropp</translation>
     </message>
@@ -3415,7 +3415,7 @@ mätas längs den angivna riktningen</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <location filename="../../TaskTransformedParameters.cpp" line="509"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Ingen referens</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
@@ -3586,11 +3586,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Inga giltiga plan i detta dokument</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1194"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
@@ -3672,11 +3672,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Välj ett enda formelement i en aktiv kropp.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="1195"/>
       <source>Close this dialog?</source>
       <translation>Stäng den här dialogen?</translation>
     </message>
@@ -3901,14 +3901,14 @@ This may lead to unexpected results.</source>
       <translation>Det går inte att skapa ett subtraktivt formelement utan ett tillgängligt basformelement</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
       <location filename="../../TaskTransformedParameters.cpp" line="519"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikal skissaxel</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
       <location filename="../../TaskTransformedParameters.cpp" line="525"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
       <source>Horizontal sketch axis</source>
       <translation>Horisontell skissaxel</translation>
     </message>
@@ -3962,10 +3962,10 @@ För äldre dokument med Part Design-objekt som saknar kropp använder du migrer
       <translation>För att kunna använda det här formelementet måste det tillhöra ett delobjekt i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="68"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
@@ -4104,7 +4104,7 @@ Du kan migrera senare när som helst via ”Part Design -&gt; Migrera”.</trans
       <translation>Redigera linjärt mönster</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLoft.cpp" line="67"/>
+      <location filename="../../ViewProviderLoft.cpp" line="71"/>
       <source>Edit Loft</source>
       <translation>Redigera loft</translation>
     </message>
@@ -4955,23 +4955,23 @@ under 90: mindre hålradie nedtill
       <translation>Kan inte utföra boolesk operation med ogiltig basform</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="554"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="314"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2142"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="314"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="554"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Resultatet innehåller flera solider: aktivera ”Allow Compound” i den aktiva kroppen.</translation>
     </message>
@@ -5006,11 +5006,11 @@ under 90: mindre hålradie nedtill
       <translation>Den resulterande sammanfogade extruderingen är tom.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="564"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="564"/>
       <source>Resulting shape is not a solid</source>
       <translation>Den resulterande formen är inte en solid</translation>
     </message>
@@ -5168,7 +5168,7 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <translation>Fel: Ytan måste vara plan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2507"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2505"/>
       <source>Error: Result is not a solid</source>
       <translation>Fel: Resultatet är inte en solid</translation>
     </message>
@@ -5248,18 +5248,18 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <translation>Fel i hål: Den resulterande formen är tom</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2065"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Hålfel: Det gick inte att hitta axeln</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2116"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2124"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2122"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Boolesk operation misslyckades på profilkanten Edge</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2131"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Boolesk operation gav ett icke-solitt resultat för profilkanten Edge</translation>
     </message>
@@ -5269,24 +5269,24 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <translation>Boolesk operation misslyckades</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2157"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2155"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Kunde inte skapa en yta från skissen.
 Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att skapa en ficka upp till en yta.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2330"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2328"/>
       <source>Thread type out of range</source>
       <translation>Gängtyp utanför intervallet</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2333"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2331"/>
       <source>Thread size out of range</source>
       <translation>Gängstorlek utanför intervallet</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2481"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2479"/>
       <source>Error: Thread could not be built</source>
       <translation>Fel: Tråden kunde inte byggas</translation>
     </message>
@@ -5306,8 +5306,8 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att 
       <translation>Loft: Skapa en yta från en skiss misslyckades</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="492"/>
       <location filename="../../../App/FeatureLoft.cpp" line="357"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="492"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Misslyckades med att skapa skal</translation>
     </message>
@@ -5649,7 +5649,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <translation>Fel vid beräkning av förhandsgranskning av borttagen volym: %1</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="180"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="174"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
       <translation>Den resulterande formen är tom. Det kan tyda på att inget material kommer att tas bort eller att det finns ett problem med modellen.</translation>
     </message>
@@ -5958,69 +5958,6 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     </message>
   </context>
   <context>
-    <name>PartDesignGui::ViewProviderDefeaturing</name>
-    <message>
-      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
-      <source>Defeaturing Parameters</source>
-      <translation>Parametrar för borttagning av formdetaljer</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPointPattern</name>
-    <message>
-      <location filename="../../ViewProviderPointPattern.h" line="18"/>
-      <source>Point Pattern Parameters</source>
-      <translation>Parametrar för punktmönster</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
-      <source>Edit Point Pattern</source>
-      <translation>Redigera punktmönster</translation>
-    </message>
-  </context>
-  <context>
-    <name>BooleanToolSelection</name>
-    <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
-      <source>The result Body cannot be used as a Boolean tool.</source>
-      <translation>Resultatkroppen kan inte användas som booleskt verktyg.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPathPattern</name>
-    <message>
-      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
-      <source>Edit Path Pattern</source>
-      <translation>Redigera mönster längs bana</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPathPattern.h" line="18"/>
-      <source>Path Pattern Parameters</source>
-      <translation>Parametrar för mönster längs bana</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderCircularPattern</name>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
-      <source>Edit Circular Pattern</source>
-      <translation>Redigera cirkulärt mönster</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
-      <source>Circular Pattern Parameters</source>
-      <translation>Parametrar för cirkulärt mönster</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPartDesignDefeaturing</name>
     <message>
       <location filename="../../Command.cpp" line="2132"/>
@@ -6093,6 +6030,19 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation>Parametrar för cirkulärt mönster</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation>Redigera cirkulärt mönster</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -6115,6 +6065,56 @@ Adjust the parameters and try again.</source>
       <translation>Formelementet kunde inte skapas med de angivna parametrarna.
 Geometrin kan vara ogiltig eller så är parametrarna inkompatibla.
 Justera parametrarna och försök igen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation>Parametrar för punktmönster</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation>Redigera punktmönster</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation>Redigera mönster längs bana</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation>Parametrar för mönster längs bana</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation>Parametrar för borttagning av formdetaljer</translation>
+    </message>
+  </context>
+  <context>
+    <name>BooleanToolSelection</name>
+    <message>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation>Resultatkroppen kan inte användas som booleskt verktyg.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
     </message>
   </context>
 </TS>

@@ -73,12 +73,12 @@
       <translation>Tá do fho-thionól solúbtha faoi láthair. Déanfaidh sé seo righin é ina ionad.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>N/B</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>Ní thacaítear leis</translation>
     </message>
@@ -567,32 +567,32 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
       <translation>Insamhalta</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation>Aistriúchán Gathach</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>Rothlú</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation>Aistriúchán</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation>Uillinn an ghluaiseachta pléasctha seo</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation>Fad an ghluaiseachta pléasctha seo</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation>Cuir an socrúchán in eagar</translation>
     </message>
@@ -727,18 +727,18 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
       <translation>An réad go talamh</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation>Na rudaí a bhog an ghluaiseacht</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Seo gluaiseacht an ghluaiste. Is é an socrúchán deiridh toradh an tsocrúcháin tosaigh * an socrúchán seo.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>An cineál gluaiseachta</translation>
     </message>
@@ -1636,24 +1636,6 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Roghnaigh 2 chomhpháirt ar a laghad chun grúpa docht a chruthú</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Cruthaigh Grúpa Docht</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Cruthaigh grúpa docht.&lt;/p&gt;&lt;p&gt;Cruthaíonn sé seo grúpa docht a ghlasálann na comhpháirteanna roghnaithe le chéile go buan.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1677,6 +1659,24 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Athchóirigh an roghbhlúire</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Roghnaigh 2 chomhpháirt ar a laghad chun grúpa docht a chruthú</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Cruthaigh Grúpa Docht</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Cruthaigh grúpa docht.&lt;/p&gt;&lt;p&gt;Cruthaíonn sé seo grúpa docht a ghlasálann na comhpháirteanna roghnaithe le chéile go buan.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

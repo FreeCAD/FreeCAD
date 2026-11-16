@@ -6,12 +6,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Select</source>
-      <translation>Обрати</translation>
+      <translation>Вибір</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Zoom</source>
-      <translation>Збільшення</translation>
+      <translation>Масштабування</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Pan</source>
-      <translation>Посунути</translation>
+      <translation>Панорамування</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="94"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="103"/>
       <source>Navigation style not recognized.</source>
-      <translation>Стиль навігації не визначений.</translation>
+      <translation>Стиль навігації не розпізнано.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Compact</source>
-      <translation>Зменшити</translation>
+      <translation>Компактний</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Free Turntable</source>
-      <translation>Поворотний перегляд</translation>
+      <translation>Вільне обертання</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>

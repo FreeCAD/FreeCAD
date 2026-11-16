@@ -4363,22 +4363,32 @@ Check one or more edge entities first.</source>
       <translation>最大偏移角</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation type="unfinished">Applies these tessellation settings to all objects in currently open documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation type="unfinished">Apply to Open Documents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>設定過小的偏差會導致網格化耗時較長，從而凍結或減慢圖形使用者介面。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>角度偏差</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>設定過小的角度偏差會導致網格化耗時較長，從而凍結或減慢圖形使用者介面。</translation>
     </message>
@@ -5047,7 +5057,7 @@ the sketch plane's normal vector will be used</source>
       <translation>選取要鏡射的形狀。</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>無此檔案 '%1'</translation>
     </message>
@@ -6541,7 +6551,7 @@ Continue?</source>
       <translation>輸入距離：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>依面外觀</translation>
     </message>
@@ -7362,7 +7372,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>無法推估曲線交點。請嘗試在曲線頂點之間加入重合約束。</translation>
     </message>
@@ -7922,7 +7932,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="107"/>
       <source>Tangent Axis</source>
-      <translation type="unfinished">Tangent Axis</translation>
+      <translation>相切</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="117"/>

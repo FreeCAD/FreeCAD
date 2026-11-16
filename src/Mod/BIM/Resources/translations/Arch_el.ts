@@ -645,7 +645,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>Κλείδωμα εγγράφου</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
@@ -1778,7 +1778,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>ή</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="52"/>
@@ -1828,7 +1828,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>…</source>
-      <translation type="unfinished">…</translation>
+      <translation>…</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
@@ -1858,12 +1858,12 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="242"/>
       <source>Save thumbnails</source>
-      <translation type="unfinished">Save thumbnails</translation>
+      <translation>Αποθήκευση μικρογραφιών</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="252"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Αποθήκευση ως…</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>
@@ -1878,12 +1878,12 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="53"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Όλα τα ορατά αντικείμενα</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="63"/>
       <source>Whole document</source>
-      <translation type="unfinished">Whole document</translation>
+      <translation>Ολόκληρο έγγραφο</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="82"/>
@@ -2179,12 +2179,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="90"/>
       <source>&lt;&lt; Previous</source>
-      <translation type="unfinished">&lt;&lt; Previous</translation>
+      <translation>&lt;&lt; Προηγούμενο</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="97"/>
       <source>Next &gt;&gt;</source>
-      <translation type="unfinished">Next &gt;&gt;</translation>
+      <translation>Επόμενο &gt;&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="64"/>
@@ -2221,7 +2221,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="14"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Πόρτες και Παράθυρα</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="20"/>
@@ -2394,7 +2394,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="246"/>
       <source>New Document</source>
-      <translation type="unfinished">New Document</translation>
+      <translation>Νέο έγγραφο</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="284"/>
@@ -2932,7 +2932,7 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="93"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Πόρτες και Παράθυρα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="109"/>
@@ -2942,7 +2942,7 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="112"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>Έπιπλα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="128"/>
@@ -3619,7 +3619,7 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <source>General Options</source>
-      <translation type="unfinished">General Options</translation>
+      <translation>Γενικές επιλογές</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="43"/>
@@ -3830,22 +3830,22 @@ The default template is located at:
     <message>
       <location filename="../../ArchCoveringGui.py" line="531"/>
       <source>Top Left</source>
-      <translation type="unfinished">Top Left</translation>
+      <translation>Επάνω αριστερά</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="532"/>
       <source>Top Right</source>
-      <translation type="unfinished">Top Right</translation>
+      <translation>Επάνω δεξιά</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="533"/>
       <source>Bottom Left</source>
-      <translation type="unfinished">Bottom Left</translation>
+      <translation>Κάτω αριστερά</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="534"/>
       <source>Bottom Right</source>
-      <translation type="unfinished">Bottom Right</translation>
+      <translation>Κάτω δεξιά</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="537"/>
@@ -4222,7 +4222,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchStructure.py" line="1610"/>
       <location filename="../../bimcommands/BimPanel.py" line="211"/>
-      <location filename="../../bimcommands/BimWall.py" line="504"/>
+      <location filename="../../bimcommands/BimWall.py" line="506"/>
       <source>Length</source>
       <translation>Μήκος</translation>
     </message>
@@ -4236,7 +4236,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="484"/>
       <location filename="../../ArchStructure.py" line="1611"/>
       <location filename="../../bimcommands/BimPanel.py" line="218"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <location filename="../../bimcommands/BimWall.py" line="513"/>
       <source>Width</source>
       <translation>Πλάτος</translation>
     </message>
@@ -4247,7 +4247,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="491"/>
       <location filename="../../ArchStructure.py" line="1612"/>
       <location filename="../../ArchRoof.py" line="1086"/>
-      <location filename="../../bimcommands/BimWall.py" line="518"/>
+      <location filename="../../bimcommands/BimWall.py" line="520"/>
       <source>Height</source>
       <translation>Ύψος</translation>
     </message>
@@ -4997,7 +4997,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1752"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../bimcommands/BimWall.py" line="534"/>
+      <location filename="../../bimcommands/BimWall.py" line="536"/>
       <source>Offset</source>
       <translation>Μετατόπιση (Offset)</translation>
     </message>
@@ -5068,7 +5068,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Truss</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="113"/>
+      <location filename="../../bimcommands/BimTruss.py" line="114"/>
       <source>Create Truss</source>
       <translation type="unfinished">Create Truss</translation>
     </message>
@@ -5254,7 +5254,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="494"/>
       <source>Delete Column</source>
-      <translation type="unfinished">Delete Column</translation>
+      <translation>Διαγραφή στήλης</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="495"/>
@@ -5275,22 +5275,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="489"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Συνολικό πλάτος</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="490"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>Συνολικό ύψος</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="499"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Σειρές</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="503"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Στήλες</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1249"/>
@@ -5422,7 +5422,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPrecast.py" line="1724"/>
       <location filename="../../ArchCoveringGui.py" line="913"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="658"/>
@@ -5524,7 +5524,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
       <translation type="unfinished">Create Curtain Wall</translation>
     </message>
@@ -5649,19 +5649,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="899"/>
       <source>Import CSV File</source>
-      <translation type="unfinished">Import CSV File</translation>
+      <translation>Εισαγωγή αρχείου CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="987"/>
       <location filename="../../ArchSchedule.py" line="1011"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Λειτουργία</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1454"/>
       <location filename="../../ArchSchedule.py" line="936"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>Εξαγωγή αρχείου CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="963"/>
@@ -6074,7 +6074,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
@@ -6189,8 +6189,8 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="107"/>
-      <location filename="../../bimcommands/BimWall.py" line="407"/>
-      <location filename="../../bimcommands/BimWall.py" line="655"/>
+      <location filename="../../bimcommands/BimWall.py" line="409"/>
+      <location filename="../../bimcommands/BimWall.py" line="657"/>
       <source>Create Wall</source>
       <translation type="unfinished">Create Wall</translation>
     </message>
@@ -6200,45 +6200,45 @@ Building creation aborted.</translation>
       <translation type="unfinished">First Point of Wall</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="483"/>
+      <location filename="../../bimcommands/BimWall.py" line="485"/>
       <source>Wall Presets</source>
       <translation type="unfinished">Wall Presets</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="489"/>
+      <location filename="../../bimcommands/BimWall.py" line="491"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="541"/>
+      <location filename="../../bimcommands/BimWall.py" line="543"/>
       <source>Baseline</source>
       <translation type="unfinished">Baseline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="547"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>No baseline</source>
       <translation type="unfinished">No baseline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="548"/>
+      <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>Draft line</source>
       <translation type="unfinished">Draft line</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="549"/>
+      <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Sketch</source>
       <translation type="unfinished">Sketch</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="525"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Alignment</source>
       <translation>Ευθυγράμμιση</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1836"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Left</source>
       <translation>Αριστερά</translation>
     </message>
@@ -6254,13 +6254,13 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1802"/>
-      <location filename="../../bimcommands/BimWall.py" line="478"/>
+      <location filename="../../bimcommands/BimWall.py" line="480"/>
       <source>Wall Options</source>
       <translation type="unfinished">Wall Options</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1838"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Right</source>
       <translation>Δεξιά</translation>
     </message>
@@ -6729,7 +6729,7 @@ The year is ignored.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1185"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Ημερομηνία</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1196"/>
@@ -6741,7 +6741,7 @@ in 24-hour local time. Steps in half-hour increments.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1209"/>
       <source>Hour</source>
-      <translation type="unfinished">Hour</translation>
+      <translation>Ώρα</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1214"/>
@@ -6932,7 +6932,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchReport.py" line="1022"/>
       <source>Description:</source>
-      <translation type="unfinished">Description:</translation>
+      <translation>Περιγραφή:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1029"/>
@@ -7243,7 +7243,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchReport.py" line="2187"/>
       <source>Rename…</source>
-      <translation type="unfinished">Rename…</translation>
+      <translation>Μετονομασία…</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2188"/>
@@ -7273,7 +7273,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchReport.py" line="2268"/>
       <source>New name:</source>
-      <translation type="unfinished">New name:</translation>
+      <translation>Νέο όνομα:</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2275"/>
@@ -7298,7 +7298,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchReport.py" line="2316"/>
       <source>File Not Found</source>
-      <translation type="unfinished">File Not Found</translation>
+      <translation>Το αρχείο δεν βρέθηκε</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2317"/>
@@ -13886,7 +13886,7 @@ Do you want to proceed?</translation>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Wall Trace</source>
       <translation type="unfinished">Wall Trace</translation>
     </message>

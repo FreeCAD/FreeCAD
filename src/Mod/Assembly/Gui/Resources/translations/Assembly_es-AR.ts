@@ -73,12 +73,12 @@
       <translation>Tu subensamblaje es actualmente flexible. Esto lo hará rígido en su lugar.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>No soportado</translation>
     </message>
@@ -1635,24 +1635,6 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Elija al menos 2 componentes para crear un grupo rígido</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Crear un grupo rígido</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>Crea un grupo rígido que permanentemente bloquea entre sí los componentes seleccionados</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1676,6 +1658,24 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Restaurar instantánea</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Elija al menos 2 componentes para crear un grupo rígido</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Crear un grupo rígido</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>Crea un grupo rígido que permanentemente bloquea entre sí los componentes seleccionados</translation>
     </message>
   </context>
   <context>

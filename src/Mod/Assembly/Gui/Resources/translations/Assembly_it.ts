@@ -73,12 +73,12 @@
       <translation>Il sotto assieme è attualmente flessibile. Questa modifica lo renderà rigido.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>Non disponibile</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>Non supportato</translation>
     </message>
@@ -567,32 +567,32 @@ SLOPE definisce la pendenza della transizione tra 0 e H1 e H2 a 0 al tempo = T1 
       <translation>Simulazione</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation>Traslazione radiale</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>Rotazione</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation>Traslazione</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation>Angolazione di questa immagine in vista esplosa</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation>Distanza di questa movimento della vista esplosa</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation>Modifica posizionamento</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE definisce la pendenza della transizione tra 0 e H1 e H2 a 0 al tempo = T1 
       <translation>L'oggetto da fissare a terra</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation>Gli oggetti spostati dal movimento</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Questo è lo spostamento del movimento. Il posizionamento finale è il risultato di posizionamento iniziale * questo posizionamento.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>Il tipo di movimento</translation>
     </message>
@@ -1633,24 +1633,6 @@ Nota: al momento questa funzione seleziona solo le parti non collegate, non quel
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Seleziona almeno 2 componenti per creare un gruppo rigido</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Crea gruppo rigido</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Crea un gruppo rigido.&lt;/p&gt;&lt;p&gt;Crea un gruppo rigido che blocca permanentemente insieme i componenti selezionati.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1674,6 +1656,24 @@ Nota: al momento questa funzione seleziona solo le parti non collegate, non quel
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Ripristina snapshot</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Seleziona almeno 2 componenti per creare un gruppo rigido</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Crea gruppo rigido</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Crea un gruppo rigido.&lt;/p&gt;&lt;p&gt;Crea un gruppo rigido che blocca permanentemente insieme i componenti selezionati.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

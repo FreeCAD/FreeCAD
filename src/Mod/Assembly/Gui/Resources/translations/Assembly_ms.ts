@@ -73,12 +73,12 @@
       <translation>Subhimpunan anda fleksibel pada masa ini. Ini akan menjadikannya tegar sebaliknya.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>Tidak disokong</translation>
     </message>
@@ -499,7 +499,7 @@ SLOPE menentukan tahap kecuraman peralihan antara 0 ke H1 dan H2 ke 0 masing-mas
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
       <source>Pillow (PIL) is not installed. It is required for video export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+      <translation>Pillow (PIL) tidak dipasang. Ia diperlukan untuk mengeksport GIF.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
@@ -567,32 +567,32 @@ SLOPE menentukan tahap kecuraman peralihan antara 0 ke H1 dan H2 ke 0 masing-mas
       <translation>Simulasi</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation type="unfinished">Radial Translation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>Pusingan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation type="unfinished">Translation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation type="unfinished">Angle of this exploded-view move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation type="unfinished">Distance of this exploded-view move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation type="unfinished">Edit placement</translation>
     </message>
@@ -719,7 +719,7 @@ SLOPE menentukan tahap kecuraman peralihan antara 0 ke H1 dan H2 ke 0 masing-mas
     <message>
       <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>Senarai rujukan komponen untuk dikumpulkan bersama</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1454"/>
@@ -727,18 +727,18 @@ SLOPE menentukan tahap kecuraman peralihan antara 0 ke H1 dan H2 ke 0 masing-mas
       <translation>Objek kepada bumi</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation>Objek-objek yang digerakkan oleh pergerakan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ini ialah pergerakan bagi move. Kedudukan akhir adalah hasil daripada kedudukan awal * kedudukan ini.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>Jenis pergerakan</translation>
     </message>
@@ -790,22 +790,22 @@ SLOPE menentukan tahap kecuraman peralihan antara 0 ke H1 dan H2 ke 0 masing-mas
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>Senarai komponen yang dirakam dalam petikan ini.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Senarai penempatan yang sepadan untuk komponen tersebut.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>Senarai keadaan keterlihatan untuk komponen tersebut.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Jika benar, penggunaan petikan ini akan menyelesaikan pemasangan selepas memulihkan penempatan.</translation>
     </message>
   </context>
   <context>
@@ -1396,7 +1396,7 @@ Fail dinamakan ‘runPreDrag.asmt’ dan ‘dragging.log’ serta terletak dalam
     <message>
       <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Jika pemasangan aktif: Mencipta sambungan yang mengunci dua bahagian secara statik bersama-sama, menghalang sebarang pergerakan atau putaran&lt;/p&gt;&lt;p&gt;2 - Jika bahagian aktif: Meletakkan sub-bahagian dengan memadankan sistem koordinat yang dipilih. Bahagian kedua yang dipilih akan bergerak.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1609,12 +1609,12 @@ Fail dinamakan ‘runPreDrag.asmt’ dan ‘dragging.log’ serta terletak dalam
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Selects these conflicting joints</source>
-      <translation type="unfinished">Selects these conflicting joints</translation>
+      <translation>Klik untuk memilih sambungan yang bercanggah ini</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Selects these redundant joints</source>
-      <translation type="unfinished">Selects these redundant joints</translation>
+      <translation>Klik untuk memilih sambungan yang berlebihan ini</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
@@ -1629,24 +1629,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
       <translation type="unfinished">Selects these malformed joints</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1673,6 +1655,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation type="unfinished">Restore Snapshot</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Pilih sekurang-kurangnya 2 komponen untuk mencipta kumpulan tegar</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation type="unfinished">Create Rigid Group</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Cipta kumpulan tegar.&lt;/p&gt;&lt;p&gt;Mencipta kumpulan tegar yang mengunci komponen yang dipilih bersama-sama secara kekal.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

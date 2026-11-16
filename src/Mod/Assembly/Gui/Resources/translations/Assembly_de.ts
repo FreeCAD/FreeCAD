@@ -73,12 +73,12 @@
       <translation>Die Unterbaugruppe ist derzeit beweglich. Dies macht sie zu einem starren Verbund.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>Keine Angaben</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>Nicht unterstützt</translation>
     </message>
@@ -567,32 +567,32 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
       <translation>Simulation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation>Radiale Verschiebung</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>Drehwinkel</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation>Verschiebung</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation>Winkel dieser Explosionsansichtsverschiebung</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation>Entfernung dieser Explosionsansichtsverschiebung</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation>Positionierung bearbeiten</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
       <translation>Das verankerndes Objekt</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation>Die durch die Verschiebung bewegten Objekte</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Dies ist die Verschiebung der Bewegung. Die Endpositionierung ist das Ergebnis aus der Startpositionierung * dieser Positionierung.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>Die Art der Bewegung</translation>
     </message>
@@ -1634,24 +1634,6 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Mindestens zwei Komponenten auswählen, um eine starr verbundene Gruppe zu erstellen</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Starr verbundene Gruppe erstellen</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Eine starr verbundene Gruppe erstellen.&lt;/p&gt;&lt;p&gt;Erstellt eine starr verbundene Gruppe, die die ausgewählten Komponenten dauerhaft miteinander verbindet.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1675,6 +1657,24 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Momentaufnahme wiederherstellen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Mindestens zwei Komponenten auswählen, um eine starr verbundene Gruppe zu erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Starr verbundene Gruppe erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Eine starr verbundene Gruppe erstellen.&lt;/p&gt;&lt;p&gt;Erstellt eine starr verbundene Gruppe, die die ausgewählten Komponenten dauerhaft miteinander verbindet.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

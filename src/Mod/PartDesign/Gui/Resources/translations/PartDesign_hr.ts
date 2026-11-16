@@ -4945,17 +4945,17 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Osnovna značajka ima prazan oblik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="220"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>Ne može se izvršiti rez Booleovom operacijom bez Osnovne značajke</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="194"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="242"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Ne može se izvršiti booleova operacija za sve osim za Part::Feature i njene izvedenice</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="211"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="259"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>Ne može se izvršiti booleova operacija sa neispravnim baznim oblikom</translation>
     </message>
@@ -4963,14 +4963,14 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="419"/>
       <location filename="../../../App/FeatureHelix.cpp" line="435"/>
       <location filename="../../../App/FeatureHelix.cpp" line="453"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="554"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
       <location filename="../../../App/FeatureLoft.cpp" line="387"/>
       <location filename="../../../App/FeatureLoft.cpp" line="422"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureHole.cpp" line="2144"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="314"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
@@ -4981,12 +4981,12 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Rezultat ima više čvrstih tijela: omogućite 'Dopusti spoj' u aktivnom tijelu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="221"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="269"/>
       <source>Tool shape is null</source>
       <translation>Oblik je prazan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="248"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="296"/>
       <source>Unsupported boolean operation</source>
       <translation>Booleova operacija nije moguća</translation>
     </message>
@@ -5012,7 +5012,7 @@ preko 90: veći polumjer rupe na dnu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="564"/>
       <location filename="../../../App/FeatureLoft.cpp" line="415"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
@@ -5269,7 +5269,7 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation>Booleova operacija proizvela je nečvrsto tijelo na rubu profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="258"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="306"/>
       <source>Boolean operation failed</source>
       <translation>Booleanska operacija nije uspjela   
 </translation>
@@ -5312,7 +5312,7 @@ Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu
       <translation>Izvlačenje forme: Stvaranje lica iz skice nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="492"/>
       <location filename="../../../App/FeatureLoft.cpp" line="357"/>
       <source>Loft: Failed to create shell</source>
       <translation>Izvlačenje forme: Stvaranje ljuske nije uspjelo</translation>
@@ -5325,87 +5325,87 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="187"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="203"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Izvlačenje po putanji: Nije moguće dobiti oblik profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="194"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="210"/>
       <source>No spine linked</source>
       <translation>Vodilna krivulja nije povezana</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="209"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="225"/>
       <source>No auxiliary spine linked.</source>
       <translation>Pomoćna vodilna krivulja nije povezana</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="247"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Izvlačenje po putanji: Samo jedna izolirana točka je potrebna ako koristite skicu sa izoliranim točkama za sjecište</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="240"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="256"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Izvlačenje po putanji: Ako koristite tačku za profil onda vam je potreban barem još jedan presjek</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="258"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="274"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>Cijev: Svi segmenti moraju biti svojstva komponente</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="267"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Izvlačenje po putanji: Nije moguće dobiti oblik po presjeku</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="275"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Izvlačenje po putanji:  Samo profili i zadnje sjecište mogu biti vrhovi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="288"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="303"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Višesjeci moraju imati isti broj unutarnjih žica kao osnovni odjeljak.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="321"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="336"/>
       <source>Path must not be a null shape</source>
       <translation>Putanja vodilja ne smije da bude bez elemenata</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="361"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="376"/>
       <source>Pipe could not be built</source>
       <translation>Izvlačenje po putanji se ne može napraviti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="509"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="524"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Izvlačenje po putanji: nema ničega za oduzimanje od</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="586"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Došlo je do fatalne pogreške pri izradi cijevi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="698"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="713"/>
       <source>Invalid element in spine.</source>
       <translation>Neispravni element u Vodilnoj krivulji</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="703"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="718"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Element u Vodilnoj krivulji nije ni rub ni žica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="716"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="731"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>Vodilna krivulja nije ni rub ni žica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="721"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="736"/>
       <source>Invalid spine.</source>
       <translation>Ne važeća vodilna krivulja</translation>
     </message>
@@ -5910,32 +5910,32 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="438"/>
+      <location filename="../../TaskPatternParameters.cpp" line="474"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation type="unfinished">Select a sketch or shape containing the pattern points</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="444"/>
+      <location filename="../../TaskPatternParameters.cpp" line="480"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation type="unfinished">Select a sketch, Sub-Shape Binder, or path edge</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="453"/>
+      <location filename="../../TaskPatternParameters.cpp" line="489"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Odaberite referencu smjera (rub, površina, pomoćna linija)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="517"/>
+      <location filename="../../TaskPatternParameters.cpp" line="553"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation type="unfinished">Invalid selection. Select a sketch or shape containing points.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="520"/>
+      <location filename="../../TaskPatternParameters.cpp" line="556"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation type="unfinished">Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="522"/>
+      <location filename="../../TaskPatternParameters.cpp" line="558"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Nevažeći odabir. Odaberite rub, ravnu površinu ili pomoćnu liniju.</translation>
     </message>

@@ -4,277 +4,287 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="881"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
-      <source>Create spreadsheet</source>
-      <translation>Vytvoriť tabuľku</translation>
+      <location filename="../../Command.cpp" line="968"/>
+      <source>&amp;New Spreadsheet</source>
+      <translation>&amp;Nová tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
-      <source>Create a new spreadsheet</source>
-      <translation>Vytvoriť novú tabuľku</translation>
+      <location filename="../../Command.cpp" line="969"/>
+      <source>Creates a new spreadsheet</source>
+      <translation>Vytvorí novú tabuľku</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
-      <source>Align bottom</source>
-      <translation>Zarovnať nadol</translation>
+      <location filename="../../Command.cpp" line="522"/>
+      <source>Align &amp;Bottom</source>
+      <translation>Zarovnať na&amp;dol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
-      <source>Bottom-align contents of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek nadol</translation>
+      <location filename="../../Command.cpp" line="523"/>
+      <source>Aligns cell contents to the bottom</source>
+      <translation>Zarovná obsah buniek nadol</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
-      <source>Align center</source>
-      <translation>Zarovnať na stred</translation>
+      <location filename="../../Command.cpp" line="348"/>
+      <source>Align Horizontal &amp;Center</source>
+      <translation>Zarovnať na &amp;vodorovný stred</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
-      <source>Center-align contents of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek na stred</translation>
+      <location filename="../../Command.cpp" line="349"/>
+      <source>Aligns cell contents to the horizontal center</source>
+      <translation>Zarovná obsah buniek vodorovne na stred</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <source>Align left</source>
-      <translation>Zarovnať doľava</translation>
+      <location filename="../../Command.cpp" line="290"/>
+      <source>Align &amp;Left</source>
+      <translation>Zarovnať doľa&amp;va</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="286"/>
-      <source>Left-align contents of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek doľava</translation>
+      <location filename="../../Command.cpp" line="291"/>
+      <source>Aligns cell contents to the left</source>
+      <translation>Zarovná obsah buniek doľava</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="388"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
-      <source>Align right</source>
-      <translation>Zarovnať doprava</translation>
+      <location filename="../../Command.cpp" line="406"/>
+      <source>Align &amp;Right</source>
+      <translation>Zarovnať dop&amp;rava</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
-      <source>Right-align contents of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek doprava</translation>
+      <location filename="../../Command.cpp" line="407"/>
+      <source>Aligns cell contents to the right</source>
+      <translation>Zarovná obsah buniek doprava</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="463"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
-      <source>Align top</source>
-      <translation>Zarovnať nahor</translation>
+      <location filename="../../Command.cpp" line="464"/>
+      <source>Align &amp;Top</source>
+      <translation>Zarovnať na&amp;hor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <source>Top-align contents of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek nahor</translation>
+      <location filename="../../Command.cpp" line="465"/>
+      <source>Aligns cell contents to the top</source>
+      <translation>Zarovná obsah buniek nahor</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="579"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="545"/>
-      <source>Vertically center-align</source>
-      <translation>Vertikálne zarovnanie na stred</translation>
+      <location filename="../../Command.cpp" line="580"/>
+      <source>Align &amp;Vertical Center</source>
+      <translation>Zarovnať na &amp;zvislý stred</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="546"/>
-      <source>Vertically center-align contents of selected cells</source>
-      <translation>Vertikálne zarovnať na stred obsah vybraných buniek</translation>
+      <location filename="../../Command.cpp" line="581"/>
+      <source>Aligns cell contents to the vertical center</source>
+      <translation>Zarovná obsah buniek zvislo na stred</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="224"/>
-      <source>Export spreadsheet</source>
-      <translation>Exportovať tabuľku</translation>
+      <location filename="../../Command.cpp" line="244"/>
+      <source>&amp;Export Spreadsheet</source>
+      <translation>&amp;Exportovať tabuľku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="225"/>
-      <source>Export spreadsheet to CSV file</source>
-      <translation>Export tabuľku do súboru CSV</translation>
+      <location filename="../../Command.cpp" line="245"/>
+      <source>Exports the spreadsheet to a CSV file</source>
+      <translation>Exportuje tabuľku do súboru CSV</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
-      <source>Import spreadsheet</source>
-      <translation>Importovať tabuľku</translation>
+      <location filename="../../Command.cpp" line="189"/>
+      <source>&amp;Import Spreadsheet</source>
+      <translation>&amp;Importovať tabuľku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
-      <source>Import CSV file into spreadsheet</source>
-      <translation>Import CSV súboru do tabuľky</translation>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Imports a CSV file into a new spreadsheet</source>
+      <translation>Importuje súbor CSV do novej tabuľky</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
-      <source>Merge cells</source>
-      <translation>Zlúčiť bunky</translation>
+      <location filename="../../Command.cpp" line="62"/>
+      <source>&amp;Merge Cells</source>
+      <translation>&amp;Zlúčiť bunky</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
-      <source>Merge selected cells</source>
-      <translation>Zlúčiť vybrané bunky</translation>
+      <location filename="../../Command.cpp" line="63"/>
+      <source>Merges the selected cells</source>
+      <translation>Zlúči vybrané bunky</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="817"/>
+      <location filename="../../Command.cpp" line="895"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="818"/>
-      <source>Set alias</source>
-      <translation>Nastaviť pomenovanie</translation>
+      <location filename="../../Command.cpp" line="896"/>
+      <source>Set Alias</source>
+      <translation>Nastaviť alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="819"/>
-      <source>Set alias for selected cell</source>
-      <translation>Nastaviť pomenovanie pre vybranú bunku</translation>
+      <location filename="../../Command.cpp" line="897"/>
+      <source>Sets an alias for the selected cell</source>
+      <translation>Nastaví alias vybranej bunky</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="123"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="115"/>
-      <source>Split cell</source>
-      <translation>Rozdeliť bunku</translation>
+      <location filename="../../Command.cpp" line="124"/>
+      <source>Sp&amp;lit Cell</source>
+      <translation>Roz&amp;deliť bunku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
-      <source>Split previously merged cells</source>
-      <translation>Rozdeliť predtým zlúčené bunky</translation>
+      <location filename="../../Command.cpp" line="125"/>
+      <source>Splits a previously merged cell</source>
+      <translation>Rozdelí predtým zlúčenú bunku</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="637"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
-      <source>Bold text</source>
-      <translation>Tučné písmo</translation>
+      <location filename="../../Command.cpp" line="638"/>
+      <source>&amp;Bold Text</source>
+      <translation>&amp;Tučný text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
-      <source>Set text in selected cells bold</source>
-      <translation>Nastaviť text vo vybraných bunkách na tučný</translation>
+      <location filename="../../Command.cpp" line="639"/>
+      <source>Sets the text in the selected cells bold</source>
+      <translation>Nastaví tučné písmo vo vybraných bunkách</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="670"/>
+      <location filename="../../Command.cpp" line="723"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="671"/>
-      <source>Italic text</source>
-      <translation>Kurzívny text</translation>
+      <location filename="../../Command.cpp" line="724"/>
+      <source>&amp;Italic Text</source>
+      <translation>&amp;Kurzíva</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="672"/>
-      <source>Set text in selected cells italic</source>
-      <translation>Nastaviť text vo vybraných bunkách na kurzívu</translation>
+      <location filename="../../Command.cpp" line="725"/>
+      <source>Sets the text in the selected cells italic</source>
+      <translation>Nastaví kurzívu vo vybraných bunkách</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="744"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
-      <source>Underline text</source>
-      <translation>Podčiarknuť text</translation>
+      <location filename="../../Command.cpp" line="810"/>
+      <source>&amp;Underline Text</source>
+      <translation>&amp;Podčiarknutý text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="746"/>
-      <source>Underline text in selected cells</source>
-      <translation>Podčiarknúť text vo vybraných bunkách</translation>
+      <location filename="../../Command.cpp" line="811"/>
+      <source>Underlines the text in the selected cells</source>
+      <translation>Podčiarkne text vo vybraných bunkách</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="920"/>
+      <location filename="../../qtcolorpicker.cpp" line="554"/>
+      <source>Reset</source>
+      <translation>Obnoviť</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="558"/>
+      <source>Custom Colors</source>
+      <translation>Vlastné farby</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="653"/>
       <source>Custom Color</source>
       <translation>Vlastná farba</translation>
     </message>
@@ -282,108 +292,145 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="80"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Merge cells</source>
       <translation>Zlúčiť bunky</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="135"/>
-      <source>Split cell</source>
-      <translation>Rozdeliť bunku</translation>
+      <location filename="../../Command.cpp" line="145"/>
+      <source>Sp&amp;lit cell</source>
+      <translation>Roz&amp;deliť bunku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Zarovnať bunku doľava</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Zarovnať bunku na stred</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Zarovnať bunku doprava</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="462"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Zarovnať bunku nahor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Zarovnať bunku nadol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="566"/>
+      <location filename="../../Command.cpp" line="602"/>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Zarovnať bunky zvislo na stred</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="678"/>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Nastaviť tučné písmo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="709"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Nastaviť kurzívu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="850"/>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Podčiarknuť text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="894"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Vytvoriť tabuľku</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="230"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Nastaviť vlastnosti bunky</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="468"/>
+      <location filename="../../SheetModel.cpp" line="623"/>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Upraviť bunku</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="325"/>
-      <location filename="../../SheetTableView.cpp" line="357"/>
-      <source>Insert rows</source>
+      <location filename="../../Workbench.cpp" line="166"/>
+      <source>Set text color</source>
+      <translation>Nastaviť farbu textu</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="206"/>
+      <source>Clear text color</source>
+      <translation>Zrušiť farbu textu</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="243"/>
+      <source>Set background color</source>
+      <translation>Nastaviť farbu pozadia</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="283"/>
+      <source>Clear background color</source>
+      <translation>Zrušiť farbu pozadia</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="327"/>
+      <source>Insert Rows</source>
       <translation>Vložiť riadky</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="376"/>
-      <location filename="../../SheetTableView.cpp" line="449"/>
-      <source>Remove rows</source>
+      <location filename="../../SheetTableView.cpp" line="354"/>
+      <source>Remove Rows</source>
       <translation>Odstrániť riadky</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="397"/>
-      <location filename="../../SheetTableView.cpp" line="430"/>
-      <source>Insert columns</source>
+      <location filename="../../SheetTableView.cpp" line="340"/>
+      <source>Insert Columns</source>
       <translation>Vložiť stĺpce</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="632"/>
-      <location filename="../../SpreadsheetView.cpp" line="159"/>
-      <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Prepočítať bunky</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="132"/>
-      <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation>Odstrániť stĺpce</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="159"/>
-      <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <source>Clear Cells</source>
+      <translation>Vymazať bunky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Prepojiť bunky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>Zrušiť prepojenie buniek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>Nastaviť konfiguračnú tabuľku</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>Zrušiť nastavenie konfiguračnej tabuľky</translation>
     </message>
   </context>
   <context>
@@ -391,84 +438,84 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="69"/>
-      <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="117"/>
-      <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Prepojiť bunky tabuľky</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Prvá bunka rozsahu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="36"/>
-      <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>Posledná bunka rozsahu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Adresa prvej bunky</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Adresa poslednej bunky</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Adresa prvej cieľovej bunky prepojenia.
+Ak chcete použiť výraz, zadajte '='.
+Výraz musí vrátiť adresu bunky ako textový reťazec.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells</source>
+      <translation>Prepojiť bunky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
+      <source>To cells</source>
+      <translation>S bunkami</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
-Type '=' if you want to use an expression.
+Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Adresa poslednej cieľovej bunky prepojenia.
+Ak chcete použiť výraz, zadajte '='.
+Výraz musí vrátiť adresu bunky ako textový reťazec.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Tabuľka, s ktorou sa majú bunky prepojiť</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
+      <source>Sheet</source>
+      <translation>Tabuľka</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>Závislosť od odkazovanej tabuľky sa skryje
+pred kontrolou závislostí.
+Pomáha predísť cyklickým závislostiam, používajte však opatrne!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Skryť závislosť prepojenia</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Zrušiť prepojenie</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -486,12 +533,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.ui" line="20"/>
-      <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Nastaviť konfiguračnú tabuľku</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -504,14 +546,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Adresa prvej bunky.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Prvý stĺpec rozsahu má obsahovať názvy konfigurácií.
+Z názvov sa vytvorí zoznam textových reťazcov, ktorý sa prepojí so zadanou
+vlastnosťou, aby ste mohli dynamicky prepínať konfigurácie.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Prvý riadok rozsahu sa prepojí s riadkom, ktorý táto vlastnosť
+(nepriamo) vyberie.
 </translation>
     </message>
     <message>
@@ -525,50 +567,70 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Adresa poslednej bunky.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Prvý stĺpec rozsahu má obsahovať názvy konfigurácií.
+Z názvov sa vytvorí zoznam textových reťazcov, ktorý sa prepojí so zadanou
+vlastnosťou, aby ste mohli dynamicky prepínať konfigurácie.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Prvý riadok rozsahu sa prepojí s riadkom, ktorý táto vlastnosť
+(nepriamo) vyberie.
 </translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.ui" line="57"/>
-      <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Zadajte výraz s názvom objektu a vlastnosti na dynamické
+prepínanie konfigurácie návrhu. Ak vlastnosť neexistuje, vytvorí sa.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="20"/>
+      <source>Cell range</source>
+      <translation>Rozsah buniek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="57"/>
+      <source>Property</source>
+      <translation>Vlastnosť</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
-      <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <source>Group</source>
+      <translation>Skupina</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
-      <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <source>Optional property group name</source>
+      <translation>Voliteľný názov skupiny vlastností</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="88"/>
+      <location filename="../../DlgSheetConf.ui" line="86"/>
+      <source>Orientation</source>
+      <translation>Orientácia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="93"/>
+      <source>Horizontal</source>
+      <translation>Horizontálne</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="103"/>
+      <source>Vertical</source>
+      <translation>Zvislý</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="115"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Zrušiť nastavenie</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="95"/>
+      <location filename="../../DlgSheetConf.ui" line="122"/>
       <source>Cancel</source>
       <translation>Zrušiť</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="102"/>
+      <location filename="../../DlgSheetConf.ui" line="129"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -577,7 +639,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <name>PropertiesDialog</name>
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
-      <source>Cell properties</source>
+      <source>Cell Properties</source>
       <translation>Vlastnosti bunky</translation>
     </message>
     <message>
@@ -663,8 +725,8 @@ switch the design configuration. The property will be created if not exist.</tra
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Text jednotky, napr. "mm", ktorý sa automaticky zapíše po zadanej číselnej hodnote</translation>
+      <source>Text for the unit</source>
+      <translation>Text jednotky</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -676,177 +738,171 @@ switch the design configuration. The property will be created if not exist.</tra
       <source>Alias for this cell</source>
       <translation>Pomenovanie pre túto bunku</translation>
     </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Umožní odkazovať na bunku pomocou aliasu, napríklad
+Spreadsheet.my_alias_name namiesto Spreadsheet.B1</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
-      <location filename="../../Command.cpp" line="241"/>
-      <source>All (*)</source>
-      <translation>Všetko (*)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Import file</source>
       <translation>Importovať súbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
-      <source>Export file</source>
-      <translation>Exportovať súbor</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
-      <source>Show spreadsheet</source>
-      <translation>Zobraziť tabuľku</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="91"/>
-      <location filename="../../Workbench.cpp" line="93"/>
-      <source>Set cell(s) foreground color</source>
-      <translation>Nastaviť farbu popredia bunky</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="92"/>
-      <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Nataviť farbu popredia buniek zošita</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="106"/>
-      <location filename="../../Workbench.cpp" line="108"/>
-      <source>Set cell(s) background color</source>
-      <translation>Nataviť farbu pozadia bunky</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="107"/>
-      <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Nastaviť farbu pozadia buniek zošita</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="752"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopírovať a vložiť zlyhalo</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="426"/>
+      <location filename="../../SpreadsheetView.cpp" line="477"/>
       <source>Alias contains invalid characters!</source>
       <translation>Adresa obsahuje neplatné znaky.</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="432"/>
+      <location filename="../../SpreadsheetView.cpp" line="483"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Odkazovať na bunku jej pomenovaním, napríklad
 Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="151"/>
+      <source>Spreadsheet</source>
+      <translation>Tabuľka</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
+      <source>Export File</source>
+      <translation>Exportovať súbor</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="133"/>
+      <source>Show Spreadsheet</source>
+      <translation>Zobraziť tabuľku</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="104"/>
+      <source>Sets the text color of cells</source>
+      <translation>Nastaví farbu textu buniek</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="105"/>
+      <location filename="../../Workbench.cpp" line="106"/>
+      <source>Sets the text color of spreadsheet cells</source>
+      <translation>Nastaví farbu textu buniek tabuľky</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="132"/>
+      <location filename="../../Workbench.cpp" line="134"/>
+      <source>Sets the background color of cells</source>
+      <translation>Nastaví farbu pozadia buniek</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="133"/>
+      <source>Sets the spreadsheet cells background color</source>
+      <translation>Nastaví farbu pozadia buniek tabuľky</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="720"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation>Kopírovanie a &amp;vloženie zlyhalo</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="294"/>
+      <location filename="../../qtcolorpicker.cpp" line="463"/>
+      <source>Default</source>
+      <translation>Predvolené</translation>
+    </message>
+    <message>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
       <source>Black</source>
       <translation>Čierna</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
       <source>White</source>
       <translation>Biela</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
       <source>Red</source>
       <translation>Červená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="429"/>
       <source>Dark red</source>
       <translation>Tmavo červená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="430"/>
       <source>Green</source>
       <translation>Zelená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="431"/>
       <source>Dark green</source>
       <translation>Tmavo zelená</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="432"/>
       <source>Blue</source>
       <translation>Modrá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="433"/>
       <source>Dark blue</source>
       <translation>Tmavo modrá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="434"/>
       <source>Cyan</source>
       <translation>Azúrová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="435"/>
       <source>Dark cyan</source>
       <translation>Tmavo modrá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="436"/>
       <source>Magenta</source>
       <translation>Purpurová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="437"/>
       <source>Dark magenta</source>
       <translation>Tmavo purpurová</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="438"/>
       <source>Yellow</source>
       <translation>Žltá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="439"/>
       <source>Dark yellow</source>
       <translation>Tmavo žltá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="440"/>
       <source>Gray</source>
       <translation>Sivá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="428"/>
-      <location filename="../../qtcolorpicker.cpp" line="538"/>
+      <location filename="../../qtcolorpicker.cpp" line="441"/>
       <source>Dark gray</source>
       <translation>Tmavo sivá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="429"/>
-      <location filename="../../qtcolorpicker.cpp" line="539"/>
+      <location filename="../../qtcolorpicker.cpp" line="442"/>
       <source>Light gray</source>
       <translation>Svetlo sivá</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="451"/>
+      <location filename="../../qtcolorpicker.cpp" line="494"/>
       <source>Custom Color</source>
       <translation>Vlastná farba</translation>
     </message>
@@ -854,19 +910,14 @@ Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
   <context>
     <name>Sheet</name>
     <message>
-      <location filename="../../Sheet.ui" line="14"/>
-      <source>Form</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
       <location filename="../../Sheet.ui" line="22"/>
-      <source>&amp;Content:</source>
-      <translation>&amp;Obsah:</translation>
+      <source>&amp;Content</source>
+      <translation>&amp;Obsah</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Pomenovanie:</translation>
+      <source>&amp;Alias</source>
+      <translation>&amp;Alias</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -875,39 +926,54 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Odkazovať na bunku jej pomenovaním, napríklad
 Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../Sheet.ui" line="131"/>
+      <source>Zoom</source>
+      <translation>Priblíženie</translation>
+    </message>
+    <message>
+      <location filename="../../Sheet.ui" line="147"/>
+      <source>-</source>
+      <translation>-</translation>
+    </message>
+    <message>
+      <location filename="../../Sheet.ui" line="197"/>
+      <source>+</source>
+      <translation>+</translation>
+    </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="197"/>
-      <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <location filename="../../DlgBindSheet.cpp" line="231"/>
+      <source>Bind Cells</source>
+      <translation>Prepojiť bunky</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="198"/>
+      <location filename="../../DlgBindSheet.cpp" line="232"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
-Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+Continue?</source>
+      <translation>Počet zdrojových a cieľových buniek sa nezhoduje. Čiastočné prepojenie môže fungovať.
 
-Do you want to continue?</translation>
+Pokračovať?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="225"/>
+      <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Prepojiť bunky tabuľky</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="225"/>
+      <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Chyba:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="243"/>
-      <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <location filename="../../DlgBindSheet.cpp" line="311"/>
+      <source>Unbind Cells</source>
+      <translation>Zrušiť prepojenie buniek</translation>
     </message>
   </context>
   <context>
@@ -918,206 +984,241 @@ Do you want to continue?</translation>
       <translation>Tabuľka</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Cells</source>
+      <translation>Bunky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="165"/>
+      <source>Maximum number of columns</source>
+      <translation>Maximálny počet stĺpcov</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="175"/>
+      <source>Maximum number of rows</source>
+      <translation>Maximálny počet riadkov</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="185"/>
+      <source>Display Settings</source>
+      <translation>Nastavenia zobrazenia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Displays the cell alias using the custom format.</source>
+      <translation>Zobrazí alias bunky vo vlastnom formáte.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="194"/>
+      <source>Show alias in cell with format</source>
+      <translation>Zobrazovať alias v bunke vo formáte</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="207"/>
+      <source>Sets the table view zoom level from 60% to 160%.</source>
+      <translation>Nastaví priblíženie tabuľky od 60% do 160%.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="210"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="242"/>
+      <source>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</source>
+      <translation>Vlastný formát zobrazenia bunky.
+Predvolené: %V = %A
+
+%A - názov aliasu
+%V - hodnota bunky</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
       <translation>Nastavenia importu/exportu</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="235"/>
+      <source>Default zoom level</source>
+      <translation>Predvolené priblíženie</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="38"/>
-      <source>Delimiter Character: </source>
-      <translation>Znak oddeľovača: </translation>
+      <source>Delimiter character</source>
+      <translation>Oddeľovací znak</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak, ktorý sa použije na oddelenie polí. Predvolený je tabulátor, bežne sa používa aj čiarka (,) alebo bodkočiarka (;). Vyberte ho zo zoznamu alebo zadajte vlastný. Zadajte jeden znak alebo slovo &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt; alebo &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="74"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>tab</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="98"/>
-      <source>Quote Character: </source>
-      <translation>Znak citácie: </translation>
+      <source>Quote character</source>
+      <translation>Znak úvodzoviek</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak na ohraničenie textových reťazcov, zvyčajne jednoduchá (') alebo dvojitá úvodzovka (&amp;quot;). Zadajte jeden znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>
-      <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <source>Escape character</source>
+      <translation>Únikový znak</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="247"/>
-      <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="294"/>
-      <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>Nepomenovaný</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Únikový znak, zvyčajne spätná lomka (\), označuje špeciálne netlačiteľné znaky, napríklad \t = tabulátor. Zadajte jeden znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="128"/>
-      <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="132"/>
-      <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="136"/>
-      <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="139"/>
-      <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="153"/>
-      <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="157"/>
-      <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="161"/>
-      <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="164"/>
-      <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-      </translation>
-    </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="169"/>
-      <location filename="../../SheetTableView.cpp" line="613"/>
-      <source>Properties...</source>
-      <translation>Vlastnosti...</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="181"/>
-      <location filename="../../SheetTableView.cpp" line="614"/>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Prepočítať</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="149"/>
+      <source>Insert %n Non-Contiguous Rows</source>
+      <translation>
+        <numerusform>Vložiť %n nesúvislý riadok</numerusform>
+        <numerusform>Vložiť %n nesúvislé riadky</numerusform>
+        <numerusform>Vložiť %n nesúvislého riadka</numerusform>
+        <numerusform>Vložiť %n nesúvislých riadkov</numerusform>
+      </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="185"/>
-      <location filename="../../SheetTableView.cpp" line="622"/>
-      <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <location filename="../../SheetTableView.cpp" line="152"/>
+      <source>Remove Rows</source>
+      <translation>Odstrániť riadky</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="169"/>
+      <source>Insert %n Non-Contiguous Columns</source>
+      <translation>
+        <numerusform>Vložiť %n nesúvislý stĺpec</numerusform>
+        <numerusform>Vložiť %n nesúvislé stĺpce</numerusform>
+        <numerusform>Vložiť %n nesúvislého stĺpca</numerusform>
+        <numerusform>Vložiť %n nesúvislých stĺpcov</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="563"/>
+      <source>Properties…</source>
+      <translation>Vlastnosti…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="615"/>
-      <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <location filename="../../SheetTableView.cpp" line="572"/>
+      <source>Bind…</source>
+      <translation>Prepojiť…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="616"/>
-      <source>Merge cells</source>
+      <location filename="../../SheetTableView.cpp" line="565"/>
+      <source>Configuration Table…</source>
+      <translation>Konfiguračná tabuľka…</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="194"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
+      <source>Merge Cells</source>
       <translation>Zlúčiť bunky</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="143"/>
+      <source>Insert %n Rows Above</source>
+      <translation>
+        <numerusform>Vložiť %n riadok nad</numerusform>
+        <numerusform>Vložiť %n riadky nad</numerusform>
+        <numerusform>Vložiť %n riadka nad</numerusform>
+        <numerusform>Vložiť %n riadkov nad</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="145"/>
+      <source>Insert %n Rows Below</source>
+      <translation>
+        <numerusform>Vložiť %n riadok pod</numerusform>
+        <numerusform>Vložiť %n riadky pod</numerusform>
+        <numerusform>Vložiť %n riadka pod</numerusform>
+        <numerusform>Vložiť %n riadkov pod</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="163"/>
+      <source>Insert %n Columns Left</source>
+      <translation>
+        <numerusform>Vložiť %n stĺpec vľavo</numerusform>
+        <numerusform>Vložiť %n stĺpce vľavo</numerusform>
+        <numerusform>Vložiť %n stĺpca vľavo</numerusform>
+        <numerusform>Vložiť %n stĺpcov vľavo</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="165"/>
+      <source>Insert %n Columns Right</source>
+      <translation>
+        <numerusform>Vložiť %n stĺpec vpravo</numerusform>
+        <numerusform>Vložiť %n stĺpce vpravo</numerusform>
+        <numerusform>Vložiť %n stĺpca vpravo</numerusform>
+        <numerusform>Vložiť %n stĺpcov vpravo</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="172"/>
+      <source>Remove Columns</source>
+      <translation>Odstrániť stĺpce</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="185"/>
+      <source>Properties</source>
+      <translation>Vlastnosti</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="190"/>
+      <source>Configuration Table</source>
+      <translation>Konfiguračná tabuľka</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="617"/>
-      <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <location filename="../../SheetTableView.cpp" line="567"/>
+      <source>Split Cell</source>
+      <translation>Rozdeliť bunku</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="620"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Cut</source>
       <translation>Vystrihnúť</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="618"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Copy</source>
       <translation>Kopírovať</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="619"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Vložiť</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="621"/>
+      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Delete</source>
       <translation>Odstrániť</translation>
     </message>
@@ -1125,37 +1226,130 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="254"/>
+      <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
       <translation>Exportovať PDF</translation>
-    </message>
-    <message>
-      <location filename="../../SpreadsheetView.cpp" line="255"/>
-      <source>PDF file</source>
-      <translation>Súbor PDF</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Spreadsheet</source>
       <translation>Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Tabuľka</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Alignment</source>
       <translation>&amp;Zarovnanie</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>Š&amp;týly</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="94"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="113"/>
+      <source>Unnamed</source>
+      <translation>Nepomenovaný</translation>
+    </message>
+  </context>
+  <context>
+    <name>ZoomableView</name>
+    <message>
+      <location filename="../../ZoomableView.cpp" line="118"/>
+      <source>New zoom level:</source>
+      <translation>Nové priblíženie:</translation>
+    </message>
+    <message>
+      <location filename="../../ZoomableView.cpp" line="118"/>
+      <source>Zoom Level</source>
+      <translation>Priblíženie</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="363"/>
+      <source>Setup Configuration Table</source>
+      <translation>Nastaviť konfiguračnú tabuľku</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="430"/>
+      <source>Unsetup Configuration Table</source>
+      <translation>Zrušiť nastavenie konfiguračnej tabuľky</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>Alias sa zhoduje s vyhradenou značkou jednotky vo výrazoch</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>Neplatné: vyhradená značka jednotky</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>Alias sa zhoduje s vyhradenou značkou konštanty vo výrazoch</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>Neplatné: vyhradená značka konštanty</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>Alias už je definovaný</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>Neplatné: alias už existuje</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>Alias nesmie mať podobu adresy bunky, napríklad A1 alebo C12</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>Neplatné: alias má formát adresy bunky</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>Alias sa zhoduje s názvom existujúcej vlastnosti tabuľky</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>Neplatné: konflikt s názvom existujúcej vlastnosti</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>Alias sa musí začínať písmenom a smie obsahovať iba písmená, číslice a znak '_'</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>Neplatné: nesprávny zápis aliasu</translation>
     </message>
   </context>
 </TS>

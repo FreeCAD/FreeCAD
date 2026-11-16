@@ -18,7 +18,7 @@
       <location filename="../propertyeditor/PropertyItem.cpp" line="2448"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2737"/>
       <source>Axis</source>
-      <translation>Axe de rotation</translation>
+      <translation>Axe</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
@@ -2833,7 +2833,7 @@ La valeur spécifiée est un facteur qui sera multiplié avec la taille de la bo
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="545"/>
       <source>Maximum frame rate</source>
-      <translation>Cadence maximale d'images</translation>
+      <translation>Fréquence de rafraîchissement maximale</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="558"/>
@@ -5489,44 +5489,44 @@ Certaines informations sur les distances et les angles sont fournies dans la vue
       <translation>Afficher les dépendances</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation>En fonction de</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation>Document</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>Dépendant de</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>Sélections</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation>Tout</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Utiliser la sélection d'origine</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Ignorer les dépendances et continuer avec les objets initialement sélectionnés avant l'ouverture de cette boîte de dialogue</translation>
@@ -6126,12 +6126,12 @@ Pg.Suiv/Pg.Préc du clavier</translation>
       <translation>Macros</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation>Le fichier de la macro n'existe pas.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation>Le fichier de macro « %1 » n'existe pas.</translation>
     </message>
@@ -8111,7 +8111,7 @@ Check the report view for more details.</source>
       <translation>→ Redémarrage…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation>Exception</translation>
     </message>
@@ -9213,12 +9213,12 @@ ses dimensions avant de la charger.</translation>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation>Non autorisé :</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation>Sélection non autorisée par filtre</translation>
     </message>
@@ -15041,22 +15041,22 @@ cela sera considéré comme la séquence de raccourci « F, F ».</translation>
   <context>
     <name>Gui::Command</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
+      <location filename="../Command.cpp" line="1067"/>
       <source>Experimental</source>
       <translation>Expérimental</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
+      <location filename="../Command.cpp" line="1069"/>
       <source>EXPERIMENTAL: this command may change.</source>
       <translation>EXPERIMENTAL : cette commande peut changer.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
+      <location filename="../Command.cpp" line="1073"/>
       <source>Development preview</source>
       <translation>Avant-première du développement</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
+      <location filename="../Command.cpp" line="1074"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
       <translation>AVANT-PREMIÈRE DU DÉVELOPPEMENT : cette commande est susceptible d'être modifiée ou supprimée.</translation>
     </message>
@@ -15150,7 +15150,7 @@ valeurs faibles créent des reflets larges et flous. Notez que l'intensité des 
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4928"/>
       <source>Map</source>
-      <translation>Carte</translation>
+      <translation>Projeter</translation>
     </message>
   </context>
 </TS>

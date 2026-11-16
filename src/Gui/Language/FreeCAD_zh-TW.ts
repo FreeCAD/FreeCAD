@@ -5473,44 +5473,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>顯示相依性</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation>相依</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation>文件</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>名稱</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>相依於</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>選項</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation>所有</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation>使用原始選擇(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>忽略相依性並繼續處理在開啟此對話框之前最初選擇的物件</translation>
@@ -6112,12 +6112,12 @@ Save all changes?</source>
       <translation>巨集</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation>巨集檔案不存在</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation>無 '%1'之巨集</translation>
     </message>
@@ -8097,7 +8097,7 @@ Check the report view for more details.</source>
       <translation> → 正在重啟...</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation>異常</translation>
     </message>
@@ -9198,12 +9198,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation>不允許：</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation>不允許使用過濾器選擇</translation>
     </message>
@@ -15027,22 +15027,22 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::Command</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
+      <location filename="../Command.cpp" line="1067"/>
       <source>Experimental</source>
       <translation>實驗性功能</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
+      <location filename="../Command.cpp" line="1069"/>
       <source>EXPERIMENTAL: this command may change.</source>
       <translation>實驗性：此指令可能變更。</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
+      <location filename="../Command.cpp" line="1073"/>
       <source>Development preview</source>
       <translation>開發預覽</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
+      <location filename="../Command.cpp" line="1074"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
       <translation>開發預覽：此指令可能變更或移除。</translation>
     </message>

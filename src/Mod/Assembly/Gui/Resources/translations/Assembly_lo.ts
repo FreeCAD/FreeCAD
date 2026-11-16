@@ -73,12 +73,12 @@
       <translation>ຊຸດປະກອບຍ່ອຍຂອງທ່ານປັດຈຸບັນເປັນແບບຢືດຢຸ່ນ. ສິ່ງນີ້ຈະປ່ຽນໃຫ້ມັນເປັນແບບຄົງທີ່ແທນ.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>ບໍ່ມີຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>ບໍ່ຮອງຮັບ</translation>
     </message>
@@ -567,32 +567,32 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ການຈຳລອງ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation>ການເຄື່ອນຍ້າຍຕາມລັດສະໝີ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>ການໝູນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation>ການຍ້າຍຕຳແໜ່ງ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation>ມຸມຂອງການເຄື່ອນໄຫວມຸມເບິ່ງແບບແຍກຊິ້ນສ່ວນນີ້</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation>ໄລຍະຫ່າງຂອງການເຄື່ອນໄຫວມຸມເບິ່ງແບບແຍກຊິ້ນສ່ວນນີ້</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation>ແກ້ໄຂການວາງຕຳແໜ່ງ</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ວັດຖຸທີ່ຈະຍຶດຕິດກັບພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation>ວັດຖຸທີ່ຖືກຍ້າຍໂດຍການເຄື່ອນຍ້າຍນີ້</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>ນີ້ແມ່ນການເຄື່ອນໄຫວຂອງການຍ້າຍ. ຕຳແໜ່ງສຸດທ້າຍແມ່ນຜົນມາຈາກ ຕຳແໜ່ງເລີ່ມຕົ້ນ * ຕຳແໜ່ງນີ້.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>ປະເພດຂອງການເຄື່ອນຍ້າຍ</translation>
     </message>
@@ -1632,24 +1632,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>ເລືອກຢ່າງໜ້ອຍ 2 ສ່ວນປະກອບ ເພື່ອສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ.&lt;/p&gt;&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ ທີ່ລັອກສ່ວນປະກອບທີ່ເລືອກໄວ້ເຂົ້າກັນແບບຖາວອນ.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1673,6 +1655,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>ກູ້ຄືນພາບບັນທຶກສະຖານະ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>ເລືອກຢ່າງໜ້ອຍ 2 ສ່ວນປະກອບ ເພື່ອສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ.&lt;/p&gt;&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ ທີ່ລັອກສ່ວນປະກອບທີ່ເລືອກໄວ້ເຂົ້າກັນແບບຖາວອນ.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

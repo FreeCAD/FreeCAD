@@ -902,8 +902,8 @@ restricciones no válidas y geometría degenerada</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1666"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <location filename="../../CommandConstraints.cpp" line="10620"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
       <translation>Modificar las restricciones del croquis</translation>
     </message>
@@ -987,14 +987,14 @@ restricciones no válidas y geometría degenerada</translation>
       <translation>Modificar la restricción de texto del croquis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="131"/>
-      <source>Add sketch Text</source>
-      <translation>Agregar texto al croquis</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
       <source>Add sketch arc of parabola</source>
       <translation>Agregar arco de parábola al croquis</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="131"/>
+      <source>Add sketch Text</source>
+      <translation>Agregar texto al croquis</translation>
     </message>
   </context>
   <context>
@@ -1180,8 +1180,6 @@ restricciones no válidas y geometría degenerada</translation>
       <translation>No anclar</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="271"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="356"/>
@@ -1191,6 +1189,11 @@ restricciones no válidas y geometría degenerada</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="661"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1050"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1171"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
       <location filename="../../CommandSketcherTools.cpp" line="468"/>
       <location filename="../../CommandSketcherTools.cpp" line="1118"/>
       <location filename="../../CommandSketcherTools.cpp" line="1447"/>
@@ -1203,9 +1206,6 @@ restricciones no válidas y geometría degenerada</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2345"/>
       <location filename="../../CommandSketcherTools.cpp" line="2392"/>
       <location filename="../../CommandSketcherTools.cpp" line="2457"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandConstraints.cpp" line="480"/>
       <location filename="../../CommandConstraints.cpp" line="487"/>
       <location filename="../../CommandConstraints.cpp" line="3648"/>
@@ -4886,39 +4886,39 @@ El espaciado de la cuadrícula cambia si llega a ser menor que el tamaño en pí
 </translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="225"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1412"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1396"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1977"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2414"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1396"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1977"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2414"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
       <location filename="../../CommandConstraints.cpp" line="2059"/>
       <location filename="../../CommandConstraints.cpp" line="2066"/>
       <location filename="../../CommandConstraints.cpp" line="3987"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -5033,21 +5033,21 @@ El espaciado de la cuadrícula cambia si llega a ser menor que el tamaño en pí
       <translation>No se pudo agregar la línea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="160"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="160"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
       <source>Tool execution aborted</source>
       <translation>Se interrumpió la ejecución de la herramienta</translation>
     </message>
@@ -5169,11 +5169,6 @@ El espaciado de la cuadrícula cambia si llega a ser menor que el tamaño en pí
       <translation>Nombre de restricción no válido (solo puede contener caracteres alfanuméricos y guiones bajos, y no puede empezar con un dígito)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="183"/>
-      <source>Failed to add text</source>
-      <translation>No se pudo agregar el texto</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
       <source>Failed to add arc of parabola</source>
       <translation>No se pudo agregar el arco de parábola</translation>
@@ -5182,6 +5177,11 @@ El espaciado de la cuadrícula cambia si llega a ser menor que el tamaño en pí
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="226"/>
       <source>Failed to add arc of hyperbola</source>
       <translation>No se pudo agregar el arco de hipérbola</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="183"/>
+      <source>Failed to add text</source>
+      <translation>No se pudo agregar el texto</translation>
     </message>
   </context>
   <context>
@@ -8321,6 +8321,32 @@ Para adherirse, los puntos deben estar a menos de un quinto del espaciado de la 
     </message>
   </context>
   <context>
+    <name>CmdSketcherCancelSketch</name>
+    <message>
+      <location filename="../../Command.cpp" line="410"/>
+      <source>Cancel Editing</source>
+      <translation>Cancelar edición</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="411"/>
+      <source>Leaves 'edit' mode and reverts any changes</source>
+      <translation>Sale del modo de edición y revierte todos los cambios</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherLeaveGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="455"/>
+      <source>Leave</source>
+      <translation>Salir</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Leaves the sketch editing mode</source>
+      <translation>Sale del modo de edición del croquis</translation>
+    </message>
+  </context>
+  <context>
     <name>SketcherGui::EditTextDialog</name>
     <message>
       <location filename="../../EditTextDialog.cpp" line="73"/>
@@ -8343,45 +8369,37 @@ Para adherirse, los puntos deben estar a menos de un quinto del espaciado de la 
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_translate</name>
+    <name>CmdSketcherCreatePolylineLegacy</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
-      <source>Symmetric</source>
-      <translation>Simétrica</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
+      <source>Polyline</source>
+      <translation>Polilínea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
-      <source>Distribute the elements symmetrically around the original position.</source>
-      <translation>Distribuye los elementos simétricamente alrededor de la posición original.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p3_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
-      <source>Elements</source>
-      <translation>Elementos</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>Crea una polilínea continua. Presione la tecla 'M' para cambiar el modo de segmento</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_p5_translate</name>
+    <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
-      <source>Rows</source>
-      <translation>Filas</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_c1_trimming</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
-      <source>Include axes (U)</source>
-      <translation>Incluir ejes (U)</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <source>Text</source>
+      <translation>Texto</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
-      <source>Include axes as trim boundaries</source>
-      <translation>Incluir los ejes como límites de recorte</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation>Crea geometrías de texto controladas por una restricción de texto.
+Para editar: haga doble clic en la restricción de texto para cambiar el contenido y la fuente.
+Para posicionar o dimensionar: aplique restricciones a la línea de construcción del grupo.
+Nota: mientras la restricción de texto esté activa, se ignorarán las restricciones aplicadas directamente a las geometrías del texto.
+</translation>
     </message>
   </context>
   <context>
@@ -8449,27 +8467,6 @@ Para adherirse, los puntos deben estar a menos de un quinto del espaciado de la 
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_rotate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
-      <source>Symmetric</source>
-      <translation>Simétrica</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
-      <source>Distribute the elements symmetrically around the original position.</source>
-      <translation>Distribuye los elementos simétricamente alrededor de la posición original.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p4_rotate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
-      <source>Elements</source>
-      <translation>Elementos</translation>
-    </message>
-  </context>
-  <context>
     <name>ToolWidgetManager_p4</name>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
@@ -8506,40 +8503,6 @@ Para adherirse, los puntos deben estar a menos de un quinto del espaciado de la 
       <location filename="../../DrawSketchHandlerText.h" line="375"/>
       <source>Font</source>
       <translation>Fuente</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreatePolylineLegacy</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="227"/>
-      <source>Polyline</source>
-      <translation>Polilínea</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="228"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>Crea una polilínea continua. Presione la tecla 'M' para cambiar el modo de segmento</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherCreateText</name>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
-      <source>Text</source>
-      <translation>Texto</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation>Crea geometrías de texto controladas por una restricción de texto.
-Para editar: haga doble clic en la restricción de texto para cambiar el contenido y la fuente.
-Para posicionar o dimensionar: aplique restricciones a la línea de construcción del grupo.
-Nota: mientras la restricción de texto esté activa, se ignorarán las restricciones aplicadas directamente a las geometrías del texto.
-</translation>
     </message>
   </context>
   <context>
@@ -8655,29 +8618,66 @@ Nota: mientras la restricción de texto esté activa, se ignorarán las restricc
     </message>
   </context>
   <context>
-    <name>CmdSketcherCancelSketch</name>
+    <name>TaskSketcherTool_c2_translate</name>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
-      <source>Cancel Editing</source>
-      <translation>Cancelar edición</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
+      <source>Symmetric</source>
+      <translation>Simétrica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
-      <source>Leaves 'edit' mode and reverts any changes</source>
-      <translation>Sale del modo de edición y revierte todos los cambios</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation>Distribuye los elementos simétricamente alrededor de la posición original.</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherLeaveGroup</name>
+    <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Leave</source>
-      <translation>Salir</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>Elementos</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>Filas</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
+      <source>Symmetric</source>
+      <translation>Simétrica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <source>Leaves the sketch editing mode</source>
-      <translation>Sale del modo de edición del croquis</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation>Distribuye los elementos simétricamente alrededor de la posición original.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p4_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>Elementos</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation>Incluir ejes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation>Incluir los ejes como límites de recorte</translation>
     </message>
   </context>
 </TS>

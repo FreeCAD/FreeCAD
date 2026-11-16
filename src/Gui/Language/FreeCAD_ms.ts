@@ -135,8 +135,8 @@
     <message>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Berubah</translation>
     </message>
@@ -1111,7 +1111,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
       <source>A preference pack with that name already exists. Overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite it?</translation>
+      <translation>Pek keutamaan dengan nama tersebut sudah wujud. Tulis ganti?</translation>
     </message>
   </context>
   <context>
@@ -1314,7 +1314,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="122"/>
       <source>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
+      <translation>Mengalihkan item yang dipilih satu tahap ke bawah.Ini juga akan mengubah tahap item induk.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="145"/>
@@ -1594,12 +1594,12 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="281"/>
       <source>Launches a guide on how to set up a macro in a custom global toolbar</source>
-      <translation type="unfinished">Launches a guide on how to set up a macro in a custom global toolbar</translation>
+      <translation>Melancarkan panduan tentang cara menyediakan makro dalam bar alat global tersuai</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="307"/>
       <source>Opens the Addon Manager to download macros created by the community</source>
-      <translation type="unfinished">Opens the Addon Manager to download macros created by the community</translation>
+      <translation>Membuka Pengurus Addon untuk memuat turun makro yang dicipta oleh komuniti</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="321"/>
@@ -1609,7 +1609,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="355"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>Membuka folder makro dalam pengurus fail sistem</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="358"/>
@@ -1624,7 +1624,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="106"/>
       <source>Filter by file content, case-insensitive. Regular expressions are supported.</source>
-      <translation type="unfinished">Filter by file content, case-insensitive. Regular expressions are supported.</translation>
+      <translation>Tapis mengikut kandungan fail, tidak peka huruf. Ungkapan nalar disokong.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="310"/>
@@ -1702,12 +1702,12 @@ Nota: perubahan anda akan digunakan apabila anda menukar meja kerja seterusnya</
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="772"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</translation>
+      <translation>Panduan langkah demi langkah: Pilih makro daripada senarai, kemudian klik butang anak panah ke kanan (-&gt;), kemudian Tutup.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="796"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Panduan langkah demi langkah: Klik Baharu, pilih makro, kemudian butang anak panah ke kanan (-&gt;), kemudian Tutup.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="912"/>
@@ -1896,7 +1896,7 @@ Mungkin ralat kebenaran fail?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="50"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Menentukan warna asas bagi sesuatu permukaan apabila disinari cahaya. Ia mewakili cara objek menyebarkan cahaya secara sekata ke semua arah, tanpa bergantung pada sudut pandangan pemerhati. Sifat ini paling banyak mempengaruhi warna bahan.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="57"/>
@@ -1906,7 +1906,7 @@ Mungkin ralat kebenaran fail?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="60"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Menentukan saiz dan ketajaman sorotan spekular (pantulan kilau) pada sesuatu permukaan. Nilai yang lebih tinggi menghasilkan sorotan yang kecil dan tajam, manakala nilai yang lebih rendah menghasilkan sorotan yang lebar dan lembut. Perlu diingatkan bahawa keamatan sorotan ditentukan oleh warna spekular.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="80"/>
@@ -1921,7 +1921,7 @@ Mungkin ralat kebenaran fail?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="90"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Menentukan warna bagi sesuatu permukaan di bawah pencahayaan tidak langsung yang seragam, mewakili rupanya apabila disinari hanya oleh cahaya sekitar dalam sesuatu pemandangan, tanpa cahaya berarah, pembayangan atau sorotan.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="126"/>
@@ -1931,7 +1931,7 @@ Mungkin ralat kebenaran fail?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="129"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Menentukan warna dan keamatan bagi sorotan terang seakan cermin yang muncul pada permukaan berkilat atau memantul apabila terkena cahaya secara langsung. Tetapkan kepada warna cerah untuk objek yang berkilat.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="146"/>
@@ -1951,7 +1951,7 @@ Mungkin ralat kebenaran fail?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="169"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Menentukan warna bagi sesuatu permukaan yang kelihatan memancar seolah-olah ia merupakan sumber cahaya, tanpa bergantung pada pencahayaan luaran, menjadikannya kelihatan menyala sendiri. Tetapkan kepada warna hitam untuk tiada warna pancaran.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="176"/>
@@ -2102,7 +2102,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="314"/>
       <source>%1 not found. Would you like to start from the beginning?</source>
-      <translation type="unfinished">%1 not found. Would you like to start from the beginning?</translation>
+      <translation>%1 tidak ditemui. Adakah anda mahu memulakan dari awal?</translation>
     </message>
   </context>
   <context>
@@ -2195,12 +2195,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="179"/>
       <source>Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</source>
-      <translation type="unfinished">Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</translation>
+      <translation>Menogol keterlihatan pek keutamaan addon '%1' (gunakan Pengurus Addon untuk mengalih keluar secara kekal)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="196"/>
       <source>Delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation type="unfinished">Delete the preference pack named '%1'? This cannot be undone.</translation>
+      <translation>Padam pek keutamaan bernama '%1'? Tindakan ini tidak boleh dibuat asal.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="195"/>
@@ -2509,7 +2509,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</translation>
+      <translation>AMARAN: proses ini akan membuat asal sebarang perubahan keutamaan yang dibuat sejak tarikh yang ditentukan, dan juga akan menetapkan semula fail terkini dan Makro anda kepada keadaannya pada tarikh tersebut.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="52"/>
@@ -2730,8 +2730,8 @@ akan ditunjukkan di sudut kiri bawah dalam fail yang dibuka</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="74"/>
       <source>Size of main coordinate system representation
 in the corner in % of height/width of the viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner in % of height/width of the viewport</translation>
+      <translation>Saiz perwakilan sistem koordinat utama
+di sudut dalam % daripada ketinggian/kelebaran viewport</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="100"/>
@@ -2742,8 +2742,7 @@ in the corner in % of height/width of the viewport</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="286"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
-Changing this option requires a restart of the application.</translation>
+      <translation>Pilihan ini berguna untuk menyelesaikan masalah kad grafik dan pemacu. Mengubah pilihan ini memerlukan aplikasi dimulakan semula.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="386"/>
@@ -2774,13 +2773,12 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render caching' is another way to say 'Rendering acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>'Pengecaman paparan' (Render caching) adalah cara lain untuk menyebut 'Pecutan pemaparan' (Rendering acceleration).
+Terdapat 3 pilihan yang tersedia untuk mencapainya:
+
+1. 'Auto' (lalai), membenarkan Coin3D menentukan lokasi pengecaman.
+2. 'Diedarkan' (Distributed), menghidupkan pengecaman secara manual untuk semua nod punca pembekal paparan (view provider).
+3. 'Dipusatkan' (Centralized), mematikan pengecaman secara manual dalam semua nod bagi semua pembekal paparan, dan hanya mengecam pada nod punca graf pemandangan (scene graph). Ini menawarkan kelajuan pemaparan terpantas tetapi tindak balas yang lebih perlahan terhadap sebarang perubahan pemandangan.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
@@ -2793,15 +2791,10 @@ forcibly enabled.
 
 Note: Turning this on is typically not required. If you do,
 remember to report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">A VBO is an OpenGL feature that enables uploading geometry data
-to the graphics card, and is how efficient 3D rendering is done
-on modern hardware.
-This feature might not be used by default if you are running old
-hardware or drivers. By selecting this option its usage will be
-forcibly enabled.
+      <translation>VBO (Objek Penimbal Vektor) ialah ciri OpenGL yang membolehkan muat naik data geometri ke kad grafik, dan merupakan cara pemaparan 3D yang cekap dilakukan pada perkakasan moden.
+Ciri ini mungkin tidak digunakan secara lalai jika anda menggunakan perkakasan atau pemacu lama. Dengan memilih pilihan ini, penggunaannya akan didayakan secara paksa.
 
-Note: Turning this on is typically not required. If you do,
-remember to report this setting as enabled when seeking support.</translation>
+Nota: Mengaktifkan pilihan ini biasanya tidak diperlukan. Sekiranya anda berbuat demikian, ingat untuk melaporkan bahawa tetapan ini didayakan apabila meminta bantuan sokongan.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="314"/>
@@ -2843,10 +2836,8 @@ saiz kotak sempadan objek 3D yang sedang dipaparkan.</translation>
 'Automatic' follows the refresh rate of the display, since drawing
 faster than the display can show only wastes graphics card work.
 Set to 0 to redraw as fast as the graphics driver allows.</source>
-      <translation type="unfinished">Upper limit on how often the 3D view is redrawn.
-'Automatic' follows the refresh rate of the display, since drawing
-faster than the display can show only wastes graphics card work.
-Set to 0 to redraw as fast as the graphics driver allows.</translation>
+      <translation>Had atas kekerapan paparan 3D dilukis semula.
+'Automatik' mengikut kadar penyegaran (refresh rate) paparan, kerana melukis lebih pantas daripada apa yang boleh dipaparkan hanya membazirkan kerja kad grafik. Tetapkan kepada 0 untuk melukis semula sepantas yang dibenarkan oleh pemacu grafik.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="564"/>
@@ -3303,8 +3294,8 @@ selain bar warna</translation>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="122"/>
       <source>Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing Esc.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Membenarkan pengguna membatalkan pengiraan semula dokumen dengan menekan Esc.
+Ciri ini mungkin meningkatkan sedikit masa pengiraan semula.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
@@ -4748,7 +4739,7 @@ The preference system is the one set in the general preferences.</translation>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1168"/>
+      <location filename="../Placement.cpp" line="1173"/>
       <source>Placement</source>
       <translation>Penempatan</translation>
     </message>
@@ -5492,44 +5483,44 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <translation type="unfinished">Show dependencies</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation type="unfinished">Depending on</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation type="unfinished">Document</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>Nama</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>Bergantung oleh</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>Pemilihan</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation type="unfinished">All</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation type="unfinished">&amp;Use Original Selection</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation type="unfinished">Ignore dependencies and proceed with the objects
@@ -5915,22 +5906,22 @@ Save all changes?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="956"/>
       <source>Tap OR click left mouse button.</source>
       <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="958"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="960"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="965"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</translation>
     </message>
@@ -5978,15 +5969,15 @@ Save all changes?</translation>
       <translation type="unfinished">Bitmap</translation>
     </message>
     <message>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
+      <source>Export Graph</source>
+      <translation type="unfinished">Export Graph</translation>
+    </message>
+    <message>
       <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation type="unfinished">Export graph</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="765"/>
-      <location filename="../GraphvizView.cpp" line="411"/>
-      <source>Export Graph</source>
-      <translation type="unfinished">Export Graph</translation>
     </message>
   </context>
   <context>
@@ -6131,12 +6122,12 @@ Save all changes?</translation>
       <translation>Makro</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation type="unfinished">Macro file doesn't exist</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation type="unfinished">No such macro file: '%1'</translation>
     </message>
@@ -6840,30 +6831,30 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="871"/>
+      <location filename="../Action.cpp" line="887"/>
       <source>Open...</source>
       <translation>Terbuka...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="872"/>
-      <location filename="../Action.cpp" line="873"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="889"/>
       <source>Open a document or import files.</source>
       <translation type="unfinished">Open a document or import files.</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="888"/>
-      <location filename="../Action.cpp" line="897"/>
+      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="913"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation type="unfinished">Clear Recent Files</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="898"/>
+      <location filename="../Action.cpp" line="914"/>
       <source>Clear the list of recent files?</source>
       <translation type="unfinished">Clear the list of recent files?</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="973"/>
+      <location filename="../Action.cpp" line="989"/>
       <source>Open file %1</source>
       <translation type="unfinished">Open file %1</translation>
     </message>
@@ -6871,12 +6862,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1148"/>
+      <location filename="../Action.cpp" line="1164"/>
       <source>none</source>
       <translation>tiada</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1166"/>
+      <location filename="../Action.cpp" line="1182"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
@@ -7436,6 +7427,11 @@ Specify another directory?</translation>
       <translation type="unfinished">Hebrew</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="280"/>
+      <source>Persian</source>
+      <translation type="unfinished">Persian</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="239"/>
       <source>Danish</source>
       <translation type="unfinished">Danish</translation>
@@ -7748,12 +7744,12 @@ Specify another directory?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="732"/>
+      <location filename="../Action.cpp" line="748"/>
       <source>Selects the '%1' workbench</source>
       <translation type="unfinished">Selects the '%1' workbench</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="760"/>
+      <location filename="../Action.cpp" line="776"/>
       <source>Select the '%1' workbench</source>
       <translation type="unfinished">Select the '%1' workbench</translation>
     </message>
@@ -8122,7 +8118,7 @@ Check the report view for more details.</translation>
       <translation type="unfinished"> → Restarting…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation type="unfinished">Exception</translation>
     </message>
@@ -8168,13 +8164,6 @@ Check the report view for more details.</translation>
       <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation type="unfinished">Merge Document</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <source>%1 document</source>
-      <translation type="unfinished">%1 document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="687"/>
@@ -8625,6 +8614,13 @@ Use 'Save As…' to preserve the original file.
       <translation type="unfinished">Save document under new filename…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
+      <source>%1 document</source>
+      <translation type="unfinished">%1 document</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation type="unfinished">Save a copy of the document under new filename…</translation>
@@ -9018,8 +9014,8 @@ the current copy will be lost.
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <location filename="../OverlayManager.cpp" line="1131"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
@@ -9205,6 +9201,11 @@ the current copy will be lost.
       <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
     </message>
     <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation type="unfinished">Part</translation>
+    </message>
+    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation type="unfinished">Edit Image Plane</translation>
@@ -9219,21 +9220,16 @@ the current copy will be lost.
       <source>All Files</source>
       <translation>Semua fail</translation>
     </message>
-    <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation type="unfinished">Part</translation>
-    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation type="unfinished">Not allowed:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation type="unfinished">Selection not allowed by filter</translation>
     </message>
@@ -9547,8 +9543,8 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <source>Unnamed</source>
       <translation type="unfinished">Unnamed</translation>
     </message>
@@ -13443,7 +13439,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="181"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>Membuka folder makro dalam pengurus fail sistem</translation>
     </message>
   </context>
   <context>
@@ -14769,49 +14765,6 @@ This makes the docked panel stay transparent at all times.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation type="unfinished">Object</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Tapis mengikut jenis</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation type="unfinished">Synchronizes the 3D view selection with the full object hierarchy</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Segerakkan pemilihan sub-objek</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Cari</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Corak carian untuk menapis hasil di atas</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Tetapkan semula</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Jelas</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14914,17 +14867,69 @@ treated as shortcut key sequence 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
+    <name>Gui::Dialog::DlgDocumentObject</name>
     <message>
-      <location filename="../FileDialog.cpp" line="579"/>
-      <source>Save As</source>
-      <translation type="unfinished">Save As</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation type="unfinished">Object</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="715"/>
-      <location filename="../FileDialog.cpp" line="811"/>
-      <source>Open</source>
-      <translation type="unfinished">Open</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Tapis mengikut jenis</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation type="unfinished">Synchronizes the 3D view selection with the full object hierarchy</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Segerakkan pemilihan sub-objek</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Cari</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Corak carian untuk menapis hasil di atas</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Tetapkan semula</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Jelas</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1067"/>
+      <source>Experimental</source>
+      <translation type="unfinished">Experimental</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1073"/>
+      <source>Development preview</source>
+      <translation type="unfinished">Development preview</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1074"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
     </message>
   </context>
   <context>
@@ -14966,16 +14971,17 @@ treated as shortcut key sequence 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
+    <name>FileDialog</name>
     <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
+      <location filename="../FileDialog.cpp" line="579"/>
+      <source>Save As</source>
+      <translation type="unfinished">Save As</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
+      <source>Open</source>
+      <translation type="unfinished">Open</translation>
     </message>
   </context>
   <context>
@@ -14989,32 +14995,6 @@ treated as shortcut key sequence 'F, F'.</translation>
       <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
       <translation>Nilai</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOpenGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
-      <source>&amp;Open…</source>
-      <translation type="unfinished">&amp;Open…</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
-      <source>Opens a document or imports files</source>
-      <translation type="unfinished">Opens a document or imports files</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSaveGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="966"/>
-      <source>Save</source>
-      <translation type="unfinished">Save</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="967"/>
-      <source>Saves the active document</source>
-      <translation type="unfinished">Saves the active document</translation>
     </message>
   </context>
   <context>
@@ -15062,26 +15042,42 @@ treated as shortcut key sequence 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Command</name>
+    <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
-      <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation type="unfinished">Toggle Bottom Panels</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
-      <source>EXPERIMENTAL: this command may change.</source>
-      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation type="unfinished">Toggles the bottom dock panels</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdOpenGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="85"/>
+      <source>&amp;Open…</source>
+      <translation type="unfinished">&amp;Open…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
-      <source>Development preview</source>
-      <translation type="unfinished">Development preview</translation>
+      <location filename="../CommandDoc.cpp" line="86"/>
+      <source>Opens a document or imports files</source>
+      <translation type="unfinished">Opens a document or imports files</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <source>Save</source>
+      <translation type="unfinished">Save</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
-      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
+      <location filename="../CommandDoc.cpp" line="967"/>
+      <source>Saves the active document</source>
+      <translation type="unfinished">Saves the active document</translation>
     </message>
   </context>
   <context>

@@ -135,8 +135,8 @@
     <message>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Claochlú</translation>
     </message>
@@ -4737,7 +4737,7 @@ Is é an córas tosaíochta an ceann atá socraithe sna roghanna ginearálta.</t
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1168"/>
+      <location filename="../Placement.cpp" line="1173"/>
       <source>Placement</source>
       <translation>Socrúchán</translation>
     </message>
@@ -5481,44 +5481,44 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
       <translation>Taispeáin spleáchais</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation>Ag brath ar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation>Doiciméad</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>Ag brath ar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>Roghanna</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation>Gach</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Úsáid an Rogha Bunaidh</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Déan neamhaird de spleáchais agus lean ar aghaidh leis na réada
@@ -5904,22 +5904,22 @@ Sábháil na hathruithe go léir?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="956"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Beartaíonn NÓ cliceáil ar an luchóg chlé.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="958"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Tarraing an scáileán le dhá mhéar NÓ brúigh an cnaipe luiche ar dheis.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="960"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Tarraing an scáileán le méar amháin NÓ brúigh cnaipe na luiche ar chlé. I Sketcher agus i mód eagarthóireachta eile, coinnigh Alt síos chomh maith.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="965"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>Pionáil (cuir dhá mhéar ar an scáileán agus tarraing iad óna chéile nó i dtreo a chéile) NÓ scrollaigh roth na luiche NÓ Lch Suas/Lch Síos ar an méarchlár.</translation>
     </message>
@@ -5967,15 +5967,15 @@ Sábháil na hathruithe go léir?</translation>
       <translation>Giotánléarscáil</translation>
     </message>
     <message>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
+      <source>Export Graph</source>
+      <translation>Easpórtáil Graf</translation>
+    </message>
+    <message>
       <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation>Easpórtáil graf</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="765"/>
-      <location filename="../GraphvizView.cpp" line="411"/>
-      <source>Export Graph</source>
-      <translation>Easpórtáil Graf</translation>
     </message>
   </context>
   <context>
@@ -6120,12 +6120,12 @@ Sábháil na hathruithe go léir?</translation>
       <translation>Macraí</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation>Níl an comhad macra ann</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation>Níl aon chomhad macra den chineál seo ann: '%1'</translation>
     </message>
@@ -6829,30 +6829,30 @@ Scoir gan na sonraí go léir a shábháil?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="871"/>
+      <location filename="../Action.cpp" line="887"/>
       <source>Open...</source>
       <translation>Oscail...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="872"/>
-      <location filename="../Action.cpp" line="873"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="889"/>
       <source>Open a document or import files.</source>
       <translation>Oscail doiciméad nó iompórtáil comhaid.</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="888"/>
-      <location filename="../Action.cpp" line="897"/>
+      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="913"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Glan Comhaid Le Déanaí</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="898"/>
+      <location filename="../Action.cpp" line="914"/>
       <source>Clear the list of recent files?</source>
       <translation>An bhfuil tú ag iarraidh liosta na gcomhad le déanaí a ghlanadh?</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="973"/>
+      <location filename="../Action.cpp" line="989"/>
       <source>Open file %1</source>
       <translation>Oscail comhad %1</translation>
     </message>
@@ -6860,12 +6860,12 @@ Scoir gan na sonraí go léir a shábháil?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1148"/>
+      <location filename="../Action.cpp" line="1164"/>
       <source>none</source>
       <translation>aon cheann</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1166"/>
+      <location filename="../Action.cpp" line="1182"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Rith macra %1 (Shift+cliceáil le heagarthóireacht) aicearra méarchláir: %2</translation>
     </message>
@@ -7425,6 +7425,11 @@ Sonraigh eolaire eile?</translation>
       <translation>Eabhrais</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="280"/>
+      <source>Persian</source>
+      <translation type="unfinished">Persian</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="239"/>
       <source>Danish</source>
       <translation>Danmhairgis</translation>
@@ -7737,12 +7742,12 @@ Sonraigh eolaire eile?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="732"/>
+      <location filename="../Action.cpp" line="748"/>
       <source>Selects the '%1' workbench</source>
       <translation>Roghnaíonn sé an binse oibre '%1'</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="760"/>
+      <location filename="../Action.cpp" line="776"/>
       <source>Select the '%1' workbench</source>
       <translation>Roghnaigh an binse oibre '%1'</translation>
     </message>
@@ -8115,7 +8120,7 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <translation> → Atosú…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation>Eisceacht</translation>
     </message>
@@ -8161,13 +8166,6 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation>Doiciméad a Chumaisc</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <source>%1 document</source>
-      <translation>%1 doiciméad</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="687"/>
@@ -8618,6 +8616,13 @@ Déanfaidh sábháil an fhormáid comhaid a uasghrádú. B’fhéidir nach mbeid
       <translation>Sábháil an doiciméad faoi ainm comhaid nua…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
+      <source>%1 document</source>
+      <translation>%1 doiciméad</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Sábháil cóip den doiciméad faoin ainm comhaid nua…</translation>
@@ -9011,8 +9016,8 @@ dhéantar ar an gcóip reatha.
       <translation>Scoránaigh an forleagan</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <location filename="../OverlayManager.cpp" line="1131"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <source>Toggle floating window</source>
       <translation>Scoránaigh fuinneog snámhach</translation>
     </message>
@@ -9198,6 +9203,11 @@ dhéantar ar an gcóip reatha.
       <translation>Cuir i bhfeidhm ar na réad roghnaithe go léir (%1) agus a gcuid páistí</translation>
     </message>
     <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Cuid</translation>
+    </message>
+    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation>Cuir Plána Íomhá in Eagar</translation>
@@ -9212,21 +9222,16 @@ dhéantar ar an gcóip reatha.
       <source>All Files</source>
       <translation>Gach Comhad</translation>
     </message>
-    <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Cuid</translation>
-    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation>Ní cheadaítear:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation>Ní cheadaítear an rogha ag an scagaire</translation>
     </message>
@@ -9540,8 +9545,8 @@ dhéantar ar an gcóip reatha.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <source>Unnamed</source>
       <translation>Gan ainm</translation>
     </message>
@@ -14760,49 +14765,6 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Réad</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Scag de réir cineáil</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Sioncrónaíonn sé an rogha radhairc 3T leis an ordlathas réada iomlán</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Sioncrónaigh roghnú fo-réada</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Cuardaigh</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Patrún cuardaigh chun na torthaí thuas a scagadh</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Athshocrú</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Glan</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14905,17 +14867,69 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
+    <name>Gui::Dialog::DlgDocumentObject</name>
     <message>
-      <location filename="../FileDialog.cpp" line="579"/>
-      <source>Save As</source>
-      <translation>Sábháil Mar</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Réad</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="715"/>
-      <location filename="../FileDialog.cpp" line="811"/>
-      <source>Open</source>
-      <translation>Oscail</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Scag de réir cineáil</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Sioncrónaíonn sé an rogha radhairc 3T leis an ordlathas réada iomlán</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Sioncrónaigh roghnú fo-réada</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Cuardaigh</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Patrún cuardaigh chun na torthaí thuas a scagadh</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Athshocrú</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Glan</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1067"/>
+      <source>Experimental</source>
+      <translation>Turgnamhach</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation>TURGNAMHACH: d’fhéadfadh an t-ordú seo athrú.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1073"/>
+      <source>Development preview</source>
+      <translation>Réamhamharc forbartha</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1074"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation>RÉAMHAMHARC FORBARTHA: d’fhéadfadh an t-ordú seo athrú nó a bheith bainte.</translation>
     </message>
   </context>
   <context>
@@ -14957,16 +14971,17 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
+    <name>FileDialog</name>
     <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Painéil Bhun a Athsholáthar</translation>
+      <location filename="../FileDialog.cpp" line="579"/>
+      <source>Save As</source>
+      <translation>Sábháil Mar</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Athraíonn sé na painéil duga bun</translation>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
+      <source>Open</source>
+      <translation>Oscail</translation>
     </message>
   </context>
   <context>
@@ -14980,32 +14995,6 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
       <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
       <translation>Luach</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOpenGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
-      <source>&amp;Open…</source>
-      <translation>&amp;Oscail…</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
-      <source>Opens a document or imports files</source>
-      <translation>Osclaíonn sé doiciméad nó iompórtálann sé comhaid</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSaveGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="966"/>
-      <source>Save</source>
-      <translation>Sábháil</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="967"/>
-      <source>Saves the active document</source>
-      <translation>Sábháil an doiciméad gníomhach</translation>
     </message>
   </context>
   <context>
@@ -15053,26 +15042,42 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Command</name>
+    <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
-      <source>Experimental</source>
-      <translation>Turgnamhach</translation>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Painéil Bhun a Athsholáthar</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
-      <source>EXPERIMENTAL: this command may change.</source>
-      <translation>TURGNAMHACH: d’fhéadfadh an t-ordú seo athrú.</translation>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Athraíonn sé na painéil duga bun</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdOpenGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="85"/>
+      <source>&amp;Open…</source>
+      <translation>&amp;Oscail…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
-      <source>Development preview</source>
-      <translation>Réamhamharc forbartha</translation>
+      <location filename="../CommandDoc.cpp" line="86"/>
+      <source>Opens a document or imports files</source>
+      <translation>Osclaíonn sé doiciméad nó iompórtálann sé comhaid</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <source>Save</source>
+      <translation>Sábháil</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
-      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation>RÉAMHAMHARC FORBARTHA: d’fhéadfadh an t-ordú seo athrú nó a bheith bainte.</translation>
+      <location filename="../CommandDoc.cpp" line="967"/>
+      <source>Saves the active document</source>
+      <translation>Sábháil an doiciméad gníomhach</translation>
     </message>
   </context>
   <context>

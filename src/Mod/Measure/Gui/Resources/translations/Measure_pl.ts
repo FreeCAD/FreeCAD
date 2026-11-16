@@ -463,67 +463,6 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
     </message>
   </context>
   <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="355"/>
-      <source>Parameters</source>
-      <translation>Parametry</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="358"/>
-      <source>Physical Properties</source>
-      <translation>Właściwości fizyczne</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="361"/>
-      <source>Center of Gravity</source>
-      <translation>Środek ciężkości</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
-      <source>Center of Volume</source>
-      <translation>Środek objętości</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Inertia</source>
-      <translation>Bezwładność</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="444"/>
-      <source>Close</source>
-      <translation>Zamknij</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="447"/>
-      <source>Save</source>
-      <translation>Zapisz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="451"/>
-      <source>Reset</source>
-      <translation>Reset</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1236"/>
-      <source> (Average)</source>
-      <translation>(Przeciętne)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Właściwości masowe</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Oblicza właściwości masowe wybranych obiektów</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskMeasure</name>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="121"/>
@@ -569,6 +508,67 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
       <translation>Środek geometryczny</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Właściwości masowe</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Oblicza właściwości masowe wybranych obiektów</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="355"/>
+      <source>Parameters</source>
+      <translation>Parametry</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="358"/>
+      <source>Physical Properties</source>
+      <translation>Właściwości fizyczne</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="361"/>
+      <source>Center of Gravity</source>
+      <translation>Środek ciężkości</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <source>Center of Volume</source>
+      <translation>Środek objętości</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
+      <source>Inertia</source>
+      <translation>Bezwładność</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="444"/>
+      <source>Close</source>
+      <translation>Zamknij</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="447"/>
+      <source>Save</source>
+      <translation>Zapisz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="451"/>
+      <source>Reset</source>
+      <translation>Reset</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
+      <source> (Average)</source>
+      <translation>(Przeciętne)</translation>
     </message>
   </context>
 </TS>

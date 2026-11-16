@@ -5510,44 +5510,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Prikaži ovisnosti</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation>Ovisi o</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>Ovisan kod</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>Odabiri</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation>Sve</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation>Koristi originaln&amp;u selekciju</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Zanemarite ovisnosti i nastavite s objektima
@@ -6148,12 +6148,12 @@ Spremiti sve promjene?</translation>
       <translation>Makronaredbe</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation>Makro datoteke ne postoji</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation>Nema takve makronaredbe datoteke: '%1 '</translation>
     </message>
@@ -8145,7 +8145,7 @@ Provjerite prikaz izvješća za više pojedinosti.</translation>
       <translation> → Ponovno pokretanje…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation>Iznimka</translation>
     </message>
@@ -9255,12 +9255,12 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation>Nije dopušteno:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation>Izbor nije dozvoljen kod ovog filtera</translation>
     </message>
@@ -15105,22 +15105,22 @@ tretirati kao niz tipki prečaca 'F, F'.</translation>
   <context>
     <name>Gui::Command</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
+      <location filename="../Command.cpp" line="1067"/>
       <source>Experimental</source>
       <translation>Eksperimentalno</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
+      <location filename="../Command.cpp" line="1069"/>
       <source>EXPERIMENTAL: this command may change.</source>
       <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
+      <location filename="../Command.cpp" line="1073"/>
       <source>Development preview</source>
       <translation type="unfinished">Development preview</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
+      <location filename="../Command.cpp" line="1074"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
       <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
     </message>

@@ -2156,8 +2156,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Создать линию разрыва</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>Сохранить страницу в файл DXF</translation>
     </message>
@@ -2191,11 +2196,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1648"/>
       <source>Create DraftView</source>
       <translation>Вид из верстака Набросок</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="347"/>
@@ -2507,8 +2507,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Создать сложное сечение</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="587"/>
       <location filename="../../TaskComplexSection.cpp" line="659"/>
+      <location filename="../../TaskSectionView.cpp" line="587"/>
       <source>Edit Section View</source>
       <translation>Изменить Сечение</translation>
     </message>
@@ -3054,6 +3054,23 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
       <location filename="../../CommandAnnotate.cpp" line="117"/>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
       <location filename="../../CommandAnnotate.cpp" line="313"/>
@@ -3083,23 +3100,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
       <location filename="../../CommandHelpers.cpp" line="87"/>
       <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="649"/>
-      <location filename="../../Command.cpp" line="866"/>
-      <location filename="../../Command.cpp" line="983"/>
-      <location filename="../../Command.cpp" line="990"/>
-      <location filename="../../Command.cpp" line="995"/>
-      <location filename="../../Command.cpp" line="1033"/>
-      <location filename="../../Command.cpp" line="1132"/>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1416"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1430"/>
-      <location filename="../../Command.cpp" line="1483"/>
-      <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
@@ -3159,21 +3159,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD не может найти страницу для экспорта</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1922"/>
-      <source>Save DXF file</source>
-      <translation>Сохранить DXF-файл</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2174"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>Выбранное направление находится в пределах %1 градусов от стандартного направления. Заменить выбранное направление на %2?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2179"/>
-      <source>Direction is close to standard</source>
-      <translation>Направление близко к стандартному</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Выберите объекты для разрыва или базовый вид и объекты определяющие разрыв</translation>
@@ -3190,6 +3175,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Не выделено фигур, групп или ссылок</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="328"/>
       <location filename="../../CommandExtensionDims.cpp" line="537"/>
       <location filename="../../CommandExtensionDims.cpp" line="825"/>
@@ -3197,11 +3194,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1524"/>
       <location filename="../../CommandExtensionDims.cpp" line="1893"/>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3228,17 +3220,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1887"/>
       <location filename="../../CommandCreateDims.cpp" line="1983"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
       <source>Task in progress</source>
       <translation>Задача обрабатывается</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="906"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
       <location filename="../../CommandExtensionDims.cpp" line="538"/>
       <location filename="../../CommandExtensionDims.cpp" line="826"/>
@@ -3261,9 +3249,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1265"/>
       <location filename="../../CommandAnnotate.cpp" line="1346"/>
       <location filename="../../CommandAnnotate.cpp" line="1412"/>
-      <location filename="../../Command.cpp" line="750"/>
-      <location filename="../../Command.cpp" line="843"/>
-      <location filename="../../Command.cpp" line="906"/>
       <source>Close active task dialog and try again</source>
       <translation>Закройте окно активной задачи и попробуйте снова</translation>
     </message>
@@ -3284,14 +3269,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Не выделено базового вида, фигур, групп или ссылок</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2384"/>
       <location filename="../../Command.cpp" line="1202"/>
+      <location filename="../../CommandCreateDims.cpp" line="2384"/>
       <source>Select an object first</source>
       <translation>Сначала выберите объект</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2392"/>
       <location filename="../../Command.cpp" line="1209"/>
+      <location filename="../../CommandCreateDims.cpp" line="2392"/>
       <source>Too many objects selected</source>
       <translation>Выбрано слишком много объектов</translation>
     </message>
@@ -3314,6 +3299,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1908"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Лист содержит вид объекта из BIM, который не будет экспортирован. Продолжить?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1922"/>
+      <source>Save DXF file</source>
+      <translation>Сохранить DXF-файл</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2174"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>Выбранное направление находится в пределах %1 градусов от стандартного направления. Заменить выбранное направление на %2?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2179"/>
+      <source>Direction is close to standard</source>
+      <translation>Направление близко к стандартному</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -3437,12 +3437,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Выберите SVG файл для открытия</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="139"/>
-      <location filename="../../TaskDimRepair.cpp" line="150"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1883"/>
       <location filename="../../CommandExtensionPack.cpp" line="2007"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
+      <location filename="../../CommandDecorate.cpp" line="420"/>
+      <location filename="../../CommandDecorate.cpp" line="427"/>
+      <location filename="../../CommandDecorate.cpp" line="434"/>
+      <location filename="../../CommandDecorate.cpp" line="441"/>
+      <location filename="../../CommandDecorate.cpp" line="447"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3455,15 +3464,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2383"/>
       <location filename="../../CommandCreateDims.cpp" line="2391"/>
       <location filename="../../CommandCreateDims.cpp" line="2400"/>
-      <location filename="../../CommandDecorate.cpp" line="420"/>
-      <location filename="../../CommandDecorate.cpp" line="427"/>
-      <location filename="../../CommandDecorate.cpp" line="434"/>
-      <location filename="../../CommandDecorate.cpp" line="441"/>
-      <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
       <source>Incorrect Selection</source>
       <translation>Некорректный выбор</translation>
     </message>
@@ -3795,27 +3795,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Эта функция нуждается в странице.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="858"/>
       <source>Export Page as PDF</source>
       <translation>Экспортировать страницу в PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="772"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>Экспортировать страницу в SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="795"/>
+      <location filename="../../MDIViewPage.cpp" line="800"/>
       <source>Export page as DXF</source>
       <translation>Экспорт страницы в DXF </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="836"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>Unable to Write File</source>
       <translation>Невозможно записать файл</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="837"/>
+      <location filename="../../MDIViewPage.cpp" line="842"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD не удается открыть файл %1 для записи. Возможно, файл открыт в другой программе.</translation>
     </message>
@@ -3897,14 +3897,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Редактировать сложное сечение</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="238"/>
       <location filename="../../TaskComplexSection.cpp" line="220"/>
+      <location filename="../../TaskSectionView.cpp" line="238"/>
       <source>Current View Direction</source>
       <translation>Текущее направление просмотра</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="239"/>
       <location filename="../../TaskComplexSection.cpp" line="221"/>
+      <location filename="../../TaskSectionView.cpp" line="239"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Направление просмотра в координатах базового вида (BaseView)</translation>
     </message>
@@ -3919,8 +3919,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Проверьте нормаль сечения, направление и/или направление по X.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="653"/>
       <location filename="../../TaskComplexSection.cpp" line="726"/>
+      <location filename="../../TaskSectionView.cpp" line="653"/>
       <source>Operation Failed</source>
       <translation>Сбой при выполнении операции</translation>
     </message>
@@ -3955,9 +3955,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Изменить выносной элемент</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
-      <location filename="../../ViewProviderDimension.cpp" line="141"/>
       <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
+      <location filename="../../ViewProviderDimension.cpp" line="141"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>Изменить %1</translation>
     </message>
@@ -4091,15 +4091,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw Настройка формата</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <location filename="../../CommandAnnotate.cpp" line="1026"/>
       <source>Selection is empty</source>
       <translation>Ничего не выбрано</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <location filename="../../CommandExtensionPack.cpp" line="2155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <source>No object selected</source>
       <translation>Не выбран ни один объект</translation>
     </message>
@@ -4284,11 +4284,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Создатель форматированного текста</translation>
     </message>
     <message>
-      <location filename="../../SymbolChooser.cpp" line="61"/>
-      <source>Select a Symbol</source>
-      <translation>Выберите символ</translation>
-    </message>
-    <message>
       <location filename="../../QGIRichAnno.cpp" line="402"/>
       <source>Resize Rich Annotation</source>
       <translation>Изменить размер форматированной аннотации</translation>
@@ -4297,6 +4292,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TemplateTextField.cpp" line="58"/>
       <source>Updates the text</source>
       <translation>Обновляет текст</translation>
+    </message>
+    <message>
+      <location filename="../../SymbolChooser.cpp" line="61"/>
+      <source>Select a Symbol</source>
+      <translation>Выберите символ</translation>
     </message>
   </context>
   <context>
@@ -4319,17 +4319,17 @@ it has a weld symbol that would become broken.</source>
       <translation>Вы не можете удалить этот вид, потому что это повредит один или более других зависимых от него видов.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <source>Object dependencies</source>
       <translation>Зависимости объекта</translation>
@@ -6385,71 +6385,71 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="102"/>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
       <source>&amp;Keep Updated</source>
       <translation>&amp;Обновлять</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
       <source>Show &amp;Frames</source>
       <translation>Показывать &amp;рамки</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="108"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Show &amp;Grid</source>
       <translation>Показывать &amp;сетку</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Screen &amp;Mode</source>
       <translation type="unfinished">Screen &amp;Mode</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="115"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Экспортировать в SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="119"/>
       <source>Export DXF</source>
       <translation>Экспортировать в DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="123"/>
       <source>Export PDF</source>
       <translation>Экспортировать в PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="126"/>
+      <location filename="../../MDIViewPage.cpp" line="127"/>
       <source>Print All Pages</source>
       <translation>Распечатать все страницы</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="448"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>Different orientation</source>
       <translation>Другая ориентация</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="449"/>
+      <location filename="../../MDIViewPage.cpp" line="450"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Принтер использует отличающуюся от чертежа ориентацию бумаги.
 Хотите продолжить?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="458"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>Different paper size</source>
       <translation>Другой размер бумаги</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="459"/>
+      <location filename="../../MDIViewPage.cpp" line="460"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Принтер использует отличающийся от чертежа формат листа бумаги.
 Хотите продолжить?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1416"/>
+      <location filename="../../MDIViewPage.cpp" line="1421"/>
       <source>Selected:</source>
       <translation>Выбрано:</translation>
     </message>
@@ -10367,6 +10367,45 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation type="unfinished">Position Section View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>Косметическая вершина на пересечении</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation type="unfinished">Adds cosmetic vertices at the intersectionss of selected edges</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>Сместить вершину</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation type="unfinished">Creates an offset from one selected vertex</translation>
+    </message>
+  </context>
+  <context>
     <name>TaskSpreadsheetView</name>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
@@ -10465,105 +10504,34 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDraw_ExtensionPositionSectionView</name>
+    <name>CmdTechDrawExportPagePDF</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>Файл</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_CommandVertexCreationGroup</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>Косметическая вершина на пересечении</translation>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>Экспортировать страницу в PDF</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the intersectionss of selected edges</translation>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation>Экспортирует текущую страницу в DXF</translation>
     </message>
   </context>
   <context>
-    <name>TechDraw_CommandAddOffsetVertex</name>
+    <name>CmdTechDrawExportGroup</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
-      <source>Offset Vertex</source>
-      <translation>Сместить вершину</translation>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation type="unfinished">Creates an offset from one selected vertex</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="458"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Восстановить невидимые линии</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::QGIViewSpreadsheet</name>
-    <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
-      <source>Add row</source>
-      <translation>Добавить строку</translation>
-    </message>
-    <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
-      <source>Add column</source>
-      <translation>Добавить столбец</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>Invalid Range</source>
-      <translation>Недопустимый диапазон</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>The specified cell range is invalid. Please correct it.</source>
-      <translation>Указанный диапазон недействителен. Пожалуйста, исправьте его.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
-      <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
-      <source>Edit Spreadsheet View</source>
-      <translation>Редактировать Электронную таблицу</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>Осевая между 2 линиями</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>Осевая между 2 точками</translation>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>Распечатать все страницы</translation>
     </message>
   </context>
   <context>
@@ -10603,34 +10571,66 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>Экспортировать страницу в PDF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation>Экспортирует текущую страницу в DXF</translation>
+      <location filename="../../TaskLineDecor.cpp" line="458"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Восстановить невидимые линии</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportGroup</name>
+    <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>Технический чертёж</translation>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>Осевая между 2 линиями</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>Осевая между 2 точками</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>Invalid Range</source>
+      <translation>Недопустимый диапазон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>Распечатать все страницы</translation>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation>Указанный диапазон недействителен. Пожалуйста, исправьте его.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
+      <source>Edit Spreadsheet View</source>
+      <translation>Редактировать Электронную таблицу</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
+      <source>Add row</source>
+      <translation>Добавить строку</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
+      <source>Add column</source>
+      <translation>Добавить столбец</translation>
     </message>
   </context>
 </TS>

@@ -933,8 +933,8 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
       <translation>Utwórz cechę funkcją logiczną</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Dodaj zawartość</translation>
     </message>
@@ -3588,11 +3588,11 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Brak prawidłowej płaszczyzny w tym dokumencie</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1194"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
@@ -3674,11 +3674,11 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Wybierz tylko jedną cechę w aktywnej zawartości.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="1195"/>
       <source>Close this dialog?</source>
       <translation>Zamknąć to okno dialogowe?</translation>
     </message>
@@ -3907,14 +3907,14 @@ Brak elementów do migracji.</translation>
       <translation>Nie jest możliwe utworzenie elementu do odjęcia bez dostępnego elementu bazowego</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
       <location filename="../../TaskTransformedParameters.cpp" line="519"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
       <source>Vertical sketch axis</source>
       <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
       <location filename="../../TaskTransformedParameters.cpp" line="525"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
       <source>Horizontal sketch axis</source>
       <translation>Pozioma oś szkicu</translation>
     </message>
@@ -3969,10 +3969,10 @@ Aktywuj istniejącą zawartość (podwójne kliknięcie) lub utwórz nową.</tra
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="68"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -4111,7 +4111,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
       <translation>Edycja funkcji szyku kołowego</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLoft.cpp" line="67"/>
+      <location filename="../../ViewProviderLoft.cpp" line="71"/>
       <source>Edit Loft</source>
       <translation>Edytuj wyciągnięcie przez profile</translation>
     </message>
@@ -4948,48 +4948,48 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
       <translation>Kształt Cechy Podstawowej nie został zdefiniowany</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="220"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>Nie można przeprowadzić cięcia logicznego bez Cechy Podstawowej</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="194"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="242"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Nie można przeprowadzić operacji logicznej z niczym oprócz Part::Feature i jej pochodnych</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="211"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="259"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>Nie można przeprowadzić operacji logicznej z nieprawidłowym kształtem podstawowym</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2142"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="314"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="554"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Wynik zawiera wiele brył: włącz opcję "Zezwalaj na złożenia" w aktywnej zawartości.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="221"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="269"/>
       <source>Tool shape is null</source>
       <translation>Kształt narzędzia nie został zdefiniowany</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="248"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="296"/>
       <source>Unsupported boolean operation</source>
       <translation>Nieobsługiwana operacja logiczna.</translation>
     </message>
@@ -5014,11 +5014,11 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
       <translation>Wynikowy proces scalania przez wytłaczanie nie zawiera objętości.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="564"/>
       <source>Resulting shape is not a solid</source>
       <translation>Otrzymany kształt nie jest bryłą</translation>
     </message>
@@ -5178,7 +5178,7 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd: ściana musi być płaska</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2507"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2505"/>
       <source>Error: Result is not a solid</source>
       <translation>Błąd: wynik nie jest bryłą</translation>
     </message>
@@ -5258,45 +5258,45 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd otworu: Kształt wynikowy jest niezdefiniowany</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2065"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Błąd otworu: Wyszukiwanie osi nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2116"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2124"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2122"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Operacja logiczna na profilu krawędzi nie powiodła się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2131"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Operacja logiczna doprowadziła do powstania elementów nietrwałych (non-solid) na profilu krawędzi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="258"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="306"/>
       <source>Boolean operation failed</source>
       <translation>Operacja logiczna nie powiodła się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2157"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2155"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nie można utworzyć ściany ze szkicu.
 Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone przy tworzeniu kieszeni aż do powierzchni.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2330"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2328"/>
       <source>Thread type out of range</source>
       <translation>Typ gwintu poza zakresem</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2333"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2331"/>
       <source>Thread size out of range</source>
       <translation>Rozmiar gwintu poza zakresem</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2481"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2479"/>
       <source>Error: Thread could not be built</source>
       <translation>Błąd: Nie można zbudować gwintu</translation>
     </message>
@@ -5316,8 +5316,8 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone p
       <translation>Wyciągnięcie przez profile: Tworzenie ściany ze szkicu nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
       <location filename="../../../App/FeatureLoft.cpp" line="357"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="492"/>
       <source>Loft: Failed to create shell</source>
       <translation>Wyciągnięcie przez profile: Nie udało się utworzyć powłoki</translation>
     </message>
@@ -5329,87 +5329,87 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="187"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="203"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Wyciągnięcie wzdłuż ścieżki: Nie można uzyskać kształtu profilu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="194"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="210"/>
       <source>No spine linked</source>
       <translation>Brak powiązanych krzywych prowadzących</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="209"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="225"/>
       <source>No auxiliary spine linked.</source>
       <translation>Brak powiązanych pomocniczych krzywych prowadzących.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="247"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Wyciągnięcie wzdłuż ścieżki: tylko jeden odizolowany punkt jest wymagany gdy używa się szkicu z odizolowanymi punktami dla przekroju</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="240"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="256"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Wyciągnięcie wzdłuż ścieżki: co najmniej jeden przekrój jest wymagany gdy używa się pojedynczego punktu dla profilu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="258"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="274"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>Rura: Wszystkie przekroje muszą być cechami środowiska Część</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="267"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Wyciągnięcie wzdłuż ścieżki: Nie można uzyskać kształtu przekroju</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="275"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Wyciągnięcie wzdłuż ścieżki: Tylko profil i ostatni przekrój mogą być wierzchołkami</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="288"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="303"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Przekroje wielokrotne muszą mieć taką samą liczbę wewnętrznych polilinii jak bazowy przekrój</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="321"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="336"/>
       <source>Path must not be a null shape</source>
       <translation>Ścieżka nie może być pustym kształtem</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="361"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="376"/>
       <source>Pipe could not be built</source>
       <translation>Wyciągnięcie wzdłuż ścieżki nie może zostać zbudowane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="509"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="524"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Wyciągnięcie wzdłuż ścieżki: Nie ma od czego odjąć</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="586"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Wystąpił błąd krytyczny podczas tworzenia wyciągnięcia wzdłuż ścieżki</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="698"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="713"/>
       <source>Invalid element in spine.</source>
       <translation>Nieprawidłowy element w krzywej prowadzącej.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="703"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="718"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Element w krzywej prowadzącej nie jest ani krawędzią ani polilinią.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="716"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="731"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>Krzywa prowadząca nie jest ani krawędzią, ani polilinią.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="721"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="736"/>
       <source>Invalid spine.</source>
       <translation>Nieprawidłowa krzywa prowadząca.</translation>
     </message>
@@ -5659,7 +5659,7 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
       <translation>Błąd podczas obliczania podglądu usuniętej objętości: %1</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="180"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="174"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
       <translation>Kształt wynikowy nie zawiera materiału. 
 Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił problem z modelem.</translation>
@@ -5915,32 +5915,32 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="438"/>
+      <location filename="../../TaskPatternParameters.cpp" line="474"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Wybierz szkic lub kształt zawierający punkty szyku</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="444"/>
+      <location filename="../../TaskPatternParameters.cpp" line="480"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Wybierz szkic, łącznik kształtów podrzędnych lub krawędź ścieżki</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="453"/>
+      <location filename="../../TaskPatternParameters.cpp" line="489"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Wybierz odniesienie kierunku (krawędź, ścianę, linię odniesienia).</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="517"/>
+      <location filename="../../TaskPatternParameters.cpp" line="553"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Nieprawidłowy wybór. Wybierz szkic lub kształt zawierający punkty.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="520"/>
+      <location filename="../../TaskPatternParameters.cpp" line="556"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Nieprawidłowy wybór. Wybierz szkic, łącznik kształtów podrzędnych lub krawędź ścieżki.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="522"/>
+      <location filename="../../TaskPatternParameters.cpp" line="558"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Nieprawidłowy wybór. 
 Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
@@ -5967,69 +5967,6 @@ Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
       <location filename="../../TaskDefeaturingParameters.cpp" line="118"/>
       <source>Empty defeaturing created</source>
       <translation>Utworzono puste Usuwanie cech</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderDefeaturing</name>
-    <message>
-      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
-      <source>Defeaturing Parameters</source>
-      <translation>Parametry Usuwania cech</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPointPattern</name>
-    <message>
-      <location filename="../../ViewProviderPointPattern.h" line="18"/>
-      <source>Point Pattern Parameters</source>
-      <translation>Parametry szyku z punktów</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
-      <source>Edit Point Pattern</source>
-      <translation>Edytuj szyk z punktów</translation>
-    </message>
-  </context>
-  <context>
-    <name>BooleanToolSelection</name>
-    <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
-      <source>The result Body cannot be used as a Boolean tool.</source>
-      <translation>Wynikowej Zawartości nie można użyć jako narzędzia do operacji logicznej.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPathPattern</name>
-    <message>
-      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
-      <source>Edit Path Pattern</source>
-      <translation>Edytuj szyk po ścieżce</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPathPattern.h" line="18"/>
-      <source>Path Pattern Parameters</source>
-      <translation>Parametry szyku po ścieżce</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Błąd danych wejściowych</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderCircularPattern</name>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
-      <source>Edit Circular Pattern</source>
-      <translation>Edytuj szyk kołowy</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
-      <source>Circular Pattern Parameters</source>
-      <translation>Parametry szyku kołowego</translation>
     </message>
   </context>
   <context>
@@ -6105,6 +6042,19 @@ Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation>Parametry szyku kołowego</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation>Edytuj szyk kołowy</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -6127,6 +6077,56 @@ Adjust the parameters and try again.</source>
       <translation>Nie można utworzyć cechy przy podanych parametrach. 
 Geometria może być nieprawidłowa lub parametry mogą być ze sobą niezgodne. 
 Dostosuj parametry i spróbuj ponownie.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation>Parametry szyku z punktów</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation>Edytuj szyk z punktów</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation>Edytuj szyk po ścieżce</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation>Parametry szyku po ścieżce</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation>Parametry Usuwania cech</translation>
+    </message>
+  </context>
+  <context>
+    <name>BooleanToolSelection</name>
+    <message>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation>Wynikowej Zawartości nie można użyć jako narzędzia do operacji logicznej.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
 </TS>

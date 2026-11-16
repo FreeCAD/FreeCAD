@@ -46,5 +46,6 @@
         <file>translations/Inspection_es-CO.qm</file>
         <file>translations/Inspection_en-GB.qm</file>
         <file>translations/Inspection_fa.qm</file>
+        <file>translations/Inspection_sk.qm</file>
     </qresource>
 </RCC>

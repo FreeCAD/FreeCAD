@@ -325,17 +325,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2888"/>
+      <location filename="../../Command.cpp" line="2848"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2889"/>
+      <location filename="../../Command.cpp" line="2849"/>
       <source>Apply Changes to Pipeline</source>
       <translation>Zastosuj zmiany do obiektu prezentacji graficznej wyników</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2890"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
       <translation>Stosuje zmiany do parametrów bezpośrednio, a nie tylko przy ponownym przeliczaniu</translation>
     </message>
@@ -343,27 +343,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2212"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="2213"/>
       <source>Region Clip Filter</source>
       <translation>Filtr przycięcia obszaru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2254"/>
+      <location filename="../../Command.cpp" line="2214"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
       <translation>Definiuje filtr przycięcia, który używa funkcji do zdefiniowania przycinanego obszaru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2738"/>
       <source>Select a pipeline.</source>
       <translation>Wybierz obiekt prezentacji graficznej wyników.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2777"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Wrong selection</source>
       <translation>Niewłaściwy wybór</translation>
     </message>
@@ -371,17 +371,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2251"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2292"/>
+      <location filename="../../Command.cpp" line="2252"/>
       <source>Function Cut Filter</source>
       <translation>Filtr cięcia funkcją</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2253"/>
       <source>Cuts the data along an implicit function</source>
       <translation>Przycina dane wzdłuż niejawnej funkcji</translation>
     </message>
@@ -389,17 +389,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2328"/>
+      <location filename="../../Command.cpp" line="2288"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2329"/>
+      <location filename="../../Command.cpp" line="2289"/>
       <source>Line Clip Filter</source>
       <translation>Filtr przycięcia linią</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2330"/>
+      <location filename="../../Command.cpp" line="2290"/>
       <source>Defines a clip filter which clips a field along a line</source>
       <translation>Definiuje filtr przycięcia, który przycina pole wzdłuż linii</translation>
     </message>
@@ -407,17 +407,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2365"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2366"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Data at Point Clip Filter</source>
       <translation>Filtr danych w punkcie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2367"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Defines a clip filter which clips a field data at point</source>
       <translation>Definiuje filtr przycięcia, który przycina dane pola w punkcie</translation>
     </message>
@@ -425,37 +425,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2590"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2591"/>
       <source>Filter Functions</source>
       <translation>Funkcje filtrów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Functions for use in postprocessing filter</source>
       <translation>Funkcje do użycia w filtrze do obróbki wyników</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2830"/>
+      <location filename="../../Command.cpp" line="2790"/>
       <source>Plane</source>
       <translation>Płaszczyzna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2840"/>
+      <location filename="../../Command.cpp" line="2800"/>
       <source>Sphere</source>
       <translation>Sfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2850"/>
+      <location filename="../../Command.cpp" line="2810"/>
       <source>Cylinder</source>
       <translation>Walec</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Box</source>
       <translation>Prostopadłościan</translation>
     </message>
@@ -463,65 +463,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2099"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Grubość [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Naprężenia [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2151"/>
+      <location filename="../../Command.cpp" line="2111"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Naprężenia ukierunkowane liniowo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2157"/>
+      <location filename="../../Command.cpp" line="2117"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Naprężenie membranowe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2163"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Naprężenie membranowe i zginające</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2169"/>
+      <location filename="../../Command.cpp" line="2129"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Łącznie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2363"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2404"/>
+      <location filename="../../Command.cpp" line="2364"/>
       <source>Stress Linearization Plot</source>
       <translation>Wykres linearyzacji naprężeń</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2405"/>
+      <location filename="../../Command.cpp" line="2365"/>
       <source>Defines a stress linearization plot</source>
       <translation>Definiuje wykres linearyzacji naprężeń</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2444"/>
-      <location filename="../../Command.cpp" line="2455"/>
+      <location filename="../../Command.cpp" line="2404"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Select a clip filter which clips a stress field along a line</source>
       <translation>Wybierz filtr przycięcia, który przycina pole naprężeń wzdłuż linii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2443"/>
-      <location filename="../../Command.cpp" line="2454"/>
+      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2414"/>
       <source>Wrong selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
@@ -529,27 +529,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2889"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2930"/>
+      <location filename="../../Command.cpp" line="2890"/>
       <source>Post Pipeline From Result</source>
       <translation>Utwórz obiekt prezentacji graficznej wyników</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2931"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Tworzy ciąg do obróbki danych z obiektu wyników</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3015"/>
+      <location filename="../../Command.cpp" line="2975"/>
       <source>Wrong selection type</source>
       <translation>Niewłaściwy typ wyboru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3016"/>
+      <location filename="../../Command.cpp" line="2976"/>
       <source>Select a result object.</source>
       <translation>Wybierz obiekt wyników.</translation>
     </message>
@@ -557,17 +557,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2483"/>
+      <location filename="../../Command.cpp" line="2443"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2484"/>
+      <location filename="../../Command.cpp" line="2444"/>
       <source>Scalar Clip Filter</source>
       <translation>Filtr przycinania skalarnego</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2485"/>
+      <location filename="../../Command.cpp" line="2445"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
       <translation>Definiuje filtr przycięcia, który przycina pole wartością skalarną</translation>
     </message>
@@ -575,17 +575,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2520"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2521"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Warp Filter</source>
       <translation>Filtr wizualizacji deformacji</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2522"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
       <translation>Deformuje geometrię wzdłuż pola wektorowego o określony współczynnik</translation>
     </message>
@@ -699,17 +699,17 @@
       <translation>Utwórz zestaw elementów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2063"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Create filter</source>
       <translation>Utwórz filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>Create function</source>
       <translation>Utwórz cechę</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2984"/>
+      <location filename="../../Command.cpp" line="2944"/>
       <source>Create pipeline from result</source>
       <translation>Utwórz ciąg z wyniku</translation>
     </message>
@@ -794,22 +794,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2832"/>
+      <location filename="../../Command.cpp" line="2792"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Utwórz funkcję płaszczyzny, zdefiniowaną przez jej początek i kierunek normalny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2842"/>
+      <location filename="../../Command.cpp" line="2802"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Utwórz funkcję sfery, zdefiniowaną przez jej środek i promień</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2852"/>
+      <location filename="../../Command.cpp" line="2812"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Utwórz funkcję walca, zdefiniowaną przez jego środek, oś i promień</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2822"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Utwórz funkcję prostopadłościanu, zdefiniowanego przez jego środek, długość, szerokość i wysokość</translation>
     </message>
@@ -2766,9 +2766,9 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
       <translation>Ciśnienie na wlocie</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Ciśnienie</translation>
     </message>
@@ -2909,10 +2909,10 @@ solvera Cholesky i otrzymasz komunikat o błędzie,
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametr</translation>
@@ -3038,16 +3038,6 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
       <translation>Czy warunek brzegowy definiuje stały potencjał</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation>Przybliżenie pola dalekiego przy założeniu symetrii sferycznej</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation>Pole dalekie</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>Stały potencjał</translation>
@@ -3061,6 +3051,59 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>Składowa normalna pola przesunięcia elektrycznego</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>Pojemność</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>Dirichlet</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>Aby zdefiniować potencjał skalarny i magnetyczny potencjał wektorowy</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <source>Real</source>
+      <translation>Rzeczywisty</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <source>Imaginary</source>
+      <translation>Urojony</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>Skalar</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>Urojona część potencjału skalarnego</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation>Przybliżenie pola dalekiego przy założeniu symetrii sferycznej</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation>Pole dalekie</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3101,49 +3144,6 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation>Urojona część składowej z gęstości strumienia magnetycznego</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>Pojemność</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>Dirichlet</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>Aby zdefiniować potencjał skalarny i magnetyczny potencjał wektorowy</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <source>Real</source>
-      <translation>Rzeczywisty</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <source>Imaginary</source>
-      <translation>Urojony</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>Skalar</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>Urojona część potencjału skalarnego</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3224,13 +3224,13 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3251,11 +3251,59 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
       <translation>Średnica zewnętrzna</translation>
     </message>
     <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation>Zdefiniuj rozmiar siatki wewnątrz i na zewnątrz kształtu, z możliwą grubością warstwy przejściowej</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation>Rozmiar siatki w obrębie kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>Rozmiar wewnątrz</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation>Rozmiar siatki na zewnątrz kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>Rozmiar na zewnątrz</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation>Grubość warstwy przejściowej między rozmiarem siatki na zewnątrz/wewnątrz (dodana poza kształtem)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="109"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
-      <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>Grubość</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Prostopadłościan</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>Sfera</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
@@ -3331,12 +3379,12 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
       <translation>Normalny do brzegu</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
@@ -3348,9 +3396,9 @@ Uwaga: nie ma efektu, jeśli wybrano bryłę</translation>
       <translation>Źródło ciepła</translation>
     </message>
     <message>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>Tryb</translation>
     </message>
@@ -3439,9 +3487,9 @@ z harmonicznym / oscylującym prądem</translation>
       <translation>Wybierz tryb Niestandardowy, aby włączyć wektorową definicję gęstości prądu</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
       <source>X</source>
@@ -3458,9 +3506,9 @@ z harmonicznym / oscylującym prądem</translation>
       <translation>Urojona część składowej x gęstości prądu</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/MeshManipulate.ui" line="599"/>
       <source>Y</source>
@@ -3477,9 +3525,9 @@ z harmonicznym / oscylującym prądem</translation>
       <translation>Urojona część składowej y gęstości prądu</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/MeshManipulate.ui" line="604"/>
       <source>Z</source>
@@ -3521,21 +3569,253 @@ z harmonicznym / oscylującym prądem</translation>
       <translation>Maksymalny rozmiar elementu</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
       <source>Form</source>
       <translation>Formularz</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <source>Field</source>
+      <translation>Pole</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <source>Frames</source>
+      <translation>Ramki</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>Jedno pole dla każdej klatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>Indeks</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>Pole X</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <source>Y field</source>
+      <translation>Pole Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>Jedno pole Y dla każdej klatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>Tworzy strukturalną siatkę w objętości prowadzoną przez jej powierzchnie typu transfinite.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <source>Diagram</source>
+      <translation>Diagram</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>Wybierz dowolną liczbę brył pięcio lub sześciościennych</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <source>Icon</source>
+      <translation>Ikonka</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>Wszystkie powierzchnie objętości muszą być typu transfinite. Jeśli powierzchnie mają różne typy siatek (czworokątne vs. trójkątne), objętość musi mieć utworzoną siatkę również z włączonymi elementami mieszanymi.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>Mieszane elementy siatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>Po aktywacji wszystkie krawędzie i powierzchnie należące do wybranych brył, które nie posiadają jeszcze definicji transskończonej, stają się transskończone automatycznie. 
+Używaj strategicznie rozmieszczonych definicji krzywych i powierzchni transskończonych, aby kierować automatycznym algorytmem. 
+
+Uwagi: 
+1. Krzywe zdefiniowane przez użytkownika propagują się na przeciwległe krawędzie ścian, na wszystkich wybranych ściankach. 
+2. Działa z dowolną liczbą brył, zarówno połączonych, jak i niepołączonych. </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>Automatycznie zastosuj powierzchnie i krzywe typu transfinite</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>Węzły</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation>Rozkład</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>Stały</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation>Obustronne zagęszczenie</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation>Odwrócone obustronne zagęszczenie</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation>Progresja</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation>Odwrócona progresja</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Powierzchnia</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation>Rekombinacja</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>Zdefiniuj rozmiar elementu siatki na podstawie odległości od wybranych geometrii odniesienia.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>Rozmiar siatki, gdy odległość jest równa odległości maksymalnej</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>Odległość, przy której rozmiar siatki będzie rozmiarem maksymalnym</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Rozmiar</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>Rozmiar siatki, gdy odległość jest mniejsza od odległości minimalnej</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <source>Distance</source>
+      <translation>Odległość</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>Odległość, do której rozmiar siatki będzie rozmiarem minimalnym</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>Interpolacja</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>Rozmiar próbkowania</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>Liczba punktów próbkowania używanych do dyskretyzacji krzywych i powierzchni. 
+Dla powierzchni jest to rozmiar próbkowania na kierunek.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>Określa, czy interpolacja rozmiaru siatki między rozmiarem minimalnym i maksymalnym powinna być funkcją liniową czy sigmoidalną</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>Liniowy</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
@@ -3585,128 +3865,30 @@ z harmonicznym / oscylującym prądem</translation>
       <translation>…</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>Pole</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation>Ustawienia podglądu globalnego zagęszczenia</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <source>Frames</source>
-      <translation>Ramki</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>Automatycznie włącza wizualizację rozmiaru zagęszczenia siatki przy otwieraniu okna dialogowego zagęszczenia.</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>Jedno pole dla każdej klatki</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>Automatyczne włączenie przy otwarciu</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <source>Index</source>
-      <translation>Indeks</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>Określa, jak gęsta jest siatka podglądu. Większa liczba oznacza gęstszą siatkę (mniejsze elementy siatki)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>Pole X</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <source>Y field</source>
-      <translation>Pole Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>Jedno pole Y dla każdej klatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>Zdefiniuj rozmiar elementu siatki na podstawie odległości od wybranych geometrii odniesienia.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>Rozmiar siatki, gdy odległość jest równa odległości maksymalnej</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>Odległość, przy której rozmiar siatki będzie rozmiarem maksymalnym</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>Rozmiar</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>Rozmiar siatki, gdy odległość jest mniejsza od odległości minimalnej</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <source>Distance</source>
-      <translation>Odległość</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>Odległość, do której rozmiar siatki będzie rozmiarem minimalnym</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <source>Diagram</source>
-      <translation>Diagram</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>Interpolacja</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>Rozmiar próbkowania</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>Liczba punktów próbkowania używanych do dyskretyzacji krzywych i powierzchni. 
-Dla powierzchni jest to rozmiar próbkowania na kierunek.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>Określa, czy interpolacja rozmiaru siatki między rozmiarem minimalnym i maksymalnym powinna być funkcją liniową czy sigmoidalną</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>Liniowy</translation>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>Podgląd gęstości siatki</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
@@ -3719,37 +3901,9 @@ Dla powierzchni jest to rozmiar próbkowania na kierunek.</translation>
       <translation>Liczba węzłów na krawędzi</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <source>Progression</source>
-      <translation>Progresja</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
       <source>Invert</source>
       <translation>Odwróć wybór</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <source>Nodes</source>
-      <translation>Węzły</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <source>Bump</source>
-      <translation>Obustronne zagęszczenie</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <source>Constant</source>
-      <translation>Stały</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
@@ -3760,6 +3914,132 @@ Dla powierzchni jest to rozmiar próbkowania na kierunek.</translation>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
       <translation>Współczynnik tempa wzrostu wybrzuszenia/progresji</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>Przeciągnij udoskonalenie, które ma zostać zmienione, do obiektu Manipulate w drzewie dokumentu</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>Wprowadź ograniczenia</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>Próg</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>Wartość średnia</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>Gradient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>Krzywizna</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>Laplasjan</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>Ogranicz zastosowanie operacji zagęszczeń podrzędnych do wybranych elementów odniesienia.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>Uwzględnij brzeg wybranych elementów odniesienia</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>Uwzględnij brzeg</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>Zastosuj próg do wartości zagęszczeń podrzędnych</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>Rozmiar wyniku</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>Wartość wejściowa</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>Interpolacja liniowa</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>Zatrzymaj przy maksymalnym wejściu</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>Oblicza średnią wartość zagęszczenia podrzędnego G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>Delta w powyższym równaniu</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>Oblicz gradient różnicy skończonej dla zagęszczenia podrzędnego G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>Rodzaj</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -3778,17 +4058,6 @@ opcjonalnie z narożnymi wierzchołkami ścian trójstronnych.</translation>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz pojedynczą ścianę z więcej niż 4 krawędziami i dodatkowo wybierz 3 lub 4 wierzchołki narożnikowe.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <source>Icon</source>
-      <translation>Ikonka</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
       <translation>Przeciwległe krawędzie (lub polilinie między punktami narożnymi) muszą mieć taką samą liczbę węzłów siatki. Najprostszym sposobem osiągnięcia tego jest użycie krzywych typu transfinite.</translation>
@@ -3798,12 +4067,6 @@ opcjonalnie z narożnymi wierzchołkami ścian trójstronnych.</translation>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
       <translation>Określ czy trójkąty na powierzchni mają ulec rekombinacji na czworokąty</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <source>Recombine</source>
-      <translation>Rekombinacja</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
@@ -3837,30 +4100,6 @@ Uwagi:
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
       <translation>Automatycznie zastosuj krzywe typu transfinite</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <source>Distribution</source>
-      <translation>Rozkład</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <source>Bump Inverted</source>
-      <translation>Odwrócone obustronne zagęszczenie</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <source>Progression Inverted</source>
-      <translation>Odwrócona progresja</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type</source>
-      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
@@ -4012,245 +4251,6 @@ Przykład: "F2 + Sin(z)"</translation>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
       <translation>Używa pola danych z potoku postprocessingu MES jako rozmiaru siatki. 
 Pozwala to na dostosowanie siatki zgodnie z fizycznym zachowaniem wyniku.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings</source>
-      <translation>Ustawienia podglądu globalnego zagęszczenia</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation>Automatycznie włącza wizualizację rozmiaru zagęszczenia siatki przy otwieraniu okna dialogowego zagęszczenia.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation>Automatyczne włączenie przy otwarciu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation>Określa, jak gęsta jest siatka podglądu. Większa liczba oznacza gęstszą siatkę (mniejsze elementy siatki)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation>Podgląd gęstości siatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation>Przeciągnij udoskonalenie, które ma zostać zmienione, do obiektu Manipulate w drzewie dokumentu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation>Wprowadź ograniczenia</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation>Próg</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation>Wartość średnia</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation>Gradient</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>Krzywizna</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation>Laplasjan</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>Ogranicz zastosowanie operacji zagęszczeń podrzędnych do wybranych elementów odniesienia.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation>Uwzględnij brzeg wybranych elementów odniesienia</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation>Uwzględnij brzeg</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation>Zastosuj próg do wartości zagęszczeń podrzędnych</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation>Rozmiar wyniku</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation>Wartość wejściowa</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation>Interpolacja liniowa</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation>Zatrzymaj przy maksymalnym wejściu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation>Oblicza średnią wartość zagęszczenia podrzędnego G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation>Delta</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation>Delta w powyższym równaniu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation>Oblicz gradient różnicy skończonej dla zagęszczenia podrzędnego G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation>Rodzaj</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation>Zdefiniuj rozmiar siatki wewnątrz i na zewnątrz kształtu, z możliwą grubością warstwy przejściowej</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation>Rozmiar siatki w obrębie kształtu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation>Rozmiar wewnątrz</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation>Rozmiar siatki na zewnątrz kształtu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation>Rozmiar na zewnątrz</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation>Grubość warstwy przejściowej między rozmiarem siatki na zewnątrz/wewnątrz (dodana poza kształtem)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>Prostopadłościan</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>Sfera</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>Walec</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation>Tworzy strukturalną siatkę w objętości prowadzoną przez jej powierzchnie typu transfinite.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation>Wybierz dowolną liczbę brył pięcio lub sześciościennych</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation>Wszystkie powierzchnie objętości muszą być typu transfinite. Jeśli powierzchnie mają różne typy siatek (czworokątne vs. trójkątne), objętość musi mieć utworzoną siatkę również z włączonymi elementami mieszanymi.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation>Mieszane elementy siatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>Po aktywacji wszystkie krawędzie i powierzchnie należące do wybranych brył, które nie posiadają jeszcze definicji transskończonej, stają się transskończone automatycznie. 
-Używaj strategicznie rozmieszczonych definicji krzywych i powierzchni transskończonych, aby kierować automatycznym algorytmem. 
-
-Uwagi: 
-1. Krzywe zdefiniowane przez użytkownika propagują się na przeciwległe krawędzie ścian, na wszystkich wybranych ściankach. 
-2. Działa z dowolną liczbą brył, zarówno połączonych, jak i niepołączonych. </translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation>Automatycznie zastosuj powierzchnie i krzywe typu transfinite</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>Powierzchnia</translation>
     </message>
   </context>
   <context>
@@ -6113,28 +6113,28 @@ normal vector of the face is used as direction</source>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2021"/>
+      <location filename="../../Command.cpp" line="1981"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Błąd: Filtr może być zastosowany tylko do pojedynczego obiektu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2022"/>
-      <location filename="../../Command.cpp" line="2034"/>
+      <location filename="../../Command.cpp" line="1982"/>
+      <location filename="../../Command.cpp" line="1994"/>
       <source>The filter could not be set up.</source>
       <translation>Nie można skonfigurować filtra.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2033"/>
+      <location filename="../../Command.cpp" line="1993"/>
       <source>Error: no post processing object selected.</source>
       <translation>Błąd: nie wybrano obiektu przetwarzania końcowego.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2052"/>
+      <location filename="../../Command.cpp" line="2012"/>
       <source>Error: Object not in a post processing group</source>
       <translation>Błąd: Obiekt nie znajduje się w grupie obróbki wyników</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2053"/>
+      <location filename="../../Command.cpp" line="2013"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
       <translation>Filtr nie może być skonfigurowany: Obiekt nie znajduje się w grupie obróbki wyników.</translation>
     </message>
@@ -6566,7 +6566,7 @@ Proszę najpierw wybrać typ wyniku.</translation>
       <translation>Brak obiektu wyniku</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="168"/>
       <source>
 
 Correct module found in: 
@@ -6577,7 +6577,7 @@ Znaleziono poprawny moduł w:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="176"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6586,7 +6586,7 @@ Should this module be loaded instead?</source>
 Należy zamiast tego załadować ten moduł?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="193"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6595,17 +6595,17 @@ No matching module was found in the current Python path.</source>
 Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>VTK Python module conflict</source>
       <translation>Konflikt modułów VTK Pythona</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>VTK Python Module Conflict</source>
       <translation>Konflikt modułów VTK Pythona</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="226"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Ta funkcjonalność nie jest dostępna z powodu konfliktu modułów VTK Pythona</translation>
     </message>
@@ -6710,8 +6710,8 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
       <translation>Która część wektora pola Y ma być użyta dla osi Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <location filename="../../../femobjects/post_extract1D.py" line="66"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Określ czy pole należy wyodrębnić dla każdej dostępnej klatki</translation>
     </message>
@@ -6731,14 +6731,14 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
       <translation>Edytuj {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="58"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <source>Show Plot</source>
       <translation>Pokaż wykres</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="61"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <source>Show Data</source>
       <translation>Pokaż dane</translation>
     </message>
@@ -6957,17 +6957,17 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1669"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1670"/>
       <source>Electromagnetic Equations</source>
       <translation>Równania elektromagnetyczne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
+      <location filename="../../Command.cpp" line="1671"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>Równania elektromagnetyczne dla solvera Elmer</translation>
     </message>
@@ -6975,17 +6975,17 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2557"/>
+      <location filename="../../Command.cpp" line="2517"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2558"/>
+      <location filename="../../Command.cpp" line="2518"/>
       <source>Contours Filter</source>
       <translation>Filtr konturów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2559"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Defines a contours filter that displays iso contours</source>
       <translation>Definiuje filtr konturów, który wyświetla izokontury</translation>
     </message>
@@ -7067,17 +7067,17 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1849"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1886"/>
+      <location filename="../../Command.cpp" line="1850"/>
       <source>Mechanical Equations</source>
       <translation>Równania mechaniczne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1887"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Równania mechaniczne dla solvera Elmer</translation>
     </message>
@@ -7417,11 +7417,11 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
       <translation>Usuń elementy</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1481"/>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <location filename="../../TaskCreateElementSet.cpp" line="253"/>
       <location filename="../../TaskCreateElementSet.cpp" line="512"/>
       <location filename="../../TaskCreateElementSet.cpp" line="609"/>
-      <location filename="../../Command.cpp" line="1481"/>
       <source>Wrong selection</source>
       <translation>Nieprawidłowy wybór</translation>
     </message>
@@ -7831,9 +7831,9 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     <name>TaskPostGlyph</name>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Forma symbolu</translation>
     </message>
@@ -7875,10 +7875,10 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Które pole wektorowe jest używane do orientacji symboli</translation>
     </message>
@@ -7889,9 +7889,9 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <source>None</source>
       <translation>Brak</translation>
     </message>
@@ -7913,9 +7913,9 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Stały mnożnik do skalowania symboli</translation>
     </message>
@@ -7931,8 +7931,8 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Jeśli dane skali są wektorem, ta właściwość decyduje czy symbol jest skalowany na podstawie wartości wektora czy na podstawie jego poszczególnych składowych</translation>
     </message>
@@ -8093,17 +8093,17 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2554"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Calculator Filter</source>
       <translation>Filtr kalkulatora</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>Creates a new field from current data</source>
       <translation>Tworzy nowe pole z bieżących danych</translation>
     </message>
@@ -8111,17 +8111,17 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="3036"/>
+      <location filename="../../Command.cpp" line="2996"/>
       <source>Fem</source>
       <translation>MES</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3037"/>
+      <location filename="../../Command.cpp" line="2997"/>
       <source>Pipeline Branch</source>
       <translation>Gałąź obiektu prezentacji graficznej wyników</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3038"/>
+      <location filename="../../Command.cpp" line="2998"/>
       <source>Branches the pipeline into a new path</source>
       <translation>Rozgałęzia obiekt prezentacji graficznej wyników na nową ścieżkę</translation>
     </message>
@@ -8519,9 +8519,9 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formularz</translation>
     </message>
@@ -8739,99 +8739,29 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     </message>
   </context>
   <context>
-    <name>SolverElmer</name>
+    <name>FemToolsCcx</name>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>Kontrola pracy solvera Elmer</translation>
+      <location filename="../../../femtools/ccxtools.py" line="423"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Brak lub nieprawidłowy plik binarny ccx CalculiX</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Katalog roboczy</translation>
+      <location filename="../../../femtools/ccxtools.py" line="457"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>MES: nieprawidłowy plik wykonywalny ccx</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>Zapisz</translation>
+      <location filename="../../../femtools/ccxtools.py" line="470"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>MES: Nie znaleziono pliku wykonywalnego ccx CalculiX „{}”. 
+Proszę ustawić ścieżkę do pliku wykonywalnego ccx CalculiX w preferencjach M, w zakładce CalculiX.</translation>
     </message>
     <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Edycja</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Ścieżka do katalogu roboczego. Pozostaw puste, aby użyć ustawień użytkownika</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Parametry solvera</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>Typ symulacji</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>Czas</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Wersja solvera</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>Kontrola pracy solvera Z88</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Katalog roboczy</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>Zapisz</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Edycja</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Ścieżka do katalogu roboczego. Pozostaw puste, aby użyć ustawień użytkownika</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Parametry solvera</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>Typ solvera</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>Czas</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Wersja solvera</translation>
+      <location filename="../../../femtools/ccxtools.py" line="482"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>MES: Wyjście CalculiX ccx „{}” o treści „{}” nie zawiera oczekiwanego fragmentu „{}”. 
+Wystąpiły problemy podczas uruchamiania pliku wykonywalnego ccx. 
+Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translation>
     </message>
   </context>
   <context>
@@ -8991,32 +8921,6 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="423"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>Brak lub nieprawidłowy plik binarny ccx CalculiX</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="457"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>MES: nieprawidłowy plik wykonywalny ccx</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="470"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>MES: Nie znaleziono pliku wykonywalnego ccx CalculiX „{}”. 
-Proszę ustawić ścieżkę do pliku wykonywalnego ccx CalculiX w preferencjach M, w zakładce CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="482"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>MES: Wyjście CalculiX ccx „{}” o treści „{}” nie zawiera oczekiwanego fragmentu „{}”. 
-Wystąpiły problemy podczas uruchamiania pliku wykonywalnego ccx. 
-Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translation>
-    </message>
-  </context>
-  <context>
     <name>self.sel_master</name>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
@@ -9033,11 +8937,99 @@ Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translat
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <name>SolverZ88</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="645"/>
-      <source>Input Error</source>
-      <translation>Błąd danych wejściowych</translation>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>Kontrola pracy solvera Z88</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Katalog roboczy</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>Zapisz</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Edycja</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Ścieżka do katalogu roboczego. Pozostaw puste, aby użyć ustawień użytkownika</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametry solvera</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>Typ solvera</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>Czas</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Wersja solvera</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>Kontrola pracy solvera Elmer</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Katalog roboczy</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Zapisz</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Edycja</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Ścieżka do katalogu roboczego. Pozostaw puste, aby użyć ustawień użytkownika</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametry solvera</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>Typ symulacji</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Czas</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Wersja solvera</translation>
     </message>
   </context>
   <context>
@@ -9054,25 +9046,9 @@ Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translat
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="811"/>
-      <source>Input Error</source>
-      <translation>Błąd danych wejściowych</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="357"/>
-      <source>Input Error</source>
-      <translation>Błąd danych wejściowych</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="123"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="634"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -9086,25 +9062,33 @@ Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translat
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="651"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="336"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="394"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="811"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1158"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="123"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="408"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -9118,17 +9102,49 @@ Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translat
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="634"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1158"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="408"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="357"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="651"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="471"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="645"/>
+      <source>Input Error</source>
+      <translation>Błąd danych wejściowych</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="394"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -9145,22 +9161,6 @@ Proszę sprawdzić, czy ccx działa samodzielnie, bez użycia FreeCAD.</translat
     <name>FemGui::TaskDlgPost</name>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="405"/>
-      <source>Input Error</source>
-      <translation>Błąd danych wejściowych</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="471"/>
-      <source>Input Error</source>
-      <translation>Błąd danych wejściowych</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="336"/>
       <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>

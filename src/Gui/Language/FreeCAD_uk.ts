@@ -135,8 +135,8 @@
     <message>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Перетворити</translation>
     </message>
@@ -4747,7 +4747,7 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1168"/>
+      <location filename="../Placement.cpp" line="1173"/>
       <source>Placement</source>
       <translation>Розміщення</translation>
     </message>
@@ -5914,22 +5914,22 @@ Save all changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="956"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Торкніться або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="958"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Перетягніть екран двома пальцями або натисніть праву кнопку миші.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="960"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Перетягніть екран одним пальцем АБО натисніть ліву кнопку миші. У Sketcher та інших режимах редагування додатково утримуйте Alt.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="965"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>Щипок (покладіть два пальці на екран і розведіть або зведіть їх) АБО прокрутіть колесо миші АБО натисніть PgUp/PgDown на клавіатурі.</translation>
     </message>
@@ -5977,14 +5977,14 @@ Save all changes?</source>
       <translation>Бітове зображення</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="474"/>
-      <source>Export graph</source>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
+      <source>Export Graph</source>
       <translation>Експортувати граф</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="765"/>
-      <location filename="../GraphvizView.cpp" line="411"/>
-      <source>Export Graph</source>
+      <location filename="../GraphvizView.cpp" line="474"/>
+      <source>Export graph</source>
       <translation>Експортувати граф</translation>
     </message>
   </context>
@@ -6839,30 +6839,30 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="871"/>
+      <location filename="../Action.cpp" line="887"/>
       <source>Open...</source>
       <translation>Відкрити...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="872"/>
-      <location filename="../Action.cpp" line="873"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="889"/>
       <source>Open a document or import files.</source>
       <translation>Відкрити документ або імпортувати файли.</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="888"/>
-      <location filename="../Action.cpp" line="897"/>
+      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="913"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Очистити список останніх файлів</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="898"/>
+      <location filename="../Action.cpp" line="914"/>
       <source>Clear the list of recent files?</source>
       <translation>Очистити список останніх файлів?</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="973"/>
+      <location filename="../Action.cpp" line="989"/>
       <source>Open file %1</source>
       <translation>Відкрити файл %1</translation>
     </message>
@@ -6870,12 +6870,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1148"/>
+      <location filename="../Action.cpp" line="1164"/>
       <source>none</source>
       <translation>нічого</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1166"/>
+      <location filename="../Action.cpp" line="1182"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Виконати макрос %1 (Shift+клацання — редагувати), комбінація клавіш: %2</translation>
     </message>
@@ -7435,6 +7435,11 @@ Specify another directory?</source>
       <translation>Іврит</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="280"/>
+      <source>Persian</source>
+      <translation type="unfinished">Persian</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="239"/>
       <source>Danish</source>
       <translation>Данська</translation>
@@ -7747,12 +7752,12 @@ Specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="732"/>
+      <location filename="../Action.cpp" line="748"/>
       <source>Selects the '%1' workbench</source>
       <translation>Вибирає робоче середовище '%1'</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="760"/>
+      <location filename="../Action.cpp" line="776"/>
       <source>Select the '%1' workbench</source>
       <translation>Вибрати робоче середовище '%1'</translation>
     </message>
@@ -8170,13 +8175,6 @@ Check the report view for more details.</source>
       <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation>Об'єднати документ</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <source>%1 document</source>
-      <translation>Документ %1</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="687"/>
@@ -8627,6 +8625,13 @@ Use 'Save As…' to preserve the original file.
       <translation>Зберегти документ під новим ім'ям…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
+      <source>%1 document</source>
+      <translation>Документ %1</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Зберегти копію документа під новим іменем…</translation>
@@ -9020,8 +9025,8 @@ the current copy will be lost.
       <translation>Перемкнути накладення</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <location filename="../OverlayManager.cpp" line="1131"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <source>Toggle floating window</source>
       <translation>Перемкнути плаваюче вікно</translation>
     </message>
@@ -9207,6 +9212,11 @@ the current copy will be lost.
       <translation>Застосувати до всіх вибраних об'єктів (%1) та їхніх дочірніх елементів</translation>
     </message>
     <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Деталь</translation>
+    </message>
+    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation>Редагувати площину зображення</translation>
@@ -9220,11 +9230,6 @@ the current copy will be lost.
       <location filename="../FileDialog.cpp" line="301"/>
       <source>All Files</source>
       <translation>Усі файли</translation>
-    </message>
-    <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Деталь</translation>
     </message>
   </context>
   <context>
@@ -9549,8 +9554,8 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>
@@ -14772,49 +14777,6 @@ This makes the docked panel stay transparent at all times.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Об'єкт</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Фільтрувати за типом</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Синхронізує вибір у 3D-виді з повною ієрархією об'єкта</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Синхронізувати виділення підоб'єкту</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Пошук</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Шаблон пошуку для фільтрації результатів вище</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Скинути</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Очистити</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14917,17 +14879,69 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
+    <name>Gui::Dialog::DlgDocumentObject</name>
     <message>
-      <location filename="../FileDialog.cpp" line="579"/>
-      <source>Save As</source>
-      <translation>Зберегти як</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Об'єкт</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="715"/>
-      <location filename="../FileDialog.cpp" line="811"/>
-      <source>Open</source>
-      <translation>Відкрити</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Фільтрувати за типом</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Синхронізує вибір у 3D-виді з повною ієрархією об'єкта</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Синхронізувати виділення підоб'єкту</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Пошук</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Шаблон пошуку для фільтрації результатів вище</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Скинути</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Очистити</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1067"/>
+      <source>Experimental</source>
+      <translation>Експериментальний</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation>ЕКСПЕРИМЕНТАЛЬНО: ця команда може змінитися.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1073"/>
+      <source>Development preview</source>
+      <translation>Попередня версія для розробки</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1074"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation>ПОПЕРЕДНЯ ВЕРСІЯ ДЛЯ РОЗРОБКИ: ця команда може змінитися або бути видалена.</translation>
     </message>
   </context>
   <context>
@@ -14969,16 +14983,17 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
+    <name>FileDialog</name>
     <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Перемкнути нижні панелі</translation>
+      <location filename="../FileDialog.cpp" line="579"/>
+      <source>Save As</source>
+      <translation>Зберегти як</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Перемикає нижні закріплені панелі</translation>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
+      <source>Open</source>
+      <translation>Відкрити</translation>
     </message>
   </context>
   <context>
@@ -14992,32 +15007,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
       <translation>Значення</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOpenGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
-      <source>&amp;Open…</source>
-      <translation>&amp;Відкрити…</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
-      <source>Opens a document or imports files</source>
-      <translation>Відкриває документ або імпортує файли</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSaveGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="966"/>
-      <source>Save</source>
-      <translation>Зберегти</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="967"/>
-      <source>Saves the active document</source>
-      <translation>Зберігає активний документ</translation>
     </message>
   </context>
   <context>
@@ -15065,26 +15054,42 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Command</name>
+    <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../Command.cpp" line="1067"/>
-      <source>Experimental</source>
-      <translation>Експериментальний</translation>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Перемкнути нижні панелі</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
-      <source>EXPERIMENTAL: this command may change.</source>
-      <translation>ЕКСПЕРИМЕНТАЛЬНО: ця команда може змінитися.</translation>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Перемикає нижні закріплені панелі</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdOpenGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="85"/>
+      <source>&amp;Open…</source>
+      <translation>&amp;Відкрити…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1073"/>
-      <source>Development preview</source>
-      <translation>Попередня версія для розробки</translation>
+      <location filename="../CommandDoc.cpp" line="86"/>
+      <source>Opens a document or imports files</source>
+      <translation>Відкриває документ або імпортує файли</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <source>Save</source>
+      <translation>Зберегти</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1074"/>
-      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation>ПОПЕРЕДНЯ ВЕРСІЯ ДЛЯ РОЗРОБКИ: ця команда може змінитися або бути видалена.</translation>
+      <location filename="../CommandDoc.cpp" line="967"/>
+      <source>Saves the active document</source>
+      <translation>Зберігає активний документ</translation>
     </message>
   </context>
   <context>

@@ -4222,7 +4222,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="477"/>
       <location filename="../../ArchStructure.py" line="1610"/>
       <location filename="../../bimcommands/BimPanel.py" line="211"/>
-      <location filename="../../bimcommands/BimWall.py" line="504"/>
+      <location filename="../../bimcommands/BimWall.py" line="506"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
@@ -4236,7 +4236,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="484"/>
       <location filename="../../ArchStructure.py" line="1611"/>
       <location filename="../../bimcommands/BimPanel.py" line="218"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
+      <location filename="../../bimcommands/BimWall.py" line="513"/>
       <source>Width</source>
       <translation>宽度</translation>
     </message>
@@ -4247,7 +4247,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="491"/>
       <location filename="../../ArchStructure.py" line="1612"/>
       <location filename="../../ArchRoof.py" line="1086"/>
-      <location filename="../../bimcommands/BimWall.py" line="518"/>
+      <location filename="../../bimcommands/BimWall.py" line="520"/>
       <source>Height</source>
       <translation>高度</translation>
     </message>
@@ -4998,7 +4998,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1752"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../bimcommands/BimWall.py" line="534"/>
+      <location filename="../../bimcommands/BimWall.py" line="536"/>
       <source>Offset</source>
       <translation>偏移</translation>
     </message>
@@ -5069,7 +5069,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>桁架</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="113"/>
+      <location filename="../../bimcommands/BimTruss.py" line="114"/>
       <source>Create Truss</source>
       <translation>创建桁架</translation>
     </message>
@@ -5525,7 +5525,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
       <translation>创建幕墙</translation>
     </message>
@@ -6072,7 +6072,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
@@ -6184,8 +6184,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="107"/>
-      <location filename="../../bimcommands/BimWall.py" line="407"/>
-      <location filename="../../bimcommands/BimWall.py" line="655"/>
+      <location filename="../../bimcommands/BimWall.py" line="409"/>
+      <location filename="../../bimcommands/BimWall.py" line="657"/>
       <source>Create Wall</source>
       <translation>创建墙</translation>
     </message>
@@ -6195,45 +6195,45 @@ Building creation aborted.</source>
       <translation>墙体起点</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="483"/>
+      <location filename="../../bimcommands/BimWall.py" line="485"/>
       <source>Wall Presets</source>
       <translation>墙壁预设</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="489"/>
+      <location filename="../../bimcommands/BimWall.py" line="491"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>此列表显示了此文档的所有多材质对象。请创建一些对象来定义墙壁类型。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="541"/>
+      <location filename="../../bimcommands/BimWall.py" line="543"/>
       <source>Baseline</source>
       <translation>基准线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="547"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>No baseline</source>
       <translation>无基线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="548"/>
+      <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>Draft line</source>
       <translation>草绘线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="549"/>
+      <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Sketch</source>
       <translation>草图</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="525"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Alignment</source>
       <translation>对齐</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1836"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Left</source>
       <translation>左视</translation>
     </message>
@@ -6249,13 +6249,13 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1802"/>
-      <location filename="../../bimcommands/BimWall.py" line="478"/>
+      <location filename="../../bimcommands/BimWall.py" line="480"/>
       <source>Wall Options</source>
       <translation>墙体选项</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1838"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Right</source>
       <translation>右视</translation>
     </message>
@@ -13877,7 +13877,7 @@ Do you want to proceed?</source>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
       <source>Wall Trace</source>
       <translation>墙体轨迹</translation>
     </message>

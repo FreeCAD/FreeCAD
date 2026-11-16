@@ -409,10 +409,10 @@ i FreeCAD nó nach bhfuil.
       <translation>Fan logáilte isteach i seisiúin FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
       <location filename="../ui/dialogExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialóg</translation>
@@ -433,9 +433,9 @@ i FreeCAD nó nach bhfuil.
       <translation>Réada roghnaithe amháin</translation>
     </message>
     <message>
+      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
-      <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <source>Only visible BIM objects</source>
       <translation>Réada BIM le feiceáil amháin</translation>
     </message>
@@ -456,8 +456,8 @@ i FreeCAD nó nach bhfuil.
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
-      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <source>Select All</source>
       <translation>Roghnaigh Uile</translation>
     </message>
@@ -472,8 +472,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Airíonna IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Scrios an Maoine/Tacar Maoine Roghnaithe</translation>
     </message>
@@ -503,20 +503,20 @@ i FreeCAD nó nach bhfuil.
       <translation>Easpórtáil fhorfheidhmithe sonraí paraiméadracha FreeCAD iomlána</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by</source>
       <translation>Ordú de réir</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <location filename="../ui/dialogIfcElements.ui" line="47"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <source>Alphabetical</source>
       <translation>In ord aibítre</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="56"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <source>IFC type</source>
       <translation>Cineál IFC</translation>
     </message>
@@ -526,8 +526,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="70"/>
+      <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <source>Model structure</source>
       <translation>Struchtúr samhail</translation>
     </message>
@@ -567,8 +567,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Cuireann sé cosc ​​ar leideanna breise agus doiciméid FreeCAD nua á gcruthú. Ní dhéanfar doiciméid nua a thiontú go IFC go huathoibríoch, ach is féidir tiontú a dhéanamh níos déanaí trí Utils → Cruthaigh Tionscadal IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
       <translation>Ná fiafraigh arís</translation>
     </message>
@@ -744,8 +744,8 @@ i FreeCAD nó nach bhfuil.
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="55"/>
-      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
+      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
@@ -775,17 +775,17 @@ i FreeCAD nó nach bhfuil.
       <translation>Sannadh</translation>
     </message>
     <message>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>Cealaigh</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
-      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogPreflightResults.ui" line="103"/>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>Ceart go leor</translation>
     </message>
@@ -846,9 +846,9 @@ i FreeCAD nó nach bhfuil.
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
+      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
-      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
@@ -1691,8 +1691,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <location filename="../ui/ArchNest.ui" line="177"/>
+      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <source>Preview</source>
       <translation>Réamhamharc</translation>
     </message>
@@ -1707,9 +1707,9 @@ i FreeCAD nó nach bhfuil.
       <translation>Rang</translation>
     </message>
     <message>
-      <location filename="../ui/dialogClasses.ui" line="39"/>
       <location filename="../ui/dialogWindows.ui" line="80"/>
       <location filename="../ui/dialogWindows.ui" line="182"/>
+      <location filename="../ui/dialogClasses.ui" line="39"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
@@ -1725,8 +1725,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Ní féidir ach carachtair alfa-uimhriúla a bheith ann agus gan spásanna. Úsáid clóscríobh CamelCase chun spásanna a shainiú go huathoibríoch</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <location filename="../ui/dialogWindows.ui" line="189"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <source>Description</source>
       <translation>Cur síos</translation>
     </message>
@@ -2111,15 +2111,10 @@ i FreeCAD nó nach bhfuil.
       <translation>An bhfuil easpórtáil IfcRectangleProfileDef díchumasaithe? (Revit amháin)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
+      <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
       <translation>Foirm</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Elevation</source>
-      <translation>Airde</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2192,6 +2187,11 @@ p, li { white-space: pre-wrap; }
       <translation>Eilimint</translation>
     </message>
     <message>
+      <location filename="../ui/dialogViews.ui" line="69"/>
+      <source>Elevation</source>
+      <translation>Airde</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>Radharcanna 2T</translation>
@@ -2260,8 +2260,8 @@ p, li { white-space: pre-wrap; }
       <translation>Lipéad</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="74"/>
       <location filename="../ui/dialogWindows.ui" line="175"/>
+      <location filename="../ui/dialogViews.ui" line="74"/>
       <source>Height</source>
       <translation>Airde</translation>
     </message>
@@ -3164,8 +3164,8 @@ Socraigh é go 1 chun mód ilchroílár a úsáid i mód aonchroílár; tá sé 
 má tharlaíonn tuairteanna nuair a shocraítear ilchroílár.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="135"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
+      <location filename="../ui/preferences-ifc.ui" line="135"/>
       <source>Import Options</source>
       <translation>Roghanna Iompórtála</translation>
     </message>
@@ -3294,9 +3294,9 @@ This will slow down the import, but one can watch the import.</source>
 Cuirfidh sé seo moill ar an allmhairiú, ach is féidir féachaint air.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>Oiriúnaigh an radharc agus é á allmhairiú</translation>
     </message>
@@ -3380,9 +3380,9 @@ Má tá Netgen á úsáid agat, déan cinnte go bhfuil sé ar fáil.</translatio
       <translation>Teasáil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export Options</source>
       <translation>Roghanna Easpórtála</translation>
     </message>
@@ -3615,8 +3615,8 @@ Rabhadh: Iarrann an caighdeán IFC foirgneamh amháin ar a laghad i ngach comhad
       <translation>Easpórtáil IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General Options</source>
       <translation>Roghanna Ginearálta</translation>
     </message>
@@ -3761,14 +3761,14 @@ Tá an teimpléad réamhshocraithe suite ag:
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../Arch.py" line="2576"/>
       <location filename="../../ArchStructure.py" line="450"/>
+      <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>Bhíoma</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2580"/>
       <location filename="../../ArchStructure.py" line="451"/>
+      <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>Colún</translation>
     </message>
@@ -3799,8 +3799,8 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>An chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../ArchStructure.py" line="461"/>
+      <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>Catagóir</translation>
@@ -3973,9 +3973,9 @@ Tá an teimpléad réamhshocraithe suite ag:
     <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../ArchStructure.py" line="468"/>
-      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWindow.py" line="447"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
       <source>Preset</source>
       <translation>Réamhshocrú</translation>
     </message>
@@ -4058,6 +4058,20 @@ Tá an teimpléad réamhshocraithe suite ag:
       <location filename="../../ArchCoveringGui.py" line="995"/>
       <source>The length of the tiles</source>
       <translation>Fad na tíleanna</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="996"/>
+      <location filename="../../ArchCoveringGui.py" line="1077"/>
+      <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchStructure.py" line="1610"/>
+      <location filename="../../ArchPanel.py" line="576"/>
+      <location filename="../../ArchWall.py" line="1814"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
+      <location filename="../../ArchPrecast.py" line="1719"/>
+      <location filename="../../bimcommands/BimWall.py" line="506"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <source>Length</source>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1001"/>
@@ -4211,41 +4225,27 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>%1+%2 cuir aghaidh nó réad plánach leis</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1719"/>
-      <location filename="../../ArchWall.py" line="1814"/>
-      <location filename="../../ArchCoveringGui.py" line="996"/>
-      <location filename="../../ArchCoveringGui.py" line="1077"/>
-      <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../ArchCommands.py" line="1361"/>
-      <location filename="../../ArchStructure.py" line="477"/>
-      <location filename="../../ArchStructure.py" line="1610"/>
-      <location filename="../../bimcommands/BimPanel.py" line="211"/>
-      <location filename="../../bimcommands/BimWall.py" line="504"/>
-      <source>Length</source>
-      <translation>Fad</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1217"/>
-      <location filename="../../ArchPrecast.py" line="1720"/>
-      <location filename="../../ArchWall.py" line="1823"/>
+      <location filename="../../ArchWindow.py" line="1212"/>
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
-      <location filename="../../ArchPanel.py" line="577"/>
       <location filename="../../ArchStructure.py" line="484"/>
       <location filename="../../ArchStructure.py" line="1611"/>
+      <location filename="../../ArchPanel.py" line="577"/>
+      <location filename="../../ArchWall.py" line="1823"/>
+      <location filename="../../ArchPrecast.py" line="1720"/>
+      <location filename="../../bimcommands/BimWall.py" line="513"/>
       <location filename="../../bimcommands/BimPanel.py" line="218"/>
-      <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Width</source>
       <translation>Leithead</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1220"/>
-      <location filename="../../ArchPrecast.py" line="1721"/>
-      <location filename="../../ArchWall.py" line="1832"/>
+      <location filename="../../ArchWindow.py" line="1215"/>
       <location filename="../../ArchStructure.py" line="491"/>
       <location filename="../../ArchStructure.py" line="1612"/>
+      <location filename="../../ArchWall.py" line="1832"/>
+      <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1086"/>
-      <location filename="../../bimcommands/BimWall.py" line="518"/>
+      <location filename="../../bimcommands/BimWall.py" line="520"/>
       <source>Height</source>
       <translation>Airde</translation>
     </message>
@@ -4265,14 +4265,14 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Fad/Leithead an Athraigh</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="617"/>
       <location filename="../../ArchStructure.py" line="1091"/>
+      <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Is soladach neamhbhailí an mogalra seo</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="319"/>
       <location filename="../../ArchStructure.py" line="1195"/>
+      <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Thug Facemaker earráid ar ais</translation>
     </message>
@@ -4323,16 +4323,16 @@ Tá an teimpléad réamhshocraithe suite ag:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="295"/>
-      <location filename="../../bimcommands/BimTruss.py" line="80"/>
       <location filename="../../bimcommands/BimWall.py" line="154"/>
+      <location filename="../../bimcommands/BimTruss.py" line="80"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="297"/>
-      <location filename="../../bimcommands/BimTruss.py" line="82"/>
       <location filename="../../bimcommands/BimWall.py" line="156"/>
+      <location filename="../../bimcommands/BimTruss.py" line="82"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
@@ -4472,12 +4472,6 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Cruthaigh Próifíl</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="76"/>
-      <location filename="../../bimcommands/BimPanel.py" line="126"/>
-      <source>%1 pick point</source>
-      <translation>%1 pointe piocadh</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimProfile.py" line="92"/>
       <source>Profile Settings</source>
       <translation>Socruithe Próifíle</translation>
@@ -4566,8 +4560,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Doras</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1223"/>
       <location filename="../../ArchWindowPresets.py" line="566"/>
+      <location filename="../../ArchWindow.py" line="1218"/>
       <source>Opening</source>
       <translation>Oscailt</translation>
     </message>
@@ -4826,150 +4820,155 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Airde na sile</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1120"/>
-      <location filename="../../ArchWindow.py" line="1777"/>
+      <location filename="../../ArchWindow.py" line="1115"/>
+      <location filename="../../ArchWindow.py" line="1772"/>
       <source>Invert Opening Direction</source>
       <translation>Treo Oscailte Inbhéartaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1135"/>
-      <location filename="../../ArchWindow.py" line="1780"/>
+      <location filename="../../ArchWindow.py" line="1130"/>
+      <location filename="../../ArchWindow.py" line="1775"/>
       <source>Invert Hinge Position</source>
       <translation>Seasamh Insí Inbhéartaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1197"/>
+      <location filename="../../ArchWindow.py" line="1192"/>
       <source>This window has no defined opening</source>
       <translation>Níl aon oscailt shainithe ag an bhfuinneog seo</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1537"/>
-      <location filename="../../ArchWindow.py" line="1588"/>
-      <source>Get selected edge</source>
-      <translation>Faigh imeall roghnaithe</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1690"/>
-      <source>Unable to create component</source>
-      <translation>Ní féidir comhpháirt a chruthú</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
-      <source>Hole wire</source>
-      <translation>Sreang poll</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1736"/>
-      <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation>Uimhir na sreinge a shainíonn poll sa réad óstach. Glacfaidh luach nialas leis an sreang is mó go huathoibríoch</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
-      <source>Pick Selected</source>
-      <translation>Roghnaigh Roghnaithe</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1743"/>
-      <source>Create/Update Component</source>
-      <translation>Cruthaigh/Nuashonraigh Comhpháirt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1747"/>
-      <source>Create new Component</source>
-      <translation>Cruthaigh Comhpháirt Nua</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1751"/>
-      <source>Frame depth</source>
-      <translation>Doimhneacht an fhráma</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1753"/>
-      <source>Hinge/Track</source>
-      <translation>Insí/Rian</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1762"/>
-      <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
-      <translation>Má tá tic sa rogha seo, cuirfear luach airí Fráma na fuinneoige leis an luach a iontráladh anseo</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1770"/>
-      <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
-      <translation>Má tá tic sa rogha seo, cuirfear luach airí Fritháireamh na fuinneoige leis an luach a iontráladh anseo</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
-      <location filename="../../ArchSpace.py" line="954"/>
-      <location filename="../../ArchSectionPlane.py" line="1805"/>
-      <location filename="../../ArchComponent.py" line="2467"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchAxis.py" line="999"/>
-      <source>Remove</source>
-      <translation>Bain</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="1212"/>
+      <location filename="../../ArchWindow.py" line="1207"/>
       <location filename="../../bimcommands/BimWindow.py" line="396"/>
       <source>Window Options</source>
       <translation>Roghanna Fuinneoige</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchWindow.py" line="1532"/>
+      <location filename="../../ArchWindow.py" line="1583"/>
+      <source>Get selected edge</source>
+      <translation>Faigh imeall roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1685"/>
+      <source>Unable to create component</source>
+      <translation>Ní féidir comhpháirt a chruthú</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>Window Elements</source>
       <translation>Eilimintí Fuinneoige</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1724"/>
+      <source>Hole wire</source>
+      <translation>Sreang poll</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1731"/>
+      <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
+      <translation>Uimhir na sreinge a shainíonn poll sa réad óstach. Glacfaidh luach nialas leis an sreang is mó go huathoibríoch</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1732"/>
+      <source>Pick Selected</source>
+      <translation>Roghnaigh Roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1738"/>
+      <source>Create/Update Component</source>
+      <translation>Cruthaigh/Nuashonraigh Comhpháirt</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1742"/>
+      <source>Create new Component</source>
+      <translation>Cruthaigh Comhpháirt Nua</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1746"/>
+      <source>Frame depth</source>
+      <translation>Doimhneacht an fhráma</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1748"/>
+      <source>Hinge/Track</source>
+      <translation>Insí/Rian</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1757"/>
+      <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
+      <translation>Má tá tic sa rogha seo, cuirfear luach airí Fráma na fuinneoige leis an luach a iontráladh anseo</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1765"/>
+      <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
+      <translation>Má tá tic sa rogha seo, cuirfear luach airí Fritháireamh na fuinneoige leis an luach a iontráladh anseo</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1769"/>
+      <source>Retrieves the selected edge</source>
+      <translation>Aisghabhann an imeall roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSpace.py" line="954"/>
+      <location filename="../../ArchWindow.py" line="1733"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
+      <location filename="../../ArchAxis.py" line="999"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
+      <source>Remove</source>
+      <translation>Bain</translation>
+    </message>
+    <message>
       <location filename="../../ArchSpace.py" line="949"/>
+      <location filename="../../ArchWindow.py" line="1734"/>
       <location filename="../../ArchComponent.py" line="2468"/>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchAxis.py" line="1000"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1740"/>
+      <location filename="../../ArchWindow.py" line="1735"/>
       <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchReference.py" line="717"/>
       <location filename="../../ArchSectionPlane.py" line="1592"/>
+      <location filename="../../ArchSite.py" line="1588"/>
       <location filename="../../ArchComponent.py" line="1975"/>
+      <location filename="../../ArchAxis.py" line="831"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchIFCView.py" line="63"/>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchAxis.py" line="831"/>
+      <location filename="../../ArchReference.py" line="717"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
       <source>Base 2D object</source>
       <translation>Réad 2T bonn</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1740"/>
       <location filename="../../ArchWindow.py" line="1745"/>
-      <location filename="../../ArchWindow.py" line="1750"/>
       <source>Wires</source>
       <translation>Sreanga</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1746"/>
+      <location filename="../../ArchWindow.py" line="1741"/>
       <location filename="../../ArchComponent.py" line="2475"/>
       <source>Components</source>
       <translation>Comhpháirteanna</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1748"/>
+      <location filename="../../ArchWindow.py" line="1743"/>
       <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../ArchMaterial.py" line="921"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1749"/>
+      <location filename="../../ArchWindow.py" line="1744"/>
       <location filename="../../ArchComponent.py" line="2543"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
@@ -4977,45 +4976,40 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Cineál</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1774"/>
-      <source>Retrieves the selected edge</source>
-      <translation>Aisghabhann an imeall roghnaithe</translation>
-    </message>
-    <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchPanel.py" line="578"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>Tiús</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1752"/>
+      <location filename="../../ArchWindow.py" line="1747"/>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../bimcommands/BimWall.py" line="534"/>
+      <location filename="../../bimcommands/BimWall.py" line="536"/>
       <source>Offset</source>
       <translation>Fritháireamh</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1754"/>
+      <location filename="../../ArchWindow.py" line="1749"/>
       <source>Opening mode</source>
       <translation>Mód oscailte</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1755"/>
+      <location filename="../../ArchWindow.py" line="1750"/>
       <source>+ Frame property</source>
       <translation>+ Airíonna fráma</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1763"/>
+      <location filename="../../ArchWindow.py" line="1758"/>
       <source>+ Offset property</source>
       <translation>+ Maoin fhritháireamh</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1771"/>
+      <location filename="../../ArchWindow.py" line="1766"/>
       <source>Get Selected Edge</source>
       <translation>Faigh Imeall Roghnaithe</translation>
     </message>
@@ -5040,10 +5034,10 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Roghnaigh ais amháin ar a laghad</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchComponent.py" line="2474"/>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../ArchAxis.py" line="998"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
+      <location filename="../../Arch.py" line="102"/>
       <source>Axes</source>
       <translation>Aiseanna</translation>
     </message>
@@ -5053,10 +5047,10 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Comhpháirteanna córais ais</translation>
     </message>
     <message>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>Scríofa go rathúil</translation>
     </message>
@@ -5066,7 +5060,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Trus</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="113"/>
+      <location filename="../../bimcommands/BimTruss.py" line="114"/>
       <source>Create Truss</source>
       <translation>Cruthaigh Trus</translation>
     </message>
@@ -5167,9 +5161,9 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Cruthaigh ilábhar</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
+      <location filename="../../Arch.py" line="540"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
@@ -5265,8 +5259,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Bain an Réise</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="504"/>
       <location filename="../../ArchGrid.py" line="488"/>
+      <location filename="../../Arch.py" line="504"/>
       <source>Grid</source>
       <translation>Eangach</translation>
     </message>
@@ -5417,8 +5411,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1724"/>
       <location filename="../../ArchCoveringGui.py" line="913"/>
+      <location filename="../../ArchPrecast.py" line="1724"/>
       <source>Rotation</source>
       <translation>Rothlú</translation>
     </message>
@@ -5437,6 +5431,12 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>Cruthaigh Painéal</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <source>%1 pick point</source>
+      <translation>%1 pointe piocadh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="197"/>
@@ -5464,8 +5464,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Earráid ag ríomh cruth</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="563"/>
       <location filename="../../ArchStructure.py" line="1994"/>
+      <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>Níorbh fhéidir cruth a ríomh</translation>
     </message>
@@ -5522,7 +5522,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
       <translation>Cruthaigh Balla Imbhalla</translation>
     </message>
@@ -5635,6 +5635,18 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Ní féidir luach a aisghabháil ón réad</translation>
     </message>
     <message>
+      <location filename="../../ArchSchedule.py" line="987"/>
+      <location filename="../../ArchSchedule.py" line="1011"/>
+      <source>Operation</source>
+      <translation>Oibríocht</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="936"/>
+      <location filename="../../ArchCommands.py" line="1454"/>
+      <source>Export CSV File</source>
+      <translation>Easpórtáil Comhad CSV</translation>
+    </message>
+    <message>
       <location filename="../../ArchSchedule.py" line="771"/>
       <source>Remove Spreadsheet</source>
       <translation>Bain Scarbhileog</translation>
@@ -5648,18 +5660,6 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <location filename="../../ArchSchedule.py" line="899"/>
       <source>Import CSV File</source>
       <translation>Iompórtáil Comhad CSV</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSchedule.py" line="987"/>
-      <location filename="../../ArchSchedule.py" line="1011"/>
-      <source>Operation</source>
-      <translation>Oibríocht</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCommands.py" line="1454"/>
-      <location filename="../../ArchSchedule.py" line="936"/>
-      <source>Export CSV File</source>
-      <translation>Easpórtáil Comhad CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="963"/>
@@ -5679,17 +5679,17 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2544"/>
-      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>Luach</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <source>Unit</source>
       <translation>Aonad</translation>
     </message>
@@ -5781,13 +5781,13 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>tá cruth neamhbhailí air</translation>
     </message>
     <message>
+      <location filename="../../ArchComponent.py" line="1171"/>
       <location filename="../../ArchPrecast.py" line="192"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="444"/>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
-      <location filename="../../ArchComponent.py" line="1171"/>
       <source>has a null shape</source>
       <translation>tá cruth nialasach aige</translation>
     </message>
@@ -5819,8 +5819,156 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Cineál bonn mícheart</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1982"/>
+      <location filename="../../ArchSite.py" line="1053"/>
+      <source>Solar Diagrams</source>
+      <translation>Léaráidí Gréine</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1057"/>
+      <source>Location</source>
+      <translation>Suíomh</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1072"/>
+      <source>The latitude of this site in decimal degrees.
+Positive values are north of the Equator, negative values are south.</source>
+      <translation>Domhanleithead an tsuímh seo i gcéimeanna deachúla.
+Tá luachanna dearfacha ó thuaidh ón Meánchiorcal, tá luachanna diúltacha ó dheas.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1073"/>
+      <source>Latitude</source>
+      <translation>Domhanleithead</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1087"/>
+      <source>The longitude of this site in decimal degrees.
+Positive values are east of the Prime Meridian, negative values are west.</source>
+      <translation>Domhanfhad an tsuímh seo i gcéimeanna deachúla.
+Tá luachanna dearfacha soir ón bPríomh-Mheidian, tá luachanna diúltacha siar.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1088"/>
+      <source>Longitude</source>
+      <translation>Domhanfhad</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1100"/>
+      <source>The UTC offset of the time zone where this site is located.
+Used when calculating the sun position.</source>
+      <translation>Fritháireamh UTC an chrios ama ina bhfuil an suíomh seo suite.
+Úsáidtear é seo agus suíomh na gréine á ríomh.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1101"/>
+      <source>Time zone</source>
+      <translation>Time zone</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1118"/>
+      <source>The angle between the model's north and geographic north.
+Drives the compass orientation and the declination used to
+align the solar diagram and sun path.</source>
+      <translation>An uillinn idir tuaisceart an mhúnla agus tuaisceart geografach an tsamhail.
+Tiomáineann sé treoshuíomh an chompáis agus an diallas a úsáidtear chun
+léaráid na gréine agus cosán na gréine a ailíniú.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1119"/>
+      <source>North offset</source>
+      <translation>Fritháireamh thuaidh</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1123"/>
+      <source>Diagrams</source>
+      <translation>Léaráidí</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1126"/>
+      <source>Solar Diagram</source>
+      <translation>Léaráid Gréine</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1136"/>
+      <source>Shows a sun path arc diagram projected onto the site,
+computed from the site's latitude, longitude and north offset.</source>
+      <translation>Taispeánann sé léaráid stua cosáin gréine teilgthe ar an suíomh,
+ríofa ó dhomhanleithead, domhanfhad agus fritháireamh thuaidh an tsuímh.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1139"/>
+      <source>Compass</source>
+      <translation>Compás</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1147"/>
+      <source>Shows a compass rose overlay on the site,
+oriented according to the north offset.</source>
+      <translation>Taispeánann sé forleagan rós compáis ar an suíomh,
+dírithe de réir an fhritháireamh thuaidh.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1153"/>
+      <source>Sun Position</source>
+      <translation>Seasamh na Gréine</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1164"/>
+      <source>Shows a sphere and ray indicating the sun position
+for the selected date and time.</source>
+      <translation>Taispeánann sé sféar agus gathanna a léiríonn suíomh na gréine don dáta agus don am roghnaithe.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1184"/>
+      <source>The day and month for which the sun position is shown.
+The year is ignored.</source>
+      <translation>An lá agus an mhí a léirítear suíomh na gréine ina leith.
+Déantar neamhaird den bhliain.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1185"/>
+      <source>Date</source>
+      <translation>Dáta</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1196"/>
+      <source>The time of day for which the sun position is shown,
+in 24-hour local time. Steps in half-hour increments.</source>
+      <translation>An t-am den lá a léirítear suíomh na gréine, in am áitiúil 24
+uair an chloig. Céimeanna i méaduithe leathuaire.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1209"/>
+      <source>Hour</source>
+      <translation>Uair an chloig</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1214"/>
+      <source>Show Hour Labels</source>
+      <translation>Taispeáin Lipéid Uaireanta</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1220"/>
+      <source>Shows text labels at key hours along the sun path arc</source>
+      <translation>Taispeánann lipéid téacs ag uaireanta tábhachtacha feadh stua chonair na gréine</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1233"/>
+      <source>Solar calculations require the ladybug or pysolar Python module,
+which was not found.</source>
+      <translation>Éilíonn ríomhanna gréine an modúl Python Ladybug nó Pysolar,
+nach bhfuarthas.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="1243"/>
+      <source>Solar calculations unavailable.
+The ladybug or pysolar Python module is required.</source>
+      <translation>Níl ríomhanna gréine ar fáil.
+Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
+    </message>
+    <message>
       <location filename="../../ArchSite.py" line="1594"/>
+      <location filename="../../ArchComponent.py" line="1982"/>
       <source>Toggle Subcomponents</source>
       <translation>Fo-chomhpháirteanna a scoránaigh</translation>
     </message>
@@ -6070,9 +6218,9 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Athraíonn méid an eitleáin chun go n-oirfidh sé do na rudaí sa liosta thuas</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1837"/>
       <location filename="../../ArchCoveringGui.py" line="530"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../ArchWall.py" line="1837"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Center</source>
       <translation>Lár</translation>
     </message>
@@ -6082,8 +6230,8 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Lárnaíonn sé an plána ar na réada sa liosta thuas</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
+      <location filename="../../Arch.py" line="232"/>
       <source>Building</source>
       <translation>Foirgneamh</translation>
     </message>
@@ -6187,8 +6335,8 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="107"/>
-      <location filename="../../bimcommands/BimWall.py" line="407"/>
-      <location filename="../../bimcommands/BimWall.py" line="655"/>
+      <location filename="../../bimcommands/BimWall.py" line="409"/>
+      <location filename="../../bimcommands/BimWall.py" line="657"/>
       <source>Create Wall</source>
       <translation>Cruthaigh Balla</translation>
     </message>
@@ -6198,67 +6346,51 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Céad Phointe an Bhalla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="483"/>
+      <location filename="../../bimcommands/BimWall.py" line="485"/>
       <source>Wall Presets</source>
       <translation>Réamhshocruithe Balla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="489"/>
+      <location filename="../../bimcommands/BimWall.py" line="491"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Taispeánann an liosta seo gach réada MultiMaterials den doiciméad seo. Cruthaigh cuid acu chun cineálacha ballaí a shainiú.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="541"/>
+      <location filename="../../bimcommands/BimWall.py" line="543"/>
       <source>Baseline</source>
       <translation>Bonnlíne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="547"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>No baseline</source>
       <translation>Gan aon bhunlíne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="548"/>
+      <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>Draft line</source>
       <translation>Líne dréachta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="549"/>
+      <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Sketch</source>
       <translation>Sceitse</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1860"/>
       <location filename="../../ArchCoveringGui.py" line="837"/>
-      <location filename="../../bimcommands/BimWall.py" line="525"/>
+      <location filename="../../ArchWall.py" line="1860"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Alignment</source>
       <translation>Ailíniú</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1836"/>
-      <location filename="../../bimcommands/BimWall.py" line="527"/>
+      <location filename="../../bimcommands/BimWall.py" line="529"/>
       <source>Left</source>
       <translation>Ar chlé</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="642"/>
-      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
-      <translation>Ní féidir {obj.Label} a chruthú ná a nuashonrú mar go bhfuil a fhad, a airde nó a leithead nialasach, agus níl aon sholaid sna breisithe</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1428"/>
-      <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
-      <translation>Gan aon imill thacaithe i réad bonn {obj.Label} (líne, ciorcal, stua, éilips)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1802"/>
-      <location filename="../../bimcommands/BimWall.py" line="478"/>
-      <source>Wall Options</source>
-      <translation>Roghanna Balla</translation>
-    </message>
-    <message>
       <location filename="../../ArchWall.py" line="1838"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="530"/>
       <source>Right</source>
       <translation>Ar dheis</translation>
     </message>
@@ -6277,6 +6409,22 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchWall.py" line="720"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Earráid: Ní féidir bunréad an bhalla seo a mhodhnú</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="642"/>
+      <source>Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions</source>
+      <translation>Ní féidir {obj.Label} a chruthú ná a nuashonrú mar go bhfuil a fhad, a airde nó a leithead nialasach, agus níl aon sholaid sna breisithe</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1428"/>
+      <source>No supported edges in Base object of {obj.Label} (line, circle, arc, ellipse)</source>
+      <translation>Gan aon imill thacaithe i réad bonn {obj.Label} (líne, ciorcal, stua, éilips)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1802"/>
+      <location filename="../../bimcommands/BimWall.py" line="480"/>
+      <source>Wall Options</source>
+      <translation>Roghanna Balla</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="2082"/>
@@ -6492,13 +6640,23 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Sábháil Radharc Ceamara</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="1219"/>
+      <source>Active working plane set to Top</source>
+      <translation>Plána oibre gníomhach socraithe go Barr</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="1224"/>
+      <source>Active working plane set to {self.Object.Label}</source>
+      <translation>Plána oibre gníomhach socraithe go {self.Object.Label}</translation>
+    </message>
+    <message>
       <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>New Group</source>
       <translation>Grúpa Nua</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <location filename="../../ArchMaterial.py" line="100"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Athordaigh na Leanaí in Aibítre</translation>
     </message>
@@ -6508,14 +6666,44 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Leibhéal Clónála Suas</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1219"/>
-      <source>Active working plane set to Top</source>
-      <translation>Plána oibre gníomhach socraithe go Barr</translation>
+      <location filename="../../ArchCurtainWall.py" line="725"/>
+      <source>Vertical Sections</source>
+      <translation>Rannóga Ingearacha</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1224"/>
-      <source>Active working plane set to {self.Object.Label}</source>
-      <translation>Plána oibre gníomhach socraithe go {self.Object.Label}</translation>
+      <location filename="../../ArchCurtainWall.py" line="726"/>
+      <source>Horizontal Sections</source>
+      <translation>Rannóga Cothrománacha</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="727"/>
+      <source>Vertical Mullion Width</source>
+      <translation>Leithead Mullion Ingearach</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="730"/>
+      <source>Vertical Mullion Height</source>
+      <translation>Airde Mullion Ingearach</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="734"/>
+      <source>Horizontal Mullion Width</source>
+      <translation>Leithead Mullion Cothrománach</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="738"/>
+      <source>Horizontal Mullion Height</source>
+      <translation>Airde Mullion Cothrománach</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="740"/>
+      <source>Panel Thickness</source>
+      <translation>Tiús an Phainéil</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCurtainWall.py" line="741"/>
+      <source>Refine</source>
+      <translation>Scag</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="64"/>
@@ -6575,234 +6763,6 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchSql.py" line="2320"/>
       <source>Query is valid, but found 0 objects.</source>
       <translation>Tá an fiosrúchán bailí, ach níor aimsíodh 0 réad.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="725"/>
-      <source>Vertical Sections</source>
-      <translation>Rannóga Ingearacha</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="726"/>
-      <source>Horizontal Sections</source>
-      <translation>Rannóga Cothrománacha</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="727"/>
-      <source>Vertical Mullion Width</source>
-      <translation>Leithead Mullion Ingearach</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="730"/>
-      <source>Vertical Mullion Height</source>
-      <translation>Airde Mullion Ingearach</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="734"/>
-      <source>Horizontal Mullion Width</source>
-      <translation>Leithead Mullion Cothrománach</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="738"/>
-      <source>Horizontal Mullion Height</source>
-      <translation>Airde Mullion Cothrománach</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="740"/>
-      <source>Panel Thickness</source>
-      <translation>Tiús an Phainéil</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCurtainWall.py" line="741"/>
-      <source>Refine</source>
-      <translation>Scag</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1053"/>
-      <source>Solar Diagrams</source>
-      <translation>Léaráidí Gréine</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1057"/>
-      <source>Location</source>
-      <translation>Suíomh</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1072"/>
-      <source>The latitude of this site in decimal degrees.
-Positive values are north of the Equator, negative values are south.</source>
-      <translation>Domhanleithead an tsuímh seo i gcéimeanna deachúla.
-Tá luachanna dearfacha ó thuaidh ón Meánchiorcal, tá luachanna diúltacha ó dheas.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1073"/>
-      <source>Latitude</source>
-      <translation>Domhanleithead</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1087"/>
-      <source>The longitude of this site in decimal degrees.
-Positive values are east of the Prime Meridian, negative values are west.</source>
-      <translation>Domhanfhad an tsuímh seo i gcéimeanna deachúla.
-Tá luachanna dearfacha soir ón bPríomh-Mheidian, tá luachanna diúltacha siar.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1088"/>
-      <source>Longitude</source>
-      <translation>Domhanfhad</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1100"/>
-      <source>The UTC offset of the time zone where this site is located.
-Used when calculating the sun position.</source>
-      <translation>Fritháireamh UTC an chrios ama ina bhfuil an suíomh seo suite.
-Úsáidtear é seo agus suíomh na gréine á ríomh.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1101"/>
-      <source>Time zone</source>
-      <translation>Time zone</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1118"/>
-      <source>The angle between the model's north and geographic north.
-Drives the compass orientation and the declination used to
-align the solar diagram and sun path.</source>
-      <translation>An uillinn idir tuaisceart an mhúnla agus tuaisceart geografach an tsamhail.
-Tiomáineann sé treoshuíomh an chompáis agus an diallas a úsáidtear chun
-léaráid na gréine agus cosán na gréine a ailíniú.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1119"/>
-      <source>North offset</source>
-      <translation>Fritháireamh thuaidh</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1123"/>
-      <source>Diagrams</source>
-      <translation>Léaráidí</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1126"/>
-      <source>Solar Diagram</source>
-      <translation>Léaráid Gréine</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1136"/>
-      <source>Shows a sun path arc diagram projected onto the site,
-computed from the site's latitude, longitude and north offset.</source>
-      <translation>Taispeánann sé léaráid stua cosáin gréine teilgthe ar an suíomh,
-ríofa ó dhomhanleithead, domhanfhad agus fritháireamh thuaidh an tsuímh.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1139"/>
-      <source>Compass</source>
-      <translation>Compás</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1147"/>
-      <source>Shows a compass rose overlay on the site,
-oriented according to the north offset.</source>
-      <translation>Taispeánann sé forleagan rós compáis ar an suíomh,
-dírithe de réir an fhritháireamh thuaidh.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1153"/>
-      <source>Sun Position</source>
-      <translation>Seasamh na Gréine</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1164"/>
-      <source>Shows a sphere and ray indicating the sun position
-for the selected date and time.</source>
-      <translation>Taispeánann sé sféar agus gathanna a léiríonn suíomh na gréine don dáta agus don am roghnaithe.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1184"/>
-      <source>The day and month for which the sun position is shown.
-The year is ignored.</source>
-      <translation>An lá agus an mhí a léirítear suíomh na gréine ina leith.
-Déantar neamhaird den bhliain.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1185"/>
-      <source>Date</source>
-      <translation>Dáta</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1196"/>
-      <source>The time of day for which the sun position is shown,
-in 24-hour local time. Steps in half-hour increments.</source>
-      <translation>An t-am den lá a léirítear suíomh na gréine, in am áitiúil 24
-uair an chloig. Céimeanna i méaduithe leathuaire.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1209"/>
-      <source>Hour</source>
-      <translation>Uair an chloig</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1214"/>
-      <source>Show Hour Labels</source>
-      <translation>Taispeáin Lipéid Uaireanta</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1220"/>
-      <source>Shows text labels at key hours along the sun path arc</source>
-      <translation>Taispeánann lipéid téacs ag uaireanta tábhachtacha feadh stua chonair na gréine</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1233"/>
-      <source>Solar calculations require the ladybug or pysolar Python module,
-which was not found.</source>
-      <translation>Éilíonn ríomhanna gréine an modúl Python Ladybug nó Pysolar,
-nach bhfuarthas.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSite.py" line="1243"/>
-      <source>Solar calculations unavailable.
-The ladybug or pysolar Python module is required.</source>
-      <translation>Níl ríomhanna gréine ar fáil.
-Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="414"/>
-      <source>Height Start</source>
-      <translation>Airde Tosaigh</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="415"/>
-      <source>Height End</source>
-      <translation>Deireadh Airde</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="416"/>
-      <source>Strut Height</source>
-      <translation>Airde na Strut</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="417"/>
-      <source>Strut Width</source>
-      <translation>Leithead an Strúit</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="418"/>
-      <source>Rod Sections</source>
-      <translation>Rannóga Slat</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="419"/>
-      <source>Rod Size</source>
-      <translation>Méid an tSlat</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="420"/>
-      <source>Rod Mode</source>
-      <translation>Mód Slat</translation>
-    </message>
-    <message>
-      <location filename="../../ArchTruss.py" line="421"/>
-      <source>Rod Type</source>
-      <translation>Cineál Slat</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="884"/>
@@ -7320,6 +7280,46 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>BIM SQL Cheatsheet</translation>
     </message>
     <message>
+      <location filename="../../ArchTruss.py" line="414"/>
+      <source>Height Start</source>
+      <translation>Airde Tosaigh</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="415"/>
+      <source>Height End</source>
+      <translation>Deireadh Airde</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="416"/>
+      <source>Strut Height</source>
+      <translation>Airde na Strut</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="417"/>
+      <source>Strut Width</source>
+      <translation>Leithead an Strúit</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="418"/>
+      <source>Rod Sections</source>
+      <translation>Rannóga Slat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="419"/>
+      <source>Rod Size</source>
+      <translation>Méid an tSlat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="420"/>
+      <source>Rod Mode</source>
+      <translation>Mód Slat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchTruss.py" line="421"/>
+      <source>Rod Type</source>
+      <translation>Cineál Slat</translation>
+    </message>
+    <message>
       <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation>Cruthaigh Sceitse</translation>
@@ -7400,6 +7400,18 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Rothlú bonn timpeall ais an Uirlis (ní úsáidtear ach amháin má tá BasePerpendicularToTool fíor)</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="780"/>
+      <location filename="../../ArchPanel.py" line="85"/>
+      <source>The length of this element, if not based on a profile</source>
+      <translation>Fad an eilimint seo, mura bhfuil sé bunaithe ar phróifíl</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchPanel.py" line="95"/>
+      <source>The width of this element, if not based on a profile</source>
+      <translation>Leithead an eilimint seo, mura bhfuil sé bunaithe ar phróifíl</translation>
+    </message>
+    <message>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
@@ -7407,27 +7419,15 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</so
 Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitseáil go huathoibríoch.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="85"/>
-      <location filename="../../ArchStructure.py" line="780"/>
-      <source>The length of this element, if not based on a profile</source>
-      <translation>Fad an eilimint seo, mura bhfuil sé bunaithe ar phróifíl</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="95"/>
-      <location filename="../../ArchStructure.py" line="790"/>
-      <source>The width of this element, if not based on a profile</source>
-      <translation>Leithead an eilimint seo, mura bhfuil sé bunaithe ar phróifíl</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="272"/>
-      <location filename="../../ArchPanel.py" line="209"/>
       <location filename="../../ArchStructure.py" line="812"/>
+      <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Treo easbhrúite gnáth an réada seo (coinnigh (0,0,0) le haghaidh gnáth-uathoibríoch)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="101"/>
       <location filename="../../ArchStructure.py" line="820"/>
+      <location filename="../../ArchPrecast.py" line="101"/>
       <source>The structural nodes of this element</source>
       <translation>Nóid struchtúracha an eilimint seo</translation>
     </message>
@@ -7442,8 +7442,8 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Fad fritháireamh idir an líne lár agus líne na nóid</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="197"/>
       <location filename="../../ArchStructure.py" line="851"/>
+      <location filename="../../ArchPanel.py" line="197"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>An cineál aghaidheora le húsáid chun próifíl an réada seo a thógáil</translation>
     </message>
@@ -7454,8 +7454,8 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Imill roghnaithe (nó grúpa imill) den bhun-ArchSketch, le húsáid chun cruth an Struchtúir BIM seo a chruthú (in ionad imill uile an chrutha Bhunúsaigh a úsáid de réir réamhshocraithe). Is iad na huimhreacha innéacs d'imill nó de ghrúpaí a ionchurtar.</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="547"/>
       <location filename="../../ArchStructure.py" line="904"/>
+      <location filename="../../ArchStairs.py" line="547"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
       <translation>Roghnaigh Tacar Airíonna Sainmhínithe ag an Úsáideoir le húsáid agus cruth malairteach á chruthú, leis an ArchSketch céanna </translation>
     </message>
@@ -7526,15 +7526,15 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>An chumhacht leictreach a theastaíonn ón trealamh seo i Vatanna</translation>
     </message>
     <message>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="235"/>
       <location filename="../../Arch.py" line="317"/>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Cineál an fhoirgnimh seo</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="230"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>Airde an réada seo</translation>
     </message>
@@ -7549,26 +7549,26 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Leibhéal phointe (0,0,0) an leibhéil seo</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>Achar urláir ríofa an urláir seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="266"/>
       <location filename="../../ArchComponent.py" line="250"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>Cur síos roghnach don chomhpháirt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="274"/>
       <location filename="../../ArchComponent.py" line="258"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>Clib roghnach don chomhpháirt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="282"/>
       <location filename="../../ArchSectionPlane.py" line="1049"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Cruth an réada seo</translation>
     </message>
@@ -7588,8 +7588,8 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Léarscáil MaterialName:SolidIndexesList a nascann ainmneacha ábhar le hinnéacsanna soladacha le húsáid agus tagairt á déanamh don réad seo ó chomhaid eile</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="548"/>
       <location filename="../../ArchSectionPlane.py" line="1221"/>
+      <location filename="../../ArchBuildingPart.py" line="548"/>
       <source>The line width of this object</source>
       <translation>Leithead líne an réada seo</translation>
     </message>
@@ -7887,20 +7887,20 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>URL a thaispeánann an suíomh seo i suíomh gréasáin mapála</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="232"/>
       <location filename="../../ArchSite.py" line="656"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Cruthanna eile atá curtha leis an réad seo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="242"/>
       <location filename="../../ArchSite.py" line="666"/>
+      <location filename="../../ArchComponent.py" line="242"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Cruthanna eile a bhaintear ón réad seo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="337"/>
       <location filename="../../ArchSite.py" line="676"/>
+      <location filename="../../ArchComponent.py" line="337"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Achar teilgean an réada seo ar an eitleán XY</translation>
     </message>
@@ -7935,8 +7935,8 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Fritháireamh roghnach idir bunús an mhúnla (0,0,0) agus an pointe a léirítear leis na geo-chomhordanáidí</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="88"/>
       <location filename="../../ArchSite.py" line="744"/>
+      <location filename="../../ArchIFC.py" line="88"/>
       <source>The type of this object</source>
       <translation>Cineál an réada seo</translation>
     </message>
@@ -8261,7 +8261,7 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Taispeáin siombailí oscailte airde más féidir</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1444"/>
+      <location filename="../../ArchWindow.py" line="1439"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Uimhir na sreinge a shainmhíníonn an poll. Ciallaíonn luach 0 go bhfuil sé uathoibríoch</translation>
     </message>
@@ -9142,8 +9142,8 @@ Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitse
       <translation>Más fíor é, cuirtear línte breise le gach réad aonair leis na torthaí</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="1041"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>Suíomh an réada seo</translation>
     </message>
@@ -9668,10 +9668,15 @@ Déanfar neamhaird de má tá an balla seo bunaithe ar sholad.</translation>
       <translation>Roghnaigh Tacar Airíonna Sainmhínithe ag an Úsáideoir le húsáid chun cruth athraitheach, sraitheanna den Bhalla Áirse a chruthú leis an ArchSketch céanna </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="863"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>Bain úsáid as sonraí bunúsacha ArchSketch (más in úsáid) (e.g. leithead, ailínithe, fritháireamh) in ionad airíonna Wall</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCoveringGui.py" line="62"/>
+      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
+      <translation>Céim rothlaithe (céimeanna) a chuirtear i bhfeidhm in aghaidh brú eochrach R / Shift+R le linn socrú idirghníomhach greille.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="104"/>
@@ -9820,11 +9825,6 @@ Déanfar neamhaird de má tá an balla seo bunaithe ar sholad.</translation>
       <location filename="../../ArchCovering.py" line="346"/>
       <source>The specific IFC subtype of this covering. Exported as IfcCovering.PredefinedType.</source>
       <translation>An fochineál IFC sonrach den chlúdach seo. Easpórtáilte mar IfcCovering.PredefinedType.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCoveringGui.py" line="62"/>
-      <source>Rotation step (degrees) applied per R / Shift+R keypress during interactive grid placement.</source>
-      <translation>Céim rothlaithe (céimeanna) a chuirtear i bhfeidhm in aghaidh brú eochrach R / Shift+R le linn socrú idirghníomhach greille.</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="483"/>
@@ -10812,14 +10812,14 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
       <source>Label</source>
       <translation>Lipéad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>IFC type</source>
       <translation>Cineál IFC</translation>
     </message>
@@ -10829,8 +10829,8 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <location filename="../../nativeifc/__init__.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>Níor aimsíodh ifcOpenShell ar an gcóras seo. Tá tacaíocht IFC díchumasaithe</translation>
     </message>
@@ -11228,38 +11228,6 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
       <translation>Ábhar Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
-      <source>Merge Duplicates</source>
-      <translation>Cumaisc Dúblaigh</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
-      <source>Delete Unused</source>
-      <translation>Scrios Neamhúsáidte</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="105"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
-      <source>Rename</source>
-      <translation>Athainmnigh</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
-      <source>Duplicate</source>
-      <translation>Dúblach</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
-      <source>Merge To…</source>
-      <translation>Cumaisc le…</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
-      <source>Delete</source>
-      <translation>Scrios</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimMaterial.py" line="85"/>
       <source>Select Material</source>
       <translation>Roghnaigh Ábhar</translation>
@@ -11278,6 +11246,38 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
       <location filename="../../bimcommands/BimMaterial.py" line="138"/>
       <source>New Multi-Material</source>
       <translation>Ilábhar Nua</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
+      <source>Merge Duplicates</source>
+      <translation>Cumaisc Dúblaigh</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
+      <source>Delete Unused</source>
+      <translation>Scrios Neamhúsáidte</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <source>Rename</source>
+      <translation>Athainmnigh</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
+      <source>Duplicate</source>
+      <translation>Dúblach</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
+      <source>Merge To…</source>
+      <translation>Cumaisc le…</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <source>Delete</source>
+      <translation>Scrios</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="234"/>
@@ -11542,8 +11542,8 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
       <translation>Luchtaíodh an teimpléad go rathúil isteach sa cháipéis reatha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="153"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <source>New Group</source>
       <translation>Grúpa Nua</translation>
     </message>
@@ -12198,8 +12198,8 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
       <translation>Scriosann sé as an mbosca bruscair gach rud nach n-úsáideann aon duine eile</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="35"/>
+      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <source>Empty Trash</source>
       <translation>Folmhaigh an Bruscar</translation>
     </message>
@@ -13535,28 +13535,6 @@ roghnaigh an radharc agus an leathanach araon sula ndéantar an t-ordú a fhorgh
     </message>
   </context>
   <context>
-    <name>ArchComponent</name>
-    <message>
-      <location filename="../../ArchWall.py" line="1497"/>
-      <source>Unsupported Base</source>
-      <translation>Bonn Gan Tacaíocht</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1502"/>
-      <source>The base of this wall is not a single straight line.</source>
-      <translation>Ní líne dhíreach aonair bun an bhalla seo.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="1509"/>
-      <source>Removing the base of this complex wall will alter its shape and reset its position.
-
-Do you want to proceed?</source>
-      <translation>Má bhaintear bun an bhalla chasta seo, athrófar a chruth agus athshocrófar a shuíomh.
-
-Ar mhaith leat dul ar aghaidh?</translation>
-    </message>
-  </context>
-  <context>
     <name>BIMStatusWidget</name>
     <message>
       <location filename="../../BimStatus.py" line="105"/>
@@ -13671,6 +13649,28 @@ Ar mhaith leat dul ar aghaidh?</translation>
     </message>
   </context>
   <context>
+    <name>ArchComponent</name>
+    <message>
+      <location filename="../../ArchWall.py" line="1497"/>
+      <source>Unsupported Base</source>
+      <translation>Bonn Gan Tacaíocht</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1502"/>
+      <source>The base of this wall is not a single straight line.</source>
+      <translation>Ní líne dhíreach aonair bun an bhalla seo.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="1509"/>
+      <source>Removing the base of this complex wall will alter its shape and reset its position.
+
+Do you want to proceed?</source>
+      <translation>Má bhaintear bun an bhalla chasta seo, athrófar a chruth agus athshocrófar a shuíomh.
+
+Ar mhaith leat dul ar aghaidh?</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_ArcTools</name>
     <message>
       <location filename="../../InitGui.py" line="239"/>
@@ -13764,6 +13764,19 @@ Ar mhaith leat dul ar aghaidh?</translation>
     </message>
   </context>
   <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Bain ón nGrúpa</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Baineann an réad seo ón ngrúpa tuismitheora</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_Offset2D</name>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
@@ -13774,6 +13787,19 @@ Ar mhaith leat dul ar aghaidh?</translation>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
       <translation>Fóntas chun cruthanna plána a fhritháireamh</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Fuse</name>
+    <message>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
+      <source>Union</source>
+      <translation>Aontas</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
+      <source>Creates a union of several shapes</source>
+      <translation>Cruthaíonn sé aontas de chruthanna éagsúla</translation>
     </message>
   </context>
   <context>
@@ -13790,29 +13816,11 @@ Ar mhaith leat dul ar aghaidh?</translation>
     </message>
   </context>
   <context>
-    <name>BIM_Ungroup</name>
+    <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Bain ón nGrúpa</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Baineann an réad seo ón ngrúpa tuismitheora</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_ExtrudeFace</name>
-    <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
-      <source>Extrude Face</source>
-      <translation>Easbhrúigh Aghaidh</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
-      <source>Extrudes a selected face into a solid</source>
-      <translation>Easbhrúitear aghaidh roghnaithe ina cruth soladach</translation>
+      <location filename="../../bimcommands/BimWall.py" line="307"/>
+      <source>Wall Trace</source>
+      <translation>Rian Balla</translation>
     </message>
   </context>
   <context>
@@ -13842,32 +13850,6 @@ Ar mhaith leat dul ar aghaidh?</translation>
     </message>
   </context>
   <context>
-    <name>BIM_LinkMake</name>
-    <message>
-      <location filename="../../bimcommands/BimLink.py" line="15"/>
-      <source>Make Link</source>
-      <translation>Déan Nasc</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimLink.py" line="19"/>
-      <source>Creates a Link to the selected object and immediately enables moving it</source>
-      <translation>Cruthaíonn sé Nasc leis an réad roghnaithe agus cuireann sé ar chumas é a bhogadh láithreach</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_Fuse</name>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="34"/>
-      <source>Union</source>
-      <translation>Aontas</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimFuse.py" line="35"/>
-      <source>Creates a union of several shapes</source>
-      <translation>Cruthaíonn sé aontas de chruthanna éagsúla</translation>
-    </message>
-  </context>
-  <context>
     <name>BIM_Covering</name>
     <message>
       <location filename="../../bimcommands/BimCovering.py" line="58"/>
@@ -13881,11 +13863,29 @@ Ar mhaith leat dul ar aghaidh?</translation>
     </message>
   </context>
   <context>
-    <name>BimWall</name>
+    <name>BIM_ExtrudeFace</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="305"/>
-      <source>Wall Trace</source>
-      <translation>Rian Balla</translation>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
+      <source>Extrude Face</source>
+      <translation>Easbhrúigh Aghaidh</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
+      <source>Extrudes a selected face into a solid</source>
+      <translation>Easbhrúitear aghaidh roghnaithe ina cruth soladach</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_LinkMake</name>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
+      <source>Make Link</source>
+      <translation>Déan Nasc</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
+      <source>Creates a Link to the selected object and immediately enables moving it</source>
+      <translation>Cruthaíonn sé Nasc leis an réad roghnaithe agus cuireann sé ar chumas é a bhogadh láithreach</translation>
     </message>
   </context>
 </TS>

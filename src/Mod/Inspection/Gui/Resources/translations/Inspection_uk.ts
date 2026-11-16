@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="77"/>
       <source>Inspects distance information</source>
-      <translation>Перевірити інформацію про відстань</translation>
+      <translation>Перевіряє відстані</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Inspects the objects visually</source>
-      <translation>Перевірити об'єкти візуально</translation>
+      <translation>Перевіряє об'єкти візуально</translation>
     </message>
   </context>
   <context>
@@ -55,13 +55,13 @@
     <message>
       <location filename="../../VisualInspection.ui" line="17"/>
       <source>Actual</source>
-      <translation>Актуальний</translation>
+      <translation>Фактичний</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="72"/>
       <source>Objects</source>
-      <translation>Обʼєкти</translation>
+      <translation>Об'єкти</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>

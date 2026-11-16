@@ -1160,7 +1160,7 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
       <location filename="../../DlgBlock.ui" line="68"/>
       <location filename="../../DlgBlock.ui" line="229"/>
       <source>Up to face</source>
-      <translation>Jusqu'à la face</translation>
+      <translation>Jusqu'à une face</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="76"/>
@@ -4404,22 +4404,32 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
       <translation>Déflexion angulaire maximale</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
+      <location filename="../../DlgSettings3DViewPart.ui" line="139"/>
+      <source>Applies these tessellation settings to all objects in currently open documents</source>
+      <translation>Applique ces paramètres de tessellation à tous les objets dans les documents actuellement ouverts.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPart.ui" line="142"/>
+      <source>Apply to Open Documents</source>
+      <translation>Appliquer aux documents ouverts</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="94"/>
       <source>Deviation</source>
       <translation>Déviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="95"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Si la déviation est trop faible, la tessellation prend plus de temps et l'interface graphique se fige ou ralentit.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="119"/>
       <source>Angle deflection</source>
       <translation>Déflexion angulaire</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="120"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>Si l'écart angulaire est trop faible, la tessellation prend plus de temps et l'interface graphique se fige ou se ralentit.</translation>
     </message>
@@ -5096,7 +5106,7 @@ sinon le vecteur normal du plan de l'esquisse sera utilisé.</translation>
       <translation>Sélectionner une forme à symétriser</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="321"/>
+      <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
       <translation>Le document « %1 » n'existe pas.</translation>
     </message>
@@ -6612,7 +6622,7 @@ Continue?</source>
       <translation>Entrer une distance :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1011"/>
+      <location filename="../../ViewProviderExt.cpp" line="1012"/>
       <source>Appearance per Face</source>
       <translation>Apparence par face</translation>
     </message>
@@ -7437,7 +7447,7 @@ volumes se chevauchant seront supprimés.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6726"/>
+      <location filename="../../../App/Geometry.cpp" line="6730"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Il n'est pas possible de déterminer l'intersection des courbes. Essayer d'ajouter une
 contrainte de coïncidence entre les sommets des courbes là où il est prévu des congés.</translation>

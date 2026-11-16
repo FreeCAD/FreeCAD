@@ -934,8 +934,8 @@ avec des objets dans le même document ou dans des documents externes.</translat
       <translation>Créer une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Ajouter un corps</translation>
     </message>
@@ -3221,7 +3221,7 @@ position et son orientation d'origine.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="266"/>
       <source>Up to face</source>
-      <translation>Jusqu'à la face</translation>
+      <translation>Jusqu'à une face</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="273"/>
@@ -3584,11 +3584,11 @@ position et son orientation d'origine.</translation>
       <translation>Pas de plan valide dans le document</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1194"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
@@ -3670,11 +3670,11 @@ position et son orientation d'origine.</translation>
       <translation>Sélectionner une seule fonction dans un corps actif</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../Command.cpp" line="1195"/>
       <source>Close this dialog?</source>
       <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
@@ -3896,14 +3896,14 @@ This may lead to unexpected results.</source>
       <translation>Il n’est pas possible de créer une primitive soustractive sans une fonction de base présente.</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
       <location filename="../../TaskTransformedParameters.cpp" line="519"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
       <source>Vertical sketch axis</source>
       <translation>Axe vertical de l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
       <location filename="../../TaskTransformedParameters.cpp" line="525"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
       <source>Horizontal sketch axis</source>
       <translation>Axe horizontal de l'esquisse</translation>
     </message>
@@ -3957,10 +3957,10 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="68"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
@@ -4096,7 +4096,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>Éditer une répétition linéaire</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLoft.cpp" line="67"/>
+      <location filename="../../ViewProviderLoft.cpp" line="71"/>
       <source>Edit Loft</source>
       <translation>Éditer un lissage</translation>
     </message>
@@ -4930,48 +4930,48 @@ over 90: larger hole radius at the bottom</source>
       <translation>La fonction de base a une forme vide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="220"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>Il est impossible de faire une soustraction booléenne sans une fonction de base.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="194"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="242"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Impossible de faire une opération booléenne avec autre chose qu'un Part::Feature et ses dérivés</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="211"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="259"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>Impossible d'appliquer une opération booléenne à une forme de base invalide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2142"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="419"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="435"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="453"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="314"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="554"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composés » dans le corps actif.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="221"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="269"/>
       <source>Tool shape is null</source>
       <translation>La forme de l'outil est nulle</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="248"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="296"/>
       <source>Unsupported boolean operation</source>
       <translation>Opération booléenne non prise en charge</translation>
     </message>
@@ -4996,11 +4996,11 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'extrusion fusionnée résultante est sans résultat.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="415"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="445"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="564"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forme résultante n'est pas un solide</translation>
     </message>
@@ -5158,7 +5158,7 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur : la face doit être plane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2507"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2505"/>
       <source>Error: Result is not a solid</source>
       <translation>Erreur : le résultat n'est pas un solide.</translation>
     </message>
@@ -5238,45 +5238,45 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur sur le trou : la forme résultante est vide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2067"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2065"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Erreur sur le trou : la recherche de l'axe a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2116"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2124"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2122"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>L'opération booléenne a échoué sur le profil de l'arête.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2131"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>L'opération booléenne a produit des éléments non solides sur le profil de l'arête.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="258"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="306"/>
       <source>Boolean operation failed</source>
       <translation>L'opération booléenne a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2157"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2155"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
 L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'est pas autorisée pour créer une cavité jusqu'à une face.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2330"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2328"/>
       <source>Thread type out of range</source>
       <translation>Type de filetage en dehors de la gamme</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2333"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2331"/>
       <source>Thread size out of range</source>
       <translation>Taille du filetage en dehors de la plage</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2481"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2479"/>
       <source>Error: Thread could not be built</source>
       <translation>Erreur : le filetage n'a pas pu être construit.</translation>
     </message>
@@ -5296,8 +5296,8 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <translation>Lissage : la création d'une face à partir de l'esquisse a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
       <location filename="../../../App/FeatureLoft.cpp" line="357"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="492"/>
       <source>Loft: Failed to create shell</source>
       <translation>Lissage : il n'est pas possible de créer une coque.</translation>
     </message>
@@ -5309,87 +5309,87 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse ne sont pas autorisées.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="187"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="203"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Balayage : impossible d'obtenir la forme du profil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="194"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="210"/>
       <source>No spine linked</source>
       <translation>Pas de trajectoire liée</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="209"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="225"/>
       <source>No auxiliary spine linked.</source>
       <translation>Pas de trajectoire auxiliaire liée.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="247"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Balayage : un seul point isolé est nécessaire si vous utilisez une esquisse avec des points isolés pour la section.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="240"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="256"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Balayage : au moins une section est nécessaire lorsque vous utilisez un seul point pour le profil.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="258"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="274"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>Balayage : toutes les sections doivent être des fonctions de Part.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="267"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Balayage : impossible d'obtenir la forme du profil.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="275"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Balayage : seul le profil et la dernière section peuvent être des sommets.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="288"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="303"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Les différentes sections doivent avoir le même nombre de polylignes internes que la section de base.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="321"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="336"/>
       <source>Path must not be a null shape</source>
       <translation>La trajectoire ne doit pas être une forme nulle</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="361"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="376"/>
       <source>Pipe could not be built</source>
       <translation>Le balayage n'a pas pu être construit.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="509"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="524"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Balayage : il n'y a rien à soustraire.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="586"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Une erreur s'est produite lors de la création du balayage.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="698"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="713"/>
       <source>Invalid element in spine.</source>
       <translation>Élément non valide dans la trajectoire</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="703"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="718"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>L'élément dans la trajectoire n'est ni une arête ni une polyligne.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="716"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="731"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>La trajectoire n'est ni une arête ni une polyligne.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="721"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="736"/>
       <source>Invalid spine.</source>
       <translation>Trajectoire non valide</translation>
     </message>
@@ -5639,7 +5639,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Une erreur s'est produite lors du calcul de l'aperçu du volume supprimé : %1</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureAddSub.cpp" line="180"/>
+      <location filename="../../../App/FeatureAddSub.cpp" line="174"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
       <translation>La forme obtenue est vide. Cela peut indiquer qu'aucun matériau ne sera retiré ou qu'il y a un problème avec le modèle.</translation>
     </message>
@@ -5894,32 +5894,32 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="438"/>
+      <location filename="../../TaskPatternParameters.cpp" line="474"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Sélectionner une esquisse ou une forme contenant les points de la répétition</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="444"/>
+      <location filename="../../TaskPatternParameters.cpp" line="480"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Sélectionner une esquisse, une sous forme liée ou une arête de trajectoire</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="453"/>
+      <location filename="../../TaskPatternParameters.cpp" line="489"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Sélectionner une référence de direction (arête, face, ligne de référence)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="517"/>
+      <location filename="../../TaskPatternParameters.cpp" line="553"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Sélection non valide. Sélectionner une esquisse ou une forme contenant des points.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="520"/>
+      <location filename="../../TaskPatternParameters.cpp" line="556"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Sélection non valide. Sélectionner une esquisse, une sous forme liée ou une arête de trajectoire.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="522"/>
+      <location filename="../../TaskPatternParameters.cpp" line="558"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>La sélection est non valide. Sélectionner une arête, une face planaire ou une ligne de référence.</translation>
     </message>
@@ -5945,69 +5945,6 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <location filename="../../TaskDefeaturingParameters.cpp" line="118"/>
       <source>Empty defeaturing created</source>
       <translation>Une fonction « Defeaturing » vide a été créée.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderDefeaturing</name>
-    <message>
-      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
-      <source>Defeaturing Parameters</source>
-      <translation>Paramètres de la suppression de fonction</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPointPattern</name>
-    <message>
-      <location filename="../../ViewProviderPointPattern.h" line="18"/>
-      <source>Point Pattern Parameters</source>
-      <translation>Paramètres de la répétition suivant des points</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
-      <source>Edit Point Pattern</source>
-      <translation>Éditer la répétition suivant des points</translation>
-    </message>
-  </context>
-  <context>
-    <name>BooleanToolSelection</name>
-    <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
-      <source>The result Body cannot be used as a Boolean tool.</source>
-      <translation>Le résultat « Body » ne peut pas être utilisé comme un outil booléen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPathPattern</name>
-    <message>
-      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
-      <source>Edit Path Pattern</source>
-      <translation>Éditer la répétition suivant une courbe</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPathPattern.h" line="18"/>
-      <source>Path Pattern Parameters</source>
-      <translation>Paramètres de la répétition suivant une courbe</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Erreur de saisie</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderCircularPattern</name>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
-      <source>Edit Circular Pattern</source>
-      <translation>Éditer la répétition circulaire</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
-      <source>Circular Pattern Parameters</source>
-      <translation>Paramètres de la répétition circulaire</translation>
     </message>
   </context>
   <context>
@@ -6083,6 +6020,19 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation>Paramètres de la répétition circulaire</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation>Éditer la répétition circulaire</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -6104,6 +6054,56 @@ The geometry may be invalid or the parameters may be incompatible.
 Adjust the parameters and try again.</source>
       <translation>La fonction n'a pas pu être créée avec les paramètres indiqués. La géométrie est peut-être incorrecte ou les paramètres sont peut-être
 incompatibles. Modifier les paramètres et réessayer.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation>Paramètres de la répétition suivant des points</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation>Éditer la répétition suivant des points</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation>Éditer la répétition suivant une courbe</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation>Paramètres de la répétition suivant une courbe</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation>Paramètres de la suppression de fonction</translation>
+    </message>
+  </context>
+  <context>
+    <name>BooleanToolSelection</name>
+    <message>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation>Le résultat « Body » ne peut pas être utilisé comme un outil booléen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Erreur de saisie</translation>
     </message>
   </context>
 </TS>

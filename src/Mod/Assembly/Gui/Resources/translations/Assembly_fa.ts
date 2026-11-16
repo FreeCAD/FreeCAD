@@ -73,12 +73,12 @@
       <translation>زیرمونتاژ شما اکنون انعطاف‌پذیر است. با این کار صلب می‌شود.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="329"/>
+      <location filename="../../../App/BomObject.cpp" line="332"/>
       <source>N/A</source>
       <translation>ناموجود</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="353"/>
+      <location filename="../../../App/BomObject.cpp" line="356"/>
       <source>Not supported</source>
       <translation>پشتیبانی نمی‌شود</translation>
     </message>
@@ -567,32 +567,32 @@ SLOPE تندی گذار از 0 به H1 و از H2 به 0 را به‌ترتیب 
       <translation>شبیه‌سازی</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="396"/>
       <source>Radial Translation</source>
       <translation>جابجایی شعاعی</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="398"/>
+      <location filename="../../../CommandCreateView.py" line="399"/>
       <source>Rotation</source>
       <translation>چرخش</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="401"/>
+      <location filename="../../../CommandCreateView.py" line="402"/>
       <source>Translation</source>
       <translation>جابجایی</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="989"/>
+      <location filename="../../../CommandCreateView.py" line="990"/>
       <source>Angle of this exploded-view move</source>
       <translation>زاویه این حرکت در نمای گسترده</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="999"/>
+      <location filename="../../../CommandCreateView.py" line="1000"/>
       <source>Distance of this exploded-view move</source>
       <translation>فاصله این حرکت در نمای گسترده</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1039"/>
+      <location filename="../../../CommandCreateView.py" line="1040"/>
       <source>Edit placement</source>
       <translation>ویرایش جایگذاری</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE تندی گذار از 0 به H1 و از H2 به 0 را به‌ترتیب 
       <translation>شیئی که باید ثابت شود</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="528"/>
-      <location filename="../../../CommandCreateView.py" line="565"/>
+      <location filename="../../../CommandCreateView.py" line="529"/>
+      <location filename="../../../CommandCreateView.py" line="566"/>
       <source>The objects moved by the move</source>
       <translation>اشیایی که با این حرکت جابه‌جا می‌شوند</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="540"/>
+      <location filename="../../../CommandCreateView.py" line="541"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>حرکت مربوط به این جابه‌جایی است. جایگذاری نهایی حاصل جایگذاری آغازین * این جایگذاری است.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="549"/>
+      <location filename="../../../CommandCreateView.py" line="550"/>
       <source>The type of the move</source>
       <translation>نوع حرکت</translation>
     </message>
@@ -1634,24 +1634,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>برای ایجاد گروه صلب دست‌کم 2 مؤلفه انتخاب کنید</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>ایجاد گروه صلب</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;یک گروه صلب ایجاد می‌کند.&lt;/p&gt;&lt;p&gt;گروه صلب مؤلفه‌های انتخاب‌شده را به‌طور دائمی به هم قفل می‌کند.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1675,6 +1657,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>بازیابی تصویر وضعیت</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>برای ایجاد گروه صلب دست‌کم 2 مؤلفه انتخاب کنید</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>ایجاد گروه صلب</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;یک گروه صلب ایجاد می‌کند.&lt;/p&gt;&lt;p&gt;گروه صلب مؤلفه‌های انتخاب‌شده را به‌طور دائمی به هم قفل می‌کند.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

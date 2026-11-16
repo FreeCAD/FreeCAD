@@ -237,8 +237,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <source>Fit B-spline</source>
       <translation>Ajuster la courbe B-spline</translation>
     </message>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation>Samples par noeuds</translation>
+      <translation>Échantillons par nœuds</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>

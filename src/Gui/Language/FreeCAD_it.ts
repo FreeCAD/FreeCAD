@@ -135,8 +135,8 @@
     <message>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Trasforma</translation>
     </message>
@@ -4742,7 +4742,7 @@ Il sistema di preferenza è quello impostato nelle preferenze generali.</transla
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1168"/>
+      <location filename="../Placement.cpp" line="1173"/>
       <source>Placement</source>
       <translation>Posizionamento</translation>
     </message>
@@ -5484,44 +5484,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Mostra dipendenze</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation>Dipende da</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation>Documento</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>Dipendente da</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>Selezioni</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation>Tutti</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Utilizza selezione originale</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Ignora le dipendenze e procedi con gli oggetti
@@ -5907,22 +5907,22 @@ Salvare tutte le modifiche?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="955"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="956"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Toccare oppure cliccare con il pulsante sinistro del mouse.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="957"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="958"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Trascinare lo schermo con due dita, oppure premere il tasto destro del mouse.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="959"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="960"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
       <translation>Trascinare lo schermo con un dito, oppure premere il tasto sinistro del mouse. In Sketcher e altre modalità di modifica, tenere anche premuto Alt.</translation>
     </message>
     <message>
-      <location filename="../Navigation/GestureNavigationStyle.cpp" line="964"/>
+      <location filename="../Navigation/GestureNavigationStyle.cpp" line="965"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
       <translation>Pinch (posizionare due dita sullo schermo e trascinarle allontanandole o avvicinandole l'una all'altra) OPPURE usare la rotellina del mouse OPPURE usare PgSu/PgGiù sulla tastiera.</translation>
     </message>
@@ -5970,15 +5970,15 @@ Salvare tutte le modifiche?</translation>
       <translation>Bitmap</translation>
     </message>
     <message>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
+      <source>Export Graph</source>
+      <translation>Esporta il grafo</translation>
+    </message>
+    <message>
       <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation>Esporta grafico</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="765"/>
-      <location filename="../GraphvizView.cpp" line="411"/>
-      <source>Export Graph</source>
-      <translation>Esporta il grafo</translation>
     </message>
   </context>
   <context>
@@ -6123,12 +6123,12 @@ Salvare tutte le modifiche?</translation>
       <translation>Macro</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation>Il file di macro non esiste</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation>Nessun file macro: '%1'</translation>
     </message>
@@ -6831,30 +6831,30 @@ Uscire senza salvare tutti i dati?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="871"/>
+      <location filename="../Action.cpp" line="887"/>
       <source>Open...</source>
       <translation>Apri...</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="872"/>
-      <location filename="../Action.cpp" line="873"/>
+      <location filename="../Action.cpp" line="888"/>
+      <location filename="../Action.cpp" line="889"/>
       <source>Open a document or import files.</source>
       <translation>Apre un documento o importa dei file.</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="888"/>
-      <location filename="../Action.cpp" line="897"/>
+      <location filename="../Action.cpp" line="904"/>
+      <location filename="../Action.cpp" line="913"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Pulisci File Recenti</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="898"/>
+      <location filename="../Action.cpp" line="914"/>
       <source>Clear the list of recent files?</source>
       <translation>Cancellare l'elenco dei file recenti?</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="973"/>
+      <location filename="../Action.cpp" line="989"/>
       <source>Open file %1</source>
       <translation>Apri file %1</translation>
     </message>
@@ -6862,12 +6862,12 @@ Uscire senza salvare tutti i dati?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1148"/>
+      <location filename="../Action.cpp" line="1164"/>
       <source>none</source>
       <translation>nessuno</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1166"/>
+      <location filename="../Action.cpp" line="1182"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Esegue la macro %1 (Maiusc+clic per modificare) scorciatoia da tastiera: %2</translation>
     </message>
@@ -7427,6 +7427,11 @@ Specificare un'altra directory?</translation>
       <translation>Ebraico</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="280"/>
+      <source>Persian</source>
+      <translation type="unfinished">Persian</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="239"/>
       <source>Danish</source>
       <translation>Danese</translation>
@@ -7739,12 +7744,12 @@ Specificare un'altra directory?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="732"/>
+      <location filename="../Action.cpp" line="748"/>
       <source>Selects the '%1' workbench</source>
       <translation>Seleziona l'ambiente di lavoro '%1'</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="760"/>
+      <location filename="../Action.cpp" line="776"/>
       <source>Select the '%1' workbench</source>
       <translation>Seleziona l'ambiente '%1'</translation>
     </message>
@@ -8114,7 +8119,7 @@ Consultare la vista report per maggiori dettagli.</translation>
       <translation> → Riavvio…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation>Eccezione</translation>
     </message>
@@ -8160,13 +8165,6 @@ Consultare la vista report per maggiori dettagli.</translation>
       <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation>Unisci documento</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
-      <location filename="../Document.cpp" line="1749"/>
-      <location filename="../Document.cpp" line="1879"/>
-      <source>%1 document</source>
-      <translation>%1 documento</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="687"/>
@@ -8617,6 +8615,13 @@ Usa 'Salva come…' per preservare il file originale.
       <translation>Salva il documento con nuovo nome di file…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
+      <source>%1 document</source>
+      <translation>%1 documento</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Salvare una copia del documento con un nuovo nome di file…</translation>
@@ -9007,8 +9012,8 @@ the current copy will be lost.
       <translation>Attiva/disattiva sovrapposizione</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <location filename="../OverlayManager.cpp" line="1131"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
       <source>Toggle floating window</source>
       <translation>Attiva/disattiva finestra fluttuante</translation>
     </message>
@@ -9194,6 +9199,11 @@ the current copy will be lost.
       <translation>Applica a tutti gli oggetti selezionati (%1) e ai loro elementi figlio</translation>
     </message>
     <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Parte</translation>
+    </message>
+    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="172"/>
       <source>Edit Image Plane</source>
       <translation>Modifica piano immagine</translation>
@@ -9208,21 +9218,16 @@ the current copy will be lost.
       <source>All Files</source>
       <translation>Tutti i file</translation>
     </message>
-    <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Parte</translation>
-    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation>Non consentito:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation>Selezione non consentita dal filtro</translation>
     </message>
@@ -9536,8 +9541,8 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <source>Unnamed</source>
       <translation>Senza nome</translation>
     </message>
@@ -14751,49 +14756,6 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Oggetto</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Filtra per tipo</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Sincronizza la selezione della vista 3D con la gerarchia degli oggetti</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Sincronizza la selezione dei sotto-oggetti</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Trova</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Un modello di ricerca per filtrare i risultati di cui sopra</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Ripristina</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Pulisci</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14895,17 +14857,69 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
+    <name>Gui::Dialog::DlgDocumentObject</name>
     <message>
-      <location filename="../FileDialog.cpp" line="579"/>
-      <source>Save As</source>
-      <translation>Salva come</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Oggetto</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="715"/>
-      <location filename="../FileDialog.cpp" line="811"/>
-      <source>Open</source>
-      <translation>Apri</translation>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Filtra per tipo</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Sincronizza la selezione della vista 3D con la gerarchia degli oggetti</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Sincronizza la selezione dei sotto-oggetti</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Trova</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Un modello di ricerca per filtrare i risultati di cui sopra</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Ripristina</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Pulisci</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1067"/>
+      <source>Experimental</source>
+      <translation>Sperimentale</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation>ESPERIMENTALE: questo comando può cambiare.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1073"/>
+      <source>Development preview</source>
+      <translation>Anteprima sviluppo</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1074"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation>PREVISIONE DELLO SVILUPPO: questo comando può cambiare o essere rimosso.</translation>
     </message>
   </context>
   <context>
@@ -14947,16 +14961,17 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
+    <name>FileDialog</name>
     <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Attiva/disattiva i pannelli inferiori</translation>
+      <location filename="../FileDialog.cpp" line="579"/>
+      <source>Save As</source>
+      <translation>Salva come</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Attiva/disattiva i pannelli agganciabili inferiori</translation>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
+      <source>Open</source>
+      <translation>Apri</translation>
     </message>
   </context>
   <context>
@@ -14970,32 +14985,6 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
       <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
       <translation>Valore</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOpenGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
-      <source>&amp;Open…</source>
-      <translation>&amp;Apri…</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
-      <source>Opens a document or imports files</source>
-      <translation>Apre un documento o importa dei file</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSaveGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="966"/>
-      <source>Save</source>
-      <translation>Salva</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="967"/>
-      <source>Saves the active document</source>
-      <translation>Salva il documento attivo</translation>
     </message>
   </context>
   <context>
@@ -15043,26 +15032,42 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
     </message>
   </context>
   <context>
-    <name>Gui::Command</name>
+    <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
-      <source>Experimental</source>
-      <translation>Sperimentale</translation>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Attiva/disattiva i pannelli inferiori</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
-      <source>EXPERIMENTAL: this command may change.</source>
-      <translation>ESPERIMENTALE: questo comando può cambiare.</translation>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Attiva/disattiva i pannelli agganciabili inferiori</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdOpenGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="85"/>
+      <source>&amp;Open…</source>
+      <translation>&amp;Apri…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
-      <source>Development preview</source>
-      <translation>Anteprima sviluppo</translation>
+      <location filename="../CommandDoc.cpp" line="86"/>
+      <source>Opens a document or imports files</source>
+      <translation>Apre un documento o importa dei file</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <source>Save</source>
+      <translation>Salva</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
-      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation>PREVISIONE DELLO SVILUPPO: questo comando può cambiare o essere rimosso.</translation>
+      <location filename="../CommandDoc.cpp" line="967"/>
+      <source>Saves the active document</source>
+      <translation>Salva il documento attivo</translation>
     </message>
   </context>
   <context>

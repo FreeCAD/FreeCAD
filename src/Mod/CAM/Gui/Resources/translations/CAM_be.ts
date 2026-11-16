@@ -1152,6 +1152,11 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>Пераключыце значэнне ўтрымання суадносін інструмента паміж 0 і дыяметрам інструмента</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="204"/>
+      <source>How much stock to leave on the walls for this operation</source>
+      <translation>Колькі загатоўкі трэба пакінуць на сценках для гэтай аперацыі</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
       <source>Force clearing inside-out</source>
       <translation>Прымусовая ачыстка ўнутры</translation>
@@ -1355,7 +1360,7 @@ Does not affect the toolpath point spacing (Sample Interval).</source>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="140"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="49"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="42"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="33"/>
       <source>Direction</source>
       <translation>Напрамак</translation>
     </message>
@@ -1810,35 +1815,24 @@ S-вобразны выгіб - спадзісты з абодвух канцо�
       <translation>Фігура мяжы</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="30"/>
-      <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
-
-The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.</source>
-      <translation>Пакажыце, ці павінна абліцоўка абмяжоўвацца фактычнай фігурай абранай грані (ці дэталі, калі грань не абраная), альбо калі габарыты павінны быць звернутымі ў бок.
-
-Апошняе можна ўжываць для абліцоўкі ўсёй вобласці загатоўкі, каб забяспечыць раўнамерную вышыню для наступных аперацый.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="45"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="39"/>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="45"/>
       <source>Cut Mode</source>
       <translation>Рэжым апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="56"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="73"/>
       <source>Climb</source>
       <translation>Узбірацца</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="61"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="78"/>
       <source>Conventional</source>
       <translation>Звычайны</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="69"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="49"/>
       <source>Pattern</source>
       <translation>Шаблон</translation>
     </message>
@@ -1854,72 +1848,33 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Рэжым астуджэння</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="52"/>
-      <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
-      <translation>Рэжым апрацоўкі мяркуе, што апрацоўкі на адным баку такарным разцом уяўляе сабой атрыманую дэталь, а другі бок альбо ўжо адздрабнены, альбо будзе выдалены пазней.
-
-Рэжым уздыму - калі такарны разец рухаецца ў разрэз пры кожным вярчэнні, тады як у звычайным рэжыме вярчэнне такарных разцоў і бакавы рух інструментаў адбываюцца ў адным напрамку</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="76"/>
-      <source>Pattern the tool bit is moved in to clear the material</source>
-      <translation>Шаблон, у якім такарны разец рухаецца ўнутр, каб ачысціць матэрыял</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="83"/>
-      <source>ZigZag</source>
-      <translation>Зігзаг</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
-      <source>Spiral</source>
-      <translation>Спіраль</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="98"/>
-      <source>ZigZagOffset</source>
-      <translation>Зрушэнне зігзагу</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="103"/>
-      <source>Line</source>
-      <translation>Лінія</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="108"/>
-      <source>Grid</source>
-      <translation>Сетка</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="113"/>
-      <source>Triangle</source>
-      <translation>Трыкутнік</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="121"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="79"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="55"/>
       <source>Angle</source>
       <translation>Вугал</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="128"/>
-      <source>Angle in which the pattern is applied</source>
-      <translation>Вугал, пад якім прымяняецца шаблон</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="59"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <source>Start at</source>
+      <translation>Пачаць з</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="69"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="44"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="53"/>
+      <source>Sorting</source>
+      <translation>Парадкаванне</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="86"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="62"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="157"/>
-      <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
-      <translation>Бакавая адлегласць*, на якую перамяшчаецца рэжучы інструмент паміж паслядоўнымі праходамі
-(* у адсотках ад дыяметра інструмента).</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="121"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
@@ -1932,78 +1887,69 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="179"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="129"/>
+      <source>Finishing passes</source>
+      <translation>Фінішныя праходы</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="146"/>
+      <source>Finishing offset</source>
+      <translation>Фінішная зрушэнне</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="158"/>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="155"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="61"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
       <source>Radial stock to leave</source>
       <translation>Радыяльная загатоўка, якую трэба пакінуць</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
-      <source>Set picked point as start point</source>
-      <translation>Задаць выбраную кропку ў якасці пачатковай</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="186"/>
-      <source>The amount of material that should be left by this operation in relation to the target shape</source>
-      <translation>Колькасць матэрыялу, якое павінна застацца ў выніку гэтай аперацыі, у адносінах да мэтавай фігуры</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="193"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="75"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="168"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="73"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
       <source>Retract threshold</source>
       <translation>Парог адводу</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="200"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
-      <source>Distance which will attempts to avoid unnecessary retractions</source>
-      <translation>Адлегласць, якая дазволіць пазбегнуць непатрэбных адводаў</translation>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="162"/>
+      <source>Finishing one step down</source>
+      <translation>Завяршэнне на адзін крок ніжэй</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="210"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="92"/>
-      <source>Toggle retract threshold between 0 and tool diameter</source>
-      <translation>Пераключыць парог уцягвання паміж 0 і дыяметрам інструмента</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="231"/>
-      <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
-      <translation>Калі абрана, аперацыя ўжывае контур абранай асноўнай геаметрыі і прапускае ўсе адтуліны</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="207"/>
       <source>Ignore holes</source>
       <translation>Ігнараваць адтуліны</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="228"/>
       <source>Specify if this operation uses a starting point</source>
       <translation>Пакажыце, ці ўжываецца ў аперацыі пачатковая кропка</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="231"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="190"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="204"/>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="415"/>
       <source>Use start point</source>
       <translation>Ужыць пачатковую кропку</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="238"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="211"/>
+      <source>Set picked point as start point</source>
+      <translation>Задаць выбраную кропку ў якасці пачатковай</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="214"/>
       <source>Clear edges</source>
       <translation>Ачысціць рэбры</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="248"/>
-      <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation>Праверце, ці не прапускаюцца вобласці апрацоўкі, якія ўжо былі ачышчаны папярэднімі аперацыямі</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="221"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="241"/>
       <source>Use rest machining</source>
       <translation>Ужываць механічную апрацоўку</translation>
@@ -2049,14 +1995,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>ProbePoints.txt</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="34"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="53"/>
-      <source>PLACEHOLDER</source>
-      <translation>ЗАПАЎНЯЛЬНІК</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="56"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="49"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
       <translation>Напрамак, у якім выконваецца профіль, па гадзінніку ці супраць</translation>
     </message>
@@ -2066,87 +2005,44 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Апрацаваць бок</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="30"/>
-      <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if &apos;Use compensation&apos; is checked (the default).</source>
-      <translation>Пакажыце, ці варта ўжываць профіль унутры ці звонку асноўных геаметрычных характарыстык.
-Гэта мае значэнне толькі калі ўключаная налада 'Ужываецца кампенсацыя' (першапачаткова).</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="68"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="204"/>
-      <source>How much stock to leave on the walls for this operation</source>
-      <translation>Колькі загатоўкі трэба пакінуць на сценках для гэтай аперацыі</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="107"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="102"/>
       <source>Number of passes</source>
       <translation>Колькасць праходаў</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="120"/>
-      <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
-      <translation>Колькасць выкананых праходаў.
-Калі іх больш аднаго, патрабуецца ненулявое значэнне для налады 'Пакрокавае выкананне праходу'.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="119"/>
       <source>Pass stepover</source>
       <translation>Праход пераходнага этапу</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="134"/>
-      <source>If doing multiple passes, the extra offset of each additional pass</source>
-      <translation>Пры выкананні некалькіх праходаў патрабуецца дадатковае зрушэнне кожнага дадатковага праходу</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="187"/>
-      <source>Check if this operation should use a starting point</source>
-      <translation>Праверце, ці павінна ўжываць гэтая аперацыя пачатковую кропку</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
-      <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation>Правярае, ці павінна гэтая аперацыя прафілявання таксама апрацоўваць адтуліны ў асноўнай геаметрыі.
-Знойдзеныя адтуліны аўтаматычна ссоўваюцца на супрацьлеглы бок апрацоўкі, і выконваецца ў супрацьлеглым напрамку ад перыметраў.
-Звярніце ўвагу, што не ўключаюцца круглыя адтуліны, бо мяркуецца, што яны будуць прасвідраваныя</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="169"/>
       <source>Process holes</source>
       <translation>Тэхналагічныя адтуліны</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
-      <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by &apos;Cut side&apos;.</source>
-      <translation>Калі птушка, аперацыя прафілявання ссоўваецца на радыус інструмента.
-Напрамак зрушэння вызначаецца наладай 'Бок апрацоўкі'.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
-      <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</source>
-      <translation>Праверце, каб дадзеная аперацыя прафілявання прымянялася таксама да круглых адтулін, якія звычайна прасвідроўваюцца.
-Можа быць карысным, калі няма даступнага свердзела падыходнага дыяметру, альбо колькасць адтулін не апраўдвае неабходнасць замены інструмента.
-Звярніце ўвагу, што бок і напрамак апрацоўкі супрацьлеглы адносна паказаных значэнняў.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="183"/>
       <source>Process circles</source>
       <translation>Тэхналагічныя акружнасці</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
-      <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
-      <translation>Праверце, ці павінна гэтая аперацыя прафілявання таксама апрацоўваць вонкавы перыметр асноўных геаметрычных фігур</translation>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="87"/>
+      <source>Toggle retract threshold between 0 and tool diameter</source>
+      <translation>Пераключыць парог уцягвання паміж 0 і дыяметрам інструмента</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="176"/>
       <source>Use Compensation</source>
       <translation>Ужыць кампенсацыю</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="180"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="190"/>
       <source>Process Perimeter</source>
       <translation>Тэхналагічны перыметр</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
+      <source>Use longest edge</source>
+      <translation>Ужыць самае доўгае рабро</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="88"/>
@@ -2341,12 +2237,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>Шаблон апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="44"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
-      <source>Sorting</source>
-      <translation>Парадкаванне</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="52"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="39"/>
       <source>Automatic</source>
@@ -2507,7 +2397,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
 Меншыя значэнні хутка павялічваюць час апрацоўкі.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="150"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="105"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="114"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
@@ -5149,32 +5039,32 @@ Default: 3 mm</source>
       <translation>грань %s не апрацоўваецца, мяркуючы, што яна не вертыкальная</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="244"/>
+      <location filename="../../../Path/Geom.py" line="249"/>
       <source>edge %s not handled, assuming not vertical</source>
       <translation>рабро %s не апрацоўваецца, мяркуючы, што яно не вертыкальнае</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="248"/>
+      <location filename="../../../Path/Geom.py" line="253"/>
       <source>isVertical(%s) not supported</source>
       <translation>isVertical(%s) не падтрымліваецца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="278"/>
+      <location filename="../../../Path/Geom.py" line="283"/>
       <source>isHorizontal(%s) not supported</source>
       <translation>isHorizontal(%s) не падтрымліваецца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="863"/>
+      <location filename="../../../Path/Geom.py" line="868"/>
       <source>%s not supported for flipping</source>
       <translation>%s не падтрымліваецца для павароту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="933"/>
+      <location filename="../../../Path/Geom.py" line="938"/>
       <source>combineHorizontalFaces: Zero working area to process</source>
       <translation>combineHorizontalFaces: нулявая працоўная зона для апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="955"/>
+      <location filename="../../../Path/Geom.py" line="961"/>
       <source>Can not restore order of faces.</source>
       <translation>Не атрымалася аднавіць парадак размяшчэння граняў.</translation>
     </message>
@@ -5422,7 +5312,7 @@ Affects only to Path repesentation in 3d view.</source>
       <translation>Змяніць вывад з траекторыі руху інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="193"/>
+      <location filename="../../../Path/Op/Profile.py" line="202"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="94"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="358"/>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="70"/>
@@ -5519,7 +5409,6 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>Выканаць апусканне з дапамогай G0</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="249"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="55"/>
       <source>Angle of ramp</source>
       <translation>Вугал уваходу</translation>
@@ -5542,11 +5431,6 @@ Ramp Method 4: Ramp down at rampangle along the path, continue with the original
 Метад уваходу 4: рух па нахільнай плоскасці наўздоўж траекторыі, працягвае рух па першапачатковай траекторыі, пашырае і зачыняе траекторыю на апошняй пятлі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="82"/>
-      <source>Should the dressup ignore motion commands above DressupStartDepth</source>
-      <translation>Ці павінна аздабленне ігнараваць каманды руху, якія прыведзеныя вышэй DressupStartDepth</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="93"/>
       <source>The depth where the ramp dressup is enabled.
 Above this depth ramps are not generated, but motion commands are passed through as is.</source>
@@ -5558,6 +5442,11 @@ Above this depth ramps are not generated, but motion commands are passed through
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="185"/>
       <source>Calculate ramp angle from vertical plane</source>
       <translation>Вылічыць вугал нахілу ад вертыкальнай плоскасці</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="82"/>
+      <source>Should the dressup ignore motion commands above DressupStartDepth</source>
+      <translation>Ці павінна аздабленне ігнараваць каманды руху, якія прыведзеныя вышэй DressupStartDepth</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="68"/>
@@ -5777,75 +5666,75 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>Задаць False, каб прадухіліць стварэнне G-code для аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1552"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1557"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>Бок выбраных граняў, якую інструмент павінен абрэзаць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1561"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1566"/>
       <source>Type of adaptive operation</source>
       <translation>Тып адаптыўнай аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1615"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1620"/>
       <source>Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>Задаць, колькі загатоўкі павінна заставацца на паверхні для выканання аперацыі.
 Уласцівасць ужываецца толькі калі ўключана налада ModelAwareExperiment.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1691"/>
-      <location filename="../../../Path/Op/Helix.py" line="284"/>
-      <location filename="../../../Path/Op/Helix.py" line="544"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1696"/>
+      <location filename="../../../Path/Op/Helix.py" line="286"/>
+      <location filename="../../../Path/Op/Helix.py" line="546"/>
       <source>The maximum allowable descent in a single revolution of the helix
 Set to zero to disable limitation by pitch</source>
       <translation>Найбольш дапушчальны спуск за адзін абарот спіралі.
 Задаць значэнне нуль, каб адключыць абмежаванне па падачы</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1718"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1912"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1723"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1917"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation>Найменшы дапушчальны ўваходны дыяметр спіралі ў адсотках ад дыяметра інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1745"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1750"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>Парадкуе разрэзы па рэгіёнах, а не па глыбіні.
 Ужываецца толькі калі ўключаная эксперыментальная функцыя з улікам мадэлі (ModelAwareExperiment).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1760"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1884"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1765"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1889"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation>Уключыць функцыю азнаямлення з эксперыментальнай мадэллю, каб улічваць трохмерную геаметрыю і прадухіляць рэзанне пад навісямі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1934"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1939"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation>Найбольш дапушчальны спуск за адзін абарот спіралі.
 Задаць значэнне нуль, каб адключыць абмежаванне падачы.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="173"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1579"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1964"/>
-      <location filename="../../../Path/Op/Helix.py" line="160"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="171"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1584"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1969"/>
+      <location filename="../../../Path/Op/Helix.py" line="162"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Адсотак дыяметра разца, які неабходна пераступаць пры кожным праходзе</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="564"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1588"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1593"/>
       <source>Lift distance for rapid moves</source>
       <translation>Адлегласць Уздыму для хуткіх рухаў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1597"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1602"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>Найбольшая даўжыня траекторыі апускання інструмента ў параўнанні з прамой адлегласцю паміж кропкамі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1570"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1575"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5855,40 +5744,40 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="584"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1624"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1629"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>Высілак, з якім матэрыял апускаецца ўнутр і чысціцца па рэбрах</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="593"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1633"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1638"/>
       <source>To take a finishing profile path at the end</source>
       <translation>Каб абраць траекторыю чыставой апрацоўкі ў канцы</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1640"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1650"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1645"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1655"/>
       <source>Stop processing</source>
       <translation>Спыніць апрацоўку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1660"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1665"/>
       <source>Internal input state</source>
       <translation>Стан уваходнага ўваходу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1669"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1674"/>
       <source>Internal output state</source>
       <translation>Стан уваходнага выхаду</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1700"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1705"/>
       <source>Helix cone angle (degrees)</source>
       <translation>Вугал уваходу ў конус (градусы)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketShape.py" line="78"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1732"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Ужывае контур асноўнай геаметрыі.</translation>
     </message>
@@ -5898,13 +5787,13 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>Зачыніць разамкнутую вобласць, адукаваную рэбрамі, ці вертыкальныя грані прамой лініяй.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1862"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>Парадак скарачэння па рэгіёнах, а не па глыбіні.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="95"/>
-      <location filename="../../../Path/Op/Area.py" line="146"/>
+      <location filename="../../../Path/Op/Area.py" line="93"/>
+      <location filename="../../../Path/Op/Area.py" line="144"/>
       <source>Split Arcs into discrete segments</source>
       <translation>Разбіць дугі на асобныя адрэзкі</translation>
     </message>
@@ -6068,31 +5957,31 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
       <translation>Налада астуджэння для аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="84"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="87"/>
       <source>List of disabled features</source>
       <translation>Спіс выключаных характарыстык</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="91"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="300"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="94"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="308"/>
       <source>Manual or Automatic mode sorting of holes</source>
       <translation>Парадкаванне адтулін у ручным ці аўтаматычным рэжыме</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="102"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="314"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="105"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="322"/>
       <source>Start point for automatic sorting (x,y used, z ignored)</source>
       <translation>Пачатковая кропка для аўтаматычнага парадкавання (x,y ужываюцца, z ігнаруецца)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="109"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="323"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="112"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="331"/>
       <source>Enable to use end point for automatic sorting</source>
       <translation>Дазволіць ужываць канцавую кропку для аўтаматычнага парадкавання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="118"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="335"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="121"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="343"/>
       <source>End point for automatic sorting (x,y used, z ignored)</source>
       <translation>Канцавая кропка для аўтаматычнага парадкавання (x,y ужываюцца, z ігнаруецца)</translation>
     </message>
@@ -6285,23 +6174,23 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
       <translation>Пры ўключэнні злучаныя рэбры пашырэння аб'ядноўваюцца ў ломаныя лініі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="133"/>
+      <location filename="../../../Path/Op/Helix.py" line="135"/>
       <source>The direction of the circular cuts, ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Напрамак кругавых разрэзаў: па гадзінніку (CW) ці супраць (CCW)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="142"/>
+      <location filename="../../../Path/Op/Helix.py" line="144"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Пачынаць разрэз знутры ці звонку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="151"/>
-      <location filename="../../../Path/Op/Helix.py" line="571"/>
+      <location filename="../../../Path/Op/Helix.py" line="153"/>
+      <location filename="../../../Path/Op/Helix.py" line="573"/>
       <source>The direction of the circular cuts</source>
       <translation>Напрамак круглай абрэзкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="172"/>
+      <location filename="../../../Path/Op/Helix.py" line="174"/>
       <source>Set how much stock to leave on the inner wall for the operation.
 Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
 For External profile - profile radius</source>
@@ -6310,70 +6199,70 @@ For External profile - profile radius</source>
 Для вонкавага профілю - радыус профілю</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="181"/>
-      <location filename="../../../Path/Op/Helix.py" line="420"/>
+      <location filename="../../../Path/Op/Helix.py" line="183"/>
+      <location filename="../../../Path/Op/Helix.py" line="422"/>
       <source>Set how much stock to leave on the outer wall for the operation.</source>
       <translation>Задаць, колькі загатоўкі трэба пакінуць на па-за межамі сценкі для аперацыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="190"/>
-      <location filename="../../../Path/Op/Helix.py" line="475"/>
+      <location filename="../../../Path/Op/Helix.py" line="192"/>
+      <location filename="../../../Path/Op/Helix.py" line="477"/>
       <source>Cone angle of the Helix</source>
       <translation>Вугал конусу спіралі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="199"/>
-      <location filename="../../../Path/Op/Helix.py" line="433"/>
+      <location filename="../../../Path/Op/Helix.py" line="201"/>
+      <location filename="../../../Path/Op/Helix.py" line="435"/>
       <source>Create only one Helix</source>
       <translation>Стварыць толькі адну спіраль</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="208"/>
-      <location filename="../../../Path/Op/Helix.py" line="443"/>
+      <location filename="../../../Path/Op/Helix.py" line="210"/>
+      <location filename="../../../Path/Op/Helix.py" line="445"/>
       <source>Create spiral mill</source>
       <translation>Стварыць спіральнае здрабненне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="217"/>
-      <location filename="../../../Path/Op/Helix.py" line="453"/>
+      <location filename="../../../Path/Op/Helix.py" line="219"/>
+      <location filename="../../../Path/Op/Helix.py" line="455"/>
       <source>Create finish full circle for helix</source>
       <translation>Стварыць завяршальную поўную акружнасць для спіралі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="226"/>
-      <location filename="../../../Path/Op/Helix.py" line="464"/>
+      <location filename="../../../Path/Op/Helix.py" line="228"/>
+      <location filename="../../../Path/Op/Helix.py" line="466"/>
       <source>Create finish full circle for spiral</source>
       <translation>Стварыць завяршальную поўную акружнасць для спіралі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="235"/>
-      <location filename="../../../Path/Op/Helix.py" line="485"/>
+      <location filename="../../../Path/Op/Helix.py" line="237"/>
+      <location filename="../../../Path/Op/Helix.py" line="487"/>
       <source>Side of profile on which create Path</source>
       <translation>Бок профілю, на якім ствараецца траекторыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="244"/>
-      <location filename="../../../Path/Op/Helix.py" line="496"/>
+      <location filename="../../../Path/Op/Helix.py" line="246"/>
+      <location filename="../../../Path/Op/Helix.py" line="498"/>
       <source>Move from wall while retract if there is free space</source>
       <translation>Перамясціць ад сцяны і адвод назад, калі ёсць вольная прастора</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="253"/>
-      <location filename="../../../Path/Op/Helix.py" line="507"/>
+      <location filename="../../../Path/Op/Helix.py" line="255"/>
+      <location filename="../../../Path/Op/Helix.py" line="509"/>
       <source>Override arcs feed rate to get constant tool cutting speed</source>
       <translation>Змяніць хуткасць падачы дуг, каб атрымаць пастаянную хуткасць рэзання інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="263"/>
-      <location filename="../../../Path/Op/Helix.py" line="518"/>
+      <location filename="../../../Path/Op/Helix.py" line="265"/>
+      <location filename="../../../Path/Op/Helix.py" line="520"/>
       <source>Replace profiles diameter to get identical size of the holes
 This value can not be less than tool diameter</source>
       <translation>Замяніць дыяметр профіляў, каб атрымаць аднолькавы памер адтулін.
 Значэнне не можа быць менш дыяметра інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="274"/>
-      <location filename="../../../Path/Op/Helix.py" line="530"/>
+      <location filename="../../../Path/Op/Helix.py" line="276"/>
+      <location filename="../../../Path/Op/Helix.py" line="532"/>
       <source>Determine position of the start and end point
 Angle 0 means start and end points located along axis X
 Set -1 to calculate optimal angle automatically</source>
@@ -6382,21 +6271,21 @@ Set -1 to calculate optimal angle automatically</source>
 Задайце -1 для аўтаматычнага вылічэння аптымальнага вугла</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="294"/>
-      <location filename="../../../Path/Op/Helix.py" line="561"/>
+      <location filename="../../../Path/Op/Helix.py" line="296"/>
+      <location filename="../../../Path/Op/Helix.py" line="563"/>
       <source>The maximum allowable ramp entry angle
 Set to zero to disable limitation by ramp angle</source>
       <translation>Найбольш дапушчальны вугал уваходу.
 Задаць значэнне нуль, каб адключыць абмежаванне па вуглу ўваходу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="303"/>
-      <location filename="../../../Path/Op/Helix.py" line="589"/>
+      <location filename="../../../Path/Op/Helix.py" line="305"/>
+      <location filename="../../../Path/Op/Helix.py" line="591"/>
       <source>Allows to process cone helix from bottom to top</source>
       <translation>Дазваляе апрацоўваць спіраль конусу знізу даверху</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="407"/>
+      <location filename="../../../Path/Op/Helix.py" line="409"/>
       <source>Set how much stock to leave on the inner wall for the operation.
 Default inner radius is Tool radius and can not be less than (-ToolRadius)
 For External profile - profile radius</source>
@@ -6444,32 +6333,32 @@ For External profile - profile radius</source>
       <translation>Апрацаваць мадэль і загатоўку ў аперацыі без выбару асноўнай геаметрыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="159"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="157"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Дадатковае зрушэнне, якое ўжываецца да аперацыі. Напрамак залежыць ад аперацыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="165"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="163"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Пачынаць апрацоўку кішэні ў цэнтры ці на мяжы</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="179"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="177"/>
       <source>Angle of the grid, line and zigzag patterns</source>
       <translation>Вугал нахілу сеткі, ліній і зігзагападобных шаблонаў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="194"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="358"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="192"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="347"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="94"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="145"/>
       <source>Set distance which will attempts to avoid unnecessary retractions.</source>
       <translation>Задаць адлегласць, якая дазволіць пазбегнуць непатрэбных адводаў.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="214"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="370"/>
-      <location filename="../../../Path/Op/Profile.py" line="204"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="212"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="359"/>
+      <location filename="../../../Path/Op/Profile.py" line="213"/>
       <source>Order processing of the shapes
 Automatic: uses nearest neighbour algorithm to sort shapes
 Manual: uses order of shapes selection</source>
@@ -6478,48 +6367,42 @@ Manual: uses order of shapes selection</source>
 Ручны: ужываецца парадак выбару фігур</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="223"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="348"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="221"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="337"/>
       <source>Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, &gt;50%) to ensure full area coverage.</source>
       <translation>Прымусова павялічыць крок, нават калі ачышчана не ўся вобласць.
 Калі не птушка, крок можа быць паменшаны (пры вялікім кроку >50%), каб забяспечыць поўны ахоп вобласці.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="232"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="396"/>
-      <location filename="../../../Path/Op/Profile.py" line="213"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="230"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="385"/>
+      <location filename="../../../Path/Op/Profile.py" line="222"/>
       <source>Distance between roughing and finishing passes</source>
       <translation>Адлегласць паміж чарнавым і чыставым праходамі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="242"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="419"/>
-      <location filename="../../../Path/Op/Profile.py" line="259"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="240"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="408"/>
+      <location filename="../../../Path/Op/Profile.py" line="250"/>
       <source>Adds an additional finishing pass that clears the stock left over from tool deflection</source>
       <translation>Дадае дадатковы чыставы праход, які ачышчае загатоўку, якая засталася пасля адхіленні інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="251"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="408"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="249"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="397"/>
       <source>Finishing pass will processing with one step down at final depth</source>
       <translation>Завяршальны праход прывядзе да апрацоўкі на адзін крок уніз на апошняй глыбіні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="260"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="432"/>
-      <source>Create helix ramp for finishing pass</source>
-      <translation>Стварыць уваход спіралі для апошняга праходу</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="185"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="183"/>
       <source>Clearing pattern to use</source>
       <translation>Ачыстка шаблона, які ўжываецца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="203"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="338"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1851"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="201"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="327"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1741"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
       <translation>Прапускаць вобласці апрацоўкі, якія ўжо былі ачышчаны папярэднімі аперацыямі.</translation>
     </message>
@@ -6556,77 +6439,76 @@ Manual: uses order of shapes selection</source>
 Кропка павінна знаходзіцца ўнутры фігуры на канчатковай глыбіні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="150"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="148"/>
       <location filename="../../../Path/Op/Profile.py" line="105"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Напрамак, у якім траекторыя руху інструмента павінна праходзіць вакол дэталі па гадзінніку (CW) ці супраць (CCW)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="123"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1606"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1611"/>
       <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
       <source>Set how much stock to leave on the walls for the operation.</source>
       <translation>Задаць, колькі загатоўкі трэба пакінуць на сценках для аперацыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="129"/>
-      <source>Profile holes as well as the outline</source>
-      <translation>Прафіляваць адтуліны, а таксама контур</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="135"/>
-      <source>Profile the outline</source>
-      <translation>Прафіляваць контур</translation>
+      <location filename="../../../Path/Op/Profile.py" line="132"/>
+      <source>Profile holes as well as the outline.
+Only with horizontal faces.</source>
+      <translation>Адтуліны профілю, а таксама контур.
+Толькі з гарызантальнымі гранямі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="141"/>
-      <source>Profile round holes</source>
-      <translation>Прафіляваць закругленыя адтуліны</translation>
+      <source>Profile the outline.
+Only with horizontal faces.</source>
+      <translation>Профіль контуру.
+Толькі з гарызантальнымі гранямі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="147"/>
+      <location filename="../../../Path/Op/Profile.py" line="150"/>
+      <source>Profile round holes.
+Only with horizontal faces.</source>
+      <translation>Профіль закругленых адтулін.
+Толькі з гарызантальнымі гранямі.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="156"/>
       <source>Side of edge that tool should cut</source>
       <translation>Бок рабра, які інструмент павінен абрэзаць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="155"/>
+      <location filename="../../../Path/Op/Profile.py" line="164"/>
       <source>Make True, if using Cutter Radius Compensation</source>
       <translation>Задаць True, калі ўжываецца карэкцыя радыусу разца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="164"/>
+      <location filename="../../../Path/Op/Profile.py" line="173"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for Stepover</source>
       <translation>Колькасць выкананых праходаў.
 Калі іх больш аднаго, патрабуецца ненулявое значэнне для пакрокавага выканання праходу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="173"/>
+      <location filename="../../../Path/Op/Profile.py" line="182"/>
       <source>If doing multiple passes, the extra offset of each additional pass</source>
       <translation>Пры выкананні некалькіх праходаў патрабуецца дадатковае зрушэнне кожнага дадатковага праходу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="184"/>
+      <location filename="../../../Path/Op/Profile.py" line="193"/>
       <source>Override start point
 Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStartPoint</source>
       <translation>Перавызначыць пачатковую кропку.
 Варта ўжываць толькі з індывідуальнай апрацоўкай мноства функцый (HandleMultipleFeaturesand) і адключаным выкарыстаннем пачатковай кропкі (UseStartPoint)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="222"/>
+      <location filename="../../../Path/Op/Profile.py" line="231"/>
       <source>Finish pass will processing with one step down at final depth</source>
       <translation>Апошні праход прывядзе да апрацоўкі на адзін крок уніз на апошняй глыбіні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="231"/>
+      <location filename="../../../Path/Op/Profile.py" line="240"/>
       <source>Start multiple profile from edge or out of edge</source>
       <translation>Пачаць некалькіх профіляў з рабра ці за межамі рабра</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="240"/>
-      <source>Create helix ramp for closed path
-Helix pitch limits by &apos;Step Down&apos;</source>
-      <translation>Стварыць уваход спіралі для замкнёнай траекторыі
-Абмажаваць крок спіралі з дапамогай 'Крок уніз'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="205"/>
@@ -7001,7 +6883,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="603"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1681"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1686"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation>Найбольш дапушчальны вугал нахілу спіралі (градусы).
@@ -7009,8 +6891,8 @@ Set to zero to disable limitation by ramp angle</source>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="612"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1709"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1903"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1714"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1908"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation>Найбольшы (і намінальны) дыяметр уваходу спіралі ў адсотках ад дыяметра інструмента</translation>
     </message>
@@ -7701,7 +7583,7 @@ this gives the pause of the next move</source>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="170"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1873"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
       <source>Set how much stock to leave on the floor for the operation.</source>
       <translation>Задаць, колькі загатоўкі трэба пакінуць на паверхні для аперацыі.</translation>
     </message>
@@ -8032,19 +7914,14 @@ Can be used only if Peck Depth is zero</source>
   <context>
     <name>PathAreaOp</name>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="116"/>
+      <location filename="../../../Path/Op/Area.py" line="114"/>
       <source>job %s has no Base.</source>
       <translation>заданне %s не мае асновы.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="118"/>
+      <location filename="../../../Path/Op/Area.py" line="116"/>
       <source>no job for operation %s found.</source>
       <translation>заданне для аперацыі %s не знойдзена.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Area.py" line="294"/>
-      <source>%s: ramp method &apos;%s&apos; needs a ramp angle, plunging</source>
-      <translation>%s: метад уваходу '%s' патрабуе вугла ўваходу, апускання</translation>
     </message>
   </context>
   <context>
@@ -8070,87 +7947,62 @@ Can be used only if Peck Depth is zero</source>
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="285"/>
+      <location filename="../../../Path/Op/Profile.py" line="276"/>
       <source>Outside</source>
       <translation>Звонку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="286"/>
+      <location filename="../../../Path/Op/Profile.py" line="277"/>
       <source>Inside</source>
       <translation>Унутры</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="277"/>
+      <location filename="../../../Path/Op/Profile.py" line="268"/>
       <source>CW</source>
       <translation>па гадзінніку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="278"/>
+      <location filename="../../../Path/Op/Profile.py" line="269"/>
       <source>CCW</source>
       <translation>супраць гадзінніка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="281"/>
+      <location filename="../../../Path/Op/Profile.py" line="272"/>
       <source>Collectively</source>
       <translation>Калектыўна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="282"/>
+      <location filename="../../../Path/Op/Profile.py" line="273"/>
       <source>Individually</source>
       <translation>Індывідуальна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="289"/>
+      <location filename="../../../Path/Op/Profile.py" line="280"/>
       <source>Automatic</source>
       <translation>Аўтаматычна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="290"/>
+      <location filename="../../../Path/Op/Profile.py" line="281"/>
       <source>Manual</source>
       <translation>Уручную</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="293"/>
-      <source>OutOfEdge</source>
+      <location filename="../../../Path/Op/Profile.py" line="284"/>
+      <source>Out of edge</source>
       <translation>Па-за межамі рабра</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="294"/>
+      <location filename="../../../Path/Op/Profile.py" line="285"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="297"/>
-      <source>None</source>
-      <translation>Нічога</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="298"/>
-      <source>Helix</source>
-      <translation>Спіраль</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="299"/>
-      <source>Method 1</source>
-      <translation>Метад 1</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="300"/>
-      <source>Method 2</source>
-      <translation>Метад 2</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="301"/>
-      <source>Method 3</source>
-      <translation>Метад 3</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="488"/>
+      <location filename="../../../Path/Op/Profile.py" line="479"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Абраныя рэбры недаступныя. Калі іх некалькі, можа спрацаваць змена парадку выбару.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="634"/>
+      <location filename="../../../Path/Op/Profile.py" line="625"/>
       <source>Unable to create path for face(s).</source>
       <translation>Не атрымалася стварыць траекторыю для граняў.</translation>
     </message>
@@ -8543,66 +8395,66 @@ Can be used only if Peck Depth is zero</source>
       <translation>u26a0 састарэў: {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="853"/>
       <source>Base Geometry</source>
       <translation>Асноўная геаметрыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="973"/>
       <source>Multiple operations are labeled as</source>
       <translation>Некалькі аперацый пазначаныя як</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1047"/>
       <source>Base Location</source>
       <translation>Асноўнае месцазнаходжанне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1275"/>
       <source>Heights</source>
       <translation>Вышыні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1438"/>
       <source>Tool Controller</source>
       <translation>Кантролер інструментаў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1192"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Канчатковая глыбіня (FinalDepth) не можа быць зменена для гэтай аперацыі.
 Калі неабходна задаць канчатковую глыбіню (FinalDepth) ўручную - абярыце іншую аперацыю.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1472"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1475"/>
       <source>Diameters</source>
       <translation>Дыяметры</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1504"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1507"/>
       <source>AreaOp Operation</source>
       <translation>Аперацыя AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1571"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1574"/>
       <source>Operation</source>
       <translation>Аперацыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1667"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1670"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Аперацыя адмены AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1882"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1885"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Не знойдзены прыдатны кантролер інструментаў.
 Перапыненне аперацыі стварэння</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1886"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1889"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Адсутнічае кантролер інструментаў, перапыняецца аперацыя стварэння</translation>
     </message>
@@ -9904,17 +9756,17 @@ G-code пад паказальнікам вызначае размяшчэнне
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="314"/>
       <source>High</source>
       <translation>Высокі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="316"/>
       <source>Low</source>
       <translation>Нізкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="318"/>
       <source>Medium</source>
       <translation>Сярэдні</translation>
     </message>
@@ -9932,22 +9784,22 @@ G-code пад паказальнікам вызначае размяшчэнне
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1519"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1524"/>
       <source>Outside</source>
       <translation>Звонку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1520"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1525"/>
       <source>Inside</source>
       <translation>Унутры</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1523"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1528"/>
       <source>Clearing</source>
       <translation>Ачыстка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1524"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1529"/>
       <source>Profiling</source>
       <translation>Апрацоўка</translation>
     </message>
@@ -10035,7 +9887,7 @@ G-code пад паказальнікам вызначае размяшчэнне
       <translation>Кантролер інструментаў ужываецца для {0} іншых аперацый.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1243"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1246"/>
       <source>None (Job XY)</source>
       <translation>Няма (заданне XY)</translation>
     </message>
@@ -10089,12 +9941,12 @@ G-code пад паказальнікам вызначае размяшчэнне
       <translation>Памылка часу цыкла</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="163"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="168"/>
       <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
       <translation>Дыяметр адтуліны можа быць недакладным з-за брукаванне на грані. Разгледзьце магчымасць выбару рабра адтуліны.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="198"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="203"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>Характарыстыка %s.%s не можа быць апрацавана як круглая адтуліна - выдаліце яе з спісу асноўнай геаметрыі.</translation>
     </message>
@@ -11476,49 +11328,49 @@ G55 выбірае наступны і гэтак далей.</translation>
       <translation>Стварае спіральную траекторыю руху інструмента з характарыстыкі асноўнага аб'екту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="89"/>
+      <location filename="../../../Path/Op/Helix.py" line="91"/>
       <source>CW</source>
       <translation>па гадзінніку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="90"/>
+      <location filename="../../../Path/Op/Helix.py" line="92"/>
       <source>CCW</source>
       <translation>супраць гадзінніка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="93"/>
-      <location filename="../../../Path/Op/Helix.py" line="101"/>
+      <location filename="../../../Path/Op/Helix.py" line="95"/>
+      <location filename="../../../Path/Op/Helix.py" line="103"/>
       <source>Inside</source>
       <translation>Унутры</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="94"/>
-      <location filename="../../../Path/Op/Helix.py" line="102"/>
+      <location filename="../../../Path/Op/Helix.py" line="96"/>
+      <location filename="../../../Path/Op/Helix.py" line="104"/>
       <source>Outside</source>
       <translation>Звонку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="97"/>
+      <location filename="../../../Path/Op/Helix.py" line="99"/>
       <source>Climb</source>
       <translation>Узбірацца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="98"/>
+      <location filename="../../../Path/Op/Helix.py" line="100"/>
       <source>Conventional</source>
       <translation>Звычайны</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="332"/>
+      <location filename="../../../Path/Op/Helix.py" line="334"/>
       <source>Faces Cone angle is not identical</source>
       <translation>Вуглы граняў конусу не аднолькавыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="339"/>
+      <location filename="../../../Path/Op/Helix.py" line="341"/>
       <source>Automatic cone angle definition allowed only for cone faces</source>
       <translation>Аўтаматычнае вызначэнне вугла нахілу конусу дазволена толькі для вызначаных паверхняў конусу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="761"/>
+      <location filename="../../../Path/Op/Helix.py" line="777"/>
       <source>Skipped hole at position %s</source>
       <translation>Прапускае адтуліну ў становішчы %s</translation>
     </message>
@@ -11586,32 +11438,27 @@ G55 выбірае наступны і гэтак далей.</translation>
       <translation>Зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="73"/>
-      <source>Helix</source>
-      <translation>Спіраль</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="76"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="75"/>
       <source>No clearing</source>
       <translation>Не ачышчаны</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="79"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="78"/>
       <source>Automatic</source>
       <translation>Аўтаматычна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="80"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="79"/>
       <source>Manual</source>
       <translation>Уручную</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="74"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="73"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="75"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="74"/>
       <source>Grid</source>
       <translation>Сетка</translation>
     </message>
@@ -11636,7 +11483,7 @@ G55 выбірае наступны і гэтак далей.</translation>
       <translation>Пашырэнні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="189"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="239"/>
       <source>Set start point: %s, %s</source>
       <translation>Задаць пачатковую кропку: %s, %s</translation>
     </message>
@@ -12235,12 +12082,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_MillFace</name>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFace.py" line="74"/>
+      <location filename="../../../Path/Op/Gui/MillFace.py" line="76"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFace.py" line="75"/>
+      <location filename="../../../Path/Op/Gui/MillFace.py" line="77"/>
       <source>Create a Facing Operation from a model or face</source>
       <translation>Стварае аперацыю абліцоўвання з мадэлі ці грані</translation>
     </message>
@@ -12620,17 +12467,17 @@ Tool number for {}:</source>
   <context>
     <name>CAM_Profile</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="186"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="212"/>
       <source>Set start point: %s, %s</source>
       <translation>Задаць пачатковую кропку: %s, %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="209"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="235"/>
       <source>Profile</source>
       <translation>Профіль</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="210"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="236"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation>Профіль усёй мадэлі, абраных граняў ці абраных рэбраў</translation>
     </message>
@@ -14013,12 +13860,12 @@ Supported tool types: flat, bull-nose, V-bit.</source>
   <context>
     <name>CAM_SetStartPoint</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1834"/>
       <source>Start Point Selection</source>
       <translation>Выбар пачатковай кропкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1835"/>
       <source>Selects the start point</source>
       <translation>Выбірае пачатковую кропку</translation>
     </message>
@@ -14046,12 +13893,12 @@ Supported tool types: flat, bull-nose, V-bit.</source>
   <context>
     <name>CAM_SimulatorGL</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>CAM Simulator</source>
       <translation>Сродак мадэлявання CAM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="368"/>
       <source>Simulates G-code on stock</source>
       <translation>Мадэлюе G-code па загатоўцы</translation>
     </message>

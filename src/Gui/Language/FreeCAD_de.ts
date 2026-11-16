@@ -4122,7 +4122,7 @@ Bei herkömmlichen Mausrädern wird weiterhin gezoomt.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="770"/>
       <source>Enable support of legacy SpaceMouse devices</source>
-      <translation>Unterstützung von älteren Space-Mouse-Geräten aktivieren</translation>
+      <translation>Unterstützung von älteren SpaceMouse-Geräten aktivieren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="798"/>
@@ -5492,44 +5492,44 @@ Die Spalte "Status" zeigt an, ob das Dokument wiederhergestellt werden konnte.</
       <translation>Abhängigkeiten anzeigen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
       <source>Depending on</source>
       <translation>Abhängig von</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="131"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Depended by</source>
       <translation>Abhängig von</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="134"/>
       <source>Selections</source>
       <translation>Auswahl</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="140"/>
       <source>All</source>
       <translation>Alle</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>&amp;Use Original Selection</source>
       <translation>Originala&amp;uswahl verwenden</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="172"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Abhängigkeiten ignorieren und mit Objekten
@@ -6132,12 +6132,12 @@ Alle Änderungen speichern?</translation>
       <translation>Makros</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1364"/>
+      <location filename="../Command.cpp" line="1368"/>
       <source>Macro file doesn't exist</source>
       <translation>Makro-Datei existiert nicht</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1365"/>
+      <location filename="../Command.cpp" line="1369"/>
       <source>No such macro file: '%1'</source>
       <translation>Keine solche Makrodatei: "%1"</translation>
     </message>
@@ -8124,7 +8124,7 @@ Weitere Einzelheiten finden sich im Ausgabefenster.</translation>
       <translation> → Neustart…</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="548"/>
+      <location filename="../Command.cpp" line="550"/>
       <source>Exception</source>
       <translation>Ausnahme</translation>
     </message>
@@ -9230,12 +9230,12 @@ aktuellen Kopie gehen verloren.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="975"/>
+      <location filename="../Selection/Selection.cpp" line="978"/>
       <source>Not allowed:</source>
       <translation>Nicht erlaubt:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1335"/>
+      <location filename="../Selection/Selection.cpp" line="1338"/>
       <source>Selection not allowed by filter</source>
       <translation>Auswahl vom Filter nicht erlaubt</translation>
     </message>
@@ -15064,22 +15064,22 @@ Zum Beispiel wird das zweifache Drücken von 'F' in weniger als der hier eingest
   <context>
     <name>Gui::Command</name>
     <message>
-      <location filename="../Command.cpp" line="1063"/>
+      <location filename="../Command.cpp" line="1067"/>
       <source>Experimental</source>
       <translation>Experimentell</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1065"/>
+      <location filename="../Command.cpp" line="1069"/>
       <source>EXPERIMENTAL: this command may change.</source>
       <translation>EXPERIMENTELL: Dieser Befehl kann sich ändern.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1069"/>
+      <location filename="../Command.cpp" line="1073"/>
       <source>Development preview</source>
       <translation>Entwicklervorschau</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1070"/>
+      <location filename="../Command.cpp" line="1074"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
       <translation>ENTWICKLERVORSCHAU: Dieser Befehl kann sich ändern oder entfernt werden.</translation>
     </message>
