@@ -259,6 +259,42 @@ class RegressionTests(unittest.TestCase):
             # cluster should contain all edges
             self.assertEqual(len(clusters[0]), i)
 
+    def test_sortEdges(self):
+        "Part.__sortEdges__ outputs all edges in order, oriented, and marked Forward"
+        p = [
+            Vector(0, 0, 0),
+            Vector(10, 0, 0),
+            Vector(10, 10, 0),
+            Vector(20, 10, 0),
+            Vector(20, 20, 0),
+            Vector(30, 20, 0),
+        ]
+        edges = [
+            Part.makeLine(p[0], p[1]),  # forward, marked forward
+            Part.makeLine(p[1], p[2]),  # forward, marked forward
+            Part.makeLine(p[2], p[3]).reversed(),  # forward, marked reversed
+            Part.makeLine(p[4], p[3]),  # reversed, marked forward
+            Part.makeLine(p[5], p[4]).reversed(),  # reversed, marked reversed
+        ]
+        shuffled_edges = [edges[0], edges[3], edges[1], edges[4], edges[2]]
+
+        def check(sortedEdges):
+            self.assertEqual(len(sortedEdges), len(p) - 1)
+            for i, e in enumerate(sortedEdges):
+                # Check that the edge is marked as oriented forwards
+                self.assertEqual(e.Orientation, "Forward", f"edge {i}")
+
+                # Check that the first and last vertices are the correct points
+                self.assertAlmostEqual(e.firstVertex().Point, p[i], f"edge {i}")
+                self.assertAlmostEqual(e.lastVertex().Point, p[i + 1], f"edge {i}")
+
+                # Check that the curve start and end are the correct points
+                self.assertAlmostEqual(e.valueAt(e.FirstParameter), p[i], f"edge {i}")
+                self.assertAlmostEqual(e.valueAt(e.LastParameter), p[i + 1], f"edge {i}")
+
+        check(Part.__sortEdges__(edges))
+        check(Part.__sortEdges__(shuffled_edges))
+
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""
         # This flag allows doing something like this:

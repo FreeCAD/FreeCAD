@@ -193,7 +193,6 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
     std::list<EdgePoints> edge_points;
     for (std::list<TopoDS_Edge>::iterator it = edges.begin(); it != edges.end(); ++it) {
         EdgePoints ep;
-        // curve start/end by vertex orientation (storage order is not meaningful)
         TopoDS_Vertex V1, V2;
         TopExp::Vertices(*it, V1, V2);
         ep.v1 = BRep_Tool::Pnt(V1);
