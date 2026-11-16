@@ -157,23 +157,17 @@ void FeatureAddSub::updatePreviewShape()
                     Precision::Confusion()
                 );
 
-                GProp_GProps propsBefore, propsAfter;
-                BRepGProp::VolumeProperties(base.getShape(), propsBefore);
+                // Use the boolean intersection, not the tool: compound tools may overlap.
+                GProp_GProps propsCommon;
+                BRepGProp::VolumeProperties(common.getShape(), propsCommon);
 
-                TopoShape cut;
-                cut.makeElementBoolean(
-                    Part::OpCodes::Cut,
-                    {base, tool},
-                    "PreviewCheck",
-                    Precision::Confusion()
-                );
-
-                // Check whether the selected operation removes material from the base.
-                const bool keepCommon = getBooleanOperation() == BooleanOperation::Common;
-                const TopoShape& result = keepCommon ? common : cut;
-                BRepGProp::VolumeProperties(result.getShape(), propsAfter);
-
-                const double removed = propsBefore.Mass() - propsAfter.Mass();
+                // Subtraction removes the intersection; Common keeps it instead.
+                double removed = propsCommon.Mass();
+                if (getBooleanOperation() == BooleanOperation::Common) {
+                    GProp_GProps propsBase;
+                    BRepGProp::VolumeProperties(base.getShape(), propsBase);
+                    removed = propsBase.Mass() - removed;
+                }
 
                 if (removed <= Precision::Confusion()) {
                     notifyWarning(

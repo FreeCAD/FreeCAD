@@ -720,7 +720,7 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
 
     heightGizmo = new Gui::LinearGizmo(ui->height);
 
-    connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
+    connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
         heightGizmo->setVisibility(!isPitchTurnsAngle);
     });

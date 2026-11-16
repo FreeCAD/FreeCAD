@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-# (c) 2024 Werner Mayer LGPL
+# SPDX-FileCopyrightText: 2024 Werner Mayer
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 __author__ = "Werner Mayer"
 __url__ = "https://www.freecad.org"

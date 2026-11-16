@@ -531,6 +531,7 @@ def _machine_ac(strategy):
         name="C",
         rotation_vector=FreeCAD.Vector(0, 0, 1),
         role=AxisRole.TABLE_ROTARY,
+        parent="A",
         sequence=0,
     )
     machine.rotary_axes["A"] = RotaryAxis(
@@ -539,7 +540,7 @@ def _machine_ac(strategy):
         min_limit=-120,
         max_limit=120,
         role=AxisRole.TABLE_ROTARY,
-        parent="C",
+        parent=None,
         sequence=1,
     )
     machine.kinematics.rotation_strategy = strategy
@@ -675,10 +676,11 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
             pre_rotary_move="G53 G0 Z0",
             post_rotary_move="G54.2 P1",
         )
-        rotary = next(l for l in lines if re.match(r"^G0 .*A", l))
-        index = lines.index(rotary)
+        index = next(i for i, l in enumerate(lines) if re.match(r"^G0 [AC]", l))
         self.assertEqual("G53 G0 Z0", lines[index - 1])
-        self.assertEqual("G54.2 P1", lines[index + 1])
+        self.assertRegex(lines[index], r"^G0 C", "C is sequence 0, A is 1")
+        self.assertRegex(lines[index + 1], r"^G0 A")
+        self.assertEqual("G54.2 P1", lines[index + 2])
         self.assertNotIn(DECLARE, lines)
         self.assertNotIn("G69", lines)
         self.assertNotIn("G1 X10.000 Y0.000 Z-2.000 F600.000", lines, "the path is rotated")
