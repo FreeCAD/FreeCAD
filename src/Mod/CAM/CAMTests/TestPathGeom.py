@@ -926,9 +926,10 @@ class TestPathGeom(PathTestBase):
         face.translate(Vector(0, 0, 10.001))
         faces.append(face)
 
-        # rectangle
+        # rectangle not horizontal
         face = Part.makePlane(100, 100, Vector(50, 50, 0))
         face.translate(Vector(0, 0, -10.001))
+        face.rotate(Vector(), Vector(1, 0, 0), 0.1)
         faces.append(face)
 
         # rectangle with circular island
@@ -982,8 +983,11 @@ class TestPathGeom(PathTestBase):
         # result shape contains only one face
         self.assertEqual(len(comb[0].Faces), 1)
 
+        # check face flat
+        self.assertRoughly(comb[0].Faces[0].BoundBox.ZLength, 0)
+
         # check result face area
-        self.assertRoughly(comb[0].Area, 50166, 1)
+        self.assertRoughly(comb[0].Area, 50160, 10)
 
         # check face z
         self.assertRoughly(comb[0].Faces[0].BoundBox.ZMax, z)
