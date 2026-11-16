@@ -760,7 +760,6 @@ class TestExport2Integration(unittest.TestCase):
                 "early_tool_prep": False,
                 "filter_inefficient_moves": False,
                 "split_arcs": False,
-                "tool_change": True,
                 "translate_rapid_moves": False,
             },
             "version": 1,

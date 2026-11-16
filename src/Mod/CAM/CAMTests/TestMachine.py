@@ -225,7 +225,6 @@ class TestProcessingOptions(PathTestUtils.PathTestBase):
         self.assertFalse(opts.early_tool_prep)
         self.assertFalse(opts.filter_inefficient_moves)
         self.assertFalse(opts.split_arcs)
-        self.assertTrue(opts.tool_change)
         self.assertFalse(opts.translate_rapid_moves)
         self.assertIsNone(opts.return_to)
 
@@ -235,7 +234,6 @@ class TestProcessingOptions(PathTestUtils.PathTestBase):
             early_tool_prep=True,
             filter_inefficient_moves=True,
             split_arcs=True,
-            tool_change=False,
             translate_rapid_moves=True,
             return_to=(10.0, 20.0, 30.0),
         )
@@ -244,7 +242,6 @@ class TestProcessingOptions(PathTestUtils.PathTestBase):
         self.assertTrue(opts.early_tool_prep)
         self.assertTrue(opts.filter_inefficient_moves)
         self.assertTrue(opts.split_arcs)
-        self.assertFalse(opts.tool_change)
         self.assertTrue(opts.translate_rapid_moves)
         self.assertEqual(opts.return_to, (10.0, 20.0, 30.0))
 
