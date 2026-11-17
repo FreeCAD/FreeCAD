@@ -42,11 +42,10 @@ import unittest
 
 import Constants
 import Path
-from CAMTests import PathTestUtils
-from CAMTests import PostTestMocks
-from Path.Post.Processor import PostProcessorFactory, WrapperPost, VALID_SCOPES, property_scope
+from CAMTests import PostTestSupport
+from Path.Post.Processor import WrapperPost
 from Path.Post.CAMErrors import CAMValueError
-from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
+from Machine.models.machine import OutputUnits
 
 try:
     from Path.Post.TiltedWorkPlane import PlaneCommand
@@ -71,76 +70,16 @@ def _tap(name="G84", **overrides):
     return command
 
 
-class IndustrialPostTestBase(PathTestUtils.PathTestBase):
-    """A mock job and the export helpers for an industrial post.
+class IndustrialPostTestBase(PostTestSupport.MachinePostTestBase):
+    """The shared post test base, set for an industrial post.
 
     A subclass names the post to drive and the machine it builds. This class has
     no tests of its own.
     """
 
-    POST_NAME = None
-    MACHINE_NAME = None
-
-    @classmethod
-    def setUpClass(cls):
-        cls.job, cls.profile_op, cls.tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
-        cls.job.Machine = cls.POST_NAME
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, cls.POST_NAME)
-        if not hasattr(cls.post, "apply_configuration_bundle"):
-            # The factory returns a CAMError, not a post, when it cannot load the file.
-            raise AssertionError(f"The '{cls.POST_NAME}' post did not load: {cls.post}")
-
-    def setUp(self):
-        self.maxDiff = None
-
-        machine = Machine.create_3axis_config()
-        machine.name = self.MACHINE_NAME
-        machine.output.units = OutputUnits.METRIC
-        machine.output.output_header = False
-        machine.output.comments.enabled = False
-        machine.output.precision.axis = 3
-        machine.output.precision.feed = 3
-        machine.output.precision.spindle = 0
-        machine.output.duplicates.commands = True
-        machine.output.duplicates.parameters = True
-        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
-        machine.toolheads = [
-            Toolhead(
-                name="Spindle",
-                toolhead_type=ToolheadType.ROTARY,
-                min_rpm=0,
-                max_rpm=12000,
-                max_power_kw=10.0,
-            )
-        ]
+    def configure_machine(self, machine):
         # Upper-casing is tested on its own; everything else reads easier as written.
         machine.postprocessor_properties["uppercase_output"] = False
-        self.profile_op.Path = Path.Path([])
-        self.post._machine = machine
-        self.post.apply_configuration_bundle()
-
-    # ------------------------------------------------------------------
-    # helpers
-    # ------------------------------------------------------------------
-
-    def export(self, commands=None):
-        if commands is not None:
-            self.profile_op.Path = Path.Path(
-                [Path.Command(c) if isinstance(c, str) else c for c in commands]
-            )
-        self.post.apply_configuration_bundle()
-        return self.post.export2()[0][1]
-
-    def lines(self, commands=None):
-        return self.export(commands).split(EOL)
-
-    def assert_line(self, expected, lines):
-        self.assertIn(expected, lines, f"expected line {expected!r} in\n{EOL.join(lines)}")
-
-    def assert_no_line(self, unexpected, lines):
-        self.assertNotIn(unexpected, lines, f"unexpected line {unexpected!r} in\n{EOL.join(lines)}")
 
 
 class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
@@ -155,14 +94,6 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
 
     def test_default_file_extension(self):
         self.assertEqual("nc", self.post.get_file_extension())
-
-    def test_property_schema_is_well_formed(self):
-        """Every property declares a valid scope and reaches the values dict."""
-        for prop in self.post.get_full_property_schema():
-            self.assertIn(property_scope(prop), VALID_SCOPES, prop["name"])
-            if prop["type"] == "choice":
-                self.assertIn(prop["default"], prop["choices"], prop["name"])
-            self.assertIn(prop["name"].upper(), self.post.values, prop["name"])
 
     def test_common_defaults(self):
         schema = {p["name"]: p for p in self.post.get_common_property_schema()}

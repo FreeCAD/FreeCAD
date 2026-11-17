@@ -583,6 +583,8 @@ SET(Tests_SRCS
     CAMTests/FilePathTestUtils.py
     CAMTests/PathTestUtils.py
     CAMTests/PostTestMocks.py
+    CAMTests/PostTestSupport.py
+    CAMTests/README.md
     CAMTests/test_adaptive.fcstd
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
@@ -649,6 +651,7 @@ SET(Tests_SRCS
     CAMTests/TestPathOpDeburr.py
     CAMTests/TestPathOpDeprecation.py
     CAMTests/TestPathOpUtil.py
+    CAMTests/TestPostContract.py
     CAMTests/TestPostCore.py
     CAMTests/TestPostProcessor.py
     CAMTests/TestPostOutput.py

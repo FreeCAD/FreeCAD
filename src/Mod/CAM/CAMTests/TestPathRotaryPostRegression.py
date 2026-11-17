@@ -36,9 +36,10 @@ import Part
 import Path
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
+from CAMTests import PostTestSupport
 from CAMTests.PathTestUtils import PathTestBase
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine, RotaryAxis, Toolhead, ToolheadType
+from Machine.models.machine import RotaryAxis
 
 try:
     import ocl  # noqa: F401
@@ -221,17 +222,7 @@ class TestPathRotaryPostRegression(PathTestBase):
         """
         post = PostProcessorFactory.get_post_processor(self.job, post_name)
         post.reinitialize()
-        machine = Machine.create_3axis_config()
-        machine.name = f"Test {post_name} Rotary Machine"
-        machine.toolheads = [
-            Toolhead(
-                name="Default Toolhead",
-                toolhead_type=ToolheadType.ROTARY,
-                min_rpm=0,
-                max_rpm=24000,
-                max_power_kw=1.0,
-            )
-        ]
+        machine = PostTestSupport.make_machine(f"Test {post_name} Rotary Machine")
         machine.output.comments.enabled = False
         machine.output.output_header = False
         # Keep duplicate axis values in output so every motion line

@@ -22,89 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
-from Path.Post.Processor import PostProcessorFactory
+import CAMTests.PostTestSupport as PostTestSupport
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestPostMCodes(PathTestUtils.PathTestBase):
+class TestPostMCodes(PostTestSupport.LegacyPostTestBase):
     """Test the test_post.py postprocessor M codes."""
 
-    @classmethod
-    def setUpClass(cls):
-        """setUpClass()...
-
-        This method is called upon instantiation of this test class.  Add code
-        and objects here that are needed for the duration of the test() methods
-        in this class.  In other words, set up the 'global' test environment
-        here; use the `setUp()` method to set up a 'local' test environment.
-        This method does not have access to the class `self` reference, but it
-        is able to call static methods within this same class.
-        """
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "test")
-        # locate the operation named "Profile"
-        for op in cls.job.Operations.Group:
-            if op.Label == "Profile":
-                # remember the "Profile" operation
-                cls.profile_op = op
-                return
-
-    @classmethod
-    def tearDownClass(cls):
-        """tearDownClass()...
-
-        This method is called prior to destruction of this test class.  Add
-        code and objects here that cleanup the test environment after the
-        test() methods in this class have been executed.  This method does
-        not have access to the class `self` reference.  This method is able
-        to call static methods within this same class.
-        """
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-
-    # Setup and tear down methods called before and after each unit test
-
-    def setUp(self):
-        """setUp()...
-
-        This method is called prior to each `test()` method.  Add code and
-        objects here that are needed for multiple `test()` methods.
-        """
-        # allow a full length "diff" if an error occurs
-        self.maxDiff = None
-        #
-        # reinitialize the postprocessor data structures between tests
-        #
-        self.post.reinitialize()
-
-    def tearDown(self):
-        """tearDown()...
-
-        This method is called after each test() method. Add cleanup instructions here.
-        Such cleanup instructions will likely undo those in the setUp() method.
-        """
-        pass
-
-    def single_compare(self, path, expected, args, debug=False):
-        """Perform a test with a single comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        # there are 3 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[3], expected)
+    POST_NAME = "test"
 
     #############################################################################
     #

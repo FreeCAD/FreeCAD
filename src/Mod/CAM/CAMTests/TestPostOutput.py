@@ -35,8 +35,9 @@ import Path.Post.Utils as PostUtils
 from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
-from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
+from Machine.models.machine import Machine, OutputUnits
 
+from . import PostTestSupport
 from .FilePathTestUtils import assertFilePathsEqual
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
@@ -492,21 +493,9 @@ class TestExport2Integration(unittest.TestCase):
 
     def _create_machine(self, **output_options):
         """Helper to create a machine with specified output options."""
-        machine = Machine.create_3axis_config()
-        machine.name = "TestMachine"
-
-        # Add a default toolhead since post processor expects toolhead index 0
-        default_toolhead = Toolhead(
-            name="Default Toolhead",
-            toolhead_type=ToolheadType.ROTARY,
-            id="toolhead1",
-            max_power_kw=2.2,
-            max_rpm=24000,
-            min_rpm=6000,
-            tool_change="manual",
-            toolhead_wait=1.0,
+        machine = PostTestSupport.make_machine(
+            "TestMachine", toolhead=PostTestSupport.make_manual_toolhead(toolhead_wait=1.0)
         )
-        machine.toolheads = [default_toolhead]
 
         for key, value in output_options.items():
             # Handle nested output structure
@@ -599,10 +588,7 @@ class TestExport2Integration(unittest.TestCase):
 
     def _run_export2(self, machine=None, job=None):
         """Helper to run export2 and return results."""
-        if machine is None:
-            machine = self._create_machine()
-        post = self._create_postprocessor(machine, job)
-        return post.export2()
+        return PostTestSupport.run_export2(job or self.job, machine or self._create_machine())
 
     def _get_first_section_gcode(self, results):
         """Helper to extract first section's G-code from results."""
