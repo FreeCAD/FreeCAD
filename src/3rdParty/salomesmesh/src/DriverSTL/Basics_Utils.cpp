@@ -29,6 +29,7 @@
 #ifndef WIN32
   #include <unistd.h>
   #include <sys/stat.h>
+  #include <config.h>
   #ifdef HAVE_BACKTRACE_SYMBOLS
     #include <execinfo.h>
   #endif
