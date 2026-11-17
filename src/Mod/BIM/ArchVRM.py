@@ -123,6 +123,17 @@ class Renderer:
                 self.objects.append(o)
                 color = o.ViewObject.ShapeColor
                 if o.Shape.Faces:
+                    colors = getattr(o.ViewObject, "DiffuseColor", [])
+                    solids = o.Shape.Solids
+                    if len(colors) == len(o.Shape.Faces) == sum(len(s.Faces) for s in solids):
+                        # cut() rebuilds the faces from self.shapes, so keep one color per solid
+                        i = 0
+                        for sol in solids:
+                            self.shapes.append([sol, colors[i]])
+                            i += len(sol.Faces)
+                        for f, c in zip(o.Shape.Faces, colors):
+                            self.faces.append([f, c])
+                        continue
                     self.shapes.append([o.Shape, color])
                     for f in o.Shape.Faces:
                         self.faces.append([f, color])
