@@ -1033,6 +1033,25 @@ class PartBOPTestContainer(unittest.TestCase):
         self.assertEqual(part, cut.getParent())
         self.assertEqual(cyl, body.BaseFeature)
 
+    def testMakeCutWithBaseFeatureInPart(self):
+        # The input is held by an App::Part and is also a Body's BaseFeature.
+        # getParent() may return the Body (first in InList), but the result
+        # must go into the Part, the group that actually holds the input.
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = box
+        self.Doc.recompute()
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        self.Doc.recompute()
+        from BOPTools import BOPFeatures
+
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        cut = bp.make_cut([box.Name, cyl.Name])
+        self.assertEqual(part, cut.getParent())
+        self.assertEqual(box, body.BaseFeature)
+
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
 

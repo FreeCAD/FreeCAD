@@ -86,18 +86,19 @@ class BOPFeatures:
         Only groups that really list an input as a member are touched. A
         PartDesign Body reports itself as the parent of the object it uses as
         BaseFeature, but the Body neither holds that object in its Group nor
-        accepts Part features, so it must not be used as the target.
+        accepts Part features, so it must not be used as the target. Since
+        getParent() returns only the first group in the InList, which may be
+        such a Body, the InList is searched for the group that holds the input.
         """
         targetGroup = None
         for obj in objects:
             obj.Visibility = False
-            parent = obj.getParent()
-            if (
-                parent
-                and hasattr(parent, "hasObject")
-                and parent.hasObject(obj)
-                and (result is None or self._allows(parent, result))
-            ):
+            parent = None
+            for p in obj.InList:
+                if p.hasExtension("App::GroupExtension") and p.hasObject(obj):
+                    parent = p
+                    break
+            if parent and (result is None or self._allows(parent, result)):
                 parent.removeObject(obj)
                 targetGroup = parent
         if result is not None and targetGroup:
