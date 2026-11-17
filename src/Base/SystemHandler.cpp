@@ -64,19 +64,23 @@ static void freecadNewHandler()
 }
 #endif
 
+
+
+# if HAVE_CONFIG_H
+#  include <config.h>
+# endif  // HAVE_CONFIG_H
+
 #if defined(FC_OS_LINUX)
 # include <unistd.h>
-# include <execinfo.h>
+    #ifdef HAVE_BACKTRACE_SYMBOLS
+        # include <execinfo.h>
+    #endif
 # include <dlfcn.h>
 # include <cxxabi.h>
 
 # include <cstdio>
 # include <cstdlib>
 # include <string>
-
-# if HAVE_CONFIG_H
-#  include <config.h>
-# endif  // HAVE_CONFIG_H
 
 // This function produces a stack backtrace with demangled function & method names.
 static void printBacktrace([[maybe_unused]] size_t skip = 0)
