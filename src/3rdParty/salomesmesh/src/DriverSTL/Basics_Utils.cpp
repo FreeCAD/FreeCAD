@@ -128,10 +128,10 @@ namespace Kernel_Utils
         }
   
       free (strings);
+    #else
+      write(STDERR_FILENO, "Your enviroment is incompatable with execinfo.h\n", sizeof("Your enviroment is incompatable with execinfo.h\n") - 1);
+    #endif
     }
-  #else
-    write(STDERR_FILENO, "Your enviroment is incompatable with execinfo.h\n", sizeof("Your enviroment is incompatable with execinfo.h\n") - 1);
-  #endif
 #else
   #if (_MSC_VER >= 1400) // Visual Studio 2005
   #include <sstream>
