@@ -27,9 +27,11 @@
 #include <stdlib.h>
 
 #ifndef WIN32
-#include <unistd.h>
-#include <sys/stat.h>
-#include <execinfo.h>
+  #include <unistd.h>
+  #include <sys/stat.h>
+  #ifdef HAVE_BACKTRACE_SYMBOLS
+    #include <execinfo.h>
+  #endif
 #endif
 
 
@@ -107,23 +109,28 @@ namespace Kernel_Utils
   }
 
 #ifndef WIN32
+
   void print_traceback()
   {
-    void *array[50];
-    size_t size;
-    char **strings;
-    size_t i;
-
-    size = backtrace (array, 40);
-    strings = backtrace_symbols (array, size);
-
-    for (i = 0; i < size; i++)
-      {
-        std::cerr << strings[i] << std::endl;
-      }
-
-    free (strings);
-  }
+    #ifdef HAVE_BACKTRACE_SYMBOLS
+      void *array[50];
+      size_t size;
+      char **strings;
+      size_t i;
+  
+      size = backtrace (array, 40);
+      strings = backtrace_symbols (array, size);
+  
+      for (i = 0; i < size; i++)
+        {
+          std::cerr << strings[i] << std::endl;
+        }
+  
+      free (strings);
+    }
+  #else
+    write(STDERR_FILENO, "Your enviroment is incompatable with execinfo.h\n", sizeof("Your enviroment is incompatable with execinfo.h\n") - 1);
+  #endif
 #else
   #if (_MSC_VER >= 1400) // Visual Studio 2005
   #include <sstream>
