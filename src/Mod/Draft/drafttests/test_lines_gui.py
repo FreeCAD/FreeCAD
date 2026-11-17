@@ -29,6 +29,8 @@ from unittest import mock
 
 import FreeCAD as App
 from draftguitools import gui_lines
+from draftguitools import gui_splines
+from draftguitools import gui_beziers
 
 
 class DraftGuiLines(unittest.TestCase):
@@ -159,3 +161,105 @@ class DraftGuiLines(unittest.TestCase):
         draw_update.assert_called_once_with(first)
         undolast.assert_called_once_with()
         finish.assert_called_once_with(cont=None, closed=True)
+
+    def test_remove_temporary_object_delays_deletion(self):
+        """Active temporary object must be scheduled for removal and cleared."""
+        command = gui_lines.Line()
+        command.doc = mock.Mock()
+        command.obj = SimpleNamespace(Name="Line_Temp")
+
+        with mock.patch.object(gui_lines.todo.ToDo, "delay") as delay:
+            command.removeTemporaryObject()
+
+        delay.assert_called_once_with(command.doc.removeObject, "Line_Temp")
+        self.assertIsNone(command.obj)
+
+    def test_remove_temporary_object_handles_reference_error(self):
+        """Deleted temporary object raising ReferenceError must not throw."""
+        command = gui_lines.Line()
+        command.doc = mock.Mock()
+
+        class DeletedObject:
+            @property
+            def Name(self):
+                raise ReferenceError("Cannot access attribute 'Name' of deleted object")
+
+        command.obj = DeletedObject()
+
+        with mock.patch.object(gui_lines.todo.ToDo, "delay") as delay:
+            command.removeTemporaryObject()
+
+        delay.assert_not_called()
+        self.assertIsNone(command.obj)
+
+    def test_bspline_finish_handles_deleted_temporary_object(self):
+        """BSpline finish must safely complete when temporary object is deleted."""
+        command = gui_splines.BSpline()
+        command.doc = mock.Mock()
+        command.ui = None
+        command.call = None
+        command.node = []
+
+        class DeletedObject:
+            @property
+            def Name(self):
+                raise ReferenceError("Cannot access attribute 'Name' of deleted object")
+
+        command.obj = DeletedObject()
+
+        with (
+            mock.patch.object(command, "end_callbacks"),
+            mock.patch("draftguitools.gui_base_original.Creator.finish"),
+        ):
+            command.finish()
+
+        self.assertIsNone(command.obj)
+
+    def test_bez_curve_finish_handles_deleted_temporary_object(self):
+        """BezCurve finish must safely complete when temporary object is deleted."""
+        command = gui_beziers.BezCurve()
+        command.doc = mock.Mock()
+        command.ui = None
+        command.call = None
+        command.node = []
+
+        class DeletedObject:
+            @property
+            def Name(self):
+                raise ReferenceError("Cannot access attribute 'Name' of deleted object")
+
+        command.obj = DeletedObject()
+
+        with (
+            mock.patch.object(command, "end_callbacks"),
+            mock.patch("draftguitools.gui_base_original.Creator.finish"),
+        ):
+            command.finish()
+
+        self.assertIsNone(command.obj)
+
+    def test_cubic_bez_curve_finish_handles_deleted_temporary_object(self):
+        """CubicBezCurve finish must safely complete when temporary object is deleted."""
+        command = gui_beziers.CubicBezCurve()
+        command.doc = mock.Mock()
+        command.ui = None
+        command.call = None
+        command.node = []
+        command.degree = 3
+        command.old_EnableSelection = True
+
+        class DeletedObject:
+            @property
+            def Name(self):
+                raise ReferenceError("Cannot access attribute 'Name' of deleted object")
+
+        command.obj = DeletedObject()
+
+        with (
+            mock.patch.object(command, "end_callbacks"),
+            mock.patch("draftutils.params.set_param_view"),
+            mock.patch("draftguitools.gui_base_original.Creator.finish"),
+        ):
+            command.finish()
+
+        self.assertIsNone(command.obj)

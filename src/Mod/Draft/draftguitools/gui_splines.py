@@ -39,7 +39,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import draftutils.utils as utils
-import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
@@ -172,10 +171,7 @@ class BSpline(gui_lines.Line):
         self.end_callbacks(self.call)
         if self.ui:
             self.bsplinetrack.finalize()
-        if self.obj:
-            # Remove temporary object, if any
-            old = self.obj.Name
-            todo.ToDo.delay(self.doc.removeObject, old)
+        self.removeTemporaryObject()
         if len(self.node) > 1:
             # The command to run is built as a series of text strings
             # to be committed through the `draftutils.todo.ToDo` class.

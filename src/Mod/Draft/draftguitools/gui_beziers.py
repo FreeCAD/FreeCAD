@@ -48,7 +48,6 @@ from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
-from draftutils import todo
 from draftutils import utils
 from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
@@ -200,10 +199,7 @@ class BezCurve(gui_lines.Line):
         self.end_callbacks(self.call)
         if self.ui and hasattr(self, "bezcurvetrack"):
             self.bezcurvetrack.finalize()
-        if self.obj:
-            # remove temporary object, if any
-            old = self.obj.Name
-            todo.ToDo.delay(self.doc.removeObject, old)
+        self.removeTemporaryObject()
         if len(self.node) > 1:
             # The command to run is built as a series of text strings
             # to be committed through the `draftutils.todo.ToDo` class.
@@ -453,10 +449,7 @@ class CubicBezCurve(gui_lines.Line):
         self.end_callbacks(self.call)
         if self.ui and hasattr(self, "bezcurvetrack"):
             self.bezcurvetrack.finalize()
-        if self.obj:
-            # remove temporary object, if any
-            old = self.obj.Name
-            todo.ToDo.delay(self.doc.removeObject, old)
+        self.removeTemporaryObject()
         if closed is False:
             cleannd = (len(self.node) - 1) % self.degree
             if cleannd == 0:
