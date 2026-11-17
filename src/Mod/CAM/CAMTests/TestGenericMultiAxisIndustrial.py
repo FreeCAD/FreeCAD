@@ -221,7 +221,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.post._machine.output.formatting.line_increment = 10
         lines = self.lines(["G0 X1 Y2 Z3"])
         self.assertEqual("%", lines[0], "the tape mark is never numbered")
-        self.assertTrue(any(re.match(r"^N\d+ G0 X1\.000", l) for l in lines), lines)
+        self.assertTrue(any(re.match(r"^N\d+ G0 G43 X1\.000", l) for l in lines), lines)
 
     # ------------------------------------------------------------------
     # formatting
@@ -242,7 +242,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.post._machine.output.units = OutputUnits.IMPERIAL
         lines = self.lines(["G0 X25.4 Y50.8 Z2.54", "G1 X0 F25.4"])
         self.assert_line("G20", lines)
-        self.assert_line("G0 X1.000 Y2.000 Z0.100", lines)
+        self.assert_line("G0 G43 X1.000 Y2.000 Z0.100 H1", lines)
         self.assert_line("G1 X0.000 F60.000", lines)
 
     # ------------------------------------------------------------------
