@@ -65,10 +65,8 @@ static void freecadNewHandler()
 #endif
 
 #if defined(FC_OS_LINUX)
-    # include <unistd.h>
-    #ifdef HAVE_BACKTRACE_SYMBOLS
-        # include <execinfo.h>
-    #endif
+# include <unistd.h>
+# include <execinfo.h>
 # include <dlfcn.h>
 # include <cxxabi.h>
 
