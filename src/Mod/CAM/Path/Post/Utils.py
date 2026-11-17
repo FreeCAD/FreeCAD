@@ -27,7 +27,7 @@ These are common functions and classes for creating custom post processors.
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
-from Constants import GCODE_DRILL_EXTENDED, GCODE_MOVE_TAP
+from Constants import ANNOT_RIGID_TAP_SPEED, GCODE_DRILL_EXTENDED, GCODE_MOVE_TAP
 
 from PySide import QtGui
 
@@ -452,8 +452,16 @@ def cannedCycleTerminator(path):
                 not cycle_active or current_retract_mode != last_retract_mode
             ) and not explicit_retract_mode_set:
                 retract = modal(current_retract_mode, command.Annotations)
-                if command.Name in GCODE_MOVE_TAP and result and result[-1].Name == "M29":
-                    # Rigid tap: keep the post's M29 S<rpm> directly before its tap.
+                if (
+                    command.Name in GCODE_MOVE_TAP
+                    and result
+                    and (
+                        result[-1].Name == "M29"
+                        or result[-1].Annotations.get(ANNOT_RIGID_TAP_SPEED, False)
+                    )
+                ):
+                    # Rigid tap: keep the post's speed block (M29 S<rpm>, or
+                    # whatever its control uses) directly before its tap.
                     result.insert(len(result) - 1, retract)
                 else:
                     result.append(retract)
