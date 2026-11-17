@@ -36,6 +36,8 @@
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyGeo.h>
 #include <Base/Tools.h>
+#include <Base/Interpreter.h>
+#include <Gui/CommandT.h>
 
 
 FC_LOG_LEVEL_INIT("Expression", true, true)
@@ -208,13 +210,11 @@ bool ExpressionBinding::assignToProperty(const std::string& propName, double val
     Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value);
     return true;
 }
-
 bool ExpressionBinding::apply(const std::string& propName)
 {
     Q_UNUSED(propName);
     if (hasExpression()) {
-        DocumentObject* docObj = path.getDocumentObject();
-
+        App::DocumentObject* docObj = path.getDocumentObject();
         if (!docObj) {
             throw Base::RuntimeError("Document object not found.");
         }
@@ -225,47 +225,65 @@ bool ExpressionBinding::apply(const std::string& propName)
             ss << "Set expression " << docObj->Label.getValue();
             docObj->getDocument()->openTransaction(ss.str().c_str());
         }
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').%s.setExpression('%s', u'%s')",
-            docObj->getDocument()->getName(),
-            docObj->getNameInDocument(),
-            path.toEscapedString().c_str(),
-            getEscapedExpressionString().c_str()
-        );
+
+        // Apply to live C++ object
+        if (auto expr = getExpression()) {
+            docObj->setExpression(path, expr);
+        }
+
+        std::string pathStr = path.toEscapedString();
+
+        // If we are buffering inside an active tool transaction, calculate the index offset
+        if (Gui::ConstraintCommandQueue::isBuffering()) {
+            // Count pending addConstraint calls in the buffer for this transaction
+            size_t pendingConstraints = 0;
+            for (const auto& cmd : Gui::ConstraintCommandQueue::getBuffer()) {
+                if (cmd.find("addConstraint") != std::string::npos) {
+                    pendingConstraints++;
+                }
+            }
+
+            // If an addConstraint was buffered before setExpression, adjust the target index
+            if (pendingConstraints > 0) {
+                // If pathStr is "Constraints[11]" and 1 constraint was added, adjust to
+                // "Constraints[12]"
+                int currentIndex = -1;
+                if (sscanf(pathStr.c_str(), "Constraints[%d]", &currentIndex) == 1) {
+                    pathStr = boost::str(
+                        boost::format("Constraints[%d]") % (currentIndex + pendingConstraints)
+                    );
+                }
+            }
+        }
+
+        Gui::cmdSketcherExpression(docObj, pathStr, getEscapedExpressionString());
+
         if (transaction) {
             docObj->getDocument()->commitTransaction();
         }
         return true;
     }
     else {
-        if (isBound()) {
-            DocumentObject* docObj = path.getDocumentObject();
-
+        if (isBound() && lastExpression) {
+            App::DocumentObject* docObj = path.getDocumentObject();
             if (!docObj) {
                 throw Base::RuntimeError("Document object not found.");
             }
 
-            if (lastExpression) {
-                bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
-                if (transaction) {
-                    std::ostringstream ss;
-                    ss << "Discard expression " << docObj->Label.getValue();
-                    docObj->getDocument()->openTransaction(ss.str().c_str());
-                }
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,
-                    "App.getDocument('%s').%s.setExpression('%s', None)",
-                    docObj->getDocument()->getName(),
-                    docObj->getNameInDocument(),
-                    path.toEscapedString().c_str()
-                );
-                if (transaction) {
-                    docObj->getDocument()->commitTransaction();
-                }
+            bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
+            if (transaction) {
+                std::ostringstream ss;
+                ss << "Discard expression " << docObj->Label.getValue();
+                docObj->getDocument()->openTransaction(ss.str().c_str());
+            }
+
+            // Dispatch discard through helper
+            Gui::cmdSketcherExpression(docObj, path.toEscapedString(), "");
+
+            if (transaction) {
+                docObj->getDocument()->commitTransaction();
             }
         }
-
         return false;
     }
 }
