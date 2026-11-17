@@ -97,6 +97,10 @@ def slice(base_shape, tool_shapes, mode, tolerance=0.0):
     elif mode == "Split":
         gr.splitAggregates(gr.piecesFromSource(shapes[0]))
         result = gr.piecesFromSource(shapes[0])
+        # A base with nested compounds (e.g. a chain of Part booleans) keeps all
+        # its pieces in one inner compound. Return the pieces themselves, as for
+        # a plain shape, so that Slice apart gets one object per piece.
+        result = [leaf for piece in result for leaf in Utils.compoundLeaves(piece)]
     if result != None:
         return result[0] if len(result) == 1 else Part.makeCompound(result)
     else:
