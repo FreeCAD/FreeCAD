@@ -18,7 +18,7 @@ jobs:
     if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
@@ -75,7 +75,7 @@ jobs:
           git push origin "$PR_BRANCH" --force
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
+        uses: peter-evans/create-pull-request@15733dbdfeedb4f7fdb73d13c6f5ac83b710fab8
         with:
           branch: ${{ env.PR_BRANCH }}
           base: ${{ env.TRANSLATION_REF }}

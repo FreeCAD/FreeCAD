@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShapeEdge import TopoShapeEdge
@@ -36,16 +34,13 @@ class ShapeFix_EdgeConnect(PyObjectBase):
         add(shape)
         Adds connectivity information for the whole shape.
         """
-        ...
 
     def build(self) -> None:
         """
         Builds shared vertices, updates their positions and tolerances
         """
-        ...
 
     def clear(self) -> None:
         """
         Clears internal data structure
         """
-        ...

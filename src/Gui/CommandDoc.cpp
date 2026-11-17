@@ -610,7 +610,7 @@ void StdCmdExport::activated(int iMsg)
     );
     if (!filename.isEmpty()) {
         const auto& selectedFilter = filterList[selectedFilterIndex];
-        hPath->SetASCII("FileExportFilter", selectedFilter.name.toLatin1().constData());
+        hPath->SetASCII("FileExportFilter", selectedFilter.name.toUtf8());
 
         SelectModule::Dict dict
             = SelectModule::exportHandler(filename, selectedFilter.toFilterString());

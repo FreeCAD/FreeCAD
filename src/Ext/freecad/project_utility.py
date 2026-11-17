@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-# (c) 2023 Werner Mayer LGPL
+# SPDX-FileCopyrightText: 2023 Werner Mayer
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 __title__="Document handling module"
 __author__ = "Werner Mayer"

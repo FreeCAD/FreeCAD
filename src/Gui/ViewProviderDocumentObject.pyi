@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from ViewProvider import ViewProvider
 from typing import TYPE_CHECKING, Final
 
@@ -20,7 +18,6 @@ class ViewProviderDocumentObject(ViewProvider):
         """
         Update the view representation of the object
         """
-        ...
     Object: _DocumentObject = ...
     """Set/Get the associated data object"""
 

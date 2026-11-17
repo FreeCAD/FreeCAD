@@ -30,7 +30,6 @@
 #include <Precision.hxx>
 #include <ShapeConstruct_Curve.hxx>
 #include <Standard_ConstructionError.hxx>
-#include <Standard_Version.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS.hxx>
@@ -101,11 +100,7 @@ void BRepOffsetAPI_MakeOffsetFix::Perform(const Standard_Real Offset, const Stan
     mkOffset.Perform(Offset, Alt);
 }
 
-#if OCC_VERSION_HEX >= 0x070600
 void BRepOffsetAPI_MakeOffsetFix::Build(const Message_ProgressRange&)
-#else
-void BRepOffsetAPI_MakeOffsetFix::Build()
-#endif
 {
     mkOffset.Build();
 }

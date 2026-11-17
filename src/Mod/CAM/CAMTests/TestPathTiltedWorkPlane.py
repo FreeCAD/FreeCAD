@@ -108,7 +108,11 @@ class TestPlaneAngles(unittest.TestCase):
 def _machineCA(strategy):
     m = Machine(name="Test CA Machine")
     m.rotary_axes["C"] = RotaryAxis(
-        name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
+        name="C",
+        rotation_vector=Vector(0, 0, 1),
+        role=AxisRole.TABLE_ROTARY,
+        parent="A",
+        sequence=0,
     )
     m.rotary_axes["A"] = RotaryAxis(
         name="A",
@@ -116,7 +120,7 @@ def _machineCA(strategy):
         min_limit=-120,
         max_limit=120,
         role=AxisRole.TABLE_ROTARY,
-        parent="C",
+        parent=None,
         sequence=1,
     )
     m.kinematics.rotation_strategy = strategy
@@ -308,9 +312,57 @@ class TestTiltedWorkPlanePost(_PlaneFixture):
         self.assertTrue(shape[0].startswith("rotation:G0"), shape)
         self.assertEqual(shape[1:], [DECLARE, "operation", "G69"])
         positions = dict(rotation.solve_orientation(self.machine, _tiltedAboutX()).angles)
-        rotary = items[0].path.Commands[0]
+        moved = {k: v for c in items[0].path.Commands for k, v in c.Parameters.items()}
         for axis, angle in positions.items():
-            self.assertAlmostEqual(rotary.Parameters[axis], angle, places=6)
+            self.assertAlmostEqual(moved[axis], angle, places=6)
+
+    # the rotary sequence
+
+    def _rotary_moves(self, *ops):
+        items = self._expand([op if isinstance(op, Postable) else self._item(op) for op in ops])
+        return [
+            [sorted(c.Parameters) for c in item.path.Commands]
+            for item in items
+            if item.item_type == "rotation"
+        ]
+
+    def test_theRotariesMoveOneSequenceNumberAtATime(self):
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        moves = self._rotary_moves(self._op("Tilted", self._plane()))
+        self.assertEqual(moves, [[["C"], ["A"]]], "C is sequence 0, A is 1")
+
+    def test_rotariesThatShareASequenceNumberMoveTogether(self):
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        self.machine.rotary_axes["C"].sequence = 1
+        moves = self._rotary_moves(self._op("Tilted", self._plane()))
+        self.assertEqual(moves, [[["A", "C"]]])
+
+    def test_aRotaryAlreadyInPlaceIsLeftOut(self):
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        moves = self._rotary_moves(self._op("Tilted", self._plane()), self._op("Plain", None))
+        self.assertEqual(moves[1], [["A"]], "C stays at 0 on the way home")
+
+    def test_aRotaryWithoutASequenceNumberMovesFirst(self):
+        raw = self.machine.to_dict()
+        raw["machine"]["axes"]["A"]["sequence"] = None
+        self.machine = Machine.from_dict(raw)
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        moves = self._rotary_moves(self._op("Tilted", self._plane()))
+        self.assertEqual(moves, [[["A", "C"]]], "read as sequence 0, C's")
+
+    def test_aFixtureChangeAloneMovesNoRotary(self):
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        other = self._plane()
+        other.Fixture = "G55"
+        moves = self._rotary_moves(self._op("A", self._plane()), self._op("B", other))
+        self.assertEqual(moves, [[["C"], ["A"]]], "already in place under G55")
+
+    def test_aToolChangeCommandsEveryRotaryAgain(self):
+        """Where the rotaries are is not assumed after a tool change."""
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
+        plane = self._plane()
+        moves = self._rotary_moves(self._op("A", plane), self._tool_change(), self._op("B", plane))
+        self.assertEqual(moves, [[["C"], ["A"]], [["C"], ["A"]]])
 
     # the rotary blocks
 

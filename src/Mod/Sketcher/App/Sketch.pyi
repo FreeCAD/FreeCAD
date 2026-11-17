@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.Persistence import Persistence
 from Base.Vector import Vector
@@ -41,7 +39,6 @@ class Sketch(Persistence):
         """
         Solve the actual set of geometry and constraints
         """
-        ...
 
     def addGeometry(
         self, geometry: Union[Geometry, List[Geometry]], /
@@ -49,7 +46,6 @@ class Sketch(Persistence):
         """
         Add a geometric object to the sketch
         """
-        ...
 
     def addConstraint(
         self, constraint: Union[Constraint, List[Constraint]], /
@@ -57,13 +53,11 @@ class Sketch(Persistence):
         """
         Add an constraint object to the sketch
         """
-        ...
 
     def clear(self) -> None:
         """
         Clear the sketch
         """
-        ...
 
     def moveGeometry(
         self, geo_index: int, point_pos: int, vector: Vector, relative: bool = False, /
@@ -79,4 +73,3 @@ class Sketch(Persistence):
         The argument 'relative', if present, states if the new location is given
         relatively to the current one.
         """
-        ...

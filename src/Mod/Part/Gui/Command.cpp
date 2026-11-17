@@ -642,7 +642,7 @@ void CmdPartCompJoinFeatures::languageChange()
     if (joinConnect) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate("Part_JoinFeatures", joinConnect->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("Part_JoinFeatures", joinConnect->getToolTipText()));
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, joinConnect));
         cmd0->setStatusTip(QApplication::translate("Part_JoinFeatures", joinConnect->getStatusTip()));
     }
 
@@ -650,7 +650,7 @@ void CmdPartCompJoinFeatures::languageChange()
     if (joinEmbed) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate("Part_JoinFeatures", joinEmbed->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_JoinFeatures", joinEmbed->getToolTipText()));
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, joinEmbed));
         cmd1->setStatusTip(QApplication::translate("Part_JoinFeatures", joinEmbed->getStatusTip()));
     }
 
@@ -658,7 +658,7 @@ void CmdPartCompJoinFeatures::languageChange()
     if (joinCutout) {
         QAction* cmd2 = a[2];
         cmd2->setText(QApplication::translate("Part_JoinFeatures", joinCutout->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("Part_JoinFeatures", joinCutout->getToolTipText()));
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, joinCutout));
         cmd2->setStatusTip(QApplication::translate("Part_JoinFeatures", joinCutout->getStatusTip()));
     }
 }
@@ -761,9 +761,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitBoolFragments) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate("Part_SplitFeatures", splitBoolFragments->getMenuText()));
-        cmd0->setToolTip(
-            QApplication::translate("Part_SplitFeatures", splitBoolFragments->getToolTipText())
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, splitBoolFragments));
         cmd0->setStatusTip(
             QApplication::translate("Part_SplitFeatures", splitBoolFragments->getStatusTip())
         );
@@ -773,9 +771,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitSliceApart) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSliceApart->getMenuText()));
-        cmd1->setToolTip(
-            QApplication::translate("Part_SplitFeatures", splitSliceApart->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, splitSliceApart));
         cmd1->setStatusTip(
             QApplication::translate("Part_SplitFeatures", splitSliceApart->getStatusTip())
         );
@@ -785,7 +781,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitSlice) {
         QAction* cmd1 = a[2];
         cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSlice->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_SplitFeatures", splitSlice->getToolTipText()));
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, splitSlice));
         cmd1->setStatusTip(QApplication::translate("Part_SplitFeatures", splitSlice->getStatusTip()));
     }
 
@@ -793,7 +789,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitXOR) {
         QAction* cmd2 = a[3];
         cmd2->setText(QApplication::translate("Part_SplitFeatures", splitXOR->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("Part_SplitFeatures", splitXOR->getToolTipText()));
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, splitXOR));
         cmd2->setStatusTip(QApplication::translate("Part_SplitFeatures", splitXOR->getStatusTip()));
     }
 }
@@ -890,7 +886,7 @@ void CmdPartCompCompoundTools::languageChange()
     if (cmdCompound) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate("CmdPartCompound", cmdCompound->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("CmdPartCompound", cmdCompound->getToolTipText()));
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, cmdCompound));
         cmd0->setStatusTip(QApplication::translate("CmdPartCompound", cmdCompound->getStatusTip()));
     }
 
@@ -898,7 +894,7 @@ void CmdPartCompCompoundTools::languageChange()
     if (cmdExplode) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate("Part_CompoundTools", cmdExplode->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_CompoundTools", cmdExplode->getToolTipText()));
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, cmdExplode));
         cmd1->setStatusTip(QApplication::translate("Part_CompoundTools", cmdExplode->getStatusTip()));
     }
 
@@ -906,9 +902,7 @@ void CmdPartCompCompoundTools::languageChange()
     if (cmdCompoundFilter) {
         QAction* cmd2 = a[2];
         cmd2->setText(QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getMenuText()));
-        cmd2->setToolTip(
-            QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getToolTipText())
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, cmdCompoundFilter));
         cmd2->setStatusTip(
             QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getStatusTip())
         );
@@ -1991,7 +1985,7 @@ void CmdPartCompOffset::languageChange()
     if (cmdOffset) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate(cmdOffset->className(), cmdOffset->getMenuText()));
-        cmd0->setToolTip(QApplication::translate(cmdOffset->className(), cmdOffset->getToolTipText()));
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, cmdOffset));
         cmd0->setStatusTip(QApplication::translate(cmdOffset->className(), cmdOffset->getStatusTip()));
     }
 
@@ -1999,9 +1993,7 @@ void CmdPartCompOffset::languageChange()
     if (cmdOffset2D) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getMenuText()));
-        cmd1->setToolTip(
-            QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, cmdOffset2D));
         cmd1->setStatusTip(
             QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getStatusTip())
         );

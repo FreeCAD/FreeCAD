@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, List, Tuple, TypeAlias
 
 from Base.Metadata import export
@@ -23,11 +21,9 @@ class ViewProviderAssembly(ViewProvider):
         """
         Return true if the assembly object is currently in edit mode.
         """
-        ...
 
     def getDragger(self) -> SoTransformDragger:
         """Return the assembly dragger coin object."""
-        ...
 
     def isolateComponents(
         self, components: List[DocumentObject] | Tuple[DocumentObject, ...], mode: int, /
@@ -44,13 +40,11 @@ class ViewProviderAssembly(ViewProvider):
                 - 1: Wireframe
                 - 2: Hidden
         """
-        ...
 
     def clearIsolate(self) -> None:
         """
         Restores the visual state of all components, clearing any active isolation.
         """
-        ...
     EnableMovement: bool
     """Enable moving the parts by clicking and dragging."""
 

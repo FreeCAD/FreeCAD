@@ -2418,9 +2418,7 @@ PyObject* TopoShapePy::distToShape(PyObject* args) const
     }
     BRepExtrema_DistShapeShape extss;
     extss.SetDeflection(tol);
-#if OCC_VERSION_HEX >= 0x070600
     extss.SetMultiThread(true);
-#endif
     extss.LoadS1(s1);
     extss.LoadS2(s2);
     try {

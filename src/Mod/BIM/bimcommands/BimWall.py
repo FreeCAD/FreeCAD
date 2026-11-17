@@ -204,7 +204,9 @@ class Arch_Wall:
             )
 
         elif len(self.points) == 2:
-            self.create_wall()
+            from draftutils import todo
+
+            todo.ToDo.delay(self.create_wall, None)
 
     def _create_baseless_wall(self, p0, p1):
         """Creates a baseless wall and ensures all steps are macro-recordable."""

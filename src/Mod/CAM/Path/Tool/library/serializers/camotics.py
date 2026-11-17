@@ -31,9 +31,7 @@ from ...shape import ToolBitShape, ToolBitShapeEndmill
 from ..models.library import Library
 
 SHAPEMAP = {
-    "ballend": "Ballnose",
     "endmill": "Cylindrical",
-    "taperedballnose": "Ballnose",
     "v-bit": "Conical",
     "vbit": "Conical",
     "chamfer": "Snubnose",
@@ -110,7 +108,10 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             toolitem["length"] = round(tool.get_length().getValueAs(unit).Value, decimals)
 
-            toolitem["shape"] = SHAPEMAP.get(tool._tool_bit_shape.name.lower(), "Cylindrical")
+            if tool._tool_bit_shape.ball_end:
+                toolitem["shape"] = "Ballnose"
+            else:
+                toolitem["shape"] = SHAPEMAP.get(tool._tool_bit_shape.name.lower(), "Cylindrical")
             toollist[str(tool_no)] = toolitem
 
         return json.dumps(toollist, indent=2).encode("utf-8")

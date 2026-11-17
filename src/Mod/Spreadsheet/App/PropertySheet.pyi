@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from typing import Any
 
@@ -26,4 +25,3 @@ class PropertySheet(Persistence):
     @constmethod
     def keys(self) -> Any:
         """Get all cell names"""
-        ...

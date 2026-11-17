@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from typing import overload
@@ -35,7 +33,6 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane
         """
-        ...
 
     def perform(self, radius: float, /) -> bool:
         """
@@ -43,13 +40,11 @@ class ChFi2d_FilletAPI(PyObjectBase):
 
         Constructs a fillet edge
         """
-        ...
 
     def numberOfResults(self, point: Vector, /) -> int:
         """
         Returns number of possible solutions
         """
-        ...
 
     def result(
         self, point: Point, solution: int = -1, /
@@ -59,4 +54,3 @@ class ChFi2d_FilletAPI(PyObjectBase):
 
         Returns result (fillet edge, modified edge1, modified edge2)
         """
-        ...

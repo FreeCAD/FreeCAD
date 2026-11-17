@@ -24,6 +24,7 @@
 import pathlib
 
 import Draft
+import Part
 import FreeCAD
 import Path
 import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
@@ -239,3 +240,135 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.assertEqual("CCW", expected_direction, msg)
         else:
             raise NotImplementedError("Cannot determine direction for arbitrary paths")
+
+
+class TestPathHelixSteppedHole(PathTestUtils.PathTestBase):
+    """A counterbore over its hole: both steps are cut, each to its own depth."""
+
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestPathHelixSteppedHole")
+        block = Part.makeBox(40, 40, 20).cut(Part.makeCylinder(7, 5, FreeCAD.Vector(20, 20, 15)))
+        body = self.doc.addObject("Part::Feature", "Block")
+        body.Shape = block.cut(Part.makeCylinder(4, 20, FreeCAD.Vector(20, 20, 0))).removeSplitter()
+        self.doc.recompute()
+        self.job = PathJob.Create("Job", [body])
+        self.job.Tools.Group[0].Tool.Diameter = 6
+        self.model = self.job.Model.Group[0]
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def testBothStepsCut(self):
+        """Verify the bore and the counterbore over it are both kept and cut to their own depths"""
+        faces = list(enumerate(self.model.Shape.Faces, 1))
+        bore = next(i for i, f in faces if Path.Geom.isRoughly(f.BoundBox.XLength, 8))
+        floor = next(
+            i
+            for i, f in faces
+            if Path.Geom.isRoughly(f.BoundBox.ZMin, 15)
+            and Path.Geom.isRoughly(f.BoundBox.ZLength, 0)
+        )
+        op = PathHelix.Create("Helix")
+        op.Base = [(self.model, [f"Face{bore}", f"Face{floor}"])]
+        for prop in ("StartDepth", "FinalDepth", "StepDown"):
+            op.setExpression(prop, None)
+        op.StartDepth = 20
+        op.StepDown = 20
+
+        # the Final Depth at the bore's bottom, partway down the bore, or at the counterbore's floor
+        for final, bore in ((0, 0), (5, 5), (15, 15)):
+            with self.subTest(final=final):
+                op.FinalDepth = final
+                self.doc.recompute()
+                self.assertEqual(op.Disabled, [])
+                # the tool radius is 3: the bore's arcs run 1 from the axis, the counterbore's 3-4
+                bottoms = {}
+                for cmd in (c for c in op.Path.Commands if c.Name in ("G2", "G3")):
+                    off = FreeCAD.Vector(cmd.x - 20, cmd.y - 20, 0).Length
+                    step = "bore" if off < 2 else "counterbore"
+                    bottoms[step] = min(bottoms.get(step, cmd.z), cmd.z)
+                self.assertRoughly(bottoms["bore"], bore)
+                self.assertRoughly(bottoms["counterbore"], 15)
+
+        # at one diameter for all, the stepped hole is cut once
+        op.FinalDepth = 0
+        op.OverrideProfileDiameter = 10
+        self.doc.recompute()
+        self.assertEqual(sum(c.Name.startswith("(hole") for c in op.Path.Commands), 1)
+
+    def cut(self, job, subs, side="Inside"):
+        """A Helix on subs from the top of the model down to Z0 in one pass"""
+        op = PathHelix.Create("Helix", parentJob=job)
+        op.Base = [(job.Model.Group[0], subs)]
+        for prop in ("StartDepth", "FinalDepth", "StepDown"):
+            op.setExpression(prop, None)
+        op.Side = side
+        op.StartDepth = 20
+        op.FinalDepth = 0
+        op.StepDown = 20
+        self.doc.recompute()
+        return [c for c in op.Path.Commands if c.Name in ("G2", "G3")]
+
+    def testOutsideBoss(self):
+        """Verify a stepped boss cut outside: the upper step stops at its floor, not in the lower"""
+        lower = Part.makeCylinder(10, 10, FreeCAD.Vector(20, 20, 0))
+        upper = Part.makeCylinder(5, 10, FreeCAD.Vector(20, 20, 10))
+        body = self.doc.addObject("Part::Feature", "Boss")
+        body.Shape = lower.fuse(upper).removeSplitter()
+        self.doc.recompute()
+        job = PathJob.Create("BossJob", [body])
+        job.Tools.Group[0].Tool.Diameter = 6
+        faces = enumerate(job.Model.Group[0].Shape.Faces, 1)
+        walls = [f"Face{i}" for i, f in faces if isinstance(f.Surface, Part.Cylinder)]
+
+        # the tool radius is 3: the upper step's arcs run 8 from the axis, the lower's 13
+        bottoms = {}
+        for cmd in self.cut(job, walls, "Outside"):
+            step = round(FreeCAD.Vector(cmd.x - 20, cmd.y - 20, 0).Length)
+            bottoms[step] = min(bottoms.get(step, cmd.z), cmd.z)
+        self.assertEqual(sorted(bottoms), [8, 13])
+        self.assertRoughly(bottoms[8], 10)
+        self.assertRoughly(bottoms[13], 0)
+
+    def testTopEdge(self):
+        """Verify a counterbore picked by its top edge is cut down to its floor"""
+        top = next(
+            i
+            for i, e in enumerate(self.model.Shape.Edges, 1)
+            if Path.Geom.isRoughly(e.BoundBox.XLength, 14)
+            and Path.Geom.isRoughly(e.BoundBox.ZMin, 20)
+        )
+        faces = enumerate(self.model.Shape.Faces, 1)
+        bore = next(i for i, f in faces if Path.Geom.isRoughly(f.BoundBox.XLength, 8))
+
+        # the counterbore's arcs run 3-4 from the axis
+        arcs = self.cut(self.job, [f"Edge{top}", f"Face{bore}"])
+        floor = min(c.z for c in arcs if FreeCAD.Vector(c.x - 20, c.y - 20, 0).Length > 2)
+        self.assertRoughly(floor, 15)
+
+    def testBottomEdgeOverCone(self):
+        """Verify a counterbore picked by its bottom edge stops there, above a cone under it"""
+        cone = Part.makeCone(4, 7, 3, FreeCAD.Vector(20, 20, 12))
+        body = self.doc.addObject("Part::Feature", "Cone")
+        body.Shape = self.model.Shape.cut(cone).removeSplitter()
+        self.doc.recompute()
+        job = PathJob.Create("ConeJob", [body])
+        job.Tools.Group[0].Tool.Diameter = 6
+        model = job.Model.Group[0].Shape
+        bottom = next(
+            i
+            for i, e in enumerate(model.Edges, 1)
+            if Path.Geom.isRoughly(e.BoundBox.XLength, 14)
+            and Path.Geom.isRoughly(e.BoundBox.ZMin, 15)
+        )
+        faces = enumerate(model.Faces, 1)
+        bore = next(
+            i
+            for i, f in faces
+            if isinstance(f.Surface, Part.Cylinder) and Path.Geom.isRoughly(f.BoundBox.XLength, 8)
+        )
+
+        # the cone from Z12 to Z15 shares the edge, but is not the counterbore's wall
+        arcs = self.cut(job, [f"Edge{bottom}", f"Face{bore}"])
+        floor = min(c.z for c in arcs if FreeCAD.Vector(c.x - 20, c.y - 20, 0).Length > 2)
+        self.assertRoughly(floor, 15)

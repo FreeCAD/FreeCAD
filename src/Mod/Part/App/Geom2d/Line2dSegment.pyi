@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from typing import overload
 from Part.Geom2d import Curve2d
@@ -45,4 +43,3 @@ class Line2dSegment(Curve2d):
         """
         Set the parameter range of the underlying line segment geometry.
         """
-        ...

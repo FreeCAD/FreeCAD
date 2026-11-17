@@ -24,54 +24,44 @@ class VoronoiEdge(BaseClass):
     @constmethod
     def isFinite(self) -> Any:
         """Returns true if both vertices are finite"""
-        ...
 
     @constmethod
     def isInfinite(self) -> Any:
         """Returns true if the end vertex is infinite"""
-        ...
 
     @constmethod
     def isLinear(self) -> Any:
         """Returns true if edge is straight"""
-        ...
 
     @constmethod
     def isCurved(self) -> Any:
         """Returns true if edge is curved"""
-        ...
 
     @constmethod
     def isPrimary(self) -> Any:
         """Returns false if edge goes through endpoint of the segment site"""
-        ...
 
     @constmethod
     def isSecondary(self) -> Any:
         """Returns true if edge goes through endpoint of the segment site"""
-        ...
 
     @constmethod
     def isBorderline(self) -> Any:
         """Returns true if the point is on the segment"""
-        ...
 
     @constmethod
     def toShape(
         self, z0: float = 0.0, z1: float = 0.0, dbg: bool = False, /
     ) -> TopoShapeEdge | None:
         """Returns a shape for the edge"""
-        ...
 
     @constmethod
     def getDistances(self) -> Any:
         """Returns the distance of the vertices to the input source"""
-        ...
 
     @constmethod
     def getSegmentAngle(self) -> float | None:
         """Returns the angle (in degree) of the segments if the edge was formed by two segments"""
-        ...
     Index: Final[int]
     """Internal id of the element."""
 

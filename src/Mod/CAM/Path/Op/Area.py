@@ -24,12 +24,10 @@ import FreeCAD
 import Part
 import Path
 from Path.Base.Generator import linking
-from Path.Base.Generator.ramp_entry import RampEntry
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import math
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -248,17 +246,8 @@ class ObjectOp(PathOp.ObjectOp):
             """
             Notes:
             - Finishing pass should be the last in order, no matter value 'StartAt'.
-            - For helix ramp need to skip step down and use only bottom shapes.
             - For 'StartAt' at 'Center' in Pocket op StartPoint should be in the center.
             """
-            rampParams = {
-                "commands": None,
-                "method": None,
-                "angle_rad": None,
-                "pitch": None,
-                "tc": obj.ToolController,
-                "ignoreAbove": obj.StartDepth.Value,
-            }
             reverseOpenWire = False
             zigzag = False
             oneStepDown = False
@@ -267,34 +256,8 @@ class ObjectOp(PathOp.ObjectOp):
             orientation = baseOrientation
             finishing = areaIndex >= len(areaParamsList) - getattr(obj, "FinishingPasses", 0)
             if "Path.Op.Profile" in obj.Proxy.__module__:
-                if obj.RampAngle:
-                    rampParams["angle_rad"] = math.radians(obj.RampAngle.Value)
-                else:
-                    rampParams["pitch"] = obj.StepDown.Value
-
-                if finishing:  # Profile finishing pass
-                    if obj.FinishingOneStepDown:
-                        oneStepDown = True
-                    elif obj.RampMethod == "Helix":
-                        rampParams["method"] = 0
-                        oneStepDown = True
-                elif obj.RampMethod != "None":
-                    oneStepDown = obj.RampMethod == "Helix"
-                    rampParams["method"] = (
-                        0 if obj.RampMethod == "Helix" else int(obj.RampMethod.split()[1])
-                    )
-
-                if rampParams["method"] and not rampParams["angle_rad"]:
-                    # Ramp methods 1-3 need an angle, plunge instead
-                    if areaIndex == 0:
-                        Path.Log.warning(
-                            translate(
-                                "PathAreaOp", "%s: ramp method '%s' needs a ramp angle, plunging"
-                            )
-                            % (obj.Label, obj.RampMethod)
-                        )
-                    rampParams["method"] = None
-
+                if finishing and obj.FinishingOneStepDown:
+                    oneStepDown = True
                 if (
                     obj.UseLongestEdge
                     and not obj.UseStartPoint
@@ -307,17 +270,9 @@ class ObjectOp(PathOp.ObjectOp):
                     orientation = not baseOrientation
                     if obj.FinishingOneStepDown:
                         oneStepDown = True
-                    elif obj.FinishingRampHelix:
-                        oneStepDown = True
-                        rampParams["method"] = 0
-                        rampParams["pitch"] = obj.StepDown.Value
-                elif obj.ClearingPattern in ("Offset", "Helix"):  # Pocket clearing path
+                elif obj.ClearingPattern in ("Offset",):  # Pocket clearing path
                     if obj.StartAt == "Center":
                         pocketCenter = True
-                    if obj.ClearingPattern == "Helix":
-                        oneStepDown = True
-                        rampParams["method"] = 0
-                        rampParams["pitch"] = obj.StepDown.Value
                 if obj.CutMode == "Climb" and obj.ClearingPattern in ("Grid", "Line"):
                     reverseOpenWire = True
                 if obj.ClearingPattern == "ZigZag":
@@ -358,18 +313,18 @@ class ObjectOp(PathOp.ObjectOp):
             if not sections:
                 continue
 
-            opts = (rampParams, reverseOpenWire, middleEdge, pocketCenter, orientation, finishing)
+            opts = (reverseOpenWire, middleEdge, pocketCenter, orientation, finishing)
             units.extend((opts, sec.getShape()) for sec in sections)
 
         if obj.Proxy.__module__ == "Path.Op.Profile":
             # Cut all roughing offsets at one height before stepping down,
             # finishing passes stay last
-            roughing = [u for u in units if not u[0][5]]
+            roughing = [u for u in units if not u[0][4]]
             roughing.sort(key=lambda u: -round(u[1].BoundBox.ZMax, 6))  # stable: keeps pass order
-            units = roughing + [u for u in units if u[0][5]]
+            units = roughing + [u for u in units if u[0][4]]
 
         for opts, sh in units:  # each shape is a path/wires at one height
-            rampParams, reverseOpenWire, middleEdge, pocketCenter, orientation, _ = opts
+            reverseOpenWire, middleEdge, pocketCenter, orientation, _ = opts
             pathParams["orientation"] = orientation
             if not (wires := sh.Wires):
                 continue
@@ -396,7 +351,6 @@ class ObjectOp(PathOp.ObjectOp):
                 Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
                 if pp.Size:
-                    doRamp = rampParams["method"] is not None
                     while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
                         pp.deleteCommand(0)  # remove rapid moves
                     plungeMove = pp.Commands[0]
@@ -417,9 +371,6 @@ class ObjectOp(PathOp.ObjectOp):
                         linkingArgs["start_position"] = self.endVector
                         linkingArgs["target_position"] = p
                         cmds.extend(linking.get_linking_moves(**linkingArgs))
-                        zMax = max(cmd.z for cmd in cmds) if cmds else p.z
-                        if rampParams["method"] == 0 and zMax < obj.SafeHeight.Value:
-                            doRamp = False
                         for cmd in cmds:
                             if cmd.z < obj.SafeHeight.Value:
                                 cmd.Name = "G1"
@@ -427,15 +378,7 @@ class ObjectOp(PathOp.ObjectOp):
                                 par["F"] = self.vertFeed
                                 cmd.Parameters = par
 
-                        if doRamp and len(cmds) < 2:
-                            c = commands[-1]
-                            cmds.insert(0, Path.Command("G1", {"X": c.x, "Y": c.y, "Z": c.z}))
-
                     cmds.extend(pp.Commands)
-                    if doRamp:  # generate ramp entry
-                        rampParams["commands"] = cmds
-                        cmds = RampEntry(**rampParams).generate()
-
                     commands.extend(cmds)
                     self.endVector = end_vector
                     sortFrom = end_vector

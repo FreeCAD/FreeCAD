@@ -112,24 +112,30 @@ class Arch_CurtainWall:
                 last=self.points[0], callback=self.getPoint, hints=self.get_hints()
             )
         elif len(self.points) == 2:
+            from draftutils import todo
+
             self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
-            FreeCADGui.Control.closeDialog()
-            self.doc.openTransaction(translate("Arch", "Create Curtain Wall"))
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand(
-                "base = Draft.make_line(FreeCAD."
-                + str(self.points[0])
-                + ",FreeCAD."
-                + str(self.points[1])
-                + ")"
-            )
-            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            self.doc.commitTransaction()
-            self.doc.recompute()
+            todo.ToDo.delay(self.createCurtainWall, None)
+
+    def createCurtainWall(self):
+        """Creates the curtain wall from the picked points"""
+
+        self.doc.openTransaction(translate("Arch", "Create Curtain Wall"))
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand(
+            "base = Draft.make_line(FreeCAD."
+            + str(self.points[0])
+            + ",FreeCAD."
+            + str(self.points[1])
+            + ")"
+        )
+        FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
 
 FreeCADGui.addCommand("Arch_CurtainWall", Arch_CurtainWall())

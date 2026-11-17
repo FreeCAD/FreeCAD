@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.TopoShape import TopoShape
@@ -26,7 +24,6 @@ class ShapeFix_FaceConnect(PyObjectBase):
         """
         add(face1, face2)
         """
-        ...
 
     def build(
         self, shell: TopoShapeShell, sewtolerance: float, fixtolerance: float, /
@@ -34,10 +31,8 @@ class ShapeFix_FaceConnect(PyObjectBase):
         """
         build(shell, sewtolerance, fixtolerance)
         """
-        ...
 
     def clear(self) -> None:
         """
         Clears internal data structure
         """
-        ...

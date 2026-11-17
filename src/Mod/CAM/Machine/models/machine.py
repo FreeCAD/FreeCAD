@@ -28,6 +28,7 @@ from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Tuple, Callable
 from collections import namedtuple
 from enum import Enum
+from Constants import ToolChangeFormat  # defined in Constants, used here and re-exported
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -164,9 +165,12 @@ class ProcessingOptions:
     # Conversion and expansion of Path Objects. Does not affect final gcode generation
 
     early_tool_prep: bool = False  # Prepare tool before operation (affects postlist ordering)
+    assert_tool_prep: bool = (
+        False  # Write T# before every tool change to force tool prep. Useful for starting in the middle of a file.
+    )
+    tool_change_format: ToolChangeFormat = ToolChangeFormat.M6_T  # Dropdown of tool change formats
     filter_inefficient_moves: bool = False  # Collapse redundant G0 rapid move chains
     split_arcs: bool = False
-    tool_change: bool = True  # Enable tool change commands
     translate_drill_cycles: bool = False  # Expand canned drill cycles to G0/G1 moves
     translate_rapid_moves: bool = False
     f_for_rapid_moves = False
@@ -746,8 +750,6 @@ class Machine:
     # Rotary axis configuration (legacy - will be deprecated)
     primary_rotary_axis: Optional[str] = None
     secondary_rotary_axis: Optional[str] = None
-    compound_moves: bool = True
-    prefer_positive_rotation: bool = True
 
     # Units and versioning
     configuration_units: str = "metric"  # Internal storage for configuration_units
@@ -1014,7 +1016,7 @@ class Machine:
         """Create standard A/C table configuration.
 
         Kinematic tree:
-          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> A (tilt, table_rotary) -> C (azimuth, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         config = cls("AC Table Configuration")
@@ -1024,10 +1026,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
         config.rotary_axes["C"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["C"].parent = "A"
         config.rotary_axes["C"].sequence = 0
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
         config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
-        config.rotary_axes["A"].parent = "C"
         config.rotary_axes["A"].sequence = 1
         config.set_alignment_axes("C", "A")
         return config
@@ -1037,7 +1039,7 @@ class Machine:
         """Create standard B/C head configuration.
 
         Kinematic tree:
-          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> C (azimuth, head_rotary) -> B (tilt, head_rotary)
           BaseFrame -> X, Y (table_linear)
         """
         config = cls("BC Head Configuration")
@@ -1047,13 +1049,12 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.rotary_axes["B"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["B"].parent = "C"
         config.rotary_axes["B"].sequence = 0
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
         config.rotary_axes["C"].role = AxisRole.HEAD_ROTARY
-        config.rotary_axes["C"].parent = "B"
         config.rotary_axes["C"].sequence = 1
         config.set_alignment_axes("C", "B")
-        config.compound_moves = True  # Ensure compound moves are enabled for test compatibility
         return config
 
     @classmethod
@@ -1061,7 +1062,7 @@ class Machine:
         """Create standard A/B table configuration.
 
         Kinematic tree:
-          BaseFrame -> A (tilt-X, table_rotary) -> B (tilt-Y, table_rotary)
+          BaseFrame -> B (tilt-Y, table_rotary) -> A (tilt-X, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         config = cls("AB Table Configuration")
@@ -1072,10 +1073,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
         config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].parent = "B"
         config.rotary_axes["A"].sequence = 0
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
-        config.rotary_axes["B"].parent = "A"
         config.rotary_axes["B"].sequence = 1
         config.set_alignment_axes("A", "B")
         return config
@@ -1230,9 +1231,10 @@ class Machine:
         # Processing options
         data["processing"] = {
             "early_tool_prep": self.processing.early_tool_prep,
+            "assert_tool_prep": self.processing.assert_tool_prep,
+            "tool_change_format": self.processing.tool_change_format.value,
             "filter_inefficient_moves": self.processing.filter_inefficient_moves,
             "split_arcs": self.processing.split_arcs,
-            "tool_change": self.processing.tool_change,
             "translate_drill_cycles": self.processing.translate_drill_cycles,
             "translate_rapid_moves": self.processing.translate_rapid_moves,
             "xy_before_z_after_tool_change": self.processing.xy_before_z_after_tool_change,
@@ -1252,7 +1254,6 @@ class Machine:
         self.rotary_axes = {}
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
-        self.compound_moves = True
 
     def validate_kinematic_chain(self) -> List[str]:
         """Validate the kinematic chain configuration.
@@ -1285,46 +1286,7 @@ class Machine:
                             break
                         current = parent_axis.parent if parent_axis else None
 
-        # Validate sequence numbers are unique within each chain
-        chains = self._get_kinematic_chains()
-        for chain_name, chain_axes in chains.items():
-            sequences = [axis.sequence for axis in chain_axes]
-            if len(sequences) != len(set(sequences)):
-                errors.append(f"Duplicate sequence numbers in chain {chain_name}")
-
         return errors
-
-    def _get_kinematic_chains(self) -> Dict[str, List]:
-        """Group axes by their kinematic chains.
-
-        Returns:
-            Dictionary mapping chain names to lists of axes
-        """
-        chains = {}
-        all_axes = {**self.linear_axes, **self.rotary_axes}
-
-        # Find root axes (those with no parent)
-        root_axes = [name for name, axis in all_axes.items() if axis.parent is None]
-
-        for root_name in root_axes:
-            chain = []
-            visited = set()
-
-            def collect_chain(axis_name):
-                if axis_name in visited or axis_name not in all_axes:
-                    return
-                visited.add(axis_name)
-                chain.append(all_axes[axis_name])
-
-                # Find children
-                for child_name, child_axis in all_axes.items():
-                    if child_axis.parent == axis_name:
-                        collect_chain(child_name)
-
-            collect_chain(root_name)
-            chains[root_name] = chain
-
-        return chains
 
     def get_axis_chain(self, axis_name: str) -> List[str]:
         """Get the kinematic chain for a specific axis.
@@ -1393,7 +1355,7 @@ class Machine:
         """Initialize as a 5-axis AC table configuration.
 
         Kinematic tree:
-          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> A (tilt, table_rotary) -> C (azimuth, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         self._initialize_3axis_config()
@@ -1403,7 +1365,7 @@ class Machine:
             min_limit=c_limits[0],
             max_limit=c_limits[1],
             role=AxisRole.TABLE_ROTARY,
-            parent=None,
+            parent="A",
             sequence=0,
         )
         self.rotary_axes["A"] = RotaryAxis(
@@ -1412,7 +1374,7 @@ class Machine:
             min_limit=a_limits[0],
             max_limit=a_limits[1],
             role=AxisRole.TABLE_ROTARY,
-            parent="C",
+            parent=None,
             sequence=1,
         )
         self.primary_rotary_axis = "C"
@@ -1422,7 +1384,7 @@ class Machine:
         """Initialize as a 5-axis BC head configuration.
 
         Kinematic tree:
-          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> C (azimuth, head_rotary) -> B (tilt, head_rotary)
           BaseFrame -> X, Y (table_linear)
         """
         self._initialize_3axis_config()
@@ -1432,7 +1394,7 @@ class Machine:
             min_limit=b_limits[0],
             max_limit=b_limits[1],
             role=AxisRole.HEAD_ROTARY,
-            parent=None,
+            parent="C",
             sequence=0,
         )
         self.rotary_axes["C"] = RotaryAxis(
@@ -1441,7 +1403,7 @@ class Machine:
             min_limit=c_limits[0],
             max_limit=c_limits[1],
             role=AxisRole.HEAD_ROTARY,
-            parent="B",
+            parent=None,
             sequence=1,
         )
         self.primary_rotary_axis = "B"
@@ -1471,7 +1433,6 @@ class Machine:
         self.rotary_axes = {}
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
-        self.compound_moves = True
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Machine":
@@ -1579,7 +1540,7 @@ class Machine:
                 max_velocity = axis_data.get("max_velocity", 36000)
                 role = AxisRole(axis_data.get("role", "table_rotary"))
                 parent = axis_data.get("parent")
-                sequence = axis_data.get("sequence", 0)
+                sequence = int(axis_data.get("sequence") or 0)
                 solution_preference = axis_data.get("solution_preference", "shortest")
                 allow_flip = axis_data.get("allow_flip", True)
 
@@ -1786,11 +1747,14 @@ class Machine:
         processing_data = data.get("processing", {})
         if processing_data:
             config.processing.early_tool_prep = processing_data.get("early_tool_prep", False)
+            config.processing.assert_tool_prep = processing_data.get("assert_tool_prep", False)
+            config.processing.tool_change_format = ToolChangeFormat(
+                processing_data.get("tool_change_format", ToolChangeFormat.M6_T.value)
+            )
             config.processing.filter_inefficient_moves = processing_data.get(
                 "filter_inefficient_moves", False
             )
             config.processing.split_arcs = processing_data.get("split_arcs", False)
-            config.processing.tool_change = processing_data.get("tool_change", True)
             config.processing.translate_drill_cycles = processing_data.get(
                 "translate_drill_cycles", False
             )

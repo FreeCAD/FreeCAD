@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
@@ -25,7 +23,6 @@ class Document(Persistence):
         object_name : str
             Name of the `Gui.ViewProvider` to show.
         """
-        ...
 
     def hide(self, object_name: str, /) -> None:
         """
@@ -34,7 +31,6 @@ class Document(Persistence):
         object_name : str
             Name of the `Gui.ViewProvider` to hide.
         """
-        ...
 
     def setPos(self, object_name: str, matrix: Matrix, /) -> None:
         """
@@ -46,7 +42,6 @@ class Document(Persistence):
         matrix : Base.Matrix
             Transformation to apply on the object.
         """
-        ...
 
     def setEdit(
         self, obj: str | DocumentObject | _ViewProvider, mode: int = 0, subname: str = ..., /
@@ -61,19 +56,16 @@ class Document(Persistence):
         subname : str
             Subelement name. Optional.
         """
-        ...
 
     def getInEdit(self) -> Optional[Any]:
         """
         Returns the current object in edit mode or None if there is no such object.
         """
-        ...
 
     def resetEdit(self) -> None:
         """
         End the current editing.
         """
-        ...
 
     def addAnnotation(self, name: str, filename: str, mode: str = "Main", /) -> None:
         """
@@ -86,13 +78,11 @@ class Document(Persistence):
         mode : str
             Display mode name. Optional.
         """
-        ...
 
     def update(self) -> None:
         """
         Update the view representations of all objects.
         """
-        ...
 
     def getObject(self, name: str, /) -> Optional[Any]:
         """
@@ -101,19 +91,16 @@ class Document(Persistence):
         name : str
             Object name.
         """
-        ...
 
     def activeObject(self) -> Optional[Any]:
         """
         The active object of the document. Deprecated, use ActiveObject.
         """
-        ...
 
     def activeView(self) -> Optional[Any]:
         """
         The active view of the document. Deprecated, use ActiveView.
         """
-        ...
 
     def createView(self, type: str, /) -> Optional[Any]:
         """
@@ -122,7 +109,6 @@ class Document(Persistence):
         type : str
             Type name.
         """
-        ...
 
     @constmethod
     def mdiViewsOfType(self, type: str, /) -> List[Any]:
@@ -132,19 +118,16 @@ class Document(Persistence):
         type : str
             Type name.
         """
-        ...
 
     def save(self) -> bool:
         """
         Attempts to save the document
         """
-        ...
 
     def saveAs(self) -> bool:
         """
         Attempts to save the document under a new name
         """
-        ...
 
     def sendMsgToViews(self, msg: str, /) -> None:
         """
@@ -152,7 +135,6 @@ class Document(Persistence):
 
         msg : str
         """
-        ...
 
     def mergeProject(self, filename: str, /) -> None:
         """
@@ -161,7 +143,6 @@ class Document(Persistence):
         filename : str
             File name.
         """
-        ...
 
     def toggleTreeItem(self, obj: DocumentObject, mode: int = 0, subname: str = ..., /) -> None:
         """
@@ -174,7 +155,6 @@ class Document(Persistence):
         subname : str
             Subelement name. Optional.
         """
-        ...
 
     def scrollToTreeItem(self, obj: _ViewProviderDocumentObject, /) -> None:
         """
@@ -182,7 +162,6 @@ class Document(Persistence):
 
         obj : Gui.ViewProviderDocumentObject
         """
-        ...
 
     def toggleInSceneGraph(self, obj: _ViewProvider, /) -> None:
         """
@@ -191,7 +170,6 @@ class Document(Persistence):
 
         obj : Gui.ViewProvider
         """
-        ...
 
     def openCommand(self, name: str) -> int:
         """
@@ -200,7 +178,6 @@ class Document(Persistence):
         Opens a named transaction for the document and returns it's
         id or 0 on failure
         """
-        ...
 
     def commitCommand(self) -> None:
         """
@@ -208,7 +185,6 @@ class Document(Persistence):
 
         Commits the current transaction of the document
         """
-        ...
 
     def abortCommand(self) -> None:
         """
@@ -216,7 +192,6 @@ class Document(Persistence):
 
         Aborts the current transaction of the document
         """
-        ...
     ActiveObject: Any = ...
     """The active object of the document."""
 

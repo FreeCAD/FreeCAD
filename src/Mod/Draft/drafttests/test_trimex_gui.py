@@ -7,7 +7,7 @@
 # *                                                                         *
 # *   This file is free software; you can redistribute it and/or modify it  *
 # *   under the terms of the GNU Lesser General Public License (LGPL)       *
-# *   as published by the Free Software Foundation; either version 2.1 of  *
+# *   as published by the Free Software Foundation; either version 2.1 of   *
 # *   the License, or (at your option) any later version.                   *
 # *                                                                         *
 # ***************************************************************************
@@ -40,7 +40,7 @@ class DraftTrimexGui(DraftTestCaseDoc):
             [vertex.Point for vertex in line.Shape.Vertexes],
             [App.Vector(-300, -300, 0), App.Vector(100, -300, 0)],
         )
-        shape = gui_trimex._get_global_shape(line)
+        shape = gui_trimex._get_global_shape(part, f"{line.Name}.Edge1")
         self.assertEqual(
             [vertex.Point for vertex in shape.Vertexes],
             [App.Vector(100, 100, 0), App.Vector(500, 100, 0)],
@@ -98,7 +98,9 @@ class DraftTrimexGui(DraftTestCaseDoc):
         command.placement = placement
         command.edges = shape.Edges
         command.ghost = [mock.Mock()]
+        command.axisSetter = None
         command.activePoint = 0
+        command.lockedActivePoint = None
         command.force = None
         command.doc = self.doc
         command.extrudeMode = False
@@ -112,7 +114,7 @@ class DraftTrimexGui(DraftTestCaseDoc):
 
         command.trimObject()
 
-        self.assertEqual(horizontal.Points, [App.Vector(20, 0, 0), App.Vector(0, 0, 0)])
+        self.assertEqual(horizontal.Points, [App.Vector(0, 0, 0), App.Vector(20, 0, 0)])
 
     def test_extend_to_object_in_translated_part(self):
         """Trimex should extend between world-space shapes in an App Part."""
@@ -127,13 +129,15 @@ class DraftTrimexGui(DraftTestCaseDoc):
         self.doc.recompute()
 
         command = gui_trimex.Trimex()
-        command.edges = gui_trimex._get_global_shape(horizontal).Edges
+        command.edges = gui_trimex._get_global_shape(part, f"{horizontal.Name}.Edge1").Edges
         command.ghost = [mock.Mock()]
+        command.axisSetter = None
         command.activePoint = 0
+        command.lockedActivePoint = None
         command.force = None
         edges = command.redraw(
             App.Vector(700, 100, 0),
-            {"ParentObject": vertical, "SubName": "Edge1"},
+            {"ParentObject": part, "SubName": f"{vertical.Name}.Edge1"},
             real=True,
         )
 
@@ -145,11 +149,11 @@ class DraftTrimexGui(DraftTestCaseDoc):
         command.placement = horizontal.getGlobalPlacement()
         command.extrudeMode = False
         command.point = App.Vector(700, 100, 0)
-        command.snapped = {"ParentObject": vertical, "SubName": "Edge1"}
+        command.snapped = {"ParentObject": part, "SubName": f"{vertical.Name}.Edge1"}
         command.shift = False
         command.alt = False
         command.trimObject()
         self.assertEqual(
             horizontal.Points,
-            [App.Vector(700, 100, 0), App.Vector(100, 100, 0)],
+            [App.Vector(100, 100, 0), App.Vector(700, 100, 0)],
         )
