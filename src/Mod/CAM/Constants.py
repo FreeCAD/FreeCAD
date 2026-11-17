@@ -272,5 +272,10 @@ ANNOT_AS_IS = "as-is"
 # This tlo g-code was added due to option `output_tool_length_offset`
 ANNOT_ADDED_TLO = "tool_length_offset"
 
+# The block a post writes ahead of a rigid tap to carry the spindle speed
+# ("M29 S500" on a Fanuc, a bare "S500" on a control with no mode word).
+# The canned-cycle terminator keeps it directly before its tap.
+ANNOT_RIGID_TAP_SPEED = "rigid_tap_speed"
+
 # Moves from linking generator
 ANNOT_LINKING = {"type": "linking"}

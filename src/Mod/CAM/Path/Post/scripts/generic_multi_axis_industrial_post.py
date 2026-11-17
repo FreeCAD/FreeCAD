@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
 # SPDX-FileCopyrightText: 2026 Fae Corrigan <propsmonsterproductions@gmail.com>
 # SPDX-FileNotice: Part of the FreeCAD project.
 
@@ -18,11 +19,14 @@
 #   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
 #                                                                              #
 ################################################################################
-out_tooltip = """
+
+"""
 Generic Multi Axis Industrial Post, "machine" based.
 
 Covers common code between several industrial cnc machines to reduce duplication.
-It is not intended to be used standalone
+It is a post in its own right, for a control that reads this common dialect, and
+the parent of the posts for specific controls (Fanuc), which add what is their
+own. It is machine based only: it has no legacy export() entry point.
 
 Features:
 - the ``%`` tape marks and an ``O`` program number;
@@ -34,14 +38,15 @@ Features:
 - an optional empty-spindle park (``M6 T0``) before the postamble;
 - rigid tapping: ``S<rpm>`` immediately before a ``G84``/``G74`` block,
   whose F is pitch times spindle speed;
-  Note: set RIGID_TAP_MODE at the top of the file if there is a specific command
-  for it on your machine.
-  eg. RIGID_TAP_MODE ="M29" for Fanuc machines
+  Note: a child post sets the RIGID_TAP_MODE class attribute if there is a
+  specific command for it on the machine, e.g. RIGID_TAP_MODE = "M29" for Fanuc.
+  Left empty, the block before the cycle is the S word alone.
 - upper-case output for older controls.
 
-The post leaves DWO vs TWP ambigous to be set by the child post processor.
+The post leaves DWO vs TWP ambiguous to be set by the child post processor.
 
 """
+
 import re
 from typing import Any
 
@@ -50,23 +55,9 @@ import Path
 
 import Constants
 import Path.Base.Util as PathUtil
-from Path.Post.Processor import (
-    PostProcessor,
-    SCOPE_MACHINE,
-    SCOPE_JOB,
-    _HeaderBuilder,
-    _sanitize_comment,
-)
+from Path.Post.Processor import PostProcessor, SCOPE_MACHINE, SCOPE_JOB
 from Path.Post.CAMErrors import CAMValueError
 from Path.Post.UtilsParse import format_command_line
-
-try:
-    # Tilted work planes: the post names its plane command once the base
-    # post-processor knows what one is.
-    from Path.Post.TiltedWorkPlane import PlaneCommand
-except ImportError:
-    PlaneCommand = None
-
 
 translate = FreeCAD.Qt.translate
 
@@ -87,11 +78,8 @@ EXTRA_SUPPORTED = Constants.MCODE_END + Constants.MCODE_END_RESET
 
 
 class GenericMultiAxisIndustrial(PostProcessor):
-    """Post processor for Generic Multi Axis Industrial Machines.
-    Not intended to be used standalone"""
-
-    # Canned cycles whose P word is a dwell.
-    DwellCycles = ("G82", "G88", "G89", "G84", "G74", "G76")
+    """Post processor for generic multi axis industrial machines, and the parent
+    of the posts for specific industrial controls."""
 
     # The mode command written before S<rpm> ahead of a rigid tap, "M29" on a
     # Fanuc. Empty when the control only wants the S word. Child posts set this.
@@ -100,6 +88,9 @@ class GenericMultiAxisIndustrial(PostProcessor):
     # Commands added to the supported list beyond the base's. Child posts
     # extend this.
     EXTRA_SUPPORTED = EXTRA_SUPPORTED
+
+    # The O number is zero-padded to this many digits. Child posts set this.
+    PROGRAM_NUMBER_DIGITS = 4
 
     # ------------------------------------------------------------------
     # Property schema
@@ -243,6 +234,21 @@ class GenericMultiAxisIndustrial(PostProcessor):
     # Setup
     # ------------------------------------------------------------------
 
+    def __init__(
+        self,
+        job,
+        tooltip=translate("CAM", "Generic multi axis industrial post processor"),
+        tooltipargs=[],
+        units="Metric",
+    ) -> None:
+        super().__init__(job=job, tooltip=tooltip, tooltipargs=tooltipargs, units=units)
+        Path.Log.debug("Generic multi axis industrial post processor initialized.")
+
+    def init_values(self, values: Values) -> None:
+        super().init_values(values)
+        values["MACHINE_NAME"] = "Generic Multi Axis Industrial"
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+
     def _merge_machine_config(self):
         super()._merge_machine_config()
         # Comments are parenthesised, whatever the machine file says.
@@ -316,7 +322,10 @@ class GenericMultiAxisIndustrial(PostProcessor):
                             Path.Command(
                                 self.RIGID_TAP_MODE,
                                 {"S": speed},
-                                {Constants.ANNOT_ALLOW_UNSUPPORTED: True},
+                                {
+                                    Constants.ANNOT_ALLOW_UNSUPPORTED: True,
+                                    Constants.ANNOT_RIGID_TAP_SPEED: True,
+                                },
                             )
                         )
                         changed = True
@@ -337,7 +346,7 @@ class GenericMultiAxisIndustrial(PostProcessor):
             leading.append(self._as_is(TAPE_MARK))
         number = int(self.values.get("PROGRAM_NUMBER", 0) or 0)
         if number > 0:
-            line = f"O{number:04d}"
+            line = f"O{number:0{self.PROGRAM_NUMBER_DIGITS}d}"
             if self.values["OUTPUT_COMMENTS"] and self._job is not None:
                 label = re.sub(r"[()]", "", getattr(self._job, "Label", "") or "")
                 if label:
@@ -383,7 +392,7 @@ class GenericMultiAxisIndustrial(PostProcessor):
     # Command conversion
     # ------------------------------------------------------------------
 
-    def format_parameter(self, param_name, value, command_name=None):  # TODO
+    def format_parameter(self, param_name, value, command_name=None):
         """P is a dwell in whole milliseconds on these controls, unless the control
         is set otherwise; on G54.1 it is the extended WCS offset number."""
         if param_name == "P":
@@ -412,20 +421,24 @@ class GenericMultiAxisIndustrial(PostProcessor):
             params = {k: v for k, v in command.Parameters.items() if k != "S"}
             command = Path.Command(command.Name, params, command.Annotations)
 
-        doubles = self.values["OUTPUT_DOUBLES"]  # TODO why does this need to check doubles?
+        doubles = self.values["OUTPUT_DOUBLES"]
         self.values["OUTPUT_DOUBLES"] = True
         try:
             return self._convert_move(command)
         finally:
             self.values["OUTPUT_DOUBLES"] = doubles
 
-    def _convert_generic_command(self, command: Path.Command) -> str:  # TODO
+    def _convert_generic_command(self, command: Path.Command) -> str:
         """Rigid tapping S<rpm>: the S must be written even when it repeats the spindle's."""
-        if command.Name == self.RIGID_TAP_MODE:
+        # Found by its annotation, not its name: the name is the child's
+        # RIGID_TAP_MODE, and an empty name is also what a modal-stripped
+        # command carries.
+        if command.Annotations.get(Constants.ANNOT_RIGID_TAP_SPEED, False):
             words = []
             if (n := command.Parameters.get("N")) is not None:
                 words.append(f"{self.values['LINE_NUMBER_PREFIX']}{int(n):d}")
-            words.append(self.RIGID_TAP_MODE)
+            if self.RIGID_TAP_MODE:
+                words.append(self.RIGID_TAP_MODE)
             words.append(f"S{self.format_parameter('S', command.Parameters['S'])}")
             return format_command_line(self.values, words)
         return super()._convert_generic_command(command)
@@ -478,3 +491,19 @@ class GenericMultiAxisIndustrial(PostProcessor):
                         )
                         break
         return squawks
+
+    @property
+    def tooltip(self):
+        return """
+        Generic multi axis industrial post processor for the CAM workbench.
+
+        Writes the G-code dialect the industrial mill controls share: % tape
+        marks and an O number, native canned cycles with every parameter on
+        every block, rigid tapping with S<rpm> ahead of the cycle, and dwell
+        in milliseconds. The posts for specific controls build on it.
+        """
+
+
+# Class alias for PostProcessorFactory: it looks for the title-cased post name.
+# Without it the factory takes the file for a legacy script and fails.
+Generic_Multi_Axis_Industrial = GenericMultiAxisIndustrial

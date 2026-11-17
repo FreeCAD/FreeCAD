@@ -23,12 +23,14 @@
 Tests for the output shared by the industrial machine posts
 (generic_multi_axis_industrial_post.py).
 
-The generic post is not a standalone post, so these tests drive it through a
-concrete child, the Fanuc post. They pin what the children inherit: tape marks,
+Most of these tests drive the generic post through a concrete child, the Fanuc
+post. They pin what the children inherit: tape marks,
 program number, upper-case output, dwell units, native canned cycles, rigid
 tapping, the parametric tool length offset, the empty-spindle park and the
 rigid-tapping sanity check. Where a line belongs to the child (the M29 mode
-word, the postamble) it is the Fanuc one.
+word, the postamble) it is the Fanuc one. A last class drives the
+generic post itself, to pin that it loads as a machine-based post and what it
+writes without a rigid-tap mode word.
 
 IndustrialPostTestBase carries the mock job and the helpers and has no tests of
 its own, so a child post's test module can build on it without collecting these
@@ -41,7 +43,7 @@ import unittest
 import Path
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
-from Path.Post.Processor import PostProcessorFactory, VALID_SCOPES, property_scope
+from Path.Post.Processor import PostProcessorFactory, WrapperPost, VALID_SCOPES, property_scope
 from Path.Post.CAMErrors import CAMValueError
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
@@ -219,7 +221,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.post._machine.output.formatting.line_increment = 10
         lines = self.lines(["G0 X1 Y2 Z3"])
         self.assertEqual("%", lines[0], "the tape mark is never numbered")
-        self.assertTrue(any(re.match(r"^N\d+ G0 X1\.000", l) for l in lines), lines)
+        self.assertTrue(any(re.match(r"^N\d+ G0 G43 X1\.000", l) for l in lines), lines)
 
     # ------------------------------------------------------------------
     # formatting
@@ -240,7 +242,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.post._machine.output.units = OutputUnits.IMPERIAL
         lines = self.lines(["G0 X25.4 Y50.8 Z2.54", "G1 X0 F25.4"])
         self.assert_line("G20", lines)
-        self.assert_line("G0 X1.000 Y2.000 Z0.100", lines)
+        self.assert_line("G0 G43 X1.000 Y2.000 Z0.100 H1", lines)
         self.assert_line("G1 X0.000 F60.000", lines)
 
     # ------------------------------------------------------------------
@@ -451,3 +453,66 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.profile_op.Path = Path.Path([Path.Command("G0 X0 Y0 Z10"), _tap()])
         squawks = self.post.get_sanity_checks(self.job)
         self.assertFalse(any("rigid tapping" in s["Note"] for s in squawks), squawks)
+
+
+class TestGenericMultiAxisIndustrialStandalone(IndustrialPostTestBase):
+    """The generic post on its own: no child, no rigid-tap mode word."""
+
+    POST_NAME = "generic_multi_axis_industrial"
+    MACHINE_NAME = "Test Generic Industrial"
+
+    def test_is_a_machine_based_post(self):
+        """Offered with the machine-based posts and never with the legacy ones."""
+        self.assertEqual("machine", Path.Preferences.classifyPostProcessor(self.POST_NAME))
+        self.assertIn(self.POST_NAME, Path.Preferences.allAvailableMachinePostProcessors())
+        self.assertNotIn(self.POST_NAME, Path.Preferences.allAvailableLegacyPostProcessors())
+
+    def test_factory_loads_the_class_not_a_script_wrapper(self):
+        """The factory finds the class by its alias; it does not fall back to
+        the legacy script wrapper, which needs an export() this post lacks."""
+        self.assertNotIsInstance(self.post, WrapperPost)
+        self.assertEqual("GenericMultiAxisIndustrial", type(self.post).__name__)
+
+    def test_exports_a_program(self):
+        lines = self.lines(["G0 X1 Y2 Z3"])
+        self.assertEqual("%", lines[0])
+        self.assert_line("G0 X1.000 Y2.000 Z3.000", lines)
+        self.assertEqual("%", lines[-1])
+
+    def test_rigid_tap_without_a_mode_word_writes_s_alone(self):
+        lines = self.lines(["G0 X0 Y0 Z10", "G98", _tap()])
+        index = lines.index("S500")
+        self.assertEqual("G84 X5.000 Y5.000 Z-10.000 F625.000 R2.000", lines[index + 1])
+        self.assert_line("G80", lines)
+
+    def test_rigid_tap_without_a_mode_word_is_line_numbered(self):
+        self.post._machine.output.formatting.line_numbers = True
+        lines = self.lines(["G0 X0 Y0 Z10", _tap()])
+        self.assertTrue(any(re.match(r"^N\d+ S500$", l) for l in lines), lines)
+
+    def test_rigid_tap_without_a_mode_word_repeats_s(self):
+        """The S block is never dropped as a duplicate of the M3's."""
+        self.post._machine.output.duplicates.parameters = False
+        lines = self.lines(["M3 S500", "G0 X0 Y0 Z10", _tap()])
+        self.assert_line("M3 S500", lines)
+        self.assert_line("S500", lines)
+
+    def test_modal_stripped_moves_are_not_taken_for_the_tap_speed(self):
+        """A move stripped of its repeated command word has an empty name too."""
+        self.post._machine.output.duplicates.commands = False
+        lines = self.lines(["G1 X1 Y0 Z0 F100", "G1 X2", "G1 X3"])
+        self.assert_line("X2.000", lines)
+        self.assert_line("X3.000", lines)
+
+    def test_sanity_names_no_mode_word(self):
+        self.profile_op.Path = Path.Path(
+            [Path.Command("G0 X0 Y0 Z10"), Path.Command("G84 X5 Y5 Z-10 R2 F10")]
+        )
+        self.tool_controller.SpindleSpeed = 0
+        try:
+            squawks = self.post.get_sanity_checks(self.job)
+        finally:
+            self.tool_controller.SpindleSpeed = 1000
+        notes = [s["Note"] for s in squawks if "rigid tapping" in s["Note"]]
+        self.assertEqual(1, len(notes), squawks)
+        self.assertIn("rigid tapping needs one", notes[0])

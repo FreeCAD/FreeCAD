@@ -30,6 +30,9 @@ writes the G-code these controls read; this post adds what is Fanuc's own:
 - rigid tapping: ``M29 S<rpm>`` immediately before a ``G84``/``G74`` block,
   whose F is pitch times spindle speed;
 - canned cycles kept native, every block carrying its full parameter set;
+- the tool length offset on the first Z move after a tool change
+  (``G0 G43 Z50.000 H1``): a ``G43 H1`` block with no axis word moves the
+  axis by the offset on a Fanuc;
 - dwell in milliseconds (``G4 P1500``, ``G82 P500``), the Fanuc default;
 - an optional parametric tool-length offset using the ``#4120`` system
   variable, for shops that program that way;
@@ -43,15 +46,21 @@ the rotary move and the rotated path, and puts its dynamic fixture offset
 (``G54.2 Pn``) in the post-rotary block.
 """
 
+import re
 from typing import Any
 
 import FreeCAD
 import Path
 
-from Path.Post.scripts.generic_multi_axis_industrial_post import (
-    GenericMultiAxisIndustrial,
-    PlaneCommand,
-)
+import Constants
+from Path.Post.scripts.generic_multi_axis_industrial_post import GenericMultiAxisIndustrial
+
+try:
+    # Tilted work planes: the post names its plane command once the base
+    # post-processor knows what one is.
+    from Path.Post.TiltedWorkPlane import PlaneCommand
+except ImportError:
+    PlaneCommand = None
 
 translate = FreeCAD.Qt.translate
 
@@ -67,6 +76,11 @@ Values = dict[str, Any]
 POST_TYPE = "machine"
 
 RIGID_TAP_MODE = "M29"
+
+# A tool length offset block keeps its move here, G0 or G1 and its Z, where
+# the duplicate suppression that runs later cannot remove them.
+ANNOT_TLO_MOVE = "fanuc_tlo_move"
+ANNOT_TLO_Z = "fanuc_tlo_z"
 
 EXTRA_SUPPORTED = ["G54.1"] + GenericMultiAxisIndustrial.EXTRA_SUPPORTED
 
@@ -172,6 +186,118 @@ class FanucPost(GenericMultiAxisIndustrial):
         super().init_values(values)
         values["MACHINE_NAME"] = "Fanuc"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
+
+    # ------------------------------------------------------------------
+    # Tool length offset
+    # ------------------------------------------------------------------
+
+    def _expand_tool_change(self, postables):
+        """Write the tool length offset on the first Z move after the tool change.
+
+        The base post writes G43 H<n> alone after M6. A Fanuc reads a G43
+        block with no axis word as G43 G91 Z0 H<n> and moves the axis by the
+        offset: at the Z home position, where a tool change leaves the tool,
+        that is an overtravel. Only a control set to the shift type of
+        compensation does not move. So the offset goes on the move that
+        brings the tool to the part, G0 G43 Z<clearance> H<n>.
+
+        The G43 the base post added stays where it is when no straight move
+        with a Z follows it before the next tool change, or when an arc or a
+        canned cycle with a Z comes first: a block with no offset at all is
+        the larger risk.
+        """
+        super()._expand_tool_change(postables)
+
+        linear = Constants.GCODE_MOVE_LINE
+        for section_name, sublist in postables:
+            pending = None  # (command list, index) of the G43 not yet placed
+            edited = []
+            for item in sublist:
+                if not item.path:
+                    continue
+                commands = list(item.path.Commands)
+                edited.append((item, commands))
+                index = 0
+                while index < len(commands):
+                    cmd = commands[index]
+                    if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET and cmd.Annotations.get(
+                        Constants.ANNOT_ADDED_TLO
+                    ):
+                        pending = (commands, index)
+                    elif pending is not None and cmd.Name in Constants.MCODE_TOOL_CHANGE:
+                        pending = None
+                    elif (
+                        pending is not None
+                        and cmd.Name in Constants.GCODE_MOVE_ALL
+                        and "Z" in cmd.Parameters
+                    ):
+                        if cmd.Name in linear:
+                            offset_list, offset_index = pending
+                            offset = offset_list[offset_index]
+                            commands[index] = Path.Command(
+                                cmd.Name,
+                                {**cmd.Parameters, "H": offset.Parameters["H"]},
+                                {
+                                    **cmd.Annotations,
+                                    Constants.ANNOT_ADDED_TLO: True,
+                                    ANNOT_TLO_MOVE: cmd.Name,
+                                    ANNOT_TLO_Z: cmd.Parameters["Z"],
+                                },
+                            )
+                            del offset_list[offset_index]
+                            if offset_list is commands:
+                                index -= 1
+                        else:
+                            Path.Log.warning(
+                                f"{item.label}: the first Z move after the tool change is "
+                                f"{cmd.Name}, so G43 stays in a block of its own"
+                            )
+                        pending = None
+                    index += 1
+
+            for item, commands in edited:
+                if len(commands) != len(item.path.Commands) or any(
+                    ANNOT_TLO_MOVE in c.Annotations for c in commands
+                ):
+                    item.path = Path.Path(commands)
+
+    # ------------------------------------------------------------------
+    # Command conversion
+    # ------------------------------------------------------------------
+
+    def convert_command_to_gcode(self, command: Path.Command) -> str:
+        """A tool length offset block gets its move and its Z back: the
+        duplicate suppression may have removed either, and without the Z the
+        block moves the axis by the offset."""
+        move = command.Annotations.get(ANNOT_TLO_MOVE)
+        if move:
+            command = Path.Command(
+                move,
+                {**command.Parameters, "Z": command.Annotations[ANNOT_TLO_Z]},
+                command.Annotations,
+            )
+        return super().convert_command_to_gcode(command)
+
+    def _convert_move(self, command: Path.Command) -> str:
+        """G0 G43 Z<clearance> H<n>: the offset block always carries its Z."""
+        if ANNOT_TLO_MOVE not in command.Annotations:
+            return super()._convert_move(command)
+
+        doubles = self.values["OUTPUT_DOUBLES"]
+        self.values["OUTPUT_DOUBLES"] = True
+        try:
+            line = super()._convert_move(command)
+        finally:
+            self.values["OUTPUT_DOUBLES"] = doubles
+
+        name = command.Name
+        offset = Constants.GCODE_TOOL_LENGTH_OFFSET[0]
+        return re.sub(
+            rf"{re.escape(name)}(?![\d.])",
+            name + self.values["COMMAND_SPACE"] + offset,
+            line,
+            count=1,
+        )
 
     @property
     def tooltip(self):

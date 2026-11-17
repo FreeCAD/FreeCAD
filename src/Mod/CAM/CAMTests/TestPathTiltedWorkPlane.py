@@ -256,7 +256,12 @@ class TestTiltedWorkPlanePost(_PlaneFixture):
         items = self._expand([self._item(op)], self._processor(plane_command=PlaneCommand.G268))
         self.assertEqual(
             self._shape(items),
-            ["G268 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000", "G53.1", "operation", "G269"],
+            [
+                "G268 X30.000 Y10.000 Z5.000 I45.000 J0.000 K0.000 Q123",
+                "G253",
+                "operation",
+                "G269",
+            ],
         )
 
     def test_heidenhainDialect(self):

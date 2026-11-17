@@ -95,7 +95,7 @@ class TestFanucPost(IndustrialPostTestBase):
 
     def test_moves_pass_through(self):
         lines = self.lines(["G0 X1 Y2 Z3", "G1 X10 F10", "G2 X20 Y10 I10 J0 K0"])
-        self.assert_line("G0 X1.000 Y2.000 Z3.000", lines)
+        self.assert_line("G0 G43 X1.000 Y2.000 Z3.000 H1", lines)
         self.assert_line("G1 X10.000 F600.000", lines)
         self.assert_line("G2 X20.000 Y10.000 I10.000 J0.000", lines)
 
@@ -121,6 +121,70 @@ class TestFanucPost(IndustrialPostTestBase):
         self.assert_line("G2 X10.000 Z-10.000 F600.000 I5.000 K-5.000", lines)
         self.assert_line("G17", lines)
         self.assert_line("G2 X0.000 Y0.000 F600.000 I-5.000 J0.000", lines)
+
+    # ------------------------------------------------------------------
+    # tool change and tool length offset
+    # ------------------------------------------------------------------
+
+    def test_tool_change_sequence(self):
+        """The offset is on the first Z move: G43 H1 alone moves the axis on a Fanuc."""
+        self.post._machine.processing.tool_change = True
+        lines = self.lines(["G0 Z5", "G0 X1 Y2", "G1 Z-1 F10"])
+        start = lines.index("M05")
+        self.assertEqual(
+            ["M05", "G28 G91 Z0", "G90", "M6 T1", "M3 S1000", "G54", "G0 G43 Z5.000 H1"],
+            lines[start : start + 7],
+        )
+        self.assert_no_line("G43 H1", lines)
+        self.assertEqual(1, sum("G43" in l for l in lines), lines)
+
+    def test_tool_length_offset_follows_the_xy_move(self):
+        self.post._machine.processing.tool_change = True
+        lines = self.lines(["G0 X1 Y2", "G0 Z5", "G0 Z3"])
+        index = lines.index("G0 X1.000 Y2.000")
+        self.assertEqual(["G0 G43 Z5.000 H1", "G0 Z3.000"], lines[index + 1 : index + 3])
+
+    def test_tool_length_offset_on_a_move_with_x_y_and_z(self):
+        self.post._machine.processing.tool_change = True
+        lines = self.lines(["G0 X1 Y2 Z5"])
+        self.assert_line("G0 G43 X1.000 Y2.000 Z5.000 H1", lines)
+
+    def test_tool_length_offset_on_a_feed_move(self):
+        self.post._machine.processing.tool_change = True
+        lines = self.lines(["G0 X1 Y2", "G1 Z-1 F10"])
+        self.assert_line("G1 G43 Z-1.000 F600.000 H1", lines)
+
+    def test_tool_length_offset_keeps_its_move_and_z_in_modal_output(self):
+        """Duplicate suppression removes neither the G0 nor a Z that repeats."""
+        self.post._machine.processing.tool_change = True
+        self.post._machine.output.duplicates.commands = False
+        self.post._machine.output.duplicates.parameters = False
+        lines = self.lines(["G0 X1 Y2", "G0 Z0", "G0 Z3"])
+        self.assert_line("G0 G43 Z0.000 H1", lines)
+        self.assert_no_line("G43 H1", lines)
+
+    def test_tool_length_offset_is_line_numbered_with_its_move(self):
+        self.post._machine.processing.tool_change = True
+        self.post._machine.output.formatting.line_numbers = True
+        lines = self.lines(["G0 Z5"])
+        self.assertTrue(any(re.match(r"^N\d+ G0 G43 Z5\.000 H1$", l) for l in lines), lines)
+
+    def test_tool_length_offset_without_a_straight_z_move(self):
+        """No move to carry it: the offset keeps a block of its own."""
+        self.post._machine.processing.tool_change = True
+        lines = self.lines([])
+        self.assertEqual("G43 H1", lines[lines.index("M6 T1") + 1])
+
+        lines = self.lines(["G0 X0 Y0", "G2 X10 Y10 Z-1 I10 J0 F10", "G0 Z5"])
+        self.assertEqual("G43 H1", lines[lines.index("M6 T1") + 1])
+        self.assert_line("G0 Z5.000", lines)
+
+    def test_tool_length_offset_macro_form_has_no_second_offset(self):
+        self.post._machine.processing.tool_change = True
+        self.post._machine.postprocessor_properties["tool_length_offset_macro"] = True
+        lines = self.lines(["G0 Z5"])
+        self.assert_line("G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120", lines)
+        self.assert_line("G0 Z5.000", lines)
 
     # ------------------------------------------------------------------
     # fixtures, coolant, program control
