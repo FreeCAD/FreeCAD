@@ -97,7 +97,7 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
         }
     }
 
-    if (prop == &(getTemplate()->EditableTexts)) {
+    if (prop == &(getTemplate()->EditableTexts) || prop == &(getTemplate()->Language)) {
         QGITemplate* qgiv = getQTemplate();
         if (qgiv) {
             qgiv->updateView(true);
