@@ -25,7 +25,6 @@
 #include <QDockWidget>
 #include <QKeyEvent>
 #include <QMessageBox>
-#include <QMetaObject>
 #include <QSignalMapper>
 
 
@@ -144,6 +143,11 @@ void PlacementHandler::setIgnoreTransactions(bool value)
     ignoreTransaction = value;
 }
 
+bool PlacementHandler::isChangingProperty() const
+{
+    return changeProperty;
+}
+
 void PlacementHandler::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
     selectionObjects = selection;
@@ -184,31 +188,27 @@ void PlacementHandler::appendDocument(const std::string& name)
 void PlacementHandler::activatedDocument(const std::string& name)
 {
     appendDocument(name);
-
-    if (changeProperty) {
-        QMetaObject::invokeMethod(this, "openTransaction", Qt::QueuedConnection);
-    }
 }
 
 void PlacementHandler::openTransaction()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc) {
-        activeDoc->openTransaction("Placement");
+        transactionID = activeDoc->openTransaction("Placement");
     }
 }
 
 void PlacementHandler::revertTransformation()
 {
+    if (changeProperty) {
+        abortCommandIfActive();
+        return;
+    }
+
     for (const auto& it : documents) {
         Gui::Document* document = Application::Instance->getDocument(it.c_str());
         if (document) {
-            if (!changeProperty) {
-                revertTransformationOfViewProviders(document);
-            }
-            else {
-                abortCommandIfActive(document);
-            }
+            revertTransformationOfViewProviders(document);
         }
     }
 }
@@ -328,7 +328,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
     // When directly changing the property we now only have to commit the transaction,
     // do a recompute and open a new transaction
     if (changeProperty) {
-        commitCommandIfActive(document);
+        commitCommandIfActive();
         tryRecompute(document);
         openCommandIfActive(document);
     }
@@ -339,7 +339,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
             for (const auto& it : sel) {
                 applyPlacement(it, data, incremental);
             }
-            commitCommandIfActive(document);
+            commitCommandIfActive();
             tryRecompute(document);
         }
         else {
@@ -464,21 +464,21 @@ void PlacementHandler::slotActiveDocument(const Gui::Document& doc)
 void PlacementHandler::openCommandIfActive(Gui::Document* doc)
 {
     if (!ignoreTransaction) {
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+        transactionID = doc->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
     }
 }
 
-void PlacementHandler::commitCommandIfActive(Gui::Document* doc)
+void PlacementHandler::commitCommandIfActive()
 {
     if (!ignoreTransaction) {
-        doc->commitCommand();
+        Gui::Command::commitCommand(std::exchange(transactionID, 0));
     }
 }
 
-void PlacementHandler::abortCommandIfActive(Gui::Document* doc)
+void PlacementHandler::abortCommandIfActive()
 {
     if (!ignoreTransaction) {
-        doc->abortCommand();
+        Gui::Command::abortCommand(std::exchange(transactionID, 0));
     }
 }
 
@@ -933,6 +933,11 @@ void Placement::setIgnoreTransactions(bool value)
     handler.setIgnoreTransactions(value);
 }
 
+bool Placement::isChangingProperty() const
+{
+    return handler.isChangingProperty();
+}
+
 /*!
  * \brief Placement::bindObject
  * Binds the spin boxes to the placement components of the first object of the selection.
@@ -1246,6 +1251,11 @@ void TaskPlacement::open()
     widget->open();
 }
 
+bool TaskPlacement::isAllowedAlterDocument() const
+{
+    return !widget->isChangingProperty();
+}
+
 void TaskPlacement::setPropertyName(const QString& name)
 {
     widget->setPropertyName(name.toStdString());
@@ -1521,7 +1531,7 @@ Py::Object TaskPlacementPy::isAllowedAlterDocument(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-    return Py::Boolean(true);
+    return Py::Boolean(!widget || !widget->isChangingProperty());
 }
 
 Py::Object TaskPlacementPy::isAllowedAlterView(const Py::Tuple& args)

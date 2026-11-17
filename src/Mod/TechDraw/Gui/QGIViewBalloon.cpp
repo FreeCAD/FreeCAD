@@ -1156,16 +1156,16 @@ QPainterPath QGIViewBalloon::shape() const
     if (balloonShape) {
         QPainterPath p = mapFromItem(balloonShape, balloonShape->path());
         p.setFillRule(Qt::WindingFill);
-        path.addPath(p);
+        path = path.united(p);
     }
     if (balloonLines) {
-        path.addPath(mapFromItem(balloonLines, balloonLines->shape()));
+        path = path.united(mapFromItem(balloonLines, balloonLines->shape()));
     }
     if (balloonLabel) {
-        path.addPath(mapFromItem(balloonLabel, balloonLabel->shape()));
+        path = path.united(mapFromItem(balloonLabel, balloonLabel->shape()));
     }
     if (arrow && arrow->isVisible()) {
-        path.addPath(mapFromItem(arrow, arrow->shape()));
+        path = path.united(mapFromItem(arrow, arrow->shape()));
     }
 
     return path;

@@ -35,6 +35,7 @@ tilted-work-plane program under both rotation strategies.
 import re
 import unittest
 
+import Constants
 import FreeCAD
 import Path
 from CAMTests import PathTestUtils
@@ -128,7 +129,7 @@ class TestFanucPost(IndustrialPostTestBase):
 
     def test_tool_change_sequence(self):
         """The offset is on the first Z move: G43 H1 alone moves the axis on a Fanuc."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 Z5", "G0 X1 Y2", "G1 Z-1 F10"])
         start = lines.index("M05")
         self.assertEqual(
@@ -139,24 +140,24 @@ class TestFanucPost(IndustrialPostTestBase):
         self.assertEqual(1, sum("G43" in l for l in lines), lines)
 
     def test_tool_length_offset_follows_the_xy_move(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 X1 Y2", "G0 Z5", "G0 Z3"])
         index = lines.index("G0 X1.000 Y2.000")
         self.assertEqual(["G0 G43 Z5.000 H1", "G0 Z3.000"], lines[index + 1 : index + 3])
 
     def test_tool_length_offset_on_a_move_with_x_y_and_z(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 X1 Y2 Z5"])
         self.assert_line("G0 G43 X1.000 Y2.000 Z5.000 H1", lines)
 
     def test_tool_length_offset_on_a_feed_move(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines(["G0 X1 Y2", "G1 Z-1 F10"])
         self.assert_line("G1 G43 Z-1.000 F600.000 H1", lines)
 
     def test_tool_length_offset_keeps_its_move_and_z_in_modal_output(self):
         """Duplicate suppression removes neither the G0 nor a Z that repeats."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.output.duplicates.commands = False
         self.post._machine.output.duplicates.parameters = False
         lines = self.lines(["G0 X1 Y2", "G0 Z0", "G0 Z3"])
@@ -164,14 +165,14 @@ class TestFanucPost(IndustrialPostTestBase):
         self.assert_no_line("G43 H1", lines)
 
     def test_tool_length_offset_is_line_numbered_with_its_move(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.output.formatting.line_numbers = True
         lines = self.lines(["G0 Z5"])
         self.assertTrue(any(re.match(r"^N\d+ G0 G43 Z5\.000 H1$", l) for l in lines), lines)
 
     def test_tool_length_offset_without_a_straight_z_move(self):
         """No move to carry it: the offset keeps a block of its own."""
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines([])
         self.assertEqual("G43 H1", lines[lines.index("M6 T1") + 1])
 
@@ -180,7 +181,7 @@ class TestFanucPost(IndustrialPostTestBase):
         self.assert_line("G0 Z5.000", lines)
 
     def test_tool_length_offset_macro_form_has_no_second_offset(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.postprocessor_properties["tool_length_offset_macro"] = True
         lines = self.lines(["G0 Z5"])
         self.assert_line("G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120", lines)
@@ -211,7 +212,7 @@ class TestFanucPost(IndustrialPostTestBase):
         self.post._machine.output.duplicates.commands = False
         self.post._machine.output.duplicates.parameters = False
         self.post._machine.output.formatting.line_numbers = True
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.processing.filter_inefficient_moves = True
         self.post._machine.postprocessor_properties["program_number"] = 7
         self.post._machine.postprocessor_properties["uppercase_output"] = True
@@ -245,6 +246,7 @@ def _machine_ac(strategy):
         name="C",
         rotation_vector=FreeCAD.Vector(0, 0, 1),
         role=AxisRole.TABLE_ROTARY,
+        parent="A",
         sequence=0,
     )
     machine.rotary_axes["A"] = RotaryAxis(
@@ -253,7 +255,7 @@ def _machine_ac(strategy):
         min_limit=-120,
         max_limit=120,
         role=AxisRole.TABLE_ROTARY,
-        parent="C",
+        parent=None,
         sequence=1,
     )
     machine.kinematics.rotation_strategy = strategy
@@ -262,7 +264,7 @@ def _machine_ac(strategy):
     machine.output.precision.axis = 3
     machine.output.precision.feed = 3
     machine.output.precision.spindle = 0
-    machine.processing.tool_change = False
+    machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
     machine.postprocessor_properties["uppercase_output"] = False
     return machine
 
@@ -352,7 +354,7 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
         import Path.Tool.Controller as PathToolController
 
         machine = _machine_ac(RotationStrategy.TWP)
-        machine.processing.tool_change = True
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         plane = self._plane()
         first = self._op("First", plane)
         second = self._op("Second", plane)
@@ -389,10 +391,11 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
             pre_rotary_move="G53 G0 Z0",
             post_rotary_move="G54.2 P1",
         )
-        rotary = next(l for l in lines if re.match(r"^G0 .*A", l))
-        index = lines.index(rotary)
+        index = next(i for i, l in enumerate(lines) if re.match(r"^G0 [AC]", l))
         self.assertEqual("G53 G0 Z0", lines[index - 1])
-        self.assertEqual("G54.2 P1", lines[index + 1])
+        self.assertRegex(lines[index], r"^G0 C", "C is sequence 0, A is 1")
+        self.assertRegex(lines[index + 1], r"^G0 A")
+        self.assertEqual("G54.2 P1", lines[index + 2])
         self.assertNotIn(DECLARE, lines)
         self.assertNotIn("G69", lines)
         self.assertNotIn("G1 X10.000 Y0.000 Z-2.000 F600.000", lines, "the path is rotated")
@@ -407,7 +410,7 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
         machine = Machine.create_3axis_config()
         machine.output.output_header = False
         machine.output.comments.enabled = False
-        machine.processing.tool_change = False
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         with self.assertRaisesRegex(CAMValueError, "rotary axes"):
             self._export(machine)
 

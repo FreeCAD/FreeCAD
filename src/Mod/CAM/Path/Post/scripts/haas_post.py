@@ -311,7 +311,8 @@ class HaasPost(GenericMultiAxisIndustrial):
         if self._rotation_strategy() != RotationStrategy.TWP:
             return []
         machine = self._machine
-        if machine.processing.tool_change and machine.output.output_tool_length_offset:
+        # The offset block is written for each tool, whatever the tool change format.
+        if machine.output.output_tool_length_offset:
             return []
         return [
             self._create_squawk(

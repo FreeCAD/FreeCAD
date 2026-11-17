@@ -40,6 +40,7 @@ tests a second time.
 import re
 import unittest
 
+import Constants
 import Path
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
@@ -104,7 +105,7 @@ class IndustrialPostTestBase(PathTestUtils.PathTestBase):
         machine.output.precision.spindle = 0
         machine.output.duplicates.commands = True
         machine.output.duplicates.parameters = True
-        machine.processing.tool_change = False
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
         machine.toolheads = [
             Toolhead(
                 name="Spindle",
@@ -228,7 +229,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
     # ------------------------------------------------------------------
 
     def test_spindle_speed_is_an_integer(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines([])
         self.assert_line("M3 S1000", lines)
 
@@ -268,7 +269,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.assert_line("G4 P1.500", lines)
 
     def test_spindle_wait_dwell_is_in_milliseconds(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.toolheads[0].spindle_wait = 2.0
         lines = self.lines([])
         index = lines.index("M3 S1000")
@@ -391,7 +392,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
     # ------------------------------------------------------------------
 
     def test_tool_change_sequence(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines([])
         start = lines.index("M05")
         self.assertEqual(
@@ -400,7 +401,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         )
 
     def test_tool_length_offset_macro_form(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.postprocessor_properties["tool_length_offset_macro"] = True
         lines = self.lines([])
         index = lines.index("M6 T1")
@@ -409,7 +410,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         self.assert_no_line("G43 H1", lines)
 
     def test_tool_length_offset_suppressed(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.output.output_tool_length_offset = False
         lines = self.lines([])
         self.assert_no_line("G43 H1", lines)

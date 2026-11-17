@@ -97,6 +97,14 @@ class TestMachineValidate(PathTestUtils.PathTestBase):
         findings = validate_machine(machine, check_postprocessor=False)
         self.assertIn("kinematics", _codes(findings, Severity.ERROR))
 
+    def test055_axes_sharing_a_sequence_number_are_valid(self):
+        """Axes with equal sequence numbers move together, even within one chain."""
+        machine = self._valid_machine()
+        machine.linear_axes["X"].parent = "Y"
+        machine.linear_axes["X"].sequence = machine.linear_axes["Y"].sequence = 0
+        findings = validate_machine(machine, check_postprocessor=False)
+        self.assertNotIn("kinematics", _codes(findings, Severity.ERROR))
+
     def test060_missing_postprocessor_is_an_error(self):
         machine = self._valid_machine()
         machine.postprocessor_file_name = ""

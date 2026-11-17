@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
@@ -21,8 +19,6 @@ class DrawViewCollection(DrawView):
 
     def addView(self, view: DrawView, /) -> int:
         """addView(DrawView object) - Add a new View to this Group. Returns count of views."""
-        ...
 
     def removeView(self, view: DrawView, /) -> int:
         """removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group."""
-        ...

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from Base.Matrix import Matrix
@@ -50,93 +48,78 @@ class GeometryFacade(BaseClass):
         """
         Returns a boolean indicating whether the given bit is set.
         """
-        ...
 
     def setGeometryMode(self, mode: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
-        ...
 
     def mirror(self, point: Vector, axis: Vector = ..., /) -> None:
         """
         Performs the symmetrical transformation of this geometric object
         """
-        ...
 
     def rotate(self, placement: Placement, /) -> None:
         """
         Rotates this geometric object at angle Ang (in radians) about axis
         """
-        ...
 
     def scale(self, center: Vector | tuple[float, float, float], factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
-        ...
 
     def transform(self, transformation: Matrix, /) -> None:
         """
         Applies a transformation to this geometric object
         """
-        ...
 
     def translate(self, offset: Vector | tuple[float, float, float], /) -> None:
         """
         Translates this geometric object
         """
-        ...
 
     @constmethod
     def hasExtensionOfType(self, type_str: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         """
-        ...
 
     @constmethod
     def hasExtensionOfName(self, name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         """
-        ...
 
     @constmethod
     def getExtensionOfType(self, type_str: str, /) -> GeometryExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
-        ...
 
     @constmethod
     def getExtensionOfName(self, name: str, /) -> GeometryExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """
-        ...
 
     def setExtension(self, extension: GeometryExtension, /) -> None:
         """
         Sets a geometry extension of the indicated type.
         """
-        ...
 
     def deleteExtensionOfType(self, type_str: str, /) -> None:
         """
         Deletes all extensions of the indicated type.
         """
-        ...
 
     def deleteExtensionOfName(self, name: str, /) -> None:
         """
         Deletes all extensions of the indicated name.
         """
-        ...
 
     @constmethod
     def getExtensions(self) -> List[GeometryExtension]:
         """
         Returns a list with information about the geometry extensions.
         """
-        ...

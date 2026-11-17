@@ -116,15 +116,13 @@ QPainterPath QGILeaderLine::shape() const
         stroker.setCapStyle(Qt::RoundCap);
         stroker.setJoinStyle(Qt::RoundJoin);
         QPainterPath stroked = stroker.createStroke(m_line->path());
-        path.addPath(mapFromItem(m_line, stroked));
+        path = path.united(mapFromItem(m_line, stroked));
     }
     if (m_arrow1 && m_arrow1->isVisible()) {
-        QPainterPath ap = mapFromItem(m_arrow1, m_arrow1->path());
-        path.addPath(ap);
+        path = path.united(mapFromItem(m_arrow1, m_arrow1->path()));
     }
     if (m_arrow2 && m_arrow2->isVisible()) {
-        QPainterPath ap = mapFromItem(m_arrow2, m_arrow2->path());
-        path.addPath(ap);
+        path = path.united(mapFromItem(m_arrow2, m_arrow2->path()));
     }
 
     return path;

@@ -34,6 +34,7 @@ rotation strategies: G254 / G255 for DWO, G268 / G253 / G269 for TWP.
 import re
 import unittest
 
+import Constants
 import FreeCAD
 import Path
 from CAMTests import PathTestUtils
@@ -107,7 +108,7 @@ class TestHaasPost(IndustrialPostTestBase):
         self.assertEqual(["M05", "G53 G0 Z0", "M30", "%"], lines[-4:])
 
     def test_tool_change_sequence(self):
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         lines = self.lines([])
         start = lines.index("M05")
         self.assertEqual(
@@ -202,7 +203,7 @@ class TestHaasPost(IndustrialPostTestBase):
         self.post._machine.output.duplicates.commands = False
         self.post._machine.output.duplicates.parameters = False
         self.post._machine.output.formatting.line_numbers = True
-        self.post._machine.processing.tool_change = True
+        self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self.post._machine.processing.filter_inefficient_moves = True
         self.post._machine.postprocessor_properties["program_number"] = 7
         self.post._machine.postprocessor_properties["uppercase_output"] = True
@@ -255,7 +256,7 @@ def _machine_bc(strategy):
     machine.output.precision.axis = 3
     machine.output.precision.feed = 3
     machine.output.precision.spindle = 0
-    machine.processing.tool_change = False
+    machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
     machine.postprocessor_properties["uppercase_output"] = False
     return machine
 
@@ -340,7 +341,7 @@ class TestHaasTiltedWorkPlane(PathTestUtils.PathTestBase):
     def test_twp_declares_after_the_tool_length_offset(self):
         """G268 alarms unless G43 is active."""
         machine = _machine_bc(RotationStrategy.TWP)
-        machine.processing.tool_change = True
+        machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
         self._op("Tilted", self._plane())
         _, lines = self._export(machine)
         self.assertLess(lines.index("G43 H1"), lines.index(DECLARE))
@@ -365,16 +366,19 @@ class TestHaasTiltedWorkPlane(PathTestUtils.PathTestBase):
         self.assertLess(speed, lines.index("G269"))
 
     def test_sanity_warns_when_twp_has_no_tool_length_offset(self):
+        machine = _machine_bc(RotationStrategy.TWP)
+        machine.output.output_tool_length_offset = False
         self._op("Tilted", self._plane())
-        post, _ = self._export(_machine_bc(RotationStrategy.TWP))
+        post, lines = self._export(machine)
+        self.assertNotIn("G43 H1", lines)
         squawks = post.get_sanity_checks(self.job)
         self.assertTrue(any("G43 active before G268" in s["Note"] for s in squawks), squawks)
 
     def test_sanity_is_quiet_when_twp_has_a_tool_length_offset(self):
-        machine = _machine_bc(RotationStrategy.TWP)
-        machine.processing.tool_change = True
+        """The offset block is written with and without a tool change."""
         self._op("Tilted", self._plane())
-        post, _ = self._export(machine)
+        post, lines = self._export(_machine_bc(RotationStrategy.TWP))
+        self.assertLess(lines.index("G43 H1"), lines.index(DECLARE))
         squawks = post.get_sanity_checks(self.job)
         self.assertFalse(any("G268" in s["Note"] for s in squawks), squawks)
 

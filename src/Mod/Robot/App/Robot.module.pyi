@@ -6,8 +6,6 @@ This source-adjacent stub file carries the standalone robot simulation helper
 exposed directly by the Robot application module.
 """
 
-from __future__ import annotations
-
 def simulateToFile(
     robot: Robot6Axis,
     trajectory: Trajectory,
@@ -16,4 +14,3 @@ def simulateToFile(
     /,
 ) -> float:
     """Run one robot simulation, write its result to one file, and return the numeric status."""
-    ...

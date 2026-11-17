@@ -59,6 +59,11 @@ target_link_libraries(Base_tests_run PRIVATE
     ICU::uc ICU::i18n
 )
 
+# The FileInfo tests create an AF_UNIX socket, which needs Winsock on Windows.
+if(WIN32)
+    target_link_libraries(Base_tests_run PRIVATE ws2_32)
+endif()
+
 # CrashReporter_tests decides what the Reader inside FreeCADBase is capable of from this define,
 # so the two targets have to agree on it. FreeCADBase sets it PRIVATE, which does not propagate.
 if(cpptrace_FOUND)

@@ -27,7 +27,6 @@ class Area(BaseClass):
 
     def add(self, shape: TopoShape, Operation: int = 0) -> Area:
         """"""
-        ...
 
     def setPlane(self, shape: TopoShape, /) -> Area:
         """
@@ -39,7 +38,6 @@ class Area(BaseClass):
         Area will try to find a working plane from the added children shape using the
         same algorithm
         """
-        ...
 
     def getShape(self, index: int = -1, rebuild: bool = False) -> TopoShape:
         """
@@ -48,7 +46,6 @@ class Area(BaseClass):
         * index (-1): the index of the section. -1 means all sections. No effect on planar shape.
         * rebuild: clean the internal cache and rebuild
         """
-        ...
 
     def makeOffset(
         self,
@@ -58,7 +55,6 @@ class Area(BaseClass):
         Stepover: float = 0.0,
     ) -> TopoShape:
         """Make an offset of the shape."""
-        ...
 
     def makePocket(
         self,
@@ -74,7 +70,6 @@ class Area(BaseClass):
         ForceMaxStepover: bool = False,
     ) -> TopoShape:
         """Generate pocket toolpath of the shape."""
-        ...
 
     def makeSections(
         self,
@@ -84,39 +79,30 @@ class Area(BaseClass):
         plane: TopoShape = None,
     ) -> list[Area]:
         """Make a list of area holding the sectioned children shapes on given heights."""
-        ...
 
     def getRestArea(self, clearedAreas: list[Area], diameter: float, /) -> Area | None:
         """Rest machining: Gets the area left to be machined, assuming some of this area has already been cleared by previous tool paths."""
-        ...
 
     def toTopoShape(self) -> Any:
         """Convert the Area object to a TopoShape."""
-        ...
 
     def setParams(self, **kwargs) -> Any:
         """Set algorithm parameters."""
-        ...
 
     def setDefaultParams(self, **kwargs) -> Any:
         """Static method to set the default parameters of all following Path.Area, plus the following additional parameters."""
-        ...
 
     def getDefaultParams(self) -> Any:
         """Static method to return the current default parameters."""
-        ...
 
     def getParamsDesc(self, **kwargs) -> Any:
         """Returns a list of supported parameters and their descriptions."""
-        ...
 
     def getParams(self) -> Any:
         """Get current algorithm parameters as a dictionary."""
-        ...
 
     def abort(self, **kwargs) -> Any:
         """Abort the current operation."""
-        ...
     Sections: Final[list]
     """List of sections in this area."""
 

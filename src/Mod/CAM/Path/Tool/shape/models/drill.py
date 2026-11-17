@@ -22,7 +22,9 @@
 # ***************************************************************************
 
 import FreeCAD
-from typing import Tuple, Mapping
+from types import SimpleNamespace
+from typing import Any, Tuple, Mapping
+from Path.Op.Util import drillTipLength
 from .base import ToolBitShape
 
 
@@ -32,6 +34,10 @@ class ToolBitShapeDrill(ToolBitShape):
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
             "Diameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
                 "App::PropertyLength",
@@ -49,6 +55,11 @@ class ToolBitShapeDrill(ToolBitShape):
                 "App::PropertyAngle",
             ),
         }
+
+    @classmethod
+    def derived_parameters(cls) -> Mapping[str, Any]:
+        """Only the tip cone cuts sideways, so the cutting edge height is its length."""
+        return {"CuttingEdgeHeight": lambda p: drillTipLength(SimpleNamespace(**p))}
 
     @property
     def label(self) -> str:

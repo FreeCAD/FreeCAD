@@ -23,22 +23,18 @@ class VoronoiCell(BaseClass):
     @constmethod
     def containsPoint(self) -> Any:
         """Returns true if the cell contains a point site"""
-        ...
 
     @constmethod
     def containsSegment(self) -> Any:
         """Returns true if the cell contains a segment site"""
-        ...
 
     @constmethod
     def isDegenerate(self) -> Any:
         """Returns true if the cell doesn't have an incident edge"""
-        ...
 
     @constmethod
     def getSource(self, z: float = 0.0, /) -> Any:
         """Returns the Source for the cell"""
-        ...
     Index: Final[int]
     """Internal id of the element."""
 

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from GeometrySurface import GeometrySurface
 from typing import Any, Final
@@ -41,4 +39,3 @@ class RectangularTrimmedSurface(GeometrySurface):
 
         Modifies this patch by changing the trim values applied to the original surface
         """
-        ...

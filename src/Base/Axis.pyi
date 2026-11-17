@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export
 from PyObjectBase import PyObjectBase
 from Vector import Vector
@@ -52,7 +50,6 @@ class Axis(PyObjectBase):
         """
         Returns a copy of this Axis.
         """
-        ...
 
     def move(self, vector: Vector, /) -> None:
         """
@@ -61,7 +58,6 @@ class Axis(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the axis.
         """
-        ...
 
     def multiply(self, placement: Placement, /) -> Axis:
         """
@@ -70,11 +66,9 @@ class Axis(PyObjectBase):
         placement : Base.Placement
             Placement by which to multiply the axis.
         """
-        ...
 
     def reversed(self) -> Axis:
         """
         Compute the reversed axis. This returns a new Base.Axis with
         the original direction reversed.
         """
-        ...

@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
@@ -38,14 +37,12 @@ class StringHasher(BaseClass):
 
         base64: indicate if the input 'txt' is base64 encoded binary data
         """
-        ...
 
     @constmethod
     def isSame(self, other: "StringHasher", /) -> bool:
         """
         Check if two hasher are the same
         """
-        ...
 
     Count: Final[int] = 0
     """Return count of used hashes"""

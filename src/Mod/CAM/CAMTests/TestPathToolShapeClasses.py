@@ -312,10 +312,129 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["CuttingEdgeAngle"].Value, 60.0)
         self.assertEqual(unit(shape["CuttingEdgeAngle"]), "°")
+        self.assertEqual(shape["CuttingEdgeHeight"].Value, 9.0)
+        self.assertEqual(shape["NeckCuttingHeight"].Value, 0.0)
+        self.assertEqual(unit(shape["NeckCuttingHeight"]), "mm")
         # Need an instance to get parameter labels, get it from the asset manager
         uri = ToolBitShape.resolve_name("dovetail")
         instance = self.assets.get(uri)
         self.assertEqual(instance.get_parameter_label("CuttingEdgeAngle"), "Cutting angle")
+        self.assertEqual(instance.get_parameter_label("NeckCuttingHeight"), "Neck cutting height")
+
+    def test_toolbitshapekeyway_defaults(self):
+        """Test ToolBitShapeKeyway default parameters and labels."""
+        shape = self._test_shape_common("keyway")
+        self.assertEqual(shape["Diameter"].Value, 20.0)
+        self.assertEqual(unit(shape["Diameter"]), "mm")
+        self.assertEqual(shape["LowerCuttingHeight"].Value, 3.0)
+        self.assertEqual(shape["NeckDiameter"].Value, 8.0)
+        self.assertEqual(shape["NeckHeight"].Value, 10.0)
+        self.assertEqual(shape["NeckCuttingHeight"].Value, 0.0)
+        self.assertEqual(shape["ShankDiameter"].Value, 10.0)
+        self.assertEqual(shape["Length"].Value, 50.0)
+        self.assertEqual(shape["CuttingEdgeHeight"].Value, 3.0)
+        uri = ToolBitShape.resolve_name("keyway")
+        instance = self.assets.get(uri)
+        self.assertEqual(instance.get_parameter_label("LowerCuttingHeight"), "Lower cutting height")
+        self.assertEqual(instance.get_parameter_label("NeckCuttingHeight"), "Neck cutting height")
+        self.assertEqual(set(instance.derived_parameters()), {"CuttingEdgeHeight"})
+        for alias in ("keyway", "keyseat", "woodruff"):
+            self.assertIs(ToolBitShape.get_subclass_by_name(alias), type(instance))
+
+    def test_keyway_derived_cutting_edge_height(self):
+        """The keyway cuts with its head and the fluted part of its neck."""
+        shape = self.assets.get(ToolBitShape.resolve_name("keyway"))
+        shape.set_parameters(
+            LowerCuttingHeight=FreeCAD.Units.Quantity("3.175 mm"),
+            NeckCuttingHeight=FreeCAD.Units.Quantity("2 mm"),
+            CuttingEdgeHeight=FreeCAD.Units.Quantity("0 mm"),
+        )
+        self.assertIn("CuttingEdgeHeight", shape.apply_derived_parameters())
+        height = shape.get_parameter("CuttingEdgeHeight")
+        self.assertAlmostEqual(height.Value, 5.175)
+        self.assertEqual(height.Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.apply_derived_parameters(), {})
+
+        # No fluted neck: only the head cuts.
+        shape.set_parameter("NeckCuttingHeight", FreeCAD.Units.Quantity("0 mm"))
+        shape.apply_derived_parameters()
+        self.assertAlmostEqual(shape.get_parameter("CuttingEdgeHeight").Value, 3.175)
+
+        # The flutes end where the neck does, never in the shank.
+        shape.set_parameters(
+            NeckHeight=FreeCAD.Units.Quantity("10 mm"),
+            NeckCuttingHeight=FreeCAD.Units.Quantity("15 mm"),
+        )
+        shape.apply_derived_parameters()
+        self.assertAlmostEqual(shape.get_parameter("CuttingEdgeHeight").Value, 13.175)
+
+    def test_toolbitshapelollipop_defaults(self):
+        """Test ToolBitShapeLollipop default parameters and labels."""
+        shape = self._test_shape_common("lollipop")
+        self.assertEqual(shape["Diameter"].Value, 6.0)
+        self.assertEqual(unit(shape["Diameter"]), "mm")
+        self.assertEqual(shape["NeckDiameter"].Value, 3.0)
+        self.assertEqual(shape["NeckHeight"].Value, 12.0)
+        self.assertEqual(shape["ShankDiameter"].Value, 6.0)
+        self.assertEqual(shape["Length"].Value, 50.0)
+        self.assertAlmostEqual(shape["CuttingEdgeHeight"].Value, 3 + math.sqrt(9 - 2.25), 4)
+        uri = ToolBitShape.resolve_name("lollipop")
+        instance = self.assets.get(uri)
+        self.assertEqual(instance.get_parameter_label("Diameter"), "Ball diameter")
+        self.assertEqual(instance.get_parameter_label("NeckHeight"), "Neck length")
+        self.assertEqual(set(instance.derived_parameters()), {"CuttingEdgeHeight"})
+        self.assertIs(ToolBitShape.get_subclass_by_name("lollipop"), type(instance))
+
+    def test_lollipop_derived_cutting_edge_height(self):
+        """The lollipop cuts up to where its neck meets the ball."""
+        shape = self.assets.get(ToolBitShape.resolve_name("lollipop"))
+        shape.set_parameters(
+            Diameter=FreeCAD.Units.Quantity("6.35 mm"),
+            NeckDiameter=FreeCAD.Units.Quantity("3.175 mm"),
+            CuttingEdgeHeight=FreeCAD.Units.Quantity("0 mm"),
+        )
+        self.assertIn("CuttingEdgeHeight", shape.apply_derived_parameters())
+        height = shape.get_parameter("CuttingEdgeHeight")
+        r, n = 6.35 / 2, 3.175 / 2
+        self.assertAlmostEqual(height.Value, r + math.sqrt(r * r - n * n))
+        self.assertEqual(height.Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.apply_derived_parameters(), {})
+
+    def test_ball_end_shapes(self):
+        """Ball end, tapered ball nose and lollipop cut with a ball; nothing else does."""
+        for name in ("ballend", "Ballend", "taperedballnose", "conicalballnose", "lollipop"):
+            with self.subTest(name=name):
+                self.assertTrue(ToolBitShape.is_ball_end(name))
+        for name in ("endmill", "bullnose", "v-bit", "custom", "unknown", "", None):
+            with self.subTest(name=name):
+                self.assertFalse(ToolBitShape.is_ball_end(name))
+
+    def test_drill_derived_cutting_edge_height(self):
+        """A drill cuts sideways with its tip cone only: CuttingEdgeHeight is its length."""
+        shape = self.assets.get(ToolBitShape.resolve_name("drill"))
+        self.assertEqual(set(shape.derived_parameters()), {"CuttingEdgeHeight"})
+        cases = (
+            ("6 mm", "118 deg", 3 / math.tan(math.radians(59))),
+            ("10 mm", "90 deg", 5.0),
+            ("10 mm", "180 deg", 0.0),
+            ("10 mm", "0 deg", 0.0),
+        )
+        for diameter, angle, expected in cases:
+            with self.subTest(diameter=diameter, angle=angle):
+                shape.set_parameters(
+                    Diameter=FreeCAD.Units.Quantity(diameter),
+                    TipAngle=FreeCAD.Units.Quantity(angle),
+                )
+                shape.apply_derived_parameters()
+                self.assertAlmostEqual(shape.get_parameter("CuttingEdgeHeight").Value, expected)
+
+    def test_tap_derived_cutting_edge_height(self):
+        """A tap cuts only at its point: CuttingEdgeHeight is 0."""
+        shape = self.assets.get(ToolBitShape.resolve_name("tap"))
+        self.assertEqual(set(shape.derived_parameters()), {"CuttingEdgeHeight"})
+        shape.set_parameter("CuttingEdgeHeight", FreeCAD.Units.Quantity("12 mm"))
+        shape.apply_derived_parameters()
+        self.assertEqual(shape.get_parameter("CuttingEdgeHeight").Value, 0.0)
 
     def test_toolbitshapeendmill_defaults(self):
         """Test ToolBitShapeEndmill default parameters and labels."""
@@ -353,9 +472,28 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(shape["Length"].Value, 50.0)
         self.assertEqual(unit(shape["Length"]), "mm")
         # Need an instance to get parameter labels, get it from the asset manager
+        self.assertEqual(shape["FluteLength"].Value, 30.0)
+        self.assertEqual(unit(shape["FluteLength"]), "mm")
+        self.assertEqual(shape["CuttingEdgeHeight"].Value, 0.0)
         uri = ToolBitShape.resolve_name("reamer")
         instance = self.assets.get(uri)
         self.assertEqual(instance.get_parameter_label("Diameter"), "Diameter")
+        self.assertEqual(instance.get_parameter_label("FluteLength"), "Flute length")
+        self.assertEqual(set(instance.derived_parameters()), {"CuttingEdgeHeight"})
+
+    def test_reamer_derived_cutting_edge_height(self):
+        """A reamer cuts with its lead chamfer only: CuttingEdgeHeight is 0."""
+        shape = self.assets.get(ToolBitShape.resolve_name("reamer"))
+        shape.set_parameters(
+            FluteLength=FreeCAD.Units.Quantity("25 mm"),
+            CuttingEdgeHeight=FreeCAD.Units.Quantity("25 mm"),
+        )
+        self.assertIn("CuttingEdgeHeight", shape.apply_derived_parameters())
+        height = shape.get_parameter("CuttingEdgeHeight")
+        self.assertEqual(height.Value, 0.0)
+        self.assertEqual(height.Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.get_parameter("FluteLength").Value, 25.0)
+        self.assertEqual(shape.apply_derived_parameters(), {})
 
     def test_toolbitshapeslittingsaw_defaults(self):
         """Test ToolBitShapeSlittingSaw default parameters and labels."""

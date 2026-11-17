@@ -293,6 +293,7 @@ def _wire_rotary_chain(machine: Machine, report: ImportReport):
     review.
     """
     letters = set(machine.rotary_axes)
+    # (moves first, moves second and carries the first, role, label)
     wiring = {
         frozenset("AC"): ("C", "A", AxisRole.TABLE_ROTARY, "A/C table (trunnion)"),
         frozenset("AB"): ("A", "B", AxisRole.TABLE_ROTARY, "A/B table"),
@@ -300,12 +301,10 @@ def _wire_rotary_chain(machine: Machine, report: ImportReport):
     }
     if frozenset(letters) in wiring:
         first, second, role, label = wiring[frozenset(letters)]
-        machine.rotary_axes[first].role = role
-        machine.rotary_axes[first].sequence = 0
-        machine.rotary_axes[first].parent = None
-        machine.rotary_axes[second].role = role
-        machine.rotary_axes[second].sequence = 1
-        machine.rotary_axes[second].parent = first
+        for sequence, name in enumerate((first, second)):
+            machine.rotary_axes[name].role = role
+            machine.rotary_axes[name].sequence = sequence
+            machine.rotary_axes[name].parent = None if name == second else second
         # Match the factory configs' alignment argument order exactly.
         if frozenset(letters) == frozenset("AC"):
             machine.set_alignment_axes("C", "A")

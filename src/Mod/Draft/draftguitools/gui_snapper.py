@@ -1475,7 +1475,6 @@ class Snapper:
         self.pt = None
         self.holdPoints = []
         self.ui = Gui.draftToolBar
-        self.view = gui_utils.get_3d_view()
 
         # remove any previous leftover callbacks
         try:
@@ -1495,6 +1494,7 @@ class Snapper:
             pass
         self.callbackClick = None
         self.callbackMove = None
+        self.view = gui_utils.get_3d_view()
 
         def move(event_cb):
             if not self.ui.mouse:

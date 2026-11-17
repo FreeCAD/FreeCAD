@@ -85,6 +85,9 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
         cerr << "Exception message is: \n" << message << "\n";
         XMLString::release(&message);
     }
+    catch (const Base::Exception& toCatch) {
+        cerr << "Exception message is: \n" << toCatch.what() << "\n";
+    }
 #ifndef FC_DEBUG
     catch (...) {
         cerr << "Unexpected Exception \n";
@@ -605,6 +608,16 @@ void Base::XMLReader::startCDATA()
 void Base::XMLReader::endCDATA()
 {
     ReadType = EndCDATA;
+}
+
+void Base::XMLReader::startDTD(
+    const XMLCh* const /*name*/,
+    const XMLCh* const /*publicId*/,
+    const XMLCh* const /*systemId*/
+)
+{
+    // FreeCAD never writes a DTD, and an internal subset permits unbounded entity expansion.
+    throw Base::XMLParseException("Document type declarations are not supported");
 }
 
 void Base::XMLReader::characters(const XMLCh* const chars, const XMLSize_t length)

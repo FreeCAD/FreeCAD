@@ -6,8 +6,6 @@ This source-adjacent stub file carries the deprecated Draft utility shim that
 still exists for DXF import compatibility.
 """
 
-from __future__ import annotations
-
 from Base.Metadata import deprecated
 
 @deprecated(
@@ -23,4 +21,3 @@ def readDXF(
     /,
 ) -> None:
     """Warn that the legacy Draft DXF helper is removed and return `None`."""
-    ...

@@ -112,11 +112,6 @@
 #include <TopExp_Explorer.hxx>
 #include <ShapeFix_Wire.hxx>
 
-#if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HSurface.hxx>
-# include <GeomAdaptor_HCurve.hxx>
-#endif
-
 #include <boost/random.hpp>
 #include <cmath>
 #include <ctime>
@@ -186,10 +181,6 @@
 
 #include <gp_Quaternion.hxx>
 
-
-#if OCC_VERSION_HEX >= 0x070600
-using GeomAdaptor_HCurve = GeomAdaptor_Curve;
-#endif
 
 using namespace Part;
 
@@ -1342,6 +1333,10 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
     // get the value of my attribute
     int polescount = reader.getAttribute<long>("PolesCount");
 
+    if (polescount < 2 || polescount > Geom_BezierCurve::MaxDegree() + 1) {
+        THROWM(Base::CADKernelError, "Invalid number of poles in BezierCurve")
+    }
+
     TColgp_Array1OfPnt poleArray(1, polescount);
     TColStd_Array1OfReal weightArray(1, polescount);
 
@@ -1885,7 +1880,7 @@ void GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree,
 {
     try {
         GeomAdaptor_Curve adapt(myCurve);
-        Handle(GeomAdaptor_HCurve) hCurve = new GeomAdaptor_HCurve(adapt);
+        Handle(GeomAdaptor_Curve) hCurve = new GeomAdaptor_Curve(adapt);
         Approx_Curve3d approx(hCurve, tol3d, continuity, maxSegments, maxDegree);
         if (approx.IsDone()) {
             this->setHandle(approx.Curve());
@@ -3079,10 +3074,7 @@ void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
     v = curve->LastParameter();
     if (emulateCCWXY) {
         Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
-        double angleXU = -conic->Position().XDirection().AngleWithRef(
-            gp_Dir(1.0, 0.0, 0.0),
-            gp_Dir(0.0, 0.0, 1.0)
-        );
+        double angleXU = -conic->Position().XDirection().AngleWithRef(gp::DX(), gp::DZ());
         double u1 = u, v1 = v;  // the true arc curve parameters, cached. u,v will contain the
                                 // rotation-corrected and swapped angles.
         if (conic->Axis().Direction().Z() > 0.0) {
@@ -3120,10 +3112,7 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
         Handle(Geom_TrimmedCurve) curve = Handle(Geom_TrimmedCurve)::DownCast(handle());
         if (emulateCCWXY) {
             Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
-            double angleXU = -conic->Position().XDirection().AngleWithRef(
-                gp_Dir(1.0, 0.0, 0.0),
-                gp_Dir(0.0, 0.0, 1.0)
-            );
+            double angleXU = -conic->Position().XDirection().AngleWithRef(gp::DX(), gp::DZ());
             double u1 = u, v1 = v;  // the values that were passed, ccw angles from X axis. u,v will
                                     // contain the rotation-corrected and swapped angles.
             if (conic->Axis().Direction().Z() > 0.0) {
@@ -4758,8 +4747,8 @@ TYPESYSTEM_SOURCE(Part::GeomLineSegment, Part::GeomTrimmedCurve)
 GeomLineSegment::GeomLineSegment()
 {
     gp_Lin line;
-    line.SetLocation(gp_Pnt(0.0, 0.0, 0.0));
-    line.SetDirection(gp_Dir(0.0, 0.0, 1.0));
+    line.SetLocation(gp::Origin());
+    line.SetDirection(gp::DZ());
     Handle(Geom_Line) c = new Geom_Line(line);
     this->myCurve = new Geom_TrimmedCurve(c, 0.0, 1.0);
 }

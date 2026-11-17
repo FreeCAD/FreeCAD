@@ -143,7 +143,6 @@ class MockMachine:
             "early_tool_prep": False,
             "filter_inefficient_moves": False,
             "split_arcs": False,
-            "tool_change": False,  # Disable tool change to avoid extra M3 commands
             "translate_rapid_moves": False,
             "xy_before_z_after_tool_change": False,
             "spindle": False,  # Disable spindle commands to avoid M3 S1000

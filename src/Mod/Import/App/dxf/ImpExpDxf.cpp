@@ -20,10 +20,6 @@
  ******************************************************************************/
 
 
-#include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-#endif
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -89,10 +85,6 @@
 
 
 using namespace Import;
-
-#if OCC_VERSION_HEX >= 0x070600
-using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 namespace
 {
@@ -2038,7 +2030,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 
     Standard_Real tol3D = 0.001;
     Standard_Integer maxDegree = 3, maxSegment = 200;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(c);
     Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
         spline = approx.Curve();

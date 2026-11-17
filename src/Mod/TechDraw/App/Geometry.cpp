@@ -61,15 +61,11 @@
 # include <gp_Vec.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Precision.hxx>
-# include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
@@ -92,10 +88,6 @@ using namespace TechDraw;
 using namespace Part;
 using namespace std;
 using DU = DrawUtil;
-
-#if OCC_VERSION_HEX >= 0x070600
-using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 // Collection of Geometric Features
 Wire::Wire()
@@ -1135,7 +1127,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     setDirection(edgeCurve);
 
     // if the curve is already has degree <= 3, we should not approximate it, but just use the existing curve
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(edgeCurve);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(edgeCurve);
     Handle(Geom_BSplineCurve) splineOut = hCurve->BSpline();   // the bspline from the edge
     if (hCurve->Degree() > 3) {
         // if the degree is > 3 Qt can not draw it, so we approximate it as bezier
@@ -1674,48 +1666,46 @@ TopoDS_Edge GeometryUtils::asCircle(const TopoDS_Edge& splineEdge, bool& arc)
     return BRepBuilderAPI_MakeEdge(arcToUse);
 }
 
-bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
+//! true if occEdge (a bspline) can be represented by a straight line.
+bool GeometryUtils::isLine(const TopoDS_Edge& splineEdge)
 {
-    BRepAdaptor_Curve adapt(occEdge);
+    BRepAdaptor_Curve adapt(splineEdge);
 
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+
+    auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
+    auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
+
+    if (startPoint.IsEqual(endPoint, EWTOLERANCE)) {
+        // either not a line (circle?) or a zero length line.
+        return false;
+    }
 
     // Because Geom_BSplineCurve::Segment() modifies the curve in-place, we must work with a copy
     Handle(Geom_BSplineCurve) spline = Handle(Geom_BSplineCurve)::DownCast(adapt.BSpline()->Copy());
     spline->Segment(firstParm, lastParm);
 
-    auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
-    auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
-    auto edgeLong = edgeLength(occEdge);
-
-    constexpr double LimitFactor{0.001};     // 0.1%  not sure about this value
-    double tolerance = edgeLong * LimitFactor;
-    if (startPoint.IsEqual(endPoint, tolerance)) {
-        // either not a line or a zero length line?
-        return false;
-    }
-    if (adapt.Degree() == 1) {
-        // Skip the calculation.  This is a line masquerading as a bspline.
-        return true;
-    }
-
-    // still might be a line disguised as a curve with a really big curvature.
-
-    // in a line the sum of the lengths of the segments should equal the distance
-    // from start to end
-    double endPointLength = (endPoint - startPoint).Length();
-
     const TColgp_Array1OfPnt& poles = spline->Poles();
-    double lenTotal = 0.0;
-    for (int i = poles.Lower(); i < poles.Upper() - 1; i++) {
-        gp_Pnt p1 = poles.Value(i);
-        gp_Pnt p2 = poles.Value(i+1);
-        auto v = Base::convertTo<Base::Vector3d>(p2.XYZ() - p1.XYZ());
-        lenTotal += v.Length();
+    if (poles.Size() < 2) {
+        throw Base::RuntimeError("BSpline has too few points");
     }
 
-    return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);
+    if (poles.Size() == 2) {
+        if (adapt.Degree() == 1) {
+            // Skip the calculation.  This is a line masquerading as a bspline.
+            return true;
+        }
+        // only 2 poles, but degree implies we need a least 1 more pole to bend the line.
+        return false;  // we can't draw this as a line
+    }
+
+    std::vector<Base::Vector3d> polePoints;
+    for (int iPole = poles.Lower(); iPole <= poles.Upper(); iPole++) {
+        polePoints.push_back(Base::convertTo<Base::Vector3d>(poles.Value(iPole)));
+    }
+
+    return colinearPoints2dAll(polePoints);
 }
 
 
@@ -1911,7 +1901,7 @@ bool GeometryUtils::asCubic(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplin
 {
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen/paper can't resolve this
     Standard_Integer maxDegree = 3, maxSegment = 200;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(curveIn);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(curveIn);
 
     try {
         Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
@@ -2001,4 +1991,44 @@ opencascade::handle<Geom_TrimmedCurve> GeometryUtils::bestFitArc(opencascade::ha
     return circleArc1;
 }
 
+//! true if 2d points p0 (x, y, 0), p1, p2 are colinear
+bool GeometryUtils::colinearPoints2d(Base::Vector3d p0, Base::Vector3d p1, Base::Vector3d p2)
+{
+    Base::Matrix4D myMat;   // identity mat
+    myMat.setRow(0, p0);
+    myMat.setRow(1, p1);
+    myMat.setRow(2,p2);
+    Base::Vector3d allOnes(1, 1, 1);
+    myMat.setCol(2, allOnes);
+    double detValue = myMat.determinant3();
+    return DU::fpCompare(detValue, 0, Precision::Confusion());
+}
+
+
+//! true if all entries in points2d are colinear.  Expects 2 or more points.
+bool GeometryUtils::colinearPoints2dAll(const std::vector<Base::Vector3d>& points2d)
+{
+    int pointCount = points2d.size();
+    if (pointCount < 2) {
+        throw Base::RuntimeError("BSpline has too few points");
+    }
+
+    if (pointCount == 2) {
+        return true;
+    }
+    Base::Vector3d startPoint = points2d.front();
+    Base::Vector3d endPoint = points2d.back();
+    int iStart = 1;
+    int iStop  = points2d.size() - 2;
+
+    for (int iPoint = iStart; iPoint <= iStop; iPoint++) {
+        if (!colinearPoints2d(startPoint,
+                         points2d.at(iPoint),
+                         endPoint)) {
+            return false;
+        }
+    }
+    // all points are colinear with the ends
+    return true;
+}
 

@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 """Typed public signatures for the ``ImportGui`` module helpers.
 
 This source-adjacent stub file carries the GUI-assisted import/export helpers,
 their option dictionaries, and the DXF inspection utilities.
 """
-
-from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict
@@ -66,7 +65,6 @@ def open(
     mode: int = -1,
 ) -> DocumentObject | None:
     """Open one STEP, IGES, or glTF file with GUI import behavior."""
-    ...
 
 def insert(
     name: str,
@@ -78,11 +76,9 @@ def insert(
     mode: int = -1,
 ) -> DocumentObject | None:
     """Insert one STEP, IGES, or glTF file with GUI import behavior."""
-    ...
 
 def preScanDxf(filepath: str, /) -> dict[str, int]:
     """Return entity-count statistics gathered from one DXF file without importing it."""
-    ...
 
 def readDXF(
     filename: str,
@@ -92,15 +88,12 @@ def readDXF(
     /,
 ) -> DxfImportStats:
     """Import one DXF file through the GUI path and return import statistics."""
-    ...
 
 def importOptions(name: str, /) -> ImportOptions:
     """Show the GUI import-options dialog for one file type and return the chosen options."""
-    ...
 
 def exportOptions(name: str, /) -> ExportOptions:
     """Show the GUI export-options dialog for one file type and return the chosen options."""
-    ...
 
 def export(
     obj: Sequence[DocumentObject],
@@ -111,8 +104,6 @@ def export(
     keepPlacement: bool | None = None,
 ) -> None:
     """Export document objects through the GUI-aware OCAF exporter."""
-    ...
 
 def ocaf(name: str, /) -> None:
     """Open the OCAF browser for one STEP, IGES, or glTF file."""
-    ...
