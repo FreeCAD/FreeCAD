@@ -1843,8 +1843,10 @@ class PostProcessor:
         """Inject or remove bCNC block annotation commands.
 
         When OUTPUT_BCNC is True, injects bCNC block-name, block-expand,
-        and block-enable commands before each operation,
-        and stores postamble commands for later insertion.
+        and block-enable commands before the prefix lines ("Header"), each
+        tool change, each Job fixture and each operation, and stores
+        postamble commands for later insertion. The fixture selection and the
+        pose change that a work plane adds are in the block of their operation.
 
         Returns the new postable list. The caller must keep the result.
 
@@ -1862,24 +1864,56 @@ class PostProcessor:
         if output_bcnc:
             Path.Log.debug("Creating bCNC commands")
 
-            def insert_op_bcnc(section_name: str, item, section_state: dict):
-                if item.item_type == "operation" and item.path:
+            def block_header(name: str):
+                return self._make_postable(
+                    "Post: bCNC block",
+                    [
+                        Path.Command(f"(Block-name: {name})", {}, {"bcnc": "block_start"}),
+                        Path.Command("(Block-expand: 0)", {}, {"bcnc": "block_meta"}),
+                        Path.Command("(Block-enable: 1)", {}, {"bcnc": "block_meta"}),
+                    ],
+                )
 
-                    new_postable = self._make_postable(
-                        "Post: bCNC preop",
-                        [
-                            Path.Command(
-                                f"(Block-name: {item.label})", {}, {"bcnc": "block_start"}
-                            ),
-                            Path.Command("(Block-expand: 0)", {}, {"bcnc": "block_meta"}),
-                            Path.Command("(Block-enable: 1)", {}, {"bcnc": "block_meta"}),
-                        ],
-                    )
-                    return -1, [new_postable]
-                else:
-                    return None, None
+            def next_operation(sublist, start):
+                for later in sublist[start:]:
+                    if later.item_type == "operation":
+                        return later
+                return None
 
-            # Create bCNC postamble commands
+            new_sections = []
+            for section_name, sublist in postables:
+                new_sublist = []
+                # The lines before the first item of the Job: safety block, header, preamble
+                has_prefix = bool(sublist) and sublist[0].label.startswith("Post: ")
+                header_done = not has_prefix
+                # True while the setup items of the next operation go by
+                in_setup = False
+                for index, item in enumerate(sublist):
+                    if not header_done and item.label != "Post: start optimizable":
+                        # after the marker, which must stay first
+                        new_sublist.append(block_header("Header"))
+                        header_done = True
+
+                    if item.data.get(Constants.DATA_OPERATION_SETUP):
+                        # The fixture selection and the pose change of an operation
+                        # are in the block of that operation
+                        operation = next_operation(sublist, index)
+                        if not in_setup and operation is not None and operation.path:
+                            new_sublist.append(block_header(operation.label))
+                            in_setup = True
+                    elif item.item_type == "operation":
+                        if not in_setup and item.path:
+                            new_sublist.append(block_header(item.label))
+                        in_setup = False
+                    elif item.item_type in ("tool_controller", "fixture") and item.path:
+                        # As in the legacy post: a block for each tool change and
+                        # each fixture, so that a disabled operation block does
+                        # not remove the tool change of the next operation
+                        new_sublist.append(block_header(item.label))
+
+                    new_sublist.append(item)
+                new_sections.append((section_name, new_sublist))
+
             # Store bCNC postamble commands for later insertion
             self._bcnc_postamble_commands = [
                 Path.Command("(Block-name: post_amble)", {}, {"bcnc": "postamble_start"}),
@@ -1887,7 +1921,7 @@ class PostProcessor:
                 Path.Command("(Block-enable: 1)", {}, {"bcnc": "postamble_meta"}),
             ]
 
-            return self._edit_postable_list(postables, insert_op_bcnc)
+            return new_sections
 
         else:
             Path.Log.debug("Removing existing bCNC commands")
@@ -2242,6 +2276,16 @@ class PostProcessor:
             items.extend(self._rotary_block_postables("POST_ROTARY_MOVE"))
         return items
 
+    @staticmethod
+    def _operation_setup(items):
+        """Mark items as the setup of the operation that follows them: the
+        fixture selection and the pose change that the operation's work plane
+        needs. They belong to that operation, and anything that groups the
+        output by operation (the bCNC blocks) must keep them with it."""
+        for item in items:
+            item.data[Constants.DATA_OPERATION_SETUP] = True
+        return items
+
     def _operations_to_post(self):
         """The operations this export covers: the selected ones or the Job's,
         minus any that are inactive - the same set the post list is built
@@ -2439,7 +2483,9 @@ class PostProcessor:
                 placement = placement_of(item)
                 if placement is None:
                     if fixture_change:
-                        new_items.append(self._fixture_postable(fixture_change))
+                        new_items.extend(
+                            self._operation_setup([self._fixture_postable(fixture_change)])
+                        )
                         selected = fixture_change
                     new_items.append(item)
                     continue
@@ -2449,7 +2495,9 @@ class PostProcessor:
                     if tilted:
                         self._refuse_without_rotary_axes(item)
                     if fixture_change:
-                        new_items.append(self._fixture_postable(fixture_change))
+                        new_items.extend(
+                            self._operation_setup([self._fixture_postable(fixture_change)])
+                        )
                         selected = fixture_change
                     item.path = PathUtil.applyPlacementToPath(placement, item.path)
                     new_items.append(item)
@@ -2467,14 +2515,16 @@ class PostProcessor:
                 if (frame, angles) != pose or fixture_change:
                     rotaries_move = pose is None or angles != pose[1]
                     new_items.extend(
-                        self._pose_change_postables(
-                            strategy,
-                            placement,
-                            positions,
-                            declared,
-                            rotaries_move,
-                            fixture_change,
-                            dict(pose[1]) if pose else None,
+                        self._operation_setup(
+                            self._pose_change_postables(
+                                strategy,
+                                placement,
+                                positions,
+                                declared,
+                                rotaries_move,
+                                fixture_change,
+                                dict(pose[1]) if pose else None,
+                            )
                         )
                     )
                     if fixture_change:
@@ -3030,7 +3080,8 @@ class PostProcessor:
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
-        # Before _expand_pre_item: the bCNC block header comes before the pre-operation lines
+        # After _expand_prefix: the Header block contains the prefix lines
+        # Before _expand_pre_item: a bCNC block header comes before the pre-item lines
         postables = self._expand_bcnc_commands(postables)
         postables = self._expand_pre_item(postables)
 
