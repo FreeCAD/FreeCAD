@@ -40,7 +40,14 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
 
     def _create_TD_page(self):
         tpath = os.path.join(
-            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
+            App.getResourceDir(),
+            "Mod",
+            "TechDraw",
+            "Templates",
+            "Blank",
+            "A3",
+            "landscape",
+            "A3_blank_landscape.svg",
         )
         page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
         template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")

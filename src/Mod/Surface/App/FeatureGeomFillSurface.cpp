@@ -132,6 +132,7 @@ GeomFillSurface::GeomFillSurface()
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (nullptr, "Dummy"));
     ADD_PROPERTY(ReversedList, (false));
+    ReversedList.setSize(0);
     FillType.setEnums(FillTypeEnums);
     BoundaryList.setScope(App::LinkScope::Global);
 }
@@ -148,13 +149,14 @@ short GeomFillSurface::mustExecute() const
 
 void GeomFillSurface::onChanged(const App::Property* prop)
 {
-    if (isRestoring()) {
-        if (prop == &BoundaryList) {
-            // auto-adjusting size of this list
-            if (BoundaryList.getSize() != ReversedList.getSize()) {
-                ReversedList.setSize(BoundaryList.getSize());
-            }
+    if (isRestoring() && prop == &BoundaryList) {
+        // auto-adjusting size of this list
+        if (BoundaryList.getSize() != ReversedList.getSize()) {
+            ReversedList.setSize(BoundaryList.getSize());
         }
+    }
+    if (prop == &ReversedList && ReversedList.getSize() > BoundaryList.getSize()) {
+        ReversedList.setSize(BoundaryList.getSize());
     }
     Part::Spline::onChanged(prop);
 }

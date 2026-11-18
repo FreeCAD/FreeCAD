@@ -36,14 +36,22 @@ through its ``values`` without knowing the angle math.
 
 Angle conventions, verified against composed rotations:
 
-``G68.2`` / ``G268`` (Fanuc, Haas and the controls that copy them) take
-I, J, K as intrinsic Euler angles: rotate about Z by I, then about the new X
-by J, then about the newest Z by K. That is ``Rz(I) * Rx(J) * Rz(K)``, which
-FreeCAD spells ``IZXZ``.
+``G68.2`` (Fanuc and the controls that copy it) takes I, J, K as intrinsic
+Euler angles: rotate about Z by I, then about the new X by J, then about the
+newest Z by K. That is ``Rz(I) * Rx(J) * Rz(K)``, which FreeCAD spells
+``IZXZ``.
 
 ``PLANE SPATIAL`` (Heidenhain) takes SPA, SPB, SPC as spatial angles about
 the fixed machine X, Y and Z, applied in that order: ``Rz(C) * Ry(B) * Rx(A)``,
 which FreeCAD spells ``IZYX`` and returns as (C, B, A).
+
+``G268`` (Haas) does not take the Fanuc angles. Its I, J, K are rotations
+about the work coordinate system's X, Y and Z, and ``Q123``, the control's
+default, applies them in that order: the same spatial angles as
+``PLANE SPATIAL``. The Haas manual gives the axes and the order and pairs a
+table at ``B30. C45.`` with ``I0 J30. K45. Q123``; it does not say fixed or
+moving axes in so many words, so the convention here is read from that example
+and is not proven on a machine.
 
 A plane parallel to the table is the singular case for both: only the sum of
 the first and last angle is defined. FreeCAD puts it all in one of them, which
@@ -64,8 +72,10 @@ class PlaneCommand(Enum):
                     Brother, Mach4 with the option). `G68.2 X Y Z I J K` with
                     I, J, K the intrinsic Z-X'-Z'' Euler angles; `G53.1`
                     aligns the tool axis; `G69` cancels.
-    G268          : Haas NGC. Same angles and alignment; `G268` declares,
-                    `G269` cancels.
+    G268          : Haas NGC, UMC and gimbal-head machines.
+                    `G268 X Y Z I J K Q123` with I, J, K the rotations about
+                    the work coordinate system's X, Y, Z applied in that
+                    order; `G253` aligns the tool axis; `G269` cancels.
     PLANE_SPATIAL : Heidenhain. `PLANE SPATIAL SPA SPB SPC` with the spatial
                     angles about the fixed machine X, Y, Z axes applied in
                     that order; `TURN` positions the rotaries; `PLANE RESET`
@@ -78,12 +88,13 @@ class PlaneCommand(Enum):
 
 
 def euler_zxz(rotation):
-    """(I, J, K) in degrees for G68.2 / G268: intrinsic Z, X', Z''."""
+    """(I, J, K) in degrees for G68.2: intrinsic Z, X', Z''."""
     return tuple(_clean(a) for a in rotation.toEulerAngles("IZXZ"))
 
 
 def spatial_abc(rotation):
-    """(SPA, SPB, SPC) in degrees for PLANE SPATIAL: about fixed X, then Y, then Z."""
+    """(SPA, SPB, SPC) in degrees for PLANE SPATIAL, and (I, J, K) for G268
+    Q123: about fixed X, then Y, then Z."""
     c, b, a = rotation.toEulerAngles("IZYX")
     return (_clean(a), _clean(b), _clean(c))
 
@@ -107,9 +118,9 @@ DIALECTS = {
         "cancel": "G69",
     },
     PlaneCommand.G268: {
-        "angles": euler_zxz,
-        "declare": "G268 X{x} Y{y} Z{z} I{a1} J{a2} K{a3}",
-        "align": "G53.1",
+        "angles": spatial_abc,
+        "declare": "G268 X{x} Y{y} Z{z} I{a1} J{a2} K{a3} Q123",
+        "align": "G253",
         "cancel": "G269",
     },
     PlaneCommand.PLANE_SPATIAL: {

@@ -450,76 +450,88 @@ public:
 
     Sketcher::ConstraintType constraintType() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
-        return sketch->Constraints[ConstraintNbr]->Type;
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->Type;
+        }
+
+        return Sketcher::ConstraintType::None;
     }
 
     bool isEnforceable() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
 
-        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
-
-        switch (constraint->Type) {
-            case Sketcher::None:
-            case Sketcher::NumConstraintTypes:
-                assert(false);
-                return false;
-            case Sketcher::Horizontal:
-            case Sketcher::Vertical:
-            case Sketcher::Coincident:
-            case Sketcher::Block:
-            case Sketcher::PointOnObject:
-            case Sketcher::Parallel:
-            case Sketcher::Perpendicular:
-            case Sketcher::Tangent:
-            case Sketcher::Equal:
-            case Sketcher::Symmetric:
-            case Sketcher::Group:
-            case Sketcher::Text:
-                return true;
-            case Sketcher::Distance:
-            case Sketcher::DistanceX:
-            case Sketcher::DistanceY:
-            case Sketcher::Radius:
-            case Sketcher::Diameter:
-            case Sketcher::Weight:
-            case Sketcher::Angle:
-            case Sketcher::SnellsLaw:
-                return (constraint->First >= 0 || constraint->Second >= 0
-                        || constraint->Third >= 0);
-            case Sketcher::InternalAlignment:
-                return true;
+            switch (constraint->Type) {
+                case Sketcher::None:
+                case Sketcher::NumConstraintTypes:
+                    assert(false);
+                    return false;
+                case Sketcher::Horizontal:
+                case Sketcher::Vertical:
+                case Sketcher::Coincident:
+                case Sketcher::Block:
+                case Sketcher::PointOnObject:
+                case Sketcher::Parallel:
+                case Sketcher::Perpendicular:
+                case Sketcher::Tangent:
+                case Sketcher::Equal:
+                case Sketcher::Symmetric:
+                case Sketcher::Group:
+                case Sketcher::Text:
+                    return true;
+                case Sketcher::Distance:
+                case Sketcher::DistanceX:
+                case Sketcher::DistanceY:
+                case Sketcher::Radius:
+                case Sketcher::Diameter:
+                case Sketcher::Weight:
+                case Sketcher::Angle:
+                case Sketcher::SnellsLaw:
+                    return (constraint->First >= 0 ||
+                            constraint->Second >= 0 ||
+                            constraint->Third >= 0);
+                case Sketcher::InternalAlignment:
+                    return true;
+            }
         }
         return false;
     }
 
     bool isDimensional() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return (sketch->Constraints[ConstraintNbr])->isDimensional();
+        }
 
-        return (sketch->Constraints[ConstraintNbr])->isDimensional();
+        return false;
     }
 
     bool isDriving() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isDriving;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isDriving;
+        return false;
     }
 
     bool isInVirtualSpace() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
+        return false;
     }
 
     bool isActive() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isActive;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isActive;
+        return false;
     }
 
     void updateVirtualSpaceStatus()
