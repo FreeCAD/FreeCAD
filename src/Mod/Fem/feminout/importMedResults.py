@@ -46,6 +46,7 @@ except Exception:
     FreeCAD.Console.PrintError("Module medcoupling not found. Cannot load med file.\n")
 
 from vtkmodules.util import numpy_support as vtk_np
+from vtkmodules.vtkCommonDataModel import VTK_TRIANGLE
 from vtkmodules.vtkCommonDataModel import vtkCellArray, vtkUnstructuredGrid
 from vtkmodules.vtkCommonCore import vtkPoints
 
@@ -72,7 +73,7 @@ def read_med_meshVTK(medfile):
     types = []
     for e in range(m.getNumberOfCells()):
         if m.getTypeOfCell(e) == 3:
-            types.append(vtk_np.vtkConstants.VTK_TRIANGLE)
+            types.append(VTK_TRIANGLE)
         else:
             FreeCAD.Console.PrintError("Only tria3 elements supported at present")
         nid = m.getNodeIdsOfCell(e)
