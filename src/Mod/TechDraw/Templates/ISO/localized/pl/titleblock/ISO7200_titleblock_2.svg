@@ -45,16 +45,16 @@
     <rect id="document_type_border" x="0" y="12" width="80" height="12" />
   </g>
   <g id="title_block_labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-    <text id="legal_owner label" x="140.5" y="3.6">Prawny właściciel:</text>
-    <text id="identification_number_label" x="0.5" y="27.6">Numer identyfikacyjny:</text>
+    <text id="legal_owner label" x="140.5" y="3.6">Właściciel:</text>
+    <text id="identification_number_label" x="0.5" y="27.6">Numer rysunku:</text>
     <text id="revision_index_label" x="100.5" y="27.6">Zmiana:</text>
-    <text id="date_of_issue_label" x="60.5" y="27.6">Data wydania:</text>
+    <text id="date_of_issue_label" x="60.5" y="27.6">Data:</text>
     <text id="sheet_number_label" x="120.5" y="27.6">Arkusz:</text>
-    <text id="title_label" x="0.5" y="3.6">Tytuł:</text>
-    <text id="responsible_department_label" x="140.5" y="27.6">Dział odpowiedzialny:</text>
+    <text id="title_label" x="0.5" y="3.6">Nazwa części:</text>
+    <text id="responsible_department_label" x="140.5" y="27.6">Dział:</text>
     <text id="approval_person_label" x="80.5" y="15.6">Zatwierdził:</text>
-    <text id="creator_label" x="80.5" y="3.6">Wykonał:</text>
-    <text id="document_type_label" x="0.5" y="15.6">Rodzaj dokumentu:</text>
+    <text id="creator_label" x="80.5" y="3.6">Kreślił:</text>
+    <text id="document_type_label" x="0.5" y="15.6">Typ rysunku:</text>
   </g>
   <g id="title_block_data_fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
     <text id="owner_1_data_field" x="160" y="9.1" freecad:editable="legal_owner_1" freecad:autofill="organization" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
@@ -69,6 +69,6 @@
     <text id="responsible_department_data_field" x="141" y="33.2" freecad:editable="responsible_department"><tspan>BiR</tspan></text>
     <text id="approval_person_data_field" x="81" y="21.2" freecad:editable="approval_person"><tspan>J. Nowak</tspan></text>
     <text id="creator_data_field" x="81" y="9.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Kowalski</tspan></text>
-    <text id="document_type_data_field" x="1" y="21.2" freecad:editable="document_type"><tspan>Rysunek elementu</tspan></text>
+    <text id="document_type_data_field" x="1" y="21.2" freecad:editable="document_type"><tspan>Rysunek części</tspan></text>
   </g>
 </svg>
