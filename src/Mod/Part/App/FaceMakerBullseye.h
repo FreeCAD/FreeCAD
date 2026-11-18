@@ -96,6 +96,7 @@ protected:
     {
     public:
         FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire);
+        ~FaceDriller();
 
         /// Hit test result
         enum class HitTest

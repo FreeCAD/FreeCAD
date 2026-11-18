@@ -60,6 +60,8 @@ Reader3MF::Reader3MF(const std::string& filename)
     }
 }
 
+Reader3MF::~Reader3MF() = default;
+
 std::vector<int> Reader3MF::GetMeshIds() const
 {
     std::vector<int> ids(meshes.size());
