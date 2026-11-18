@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
@@ -137,7 +139,7 @@ void QGIViewClip::drawClip()
                 qgiv->show();
             }
         } else {
-            Base::Console().warning("Logic error? - drawClip() - qgiv for %s not found\n", name.c_str());   //gview for feature !exist
+            Base::Console().warning("Logic error? - drawClip() - qgiv for {} not found\n", name);   //gview for feature !exist
         }
     }
 

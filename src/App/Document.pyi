@@ -1,16 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
 from DocumentSettings import DocumentSettings
-from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
-
-if TYPE_CHECKING:
-    from Part import Feature as _PartFeature
-
+from typing import Final, Literal, overload
+from collections.abc import Sequence
 
 class Document(PropertyContainer):
     """
@@ -93,19 +89,16 @@ class Document(PropertyContainer):
         """
         Save the document to disk.
         """
-        ...
 
     def saveAs(self, path: str, /) -> None:
         """
         Save the document under a new name to disk.
         """
-        ...
 
     def saveCopy(self, path: str, /) -> None:
         """
         Save a copy of the document under a new name to disk.
         """
-        ...
 
     def canWriteRecoverySnapshot(self) -> bool:
         """
@@ -115,38 +108,32 @@ class Document(PropertyContainer):
         This does not account for GUI-only constraints such as an active Gui
         transaction.
         """
-        ...
 
     def load(self, path: str, /) -> None:
         """
         Load the document from the given path.
         """
-        ...
 
     def restore(self) -> None:
         """
         Restore the document from disk
         """
-        ...
 
     def isSaved(self) -> bool:
         """
         Checks if the document is saved
         """
-        ...
 
     def getProgramVersion(self) -> str:
         """
         Get the program version that a project file was created with
         """
-        ...
 
     def getFileName(self) -> str:
         """
         For a regular document it returns its file name property.
         For a temporary document it returns its transient directory.
         """
-        ...
 
     @constmethod
     def settings(self, namespace: str, /) -> DocumentSettings:
@@ -155,7 +142,6 @@ class Document(PropertyContainer):
 
         The namespace may contain dot-separated identifier segments.
         """
-        ...
 
     def getUniqueObjectName(self, objName: str, /) -> str:
         """
@@ -168,23 +154,20 @@ class Document(PropertyContainer):
         Returns:
             Unique object name based on objName.
         """
-        ...
 
     def mergeProject(self, path: str, /) -> None:
         """
         Merges this document with another project file.
         """
-        ...
 
-    def exportGraphviz(self, path: str = None, /) -> str | None:
+    def exportGraphviz(self, path: str = ..., /) -> str | None:
         """
         Export the dependencies of the objects as graph.
 
         If path is passed, graph is written to it. if not a string is returned.
         """
-        ...
 
-    def openTransaction(self, name: str, /) -> None:
+    def openTransaction(self, name: str = ..., /) -> None:
         """
         Open a new Undo/Redo transaction.
 
@@ -194,50 +177,25 @@ class Document(PropertyContainer):
         If more than one document is changed, all newly created transactions will have
         the same internal ID and will be undo/redo together.
         """
-        ...
 
     def abortTransaction(self) -> None:
         """
         Abort an Undo/Redo transaction (rollback)
         """
-        ...
 
     def commitTransaction(self) -> None:
         """
         Commit an Undo/Redo transaction
         """
-        ...
-
-    @overload
-    def addObject(
-        self,
-        type: Literal["Part::Feature"],
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
-    ) -> _PartFeature: ...
-
-    @overload
-    def addObject(
-        self,
-        type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
-    ) -> DocumentObject: ...
 
     def addObject(
         self,
         type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
+        name: str = ...,
+        objProxy: object | None = None,
+        viewProxy: object | None = None,
         attach: bool = False,
-        viewType: str = None,
+        viewType: str = ...,
     ) -> DocumentObject:
         """
         Add an object to document.
@@ -253,7 +211,6 @@ class Document(PropertyContainer):
                     the document, it will try to call Python binding object's attach(obj) method.
             viewType: override the view provider type directly, only effective when attach is False.
         """
-        ...
 
     def addProperty(
         self,
@@ -283,21 +240,18 @@ class Document(PropertyContainer):
         Returns:
             The document instance with the added property.
         """
-        ...
 
-    def removeProperty(self, name: str, /) -> None:
+    def removeProperty(self, name: str, /) -> bool:
         """
         Remove a generic property.
 
         Note, you can only remove user-defined properties but not built-in ones.
         """
-        ...
 
-    def removeObject(self, name: str, /) -> None:
+    def removeObject(self, object: str | DocumentObject, /) -> None:
         """
         Remove an object from the document.
         """
-        ...
 
     @overload
     def copyObject(
@@ -338,7 +292,6 @@ class Document(PropertyContainer):
             return_all: if True, returns all copied objects, or else return only the copied
                         object corresponding to the input objects.
         """
-        ...
 
     def moveObject(
         self,
@@ -353,11 +306,10 @@ class Document(PropertyContainer):
             object: can either a single object or sequence of objects
             with_dependencies: if True, all internal dependent objects are copied too.
         """
-        ...
 
     def importLinks(
         self,
-        object: DocumentObject = None,
+        source: DocumentObject | Sequence[DocumentObject] | None = None,
         /,
     ) -> tuple[DocumentObject, ...]:
         """
@@ -368,55 +320,46 @@ class Document(PropertyContainer):
         If no object is given as input, it import all externally linked
         object of this document.
         """
-        ...
 
     def undo(self) -> None:
         """
         Undo one transaction
         """
-        ...
 
     def redo(self) -> None:
         """
         Redo a previously undone transaction
         """
-        ...
 
     def clearUndos(self) -> None:
         """
         Clear the undo stack of the document
         """
-        ...
 
     def clearDocument(self) -> None:
         """
         Clear the whole document
         """
-        ...
 
     def setClosable(self, closable: bool, /) -> None:
         """
         Set a flag that allows or forbids to close a document
         """
-        ...
 
     def isClosable(self) -> bool:
         """
         Check if the document can be closed. The default value is True
         """
-        ...
 
     def setAutoCreated(self, autoCreated: bool, /) -> None:
         """
         Set a flag that indicates if a document is autoCreated
         """
-        ...
 
     def isAutoCreated(self) -> bool:
         """
         Check if the document is autoCreated. The default value is False
         """
-        ...
 
     def recompute(
         self,
@@ -428,31 +371,26 @@ class Document(PropertyContainer):
         """
         Recompute the document and returns the amount of recomputed features.
         """
-        ...
 
     def mustExecute(self) -> bool:
         """
         Check if any object must be recomputed
         """
-        ...
 
     def purgeTouched(self) -> None:
         """
         Purge the touched state of all objects
         """
-        ...
 
     def isTouched(self) -> bool:
         """
         Check if any object is in touched state
         """
-        ...
 
-    def getObject(self, name: str, /) -> DocumentObject:
+    def getObject(self, name: str | int, /) -> DocumentObject | None:
         """
-        Return the object with the given name
+        Return the object with the given name or ID, or None if it does not exist.
         """
-        ...
 
     def getObjectsByLabel(self, label: str, /) -> list[DocumentObject]:
         """
@@ -460,13 +398,12 @@ class Document(PropertyContainer):
 
         NOTE: It's possible that several objects have the same label name.
         """
-        ...
 
     def findObjects(
         self,
-        Type: str = None,
-        Name: str = None,
-        Label: str = None,
+        Type: str = ...,
+        Name: str = ...,
+        Label: str = ...,
     ) -> list[DocumentObject]:
         """
         Return a list of objects that match the specified type, name or label.
@@ -478,11 +415,10 @@ class Document(PropertyContainer):
             Name: Name
             Label: Label
         """
-        ...
 
     def getLinksTo(
         self,
-        obj: DocumentObject,
+        obj: DocumentObject | None = None,
         options: int = 0,
         maxCount: int = 0,
         /,
@@ -494,28 +430,25 @@ class Document(PropertyContainer):
             options: 1: recursive, 2: check link array. Options can combine.
             maxCount: to limit the number of links returned.
         """
-        ...
 
     def supportedTypes(self) -> list[str]:
         """
         A list of supported types of objects
         """
-        ...
 
-    def getTempFileName(self) -> str:
+    def getTempFileName(self, name: str, /) -> str:
         """
-        Returns a file name with path in the temp directory of the document.
+        Returns a unique file name, based on the given name, with a path in the temp directory of
+        the document.
         """
-        ...
 
-    def getDependentDocuments(self, sort: bool = True, /) -> list[DocumentObject]:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[Document]:
         """
         Returns a list of documents that this document directly or indirectly links to including itself.
 
         Args:
             sort: whether to topologically sort the return list
         """
-        ...
 
     def getBookedTransactionID(self) -> int:
         """
@@ -524,4 +457,3 @@ class Document(PropertyContainer):
         Returns the currently booked transaction id, which is the id of the current transaction OR the id
         the next transaction will stick to if no change has occurred yet
         """
-        ...

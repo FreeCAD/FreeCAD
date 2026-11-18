@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2005 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <cstdlib>
 
@@ -285,9 +282,7 @@ std::size_t ColorGradient::getMinColors() const
             if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
                 return colorField1.getMinColors() + colorField2.getMinColors();
             }
-            else {
-                return colorField1.getMinColors();
-            }
+            return colorField1.getMinColors();
         }
     }
     return 2;
@@ -349,12 +344,7 @@ bool ColorLegend::operator==(const ColorLegend& rclCL) const
 
 float ColorLegend::getValue(std::size_t ulPos) const
 {
-    if (ulPos < values.size()) {
-        return values[ulPos];
-    }
-    else {
-        return 0.0f;
-    }
+    return ulPos < values.size() ? values[ulPos] : 0.0f;
 }
 
 bool ColorLegend::setValue(std::size_t ulPos, float fVal)
@@ -363,19 +353,12 @@ bool ColorLegend::setValue(std::size_t ulPos, float fVal)
         values[ulPos] = fVal;
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 Base::Color ColorLegend::getColor(std::size_t ulPos) const
 {
-    if (ulPos < colorFields.size()) {
-        return colorFields[ulPos];
-    }
-    else {
-        return Base::Color();
-    }
+    return ulPos < colorFields.size() ? colorFields[ulPos] : Base::Color();
 }
 
 // color as: 0x00rrggbb
@@ -387,12 +370,7 @@ uint32_t ColorLegend::getPackedColor(std::size_t ulPos) const
 
 std::string ColorLegend::getText(std::size_t ulPos) const
 {
-    if (ulPos < names.size()) {
-        return names[ulPos];
-    }
-    else {
-        return "";
-    }
+    return ulPos < names.size() ? names[ulPos] : "";
 }
 
 std::size_t ColorLegend::addMin(const std::string& rclName)

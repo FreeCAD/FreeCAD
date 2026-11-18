@@ -174,16 +174,6 @@ G0 X11.250000 Y5.000000 Z23.000000"
         args["edge"] = edg
         self.assertRaises(ValueError, generator.generate, **args)
 
-    def test09(self):
-        """Test Helix Generator with inverted vertical edge"""
-        args = _resetArgs()
-        v1 = FreeCAD.Vector(5, 5, 18)
-        v2 = FreeCAD.Vector(5, 5, 20)
-        edg = Part.makeLine(v1, v2)
-        args["edge"] = edg
-
-        self.assertRaises(ValueError, generator.generate, **args)
-
     def test10(self):
         """Test Helix Retraction"""
 

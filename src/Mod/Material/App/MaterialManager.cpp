@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <random>
 
@@ -150,7 +148,8 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
         color.a = 1.0;  // The default color sets fully transparent, not opaque
     };
     auto intRandom = [](int min, int max) -> int {
-        static std::mt19937 generator;
+        static std::random_device rd;
+        static std::mt19937 generator(rd());
         std::uniform_int_distribution<int> distribution(min, max);
         return distribution(generator);
     };
@@ -634,10 +633,10 @@ void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::Materia
         auto uuid = it.getUUID();
         auto path = it.getPath();
         auto name = it.getName();
-        Base::Console().log("\t('%s', '%s', '%s')\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            name.toStdString().c_str());
+        Base::Console().log("\t('{}', '{}', '{}')\n",
+                            uuid.toStdString(),
+                            path.toStdString(),
+                            name.toStdString());
 
         auto material = _localManager->getMaterial(uuid);
         if (!material->isOldFormat()) {
@@ -654,10 +653,10 @@ void MaterialManager::validateMigration(const std::shared_ptr<Materials::Materia
         auto uuid = it.getUUID();
         auto path = it.getPath();
         auto name = it.getName();
-        Base::Console().log("\t('%s', '%s', '%s')\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            name.toStdString().c_str());
+        Base::Console().log("\t('{}', '{}', '{}')\n",
+                            uuid.toStdString(),
+                            path.toStdString(),
+                            name.toStdString());
 
         auto material = _localManager->getMaterial(uuid);
         if (!material->isOldFormat()) {

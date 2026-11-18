@@ -95,10 +95,10 @@ Gui.addWorkbench(TestWorkbench())
 FreeCAD.__unit_test__ += [
     "Workbench",
     "Menu",
-    "Menu.MenuDeleteCases",
-    "Menu.MenuCreateCases",
     "GuiDocument",
+    "TestGroupVisibilityRestoreGui",
     "TestGraphicsViewWrapping",
+    "TestMDIView",
     "TestRubberbandSelection",
     "TestSelectionVisual",
     "TestCornerAxisCrossVisual",

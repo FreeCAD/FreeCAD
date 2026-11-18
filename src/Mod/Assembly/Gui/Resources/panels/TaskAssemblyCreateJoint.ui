@@ -359,10 +359,10 @@
          <string notr="true">deg</string>
         </property>
         <property name="minimum">
-          <double>-180.0</double>
+          <double>-360.0</double>
         </property>
         <property name="maximum">
-          <double>180.0</double>
+          <double>360.0</double>
         </property>
        </widget>
       </item>
@@ -388,10 +388,10 @@
          <string notr="true">deg</string>
         </property>
         <property name="minimum">
-          <double>-180.0</double>
+          <double>-360.0</double>
         </property>
         <property name="maximum">
-          <double>180.0</double>
+          <double>360.0</double>
         </property>
        </widget>
       </item>

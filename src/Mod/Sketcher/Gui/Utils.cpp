@@ -25,16 +25,14 @@
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
-#include <QDir>
-#include <QDirIterator>
-#include <QFileInfo>
 
-#include <App/Application.h>
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <Gui/ComboView.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/DockWindowManager.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -1014,45 +1012,24 @@ int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
     return -1;
 }
 
-QMap<QString, QString> SketcherGui::findAvailableFontFiles()
+Gui::TreeWidget* SketcherGui::findModelTreeWidget()
 {
-    QMap<QString, QString> fontMap;
-    QStringList fontPaths;
+    // The target dock's name depends on the tree mode
+    // (Independent -> "Tree view", Combined -> "Model").
+    auto* mgr = Gui::DockWindowManager::instance();
 
-    // 0. Include FreeCAD bundled fonts
-    fontPaths << QString::fromStdString(
-        App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/"
-    );
-
-#if defined(Q_OS_WIN)
-    fontPaths << QString::fromUtf8("C:/Windows/Fonts");
-#elif defined(Q_OS_MACOS)
-    fontPaths << QString::fromUtf8("/System/Library/Fonts") << QString::fromUtf8("/Library/Fonts")
-              << QDir::homePath() + QString::fromUtf8("/Library/Fonts");
-#else  // Linux and other Unix-like systems
-    fontPaths << QString::fromUtf8("/usr/share/fonts") << QString::fromUtf8("/usr/local/share/fonts")
-              << QDir::homePath() + QString::fromUtf8("/.fonts");
-#endif
-
-    for (const QString& path : fontPaths) {
-        if (!QDir(path).exists()) {
-            continue;
-        }
-
-        QDirIterator it(
-            path,
-            QStringList() << QString::fromUtf8("*.ttf") << QString::fromUtf8("*.otf")
-                          << QString::fromUtf8("*.ttc"),
-            QDir::Files,
-            QDirIterator::Subdirectories
-        );
-        while (it.hasNext()) {
-            QString filePath = it.next();
-            QFileInfo fileInfo(filePath);
-            // Use the base name as a "friendly name".
-            // We store in a map to avoid duplicates from different paths (e.g. ttf vs otf).
-            fontMap[fileInfo.baseName()] = filePath;
+    auto* dock = mgr->getDockWindow("Tree view");
+    if (!dock || !dock->inherits("Gui::TreeDockWidget")) {
+        dock = mgr->getDockWindow("Model");
+        if (!dock || !dock->inherits("Gui::DockWnd::ComboView")) {
+            return nullptr;
         }
     }
-    return fontMap;
+
+    for (auto* w : dock->findChildren<QWidget*>()) {
+        if (w->inherits("Gui::TreeWidget")) {
+            return static_cast<Gui::TreeWidget*>(w);
+        }
+    }
+    return nullptr;
 }

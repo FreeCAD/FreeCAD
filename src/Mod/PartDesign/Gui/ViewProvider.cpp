@@ -76,16 +76,43 @@ void ViewProvider::attach(App::DocumentObject* pcObject)
 {
     ViewProviderPart::attach(pcObject);
 
+    updatePreviewColor();
+}
+
+void ViewProvider::updatePreviewColor()
+{
+    auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
+    if (!addSubFeature) {
+        return;
+    }
+
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
-    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
-        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Additive;
-
-        PreviewColor.setValue(
-            isAdditive ? styleParameterManager->resolve(StyleParameters::PreviewAdditiveColor)
-                       : styleParameterManager->resolve(StyleParameters::PreviewSubtractiveColor)
-        );
+    switch (addSubFeature->getBooleanOperation()) {
+        case PartDesign::FeatureAddSub::BooleanOperation::Subtraction:
+            PreviewColor.setValue(
+                styleParameterManager->resolve(StyleParameters::PreviewSubtractiveColor)
+            );
+            break;
+        case PartDesign::FeatureAddSub::BooleanOperation::Common:
+            PreviewColor.setValue(styleParameterManager->resolve(StyleParameters::PreviewCommonColor));
+            break;
+        case PartDesign::FeatureAddSub::BooleanOperation::Union:
+            PreviewColor.setValue(
+                styleParameterManager->resolve(StyleParameters::PreviewAdditiveColor)
+            );
+            break;
     }
+}
+
+void ViewProvider::updateData(const App::Property* prop)
+{
+    if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
+        addSubFeature && prop == &addSubFeature->Operation) {
+        updatePreviewColor();
+    }
+
+    ViewProviderPart::updateData(prop);
 }
 
 bool ViewProvider::doubleClicked()
@@ -210,25 +237,6 @@ void ViewProvider::unsetEdit(int ModNum)
     }
 }
 
-void ViewProvider::updateData(const App::Property* prop)
-{
-    if (strcmp(prop->getName(), "PreviewShape") == 0) {
-        updatePreview();
-    }
-    else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
-            // Properties can be updated in batches, where some properties trigger other updates.
-            // We don't need to compute the preview for intermediate steps. Instead of updating
-            // the preview immediately (and potentially doing it multiple times in a row), we
-            // schedule the update to happen at a more convenient time.
-            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
-                scheduler->schedulePreviewRecompute(getObject());
-            }
-        }
-    }
-    inherited::updateData(prop);
-}
-
 void ViewProvider::attachPreview()
 {
     ViewProviderPreviewExtension::attachPreview();
@@ -253,7 +261,7 @@ void ViewProvider::updatePreview()
 
     if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
         // we only want to show the additional tool preview for subtractive features
-        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Subtractive) {
+        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Type::Subtractive) {
             return;
         }
 
@@ -375,17 +383,6 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
     makeChildrenVisible();
 
     return true;
-}
-
-Part::TopoShape ViewProvider::getPreviewShape() const
-{
-    if (auto feature = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        // Feature is responsible for generating proper shape and this ViewProvider
-        // is using it instead of more normal `Shape` property.
-        return feature->PreviewShape.getShape();
-    }
-
-    return {};
 }
 
 void ViewProvider::showPreviousFeature(bool enable)

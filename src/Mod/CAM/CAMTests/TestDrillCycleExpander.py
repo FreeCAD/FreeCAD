@@ -24,10 +24,13 @@
 Test suite for DrillCycleExpander class.
 """
 
+import itertools
+
 import unittest
 import Path
 from Path.Post.DrillCycleExpander import DrillCycleExpander
 from Path.Base.MachineState import MachineState
+import Constants
 
 
 class TestDrillCycleExpander(unittest.TestCase):
@@ -36,12 +39,14 @@ class TestDrillCycleExpander(unittest.TestCase):
     def test_00_error_r_less_than_z(self):
         """Test error condition when R < Z."""
 
-        machine_state = MachineState({"Z": 10.0, "ReturnMode": "Z"})  # G98
+        machine_state = MachineState(
+            {"X": 0, "Y": 0, "Z": 10.0, "G0F": 200, "ReturnMode": "Z"}
+        )  # G98
         expander = DrillCycleExpander(machine_state)
 
         # Invalid: retract height below drill depth
         cmd = Path.Command("G81", {"X": 5.0, "Y": 5.0, "Z": -3.0, "R": -5.0, "F": 100.0})
-        expanded = expander.expand_command(cmd)
+        expanded = expander.expand_command(cmd, strict=True)
 
         # Should return empty list for error condition
         self.assertEqual(len(expanded), 0)
@@ -77,7 +82,7 @@ class TestDrillCycleExpander(unittest.TestCase):
         expander = DrillCycleExpander(machine_state)
 
         commands = [
-            Path.Command("G0", {"X": 5.0, "Y": 10.0, "Z": 15.0}),
+            Path.Command("G0", {"X": 5.0, "Y": 10.0, "Z": 15.0, "F": 200}),
             Path.Command("G81", {"Z": -5.0, "R": 2.0, "F": 100.0}),  # No X/Y, should use current
         ]
 
@@ -95,7 +100,7 @@ class TestDrillCycleExpander(unittest.TestCase):
         expander = DrillCycleExpander(machine_state)
 
         commands = [
-            Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 30.0}),
+            Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 30.0, "F": 200}),
             Path.Command("G1", {"X": 10.0, "Y": 10.0, "Z": 10.0}),
             Path.Command("G81", {"X": 10.0, "Y": 10.0, "Z": -5.0, "R": 2.0, "F": 100.0}),
             Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 30.0}),
@@ -117,11 +122,14 @@ class TestDrillCycleExpander(unittest.TestCase):
 
     def test_04_g81_with_g98(self):
         """Test 1: Basic G81 (simple drill) with G98 retract"""
-        machine_state = MachineState({"Z": 30.0, "ReturnMode": "Z", "G0F": 110})  # G98
+        machine_state = MachineState({"X": 0, "Y": 0, "Z": 30.0, "G0F": 110})
         expander = DrillCycleExpander(machine_state)
 
+        # Generated drill commands actually have annotation
         input_cmds = [
-            Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 10, "F": 10.0}),
+            Path.Command(
+                "G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 10, "F": 10.0}, {"RetractMode": "G98"}
+            ),
         ]
 
         expected_cmds = [
@@ -140,7 +148,9 @@ class TestDrillCycleExpander(unittest.TestCase):
 
     def test_05_g81_with_g99(self):
         """Test 2: G81 with G99 retract (retract to R instead of initial Z)"""
-        machine_state = MachineState({"Z": 30.0, "ReturnMode": "R", "G0F": 110})  # G99
+        machine_state = MachineState(
+            {"X": 0, "Y": 0, "Z": 30.0, "ReturnMode": "R", "G0F": 110}
+        )  # G99
         expander = DrillCycleExpander(machine_state)
 
         input_cmds = [
@@ -164,7 +174,7 @@ class TestDrillCycleExpander(unittest.TestCase):
     def test_06_g82(self):
         """Test 3: G82 (drill with dwell)"""
         # Initialize expander with G98 retract mode
-        machine_state = MachineState({"ReturnMode": "Z"})  # G98
+        machine_state = MachineState({"X": 0, "Y": 0, "ReturnMode": "Z"})  # G98
         expander = DrillCycleExpander(machine_state)
 
         input_cmds = [
@@ -197,7 +207,7 @@ class TestDrillCycleExpander(unittest.TestCase):
         expander = DrillCycleExpander(machine_state)
 
         input_cmds = [
-            Path.Command("G0", {"Z": 1.0}),
+            Path.Command("G0", {"X": 0, "Y": 0, "Z": 1.0, "F": 1000}),
             Path.Command("G83", {"X": 1.0, "Y": 1.0, "Z": -0.6, "R": 0.1, "Q": 0.2, "F": 10.0}),
             Path.Command("G80", {}),
         ]
@@ -236,39 +246,52 @@ class TestDrillCycleExpander(unittest.TestCase):
 
     def test_08_preliminary_moves(self):
         """Test preliminary motion according to LinuxCNC specification"""
-        machine_state = MachineState({"Z": 30, "ReturnMode": "Z", "G0F": 110})  # G98
-        expander = DrillCycleExpander(machine_state)
 
-        input_cmds = [
-            Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 10, "F": 10.0}),
-        ]
+        # we specifically test the full possible list, not DrillCycleExpander.EXPANDABLE_CYCLES
+        # to catch any that we missed implementing
+        for drill_code in Constants.EXPANDABLE_DRILL_CYCLES:
+            machine_state = MachineState(
+                {"X": 0, "Y": 0, "Z": 30, "ReturnMode": "Z", "G0F": 110}
+            )  # G98
+            expander = DrillCycleExpander(machine_state)
 
-        # According to LinuxCNC spec:
-        # 1. Since Z=30 > R=10, no preliminary Z move
-        # 2. Move XY to position at current Z (30)
-        # 3. Move Z to R position (10) since it's not already there
-        # 4. Drill
-        # 5. Retract to initial Z (30) for G98
-        expected_cmds = [
-            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 30.0, "F": 110}),  # XY move at current Z
-            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 10.0, "F": 110}),  # Z to R position
-            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.5, "F": 10.0}),  # Drill
-            Path.Command(
-                "G0", {"X": 1.0, "Y": 1.0, "Z": 30.0, "F": 110}
-            ),  # Retract to initial Z (G98)
-        ]
+            # Same preliminary-move code for G81,G82,G73,G83,G85
+            input_cmd = Path.Command(
+                drill_code, {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 10, "F": 10.0}
+            )
 
-        result = expander.expand_commands(input_cmds)
+            # According to LinuxCNC spec:
+            # 1. Since Z=30 > R=10, no preliminary Z move
+            # 2. Move XY to position at current Z (30)
+            # 3. Move Z to R position (10) since it's not already there
+            # 4. Drill
+            # 5. Retract to initial Z (30) for G98
+            expected_cmds = [
+                Path.Command(
+                    "G0", {"X": 1.0, "Y": 1.0, "Z": 30.0, "F": 110}
+                ),  # XY move at current Z
+                Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 10.0, "F": 110}),  # Z to R position
+                # then a G1 of the actual drill/bore
+            ]
+            expected_str = "\n".join(s.toGCode() for s in expected_cmds)
 
-        self.assertEqual(len(result), len(expected_cmds))
-        for i, (res, exp) in enumerate(zip(result, expected_cmds)):
-            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
-            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+            result = expander.expand_commands([input_cmd])
+            self.assertTrue(len(result) > 0, f"Expected some result for {input_cmd.toGCode()}")
+
+            just_prelim = list(itertools.takewhile(lambda x: x.Name != "G1", result))
+            self.assertTrue(
+                len(just_prelim) > 1,
+                f"Expected some commands before G1 for {input_cmd.toGCode()}:\n\t{result}",
+            )
+
+            result_str = "\n".join(s.toGCode() for s in just_prelim)
+
+            self.assertEqual(result_str, expected_str, f"\nfor expansion of {input_cmd.toGCode()}")
 
     def test_09_preliminary_moves_z_below_r(self):
         """Test preliminary motion when Z starts below R"""
         # Below R=10
-        machine_state = MachineState({"Z": 5, "ReturnMode": "Z", "G0F": 110})  # G98
+        machine_state = MachineState({"X": 0, "Y": 0, "Z": 5, "ReturnMode": "Z", "G0F": 110})  # G98
         expander = DrillCycleExpander(machine_state)
 
         input_cmds = [
@@ -304,7 +327,7 @@ class TestDrillCycleExpander(unittest.TestCase):
         expander = DrillCycleExpander(machine_state)
 
         input_cmds = [
-            Path.Command("G0", {"Z": 1.0}),
+            Path.Command("G0", {"X": 0, "Y": 0, "Z": 1.0, "F": 1000}),
             Path.Command("G73", {"X": 1.0, "Y": 1.0, "Z": -0.6, "R": 0.1, "Q": 0.2, "F": 10.0}),
             Path.Command("G80", {}),  # This should be filtered out
         ]
@@ -346,19 +369,8 @@ class TestDrillCycleExpander(unittest.TestCase):
         machine_state = MachineState({"ReturnMode": "Z"})  # G98
         expander = DrillCycleExpander(machine_state)
 
-        input_cmds = [
-            Path.Command("G0", {"Z": 1.0}),
-            Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
-            Path.Command("G81", {"X": 2.0, "Y": 2.0}),  # Modal - reuses Z, R, F
-            Path.Command("G81", {"X": 3.0, "Y": 3.0}),  # Modal - reuses Z, R, F
-            Path.Command("G80", {}),
-        ]
-
-        # Note: The expander needs to track modal parameters (Z, R, F) from the first G81
-        # For now, we'll test with explicit parameters since modal parameter tracking
-        # is a more complex feature that may need to be added
         input_cmds_explicit = [
-            Path.Command("G0", {"Z": 1.0, "F": 100}),
+            Path.Command("G0", {"X": 0, "Y": 0, "Z": 1.0, "F": 100}),
             Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
             Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
             Path.Command("G81", {"X": 3.0, "Y": 3.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
@@ -366,7 +378,7 @@ class TestDrillCycleExpander(unittest.TestCase):
         ]
 
         expected_cmds = [
-            Path.Command("G0", {"Z": 1.0, "F": 100}),
+            Path.Command("G0", {"X": 0, "Y": 0, "Z": 1.0, "F": 100}),
             Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 1.0, "F": 100}),  # XY move at current Z
             Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 0.1, "F": 100}),  # Z to R position
             Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.5, "F": 10.0}),
@@ -390,3 +402,33 @@ class TestDrillCycleExpander(unittest.TestCase):
             self.assertEqual(
                 res.Parameters, exp.Parameters, f"Command {i} {exp}: parameters mismatch"
             )
+
+    def test_g85(self):
+        """G85 Boring"""
+
+        machine_state = MachineState(None)
+        expander = DrillCycleExpander(machine_state)
+
+        input_cmds = [
+            Path.Command("G98"),  # return mode z
+            Path.Command("G0", {"X": 0, "Y": 0, "Z": 1.0, "F": 1000}),
+            Path.Command("G85", {"X": 1.0, "Y": 1.0, "Z": 0.6, "R": 0.9, "F": 10.0}),
+            Path.Command("G80", {}),
+        ]
+
+        f = 1000
+        expected_cmds = [
+            Path.Command(f"G0 X0 Y0 Z1 F{f}"),
+            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 1.0, "F": f}),  # XY move at current Z
+            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 0.9, "F": f}),  # Z to R position
+            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": 0.6, "F": 10.0}),  # drill
+            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": 0.9, "F": 10}),  # retract
+            Path.Command("G0", {"Z": 1.0, "F": f}),  # Retract to initial Z
+        ]
+        expected_str = "\n".join(g.toGCode() for g in expected_cmds) + "\n"
+
+        result = expander.expand_commands(input_cmds)
+        result_str = "\n".join(g.toGCode() for g in result) + "\n"
+
+        self.maxDiff = 1e6
+        self.assertEqual(expected_str, result_str)

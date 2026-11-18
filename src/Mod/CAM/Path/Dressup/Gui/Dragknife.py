@@ -102,11 +102,11 @@ class ObjectDressup:
             arcLoc = FreeCAD.Vector(
                 queue[2].x + queue[1].I, queue[2].y + queue[1].J, currLocation["Z"]
             )
-            radvector = arcLoc.sub(
-                queue[1].Placement.Base
-            )  # .sub(arcLoc)  # vector of chord from center to point
-            # vector of line perp to chord.
+            radvector = arcLoc.sub(queue[1].Placement.Base)  # end point to center
+            # tangent at the end of the arc, CCW; reverse it for a CW arc
             v1 = radvector.cross(FreeCAD.Vector(0, 0, 1))
+            if queue[1].Name in ["G2", "G02"]:
+                v1 = v1.negative()
         else:
             v1 = queue[1].Placement.Base.sub(queue[2].Placement.Base)
 
@@ -115,8 +115,11 @@ class ObjectDressup:
             arcLoc = FreeCAD.Vector(
                 (queue[1].x + queue[0].I), (queue[1].y + queue[0].J), currLocation["Z"]
             )
-            radvector = queue[1].Placement.Base.sub(arcLoc)  # calculate arcangle
+            radvector = queue[1].Placement.Base.sub(arcLoc)  # center to start point
+            # tangent at the start of the arc, CW; reverse it for a CCW arc
             v2 = radvector.cross(FreeCAD.Vector(0, 0, 1))
+            if queue[0].Name in ["G3", "G03"]:
+                v2 = v2.negative()
         else:
             v2 = queue[0].Placement.Base.sub(queue[1].Placement.Base)
 
@@ -238,18 +241,20 @@ class ObjectDressup:
         # Find radius of old arc
         R = math.hypot(queue[0].I, queue[0].J)
 
-        # find angle of original center to startpoint
-        v1 = queue[1].Placement.Base.sub(arccenter)
-        segAngle = D.angle(v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
+        # find angle of original center to startpoint. Only XY counts: the
+        # start point is at cut depth but the center was taken at pivot height.
+        segAngle = math.atan2(
+            queue[1].Placement.Base.y - arccenter.y, queue[1].Placement.Base.x - arccenter.x
+        )
 
         # Find angle subtended by the offset
         theta = offset / R
 
-        # add or subtract theta depending on direction
-        if queue[1].Name in ["G2", "G02"]:
-            newangle = segAngle + theta
-        else:
+        # the twist ends along the destination arc, so its direction decides
+        if queue[0].Name in ["G2", "G02"]:
             newangle = segAngle - theta
+        else:
+            newangle = segAngle + theta
 
         # calculate endpoints
         Bx = arccenter.x + R * math.cos(newangle)
@@ -372,6 +377,8 @@ class ObjectDressup:
         if not obj.Base.isDerivedFrom("Path::Feature"):
             return
 
+        PathDressup.placeWithBase(obj)
+
         if obj.Base.Path.Commands:
 
             firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
@@ -379,7 +386,7 @@ class ObjectDressup:
 
             queue = []
 
-            for curCommand in PathUtils.getPathWithPlacement(obj.Base).Commands:
+            for curCommand in obj.Base.Path.Commands:
                 replace = None
                 # don't worry about non-move commands, just add to output
                 if curCommand.Name not in movecommands + rapidcommands:

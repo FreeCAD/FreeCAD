@@ -49,6 +49,50 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskBooleanParameters */
 
+namespace
+{
+
+PartDesign::Body* getBodyOfSelection(App::DocumentObject* object)
+{
+    if (!object) {
+        return nullptr;
+    }
+
+    if (object->isDerivedFrom<PartDesign::Body>()) {
+        return static_cast<PartDesign::Body*>(object);
+    }
+
+    return PartDesign::Body::findBodyOf(object);
+}
+
+class BooleanToolSelection: public Gui::SelectionGate
+{
+public:
+    explicit BooleanToolSelection(PartDesign::Boolean* boolean)
+        : boolean(boolean)
+    {}
+
+    bool allow(App::Document* document, App::DocumentObject* object, const char*) override
+    {
+        if (!boolean) {
+            return false;
+        }
+
+        auto* body = getBodyOfSelection(object);
+        if (document == boolean->getDocument() && body == boolean->getFeatureBody()) {
+            notAllowedReason = QT_TR_NOOP("The result Body cannot be used as a Boolean tool.");
+            return false;
+        }
+
+        return true;
+    }
+
+private:
+    PartDesign::Boolean* boolean;
+};
+
+}  // namespace
+
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Boolean Parameters"), true, parent)
     , ui(new Ui_TaskBooleanParameters)
@@ -77,7 +121,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
     for (auto body : bodies) {
         QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
         item->setText(QString::fromUtf8(body->Label.getValue()));
-        item->setData(Qt::UserRole, QString::fromLatin1(body->getNameInDocument()));
+        item->setData(Qt::UserRole, QString::fromUtf8(body->getNameInDocument()));
     }
 
     // Create context menu
@@ -118,13 +162,11 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         // if the selected object is not a body then get the body it is part of
-        if (!pcBody->isDerivedFrom<PartDesign::Body>()) {
-            pcBody = PartDesign::Body::findBodyOf(pcBody);
-            if (!pcBody) {
-                return;
-            }
-            body = pcBody->getNameInDocument();
+        pcBody = getBodyOfSelection(pcBody);
+        if (!pcBody || pcBody == pcBoolean->getFeatureBody()) {
+            return;
         }
+        body = pcBody->getNameInDocument();
 
         std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
 
@@ -136,7 +178,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
                 QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
                 item->setText(QString::fromUtf8(pcBody->Label.getValue()));
-                item->setData(Qt::UserRole, QString::fromLatin1(pcBody->getNameInDocument()));
+                item->setData(Qt::UserRole, QString::fromUtf8(pcBody->getNameInDocument()));
 
                 pcBoolean->getDocument()->recomputeFeature(pcBoolean);
                 ui->buttonBodyAdd->setChecked(false);
@@ -223,6 +265,7 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
         }
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
+        Gui::Selection().addSelectionGate(new BooleanToolSelection(pcBoolean));
     }
     else {
         exitSelectionMode();
@@ -294,7 +337,7 @@ void TaskBooleanParameters::onBodyDeleted()
     App::DocumentObject* body = bodies[index];
     QString internalName = ui->listWidgetBodies->item(index)->data(Qt::UserRole).toString();
     for (auto it = bodies.begin(); it != bodies.end(); ++it) {
-        if (internalName == QLatin1String((*it)->getNameInDocument())) {
+        if (internalName == QString::fromUtf8((*it)->getNameInDocument())) {
             body = *it;
             bodies.erase(it);
             break;
@@ -323,7 +366,12 @@ void TaskBooleanParameters::onBodyDeleted()
     }
 }
 
-TaskBooleanParameters::~TaskBooleanParameters() = default;
+TaskBooleanParameters::~TaskBooleanParameters()
+{
+    if (selectionMode == bodyAdd) {
+        Gui::Selection().rmvSelectionGate();
+    }
+}
 
 void TaskBooleanParameters::changeEvent(QEvent* e)
 {
@@ -338,6 +386,9 @@ void TaskBooleanParameters::changeEvent(QEvent* e)
 
 void TaskBooleanParameters::exitSelectionMode()
 {
+    if (selectionMode == bodyAdd) {
+        Gui::Selection().rmvSelectionGate();
+    }
     selectionMode = none;
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {

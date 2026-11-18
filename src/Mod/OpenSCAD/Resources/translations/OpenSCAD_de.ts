@@ -367,7 +367,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation>Positionierung erweitern</translation>
+      <translation>Positionierungen erweitern</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>

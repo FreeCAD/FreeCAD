@@ -1,8 +1,3 @@
 macro(SetupOpenCasCade)
-    find_package(OCC)
-    if(NOT OCC_FOUND)
-        message(FATAL_ERROR "================================================================\n"
-                            "OpenCASCADE not found!\n"
-                            "================================================================\n")
-    endif()
+    find_package(OCC 7.6 REQUIRED)
 endmacro()

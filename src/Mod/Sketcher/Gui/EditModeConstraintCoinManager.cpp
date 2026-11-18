@@ -857,6 +857,9 @@ Restart:
                     double radius2 = 0.;
                     Base::Vector3d center1(0., 0., 0.);
                     Base::Vector3d center2(0., 0., 0.);
+                    Base::Vector3d lineHelperStart(0., 0., 0.);
+                    Base::Vector3d lineHelperEnd(0., 0., 0.);
+                    bool hasLineHelper = false;
 
                     int numPoints = 2;
 
@@ -878,11 +881,39 @@ Restart:
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
                             Base::Vector3d l2p2 = lineSeg->getEndPoint();
 
+                            const auto setLineHelper = [&](const Base::Vector3d& projection) {
+                                const Base::Vector3d lineDir = l2p2 - l2p1;
+                                const double lineLengthSquared = lineDir.Sqr();
+                                if (lineLengthSquared <= 0.) {
+                                    return;
+                                }
+
+                                const double projectionParameter = ((projection - l2p1) * lineDir)
+                                    / lineLengthSquared;
+                                constexpr double projectionTolerance = 64.
+                                    * std::numeric_limits<double>::epsilon();
+                                if (projectionParameter < -projectionTolerance) {
+                                    lineHelperStart = l2p1;
+                                    lineHelperEnd = projection;
+                                    hasLineHelper = true;
+                                }
+                                else if (projectionParameter > 1. + projectionTolerance) {
+                                    lineHelperStart = l2p2;
+                                    lineHelperEnd = projection;
+                                    hasLineHelper = true;
+                                }
+                            };
+
                             if (Constr->FirstPos != Sketcher::PointPos::none) {
                                 // point to line distance
                                 // calculate the projection of p1 onto lineSeg
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
+
+                                // Point-to-line distance uses the infinite support line. If its
+                                // projection is outside the finite segment, connect the segment
+                                // to that projection so the witness line has no visual gap.
+                                setLineHelper(pnt2);
                             }
                             else if (isCircleOrArc(*geo1)) {
                                 // circular to line distance
@@ -892,6 +923,7 @@ Restart:
                                 Base::Vector3d dir = pnt1;
                                 dir.Normalize();
                                 pnt1 += ct;
+                                setLineHelper(pnt1);
                                 pnt2 = ct + dir * radius;
                             }
                         }
@@ -963,6 +995,14 @@ Restart:
 
                     int index = static_cast<int>(ConstraintNodePosition::DatumLabelIndex);
                     auto* asciiText = static_cast<SoDatumLabel*>(sep->getChild(index));  // NOLINT
+
+                    asciiText->extensionLines.setNum(hasLineHelper ? 2 : 0);
+                    if (hasLineHelper) {
+                        SbVec3f* extensionVerts = asciiText->extensionLines.startEditing();
+                        extensionVerts[0] = SbVec3f(lineHelperStart.x, lineHelperStart.y, zConstrH);
+                        extensionVerts[1] = SbVec3f(lineHelperEnd.x, lineHelperEnd.y, zConstrH);
+                        asciiText->extensionLines.finishEditing();
+                    }
 
                     // Get presentation string (w/o units if option is set)
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
@@ -1455,6 +1495,7 @@ Restart:
                     asciiText->param4 = endLineLength1;
                     asciiText->param5 = endLineLength2;
 
+                    p0[2] = zConstrH;
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
 
@@ -1633,7 +1674,7 @@ Restart:
         catch (Base::Exception& e) {
             Base::Console().developerError(
                 "EditModeConstraintCoinManager",
-                "Exception during draw: %s\n",
+                "Exception during draw: {}\n",
                 e.what()
             );
             e.reportException();
@@ -1954,7 +1995,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
                 }
                 text->size.setValue(drawingParameters.labelFontSize);
-                text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+                text->lineWidth = drawingParameters.DimensionalConstraintLineWidth
+                    * drawingParameters.pixelScalingFactor;
+                text->linePattern = drawingParameters.DimensionalConstraintLinePattern;
                 text->useAntialiasing = false;
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
@@ -2205,10 +2248,13 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     }
 
     // Handle selection of datum labels (e.g., radius, distance dimensions).
-    if (dynamic_cast<SoDatumLabel*>(tail)) {
+    if (auto* datumLabel = dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                result.Kind = ConstraintPreselectionResult::HitKind::DatumLabel;
+                result.Kind = datumLabel->classifySelectionPoint(Point->getObjectPoint())
+                        == SoDatumLabel::SelectionPart::Annotation
+                    ? ConstraintPreselectionResult::HitKind::DatumAnnotation
+                    : ConstraintPreselectionResult::HitKind::DatumPresentation;
                 result.ConstrIndices.insert(i);
                 result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;
@@ -2287,7 +2333,7 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
         return false;
     }
 
-    constrIdsStr = QString::fromLatin1(constrIdsNode->string.getValue().getString());
+    constrIdsStr = QString::fromUtf8(constrIdsNode->string.getValue().getString());
     iconSize = getDisplayedSize(iconNode);
     if (iconSize[0] <= 0 || iconSize[1] <= 0) {
         return false;
@@ -2820,7 +2866,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
     }
 
     combinedConstrBoxes[idString] = boundingBoxes;
-    thisInfo->string.setValue(idString.toLatin1().data());
+    thisInfo->string.setValue(idString.toUtf8().data());
     sendConstraintIconToCoin(compositeIcon, thisDest);
 }
 
@@ -2842,11 +2888,11 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
 
     QPixmap pxMap;
     std::stringstream constraintName;
-    constraintName << type.toLatin1().data()
+    constraintName << type.toUtf8().data()
                    << drawingParameters.constraintIconSize;  // allow resizing by embedding size
     if (!Gui::BitmapFactory().findPixmapInCache(constraintName.str().c_str(), pxMap)) {
         pxMap = Gui::BitmapFactory().pixmapFromSvg(
-            type.toLatin1().data(),
+            type.toUtf8().data(),
             QSizeF(drawingParameters.constraintIconSize, drawingParameters.constraintIconSize)
         );
         Gui::BitmapFactory().addPixmapToCache(
@@ -2863,7 +2909,15 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
-    int labelWidth = qfm.boundingRect(labels.join(joinStr)).width();
+    // Measure the right edge at the same positions used to draw each label.
+    // Bounding-box widths omit the left bearing, and advances are rounded per label.
+    int labelWidth = 0;
+    int labelOffset = 0;
+    for (auto it = labels.begin(); it != labels.end(); ++it) {
+        const QString text = (it + 1 == labels.end()) ? *it : *it + joinStr;
+        labelWidth = std::max(labelWidth, labelOffset + qfm.boundingRect(text).right() + 1);
+        labelOffset += Gui::QtTools::horizontalAdvance(qfm, text);
+    }
     // See Qt docs on qRect::bottom() for explanation of the +1
     int pxBelowBase = qfm.boundingRect(labels.join(joinStr)).bottom() + 1;
 
@@ -2938,7 +2992,7 @@ void EditModeConstraintCoinManager::drawTypicalConstraintIcon(const constrIconQu
     QImage image
         = renderConstrIcon(i.type, color, QStringList(i.label), QList<QColor>() << color, i.iconRotation);
 
-    i.infoPtr->string.setValue(QString::number(i.constraintId).toLatin1().data());
+    i.infoPtr->string.setValue(QString::number(i.constraintId).toUtf8().data());
     sendConstraintIconToCoin(image, i.destination);
 }
 

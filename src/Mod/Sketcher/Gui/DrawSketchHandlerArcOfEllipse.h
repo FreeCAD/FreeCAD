@@ -519,6 +519,7 @@ void DSHArcOfEllipseController::doEnforceControlParameters(Base::Vector2d& onSke
 
             if (secondRadiusParam->isSet) {
                 secondRadius = secondRadiusParam->getValue();
+                handler->secondRadius = secondRadius;
                 handler->secondRadiusSet = true;
                 if (secondRadius < Precision::Confusion() && secondRadiusParam->hasFinishedEditing) {
                     handler->secondRadiusSet = false;

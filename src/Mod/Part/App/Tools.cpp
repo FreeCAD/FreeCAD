@@ -55,17 +55,12 @@
 #include <Precision.hxx>
 #include <Standard_Mutex.hxx>
 #include <Standard_TypeMismatch.hxx>
-#include <Standard_Version.hxx>
 #include <TColStd_ListOfTransient.hxx>
 #include <TColgp_SequenceOfXY.hxx>
 #include <TColgp_SequenceOfXYZ.hxx>
 #include <TColStd_Array1OfInteger.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopoDS.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <Adaptor3d_HCurveOnSurface.hxx>
-# include <GeomAdaptor_HCurve.hxx>
-#endif
 
 #include <Base/Exception.h>
 #include <Base/Vector3D.h>
@@ -126,8 +121,8 @@ bool Part::intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin)
     return found;
 }
 
-/*! The objects in \a theBoundaries must be of the type Adaptor3d_HCurveOnSurface or
-GeomAdaptor_HCurve or Geom_Point indicating type of a constraint. Otherwise an exception
+/*! The objects in \a theBoundaries must be of the type Adaptor3d_CurveOnSurface or
+GeomAdaptor_Curve or Geom_Point indicating type of a constraint. Otherwise an exception
 Standard_TypeMismatch is thrown.
 
 If the \a theBoundaries list is empty then Standard_ConstructionError is thrown.
@@ -160,14 +155,12 @@ Handle(Geom_Surface) Part::Tools::makeSurface(
 
     TColStd_ListIteratorOfListOfTransient anIt(theBoundaries);
     if (anIt.More()) {
-        int i = 1;
-        for (; anIt.More(); anIt.Next(), i++) {
+        for (; anIt.More(); anIt.Next()) {
             const Handle(Standard_Transient) & aCur = anIt.Value();
             if (aCur.IsNull()) {
                 assert(0);
                 throw Standard_ConstructionError("Tools::makeSurface()");
             }
-#if OCC_VERSION_HEX >= 0x070600
             else if (aCur->IsKind(STANDARD_TYPE(Adaptor3d_CurveOnSurface))) {
                 // G1 constraint
                 Handle(Adaptor3d_CurveOnSurface)
@@ -189,29 +182,6 @@ Handle(Geom_Surface) Part::Tools::makeSurface(
                     aConst = new GeomPlate_CurveConstraint(aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
                 aPlateBuilder.Add(aConst);
             }
-#else
-            else if (aCur->IsKind(STANDARD_TYPE(Adaptor3d_HCurveOnSurface))) {
-                // G1 constraint
-                Handle(Adaptor3d_HCurveOnSurface)
-                    aHCOS(Handle(Adaptor3d_HCurveOnSurface)::DownCast(aCur));
-                Handle(GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint(
-                    aHCOS,
-                    1 /*GeomAbs_G1*/,
-                    aNbPnts,
-                    aTol3d,
-                    anAngTol,
-                    aCurvTol
-                );
-                aPlateBuilder.Add(aConst);
-            }
-            else if (aCur->IsKind(STANDARD_TYPE(GeomAdaptor_HCurve))) {
-                // G0 constraint
-                Handle(GeomAdaptor_HCurve) aHC(Handle(GeomAdaptor_HCurve)::DownCast(aCur));
-                Handle(GeomPlate_CurveConstraint)
-                    aConst = new GeomPlate_CurveConstraint(aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
-                aPlateBuilder.Add(aConst);
-            }
-#endif
             else if (aCur->IsKind(STANDARD_TYPE(Geom_Point))) {
                 // Point constraint
                 Handle(Geom_Point) aGP(Handle(Geom_Point)::DownCast(aCur));
@@ -279,10 +249,6 @@ bool Part::Tools::getTriangulation(
 
     Standard_Integer nbNodes = hTria->NbNodes();
     Standard_Integer nbTriangles = hTria->NbTriangles();
-#if OCC_VERSION_HEX < 0x070600
-    const TColgp_Array1OfPnt& nodes = hTria->Nodes();
-    const Poly_Array1OfTriangle& triangles = hTria->Triangles();
-#endif
 
     points.reserve(nbNodes);
     facets.reserve(nbTriangles);
@@ -290,11 +256,7 @@ bool Part::Tools::getTriangulation(
     // cycling through the poly mesh
     //
     for (int i = 1; i <= nbNodes; i++) {
-#if OCC_VERSION_HEX < 0x070600
-        gp_Pnt p = nodes(i);
-#else
         gp_Pnt p = hTria->Node(i);
-#endif
 
         // transform the vertices to the location of the face
         if (!identity) {
@@ -307,11 +269,7 @@ bool Part::Tools::getTriangulation(
     for (int i = 1; i <= nbTriangles; i++) {
         // Get the triangle
         Standard_Integer n1, n2, n3;
-#if OCC_VERSION_HEX < 0x070600
-        triangles(i).Get(n1, n2, n3);
-#else
         hTria->Triangle(i).Get(n1, n2, n3);
-#endif
         --n1;
         --n2;
         --n3;
@@ -357,17 +315,10 @@ bool Part::Tools::getPolygonOnTriangulation(
     Standard_Integer nbNodes = hPoly->NbNodes();
     points.reserve(nbNodes);
     const TColStd_Array1OfInteger& indices = hPoly->Nodes();
-#if OCC_VERSION_HEX < 0x070600
-    const TColgp_Array1OfPnt& Nodes = hTria->Nodes();
-#endif
 
     // go through the index array
     for (Standard_Integer i = indices.Lower(); i <= indices.Upper(); i++) {
-#if OCC_VERSION_HEX < 0x070600
-        gp_Pnt p = Nodes(indices(i));
-#else
         gp_Pnt p = hTria->Node(indices(i));
-#endif
         if (!identity) {
             p.Transform(transf);
         }
@@ -487,82 +438,6 @@ void Part::Tools::getPointNormals(
     TColgp_Array1OfDir& theNormals
 )
 {
-#if OCC_VERSION_HEX < 0x070600
-    const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
-
-    if (aPolyTri->HasNormals()) {
-        // normals pre-computed in triangulation structure
-        const TShort_Array1OfShortReal& aNormals = aPolyTri->Normals();
-        const Standard_ShortReal* aNormArr = &(aNormals.Value(aNormals.Lower()));
-
-        for (Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter) {
-            const Standard_Integer anId = 3 * (aNodeIter - aNodes.Lower());
-            const gp_Dir aNorm(aNormArr[anId + 0], aNormArr[anId + 1], aNormArr[anId + 2]);
-            theNormals(aNodeIter) = aNorm;
-        }
-
-        if (theFace.Orientation() == TopAbs_REVERSED) {
-            for (Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper();
-                 ++aNodeIter) {
-                theNormals.ChangeValue(aNodeIter).Reverse();
-            }
-        }
-    }
-    else {
-        // take in face the surface location
-        Poly_Connect thePolyConnect(aPolyTri);
-        const TopoDS_Face aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
-        Handle(Geom_Surface) aSurf = BRep_Tool::Surface(aZeroFace);
-        const Standard_Real aTol = Precision::Confusion();
-        Handle(TShort_HArray1OfShortReal)
-            aNormals = new TShort_HArray1OfShortReal(1, aPolyTri->NbNodes() * 3);
-        const Poly_Array1OfTriangle& aTriangles = aPolyTri->Triangles();
-        const TColgp_Array1OfPnt2d* aNodesUV = aPolyTri->HasUVNodes() && !aSurf.IsNull()
-            ? &aPolyTri->UVNodes()
-            : nullptr;
-        Standard_Integer aTri[3];
-
-        for (Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter) {
-            // try to retrieve normal from real surface first, when UV coordinates are available
-            if (!aNodesUV
-                || GeomLib::NormEstim(aSurf, aNodesUV->Value(aNodeIter), aTol, theNormals(aNodeIter))
-                    > 1) {
-                // compute flat normals
-                gp_XYZ eqPlan(0.0, 0.0, 0.0);
-
-                for (thePolyConnect.Initialize(aNodeIter); thePolyConnect.More();
-                     thePolyConnect.Next()) {
-                    aTriangles(thePolyConnect.Value()).Get(aTri[0], aTri[1], aTri[2]);
-                    const gp_XYZ v1(aNodes(aTri[1]).Coord() - aNodes(aTri[0]).Coord());
-                    const gp_XYZ v2(aNodes(aTri[2]).Coord() - aNodes(aTri[1]).Coord());
-                    const gp_XYZ vv = v1 ^ v2;
-                    const Standard_Real aMod = vv.Modulus();
-
-                    if (aMod >= aTol) {
-                        eqPlan += vv / aMod;
-                    }
-                }
-
-                const Standard_Real aModMax = eqPlan.Modulus();
-                theNormals(aNodeIter) = (aModMax > aTol) ? gp_Dir(eqPlan) : gp::DZ();
-            }
-
-            const Standard_Integer anId = (aNodeIter - aNodes.Lower()) * 3;
-            aNormals->SetValue(anId + 1, (Standard_ShortReal)theNormals(aNodeIter).X());
-            aNormals->SetValue(anId + 2, (Standard_ShortReal)theNormals(aNodeIter).Y());
-            aNormals->SetValue(anId + 3, (Standard_ShortReal)theNormals(aNodeIter).Z());
-        }
-
-        aPolyTri->SetNormals(aNormals);
-
-        if (theFace.Orientation() == TopAbs_REVERSED) {
-            for (Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper();
-                 ++aNodeIter) {
-                theNormals.ChangeValue(aNodeIter).Reverse();
-            }
-        }
-    }
-#else
     Standard_Integer numNodes = aPolyTri->NbNodes();
 
     if (aPolyTri->HasNormals()) {
@@ -620,7 +495,6 @@ void Part::Tools::getPointNormals(
             }
         }
     }
-#endif
 }
 
 void Part::Tools::getPointNormals(
@@ -715,6 +589,10 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
 
     double uv;
     Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, uv, uv);
+
+    if (curve.IsNull()) {
+        return nullptr;
+    }
 
     BRepBuilderAPI_MakeEdge mkBuilder(curve, u, v);
     TopoDS_Shape shape = mkBuilder.Shape();

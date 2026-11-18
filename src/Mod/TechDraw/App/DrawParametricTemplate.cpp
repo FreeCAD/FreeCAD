@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -28,6 +30,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawParametricTemplate.h"
 #include "DrawParametricTemplatePy.h"
 #include "Geometry.h"
@@ -130,7 +133,16 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawParametricTemplatePython, TechDraw::DrawParametricTemplate)
 template<> const char* TechDraw::DrawParametricTemplatePython::getViewProviderName() const {
-    return "TechDrawGui::ViewProviderPython";
+    return "TechDrawGui::ViewProviderTemplate";
+}
+template<>
+PyObject* TechDraw::DrawParametricTemplatePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawParametricTemplatePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

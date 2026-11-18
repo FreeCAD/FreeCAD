@@ -104,6 +104,8 @@ def migrate_parameters(accessor: ParameterAccessor) -> bool:
     Currently handles:
     - TorusRadius → CornerRadius
     - FlatRadius/Diameter → CornerRadius
+    - Dovetail without NeckCuttingHeight → NeckCuttingHeight = 0
+    - Reamer without FluteLength → FluteLength = its old CuttingEdgeHeight (now derived 0)
     - Infers Units from parameter strings if not set
 
     Args:
@@ -182,5 +184,35 @@ def migrate_parameters(accessor: ParameterAccessor) -> bool:
                 migrated = True
             except Exception as e:
                 Path.Log.error(f"Failed to migrate FlatRadius for toolbit {name}: {e}")
+
+    kind = str(shape_type or "").lower()
+
+    # Dovetails saved before NeckCuttingHeight existed have no fluted neck.
+    if kind == "dovetail" and not accessor.has("NeckCuttingHeight"):
+        diameter = accessor.get("Diameter") if accessor.has("Diameter") else None
+        imperial = isinstance(diameter, str) and diameter.strip().endswith("in")
+        value = "0.0000 in" if imperial else "0.0000 mm"
+        accessor.add_property(
+            "App::PropertyLength",
+            "NeckCuttingHeight",
+            "Shape",
+            "Fluted length of the neck above the head",
+        )
+        accessor.set("NeckCuttingHeight", value)
+        Path.Log.info(f"Added NeckCuttingHeight={value} for {name}")
+        migrated = True
+
+    # A reamer's CuttingEdgeHeight used to be the length of its fluted body.
+    if kind == "reamer" and not accessor.has("FluteLength") and accessor.has("CuttingEdgeHeight"):
+        value = accessor.get("CuttingEdgeHeight")
+        accessor.add_property(
+            "App::PropertyLength",
+            "FluteLength",
+            "Shape",
+            "Length of the fluted body",
+        )
+        accessor.set("FluteLength", value)
+        Path.Log.info(f"Copied CuttingEdgeHeight to FluteLength={value} for {name}")
+        migrated = True
 
     return migrated

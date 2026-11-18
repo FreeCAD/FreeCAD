@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #include <fcntl.h>
-#include <sstream>
 #include <Quantity_Color.hxx>
 #include <BRep_Builder.hxx>
 #include <STEPControl_Reader.hxx>
@@ -71,35 +70,33 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     Base::FileInfo fi(Name);
 
     if (!fi.exists()) {
-        std::stringstream str;
-        str << "File '" << Name << "' does not exist!";
-        throw Base::FileException(str.str().c_str());
+        throw Base::FileNotFoundException(Name);
     }
     std::string encodednamestr = encodeFilename(std::string(Name));
     const char* encodedname = encodednamestr.c_str();
 
     if (aReader.ReadFile((Standard_CString)encodedname) != IFSelect_RetDone) {
-        throw Base::FileException("Cannot open STEP file");
+        throw Base::FileReadException(Name);
     }
 
     // Root transfers
     Standard_Integer nbr = aReader.NbRootsForTransfer();
     for (Standard_Integer n = 1; n <= nbr; n++) {
-        Base::Console().log("STEP: Transferring Root %d\n", n);
+        Base::Console().log("STEP: Transferring Root {}\n", n);
         aReader.TransferRoot(n);
     }
 
     // Collecting resulting entities
     Standard_Integer nbs = aReader.NbShapes();
     if (nbs == 0) {
-        throw Base::FileException("No shapes found in file ");
+        throw Base::FileException("No shapes found in file", Name);
     }
     else {
 
         std::map<int, Quantity_Color> hash_col;
 
         for (Standard_Integer i = 1; i <= nbs; i++) {
-            Base::Console().log("STEP:   Transferring Shape %d\n", i);
+            Base::Console().log("STEP:   Transferring Shape {}\n", i);
             aShape = aReader.Shape(i);
 
             // load each solid as an own object

@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2024 xtemp09 <xtemp09@gmail.com>                         *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2024 xtemp09
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QInputDialog>
 #include <QGraphicsProxyWidget>
@@ -56,7 +54,7 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     qpw = m_scene.addWidget(stv);
     setScene(&m_scene);
 
-    setBackgroundBrush(Qt::transparent);
+    setBackgroundBrush(QPalette().brush(QPalette::Normal, QPalette::Window));
     setFrameStyle(QFrame::NoFrame);
 
     setSizePolicy(QSizePolicy {QSizePolicy::Expanding, QSizePolicy::Expanding});
@@ -201,10 +199,20 @@ void ZoomableView::updateView(void)
     centerOn(new_geometry_f.center());
 }
 
+void ZoomableView::focusInEvent(QFocusEvent* event)
+{
+    QAbstractScrollArea::focusInEvent(event);
+}
+
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
-    if (event->reason() == Qt::FocusReason::PopupFocusReason) {
-        return;
+    switch (event->reason()) {
+        case Qt::FocusReason::PopupFocusReason:
+        case Qt::FocusReason::TabFocusReason:
+            return;
+            break;
+        default:
+            break;
     }
 
     QGraphicsView::focusOutEvent(event);
@@ -239,6 +247,23 @@ void ZoomableView::resizeEvent(QResizeEvent* event)
 {
     QGraphicsView::resizeEvent(event);
     updateView();
+}
+
+bool ZoomableView::viewportEvent(QEvent* event)
+{
+    // Swallow touch events: mid-typing trackpad touch commits cell, clobbered by remaining
+    // keystrokes (#23131)
+    switch (event->type()) {
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        case QEvent::TouchCancel:
+            return true;
+        default:
+            break;
+    }
+
+    return QGraphicsView::viewportEvent(event);
 }
 
 void ZoomableView::wheelEvent(QWheelEvent* event)

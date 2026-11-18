@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Base.Rotation import Rotation as RotationPy
 from Geometry import Geometry
 from Part.App.BSplineCurve import BSplineCurve
+from Part.App.Plane import Plane
 from Part.App.TrimmedCurve import TrimmedCurve
 from TopoShape import TopoShape
-from typing import Final, overload, List, Union, Optional, Tuple
+from typing import Final, overload, List, Union, Optional
 
 @export(
     Twin="GeomCurve",
@@ -40,61 +39,55 @@ class GeometryCurve(Geometry):
     """Returns a rotation object to describe the orientation for curve that supports it"""
 
     @constmethod
-    def toShape(self) -> TopoShape:
+    def toShape(self, u: float = ..., v: float = ..., /) -> TopoShape:
         """
-        Return the shape for the geometry.
+        Return the shape for the geometry, optionally within the parameter range [u, v].
         """
-        ...
 
     @overload
     @constmethod
     def discretize(
-        self, Number: int, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, Number: int, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points.
         """
-        ...
 
     @overload
     @constmethod
     def discretize(
-        self, QuasiNumber: int, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, QuasiNumber: int, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of quasi equidistant points.
         """
-        ...
 
     @overload
     @constmethod
     def discretize(
-        self, Distance: float, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, Distance: float, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of equidistant points with distance 'd'.
         """
-        ...
 
     @overload
     @constmethod
     def discretize(
-        self, Deflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, Deflection: float, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve.
         """
-        ...
 
     @overload
     @constmethod
     def discretize(
-        self, QuasiDeflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
+        self, QuasiDeflection: float, First: Optional[float] = None, Last: Optional[float] = None
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve (faster).
         """
-        ...
 
     @overload
     @constmethod
@@ -102,16 +95,14 @@ class GeometryCurve(Geometry):
         self,
         Angular: float,
         Curvature: float,
-        Minimum: int = 2,
-        *,
         First: Optional[float] = None,
         Last: Optional[float] = None,
+        Minimum: int = 2,
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with an angular deflection of 'a' and a curvature deflection of 'c'.
         Optionally a minimum number of points can be set.
         """
-        ...
 
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
@@ -150,118 +141,113 @@ class GeometryCurve(Geometry):
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
         """
-        ...
 
     @constmethod
     def getD0(self, parameter: float, /) -> Vector:
         """
         Returns the point of given parameter
         """
-        ...
 
     @constmethod
     def getD1(self, parameter: float, /) -> Vector:
         """
         Returns the point and first derivative of given parameter
         """
-        ...
 
     @constmethod
     def getD2(self, parameter: float, /) -> Vector:
         """
         Returns the point, first and second derivatives
         """
-        ...
 
     @constmethod
     def getD3(self, parameter: float, /) -> Vector:
         """
         Returns the point, first, second and third derivatives
         """
-        ...
 
     @constmethod
-    def getDN(self, n: int, parameter: float, /) -> Vector:
+    def getDN(self, parameter: float, n: int, /) -> Vector:
         """
         Returns the n-th derivative
         """
-        ...
 
     @constmethod
     def length(
         self,
-        uMin: Optional[float] = None,
-        uMax: Optional[float] = None,
-        Tol: Optional[float] = None,
+        u_min: float = ...,
+        u_max: float = ...,
+        tol: float = ...,
         /,
     ) -> float:
         """
         Computes the length of a curve
-        length([uMin, uMax, Tol]) -> float
+        length(u_min, u_max, tol) -> float
         """
-        ...
 
     @constmethod
     def parameterAtDistance(
         self,
-        abscissa: Optional[float] = None,
-        startingParameter: Optional[float] = None,
+        abscissa: float,
+        starting_parameter: float = ...,
         /,
     ) -> float:
         """
         Returns the parameter on the curve of a point at the given distance from a starting parameter.
-        parameterAtDistance([abscissa, startingParameter]) -> float
+        parameterAtDistance(abscissa, starting_parameter) -> float
         """
-        ...
 
     @constmethod
     def value(self, u: float, /) -> Vector:
         """
         Computes the point of parameter u on this curve
         """
-        ...
 
     @constmethod
     def tangent(self, u: float, /) -> Vector:
         """
         Computes the tangent of parameter u on this curve
         """
-        ...
 
     @constmethod
-    def makeRuledSurface(self, otherCurve: "GeometryCurve", /) -> object:
+    def makeRuledSurface(self, other_curve: "GeometryCurve", /) -> object:
         """
         Make a ruled surface of this and the given curves
         """
-        ...
 
     @constmethod
-    def intersect2d(self, otherCurve: "GeometryCurve", /) -> List[Vector]:
+    def intersect2d(self, other_curve: "GeometryCurve", plane: Plane, /) -> List[Vector]:
         """
         Get intersection points with another curve lying on a plane.
         """
-        ...
 
     @constmethod
-    def continuityWith(self, otherCurve: "GeometryCurve", /) -> str:
+    def continuityWith(
+        self,
+        other_curve: "GeometryCurve",
+        u1: float = ...,
+        u2: float = ...,
+        rev1: bool = ...,
+        rev2: bool = ...,
+        tl: float = ...,
+        ta: float = ...,
+        /,
+    ) -> str:
         """
         Computes the continuity of two curves
         """
-        ...
 
     @constmethod
     def parameter(self, point: Vector, /) -> float:
         """
         Returns the parameter on the curve of the nearest orthogonal projection of the point.
         """
-        ...
 
     @constmethod
     def normal(self, pos: float, /) -> Vector:
         """
         Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined
         """
-        ...
 
     @overload
     @constmethod
@@ -269,7 +255,6 @@ class GeometryCurve(Geometry):
         """
         projectPoint(Point=Vector, Method="NearestPoint") -> Vector
         """
-        ...
 
     @overload
     @constmethod
@@ -277,7 +262,6 @@ class GeometryCurve(Geometry):
         """
         projectPoint(Vector, "LowerDistance") -> float.
         """
-        ...
 
     @overload
     @constmethod
@@ -285,7 +269,6 @@ class GeometryCurve(Geometry):
         """
         projectPoint(Vector, "LowerDistanceParameter") -> float.
         """
-        ...
 
     @overload
     @constmethod
@@ -293,7 +276,6 @@ class GeometryCurve(Geometry):
         """
         projectPoint(Vector, "Distance") -> list of floats.
         """
-        ...
 
     @overload
     @constmethod
@@ -301,7 +283,6 @@ class GeometryCurve(Geometry):
         """
         projectPoint(Vector, "Parameter") -> list of floats.
         """
-        ...
 
     @overload
     @constmethod
@@ -309,7 +290,6 @@ class GeometryCurve(Geometry):
         """
         projectPoint(Vector, "Point") -> list of points.
         """
-        ...
 
     @constmethod
     def projectPoint(self, **kwargs) -> Union[Vector, float, List[float], List[Vector]]:
@@ -324,109 +304,94 @@ class GeometryCurve(Geometry):
         projectPoint(Vector,"Parameter") -> list of floats
         projectPoint(Vector,"Point") -> list of points
         """
-        ...
 
     @constmethod
     def curvature(self, pos: float, /) -> float:
         """
         Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined
         """
-        ...
 
     @constmethod
     def centerOfCurvature(self, pos: float, /) -> Vector:
         """
         Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined
         """
-        ...
 
     @constmethod
-    def intersect(self, curve_or_surface: object, precision: float, /) -> object:
+    def intersect(self, curve_or_surface: object, precision: float = ..., /) -> object:
         """
         Returns all intersection points and curve segments between the curve and the curve/surface.
 
         arguments: curve/surface (for the intersection), precision (float)
         """
-        ...
 
     @constmethod
-    def intersectCS(self, surface: object, /) -> object:
+    def intersectCS(self, surface: object, precision: float = ..., /) -> object:
         """
         Returns all intersection points and curve segments between the curve and the surface.
         """
-        ...
 
     @constmethod
-    def intersectCC(self, otherCurve: "GeometryCurve", /) -> List[Vector]:
+    def intersectCC(self, other_curve: "GeometryCurve", precision: float = ..., /) -> List[Vector]:
         """
         Returns all intersection points between this curve and the given curve.
         """
-        ...
 
     @constmethod
-    def toBSpline(self, points: Tuple[float, float], /) -> BSplineCurve:
+    def toBSpline(self, first: float = ..., last: float = ..., /) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last) to BSpline curve.
-        toBSpline((first: float, last: float)) -> BSplineCurve
+        toBSpline(first, last) -> BSplineCurve
         """
-        ...
 
     @constmethod
-    def toNurbs(self, points: Tuple[float, float], /) -> BSplineCurve:
+    def toNurbs(self, first: float = ..., last: float = ..., /) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last) to NURBS curve.
-        toNurbs((first: float, last: float)) -> NurbsCurve
+        toNurbs(first, last) -> NurbsCurve
         """
-        ...
 
     @constmethod
-    def trim(self, points: Tuple[float, float], /) -> TrimmedCurve:
+    def trim(self, first: float = ..., last: float = ..., /) -> TrimmedCurve:
         """
         Returns a trimmed curve defined in the given parameter range.
-        trim((first: float, last: float)) -> TrimmedCurve
+        trim(first, last) -> TrimmedCurve
         """
-        ...
 
     @constmethod
     def approximateBSpline(
-        self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
+        self, tolerance: float, max_segments: int, max_degree: int, order: str = ..., /
     ) -> BSplineCurve:
         """
         Approximates a curve of any type to a B-Spline curve.
-        approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> BSplineCurve
+        approximateBSpline(tolerance, max_segments, max_degree, [order='C2']) -> BSplineCurve
         """
-        ...
 
     def reverse(self) -> None:
         """
         Changes the direction of parametrization of the curve.
         """
-        ...
 
     @constmethod
-    def reversedParameter(self, U: float, /) -> float:
+    def reversedParameter(self, u: float, /) -> float:
         """
-        Returns the parameter on the reversed curve for the point of parameter U on this curve.
+        Returns the parameter on the reversed curve for the point of parameter u on this curve.
         """
-        ...
 
     @constmethod
     def isPeriodic(self) -> bool:
         """
         Returns true if this curve is periodic.
         """
-        ...
 
     @constmethod
     def period(self) -> float:
         """
         Returns the period of this curve or raises an exception if it is not periodic.
         """
-        ...
 
     @constmethod
     def isClosed(self) -> bool:
         """
         Returns true if the curve is closed.
         """
-        ...

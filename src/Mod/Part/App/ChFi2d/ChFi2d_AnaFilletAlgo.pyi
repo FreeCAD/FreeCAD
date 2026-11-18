@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export
 from Base.PyObjectBase import PyObjectBase
-from typing import Tuple
+from Part.App.Plane import Plane
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeWire import TopoShapeWire
+from typing import Tuple, overload
 
 @export(
     Name="ChFi2d_AnaFilletAlgoPy",
@@ -21,11 +22,14 @@ class AnaFilletAlgo(PyObjectBase):
     It is implemented for segments and arcs of circle only.
     """
 
-    def init(self) -> None:
+    @overload
+    def init(self, wire: TopoShapeWire, plane: Plane, /) -> None: ...
+    @overload
+    def init(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, plane: Plane, /) -> None: ...
+    def init(self, *args) -> None:
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane
         """
-        ...
 
     def perform(self, radius: float, /) -> bool:
         """
@@ -33,7 +37,6 @@ class AnaFilletAlgo(PyObjectBase):
 
         Constructs a fillet edge
         """
-        ...
 
     def result(self) -> Tuple[PyObjectBase, PyObjectBase, PyObjectBase]:
         """
@@ -41,4 +44,3 @@ class AnaFilletAlgo(PyObjectBase):
 
         Returns result (fillet edge, modified edge1, modified edge2)
         """
-        ...

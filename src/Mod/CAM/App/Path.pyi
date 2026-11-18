@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
 from typing import Any, Final, overload, Union
 
+from Base.BoundBox import BoundBox
 from Base.Metadata import constmethod, export
 from Base.Persistence import Persistence
 
+from .Area import Area
 from .Command import Command
 
 @export(
@@ -31,44 +32,34 @@ class Path(Persistence):
     def addCommands(self, commands: list[Command], /) -> Path: ...
     def addCommands(self, arg: Union[Command, list[Command]], /) -> Path:
         """adds a command or a list of commands at the end of the path"""
-        ...
 
     def insertCommand(self, command: Command, pos: int = -1, /) -> Path:
         """
         adds a command at the given position or at the end of the path
         """
-        ...
 
     def deleteCommand(self, pos: int = -1, /) -> Path:
         """
         deletes the command found at the given position or from the end of the path
         """
-        ...
 
     def setFromGCode(self, gcode: str, /) -> None:
         """sets the contents of the path from a gcode string"""
-        ...
 
-    def getClearedArea(self) -> Any:
+    def getClearedArea(self, diameter: float, zmax: float, bbox: BoundBox, /) -> Area:
         """Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox."""
-        ...
 
     @constmethod
     def toGCode(self) -> str:
         """returns a gcode string representing the path"""
-        ...
 
     @constmethod
     def copy(self) -> Path:
         """returns a copy of this path"""
-        ...
 
     @constmethod
-    def getCycleTime(
-        self, h_feed: float, v_feed: float, h_rapid: float, v_rapid: float, /
-    ) -> float:
-        """return the cycle time estimation for this path in s"""
-        ...
+    def getCycleTime(self, h_feed: float, v_feed: float, rapid: float, /) -> float:
+        """Return the cycle time estimation for this path in s. Parameter F from command overrides feeds from arguments."""
     Length: Final[float]
     """the total length of this path in mm"""
 

@@ -54,4 +54,42 @@
       <translation>Metrinen desimaaliluku (m, m2, m3)</translation>
     </message>
   </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../../Exception.cpp" line="321"/>
+      <source>File not found</source>
+      <translation>Tiedostoa ei löydy</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="323"/>
+      <source>No permission to read the file</source>
+      <translation>Ei oikeuksia tiedoston lukemiseen</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="325"/>
+      <source>No write permission for the file or the file is read-only</source>
+      <translation>Tiedostolle ei ole kirjoitusoikeuksia tai tiedosto on vain luku -tiedosto</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="326"/>
+      <source>File format not supported</source>
+      <translation>Tiedostomuotoa ei tueta</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="327"/>
+      <source>Error reading from file</source>
+      <translation>Virhe luettaessa tiedostoa</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="328"/>
+      <source>Error writing to file</source>
+      <translation>Virhe kirjoitettaessa tiedostoon</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="330"/>
+      <source>Directory does not exist</source>
+      <translation>Hakemistoa ei ole olemassa</translation>
+    </message>
+  </context>
 </TS>

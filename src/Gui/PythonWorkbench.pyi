@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import deprecated, export
 from Workbench import Workbench
 from typing import Any, List
@@ -19,127 +17,108 @@ class PythonWorkbench(Workbench):
     Licence: LGPL
     """
 
-    def appendMenu(self) -> None:
+    def appendMenu(self, path: str | list[str], items: str | list[str], /) -> None:
         """
         Append a new menu
         """
-        ...
 
-    def removeMenu(self) -> None:
+    def removeMenu(self, name: str, /) -> None:
         """
         Remove a menu
         """
-        ...
 
-    def appendContextMenu(self) -> None:
+    def appendContextMenu(self, path: str | list[str], items: str | list[str], /) -> None:
         """
         Append a new context menu item
         """
-        ...
 
-    def removeContextMenu(self) -> None:
+    def removeContextMenu(self, name: str, /) -> None:
         """
         Remove a context menu item
         """
-        ...
 
-    def appendToolbar(self) -> None:
+    def appendToolbar(self, name: str, commands: list[str], /) -> None:
         """
         Append a new toolbar
         """
-        ...
 
-    def removeToolbar(self) -> None:
+    def removeToolbar(self, name: str, /) -> None:
         """
         Remove a toolbar
         """
-        ...
 
-    def appendCommandbar(self) -> None:
+    def appendCommandbar(self, name: str, commands: list[str], /) -> None:
         """
         Append a new command bar
         """
-        ...
 
-    def removeCommandbar(self) -> None:
+    def removeCommandbar(self, name: str, /) -> None:
         """
         Remove a command bar
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="appendMenu")
-    def AppendMenu(self) -> None:
+    def AppendMenu(self, path: str | list[str], items: str | list[str], /) -> None:
         """
         deprecated -- use appendMenu
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="removeMenu")
-    def RemoveMenu(self) -> None:
+    def RemoveMenu(self, name: str, /) -> None:
         """
         deprecated -- use removeMenu
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="listMenus")
     def ListMenus(self) -> List[Any]:
         """
         deprecated -- use listMenus
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="appendContextMenu")
-    def AppendContextMenu(self) -> None:
+    def AppendContextMenu(self, path: str | list[str], items: str | list[str], /) -> None:
         """
         deprecated -- use appendContextMenu
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="removeContextMenu")
-    def RemoveContextMenu(self) -> None:
+    def RemoveContextMenu(self, name: str, /) -> None:
         """
         deprecated -- use removeContextMenu
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="appendToolbar")
-    def AppendToolbar(self) -> None:
+    def AppendToolbar(self, name: str, commands: list[str], /) -> None:
         """
         deprecated -- use appendToolbar
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="removeToolbar")
-    def RemoveToolbar(self) -> None:
+    def RemoveToolbar(self, name: str, /) -> None:
         """
         deprecated -- use removeToolbar
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="listToolbars")
     def ListToolbars(self) -> List[Any]:
         """
         deprecated -- use listToolbars
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="appendCommandbar")
-    def AppendCommandbar(self) -> None:
+    def AppendCommandbar(self, name: str, commands: list[str], /) -> None:
         """
         deprecated -- use appendCommandbar
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="removeCommandbar")
-    def RemoveCommandbar(self) -> None:
+    def RemoveCommandbar(self, name: str, /) -> None:
         """
         deprecated -- use removeCommandbar
         """
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="listCommandbars")
     def ListCommandbars(self) -> List[Any]:
         """
         deprecated -- use listCommandbars
         """
-        ...

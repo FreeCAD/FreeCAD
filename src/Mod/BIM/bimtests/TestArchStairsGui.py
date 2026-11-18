@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 FreeCAD contributors
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2026 FreeCAD contributors                               *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Arch
 import Draft
@@ -70,8 +67,8 @@ class TestArchStairsGui(TestArchBaseGui):
         self._assert_visibility(stairs, True)
 
     def test_stairs_multi_segment_railing_follow_parent_visibility(self):
-        wire1 = Draft.makeWire([FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0)])
-        wire2 = Draft.makeWire([FreeCAD.Vector(1000, 0, 0), FreeCAD.Vector(1000, 1000, 0)])
+        wire1 = Draft.make_wire([FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0)])
+        wire2 = Draft.make_wire([FreeCAD.Vector(1000, 0, 0), FreeCAD.Vector(1000, 1000, 0)])
         stairs = Arch.makeStairs(baseobj=[wire1, wire2], width=800, height=2500, steps=14)
         self.document.recompute()
 

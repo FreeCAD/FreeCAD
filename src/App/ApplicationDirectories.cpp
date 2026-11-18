@@ -1,26 +1,26 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileCopyrightText: 2025 The FreeCAD project association AISBL
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************************************
- *                                                                                                 *
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>                                      *
- *   Copyright (c) 2025 The FreeCAD project association AISBL                                      *
- *                                                                                                 *
- *   This file is part of FreeCAD.                                                                 *
- *                                                                                                 *
- *   FreeCAD is free software: you can redistribute it and/or modify it under the terms of the     *
- *   GNU Lesser General Public License as published by the Free Software Foundation, either        *
- *   version 2.1 of the License, or (at your option) any later version.                            *
- *                                                                                                 *
- *   FreeCAD is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without  *
- *   even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the     *
- *   GNU Lesser General Public License for more details.                                           *
- *                                                                                                 *
- *   You should have received a copy of the GNU Lesser General Public License along with FreeCAD.  *
- *   If not, see <https://www.gnu.org/licenses/>.                                                  *
- *                                                                                                 *
- **************************************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
-#include <fmt/format.h>
+#include <format>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
@@ -502,7 +502,7 @@ std::string ApplicationDirectories::versionStringForPath(int major, int minor)
 {
     // NOTE: This is intended to be stable over time, so if the format changes, a condition should be added to check for
     // older versions and return this format for them, even if the new format differs.
-    return fmt::format("v{}-{}", major, minor);
+    return std::format("v{}-{}", major, minor);
 }
 
 bool ApplicationDirectories::isVersionedPath(const fs::path &startingPath) const {
@@ -590,8 +590,8 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
         if (file.is_symlink(errorCode)) {
             auto target = fs::read_symlink(sourcePath, errorCode);
             if (errorCode || !fs::exists(target, errorCode)) {
-                Base::Console().warning("Migration: skipping broken symlink '%s'\n",
-                                        pathString.c_str());
+                Base::Console().warning("Migration: skipping broken symlink '{}'\n",
+                                        pathString);
                 result.failedPaths.push_back(sourcePath);
                 continue;
             }
@@ -603,16 +603,16 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
                      fs::copy_options::recursive | fs::copy_options::copy_symlinks);
         }
         catch (const fs::filesystem_error& error) {
-            Base::Console().warning("Migration: failed to copy '%s': %s\n",
-                                    pathString.c_str(),
+            Base::Console().warning("Migration: failed to copy '{}': {}\n",
+                                    pathString,
                                     error.what());
             result.failedPaths.push_back(sourcePath);
         }
     }
     if (errorCode) {
-        Base::Console().warning("Migration: error iterating '%s': %s\n",
-                                Base::FileInfo::pathToString(oldPath).c_str(),
-                                errorCode.message().c_str());
+        Base::Console().warning("Migration: error iterating '{}': {}\n",
+                                Base::FileInfo::pathToString(oldPath),
+                                errorCode.message());
     }
     return result;
 }
@@ -635,7 +635,7 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
         else {
             newPath = path / versionStringForPath(major, minor);
         }
-        Base::Console().message("Migrating config from %s to %s\n",
+        Base::Console().message("Migrating config from {} to {}\n",
                                 Base::FileInfo::pathToString(path),
                                 Base::FileInfo::pathToString(newPath));
         if (fs::exists(newPath)) {
@@ -649,7 +649,7 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
                                      result.failedPaths.end());
     }
     if (!allResult.failedPaths.empty()) {
-        Base::Console().warning("Migration completed with %d skipped file(s). "
+        Base::Console().warning("Migration completed with {} skipped file(s). "
                                 "See warnings above for details.\n",
                                 static_cast<int>(allResult.failedPaths.size()));
     }

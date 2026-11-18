@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Ajinkya Dahale <dahale.a.p@gmail.com>              *
  *                                                                         *
@@ -806,7 +808,7 @@ bool TaskDlgFemConstraintRigidBody::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
     return TaskDlgFemConstraint::accept();

@@ -23,9 +23,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
 
 from Path.Base.Generator.ramp_entry import RampEntry
+from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import math
@@ -67,7 +67,9 @@ class ObjectDressup:
                 "\nRamp Method 2: Travel at start depth along the path"
                 " and Ramp backwards at rampangle along the path to the original plunge end point."
                 "\nRamp Method 3: Ramp down along the path until traveled half of the Z distance,"
-                " change direction and ramp backwards to the original plunge end point.",
+                " change direction and ramp backwards to the original plunge end point."
+                "\nRamp Method 4: Ramp down at rampangle along the path,"
+                " continue with the original path, extend and close the path on the final loop",
             ),
         )
         obj.addProperty(
@@ -89,6 +91,12 @@ class ObjectDressup:
                 "\nAbove this depth ramps are not generated,"
                 " but motion commands are passed through as is.",
             ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RampVertical",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Calculate ramp angle from vertical plane"),
         )
 
         # populate the enumerations
@@ -118,13 +126,14 @@ class ObjectDressup:
                 (translate("CAM_DressupRampEntry", "RampMethod1"), "RampMethod1"),
                 (translate("CAM_DressupRampEntry", "RampMethod2"), "RampMethod2"),
                 (translate("CAM_DressupRampEntry", "RampMethod3"), "RampMethod3"),
+                (translate("CAM_DressupRampEntry", "RampMethod4"), "RampMethod4"),
             ],
         }
 
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -142,7 +151,7 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop == "UseStartDepth":
+        if prop == "UseStartDepth" and not obj.Document.Restoring:
             self.setEditorProperties(obj)
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
@@ -150,10 +159,9 @@ class ObjectDressup:
     def setEditorProperties(self, obj):
         mode = 0 if obj.UseStartDepth else 2
         obj.setEditorMode("DressupStartDepth", mode)
+        obj.setEditorMode("RampVertical", 2)
 
     def onDocumentRestored(self, obj):
-        self.setEditorProperties(obj)
-
         # Remove RampFeedRate + CustomFeedRate properties, but keep the values around temporarily
         # This is required for tool controller migration: if a TC migrates with onDocumentRestored
         # called after this, the prior ramp feed rate still needs to be accessible.
@@ -168,6 +176,22 @@ class ObjectDressup:
                     tmp = exp
             obj.Proxy.CustomFeedRate = tmp
             obj.removeProperty("CustomFeedRate")
+
+        if not hasattr(obj, "RampVertical"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RampVertical",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Calculate ramp angle from vertical plane"),
+            )
+            obj.RampVertical = True
+
+        # update enumeration
+        for n in self.propertyEnumerations():
+            if n[0] == "Method":
+                setattr(obj, n[0], n[1])
+
+        self.setEditorProperties(obj)
 
     def setup(self, obj):
         obj.Angle = 60
@@ -191,15 +215,19 @@ class ObjectDressup:
             obj.Path = path
             return
 
+        PathDressup.placeWithBase(obj)
+
         if obj.Angle >= 90:
             obj.Angle = 89.9
         elif obj.Angle <= 0:
             obj.Angle = 0.1
 
+        angle_rad = math.radians(obj.Angle.Value)
+
         args = {
-            "commands": PathUtils.getPathWithPlacement(obj.Base).Commands,
+            "commands": obj.Base.Path.Commands,
             "method": obj.Proxy.propertyEnumerations(dataType="data")[0][1].index(obj.Method),
-            "angle_rad": math.pi / 2 - math.radians(obj.Angle.Value),
+            "angle_rad": math.pi / 2 - angle_rad if obj.RampVertical else angle_rad,
             "tc": PathDressup.toolController(obj.Base),
             "ignoreAbove": obj.DressupStartDepth.Value if obj.UseStartDepth else None,
         }

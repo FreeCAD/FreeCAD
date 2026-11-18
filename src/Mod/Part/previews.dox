@@ -1,0 +1,315 @@
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+/* SPDX-FileCopyrightText: 2026 Kacper Donat */
+/* SPDX-FileNotice: Part of the FreeCAD project. */
+
+/**
+ * @defgroup PreviewFramework Preview framework
+ * @ingroup PART
+ * @brief System to show an upcoming geometry change in the 3D view.
+ *
+ * @section preview_intro Introduction
+ *
+ * A preview is a semi-transparent shape drawn over the model while a feature is
+ * being edited, showing the change before it is committed.  The framework
+ * provides:
+ * 1. a working preview for any feature, from a single shape it publishes,
+ * 2. the ability to show geometry that is not the feature's result, such as the
+ *    volume a cut removes rather than what remains,
+ * 3. the ability to show any number of shapes at once, each with its own
+ *    appearance, and
+ * 4. the ability to draw one shape many times, as a pattern does for its
+ *    instances.
+ *
+ * The first point is what a feature gets for free.  The rest is what a feature
+ * can reach for when the default is not expressive enough.
+ *
+ * The framework is available to C++ and to Python workbenches on equal terms.
+ * Everything described here can be done from either.
+ *
+ * @section preview_default What a feature gets by default
+ *
+ * A preview has two halves.  @ref Part::PreviewExtension "PreviewExtension" on
+ * the feature owns the geometry, and @ref
+ * PartGui::ViewProviderPreviewExtension "ViewProviderPreviewExtension" on the
+ * view provider owns the appearance.
+ *
+ * A feature that adds both extensions and publishes a shape gets a complete
+ * preview: the shape is rendered semi-transparently over the model, with hidden
+ * edges dashed so the change reads against the geometry behind it.  Nothing is
+ * drawn until the view provider is asked to show it, normally when an edit
+ * session begins.
+ *
+ * The split matters for testing as much as for structure.  The geometry half
+ * never touches the scene graph, so what a feature previews can be verified
+ * without a GUI.
+ *
+ * @section preview_adding Adding a preview to a feature
+ *
+ * In C++ both halves are inherited.  The feature publishes its shape from
+ * `recomputePreview()`:
+ *
+ * @code{.cpp}
+ * class MyFeature: public Part::Feature, public Part::PreviewExtension
+ * {
+ *     PROPERTY_HEADER_WITH_OVERRIDE(MyModule::MyFeature);
+ *
+ * public:
+ *     MyFeature()
+ *     {
+ *         Part::PreviewExtension::initExtension(this);
+ *     }
+ *
+ * protected:
+ *     App::DocumentObjectExecReturn* recomputePreview() override
+ *     {
+ *         PreviewShape.setValue(computeSomethingCheap());
+ *         return App::DocumentObject::StdReturn;
+ *     }
+ * };
+ * @endcode
+ *
+ * The view provider inherits @ref PartGui::ViewProviderPreviewExtension
+ * "ViewProviderPreviewExtension" and turns the preview on for the duration of an
+ * edit:
+ *
+ * @code{.cpp}
+ * bool MyViewProvider::setEdit(int mode)
+ * {
+ *     showPreview(true);
+ *     return inherited::setEdit(mode);
+ * }
+ *
+ * void MyViewProvider::unsetEdit(int mode)
+ * {
+ *     showPreview(false);
+ *     inherited::unsetEdit(mode);
+ * }
+ * @endcode
+ *
+ * In Python both halves are added as extensions, and the hooks live on the
+ * `Proxy`:
+ *
+ * @code{.py}
+ * class MyFeature:
+ *     def __init__(self, obj):
+ *         obj.Proxy = self
+ *         if not obj.hasExtension("Part::PreviewExtensionPython"):
+ *             obj.addExtension("Part::PreviewExtensionPython")
+ *
+ *     def recomputePreview(self, ext):
+ *         obj = ext.ExtendedObject
+ *         obj.PreviewShape = self.computeSomethingCheap(obj)
+ *
+ * class MyViewProvider:
+ *     def attach(self, vobj):
+ *         self.ViewObject = vobj
+ *         if not vobj.hasExtension("PartGui::ViewProviderPreviewExtensionPython"):
+ *             vobj.addExtension("PartGui::ViewProviderPreviewExtensionPython")
+ * @endcode
+ *
+ * The view extension has to be added from `attach()`.  Its scene graph is built
+ * when the extension attaches, and adding it to a view provider that is already
+ * attached leaves the preview with nothing to draw into.
+ *
+ * @section preview_what_to_show Choosing what to show
+ *
+ * The most useful previews rarely show the feature's own result.  A preview
+ * exists to communicate a change, and the change is often better described by
+ * something the model will never contain.
+ *
+ * A subtractive feature is the clearest case.  Showing the shape that remains
+ * says very little, because the interesting part is what disappears.  Instead it
+ * can intersect its tool with the base shape and show exactly the volume that
+ * will be removed — geometry that exists only for the preview:
+ *
+ * @code{.cpp}
+ * App::DocumentObjectExecReturn* MyCut::recomputePreview()
+ * {
+ *     TopoShape removed;
+ *     removed.makeElementBoolean(Part::OpCodes::Common, {getBaseTopoShape(), AddSubShape.getShape()});
+ *     PreviewShape.setValue(removed);
+ *
+ *     return App::DocumentObject::StdReturn;
+ * }
+ * @endcode
+ *
+ * PartDesign goes further and shows two shapes at once: the removed volume, and,
+ * fainter behind it, the whole tool, so the user can see how much of the tool
+ * actually bites.  A dress-up feature has a similar choice, and shows only the
+ * faces it generates rather than the entire solid.
+ *
+ * Anything the feature can compute is fair game.  The preview is not obliged to
+ * be a shape the document could hold.
+ *
+ * @section preview_multiple Showing several shapes
+ *
+ * A preview is a small scene, not a single shape.  A feature can add as many
+ * shapes as the change needs, each with its own colour, transparency and line
+ * width, so that different parts of the change read differently — added material
+ * against removed material, or a tool against its effect.
+ *
+ * Additional shapes are introduced when the scene is built and fed when it is
+ * refreshed:
+ *
+ * @code{.cpp}
+ * void MyViewProvider::attachPreview()
+ * {
+ *     inherited::attachPreview();
+ *
+ *     pcToolPreview = new PartGui::SoPreviewShape;
+ *     pcToolPreview->color.connectFrom(&pcPreviewShape->color);
+ *     pcToolPreview->transparency = 0.95F;
+ *
+ *     pcPreviewRoot->addChild(pcToolPreview);
+ * }
+ *
+ * void MyViewProvider::updatePreview()
+ * {
+ *     inherited::updatePreview();
+ *
+ *     updatePreviewShape(getToolShape(), pcToolPreview);
+ * }
+ * @endcode
+ *
+ * The same in Python:
+ *
+ * @code{.py}
+ * def attachPreview(self, vext):
+ *     from pivy import coin
+ *
+ *     self.toolNode = coin.SoType.fromName("SoPreviewShape").createInstance()
+ *     self.toolNode.color.connectFrom(vext.PreviewShapeNode.color)
+ *     self.toolNode.transparency.setValue(0.95)
+ *
+ *     vext.PreviewRootNode.addChild(self.toolNode)
+ *
+ * def updatePreview(self, vext):
+ *     vext.updatePreviewShape(self.getToolShape(), self.toolNode)
+ * @endcode
+ *
+ * @section preview_instances Showing one shape many times
+ *
+ * A feature can also draw one shape repeatedly.  A pattern previews every
+ * instance it will create by placing the same geometry at each transformation.
+ * The shape is tessellated once and drawn at each location, so previewing fifty
+ * instances costs little more than previewing one.  This is what lets a
+ * transformation show its full result while the user is still choosing the
+ * count.
+ *
+ * Such a feature builds the scene itself rather than adding to the default one:
+ *
+ * @code{.py}
+ * def attachPreview(self, vext):
+ *     from pivy import coin
+ *
+ *     self.sharedNode = coin.SoType.fromName("SoPreviewShape").createInstance()
+ *     # Held only by this attribute between refreshes, so it needs an explicit
+ *     # reference to survive being detached from the scene graph.
+ *     self.sharedNode.ref()
+ *
+ * def updatePreview(self, vext):
+ *     from pivy import coin
+ *
+ *     vext.updatePreviewShape(self.getShape(), self.sharedNode)
+ *     vext.PreviewRootNode.removeAllChildren()
+ *
+ *     for placement in self.getPlacements():
+ *         transform = coin.SoTransform()
+ *         transform.translation.setValue(*placement)
+ *
+ *         separator = coin.SoSeparator()
+ *         separator.addChild(transform)
+ *         separator.addChild(self.sharedNode)
+ *
+ *         vext.PreviewRootNode.addChild(separator)
+ * @endcode
+ *
+ * @section preview_cost Keeping previews cheap
+ *
+ * A preview is recomputed while the user drags a spinbox, so its cost is felt
+ * directly.  Two things keep it affordable.
+ *
+ * The first is scheduling.  Previews are recomputed lazily, only once something
+ * they depend on has changed, and a burst of property changes is coalesced by
+ * @ref Part::PreviewUpdateScheduler "PreviewUpdateScheduler" into a single
+ * recompute rather than one per change.  A feature whose preview does not depend
+ * on all of its properties can say so through `mustRecomputePreview()` and skip
+ * the work entirely.
+ *
+ * The second is choosing simpler geometry.  Recomputing the object to obtain the
+ * preview is a legitimate approach, and for some features it is the only one —
+ * if the shape is genuinely what the user needs to see, compute it.  But where a
+ * cheaper shape communicates the same change, prefer it.  In particular a
+ * preview usually does not need to be joined to the base shape: showing the tool
+ * or the affected volume on its own reads just as well and avoids a boolean
+ * operation on every keystroke.  The preview's job is to be understood, not to
+ * be correct in the way a final shape must be.
+ *
+ * @section preview_appearance Appearance and theming
+ *
+ * Preview colours carry meaning.  PartDesign draws additive features green and
+ * subtractive ones red, and makes a tool fainter than the volume it affects, so
+ * the nature of a change is legible before reading any dialog.
+ *
+ * These colours come from style parameters rather than being fixed, so previews
+ * follow the active theme.  `PreviewColor` sets the colour of the primary shape;
+ * additional shapes should link to it, as in the examples above, rather than
+ * hardcoding a value, so the whole preview stays consistent when the theme
+ * changes.
+ *
+ * @note Style parameters are currently reachable only from C++.  Python access
+ * is coming; until then a Python workbench that needs specific colours has to
+ * restate them, and linking additional shapes to the primary one keeps that to a
+ * single value to revisit later.
+ *
+ * @section preview_extension_points Extension points
+ *
+ * A feature customises its preview by overriding parts of the two extensions.
+ * In C++ these are virtual functions; in Python they are methods on the object's
+ * or the view provider's `Proxy`, and the two sets correspond exactly.
+ *
+ * On the geometry half:
+ * - `recomputePreview` decides what the preview shows.  This is where a
+ *   subtractive feature computes its removed volume.
+ * - `mustRecomputePreview` decides when that work is worth doing.  It follows
+ *   the object's own recompute by default, so overriding it is how a feature
+ *   both skips changes its preview does not depend on and reports staleness the
+ *   property system cannot see, such as a dependency on a linked object.
+ *
+ * On the appearance half:
+ * - `attachPreview` builds the scene, and is where additional shapes are
+ *   introduced.
+ * - `updatePreview` refreshes it, and is where instanced arrangements are laid
+ *   out.
+ * - `getPreviewShape` chooses which shape feeds the default rendering.
+ *
+ * The two appearance hooks add to what the framework has already built rather
+ * than replacing it, so a feature that only wants one extra shape does not have
+ * to reproduce the default.  A feature that wants full control can rebuild the
+ * scene from scratch instead, as the instancing example does.
+ *
+ * @section preview_pitfalls Things worth knowing
+ *
+ * The preview is refreshed automatically when the published shape changes.  An
+ * arrangement that depends on anything else — a count, a set of transformations
+ * — has to ask for a refresh when that changes.
+ *
+ * A failure inside a Python hook is reported rather than propagated, which
+ * leaves the previous preview on screen.  A hook that cannot compute its
+ * geometry should publish an empty shape, so the preview disappears instead of
+ * silently going stale.
+ *
+ * Coin nodes a Python workbench keeps between refreshes need an explicit
+ * `ref()`; a Python variable alone does not keep them alive.  Release it with a
+ * matching `unref()` once the node is no longer retained.
+ *
+ * @section preview_seealso See also
+ *
+ * - @ref Part::PreviewExtension "PreviewExtension" — the geometry half
+ * - @ref PartGui::ViewProviderPreviewExtension "ViewProviderPreviewExtension" —
+ *   the appearance half
+ * - @ref Part::PreviewUpdateScheduler "PreviewUpdateScheduler" — coalescing of
+ *   recompute requests
+ * - @ref PartGui::SoPreviewShape "SoPreviewShape" — the node a preview shape is
+ *   drawn with
+ */

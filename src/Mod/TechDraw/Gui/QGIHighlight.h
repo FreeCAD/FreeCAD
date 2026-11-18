@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -64,9 +66,11 @@ public:
     void onDragFinished() override;
 
     void setLinePen(QPen isoPen);
+    QColor getHighlightColor();
+    void setHighlightColor(QColor newColor);
 
 protected:
-    QColor getHighlightColor();
+
     void makeHighlight();
     void makeReference();
     void setTools();

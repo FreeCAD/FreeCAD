@@ -54,4 +54,42 @@
       <translation>Métrico decimal (m, m², m³)</translation>
     </message>
   </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../../Exception.cpp" line="321"/>
+      <source>File not found</source>
+      <translation>Archivo no encontrado</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="323"/>
+      <source>No permission to read the file</source>
+      <translation>No tiene permiso para leer el archivo</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="325"/>
+      <source>No write permission for the file or the file is read-only</source>
+      <translation>No hay permisos de escritura para el archivo o el archivo es de solo lectura</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="326"/>
+      <source>File format not supported</source>
+      <translation>Formato de archivo no soportado</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="327"/>
+      <source>Error reading from file</source>
+      <translation>Error al leer desde el archivo</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="328"/>
+      <source>Error writing to file</source>
+      <translation>Error al escribir el archivo</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="330"/>
+      <source>Directory does not exist</source>
+      <translation>El directorio no existe</translation>
+    </message>
+  </context>
 </TS>

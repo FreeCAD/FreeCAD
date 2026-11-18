@@ -375,10 +375,7 @@ constexpr float OVERLAY_ORTHO_EXTENT = 2.1F;
 constexpr float OVERLAY_FOV_SCALE = 1.1F;
 constexpr float OVERLAY_CUBE_Z = -5.1F;
 constexpr float OVERLAY_BUTTON_Z = -4.0F;  // in front of the cube (cube is centered at z≈-5.1)
-constexpr float BACKSIDE_HIT_LEFT = 0.79F;
-constexpr float BACKSIDE_HIT_TOP = 0.0F;
-constexpr float BACKSIDE_HIT_RIGHT = 1.0F;
-constexpr float BACKSIDE_HIT_BOTTOM = 0.16F;
+constexpr float BUTTON_HIT_SLOP = 0.015F;
 
 }  // namespace
 
@@ -1794,6 +1791,32 @@ void SoNaviCube::addButtonFace(PickId pickId) const
         return index;
     };
 
+    const auto setHitRectFromVerts = [&verts, &hitRect](float padding) {
+        if (verts.empty()) {
+            return;
+        }
+
+        float left = std::numeric_limits<float>::max();
+        float top = std::numeric_limits<float>::max();
+        float right = std::numeric_limits<float>::lowest();
+        float bottom = std::numeric_limits<float>::lowest();
+
+        for (const auto& vertex : verts) {
+            left = std::min(left, vertex[0]);
+            top = std::min(top, vertex[1]);
+            right = std::max(right, vertex[0]);
+            bottom = std::max(bottom, vertex[1]);
+        }
+
+        hitRect = {
+            .active = true,
+            .left = std::max(0.0F, left - padding),
+            .top = std::max(0.0F, top - padding),
+            .right = std::min(1.0F, right + padding),
+            .bottom = std::min(1.0F, bottom + padding)
+        };
+    };
+
     switch (pickId) {
         default:
             break;
@@ -1818,6 +1841,7 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             appendTriangles(bar, {0, 1, 2, 0, 2, 3});
             const auto triangle = appendLoop({-13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F});
             appendTriangles(triangle, {0, 1, 2});
+            setHitRectFromVerts(BUTTON_HIT_SLOP);
             break;
         }
         case PickId::Home: {
@@ -1855,8 +1879,6 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             offx = 0.80F;
             offy = 0.0F;
             // The icon has two disconnected arrow loops; keep the center gap clickable.
-            hitRect
-                = {true, BACKSIDE_HIT_LEFT, BACKSIDE_HIT_TOP, BACKSIDE_HIT_RIGHT, BACKSIDE_HIT_BOTTOM};
             const auto loop1 = appendLoop(
                 {24.0F, 21.5F, 17.0F, 29.1F, 16.7F, 25.6F, 12.0F, 25.3F, 8.2F,  24.0F, 4.0F,
                  22.0F, 1.2F,  19.0F, 0.0F,  15.0F, 0.0F,  10.0F, 1.5F,  8.1F,  4.4F,  6.1F,
@@ -1878,6 +1900,7 @@ void SoNaviCube::addButtonFace(PickId pickId) const
                                     3,  18, 4, 18, 17, 4,  4,  17, 5,  17, 16, 5, 5,  16, 6,
                                     16, 15, 6, 6,  15, 7,  15, 14, 7,  7,  14, 8, 14, 13, 8,
                                     8,  13, 9, 9,  13, 10, 10, 13, 11, 11, 13, 12});
+            setHitRectFromVerts(BUTTON_HIT_SLOP);
             break;
         }
     }

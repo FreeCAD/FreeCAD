@@ -97,8 +97,14 @@ def number_of_components_in(assembly):
         return 0
     i = 0
     for obj in assembly.Group:
+        if isLinkArray(obj):
+            i = i + 1
+            continue
+
         if isLinkGroup(obj):
-            i = i + obj.ElementCount
+            i += obj.ElementCount - sum(
+                1 for elt in obj.ElementList if isSuppressedLinkElement(elt)
+            )
             continue
 
         if obj.isDerivedFrom("Assembly::AssemblyObject") or obj.isDerivedFrom(
@@ -109,6 +115,9 @@ def number_of_components_in(assembly):
 
         if obj.isDerivedFrom("App::Link"):
             obj = obj.getLinkedObject()
+            if isLinkArray(obj):
+                i = i + 1
+                continue
 
         if not obj.isDerivedFrom("App::GeoFeature"):
             continue
@@ -127,8 +136,18 @@ def isLink(obj):
     return (obj.TypeId == "App::Link" and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
 
 
+def isLinkArray(obj):
+    return obj is not None and obj.isDerivedFrom("Part::LinkArray")
+
+
 def isLinkGroup(obj):
     return obj.TypeId == "App::Link" and obj.ElementCount > 0
+
+
+def isSuppressedLinkElement(obj):
+    return (
+        obj is not None and obj.TypeId == "App::LinkElement" and getattr(obj, "Suppressed", False)
+    )
 
 
 def getObject(ref):
@@ -177,13 +196,14 @@ def getObject(ref):
                 if obj2 and obj2.isDerivedFrom("App::DatumElement"):
                     return obj2
 
-        elif obj.isDerivedFrom("App::DatumElement"):
-            return obj
-
         elif obj.TypeId == "PartDesign::Body":
             return process_body(obj, obj, names, i)
 
-        elif obj.isDerivedFrom("Part::Feature"):
+        elif (
+            isLinkArray(obj)
+            or obj.isDerivedFrom("App::DatumElement")
+            or obj.isDerivedFrom("Part::Feature")
+        ):
             # primitive, fastener, gear ...
             return obj
 
@@ -191,6 +211,8 @@ def getObject(ref):
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body":
                 return process_body(linked_obj, obj, names, i)
+            elif isLinkArray(linked_obj):
+                return obj
             elif linked_obj.isDerivedFrom("Part::Feature"):
                 return obj
             else:
@@ -229,6 +251,7 @@ def isBodySubObject(obj):
         or obj.isDerivedFrom("Part::Datum")
         or obj.isDerivedFrom("App::DatumElement")
         or obj.isDerivedFrom("App::LocalCoordinateSystem")
+        or obj.isDerivedFrom("PartDesign::SubShapeBinder")
     )
 
 
@@ -474,9 +497,15 @@ def findElementClosestVertex(ref, mousePos):
 
     if elt_type == "Vertex":
         return element_name
+    if elt_type not in ("Edge", "Face"):
+        return ""
 
-    elif elt_type == "Edge":
-        edge = obj.Shape.getElement(element_name)
+    # Snapping uses geometric indices, not persistent names. External links can
+    # carry naming references from a different document's string hasher.
+    shape = Part.getShape(obj, noElementMap=True)
+
+    if elt_type == "Edge":
+        edge = shape.getElement(element_name)
         curve = edge.Curve
         if curve.TypeId == "Part::GeomCircle":
             # For centers, as they are not shape vertexes, we return the element name.
@@ -498,12 +527,12 @@ def findElementClosestVertex(ref, mousePos):
 
         vertexes = edge.Vertexes
 
-        vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj)
+        vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj, shape)
 
         return vertex_name
 
     elif elt_type == "Face":
-        face = obj.Shape.getElement(element_name)
+        face = shape.getElement(element_name)
         surface = face.Surface
         _type = surface.TypeId
         if _type == "Part::GeomSphere" or _type == "Part::GeomTorus":
@@ -522,7 +551,7 @@ def findElementClosestVertex(ref, mousePos):
 
             elif _type == "Part::GeomCylinder" and curve.TypeId == "Part::GeomBSplineCurve":
                 # handle special case of 2 cylinder intersecting.
-                for j, facej in enumerate(obj.Shape.Faces):
+                for j, facej in enumerate(shape.Faces):
                     surfacej = facej.Surface
                     if (elt_index - 1) != j and surfacej.TypeId == "Part::GeomCylinder":
                         for edgej in facej.Edges:
@@ -571,7 +600,7 @@ def findElementClosestVertex(ref, mousePos):
             # If center of gravity then we have no vertex name to set so we put element name
             return element_name
 
-        vertex_name = findVertexNameInObject(face.Vertexes[closest_vertex_index], obj)
+        vertex_name = findVertexNameInObject(face.Vertexes[closest_vertex_index], obj, shape)
 
         return vertex_name
 
@@ -598,14 +627,12 @@ def findClosestPointToMousePos(candidates_points, mousePos):
     return closest_point_index, point_min_length
 
 
-def findVertexNameInObject(vertex, obj):
-    for i, _ in enumerate(obj.Shape.Vertexes):
-        vertexName = "Vertex" + str(i + 1)
-
-        if (
-            obj.Shape.getElement(vertexName).Point == vertex.Point
-        ):  # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
-            return vertexName
+def findVertexNameInObject(vertex, obj, shape=None):
+    if shape is None:
+        shape = Part.getShape(obj, noElementMap=True)
+    for i, candidate in enumerate(shape.Vertexes):
+        if candidate.Point == vertex.Point:
+            return "Vertex" + str(i + 1)
     return ""
 
 
@@ -758,7 +785,10 @@ def getMovablePartsWithin(group, partsAsSolid=False):
 
 
 def getSubMovingParts(obj, partsAsSolid):
-    if obj.isDerivedFrom("Part::Feature"):
+    if obj is None or isSuppressedLinkElement(obj):
+        return []
+
+    if isLinkArray(obj) or obj.isDerivedFrom("Part::Feature"):
         return [obj]
 
     elif obj.isDerivedFrom("App::Part"):
@@ -773,7 +803,11 @@ def getSubMovingParts(obj, partsAsSolid):
 
     if isLink(obj):
         linked_obj = obj.getLinkedObject()
-        if linked_obj.isDerivedFrom("App::Part") or linked_obj.isDerivedFrom("Part::Feature"):
+        if (
+            linked_obj.isDerivedFrom("App::Part")
+            or linked_obj.isDerivedFrom("Part::Feature")
+            or isLinkArray(linked_obj)
+        ):
             return [obj]
 
     return []
@@ -846,6 +880,8 @@ def getObjMassAndCom(obj, containingPart=None):
             children = obj.Group
 
         for subObj in children:
+            if isSuppressedLinkElement(subObj):
+                continue
             mass, com = getObjMassAndCom(subObj, containingPart)
             total_mass += mass
             total_com += com
@@ -882,8 +918,8 @@ def getCenterOfBoundingBox(objs, refs):
     return center
 
 
-def findCylindersIntersection(obj, surface, edge, elt_index):
-    for j, facej in enumerate(obj.Shape.Faces):
+def findCylindersIntersection(shape, surface, edge, elt_index):
+    for j, facej in enumerate(shape.Faces):
         surfacej = facej.Surface
         if (elt_index - 1) == j or surfacej.TypeId != "Part::GeomCylinder":
             continue
@@ -905,7 +941,7 @@ def findCylindersIntersection(obj, surface, edge, elt_index):
     return surface.Center
 
 
-def openEditingPlacementDialog(obj, propName):
+def openEditingPlacementDialog(obj, propName, onChanged=None):
     task_placement = Gui.TaskPlacement()
     dialog = task_placement.form
 
@@ -915,6 +951,9 @@ def openEditingPlacementDialog(obj, propName):
     task_placement.setPropertyName(propName)
     task_placement.bindObject()
     task_placement.setIgnoreTransactions(True)
+
+    if onChanged is not None:
+        dialog.accepted.connect(onChanged)
 
     dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
     dialog.exec_()
@@ -995,6 +1034,24 @@ So here we want to find a placement that corresponds to a local coordinate syste
 """
 
 
+def getReferenceOwnerShape(ref):
+    # Same root and subname as getGlobalPlacement, without the element token.
+    # That object's shape is current; a link array's stored compound is not.
+    root = ref[0]
+    sub = ref[1][0]
+    parents = root.Parents
+    if parents is not None and len(parents) == 1 and len(parents[0]) == 2:
+        root = parents[0][0]
+        sub = parents[0][1] + sub
+    dot = sub.rfind(".")
+    if root is None or dot <= 0:
+        return None
+    shape = Part.getShape(root, sub[: dot + 1], App.Matrix(), True, noElementMap=True)
+    if shape is None or shape.isNull():
+        return None
+    return shape
+
+
 def findPlacement(ref, ignoreVertex=False):
     if not isRefValid(ref, 2):
         return App.Placement()
@@ -1021,15 +1078,28 @@ def findPlacement(ref, ignoreVertex=False):
     elt_type, elt_index = extract_type_and_number(elt)
     vtx_type, _ = extract_type_and_number(vtx)
 
+    shape = Part.getShape(obj, noElementMap=True)
+    useLive = False
+    if isLinkArray(obj):
+        # The array's stored Shape lags behind a moved inner body until the array recomputes.
+        live = getReferenceOwnerShape(ref)
+        if live is not None:
+            try:
+                element = live.getElement(elt)
+            except IndexError:
+                element = None
+            if element is not None and not element.isNull():
+                shape, useLive = live, True
+
     isLine = False
 
     if elt_type == "Vertex":
-        vertex = get_element(obj.Shape, elt)
+        vertex = get_element(shape, elt)
         if vertex is None:
             return App.Placement()
         plc.Base = (vertex.X, vertex.Y, vertex.Z)
     elif elt_type == "Edge":
-        edge = get_element(obj.Shape, elt)
+        edge = get_element(shape, elt)
         if edge is None:
             return App.Placement()
 
@@ -1046,7 +1116,7 @@ def findPlacement(ref, ignoreVertex=False):
                 line_middle = (edge_points[0] + edge_points[1]) * 0.5
                 plc.Base = line_middle
         else:
-            vertex = get_element(obj.Shape, vtx)
+            vertex = get_element(shape, vtx)
             if vertex is None:
                 return App.Placement()
 
@@ -1063,7 +1133,7 @@ def findPlacement(ref, ignoreVertex=False):
             plane = Part.Plane(plane_origin, plane_normal)
             plc.Rotation = App.Rotation(plane.Rotation)
     elif elt_type == "Face":
-        face = get_element(obj.Shape, elt)
+        face = get_element(shape, elt)
         if face is None:
             return App.Placement()
 
@@ -1097,10 +1167,10 @@ def findPlacement(ref, ignoreVertex=False):
                 surface.TypeId == "Part::GeomCylinder" and curve.TypeId == "Part::GeomBSplineCurve"
             ):
                 # handle special case of 2 cylinder intersecting.
-                plc.Base = findCylindersIntersection(obj, surface, edge, elt_index)
+                plc.Base = findCylindersIntersection(shape, surface, edge, elt_index)
 
         else:
-            vertex = get_element(obj.Shape, vtx)
+            vertex = get_element(shape, vtx)
             if vertex is None:
                 return App.Placement()
 
@@ -1110,12 +1180,28 @@ def findPlacement(ref, ignoreVertex=False):
         if hasattr(surface, "Rotation") and surface.Rotation is not None:
             plc.Rotation = App.Rotation(surface.Rotation)
 
-    if hasattr(obj, "ExpandArray"):
-        # For draft arrays, the Shape has both the array placement and the base placement.
-        plc = obj.Base.Placement.inverse() * plc
+    if useLive:
+        plc = getGlobalPlacement(ref).inverse() * plc
+    else:
+        if hasattr(obj, "ExpandArray"):
+            # For draft arrays, the Shape has both the array placement and the base placement.
+            plc = obj.Base.Placement.inverse() * plc
 
-    # change plc to be relative to the object placement.
-    plc = obj.Placement.inverse() * plc
+        # change plc to be relative to the object placement.
+        plc = obj.Placement.inverse() * plc
+
+        if isLinkArray(obj):
+            # Child placements are already in the array shape, except a linked
+            # object's own Placement when LinkTransform is off.
+            sub = ref[1][0]
+            if ref[0] != obj and sub:
+                names = sub.split(".")
+                if obj.Name in names:
+                    sub = ".".join(names[names.index(obj.Name) + 1 :])
+            head, dot, _tail = sub.partition(".")
+            if dot:
+                beyond = obj.getPlacementOf(head + ".").inverse() * obj.getPlacementOf(sub)
+                plc = beyond.inverse() * plc
 
     # post-process of plc for some special cases
     if elt_type == "Vertex":
@@ -1283,9 +1369,10 @@ def getComponentReference(assembly, root_obj, sub_string):
                 linkedObj
                 and not isLink(linkedObj)
                 and not linkedObj.isDerivedFrom("App::GeoFeature")
+                and not isLinkArray(linkedObj)
             ):
                 continue
-        elif not obj.isDerivedFrom("App::GeoFeature"):
+        elif not obj.isDerivedFrom("App::GeoFeature") and not isLinkArray(obj):
             continue
 
         component = obj

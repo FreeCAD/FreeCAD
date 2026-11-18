@@ -1,24 +1,23 @@
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <QApplication>
@@ -59,8 +58,14 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q3(1)
 {
     ui->setupUi(this);
+    ui->comboOrbitStyle->setItemData(0, int(NavigationStyle::RoundedArcball));
+    ui->comboOrbitStyle->setItemData(1, int(NavigationStyle::Trackball));
+    ui->comboOrbitStyle->setItemData(2, int(NavigationStyle::TrackballClassic));
+    ui->comboOrbitStyle->setItemData(3, int(NavigationStyle::FreeTurntable));
+    ui->comboOrbitStyle->setItemData(4, int(NavigationStyle::Turntable));
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
+    ui->checkBoxTouchpadScrollPans->setChecked(NavigationStyle::touchpadScrollPansByDefault());
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
@@ -89,14 +94,15 @@ void DlgSettingsNavigation::saveSettings()
         = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
-    int index = ui->comboOrbitStyle->currentIndex();
-    hGrp->SetInt("OrbitStyle", index);
-    index = ui->comboRotationMode->currentIndex();
+    int orbitStyle = ui->comboOrbitStyle->currentData().toInt();
+    hGrp->SetInt("OrbitStyle", orbitStyle);
+    int index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
+    ui->checkBoxTouchpadScrollPans->onSave();
     ui->rotationCenterSize->onSave();
     ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
@@ -148,6 +154,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
+    ui->checkBoxTouchpadScrollPans->onRestore();
     ui->rotationCenterSize->onRestore();
     ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
@@ -177,9 +184,9 @@ void DlgSettingsNavigation::loadSettings()
         ui->comboNavigationStyle->setCurrentIndex(index);
     }
 
-    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
-    index = Base::clamp(index, 0, ui->comboOrbitStyle->count() - 1);
-    ui->comboOrbitStyle->setCurrentIndex(index);
+    int orbitStyle = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
+    orbitStyle = std::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
+    ui->comboOrbitStyle->setCurrentIndex(ui->comboOrbitStyle->findData(orbitStyle));
 
     index = hGrp->GetInt("RotationMode", 0);
     ui->comboRotationMode->setCurrentIndex(index);
@@ -200,11 +207,7 @@ void DlgSettingsNavigation::loadSettings()
     // fill up font styles
 
     // we purposely allow all available fonts on the system
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     ui->naviCubeFontName->addItems(familyNames);
 
     // mark this combobox to be excluded from preference search

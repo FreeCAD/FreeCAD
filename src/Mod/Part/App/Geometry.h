@@ -1399,7 +1399,8 @@ PartExport GeomArcOfCircle* createFilletGeometry(
     double radius,
     int& pos1,
     int& pos2,
-    bool& reverse
+    bool& reverse,
+    Base::Vector3d& cornerPoint
 );
 PartExport std::unique_ptr<GeomSurface> makeFromSurface(
     const Handle(Geom_Surface) &,

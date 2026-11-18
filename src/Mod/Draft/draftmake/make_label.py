@@ -37,8 +37,9 @@ from draftobjects import label
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _wrn, _err
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_label import ViewProviderLabel
@@ -370,12 +371,15 @@ def make_label(
     return new_obj
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_label()",
+)
 def makeLabel(
     targetpoint=None, target=None, direction=None, distance=None, labeltype=None, placement=None
 ):
-    """Create a Label. DEPRECATED. Use 'make_label'."""
-    utils.use_instead("make_label")
-
+    """DEPRECATED. Use 'make_label'."""
     _name = "makeLabel"
     subelements = None
 

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
 
@@ -20,16 +18,14 @@ class ExternalGeometryExtension(GeometryExtension):
     """
 
     @constmethod
-    def testFlag(self) -> bool:
+    def testFlag(self, flag: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         """
-        ...
 
-    def setFlag(self) -> None:
+    def setFlag(self, flag: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
-        ...
     Ref: str = ""
     """Returns the reference string of this external geometry."""

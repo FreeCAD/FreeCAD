@@ -65,21 +65,21 @@ PyMOD_INIT_FUNC(Sketcher)
     PyObject* sketcherModule = Sketcher::initModule();
 
     // Add Types to module
-    Base::Interpreter().addType(&Sketcher::ConstraintPy ::Type, sketcherModule, "Constraint");
-    Base::Interpreter().addType(&Sketcher::SketchPy ::Type, sketcherModule, "Sketch");
+    Base::Interpreter().addType(&Sketcher::ConstraintPy::Type, sketcherModule, "Constraint");
+    Base::Interpreter().addType(&Sketcher::SketchPy::Type, sketcherModule, "Sketch");
     Base::Interpreter().addType(
-        &Sketcher::ExternalGeometryExtensionPy ::Type,
+        &Sketcher::ExternalGeometryExtensionPy::Type,
         sketcherModule,
         "ExternalGeometryExtension"
     );
     Base::Interpreter().addType(
-        &Sketcher::SketchGeometryExtensionPy ::Type,
+        &Sketcher::SketchGeometryExtensionPy::Type,
         sketcherModule,
         "SketchGeometryExtension"
     );
-    Base::Interpreter().addType(&Sketcher::GeometryFacadePy ::Type, sketcherModule, "GeometryFacade");
+    Base::Interpreter().addType(&Sketcher::GeometryFacadePy::Type, sketcherModule, "GeometryFacade");
     Base::Interpreter().addType(
-        &Sketcher::ExternalGeometryFacadePy ::Type,
+        &Sketcher::ExternalGeometryFacadePy::Type,
         sketcherModule,
         "ExternalGeometryFacade"
     );
@@ -90,20 +90,20 @@ PyMOD_INIT_FUNC(Sketcher)
     // This function is responsible for adding inherited slots from a type's base class.
 
     Sketcher::SketchGeometryType::init();
-    Sketcher::SketchGeometryExtension ::init();
-    Sketcher::ExternalGeometryExtension ::init();
-    Sketcher::SolverGeometryExtension ::init();
-    Sketcher::GeometryFacade ::init();
-    Sketcher::ExternalGeometryFacade ::init();
-    Sketcher::SketchObjectSF ::init();
-    Sketcher::SketchObject ::init();
-    Sketcher::SketchObjectPython ::init();
-    Sketcher::Sketch ::init();
-    Sketcher::Constraint ::init();
-    Sketcher::PropertyConstraintList ::init();
+    Sketcher::SketchGeometryExtension::init();
+    Sketcher::ExternalGeometryExtension::init();
+    Sketcher::SolverGeometryExtension::init();
+    Sketcher::GeometryFacade::init();
+    Sketcher::ExternalGeometryFacade::init();
+    Sketcher::SketchObjectSF::init();
+    Sketcher::SketchObject::init();
+    Sketcher::SketchObjectPython::init();
+    Sketcher::Sketch::init();
+    Sketcher::Constraint::init();
+    Sketcher::PropertyConstraintList::init();
 
     // connect to unified measurement facility
-    Sketcher::Measure ::initialize();
+    Sketcher::Measure::initialize();
 
 
     Base::Console().log("Loading Sketcher module… done\n");

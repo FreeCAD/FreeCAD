@@ -45,6 +45,7 @@ public:
                const Base::Color& color,
                const bool visible,
                const int lineNumber);
+
    // TODO: phase out the old 4 parameter constructor
    LineFormat(const int style,
                const double weight,
@@ -80,6 +81,7 @@ public:
     static void initCurrentLineFormat();
     static LineFormat& getCurrentLineFormat();
     static void setCurrentLineFormat(LineFormat& newformat);
+    static bool isEqual(const LineFormat& lf0, const LineFormat& lf1);
 
 private:
     int m_style;

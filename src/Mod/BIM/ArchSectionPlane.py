@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 ## @package ArchSectionPlane
 #  \ingroup ARCH
@@ -690,11 +687,11 @@ def getSVG(
 
     # add additional edge symbols from windows
     cutwindows = []
-    if cutface and windows and BoundBoxValid(cutface.BoundBox):
+    if cutface and windows and cutface.BoundBox.isValid():
         cutwindows = [
             w.Name
             for w in windows
-            if BoundBoxValid(w.Shape.BoundBox) and w.Shape.BoundBox.intersect(cutface.BoundBox)
+            if w.Shape.BoundBox.isValid() and w.Shape.BoundBox.intersect(cutface.BoundBox)
         ]
     if windows:
         sh = []
@@ -728,11 +725,6 @@ def getSVG(
                 svg += "</g>"
 
     return svg
-
-
-def BoundBoxValid(boundBox) -> bool:
-    """Return true if boundBox has a non-zero volume"""
-    return boundBox.XLength > 0 and boundBox.YLength > 0 and boundBox.ZLength > 0
 
 
 def getDXF(obj):
@@ -1222,14 +1214,6 @@ class _ViewProviderSectionPlane:
                 locked=True,
             )
             vobj.LineWidth = 1
-        if not "CutDistance" in pl:
-            vobj.addProperty(
-                "App::PropertyLength",
-                "CutDistance",
-                "SectionPlane",
-                QT_TRANSLATE_NOOP("App::Property", "Show the cut in the 3D view"),
-                locked=True,
-            )
         if not "LineColor" in pl:
             vobj.addProperty(
                 "App::PropertyColor",
@@ -1291,6 +1275,13 @@ class _ViewProviderSectionPlane:
     def onDocumentRestored(self, vobj):
 
         self.setProperties(vobj)
+
+    def finishRestoring(self):
+        """Remove CutDistance from older documents."""
+        vobj = self.Object.ViewObject
+        if "CutDistance" in vobj.PropertiesList:
+            vobj.setPropertyStatus("CutDistance", "-LockDynamic")
+            vobj.removeProperty("CutDistance")
 
     def getIcon(self):
 

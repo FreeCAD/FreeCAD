@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -61,6 +63,7 @@ public:
     App::PropertyFloat  HighlightAdjust;
     App::PropertyEnumeration BreakLineType;
     App::PropertyEnumeration BreakLineStyle;
+    App::PropertyColor  BreakLineColor;
     App::PropertyBool   ShowAllEdges;
     App::PropertyColor   FaceColor;
     App::PropertyPercent FaceTransparency;

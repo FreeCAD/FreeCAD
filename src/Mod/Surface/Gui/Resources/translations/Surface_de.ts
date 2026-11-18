@@ -216,7 +216,7 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation>Beschränkt die Oberfläche so, dass sie durch die ausgewählten Scheitelpunkte verläuft</translation>
+      <translation>Bestimmt die Oberfläche so, dass sie durch die ausgewählten Knotenpunkte verläuft</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>

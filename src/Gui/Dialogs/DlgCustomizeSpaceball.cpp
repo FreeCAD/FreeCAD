@@ -181,7 +181,7 @@ void ButtonModel::load3DConnexionButtons(const char* RequiredDeviceName)
     }
     catch (const std::exception& e) {
         // We don't mind not finding the file to be opened
-        Base::Console().warning("%s\n", e.what());
+        Base::Console().warning("{}\n", e.what());
     }
 }
 
@@ -483,20 +483,20 @@ QVariant CommandModel::data(const QModelIndex& index, int role) const
     }
     if (role == Qt::UserRole) {
         if (node->nodeType == CommandNode::CommandType) {
-            return {QString::fromLatin1(node->aCommand->getName())};
+            return {QString::fromUtf8(node->aCommand->getName())};
         }
         if (node->nodeType == CommandNode::GroupType) {
             if (node->children.empty()) {
                 return {};
             }
             CommandNode* childNode = node->children.at(0);
-            return {QString::fromLatin1(childNode->aCommand->getGroupName())};
+            return {QString::fromUtf8(childNode->aCommand->getGroupName())};
         }
         return {};
     }
     if (role == Qt::ToolTipRole) {
         if (node->nodeType == CommandNode::CommandType) {
-            return {QString::fromLatin1(node->aCommand->getToolTipText())};
+            return {QString::fromUtf8(node->aCommand->getToolTipText())};
         }
     }
     return {};
@@ -587,7 +587,7 @@ void CommandModel::goRemoveMacro(const QByteArray& macroName)
     QModelIndexList macroList(this->match(
         this->index(0, 0),
         Qt::UserRole,
-        QVariant(QString::fromLatin1(macroName.data())),
+        QVariant(QString::fromUtf8(macroName.data())),
         1,
         Qt::MatchWrap | Qt::MatchRecursive
     ));
@@ -648,7 +648,7 @@ QStringList CommandModel::orderedGroups()
     QStringList groups;
     std::vector<Command*> commands = Application::Instance->commandManager().getAllCommands();
     for (const auto& command : commands) {
-        QString groupName(QString::fromLatin1(command->getGroupName()));
+        QString groupName(QString::fromUtf8(command->getGroupName()));
         if (!groups.contains(groupName)) {
             groups << groupName;
         }
@@ -1004,7 +1004,7 @@ QStringList DlgCustomizeSpaceball::getModels()
     }
     catch (const std::exception& e) {
         // We don't mind not finding the file to be opened
-        Base::Console().warning("%s\n", e.what());
+        Base::Console().warning("{}\n", e.what());
     }
 
     return modelList;

@@ -51,6 +51,7 @@ import FreeCADGui
 import DraftVecUtils
 import WorkingPlane
 from draftguitools.gui_field_locks import InputFieldLockGroup
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.todo import todo
@@ -116,8 +117,20 @@ class DraftLineEdit(QtWidgets.QLineEdit):
             super().keyPressEvent(event)
 
 
-class DraftTaskPanel:
+class _BaseTaskPanel:
+    def __init__(self):
+        self.document = FreeCAD.ActiveDocument
+        self.dialog = None
+        gui_document = gui_utils.get_gui_document(self.document)
+        self.editing = gui_document.getInEdit() if gui_document is not None else None
+
+    def reset_edit(self):
+        gui_utils.reset_edit(self.document, self.editing)
+
+
+class DraftTaskPanel(_BaseTaskPanel):
     def __init__(self, widget, extra=None):
+        super().__init__()
         if extra:
             if isinstance(extra, list):
                 self.form = [widget] + extra
@@ -133,8 +146,7 @@ class DraftTaskPanel:
         if hasattr(FreeCADGui, "draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
         else:
-            if FreeCADGui.ActiveDocument:
-                FreeCADGui.ActiveDocument.resetEdit()
+            self.reset_edit()
             return True
 
     def reject(self):
@@ -145,8 +157,7 @@ class DraftTaskPanel:
             return
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
-        if FreeCADGui.ActiveDocument:
-            FreeCADGui.ActiveDocument.resetEdit()
+        self.reset_edit()
         return True
 
     def isAllowedAlterDocument(self):
@@ -175,6 +186,7 @@ class DraftToolBar:
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
+        self.panel = None
         self.mouse = True
         self.mouse_delay_input_start = time.time()
         self.cancel = None
@@ -241,6 +253,19 @@ class DraftToolBar:
         self.display_point_active = False  # prevent cyclic processing of point values
         self._locks = InputFieldLockGroup(on_change=self._on_lock_change)
         self._angle_lock_axis = None
+        FreeCAD.addDocumentObserver(self)
+
+    def slotDeletedDocument(self, doc):
+        """Document observer callback."""
+        if self.tray is None or not self.tray.isEnabled() or FreeCAD.ActiveDocument is not None:
+            return
+        self.tray.setEnabled(False)
+
+    def slotActivateDocument(self, doc):
+        """Document observer callback."""
+        if self.tray is None or self.tray.isEnabled():
+            return
+        self.tray.setEnabled(True)
 
     # ---------------------------------------------------------------------------
     # General UI setup
@@ -853,16 +878,33 @@ class DraftToolBar:
     # ---------------------------------------------------------------------------
 
     def _show_dialog(self, panel):
-        task = FreeCADGui.Control.showDialog(panel)
-        task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
-        task.setAutoCloseOnDeletedDocument(True)
+        if panel is not self.panel:
+            return
+        document = gui_utils.get_gui_document(panel.document)
+        if document is None:
+            return
+        panel.dialog = FreeCADGui.Control.showDialog(panel, document)
+        panel.dialog.setDocumentName(panel.document.Name)
+        panel.dialog.setAutoCloseOnDeletedDocument(True)
+
+    def _close_dialog(self, panel):
+        document = gui_utils.get_gui_document(panel.document)
+        if document is None or panel.dialog is None:
+            return
+        try:
+            panel.dialog.getDocumentName()
+        except RuntimeError:
+            # The captured dialog was already destroyed, possibly replaced by another task.
+            return
+        FreeCADGui.Control.closeDialog(document)
 
     def taskUi(self, title="Draft", extra=None, icon="Draft_Draft"):
         self._locks.dispose()
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
-        todo.delay(FreeCADGui.Control.closeDialog, None)
+        if self.panel is not None:
+            todo.delay(self._close_dialog, self.panel)
         self.baseWidget = DraftBaseWidget()
         self.layout = QtWidgets.QVBoxLayout(self.baseWidget)
         self.setupToolBar(task=True)
@@ -902,7 +944,7 @@ class DraftToolBar:
             and not self._is_field_locked("length")
         ):
             self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0, self.number_length(self.lengthValue.text()))
+            self.lengthValue.setSelection(0, utils.get_number_length(self.lengthValue.text()))
         elif (
             not force_xyz
             and self._is_field_locked("angle")
@@ -910,25 +952,25 @@ class DraftToolBar:
             and not self._is_field_locked("length")
         ):
             self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0, self.number_length(self.lengthValue.text()))
+            self.lengthValue.setSelection(0, utils.get_number_length(self.lengthValue.text()))
         elif f == "x":
             self.xValue.setFocus()
-            self.xValue.setSelection(0, self.number_length(self.xValue.text()))
+            self.xValue.setSelection(0, utils.get_number_length(self.xValue.text()))
         elif f == "y":
             self.yValue.setFocus()
-            self.yValue.setSelection(0, self.number_length(self.yValue.text()))
+            self.yValue.setSelection(0, utils.get_number_length(self.yValue.text()))
         elif f == "z":
             self.zValue.setFocus()
-            self.zValue.setSelection(0, self.number_length(self.zValue.text()))
+            self.zValue.setSelection(0, utils.get_number_length(self.zValue.text()))
         elif f == "radius":
             self.radiusValue.setFocus()
-            self.radiusValue.setSelection(0, self.number_length(self.radiusValue.text()))
+            self.radiusValue.setSelection(0, utils.get_number_length(self.radiusValue.text()))
         else:
             # f is None: focus the first field the cursor can still drive so
             # auto-focus skips locked fields instead of landing on them.
             target = self._first_unlocked_point_field()
             target.setFocus()
-            target.setSelection(0, self.number_length(target.text()))
+            target.setSelection(0, utils.get_number_length(target.text()))
 
     def _first_unlocked_point_field(self):
         """Return the first visible, enabled, unlocked point-entry field.
@@ -946,14 +988,6 @@ class DraftToolBar:
             if widget.isVisible() and widget.isEnabled() and not self._is_field_locked(key):
                 return widget
         return self.xValue
-
-    def number_length(self, st):
-        nl = len(st)
-        for char in st[::-1]:
-            if char in "0123456789.,-+/":
-                break
-            nl -= 1
-        return nl
 
     def extraLineUi(self):
         """shows length and angle controls"""
@@ -1104,7 +1138,10 @@ class DraftToolBar:
         self._locks.dispose()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.clearPointConstraintProvider(self)
-        todo.delay(FreeCADGui.Control.closeDialog, None)
+        panel = self.panel
+        self.panel = None
+        if panel is not None:
+            todo.delay(self._close_dialog, panel)
         self.cancel = None
         self.sourceCmd = None
         self.pointcallback = None
@@ -1270,8 +1307,9 @@ class DraftToolBar:
     def makeDumbTask(self, extra=None, on_close_call=None):
         """create a dumb taskdialog to prevent deleting the temp object"""
 
-        class TaskPanel:
+        class TaskPanel(_BaseTaskPanel):
             def __init__(self, extra=None, callback=None):
+                super().__init__()
                 if extra:
                     self.form = [extra]
                 self.callback = callback
@@ -1284,9 +1322,10 @@ class DraftToolBar:
                     self.callback()
                 return True
 
-        todo.delay(FreeCADGui.Control.closeDialog, None)
-        panel = TaskPanel(extra, on_close_call)
-        todo.delay(self._show_dialog, panel)
+        if self.panel is not None:
+            todo.delay(self._close_dialog, self.panel)
+        self.panel = TaskPanel(extra, on_close_call)
+        todo.delay(self._show_dialog, self.panel)
 
     # ---------------------------------------------------------------------------
     # Processing functions
@@ -1365,7 +1404,7 @@ class DraftToolBar:
     def checkx(self):
         if self.yValue.isEnabled():
             self.yValue.setFocus()
-            self.yValue.setSelection(0, self.number_length(self.yValue.text()))
+            self.yValue.setSelection(0, utils.get_number_length(self.yValue.text()))
             self.updateSnapper()
         else:
             self.checky()
@@ -1373,7 +1412,7 @@ class DraftToolBar:
     def checky(self):
         if self.zValue.isEnabled():
             self.zValue.setFocus()
-            self.zValue.setSelection(0, self.number_length(self.zValue.text()))
+            self.zValue.setSelection(0, utils.get_number_length(self.zValue.text()))
             self.updateSnapper()
         else:
             self.validatePoint()
@@ -1381,7 +1420,7 @@ class DraftToolBar:
     def checklength(self):
         if self.angleValue.isEnabled():
             self.angleValue.setFocus()
-            self.angleValue.setSelection(0, self.number_length(self.angleValue.text()))
+            self.angleValue.setSelection(0, utils.get_number_length(self.angleValue.text()))
             self.updateSnapper()
         else:
             self.validatePoint()
@@ -1415,8 +1454,8 @@ class DraftToolBar:
                     self.acceptPointInput()
             elif self.textValue.isVisible():
                 return False
-            else:
-                FreeCADGui.ActiveDocument.resetEdit()
+            elif self.panel is not None:
+                self.panel.reset_edit()
         return True
 
     def acceptPointInput(self):
@@ -1424,6 +1463,7 @@ class DraftToolBar:
 
     def finish(self, cont=None):
         """finish button action"""
+        panel = self.panel
         if self.sourceCmd:
             if cont is None:
                 cont = self.continueMode
@@ -1431,8 +1471,8 @@ class DraftToolBar:
         if self.cancel:
             self.cancel()
             self.cancel = None
-        if FreeCADGui.ActiveDocument:
-            FreeCADGui.ActiveDocument.resetEdit()
+        if panel is not None:
+            panel.reset_edit()
 
     def escape(self):
         """escapes the current command"""
@@ -1440,8 +1480,10 @@ class DraftToolBar:
 
     def closeLine(self):
         """close button action"""
+        panel = self.panel
         self.sourceCmd.finish(cont=self.continueMode, closed=True)
-        FreeCADGui.ActiveDocument.resetEdit()
+        if panel is not None:
+            panel.reset_edit()
 
     def wipeLine(self):
         """wipes existing segments of a line"""
@@ -2058,7 +2100,7 @@ class DraftToolBar:
                     "Draft_ShapeString",
                     "Draft_BezCurve",
                 ]
-                self.title = "Create Objects"
+                self.title = translate("draft", "Create Objects")
 
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (
@@ -2097,11 +2139,19 @@ class DraftToolBar:
             todo.delay(self.tray.show, None)
 
     def Deactivated(self):
-        if FreeCAD.activeDraftCommand is not None:
+        command = FreeCAD.activeDraftCommand
+        if command is not None:
             self.continueMode = False
-            FreeCAD.activeDraftCommand.finish()
+            if hasattr(command, "finish"):
+                command.finish()
+            else:
+                # Document activation precedes workbench deactivation.
+                document = gui_utils.get_gui_document(getattr(command, "doc", None))
+                if document is not None:
+                    dialog = FreeCADGui.Control.activeTaskDialog(document)
+                    if dialog is not None:
+                        dialog.reject()
         FreeCADGui.Control.clearTaskWatcher()
-        # self.tray = None
         if hasattr(self, "tray"):
             todo.delay(self.tray.hide, None)
 

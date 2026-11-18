@@ -208,8 +208,8 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid()
 
     if (lines > maxNumberOfLines.getValue()) {
         Base::Console().warning(
-            "Grid disabled: requested number of lines %d is larger than the maximum configured of "
-            "%d\n."
+            "Grid disabled: requested number of lines {} is larger than the maximum configured of "
+            "{}\n."
             "Either increase the 'GridSize' property to a more reasonable value (recommended) or "
             "increase the 'maxNumberOfLines' property.\n",
             lines,
@@ -413,8 +413,9 @@ void ViewProvider2DObject::onChanged(const App::Property* property)
 {
     ViewProviderPart::onChanged(property);
 
-    if (property == &ShowPlane) {
-        plane->whichChild = ShowPlane.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    if (property == &ShowPlane || property == &Visibility) {
+        plane->whichChild = (ShowPlane.getValue() && Visibility.getValue()) ? SO_SWITCH_ALL
+                                                                            : SO_SWITCH_NONE;
     }
 }
 
@@ -439,7 +440,7 @@ const char* ViewProvider2DObject::getDefaultDisplayMode() const
 
 void ViewProvider2DObject::updatePlane()
 {
-    plane->whichChild = ShowPlane.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    onChanged(&ShowPlane);
 
     Gui::coinRemoveAllChildren(plane);
 

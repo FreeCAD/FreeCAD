@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Many warnings caused by vtk
 if(CMAKE_COMPILER_IS_CLANGXX)
     add_compile_options(-Wno-pedantic) # needed for vtk headers
@@ -417,9 +419,7 @@ if (MSVC)
     target_compile_definitions(FemGui PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FemGui)
-endif()
+target_compile_warn_error(FemGui)
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})
@@ -490,7 +490,7 @@ fc_copy_sources(FemPythonUi "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiPythonUI_SRCS}
 
 INSTALL(FILES ${FemGuiPythonUI_SRCS} DESTINATION Mod/Fem/Resources/ui)
 
-SET_BIN_DIR(FemGui FemGui /Mod/Fem)
+SET_BIN_DIR(FemGui)
 SET_PYTHON_PREFIX_SUFFIX(FemGui)
 
 INSTALL(TARGETS FemGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

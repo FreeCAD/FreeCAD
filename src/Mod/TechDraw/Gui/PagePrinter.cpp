@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -52,6 +54,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
+#include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
@@ -104,6 +107,14 @@ PaperAttributes PagePrinter::getPaperAttributes(ViewProviderPage* vpPage)
     return getPaperAttributes(page);
 }
 
+Base::ScopeGuard PagePrinter::suspendScreenMode()
+{
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    return Base::ScopeGuard([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
+}
 
 //! construct a page layout object that reflects the characteristics of a DrawPage
 void PagePrinter::makePageLayout(TechDraw::DrawPage* dPage, QPageLayout& pageLayout, double& width,
@@ -146,6 +157,8 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
     printer->setPageLayout(pageLayout);
     QPainter painter(printer);
 
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
+
     auto ourDoc = Gui::Application::Instance->getDocument(doc);
     auto docModifiedState = ourDoc->isModified();
 
@@ -170,10 +183,16 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
             printer->newPage();
         }
         firstTime = false;
+
+        QGISVGTemplate* ourTemplate{nullptr};
+        QGSPage* ourScene{nullptr};
+        preRenderSetUp(vpp, ourScene, ourTemplate);
+
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
         renderPage(vpp, painter, sourceRect, targetRect);
-        dPage->redrawCommand();
+
+        postRenderCleanUp(ourScene, dPage, ourTemplate);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -189,7 +208,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         // Note: this does not protect against the case where the proposed file does not exist yet
         //       and creation of the file will not be permitted (ex attempt to write to restricted
         //       directory).
-        Base::Console().error("File %s is not available for writing.\n", qPrintable(outputFile));
+        Base::Console().error("File {} is not available for writing.\n", qPrintable(outputFile));
         return;
     }
 
@@ -222,6 +241,8 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     // start() or end() until all the pages are printed.
     QPainter painter(&pdfWriter);
 
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
+
     auto ourDoc = Gui::Application::Instance->getDocument(doc);
     auto docModifiedState = ourDoc->isModified();
 
@@ -236,8 +257,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
             continue;// can't print this one
         }
 
-        auto ourScene = vpp->getQGSPage();
-        ourScene->setExportingPdf(true);
+        QGISVGTemplate* ourTemplate{nullptr};
+        QGSPage* ourScene{nullptr};
+        preRenderSetUp(vpp, ourScene, ourTemplate);
 
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width{0};
@@ -253,9 +275,8 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
-        dPage->redrawCommand();
 
-        ourScene->setExportingPdf(false);
+        postRenderCleanUp(ourScene, dPage, ourTemplate);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -320,7 +341,7 @@ void PagePrinter::renderPage(ViewProviderPage* vpp, QPainter& painter, QRectF& s
 
 
 /// print the Page associated with the view provider
-void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPreview)
+void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
 {
     QPageLayout pageLayout = printer->pageLayout();
 
@@ -332,21 +353,21 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPrev
 
     QPainter painter(printer);
 
-    auto ourScene = vpPage->getQGSPage();
-    if (!printer->outputFileName().isEmpty() ||
-        isPreview) {
-        ourScene->setExportingPdf(true);
-    }
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
+
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
+
+    QGISVGTemplate* ourTemplate{nullptr};
+    QGSPage* ourScene{nullptr};
+    preRenderSetUp(vpPage, ourScene, ourTemplate);
 
     QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
     renderPage(vpPage, painter, sourceRect, targetRect);
 
-    ourScene->setExportingPdf(false);  // doesn't hurt if not pdf
+    postRenderCleanUp(ourScene, dPage, ourTemplate);
     ourDoc->setModified(docModifiedState);
-    dPage->redrawCommand();
 }
 
 
@@ -361,7 +382,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     if (fi.exists() && !fi.isWritable()) {
          // this guards against a no-write situation on Win (issue #25299)
          // See comment in printAllPdf re new file creaion
-        Base::Console().error("File %s is not available for writing.\n", file.c_str());
+        Base::Console().error("File {} is not available for writing.\n", file);
         return;
     }
 
@@ -390,10 +411,14 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     // pdfWriter layout is established.
     QPainter painter(&pdfWriter);
 
-    auto ourScene = vpPage->getQGSPage();
-    ourScene->setExportingPdf(true);
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
+
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
+
+    QGISVGTemplate* ourTemplate{nullptr};
+    QGSPage* ourScene{nullptr};
+    preRenderSetUp(vpPage, ourScene, ourTemplate);
 
     // render the page
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
@@ -403,9 +428,35 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     QRect targetRect(0, 0, twide, thigh);
     renderPage(vpPage, painter, sourceRect, targetRect);
 
-    ourScene->setExportingPdf(false);
+    postRenderCleanUp(ourScene, dPage, ourTemplate);
     ourDoc->setModified(docModifiedState);
+}
+
+void PagePrinter::preRenderSetUp(TechDrawGui::ViewProviderPage* vpp,
+                                 QGSPage*& ourScene,
+                                 QGISVGTemplate*& ourTemplate)
+{
+    if (!vpp) {
+        return;
+    }
+    ourScene = vpp->getQGSPage();
+    // setExportingPdf does not hurt anything here and protects against Windows
+    // Pdf writer not asking for file name until after rendering.
+    ourScene->setExportingPdf(true);
+    ourTemplate = static_cast<QGISVGTemplate*>(vpp->getQTemplate());
+    ourTemplate->updateView(true);
+}
+
+void PagePrinter::postRenderCleanUp(QGSPage* ourScene,
+                                    TechDraw::DrawPage* dPage,
+                                    QGISVGTemplate* ourTemplate)
+{
+    if (!ourScene) {
+        return;
+    }
+    ourScene->setExportingPdf(false);
     dPage->redrawCommand();
+    ourTemplate->updateView(true);
 }
 
 
@@ -419,6 +470,8 @@ void PagePrinter::saveSVG(ViewProviderPage* vpPage, const std::string& file)
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(file);
     QString filename = QString::fromStdString(filespec);
+
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
 
     auto ourScene = vpPage->getQGSPage();
     ourScene->setExportingSvg(true);

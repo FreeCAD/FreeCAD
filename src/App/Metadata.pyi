@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
@@ -197,7 +196,6 @@ class Metadata(PyObjectBase):
         provide a maximum version (implying that that content item will work with all
         known versions).
         """
-        ...
 
     def getFirstSupportedFreeCADVersion(self) -> Optional[str]:
         """
@@ -208,7 +206,6 @@ class Metadata(PyObjectBase):
         known versions. Technically limited to 0.20 as the lowest known version since
         the metadata standard was added then).
         """
-        ...
 
     def supportsCurrentFreeCAD(self) -> bool:
         """
@@ -217,7 +214,6 @@ class Metadata(PyObjectBase):
         specifically indicates that it does support the current version. Does not
         recurse into Content items.
         """
-        ...
 
     def getGenericMetadata(self, name: str, /) -> List[Any]:
         """
@@ -226,45 +222,38 @@ class Metadata(PyObjectBase):
         dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
         in the metadata file.
         """
-        ...
 
     def addContentItem(self, content_type: str, metadata: "Metadata", /) -> None:
         """
         Add a new content item of type 'content_type' with metadata 'metadata'.
         """
-        ...
 
     def removeContentItem(self, content_type: str, name: str, /) -> None:
         """
         Remove the content item of type 'content_type' with name 'name'.
         """
-        ...
 
     def addMaintainer(self, name: str, email: str, /) -> None:
         """
         Add a new Maintainer.
         """
-        ...
 
     def removeMaintainer(self, name: str, email: str, /) -> None:
         """
         Remove the Maintainer.
         """
-        ...
 
     def addLicense(self, short_code: str, path: str, /) -> None:
         """
         Add a new License.
         """
-        ...
 
-    def removeLicense(self, short_code: str, /) -> None:
+    def removeLicense(self, short_code: str, path: str, /) -> None:
         """
         Remove the License.
         """
-        ...
 
-    def addUrl(self, url_type: str, url: str, branch: str, /) -> None:
+    def addUrl(self, url_type: str, url: str, branch: str = ..., /) -> None:
         """
         Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',
 
@@ -272,92 +261,77 @@ class Metadata(PyObjectBase):
 
         must also specify the 'branch' parameter.
         """
-        ...
 
-    def removeUrl(self, url_type: str, url: str, /) -> None:
+    def removeUrl(self, url_type: str, url: str, branch: str = ..., /) -> None:
         """
         Remove the Url.
         """
-        ...
 
     def addAuthor(self, name: str, email: str, /) -> None:
         """
         Add a new Author with name 'name', and optionally email 'email'.
         """
-        ...
 
     def removeAuthor(self, name: str, email: str, /) -> None:
         """
         Remove the Author.
         """
-        ...
 
-    def addDepend(self, name: str, kind: str, optional: bool, /) -> None:
+    def addDepend(self, dependency: dict[str, Any], /) -> None:
         """
-        Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),
+        Add a new Dependency described by the given dictionary.
 
-        'internal', 'addon', or 'python').
+        See the `Depend` attribute for the recognized keys.
         """
-        ...
 
-    def removeDepend(self, name: str, kind: str, /) -> None:
+    def removeDepend(self, dependency: dict[str, Any], /) -> None:
         """
-        Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any
+        Remove the Dependency described by the given dictionary.
 
-        matching name is removed).
+        See the `Depend` attribute for the recognized keys.
         """
-        ...
 
-    def addConflict(self, name: str, kind: str, /) -> None:
+    def addConflict(self, dependency: dict[str, Any], /) -> None:
         """
         Add a new Conflict. See documentation for addDepend().
         """
-        ...
 
-    def removeConflict(self, name: str, kind: str, /) -> None:
+    def removeConflict(self, dependency: dict[str, Any], /) -> None:
         """
         Remove the Conflict. See documentation for removeDepend().
         """
-        ...
 
-    def addReplace(self, name: str, /) -> None:
+    def addReplace(self, dependency: dict[str, Any], /) -> None:
         """
         Add a new Replace.
         """
-        ...
 
-    def removeReplace(self, name: str, /) -> None:
+    def removeReplace(self, dependency: dict[str, Any], /) -> None:
         """
         Remove the Replace.
         """
-        ...
 
     def addTag(self, tag: str, /) -> None:
         """
         Add a new Tag.
         """
-        ...
 
     def removeTag(self, tag: str, /) -> None:
         """
         Remove the Tag.
         """
-        ...
 
     def addFile(self, filename: str, /) -> None:
         """
         Add a new File.
         """
-        ...
 
     def removeFile(self, filename: str, /) -> None:
         """
         Remove the File.
         """
-        ...
 
     def write(self, filename: str, /) -> None:
         """
         Write the metadata to the given file as XML data.
         """
-        ...

@@ -25,7 +25,6 @@
 #include <QDockWidget>
 #include <QKeyEvent>
 #include <QMessageBox>
-#include <QMetaObject>
 #include <QSignalMapper>
 
 
@@ -93,7 +92,15 @@ public:
 
         // search for the placement property
         std::map<std::string, App::Property*>::iterator jt;
-        jt = std::find_if(props.begin(), props.end(), find_placement(propertyName));
+        std::string name = propertyName;
+        if (name == "Placement") {
+            // Links synchronize Placement and LinkPlacement, but only one alias is visible.
+            auto* placement = obj->getPlacementProperty();
+            if (placement && !placement->testStatus(App::Property::Hidden)) {
+                name = placement->getName();
+            }
+        }
+        jt = std::find_if(props.begin(), props.end(), find_placement(name));
         if (jt != props.end()) {
             return dynamic_cast<App::PropertyPlacement*>(jt->second);
         }
@@ -136,6 +143,11 @@ void PlacementHandler::setIgnoreTransactions(bool value)
     ignoreTransaction = value;
 }
 
+bool PlacementHandler::isChangingProperty() const
+{
+    return changeProperty;
+}
+
 void PlacementHandler::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
     selectionObjects = selection;
@@ -176,31 +188,27 @@ void PlacementHandler::appendDocument(const std::string& name)
 void PlacementHandler::activatedDocument(const std::string& name)
 {
     appendDocument(name);
-
-    if (changeProperty) {
-        QMetaObject::invokeMethod(this, "openTransaction", Qt::QueuedConnection);
-    }
 }
 
 void PlacementHandler::openTransaction()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc) {
-        activeDoc->openTransaction("Placement");
+        transactionID = activeDoc->openTransaction("Placement");
     }
 }
 
 void PlacementHandler::revertTransformation()
 {
+    if (changeProperty) {
+        abortCommandIfActive();
+        return;
+    }
+
     for (const auto& it : documents) {
         Gui::Document* document = Application::Instance->getDocument(it.c_str());
         if (document) {
-            if (!changeProperty) {
-                revertTransformationOfViewProviders(document);
-            }
-            else {
-                abortCommandIfActive(document);
-            }
+            revertTransformationOfViewProviders(document);
         }
     }
 }
@@ -320,7 +328,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
     // When directly changing the property we now only have to commit the transaction,
     // do a recompute and open a new transaction
     if (changeProperty) {
-        commitCommandIfActive(document);
+        commitCommandIfActive();
         tryRecompute(document);
         openCommandIfActive(document);
     }
@@ -331,7 +339,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
             for (const auto& it : sel) {
                 applyPlacement(it, data, incremental);
             }
-            commitCommandIfActive(document);
+            commitCommandIfActive();
             tryRecompute(document);
         }
         else {
@@ -352,7 +360,7 @@ void PlacementHandler::applyPlacement(const App::DocumentObject* obj, const QStr
             cmd = getSimplePlacement(obj, data);
         }
 
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
 }
 
@@ -360,9 +368,9 @@ QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj
 {
     return QStringLiteral(R"(App.getDocument("%1").%2.%3=%4.multiply(App.getDocument("%1").%2.%3))")
         .arg(
-            QString::fromLatin1(obj->getDocument()->getName()),
-            QString::fromLatin1(obj->getNameInDocument()),
-            QString::fromLatin1(this->propertyName.c_str()),
+            QString::fromUtf8(obj->getDocument()->getName()),
+            QString::fromUtf8(obj->getNameInDocument()),
+            QString::fromUtf8(this->propertyName.c_str()),
             data
         );
 }
@@ -371,9 +379,9 @@ QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, con
 {
     return QStringLiteral("App.getDocument(\"%1\").%2.%3=%4")
         .arg(
-            QString::fromLatin1(obj->getDocument()->getName()),
-            QString::fromLatin1(obj->getNameInDocument()),
-            QString::fromLatin1(this->propertyName.c_str()),
+            QString::fromUtf8(obj->getDocument()->getName()),
+            QString::fromUtf8(obj->getNameInDocument()),
+            QString::fromUtf8(this->propertyName.c_str()),
             data
         );
 }
@@ -456,21 +464,21 @@ void PlacementHandler::slotActiveDocument(const Gui::Document& doc)
 void PlacementHandler::openCommandIfActive(Gui::Document* doc)
 {
     if (!ignoreTransaction) {
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+        transactionID = doc->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
     }
 }
 
-void PlacementHandler::commitCommandIfActive(Gui::Document* doc)
+void PlacementHandler::commitCommandIfActive()
 {
     if (!ignoreTransaction) {
-        doc->commitCommand();
+        Gui::Command::commitCommand(std::exchange(transactionID, 0));
     }
 }
 
-void PlacementHandler::abortCommandIfActive(Gui::Document* doc)
+void PlacementHandler::abortCommandIfActive()
 {
     if (!ignoreTransaction) {
-        doc->abortCommand();
+        Gui::Command::abortCommand(std::exchange(transactionID, 0));
     }
 }
 
@@ -659,7 +667,7 @@ void Placement::onSelectedVertexClicked()
             axis = Base::Vector3d(picked[0] - picked[1]);
         }
         double length = axis.Length();
-        Base::Console().message("Distance: %.8f\n", length);
+        Base::Console().message("Distance: {:.8f}\n", length);
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {  // copy to clipboard on
                                                                        // Shift+click
             QLocale loc;
@@ -710,14 +718,14 @@ void Placement::onSelectedVertexClicked()
         double angle;
         rot.getRawValue(tmp, angle);
         double length = (a - c).Length();
-        Base::Console().message("Distance: %.8f\n", length);
+        Base::Console().message("Distance: {:.8f}\n", length);
         Base::Vector3d v1(a - b);
         Base::Vector3d v2(c - b);
         v1.Normalize();
         v2.Normalize();
         double targetAngle = Base::toDegrees(v2.GetAngle(v1));
         Base::Console().message(
-            "Target angle: %.8f degrees, complementary: %.8f degrees\n",
+            "Target angle: {:.8f} degrees, complementary: {:.8f} degrees\n",
             targetAngle,
             90.0 - targetAngle
         );
@@ -923,6 +931,11 @@ void Placement::setPropertyName(const std::string& name)
 void Placement::setIgnoreTransactions(bool value)
 {
     handler.setIgnoreTransactions(value);
+}
+
+bool Placement::isChangingProperty() const
+{
+    return handler.isChangingProperty();
 }
 
 /*!
@@ -1238,6 +1251,11 @@ void TaskPlacement::open()
     widget->open();
 }
 
+bool TaskPlacement::isAllowedAlterDocument() const
+{
+    return !widget->isChangingProperty();
+}
+
 void TaskPlacement::setPropertyName(const QString& name)
 {
     widget->setPropertyName(name.toStdString());
@@ -1513,7 +1531,7 @@ Py::Object TaskPlacementPy::isAllowedAlterDocument(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-    return Py::Boolean(true);
+    return Py::Boolean(!widget || !widget->isChangingProperty());
 }
 
 Py::Object TaskPlacementPy::isAllowedAlterView(const Py::Tuple& args)

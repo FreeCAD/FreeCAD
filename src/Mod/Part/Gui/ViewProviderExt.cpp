@@ -35,7 +35,6 @@
 #include <Poly_Polygon3D.hxx>
 #include <Poly_PolygonOnTriangulation.hxx>
 #include <Poly_Triangulation.hxx>
-#include <Standard_Version.hxx>
 #include <TColgp_Array1OfDir.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TColStd_Array1OfInteger.hxx>
@@ -579,8 +578,17 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
         }
         else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex() + 1;
-            str << "Edge" << edge;
+            // The line index is NOT the edge index: the line set omits edges that
+            // produced no polyline, which shifts every later line index down.
+            // SoBrepEdgeSet stores the topological edge in partIndex; fall back to
+            // translating the line index for details built elsewhere.
+            int edge = line_detail->getPartIndex();
+            if (edge < 1 && lineset) {
+                edge = lineset->edgeIndexFromLine(line_detail->getLineIndex());
+            }
+            if (edge >= 1) {
+                str << "Edge" << edge;
+            }
         }
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
@@ -606,8 +614,16 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         return detail;
     }
     else if (element == "Edge") {
+        // Inverse of the mapping used in getElement(). An edge that produced no
+        // polyline has nothing to highlight, so report no detail rather than
+        // guessing a line index that belongs to a different edge.
+        const int line = lineset ? lineset->lineIndexFromEdge(index) : index - 1;
+        if (line == SoBrepEdgeSet::InvalidLine) {
+            return nullptr;
+        }
         SoLineDetail* detail = new SoLineDetail();
-        detail->setLineIndex(index - 1);
+        detail->setLineIndex(line);
+        detail->setPartIndex(index);
         return detail;
     }
     else if (element == "Vertex") {
@@ -928,7 +944,7 @@ bool ViewProviderPartExt::loadParameter()
         "User parameter:BaseApp/Preferences/Mod/Part"
     );
     float deviation = hGrp->GetFloat("MeshDeviation", 0.2);
-    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection", 28.65);
+    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection", 28.5);
     NormalsFromUV = hGrp->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
     if (Deviation.getValue() != deviation) {
@@ -937,6 +953,7 @@ bool ViewProviderPartExt::loadParameter()
     }
     if (AngularDeflection.getValue() != angularDeflection) {
         AngularDeflection.setValue(angularDeflection);
+        changed = true;
     }
 
     return changed;
@@ -1049,6 +1066,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         faceset->coordIndex.setNum(0);
         faceset->partIndex.setNum(0);
         lineset->coordIndex.setNum(0);
+        lineset->setEdgeMapping({});
         nodeset->startIndex.setValue(0);
         return;
     }
@@ -1087,11 +1105,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     meshParams.AllowQualityDecrease = Standard_True;
 
     // Clear triangulation and PCurves from geometry which can slow down the process
-#if OCC_VERSION_HEX < 0x070600
-    BRepTools::Clean(shape);
-#else
     BRepTools::Clean(shape, Standard_True);
-#endif
 
     BRepMesh_IncrementalMesh(shape, meshParams);
 
@@ -1132,6 +1146,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     // the edges.
     std::map<int, std::vector<int32_t>> lineSetMap;
     std::set<int> edgeIdxSet;
+    std::set<int> edgeFailed;
     std::vector<int32_t> edgeVector;
 
     // count and index the edges
@@ -1210,14 +1225,8 @@ void ViewProviderPartExt::setupCoinGeometry(
         TopAbs_Orientation orient = actFace.Orientation();
 
         // cycling through the poly mesh
-#if OCC_VERSION_HEX < 0x070600
-        const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
-        const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
-        TColgp_Array1OfDir Normals(Nodes.Lower(), Nodes.Upper());
-#else
         int numNodes = mesh->NbNodes();
         TColgp_Array1OfDir Normals(1, numNodes);
-#endif
         if (normalsFromUV) {
             Part::Tools::getPointNormals(actFace, mesh, Normals);
         }
@@ -1225,11 +1234,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         for (int g = 1; g <= nbTriInFace; g++) {
             // Get the triangle
             Standard_Integer N1, N2, N3;
-#if OCC_VERSION_HEX < 0x070600
-            Triangles(g).Get(N1, N2, N3);
-#else
             mesh->Triangle(g).Get(N1, N2, N3);
-#endif
 
             // change orientation of the triangle if the face is reversed
             if (orient != TopAbs_FORWARD) {
@@ -1239,11 +1244,7 @@ void ViewProviderPartExt::setupCoinGeometry(
             }
 
             // get the 3 points of this triangle
-#if OCC_VERSION_HEX < 0x070600
-            gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
-#else
             gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
-#endif
 
             // get the 3 normals of this triangle
             gp_Vec NV1, NV2, NV3;
@@ -1308,6 +1309,7 @@ void ViewProviderPartExt::setupCoinGeometry(
                 Handle(Poly_PolygonOnTriangulation)
                     aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                 if (aPoly.IsNull()) {
+                    edgeFailed.insert(edgeIndex);
                     continue;  // polygon does not exist
                 }
 
@@ -1323,11 +1325,7 @@ void ViewProviderPartExt::setupCoinGeometry(
                     // rare cases where some points are only referenced by the polygon
                     // but not by any triangle. Thus, we must apply the coordinates to
                     // make sure that everything is properly set.
-#if OCC_VERSION_HEX < 0x070600
-                    gp_Pnt p(Nodes(nodeIndex));
-#else
                     gp_Pnt p(mesh->Node(nodeIndex));
-#endif
                     if (!identity) {
                         p.Transform(myTransf);
                     }
@@ -1382,12 +1380,14 @@ void ViewProviderPartExt::setupCoinGeometry(
         }
     }
 
+    std::map<int, int> coordsMap;
     nodeset->startIndex.setValue(faceNodeOffset);
     for (int i = 0; i < vertexMap.Extent(); i++) {
         const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i + 1));
         gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
 
         verts[faceNodeOffset + i] = Base::convertTo<SbVec3f>(pnt);
+        coordsMap[i + 1] = faceNodeOffset + i;
     }
 
     // normalize all normals
@@ -1395,11 +1395,45 @@ void ViewProviderPartExt::setupCoinGeometry(
         norms[i].normalize();
     }
 
+    // If no adjacent face has a polygon for an edge, use its endpoint coordinates so that
+    // the edge still has a line entry. Fall back to a zero-length line to preserve the edge
+    // numbering when no usable polygon is available.
+    for (int edgeIndex : edgeFailed) {
+        if (lineSetMap.find(edgeIndex) != lineSetMap.end()) {
+            continue;
+        }
+
+        int indexedPnt1 = faceNodeOffset;
+        int indexedPnt2 = faceNodeOffset;
+        TopoDS_Edge edge = TopoDS::Edge(edgeMap.FindKey(edgeIndex));
+        Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(edge, aLoc);
+        if (!aPoly.IsNull() && aPoly->NbNodes() == 2) {
+            const int v1 = vertexMap.FindIndex(TopExp::FirstVertex(edge));
+            const int v2 = vertexMap.FindIndex(TopExp::LastVertex(edge));
+            const auto it = coordsMap.find(v1);
+            const auto jt = coordsMap.find(v2);
+            if (it != coordsMap.end() && jt != coordsMap.end()) {
+                indexedPnt1 = it->second;
+                indexedPnt2 = jt->second;
+            }
+        }
+
+        lineSetMap[edgeIndex].push_back(indexedPnt1);
+        lineSetMap[edgeIndex].push_back(indexedPnt2);
+    }
+
+    // lineSetMap may omit edges that produced no usable polyline. The emitted polyline order
+    // can therefore have gaps with respect to the topological edge numbering, so record the
+    // real edge index of each polyline rather than inferring it from the line index later.
     std::vector<int32_t> lineSetCoords;
+    std::vector<int> lineToEdge;
+    lineToEdge.reserve(lineSetMap.size());
     for (const auto& it : lineSetMap) {
         lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
         lineSetCoords.push_back(-1);
+        lineToEdge.push_back(it.first);
     }
+    lineset->setEdgeMapping(std::move(lineToEdge));
 
     // preset the index vector size
     numLines = lineSetCoords.size();
@@ -1420,11 +1454,11 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 #ifdef FC_DEBUG
     Base::Console().log(
-        "ViewProvider update time: %f s\n",
+        "ViewProvider update time: {:f} s\n",
         Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed())
     );
     Base::Console().log(
-        "Shape mesh info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",
+        "Shape mesh info: Faces:{} Edges:{} Nodes:{} Triangles:{} IdxVec:{}\n",
         numFaces,
         numEdges,
         numNodes,

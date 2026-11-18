@@ -473,7 +473,9 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 
         // Update label
         std::string userLabel(obj->Label.getValue());
-        std::string name = userLabel.substr(0, userLabel.find(":"));
+        auto colonPos = userLabel.find(':');
+        std::string name = colonPos != std::string::npos ? userLabel.substr(0, colonPos)
+                                                         : obj->getNameInDocument();
         obj->Label.setValue((name + ": ") + obj->getResultString());
     }
 

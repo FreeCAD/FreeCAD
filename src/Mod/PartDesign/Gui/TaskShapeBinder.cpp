@@ -199,7 +199,7 @@ void TaskShapeBinder::deleteItem()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data = item->text().toLatin1();
+        QByteArray data = item->text().toUtf8();
         delete item;
 
         // search inside the list of sub-elements
@@ -454,8 +454,8 @@ bool TaskDlgShapeBinder::reject()
     if (!vp.expired()) {
         // roll back the done things (deletes 'vp')
         // Gui::Command::abortCommand();
-        vp->getDocument()->abortCommand();
         App::Document* doc = vp->getObject()->getDocument();
+        vp->getDocument()->abortCommand();
         Gui::cmdGuiDocument(doc, "resetEdit()");
         Gui::cmdAppDocument(doc, "recompute()");
     }

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 add_subdirectory(App)
 
@@ -238,19 +239,12 @@ SET(PatternLib_Files
 )
 
 SET(MachiningLib_Files
-    Resources/Materials/Machining/AluminumCastAlloy.FCMat
-    Resources/Materials/Machining/AluminumWroughtAlloy.FCMat
-    Resources/Materials/Machining/AusteniticStainlessSteel.FCMat
-    Resources/Materials/Machining/BalsaWood.FCMat
-    Resources/Materials/Machining/GrayCastIron.FCMat
-    Resources/Materials/Machining/HardWood.FCMat
-    Resources/Materials/Machining/LowAlloySteel.FCMat
-    Resources/Materials/Machining/MalleableCastIron.FCMat
-    Resources/Materials/Machining/MildSteel.FCMat
-    Resources/Materials/Machining/MDF.FCMat
-    Resources/Materials/Machining/ParticleBoard.FCMat
-    Resources/Materials/Machining/SoftWood.FCMat
-    Resources/Materials/Machining/ToolSteel.FCMat
+    Resources/Materials/Machining/Aluminum-Generic.FCMat
+    Resources/Materials/Machining/Brass-Generic.FCMat
+    Resources/Materials/Machining/Copper-Generic.FCMat
+    Resources/Materials/Machining/Plastic-Generic.FCMat
+    Resources/Materials/Machining/Steel-Generic.FCMat
+    Resources/Materials/Machining/Wood-Generic.FCMat
 )
 
 SET(MaterialTestLib_Files

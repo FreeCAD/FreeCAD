@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -27,7 +29,10 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Base/Tools.h>
+
 #include "ViewProviderPage.h"
+#include "QGISVGTemplate.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -104,7 +109,9 @@ public:
     static PaperAttributes getPaperAttributes(TechDraw::DrawPage* pageObject);
     static PaperAttributes getPaperAttributes(ViewProviderPage* vpPage);
 
-    static void print(ViewProviderPage* vpPage, QPrinter* printer, bool isPreview = false);
+    static Base::ScopeGuard suspendScreenMode();
+
+    static void print(ViewProviderPage* vpPage, QPrinter* printer);
     static void printPdf(ViewProviderPage* vpPage, const std::string& file);
     static void printAll(QPrinter* printer, App::Document* doc);
     static void printAllPdf(QPrinter* printer, App::Document* doc);
@@ -112,6 +119,13 @@ public:
     static void saveSVG(ViewProviderPage* vpPage, const std::string& file);
     static void saveDXF(ViewProviderPage* vpPage, const std::string& file);
     static void savePDF(ViewProviderPage* vpPage, const std::string& file);
+
+    static void postRenderCleanUp(QGSPage* ourScene,
+                                    TechDraw::DrawPage* dPage,
+                                    QGISVGTemplate* ourTemplate);
+    static void preRenderSetUp(TechDrawGui::ViewProviderPage* vpp,
+                               QGSPage*& ourScene,
+                               QGISVGTemplate*& ourTemplate);
 };
 
 }  // namespace TechDrawGui

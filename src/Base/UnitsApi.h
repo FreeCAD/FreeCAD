@@ -25,14 +25,15 @@
 #pragma once
 
 #include "UnitsSchema.h"
-#include "UnitsSchemas.h"
-#include "UnitsSchemasData.h"
 #include "Quantity.h"
+#include <memory>
 
 using PyObject = struct _object;
 
 namespace Base
 {
+class UnitsSchemas;
+struct NumericLocaleContext;
 class BaseExport UnitsApi
 {
     friend class UnitsModulePy;
@@ -44,7 +45,16 @@ public:
 
     static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
 
+    static std::string schemaTranslate(
+        const Quantity& quant,
+        const NumericLocaleContext& formatting,
+        double& factor,
+        std::string& unitString
+    );
+
     static std::string schemaTranslate(const Quantity& quant);
+
+    static std::string schemaTranslate(const Quantity& quant, const NumericLocaleContext& formatting);
 
     static std::string toUnicodeSuperscript(const std::string& str);
 
@@ -65,13 +75,10 @@ public:
     static bool isMultiUnitLength();
     static std::string getBasicLengthUnit();
 
-    static std::size_t getDefSchemaNum()
-    {
-        return schemas->spec().num;
-    }
+    static std::size_t getDefSchemaNum();
 
 protected:
-    static inline auto schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
+    static std::unique_ptr<UnitsSchemas> schemas;
     static inline int decimals {-1};
     static inline int denominator {-1};
 

@@ -104,7 +104,8 @@ public:
         {
             None,
             Icon,
-            DatumLabel
+            DatumPresentation,
+            DatumAnnotation
         };
 
         HitKind Kind = HitKind::None;

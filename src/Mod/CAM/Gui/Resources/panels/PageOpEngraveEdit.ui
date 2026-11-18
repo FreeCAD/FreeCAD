@@ -18,19 +18,72 @@
     <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
+       <widget class="QLabel" name="label_pattern">
+        <property name="text">
+         <string>Cut pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cutPattern">
+        <item>
+         <property name="text">
+          <string>Bidirectional</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Directional</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_sorting">
+        <property name="text">
+         <string>Sorting</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="sorting">
+        <item>
+         <property name="text">
+          <string>Automatic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Manual</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Start at vertex</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="2" column="1">
        <widget class="QSpinBox" name="startVertex">
-        <property name="toolTip">
-         <string>Specify the vertex number of the underlying shape string at which engraving should start</string>
-        </property>
         <property name="maximum">
          <number>999999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="chkReverse">
+        <property name="text">
+         <string>Reverse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="chkApproximation">
+        <property name="text">
+         <string>Approximation</string>
         </property>
        </widget>
       </item>

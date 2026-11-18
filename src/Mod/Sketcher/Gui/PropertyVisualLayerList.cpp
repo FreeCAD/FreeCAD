@@ -51,7 +51,15 @@ PropertyVisualLayerList::~PropertyVisualLayerList() = default;
 
 PyObject* PropertyVisualLayerList::getPyObject()
 {
-    THROWM(Base::NotImplementedError, "PropertyVisualLayerList has no python counterpart");
+    Py::List layers;
+    for (const auto& layer : _lValueList) {
+        Py::Dict values;
+        values.setItem("LinePattern", Py::Long(static_cast<unsigned long>(layer.getLinePattern())));
+        values.setItem("LineWidth", Py::Float(layer.getLineWidth()));
+        values.setItem("Visible", Py::Boolean(layer.isVisible()));
+        layers.append(values);
+    }
+    return Py::new_reference_to(layers);
 }
 
 VisualLayer PropertyVisualLayerList::getPyValue(PyObject* item) const

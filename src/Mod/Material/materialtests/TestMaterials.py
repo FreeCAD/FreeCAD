@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2023 David Carter
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-#**************************************************************************
-#   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
-#                                                                         *
-#   This file is part of the FreeCAD CAx development system.              *
-#                                                                         *
-#   This program is free software; you can redistribute it and/or modify  *
-#   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#   as published by the Free Software Foundation; either version 2 of     *
-#   the License, or (at your option) any later version.                   *
-#   for detail see the LICENCE text file.                                 *
-#                                                                         *
-#   FreeCAD is distributed in the hope that it will be useful,            *
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#   GNU Library General Public License for more details.                  *
-#                                                                         *
-#   You should have received a copy of the GNU Library General Public     *
-#   License along with FreeCAD; if not, write to the Free Software        *
-#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#   USA                                                                   *
-#**************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 Test module for FreeCAD material cards and APIs
@@ -76,6 +73,9 @@ class MaterialTestCases(unittest.TestCase):
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
+        self.assertEqual(steel.Author, "Juergen Riegel")
+        self.assertEqual(steel.License, "CC-BY-3.0")
+        self.assertEqual(steel.AuthorAndLicense, "Juergen Riegel CC-BY-3.0")
 
         self.assertTrue(steel.hasPhysicalModel(self.uuids.Density))
         self.assertTrue(steel.hasPhysicalModel(self.uuids.IsotropicLinearElastic))

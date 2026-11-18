@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2008 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Inventor/SbViewportRegion.h>
@@ -51,6 +49,7 @@
 
 #include <Base/Interpreter.h>
 #include <App/Application.h>
+#include <App/DocumentObject.h>
 
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
@@ -58,7 +57,9 @@
 #include "Camera.h"
 #include "Command.h"
 #include "Action.h"
+#include "Document.h"
 #include "Inventor/SoMouseWheelEvent.h"
+#include "SoTouchEvents.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
 #include "Navigation/NavigationAnimator.h"
@@ -67,8 +68,27 @@
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
+
+NavigationStyleContextMenuReceiver::NavigationStyleContextMenuReceiver(
+    ViewProviderDocumentObject* viewProvider,
+    QObject* parent
+)
+    : QObject(parent)
+    , viewProvider(viewProvider)
+{}
+
+void NavigationStyleContextMenuReceiver::startEditing()
+{
+    auto action = qobject_cast<QAction*>(sender());
+    if (!action || !viewProvider) {
+        return;
+    }
+
+    viewProvider->getDocument()->setEdit(viewProvider, action->data().toInt());
+}
 
 namespace
 {
@@ -596,8 +616,9 @@ void NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 
 void NavigationStyle::lookAtPoint(const SbVec3f& position)
 {
-    this->rotationCenterFound = false;
     translateCamera(position - viewer->getFocalPoint());
+    this->rotationCenter = position;
+    this->rotationCenterFound = true;
 }
 
 SoCamera* NavigationStyle::getCamera() const
@@ -2280,6 +2301,10 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
         offeredtoViewerEventBase = true;
     }
 
+    if (!processed && ev->isOfType(SoGesturePinchEvent::getClassTypeId())) {
+        processed = processPinchEvent(static_cast<const SoGesturePinchEvent*>(ev));
+    }
+
     if (!processed && !offeredtoViewerEventBase) {
         processed = viewer->processSoEventBase(ev);
     }
@@ -2530,14 +2555,145 @@ void NavigationStyle::replayDeferredMouseDownEvent()
     clearDeferredMouseDownEvent();
 }
 
+bool NavigationStyle::touchpadScrollPansByDefault()
+{
+#ifdef Q_OS_MACOS
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool NavigationStyle::touchpadScrollPans()
+{
+    return App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+        ->GetBool("TouchpadScrollPans", touchpadScrollPansByDefault());
+}
+
+NavigationStyle::WheelAction NavigationStyle::wheelAction(
+    bool preciseDevice,
+    bool scrollPans,
+    bool shiftDown,
+    bool ctrlDown
+)
+{
+    if (!preciseDevice || !scrollPans || ctrlDown) {
+        return WheelAction::Zoom;
+    }
+
+    return shiftDown ? WheelAction::Orbit : WheelAction::Pan;
+}
+
 SbBool NavigationStyle::processWheelEvent(const SoMouseWheelEvent* const event)
 {
-    const SbVec2s pos(event->getPosition());
-    const SbVec2f posn = normalizePixelPos(pos);
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    const WheelAction action = wheelAction(
+        event->isPrecise(),
+        touchpadScrollPans(),
+        event->wasShiftDown(),
+        event->wasCtrlDown()
+    );
 
-    // handle mouse wheel zoom
-    doZoom(viewer->getSoRenderManager()->getCamera(), event->getDelta(), posn);
+    if (action != WheelAction::Zoom && !camera) {
+        return true;
+    }
+
+    if (event->isScrollBegin()) {
+        saveCursorPosition(event);
+    }
+
+    switch (action) {
+        case WheelAction::Orbit: {
+            const SbVec2f center(0.5F, 0.5F);
+            spin_simplified(center + normalizePixelPos(event->getPixelDelta()), center);
+            break;
+        }
+        case WheelAction::Pan: {
+            setupPanningPlane(camera);
+            const float ratio
+                = viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+            panCamera(
+                camera,
+                ratio,
+                this->panningplane,
+                normalizePixelPos(event->getPixelDelta()),
+                SbVec2f(0, 0)
+            );
+            break;
+        }
+        case WheelAction::Zoom:
+            doZoom(camera, event->getDelta(), normalizePixelPos(event->getPosition()));
+            break;
+    }
+
     return true;
+}
+
+SbBool NavigationStyle::processPinchEvent(const SoGesturePinchEvent* const event)
+{
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return false;
+    }
+
+    if (event->state == SoGestureEvent::SbGSStart) {
+        setupPanningPlane(camera);
+        return true;
+    }
+
+    if (event->state == SoGestureEvent::SbGSEnd) {
+        return true;
+    }
+
+    const bool touchTiltDisabled = App::GetApplication()
+                                       .GetParameterGroupByPath(
+                                           "User parameter:BaseApp/Preferences/View"
+                                       )
+                                       ->GetBool("DisableTouchTilt", true);
+    const PinchAction action = pinchAction(event, touchTiltDisabled);
+    const SbVec2f posn = normalizePixelPos(event->curCenter);
+
+    if (event->deltaCenter != SbVec2f(0.0F, 0.0F)) {
+        const float ratio = viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+        panCamera(camera, ratio, this->panningplane, normalizePixelPos(event->deltaCenter), SbVec2f(0, 0));
+    }
+
+    if (action.zoom) {
+        doZoom(camera, action.zoomLogFactor, posn);
+    }
+
+    if (action.rotate) {
+        doRotate(camera, action.rotateAngle, posn);
+    }
+
+    return true;
+}
+
+NavigationStyle::PinchAction NavigationStyle::pinchAction(
+    const SoGesturePinchEvent* const event,
+    bool touchTiltDisabled
+)
+{
+    PinchAction action;
+
+    if (event->state != SoGestureEvent::SbGSUpdate) {
+        return action;
+    }
+
+    if (event->deltaZoom > 0.0) {
+        action.zoom = true;
+        action.zoomLogFactor = -logf(static_cast<float>(event->deltaZoom));
+    }
+
+    const bool tiltBlocked = touchTiltDisabled && !event->fromNativeGesture;
+
+    if (event->deltaAngle != 0.0 && !tiltBlocked) {
+        action.rotate = true;
+        action.rotateAngle = static_cast<float>(event->deltaAngle);
+    }
+
+    return action;
 }
 
 void NavigationStyle::setPopupMenuEnabled(const SbBool on)
@@ -2555,7 +2711,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     // store the right-click position for potential use by Clarify Selection
     rightClickPosition = position;
 
-    // ask workbenches and view provider, ...
+    // ask workbenches
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("View", &view);
 
@@ -2563,9 +2719,53 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     MenuManager::getInstance()->setupContextMenu(&view, *contextMenu);
     contextMenu->setAttribute(Qt::WA_DeleteOnClose);
 
+    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
+
+    QMenu* objectMenu = nullptr;
+    QList<QAction*> objectActions;
+    App::DocumentObject* contextObject = Gui::Selection().getPreselection().Object.getSubObject();
+    if (!contextObject) {
+        const auto selection = Gui::Selection().getSelection();
+        if (selection.size() == 1) {
+            contextObject = selection.front().pObject;
+        }
+    }
+
+    if (contextObject) {
+        auto* contextViewProvider
+            = Gui::Application::Instance->getViewProvider<Gui::ViewProviderDocumentObject>(
+                contextObject
+            );
+
+        if (contextViewProvider) {
+            objectMenu = new QMenu(contextMenu);
+            auto receiver = new NavigationStyleContextMenuReceiver(contextViewProvider, objectMenu);
+            contextViewProvider->setupContextMenu(objectMenu, receiver, SLOT(startEditing()));
+            objectActions = objectMenu->actions();
+            if (!objectActions.empty()) {
+                contextMenu->setDefaultAction(objectActions.front());
+
+                for (auto* action : objectActions) {
+                    if (posAction) {
+                        contextMenu->insertAction(posAction, action);
+                    }
+                    else {
+                        contextMenu->addAction(action);
+                    }
+                }
+
+                if (posAction) {
+                    contextMenu->insertSeparator(posAction);
+                }
+                else {
+                    contextMenu->addSeparator();
+                }
+            }
+        }
+    }
+
     // Add Clarify Selection option if there are objects under cursor
     bool separator = false;
-    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
 
     // Get picked objects at position
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());

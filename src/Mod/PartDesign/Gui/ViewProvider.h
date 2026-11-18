@@ -84,8 +84,6 @@ public:
 
     void toggleVisibility() override;
 
-    /// Provides preview shape
-    Part::TopoShape getPreviewShape() const override;
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
 
@@ -107,6 +105,7 @@ protected:
 
     void attachPreview() override;
     void updatePreview() override;
+    virtual void updatePreviewColor();
 
     virtual void makeChildrenVisible();
     bool onDelete(const std::vector<std::string>&) override;

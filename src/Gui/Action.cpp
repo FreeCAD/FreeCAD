@@ -405,6 +405,22 @@ QString Action::createToolTip(
     return tooltip + cmdName;
 }
 
+QString Action::createToolTip(const QAction* action, const Command* command)
+{
+    if (!action || !command) {
+        return {};
+    }
+
+    // Use the same translation context as Command::applyCommandData()
+    const char* context = command->className();
+    if (dynamic_cast<const PythonCommand*>(command)
+        || dynamic_cast<const PythonGroupCommand*>(command)) {
+        context = command->getName();
+    }
+    QString helpText = QApplication::translate(context, command->getToolTipText());
+    return createToolTip(helpText, action->text(), action->font(), command->getShortcut(), command);
+}
+
 QString Action::toolTip() const
 {
     return _tooltip;
@@ -622,15 +638,9 @@ void ActionGroup::onHovered(QAction* act)
     // events are processed.
     QMenu* foundMenu = nullptr;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // Use associatedObjects() which includes non-widget associated objects.
     const auto associatedObjects = act->associatedObjects();
     for (QObject* obj : associatedObjects) {
-#else
-    // Use associatedWidgets() for Qt < 6.0 (associatedObjects() requires Qt 6.0+).
-    const auto associatedWidgets = act->associatedWidgets();
-    for (QWidget* obj : associatedWidgets) {
-#endif
         if (auto* menu = qobject_cast<QMenu*>(obj)) {
             if (menu->isVisible()) {
                 foundMenu = menu;
@@ -1197,7 +1207,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             " by default, if this is now blank then you should revert it back to"
             " Ctrl+Shift+ by pressing both keys at the same time."
         );
-        Base::Console().warning("%s\n", qPrintable(msgMain));
+        Base::Console().warning("{}\n", qPrintable(msgMain));
     }
 }
 

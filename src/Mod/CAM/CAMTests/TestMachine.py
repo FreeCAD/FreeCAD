@@ -26,7 +26,14 @@ import CAMTests.PathTestUtils as PathTestUtils
 from Machine.models.machine import (
     Machine,
     Toolhead,
+    ToolheadType,
     OutputOptions,
+    OutputUnits,
+    HeaderOptions,
+    CommentOptions,
+    FormattingOptions,
+    PrecisionOptions,
+    DuplicateOptions,
     ProcessingOptions,
     MachineFactory,
 )
@@ -116,99 +123,79 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
         """Test OutputOptions initialization with defaults"""
         opts = OutputOptions()
 
-        # Default values - using current field names
-        from Machine.models.machine import OutputUnits
-
-        self.assertEqual(opts.output_units, OutputUnits.METRIC)
-        self.assertEqual(opts.command_space, " ")
-        self.assertEqual(opts.comment_symbol, "(")
-        self.assertEqual(opts.end_of_line_chars, "\n")
-        self.assertEqual(opts.line_increment, 10)
-        self.assertEqual(opts.line_number_start, 100)
-        self.assertFalse(opts.line_numbers)
-        self.assertEqual(opts.line_number_prefix, "N")
-        self.assertTrue(opts.output_comments)
-        self.assertTrue(opts.output_blank_lines)
-        self.assertTrue(opts.output_bcnc_comments)
+        self.assertEqual(opts.units, OutputUnits.METRIC)
+        self.assertTrue(opts.output_tool_length_offset)
+        self.assertFalse(opts.remote_post)
         self.assertTrue(opts.output_header)
-        self.assertFalse(opts.output_labels)
-        self.assertTrue(opts.output_operation_labels)
-        self.assertFalse(opts.list_tools_in_header)
-        self.assertTrue(opts.list_fixtures_in_header)
-        self.assertFalse(opts.machine_name_in_header)
-        self.assertTrue(opts.description_in_header)
-        self.assertTrue(opts.project_file_in_header)
-        self.assertTrue(opts.output_units_in_header)
-        self.assertTrue(opts.date_in_header)
-        self.assertTrue(opts.document_name_in_header)
-        self.assertTrue(opts.output_duplicate_parameters)
-        self.assertTrue(opts.output_duplicate_commands)
-        self.assertEqual(opts.axis_precision, 3)
-        self.assertEqual(opts.feed_precision, 3)
-        self.assertEqual(opts.spindle_precision, 0)
+
+        self.assertTrue(opts.header.include_date)
+        self.assertTrue(opts.header.include_description)
+        self.assertTrue(opts.header.include_document_name)
+        self.assertTrue(opts.header.include_machine_name)
+        self.assertTrue(opts.header.include_project_file)
+        self.assertTrue(opts.header.include_units)
+        self.assertTrue(opts.header.include_tool_list)
+        self.assertTrue(opts.header.include_fixture_list)
+
+        self.assertTrue(opts.comments.enabled)
+        self.assertEqual(opts.comments.symbol, "(")
+        self.assertFalse(opts.comments.include_operation_labels)
+        self.assertTrue(opts.comments.include_blank_lines)
+        self.assertFalse(opts.comments.output_bcnc_comments)
+
+        self.assertFalse(opts.formatting.line_numbers)
+        self.assertEqual(opts.formatting.line_number_start, 100)
+        self.assertEqual(opts.formatting.line_number_prefix, "N")
+        self.assertEqual(opts.formatting.line_increment, 10)
+        self.assertEqual(opts.formatting.command_space, " ")
+        self.assertEqual(opts.formatting.end_of_line_chars, "\n")
+
+        self.assertEqual(opts.precision.axis, 3)
+        self.assertEqual(opts.precision.feed, 3)
+        self.assertEqual(opts.precision.spindle, 0)
+
+        self.assertTrue(opts.duplicates.commands)
+        self.assertTrue(opts.duplicates.parameters)
 
     def test_custom_initialization(self):
         """Test OutputOptions initialization with custom values"""
-        from Machine.models.machine import OutputUnits
-
         opts = OutputOptions(
-            output_units=OutputUnits.IMPERIAL,
-            command_space="",
-            comment_symbol=";",
-            end_of_line_chars="\r\n",
-            line_increment=5,
-            line_number_start=10,
-            line_numbers=True,
-            line_number_prefix="L",
-            output_comments=False,
-            output_blank_lines=False,
-            output_bcnc_comments=False,
+            units=OutputUnits.IMPERIAL,
+            output_tool_length_offset=False,
             output_header=False,
-            output_labels=True,
-            output_operation_labels=False,
-            list_tools_in_header=True,
-            list_fixtures_in_header=False,
-            machine_name_in_header=True,
-            description_in_header=False,
-            project_file_in_header=False,
-            output_units_in_header=False,
-            date_in_header=False,
-            document_name_in_header=False,
-            output_duplicate_parameters=False,
-            output_duplicate_commands=False,
-            axis_precision=4,
-            feed_precision=2,
-            spindle_precision=1,
+            header=HeaderOptions(include_date=False, include_tool_list=False),
+            comments=CommentOptions(enabled=False, symbol=";"),
+            formatting=FormattingOptions(
+                line_numbers=True,
+                line_number_start=10,
+                line_number_prefix="L",
+                line_increment=5,
+                command_space="",
+                end_of_line_chars="\r\n",
+            ),
+            precision=PrecisionOptions(axis=4, feed=2, spindle=1),
+            duplicates=DuplicateOptions(commands=False, parameters=False),
         )
 
-        # Verify custom values
-        self.assertEqual(opts.output_units, OutputUnits.IMPERIAL)
-        self.assertEqual(opts.command_space, "")
-        self.assertEqual(opts.comment_symbol, ";")
-        self.assertEqual(opts.end_of_line_chars, "\r\n")
-        self.assertEqual(opts.line_increment, 5)
-        self.assertEqual(opts.line_number_start, 10)
-        self.assertTrue(opts.line_numbers)
-        self.assertEqual(opts.line_number_prefix, "L")
-        self.assertFalse(opts.output_comments)
-        self.assertFalse(opts.output_blank_lines)
-        self.assertFalse(opts.output_bcnc_comments)
+        self.assertEqual(opts.units, OutputUnits.IMPERIAL)
+        self.assertFalse(opts.output_tool_length_offset)
         self.assertFalse(opts.output_header)
-        self.assertTrue(opts.output_labels)
-        self.assertFalse(opts.output_operation_labels)
-        self.assertTrue(opts.list_tools_in_header)
-        self.assertFalse(opts.list_fixtures_in_header)
-        self.assertTrue(opts.machine_name_in_header)
-        self.assertFalse(opts.description_in_header)
-        self.assertFalse(opts.project_file_in_header)
-        self.assertFalse(opts.output_units_in_header)
-        self.assertFalse(opts.date_in_header)
-        self.assertFalse(opts.document_name_in_header)
-        self.assertFalse(opts.output_duplicate_parameters)
-        self.assertFalse(opts.output_duplicate_commands)
-        self.assertEqual(opts.axis_precision, 4)
-        self.assertEqual(opts.feed_precision, 2)
-        self.assertEqual(opts.spindle_precision, 1)
+        self.assertFalse(opts.header.include_date)
+        self.assertFalse(opts.header.include_tool_list)
+        self.assertTrue(opts.header.include_description)
+        self.assertFalse(opts.comments.enabled)
+        self.assertEqual(opts.comments.symbol, ";")
+        self.assertTrue(opts.formatting.line_numbers)
+        self.assertEqual(opts.formatting.line_number_start, 10)
+        self.assertEqual(opts.formatting.line_number_prefix, "L")
+        self.assertEqual(opts.formatting.line_increment, 5)
+        self.assertEqual(opts.formatting.command_space, "")
+        self.assertEqual(opts.formatting.end_of_line_chars, "\r\n")
+        self.assertEqual(opts.precision.axis, 4)
+        self.assertEqual(opts.precision.feed, 2)
+        self.assertEqual(opts.precision.spindle, 1)
+        self.assertFalse(opts.duplicates.commands)
+        self.assertFalse(opts.duplicates.parameters)
 
     def test_equality(self):
         """Test OutputOptions equality comparison"""
@@ -216,8 +203,15 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
         opts2 = OutputOptions()
         self.assertEqual(opts1, opts2)
 
-        opts2.output_comments = False
+        opts2.comments.enabled = False
         self.assertNotEqual(opts1, opts2)
+
+    def test_nested_defaults_are_not_shared(self):
+        """Each OutputOptions gets its own nested option objects"""
+        opts1 = OutputOptions()
+        opts2 = OutputOptions()
+        opts2.formatting.line_numbers = True
+        self.assertFalse(opts1.formatting.line_numbers)
 
 
 class TestProcessingOptions(PathTestUtils.PathTestBase):
@@ -231,7 +225,6 @@ class TestProcessingOptions(PathTestUtils.PathTestBase):
         self.assertFalse(opts.early_tool_prep)
         self.assertFalse(opts.filter_inefficient_moves)
         self.assertFalse(opts.split_arcs)
-        self.assertTrue(opts.tool_change)
         self.assertFalse(opts.translate_rapid_moves)
         self.assertIsNone(opts.return_to)
 
@@ -241,7 +234,6 @@ class TestProcessingOptions(PathTestUtils.PathTestBase):
             early_tool_prep=True,
             filter_inefficient_moves=True,
             split_arcs=True,
-            tool_change=False,
             translate_rapid_moves=True,
             return_to=(10.0, 20.0, 30.0),
         )
@@ -250,7 +242,6 @@ class TestProcessingOptions(PathTestUtils.PathTestBase):
         self.assertTrue(opts.early_tool_prep)
         self.assertTrue(opts.filter_inefficient_moves)
         self.assertTrue(opts.split_arcs)
-        self.assertFalse(opts.tool_change)
         self.assertTrue(opts.translate_rapid_moves)
         self.assertEqual(opts.return_to, (10.0, 20.0, 30.0))
 
@@ -308,6 +299,22 @@ class TestToolhead(PathTestUtils.PathTestBase):
         self.assertEqual(restored.id, toolhead.id)
         self.assertEqual(restored.max_power_kw, toolhead.max_power_kw)
         self.assertEqual(restored.toolhead_wait, toolhead.toolhead_wait)
+
+    def test_toolhead_wire_edm_from_dict(self):
+        """Regression: wire_edm must deserialize to a valid toolhead type"""
+        toolhead = Toolhead.from_dict({"name": "EDM Head", "toolhead_type": "wire_edm"})
+
+        self.assertEqual(toolhead.toolhead_type, ToolheadType.WIRE_EDM)
+        self.assertTrue(toolhead.is_wire_edm())
+        self.assertTrue(toolhead.capabilities.has_pulse_control)
+        self.assertTrue(toolhead.capabilities.uses_water)
+        self.assertFalse(toolhead.capabilities.can_rotate)
+
+    def test_toolhead_type_display_names(self):
+        """Display names should be properly capitalized, including abbreviations"""
+        self.assertEqual(ToolheadType.WIRE_EDM.display_name, "Wire EDM")
+        for toolhead_type in ToolheadType:
+            self.assertNotIn("_", toolhead_type.display_name)
 
 
 class TestMachineFactory(PathTestUtils.PathTestBase):
@@ -412,9 +419,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         # List configurations
         configs = MachineFactory.list_configuration_files()
 
-        # Should include <any> plus our two machines
-        self.assertGreaterEqual(len(configs), 3)
-        self.assertEqual(configs[0][0], "<any>")
+        # Only real machine files, no placeholder entry
+        self.assertGreaterEqual(len(configs), 2)
+        self.assertTrue(all(path is not None for name, path in configs))
 
         # Check that our machines are in the list (by display name, not filename)
         names = [name for name, path in configs]
@@ -429,7 +436,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         configs = MachineFactory.list_configurations()
 
         self.assertIsInstance(configs, list)
-        self.assertIn("<any>", configs)
         # Returns display name from JSON, not filename
         self.assertIn("Test Machine", configs)
 
@@ -582,3 +588,43 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             MachineFactory._addon_machine_dirs[:] = [
                 (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
             ]
+
+    def test_rescan_addon_dirs(self):
+        """rescan_addon_dirs() makes the next tree request scan the Mod directories again.
+
+        Given: the addon directories were scanned
+        When: rescan_addon_dirs() is called
+        Then: the scan flag is cleared, and get_addon_machine_tree() sets it again
+        """
+        MachineFactory.get_addon_machine_tree()
+        self.assertTrue(MachineFactory._addon_dirs_scanned)
+        MachineFactory.rescan_addon_dirs()
+        self.assertFalse(MachineFactory._addon_dirs_scanned)
+        MachineFactory.get_addon_machine_tree()
+        self.assertTrue(MachineFactory._addon_dirs_scanned)
+
+
+class TestMachinesAddonHint(PathTestUtils.PathTestBase):
+    """The machine editor hint that points to the Machines addon."""
+
+    def setUp(self):
+        from Machine.ui.editor.machine_editor import machines_addon_hint_wanted
+
+        self.wanted = machines_addon_hint_wanted
+
+    def test_shown_without_addons(self):
+        """The hint shows when no addon supplies machines."""
+        self.assertTrue(self.wanted([], True))
+
+    def test_shown_with_other_addon(self):
+        """A different machine addon does not hide the hint."""
+        self.assertTrue(self.wanted([("VendorMachines", [])], True))
+
+    def test_hidden_when_installed(self):
+        """The hint hides when the Machines addon is in the addon tree."""
+        tree = [("VendorMachines", []), ("Machines", [("file", "Mill", "/m.fcm")])]
+        self.assertFalse(self.wanted(tree, True))
+
+    def test_hidden_when_dismissed(self):
+        """The hint stays hidden after the user dismissed it."""
+        self.assertFalse(self.wanted([], False))

@@ -12,12 +12,158 @@ TYPING_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TYPING_DIR))
 
 from stubgen.model import BindingMethod
-from stubgen.source_inputs import supplement_module_methods_from_stub_signatures
+from stubgen.source_inputs import (
+    parse_module_stub_signature_overrides,
+    parse_source_type_stub_signature_overrides,
+    supplement_module_methods_from_stub_signatures,
+)
 
 ROOT_DIR = Path(__file__).resolve().parents[4]
 
 
 class SourceInputsTests(unittest.TestCase):
+    def _parse_module_stub(self, source: str):
+        with tempfile.TemporaryDirectory(dir=ROOT_DIR) as temp_dir:
+            root = Path(temp_dir)
+            source_dir = root / "src"
+            app_dir = source_dir / "App"
+            app_dir.mkdir(parents=True)
+            (app_dir / "FreeCAD.module.pyi").write_text(source, encoding="utf-8")
+            return parse_module_stub_signature_overrides(root, source_dir)
+
+    def _parse_source_stub(self, source: str):
+        with tempfile.TemporaryDirectory(dir=ROOT_DIR) as temp_dir:
+            root = Path(temp_dir)
+            source_dir = root / "src"
+            app_dir = source_dir / "App"
+            app_dir.mkdir(parents=True)
+            (app_dir / "FreeCAD.Test.pyi").write_text(source, encoding="utf-8")
+            return parse_source_type_stub_signature_overrides(root, source_dir)
+
+    def test_overload_groups_are_preserved_for_module_and_type_stubs(self):
+        module_source = textwrap.dedent("""
+            from typing import overload
+
+            @overload
+            def ping(value: int, /) -> str: ...
+
+            @overload
+            def ping(value: str, /) -> str: ...
+            """)
+        source_stub = textwrap.dedent("""
+            from typing import overload
+
+            class Test:
+                @overload
+                def ping(self, value: int, /) -> str: ...
+
+                @overload
+                def ping(self, value: str, /) -> str: ...
+            """)
+
+        module_signatures = self._parse_module_stub(module_source)
+        source_signatures = self._parse_source_stub(source_stub)
+        self.assertEqual(2, len(module_signatures[("FreeCAD", "ping")][0]))
+        self.assertEqual(2, len(source_signatures[("FreeCAD", "Test", "ping")][0]))
+
+    def test_mixed_overload_groups_are_rejected(self):
+        module_source = textwrap.dedent("""
+            from typing import overload
+
+            @overload
+            def ping(value: int, /) -> str: ...
+
+            def ping(value: str, /) -> str: ...
+            """)
+        source_stub = textwrap.dedent("""
+            from typing import overload
+
+            class Test:
+                @overload
+                def ping(self, value: int, /) -> str: ...
+
+                def ping(self, value: str, /) -> str: ...
+            """)
+
+        for parser, source in (
+            (self._parse_module_stub, module_source),
+            (self._parse_source_stub, source_stub),
+        ):
+            with self.subTest(parser=parser.__name__):
+                with self.assertRaisesRegex(ValueError, "must all use @overload"):
+                    parser(source)
+
+    def test_duplicate_non_overload_declarations_are_rejected(self):
+        module_source = textwrap.dedent("""
+            def ping(value: int, /) -> str: ...
+            def ping(value: str, /) -> str: ...
+            """)
+        source_stub = textwrap.dedent("""
+            class Test:
+                def ping(self, value: int, /) -> str: ...
+                def ping(self, value: str, /) -> str: ...
+            """)
+
+        for parser, source in (
+            (self._parse_module_stub, module_source),
+            (self._parse_source_stub, source_stub),
+        ):
+            with self.subTest(parser=parser.__name__):
+                with self.assertRaisesRegex(ValueError, "must all use @overload"):
+                    parser(source)
+
+    def test_single_overload_declarations_are_rejected(self):
+        module_source = textwrap.dedent("""
+            from typing import overload
+
+            @overload
+            def ping(value: int, /) -> str: ...
+            """)
+        source_stub = textwrap.dedent("""
+            from typing import overload
+
+            class Test:
+                @overload
+                def ping(self, value: int, /) -> str: ...
+            """)
+
+        for parser, source in (
+            (self._parse_module_stub, module_source),
+            (self._parse_source_stub, source_stub),
+        ):
+            with self.subTest(parser=parser.__name__):
+                with self.assertRaisesRegex(ValueError, "at least two"):
+                    parser(source)
+
+    def test_duplicate_overload_signatures_are_rejected(self):
+        module_source = textwrap.dedent("""
+            from typing import overload
+
+            @overload
+            def ping(value: int, /) -> str: ...
+
+            @overload
+            def ping(value: int, /) -> str: ...
+            """)
+        source_stub = textwrap.dedent("""
+            from typing import overload
+
+            class Test:
+                @overload
+                def ping(self, value: int, /) -> str: ...
+
+                @overload
+                def ping(self, value: int, /) -> str: ...
+            """)
+
+        for parser, source in (
+            (self._parse_module_stub, module_source),
+            (self._parse_source_stub, source_stub),
+        ):
+            with self.subTest(parser=parser.__name__):
+                with self.assertRaisesRegex(ValueError, "duplicate overload signatures"):
+                    parser(source)
+
     def test_module_stub_signatures_supplement_missing_module_methods(self):
         source = textwrap.dedent("""
             from __future__ import annotations
@@ -88,6 +234,16 @@ class SourceInputsTests(unittest.TestCase):
 
         self.assertEqual(len(methods), 1)
         self.assertEqual(methods[0].source, "src/App/ApplicationPy.cpp")
+
+    def test_return_annotations_are_read_from_the_python_ast(self):
+        source = textwrap.dedent("""
+            from typing import Literal
+
+            def ping() -> Literal["a:b"]: ...
+            """)
+
+        signatures = self._parse_module_stub(source)
+        self.assertEqual("Literal['a:b']", signatures[("FreeCAD", "ping")][0][0].returns)
 
 
 if __name__ == "__main__":

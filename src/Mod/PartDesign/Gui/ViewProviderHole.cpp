@@ -26,6 +26,7 @@
 #include <QMenu>
 #include <QMessageBox>
 
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Lin.hxx>
@@ -474,13 +475,13 @@ TopoDS_Shape ViewProviderHole::getCurrentlyVisibleShape(const PartDesign::Hole* 
 
 std::pair<gp_Dir, gp_Dir> ViewProviderHole::buildOrthonormalFrame(const gp_Dir& axis)
 {
-    gp_Dir ref(0, 0, 1);
+    gp_Dir ref = gp::DZ();
     if (axis.IsParallel(ref, Precision::Angular())) {
-        ref = gp_Dir(0, 1, 0);
+        ref = gp::DY();
     }
     gp_Vec x_vec = axis.Crossed(ref);
     if (x_vec.SquareMagnitude() < Precision::Confusion()) {
-        ref = gp_Dir(1, 0, 0);
+        ref = gp::DX();
         x_vec = axis.Crossed(ref);
     }
     gp_Dir x_dir(x_vec);

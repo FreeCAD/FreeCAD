@@ -1403,6 +1403,7 @@ CmdSketcherCreateText::CmdSketcherCreateText()
     sPixmap = "Sketcher_CreateText";
     sAccel = "";
     eType = ForEdit;
+    eMaturity = Base::Maturity::Experimental;
 }
 
 CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateText, "Sketcher_CreateText")
@@ -1587,7 +1588,7 @@ public:
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
         sMenuText = QT_TR_NOOP("Fillet/Chamfer");
-        sToolTipText = QT_TR_NOOP("Creates a fillet or chamfer between 2 lines");
+        sToolTipText = QT_TR_NOOP("Creates a fillet or chamfer between 2 curves");
         sWhatsThis = "Sketcher_CompCreateFillets";
         sStatusTip = sToolTipText;
         sAccel = "G, F, F";
@@ -1621,7 +1622,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Fillet");
-    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected lines or at coincident points");
+    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected curves or at coincident points");
     sWhatsThis = "Sketcher_CreateFillet";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateFillet";
@@ -1653,7 +1654,7 @@ CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Chamfer");
-    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected lines or at coincident points");
+    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected curves or at coincident points");
     sWhatsThis = "Sketcher_CreateChamfer";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateChamfer";

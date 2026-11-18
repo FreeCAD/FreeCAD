@@ -107,6 +107,13 @@ public:
         ToShape,
     };
 
+    enum class StartMode
+    {
+        ProfilePlane = 0,
+        Offset = 1,
+        Reference = 2,
+    };
+
     enum SelectionMode
     {
         None,
@@ -271,6 +278,7 @@ private:
     void updateStartReferenceName();
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* startOffsetGizmo = nullptr;
     Gui::LinearGizmo* lengthGizmo1 = nullptr;
     Gui::LinearGizmo* lengthGizmo2 = nullptr;
     Gui::RotationGizmo* taperAngleGizmo1 = nullptr;

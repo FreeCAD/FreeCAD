@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 if(MSVC)
     add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
@@ -194,11 +195,9 @@ if (MSVC)
     target_compile_options(MatGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MatGui)
-endif()
+target_compile_warn_error(MatGui)
 
-SET_BIN_DIR(MatGui MatGui /Mod/Material)
+SET_BIN_DIR(MatGui)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})

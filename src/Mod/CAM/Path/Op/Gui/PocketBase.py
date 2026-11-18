@@ -1,33 +1,30 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Pocket as PathPocket
-import PathGui
+from Path.Base.Gui.Util import QuantitySpinBox
 
 __title__ = "CAM Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -61,7 +58,37 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
           FeatureFacing  ... used for face milling operation
           FeatureOutline ... used for pocket-shape operation
         Must be overwritten by subclasses"""
-        pass
+
+    def initPage(self, obj):
+        self.extraOffsetSpinBox = QuantitySpinBox(self.form.extraOffset, obj, "ExtraOffset")
+        self.thresholdSpinBox = QuantitySpinBox(self.form.threshold, obj, "RetractThreshold")
+        self.finishingOffsetSpinBox = QuantitySpinBox(
+            self.form.finishingOffset, obj, "FinishingOffset"
+        )
+        self.angleSpinBox = QuantitySpinBox(self.form.angle, obj, "Angle")
+
+        FreeCADGui.ExpressionBinding(self.form.finishingPasses).bind(self.obj, "FinishingPasses")
+
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)"""
+        tuples = []
+        tuples.append(("cutMode", "CutMode"))
+        tuples.append(("clearingPattern", "ClearingPattern"))
+        tuples.append(("startAt", "StartAt"))
+        tuples.append(("sorting", "SortingMode"))
+        tuples.append(("angle", "Angle"))
+        tuples.append(("stepOver", "StepOver"))
+        tuples.append(("finishingPasses", "FinishingPasses"))
+        tuples.append(("finishingOffset", "FinishingOffset"))
+        tuples.append(("extraOffset", "ExtraOffset"))
+        tuples.append(("threshold", "RetractThreshold"))
+        tuples.append(("finishingOneStepDown", "FinishingOneStepDown"))
+        tuples.append(("useOutline", "UseOutline"))
+        tuples.append(("clearEdges", "clearEdges"))
+        tuples.append(("useRestMachining", "UseRestMachining"))
+        tuples.append(("useStartPoint", "UseStartPoint"))
+
+        return tuples
 
     def getForm(self):
         """getForm() ... returns UI, adapted to the results from pocketFeatures()"""
@@ -70,23 +97,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("cutMode", "CutMode"),
             ("clearingPattern", "ClearingPattern"),
+            ("startAt", "StartAt"),
+            ("sorting", "SortingMode"),
         ]
         enumTups = PathPocket.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
-        if not FeatureFacing & self.pocketFeatures():
+        if not (FeatureFacing & self.pocketFeatures()):
             form.facingWidget.hide()
             form.clearEdges.hide()
-
-        if FeaturePocket & self.pocketFeatures():
-            form.extraOffset_label.setText(translate("PathPocket", "Pass Extension"))
-            form.extraOffset.setToolTip(
-                translate(
-                    "PathPocket",
-                    "The distance the facing operation will extend beyond the boundary shape.",
-                )
-            )
 
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
@@ -96,30 +116,35 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return form
 
-    def updateMinTravel(self, obj, setModel=True):
-        if setModel and obj.MinTravel != self.form.minTravel.isChecked():
-            obj.MinTravel = self.form.minTravel.isChecked()
-
-    def updateAngle(self, obj, setModel=True):
-        if obj.ClearingPattern == "Offset":
-            self.form.angle.setEnabled(False)
-        else:
-            self.form.angle.setEnabled(True)
-
-        if setModel:
-            PathGuiUtil.updateInputField(obj, "Angle", self.form.angle)
+    def updateQuantitySpinBoxes(self, index=None):
+        self.extraOffsetSpinBox.updateWidget()
+        self.thresholdSpinBox.updateWidget()
+        self.finishingOffsetSpinBox.updateWidget()
+        self.angleSpinBox.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
-        if obj.StepOver != self.form.stepOver.value():
-            obj.StepOver = self.form.stepOver.value()
         if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
             obj.ClearingPattern = str(self.form.clearingPattern.currentData())
+        if obj.StartAt != str(self.form.startAt.currentData()):
+            obj.StartAt = str(self.form.startAt.currentData())
+        if obj.SortingMode != str(self.form.sorting.currentData()):
+            obj.SortingMode = str(self.form.sorting.currentData())
 
-        PathGuiUtil.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
-        self.updateAngle(obj)
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
+
+        self.extraOffsetSpinBox.updateProperty()
+        self.finishingOffsetSpinBox.updateProperty()
+        self.thresholdSpinBox.updateProperty()
+        self.angleSpinBox.updateProperty()
+
+        obj.FinishingPasses = self.form.finishingPasses.value()
+
+        if obj.FinishingOneStepDown != self.form.finishingOneStepDown.isChecked():
+            obj.FinishingOneStepDown = self.form.finishingOneStepDown.isChecked()
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
@@ -130,8 +155,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureOutline & self.pocketFeatures():
             if obj.UseOutline != self.form.useOutline.isChecked():
                 obj.UseOutline = self.form.useOutline.isChecked()
-
-        self.updateMinTravel(obj)
 
         if FeatureFacing & self.pocketFeatures():
             print(obj.BoundaryShape)
@@ -144,27 +167,27 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
+        self.updateQuantitySpinBoxes()
+
+        self.form.finishingPasses.setValue(obj.FinishingPasses)
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString
-        )
+
+        self.form.finishingOneStepDown.setChecked(obj.FinishingOneStepDown)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
-        self.form.angle.setText(FreeCAD.Units.Quantity(obj.Angle, FreeCAD.Units.Angle).UserString)
-        self.updateAngle(obj, False)
-
-        self.form.minTravel.setChecked(obj.MinTravel)
-        self.updateMinTravel(obj, False)
-
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
+        self.selectInComboBox(obj.StartAt, self.form.startAt)
+        self.selectInComboBox(obj.SortingMode, self.form.sorting)
 
         if FeatureFacing & self.pocketFeatures():
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
             self.form.clearEdges.setChecked(obj.ClearEdges)
+
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -172,13 +195,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
+        signals.append(self.form.startAt.currentIndexChanged)
+        signals.append(self.form.sorting.currentIndexChanged)
         signals.append(self.form.stepOver.editingFinished)
+        signals.append(self.form.finishingOffset.editingFinished)
+        signals.append(self.form.finishingPasses.editingFinished)
         signals.append(self.form.angle.editingFinished)
         signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.threshold.editingFinished)
+        signals.append(self.form.finishingOneStepDown.clicked)
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
-        signals.append(self.form.minTravel.clicked)
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)
@@ -188,6 +216,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def registerSignalHandlers(self, obj):
         self.form.setStartPoint.clicked.connect(self.setStartPoint)
+        self.form.thresholdToggle.clicked.connect(self.thresholdToggle)
+        self.form.clearingPattern.currentIndexChanged.connect(self.updateVisibility)
+        self.form.finishingPasses.editingFinished.connect(self.updateVisibility)
+        self.form.startAt.currentIndexChanged.connect(self.updateVisibility)
+
+    def updateVisibility(self):
+        self.form.startAt.setEnabled(self.obj.ClearingPattern in ("Offset",))
+        self.form.angle.setEnabled(self.obj.ClearingPattern not in ("Offset",))
+        self.form.finishingOffset.setEnabled(self.obj.FinishingPasses)
+        self.form.finishingOneStepDown.setEnabled(self.obj.FinishingPasses)
+        self.form.useStartPoint.setEnabled(self.obj.StartAt != "Center")
 
     def setStartPoint(self):
         selEx = FreeCADGui.Selection.getSelectionEx()
@@ -199,3 +238,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 translate("CAM_Pocket", "Set start point: %s, %s")
                 % (round(point.x, 3), round(point.y, 3))
             )
+
+    def thresholdToggle(self):
+        if self.obj.RetractThreshold == 0:
+            self.obj.setExpression("RetractThreshold", "OpToolDiameter")
+            self.thresholdSpinBox.refresh_expression_icon(True)
+        else:
+            self.obj.clearExpression("RetractThreshold")
+            self.obj.RetractThreshold = 0
+            self.thresholdSpinBox.refresh_expression_icon(False)
+        self.updateQuantitySpinBoxes()
+        self.setDirty()

@@ -41,6 +41,7 @@ import collections as coll
 import inspect
 import itertools
 import math
+import sys
 from pivy import coin
 from PySide import QtCore
 from PySide import QtGui
@@ -487,7 +488,7 @@ class Snapper:
         # a Near ("passive") snap point does not 'win' if a different snap point
         # is within snapRange of the cursor point (in screen coordinates)
         cursor_pt = App.Vector(self.snapInfo["x"], self.snapInfo["y"], self.snapInfo["z"])
-        shortest_all = shortest_not_near = 1000000000000000000
+        shortest_all = shortest_not_near = sys.float_info.max
         winner_all = winner_not_near = None
         for snap in snaps:
             if (not snap) or (snap[0] is None):
@@ -1474,7 +1475,6 @@ class Snapper:
         self.pt = None
         self.holdPoints = []
         self.ui = Gui.draftToolBar
-        self.view = gui_utils.get_3d_view()
 
         # remove any previous leftover callbacks
         try:
@@ -1494,6 +1494,7 @@ class Snapper:
             pass
         self.callbackClick = None
         self.callbackMove = None
+        self.view = gui_utils.get_3d_view()
 
         def move(event_cb):
             if not self.ui.mouse:

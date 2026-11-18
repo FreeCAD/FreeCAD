@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -53,7 +55,7 @@ TaskObjectName::TaskObjectName(App::DocumentObject* pcObject, QWidget* parent)
         ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));
     }
     else {
-        ui->lineEdit_ObjectName->setText(QString::fromLatin1(pcObject->getNameInDocument()));
+        ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->getNameInDocument()));
     }
 }
 

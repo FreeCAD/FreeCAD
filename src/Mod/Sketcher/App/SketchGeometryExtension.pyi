@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
 
@@ -36,14 +34,12 @@ class SketchGeometryExtension(GeometryExtension):
     """Returns the Id of the geometry Layer in which the geometry is located."""
 
     @constmethod
-    def testGeometryMode(self) -> bool:
+    def testGeometryMode(self, mode: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         """
-        ...
 
-    def setGeometryMode(self) -> None:
+    def setGeometryMode(self, mode: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
-        ...

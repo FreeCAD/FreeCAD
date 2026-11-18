@@ -31,6 +31,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPadPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
+    TaskDefeaturingParameters.ui
     TaskDraftParameters.ui
     TaskThicknessParameters.ui
     TaskBooleanParameters.ui
@@ -73,6 +74,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderChamfer.h
     ViewProviderFillet.cpp
     ViewProviderFillet.h
+    ViewProviderDefeaturing.cpp
+    ViewProviderDefeaturing.h
     ViewProviderDraft.cpp
     ViewProviderDraft.h
     ViewProviderThickness.cpp
@@ -89,6 +92,12 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderMirrored.h
     ViewProviderLinearPattern.cpp
     ViewProviderLinearPattern.h
+    ViewProviderCircularPattern.cpp
+    ViewProviderCircularPattern.h
+    ViewProviderPathPattern.cpp
+    ViewProviderPathPattern.h
+    ViewProviderPointPattern.cpp
+    ViewProviderPointPattern.h
     ViewProviderPolarPattern.cpp
     ViewProviderPolarPattern.h
     ViewProviderScaled.cpp
@@ -130,6 +139,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     ReferenceSelection.h
     TaskFeatureParameters.cpp
     TaskFeatureParameters.h
+    TaskFeatureAddSubParameters.cpp
+    TaskFeatureAddSubParameters.h
     TaskSketchBasedParameters.cpp
     TaskSketchBasedParameters.h
     TaskExtrudeParameters.cpp
@@ -145,6 +156,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskFilletParameters.ui
     TaskFilletParameters.cpp
     TaskFilletParameters.h
+    TaskDefeaturingParameters.ui
+    TaskDefeaturingParameters.cpp
+    TaskDefeaturingParameters.h
     TaskDraftParameters.ui
     TaskDraftParameters.cpp
     TaskDraftParameters.h
@@ -259,11 +273,9 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartDesignGui)
-endif()
+target_compile_warn_error(PartDesignGui)
 
-SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
+SET_BIN_DIR(PartDesignGui)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
 fc_copy_sources(PartDesignGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign" ${PartDesignGuiIcon_SVG})

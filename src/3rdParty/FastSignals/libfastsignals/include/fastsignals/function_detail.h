@@ -20,7 +20,10 @@ struct type_container
 };
 
 /// Type that has enough space to keep type "T" (including vtable) with suitable alignment.
-using function_buffer_t = std::aligned_storage_t<inplace_buffer_size>;
+struct function_buffer_t
+{
+	alignas(std::max_align_t) std::byte data[inplace_buffer_size];
+};
 
 /// Constantly is true if callable fits function buffer, false otherwise.
 template <class T>

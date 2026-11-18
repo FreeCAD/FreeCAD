@@ -897,7 +897,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        // Base::Console().log("Insert in Part with %s",Name);
+        // Base::Console().log("Insert in Part with {}",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
@@ -964,7 +964,7 @@ private:
                 }
                 else {
                     Base::Console().message(
-                        "'%s' is not a shape, export will be ignored.\n",
+                        "'{}' is not a shape, export will be ignored.\n",
                         obj->Label.getValue()
                     );
                 }

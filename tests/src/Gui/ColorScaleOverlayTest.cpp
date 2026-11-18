@@ -50,6 +50,22 @@ TEST(ColorScaleOverlayTest, usesScientificNotationWhenFixedLabelsCollide)
     EXPECT_EQ(snapshot.ticks.back().text, "+1.0e-03");
 }
 
+TEST(ColorScaleOverlayTest, buildsGradientSnapshotForLargeRange)
+{
+    Gui::ColorScaleOverlay overlay;
+    App::ColorGradientProfile profile;
+    profile.fMin = 3491889.5F;
+    profile.fMax = 423599296.0F;
+    profile.ctColors = 5;
+    overlay.setGradientProfile(profile, 3);
+
+    const auto snapshot = overlay.snapshot();
+
+    ASSERT_EQ(snapshot.ticks.size(), 5U);
+    EXPECT_FLOAT_EQ(snapshot.ticks.front().value, profile.fMax);
+    EXPECT_FLOAT_EQ(snapshot.ticks.back().value, profile.fMin);
+}
+
 TEST(ColorScaleOverlayTest, buildsLegendSnapshotAndUsesLegendColors)
 {
     App::ColorLegend legend;

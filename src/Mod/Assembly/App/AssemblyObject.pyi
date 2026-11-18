@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, Final
 
 from Base.Metadata import constmethod, export
@@ -39,7 +37,6 @@ class AssemblyObject(Part):
         -1 if solver error,
         -2 if redundant constraints.
         """
-        ...
 
     @constmethod
     def generateSimulation(self, simulationObject: DocumentObject, /) -> int:
@@ -59,7 +56,6 @@ class AssemblyObject(Part):
         -1 if solver error,
         -2 if redundant constraints.
         """
-        ...
 
     @constmethod
     def updateForFrame(self, index: int, /) -> None:
@@ -71,12 +67,10 @@ class AssemblyObject(Part):
 
         Returns: None
         """
-        ...
 
     @constmethod
     def numberOfFrames(self) -> int:
         """Return Number of frames"""
-        ...
 
     @constmethod
     def updateSolveStatus(self) -> Any:
@@ -85,7 +79,6 @@ class AssemblyObject(Part):
         Args: None
 
         Returns: None"""
-        ...
 
     @constmethod
     def undoSolve(self) -> Any:
@@ -94,21 +87,18 @@ class AssemblyObject(Part):
         undoSolve()
 
         Returns: None"""
-        ...
 
     @constmethod
     def ensureIdentityPlacements(self) -> None:
         """
         Makes sure that LinkGroups or sub-assemblies have identity placements.
         """
-        ...
 
     @constmethod
     def clearUndo(self) -> None:
         """
         Clear the registered undo positions.
         """
-        ...
 
     @constmethod
     def isPartConnected(self, obj: DocumentObject, /) -> bool:
@@ -116,7 +106,6 @@ class AssemblyObject(Part):
         Check if a part is connected to the ground through joints.
         Returns: True if part is connected to ground.
         """
-        ...
 
     @constmethod
     def isJointConnectingPartToGround(self, joint: DocumentObject, prop_name: str, /) -> Any:
@@ -129,7 +118,6 @@ class AssemblyObject(Part):
 
         Returns: True if part is connected to ground.
         """
-        ...
 
     @constmethod
     def isPartGrounded(self, obj: DocumentObject, /) -> Any:
@@ -141,7 +129,6 @@ class AssemblyObject(Part):
 
         Returns: True if part has grounded joint.
         """
-        ...
 
     @constmethod
     def exportAsASMT(self, file_name: str, /) -> None:
@@ -151,7 +138,6 @@ class AssemblyObject(Part):
         Args:
         - fileName: The name of the file where the ASMT will be exported.
         """
-        ...
 
     @constmethod
     def getDownstreamParts(
@@ -172,6 +158,5 @@ class AssemblyObject(Part):
         Returns:
             A list of App.DocumentObject instances representing the downstream parts.
         """
-        ...
     Joints: Final[list]
     """A list of all joints this assembly has."""

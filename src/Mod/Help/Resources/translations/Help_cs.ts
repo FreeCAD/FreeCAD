@@ -168,7 +168,7 @@ To platí pouze v případě, že Markdown je vybrán výše.</translation>
     <message>
       <location filename="../../Help.py" line="82"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>Modul PySide QtWebEngineWidgets není k dispozici. Vykreslování nápovědy je provedeno systémovým prohlížečem.</translation>
+      <translation>Modul PySide QtWebEngineWidgets není k dispozici. Vykreslování nápovědy je provedeno systémovým prohlížečem</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="86"/>

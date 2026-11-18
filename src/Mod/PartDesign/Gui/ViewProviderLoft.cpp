@@ -44,18 +44,22 @@ ViewProviderLoft::~ViewProviderLoft() = default;
 
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
 {
+    std::set<App::DocumentObject*> lookup;
     std::vector<App::DocumentObject*> temp;
 
-    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
+    auto loft = getObject<PartDesign::Loft>();
 
-    App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
+    App::DocumentObject* sketch = loft->getVerifiedSketch(true);
     if (sketch) {
+        lookup.insert(sketch);
         temp.push_back(sketch);
     }
 
-    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+    for (App::DocumentObject* obj : loft->Sections.getValues()) {
         if (obj && obj->isDerivedFrom<Part::Part2DObject>()) {
-            temp.push_back(obj);
+            if (lookup.insert(obj).second) {
+                temp.push_back(obj);
+            }
         }
     }
 
@@ -153,7 +157,7 @@ QIcon ViewProviderLoft::getIcon() const
 {
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Loft>();
-    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Type::Additive) {
         str += QStringLiteral("Additive");
     }
     else {

@@ -95,6 +95,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "AxisZColor");
     OnChange(*hGrp, "UseVBO");
     OnChange(*hGrp, "RenderCache");
+    OnChange(*hGrp, "MaxFrameRate");
     OnChange(*hGrp, "Orthographic");
     OnChange(*hGrp, "NavigationStyle");
     OnChange(*hGrp, "OrbitStyle");
@@ -432,6 +433,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             for (auto _viewer : _viewers) {
                 _viewer->setRenderCache(rGrp.GetInt("RenderCache", 0));
             }
+        }
+    }
+    else if (strcmp(Reason, "MaxFrameRate") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setMaxFrameRate(static_cast<int>(rGrp.GetInt("MaxFrameRate", -1)));
         }
     }
     else if (strcmp(Reason, "Orthographic") == 0) {

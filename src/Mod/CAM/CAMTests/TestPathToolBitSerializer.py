@@ -15,13 +15,17 @@ from Path.Tool.assets.asset import Asset
 from Path.Tool.assets.serializer import AssetSerializer
 from Path.Tool.assets.uri import AssetUri
 from Path.Tool.shape import ToolBitShapeEndmill
+from Path.Tool.toolbit.util import setToolBitSchema
 from typing import Mapping
 
 
-class _BaseToolBitSerializerTestCase(PathTestWithAssets):
-    """Base test case for ToolBit Serializers."""
+class _BaseToolBitSerializerTestCase:
+    """Base test case for ToolBit Serializers.
 
-    __test__ = False
+    Deliberately not a TestCase subclass: unittest would otherwise collect and
+    run it directly, where the abstract `serializer_class` attribute does not
+    exist. Concrete suites inherit from both this mixin and PathTestWithAssets.
+    """
 
     serializer_class: Type[AssetSerializer]
     test_tool_bit: ToolBit
@@ -29,6 +33,8 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
     def setUp(self):
         """Create a tool bit for each test."""
         super().setUp()
+        # Some tests switch the schema to check a bit stores its own units.
+        self._entry_schema = FreeCAD.Units.getSchema()
         if self.serializer_class is None or not issubclass(self.serializer_class, AssetSerializer):
             raise NotImplementedError("Subclasses must define a valid serializer_class")
 
@@ -36,6 +42,10 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
         self.test_tool_bit.label = "Test Tool"
         self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("4.12 mm"))
         self.test_tool_bit.set_length(FreeCAD.Units.Quantity("15.0 mm"))
+
+    def tearDown(self):
+        FreeCAD.Units.setSchema(self._entry_schema)
+        super().tearDown()
 
     def test_serialize(self):
         """Test serialization of a toolbit."""
@@ -54,7 +64,7 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
         self.assertEqual(len(dependencies), 0)
 
 
-class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
+class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
     serializer_class = CamoticsToolBitSerializer
 
     def test_serialize(self):
@@ -70,6 +80,15 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
         ]
         for substring in expected_substrings:
             self.assertIn(substring, serialized_data)
+
+    def test_serialize_ball_end_shapes(self):
+        """A ball end and a lollipop both go to CAMotics as Ballnose."""
+        for bit_id in ("6mm_Ball_End", "250_Lollipop"):
+            with self.subTest(bit=bit_id):
+                serialized_data = self.serializer_class.serialize(
+                    self.assets.get(f"toolbit://{bit_id}")
+                )
+                self.assertIn(b'"shape": "Ballnose"', serialized_data)
 
     def test_deserialize(self):
         # Create a known serialized data string based on the Camotics format
@@ -93,7 +112,7 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
 
 
-class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
+class TestFCTBSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
     serializer_class = FCTBSerializer
 
     def test_serialize(self):
@@ -111,6 +130,32 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
             FreeCAD.Units.Quantity(data.get("parameter", {}).get("Length")),
             FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length),
         )
+
+    def test_serialize_uses_the_bits_own_units(self):
+        """A bit stores itself in the units it is specified in, not the ones on screen."""
+        self.test_tool_bit.obj.Units = "Imperial"
+        self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+
+        for active in ("Metric", "Imperial"):
+            setToolBitSchema(active)
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            diameter = data["parameter"]["Diameter"]
+            self.assertEqual(diameter, "0.3750 in", f"with the {active} schema active")
+
+    def test_serialize_keeps_tool_precision(self):
+        """Two decimals would save a 0.375" tap as 0.37" - 0.127mm out."""
+        cases = (("Metric", "9.525 mm"), ("Imperial", "0.3750 in"))
+        for units, expected in cases:
+            self.test_tool_bit.obj.Units = units
+            self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            stored = data["parameter"]["Diameter"]
+            self.assertEqual(stored, expected)
+            self.assertAlmostEqual(
+                FreeCAD.Units.Quantity(stored).Value,
+                self.test_tool_bit.obj.Diameter.Value,
+                places=6,
+            )
 
     def test_extract_dependencies(self):
         """Test dependency extraction for FCTB."""
@@ -173,7 +218,7 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(data["my_ext"], {"foo": 1})
 
 
-class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
+class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
     serializer_class = YamlToolBitSerializer
 
     def test_serialize(self):

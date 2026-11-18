@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -26,6 +28,7 @@
 
 #include "QGIPrimPath.h"
 #include "QGIUserTypes.h"
+#include "ScreenScalable.h"
 
 namespace Base {
 class Vector2d;
@@ -34,7 +37,7 @@ class Vector2d;
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIVertex : public QGIPrimPath
+class TechDrawGuiExport QGIVertex : public QGIPrimPath, public ScreenScalable
 {
 public:
     explicit QGIVertex(int index);
@@ -48,12 +51,15 @@ public:
 
     double getRadius() const { return m_radius; }
     virtual void setRadius(double r);
+    void setScreenScale(double scale) override;
 
     Base::Vector2d toVector2d() const;
     Base::Vector2d vector2dBetweenPoints(const QGIVertex* p2) const;
 
 protected:
     bool multiselectEligible() override { return true; }
+
+    void makePoint();
 
     int projIndex;
     double m_radius;

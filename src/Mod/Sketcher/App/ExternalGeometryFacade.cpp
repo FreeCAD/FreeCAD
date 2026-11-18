@@ -95,9 +95,9 @@ void ExternalGeometryFacade::initExtensions()
 
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
-        // Base::Console().warning("Sketcher External Geometry without Geometry Extension: %s
+        // Base::Console().warning("Sketcher External Geometry without Geometry Extension: {}
         // \n",
-        //                         boost::uuids::to_string(Geo->getTag()).c_str());
+        //                         boost::uuids::to_string(Geo->getTag()));
     }
 
     if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
@@ -107,8 +107,8 @@ void ExternalGeometryFacade::initExtensions()
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
         // Base::Console().warning(
-        //     "Sketcher External Geometry without ExternalGeometryExtension: %s \n",
-        //     boost::uuids::to_string(Geo->getTag()).c_str());
+        //     "Sketcher External Geometry without ExternalGeometryExtension: {} \n",
+        //     boost::uuids::to_string(Geo->getTag()));
     }
 
     SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(

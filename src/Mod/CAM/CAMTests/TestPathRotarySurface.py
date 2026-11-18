@@ -120,6 +120,7 @@ def _install_stub_machine(job, axis, min_limit=-360.0, max_limit=360.0):
         raise ValueError("axis must be 'X' or 'Y'")
 
     class _StubMachine:
+        has_rotary_axes = True
         rotary_axes = {
             name: RotaryAxis(
                 name=name,

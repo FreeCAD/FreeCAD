@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from BoundedCurve import BoundedCurve
 
@@ -21,8 +19,7 @@ class TrimmedCurve(BoundedCurve):
     Licence: LGPL
     """
 
-    def setParameterRange(self, first: float, last: float, /) -> None:
+    def setParameterRange(self, first: float = ..., last: float = ..., /) -> None:
         """
         Re-trims this curve to the provided parameter range ([Float=First, Float=Last])
         """
-        ...

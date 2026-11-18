@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -71,6 +73,7 @@ public:
     void selectQGIView(App::DocumentObject *obj, bool isSelected, const std::vector<std::string> &subNames);
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
+    void selectOnRightPress(QGraphicsItem* item);
 
     bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
@@ -124,6 +127,7 @@ public Q_SLOTS:
     void slotContextExportPdf();
     void toggleFrame();
     void toggleGrid();
+    void toggleScreenMode();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -143,11 +147,25 @@ protected:
     void sceneSelectionManager();
 
 private:
+    struct SelectionContext {
+        bool hasFace = false;
+        bool hasGeomEdge = false;
+        bool hasCosmeticEdge = false;
+        bool hasCircleEdge = false;
+    };
+
+    static SelectionContext getSelectionContext();
+
+    bool addSelectionGroups(QMenu& menu);
+    void addPageGroup(QMenu& menu);
+    int addCommandsByName(QMenu& menu, std::initializer_list<const char*> names);
+
     using Connection = fastsignals::connection;
     Connection connectDeletedObject;
 
     QAction *m_toggleFrameAction;
     QAction *m_toggleGridAction;
+    QAction *m_toggleScreenModeAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;
@@ -167,7 +185,6 @@ private:
 
     QString defaultFileName();
 
-    bool m_previewState{false};
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

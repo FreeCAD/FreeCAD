@@ -59,11 +59,7 @@
 
 
 #if defined(Q_OS_WIN)
-# if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-#  include <QtPlatformHeaders/QWindowsWindowFunctions>
-# else
-#  include <qpa/qplatformwindow_p.h>
-# endif
+# include <qpa/qplatformwindow_p.h>
 #endif
 
 #include <algorithm>
@@ -468,7 +464,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     // Preselection text yields under width pressure: it elides with an ellipsis
     // rather than crowding out higher-priority widgets like Input Hints.
-    d->actionLabel->setElideMode(Qt::ElideRight);
+    // preselection puts the element ID and coordinates at the end of the string,
+    // so elide the middle: the leading document and object labels are the least
+    // informative part and the tail is what the user is reading
+    d->actionLabel->setElideMode(Qt::ElideMiddle);
     d->actionLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     addStatusBarItem(
         d->actionLabel,
@@ -617,13 +616,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    connect(d->windowMapper, &QSignalMapper::mappedWidget, this, &MainWindow::setActiveSubWindow);
-#else
     connect(d->windowMapper, &QSignalMapper::mappedObject, this, [=, this](QObject* object) {
         setActiveSubWindow(qobject_cast<QWidget*>(object));
     });
-#endif
     connect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
 
     setupDockWindows();
@@ -1211,8 +1206,10 @@ static View3DInventorViewer* spaceballMotionEventTarget()
 {
     // check if the active window has a 3d view
 
-    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
-        return viewer;
+    if (auto active = getMainWindow()->activeWindow()) {
+        if (auto viewer = active->findChild<View3DInventorViewer*>()) {
+            return viewer;
+        }
     }
 
     // check active view for the document
@@ -1884,6 +1881,10 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    if (!Application::hiddenMainWindow()) {
+        Q_EMIT guiInitialized();
+    }
+
     // processing all command line files
     try {
         std::list<std::string> files = App::Application::getCmdLineFiles();
@@ -2204,16 +2205,10 @@ void MainWindow::loadWindowSettings()
 
     // make menus and tooltips usable in fullscreen under Windows, see issue #7563
 #if defined(Q_OS_WIN)
-# if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (QWindow* win = this->windowHandle()) {
-        QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
-    }
-# else
     using namespace QNativeInterface::Private;
     if (auto* windowsWindow = dynamic_cast<QWindowsWindow*>(this->windowHandle())) {
         windowsWindow->setHasBorderInFullScreen(true);
     }
-# endif
 #endif
 
     statusBar()->setVisible(showStatusBar);
@@ -2249,7 +2244,7 @@ void MainWindowP::restoreWindowState(const QByteArray& windowState)
         getMainWindow()->restoreState(windowState);
     }
 
-    Base::ConnectionBlocker block(connParam);
+    fastsignals::shared_connection_block blocker(connParam);
     // as a notification for user code on window state restore
     hGrp->SetBool("WindowStateRestored", !hGrp->GetBool("WindowStateRestored", false));
 }
@@ -2265,7 +2260,7 @@ void MainWindow::saveWindowSettings(bool canDelay)
         return;
     }
 
-    Base::ConnectionBlocker block(d->connParam);
+    fastsignals::shared_connection_block blocker(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
     d->hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
@@ -2490,10 +2485,7 @@ void MainWindow::insertFromMimeData(const QMimeData* mimeData)
             doc->commitTransaction();
         }
         else {
-            Base::Console().error(
-                "Failed to save pasted image to temporary file: %s\n",
-                tempPath.c_str()
-            );
+            Base::Console().error("Failed to save pasted image to temporary file: {}\n", tempPath);
         }
         return;
     }
@@ -2621,7 +2613,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             }
             else {
                 Base::Console().message(
-                    "No support to load file '%s'\n",
+                    "No support to load file '{}'\n",
                     (const char*)info.absoluteFilePath().toUtf8()
                 );
             }

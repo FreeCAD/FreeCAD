@@ -214,12 +214,15 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(string, (""));
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0F, 1.0F, 1.0F)));
     SO_NODE_ADD_FIELD(pnts, (SbVec3f(.0F, .0F, .0F)));
+    SO_NODE_ADD_FIELD(extensionLines, (SbVec3f(.0F, .0F, .0F)));
+    extensionLines.setNum(0);
     SO_NODE_ADD_FIELD(norm, (SbVec3f(.0F, .0F, 1.F)));
     SO_NODE_ADD_FIELD(strikethrough, (false));
 
     SO_NODE_ADD_FIELD(name, ("osifont"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(linePattern, (0b1111111111111111));
     SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
@@ -264,6 +267,7 @@ SoDatumLabel::SoDatumLabel()
     m_Root->addChild(m_GeometryColor);
 
     m_DrawStyle = new SoDrawStyle;
+    m_DrawStyle->linePattern.connectFrom(&this->linePattern);
     m_DrawStyle->lineWidth.connectFrom(&this->lineWidth);
     m_Root->addChild(m_DrawStyle);
 
@@ -426,6 +430,12 @@ public:
         }
         else if (label->datumtype.getValue() == SoDatumLabel::ARCLENGTH) {
             corners = computeArcLengthBBox();
+        }
+
+        const int extensionPointCount = label->extensionLines.getNum();
+        if (extensionPointCount > 0) {
+            const SbVec3f* extensionPoints = label->extensionLines.getValues(0);
+            corners.insert(corners.end(), extensionPoints, extensionPoints + extensionPointCount);
         }
 
         getBBox(corners, box, center);
@@ -1242,6 +1252,20 @@ void SoDatumLabel::generatePrimitives(SoAction* action)
             generateArcLengthPrimitives(action, p1, p2, p3);
         }
     }
+
+    const int extensionPointCount = extensionLines.getNum();
+    if (extensionPointCount > 0) {
+        const SbVec3f* extensionPoints = extensionLines.getValues(0);
+        const float selectionWidth = (imgHeight / 3.0F) * 0.8F;
+        for (int i = 0; i + 1 < extensionPointCount; i += 2) {
+            generateLineSelectionPrimitive(
+                action,
+                extensionPoints[i],
+                extensionPoints[i + 1],
+                selectionWidth
+            );
+        }
+    }
 }
 
 void SoDatumLabel::notify(SoNotList* l)
@@ -1295,6 +1319,16 @@ float SoDatumLabel::getScaleFactor(SoState* state) const
 void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
 {
     point[2] = z;
+}
+
+SoDatumLabel::SelectionPart SoDatumLabel::classifySelectionPoint(const SbVec3f& objectPoint) const
+{
+    // Geometry lies on one of two known Z layers. Coin returns an intersection point rather
+    // than the stored vertex value, so classify it by the nearest layer without an epsilon.
+    constexpr float selectionBoundary = (ZCONSTR + ZARROW_TEXT_OFFSET) * 0.5F;
+
+    return objectPoint[2] > selectionBoundary ? SelectionPart::Annotation
+                                              : SelectionPart::Presentation;
 }
 
 void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
@@ -1507,25 +1541,33 @@ void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
         }
     }
 
-    if (!lineVertices.empty()) {
-        m_LineVertexProperty->vertex
-            .setValues(0, static_cast<int>(lineVertices.size()), lineVertices.data());
-        m_LineSet->numVertices.setValues(0, static_cast<int>(lineCounts.size()), lineCounts.data());
-    }
-    else {
-        m_LineVertexProperty->vertex.setNum(0);
-        m_LineSet->numVertices.setNum(0);
+    const int extensionPointCount = extensionLines.getNum();
+    if (extensionPointCount > 0) {
+        const SbVec3f* extensionPoints = extensionLines.getValues(0);
+        for (int i = 0; i + 1 < extensionPointCount; i += 2) {
+            appendLine(lineVertices, lineCounts, extensionPoints[i], extensionPoints[i + 1]);
+        }
     }
 
-    if (!triangleVertices.empty()) {
-        m_TriangleVertexProperty->vertex
-            .setValues(0, static_cast<int>(triangleVertices.size()), triangleVertices.data());
-        m_TriangleFaceSet->numVertices
-            .setValues(0, static_cast<int>(triangleCounts.size()), triangleCounts.data());
+    // setValues() only overwrites the leading entries and never shrinks a multi-field,
+    // so set the exact size first; otherwise stale geometry from a previous, larger
+    // update (e.g. a shrinking arc helper) is still rendered.
+    const int lineVertexCount = static_cast<int>(lineVertices.size());
+    const int lineCount = static_cast<int>(lineCounts.size());
+    m_LineVertexProperty->vertex.setNum(lineVertexCount);
+    m_LineSet->numVertices.setNum(lineCount);
+    if (lineVertexCount > 0) {
+        m_LineVertexProperty->vertex.setValues(0, lineVertexCount, lineVertices.data());
+        m_LineSet->numVertices.setValues(0, lineCount, lineCounts.data());
     }
-    else {
-        m_TriangleVertexProperty->vertex.setNum(0);
-        m_TriangleFaceSet->numVertices.setNum(0);
+
+    const int triangleVertexCount = static_cast<int>(triangleVertices.size());
+    const int triangleCount = static_cast<int>(triangleCounts.size());
+    m_TriangleVertexProperty->vertex.setNum(triangleVertexCount);
+    m_TriangleFaceSet->numVertices.setNum(triangleCount);
+    if (triangleVertexCount > 0) {
+        m_TriangleVertexProperty->vertex.setValues(0, triangleVertexCount, triangleVertices.data());
+        m_TriangleFaceSet->numVertices.setValues(0, triangleCount, triangleCounts.data());
     }
 }
 

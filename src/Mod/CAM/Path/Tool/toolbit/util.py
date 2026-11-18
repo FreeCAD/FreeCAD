@@ -22,11 +22,69 @@
 # ***************************************************************************
 import FreeCAD
 
+UNITS_SCHEMA_MAP = {
+    "metric": 6,  # 6 = Metric schema in FreeCAD
+    "imperial": 3,  # 3 = Imperial schema in FreeCAD
+}
+AUTOSCALING_SCHEMA = 0  # the schema that drops to µm on its own
 
-def to_json(value):
+# Less than this rounds a 3.175mm endmill to 3.18mm, on disk and in the
+# editor: forum.freecad.org/viewtopic.php?t=79854
+METRIC_DECIMALS = 3
+IMPERIAL_DECIMALS = 4
+
+
+def tool_decimals(units=None) -> int:
+    """Decimals for `units` ("Metric"/"Imperial"), or the active schema."""
+    schema = UNITS_SCHEMA_MAP.get(units.lower()) if isinstance(units, str) else None
+    if schema is None:
+        schema = FreeCAD.Units.getSchema()
+    return IMPERIAL_DECIMALS if schema == UNITS_SCHEMA_MAP["imperial"] else METRIC_DECIMALS
+
+
+def at_tool_precision(value: FreeCAD.Units.Quantity) -> FreeCAD.Units.Quantity:
+    """
+    Stamp tool precision onto the value's format.
+
+    Gui::QuantitySpinBox reads its precision from the Quantity it is given and
+    rounds to match, so this has to arrive with the value, not be set after.
+    """
+    value = FreeCAD.Units.Quantity(value)
+    fmt = value.Format
+    fmt["Precision"] = tool_decimals()
+    value.Format = fmt
+    return value
+
+
+def _in_microns(value) -> bool:
+    """True when the value is small enough that FreeCAD would render it in µm."""
+    return FreeCAD.Units.schemaTranslate(value, AUTOSCALING_SCHEMA)[2] == "\N{MICRO SIGN}m"
+
+
+def quantity_to_str(value, units=None):
+    """
+    Format a Quantity for storage, in the units the bit is specified in.
+
+    Not UserString: that follows the active schema rather than the bit's own,
+    and rounds to the display preference, saving a 0.375" tap as 0.37".
+    """
+    schema = UNITS_SCHEMA_MAP.get(units.lower()) if isinstance(units, str) else None
+    if schema is None:
+        schema = FreeCAD.Units.getSchema()
+    _, factor, unit = FreeCAD.Units.schemaTranslate(value, schema)
+    decimals = tool_decimals(units)
+    if decimals == METRIC_DECIMALS and _in_microns(value):
+        # Below 0.1mm FreeCAD would switch to µm itself; keep that resolution.
+        decimals += 1
+    text = f"{value.Value / factor:.{decimals}f}"
+    # FreeCAD writes degrees closed up against the symbol.
+    return f"{text}{unit}" if unit == "\N{DEGREE SIGN}" else f"{text} {unit}"
+
+
+def to_json(value, units=None):
     """Convert a value to JSON format."""
     if isinstance(value, FreeCAD.Units.Quantity):
-        return value.UserString
+        return quantity_to_str(value, units)
     return value
 
 
@@ -81,12 +139,14 @@ def format_value(
     """
     Format a numeric value as a string, optionally appending a unit and controlling precision.
 
-    This function uses the ToolBitSchema (via setToolBitSchema) to ensure that units are formatted according to the correct schema (Metric or Imperial) when a FreeCAD.Units.Quantity is provided. The schema is temporarily set for formatting and then restored.
+    Lengths are formatted in the bit's own units at tool precision, so a list
+    entry says the same thing as the editor field and the file.
 
     Args:
         value: The numeric value to format.
-        unit: (Optional) The unit string to append (e.g., 'mm', 'in').
-        precision: (Optional) Number of decimal places (default: 3).
+        units: (Optional) the bit's units, "Metric" or "Imperial".
+        precision: (Optional) present to ask for a formatted value at all;
+            the number of decimals follows the units.
 
     Returns:
         str: The formatted value as a string, with unit if provided.
@@ -105,10 +165,7 @@ def format_value(
                 formatted_value = f"{deg_val:.1f}".rstrip("0").rstrip(".")
                 return f"{formatted_value}°"
             # Format the value with the specified number of precision and strip trailing zeros
-            setToolBitSchema(units)
-            _value = value.getUserPreferred()[0]
-            setToolBitSchema()
-            return _value
+            return quantity_to_str(value, units)
         return value.UserString
     return str(value)
 
@@ -148,12 +205,8 @@ def setToolBitSchema(schema=None):
     Set the FreeCAD units schema. If passed 'Metric' or 'Imperial', set accordingly (case-insensitive).
     Otherwise, if a document is open, set to its schema. If no document, fallback to user preference or provided schema.
     """
-    units_schema_map = {
-        "metric": 6,  # 6 = Metric schema in FreeCAD
-        "imperial": 3,  # 3 = Imperial schema in FreeCAD
-    }
-    if isinstance(schema, str) and schema.lower() in units_schema_map:
-        FreeCAD.Units.setSchema(units_schema_map[schema.lower()])
+    if isinstance(schema, str) and schema.lower() in UNITS_SCHEMA_MAP:
+        FreeCAD.Units.setSchema(UNITS_SCHEMA_MAP[schema.lower()])
         return
     if FreeCAD.ActiveDocument is not None:
         try:

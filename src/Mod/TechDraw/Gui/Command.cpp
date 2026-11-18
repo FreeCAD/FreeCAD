@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -59,6 +61,7 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
@@ -72,9 +75,11 @@
 #include "TaskActiveView.h"
 #include "TaskComplexSection.h"
 #include "TaskDetail.h"
+#include "TaskNewPage.h"
 #include "TaskProjGroup.h"
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
+#include "TaskSpreadsheetView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "CommandHelpers.h"
@@ -95,6 +100,38 @@ class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
+
+//===========================================================================
+// TechDraw_NewPage
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewPage)
+
+CmdTechDrawNewPage::CmdTechDrawNewPage()
+    : Command("TechDraw_NewPage")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Insert New Page");
+    sToolTipText = QT_TR_NOOP(
+        "Opens a task panel for selecting the template standard, size and language"
+    );
+    sWhatsThis = "TechDraw_NewPage";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_PageDefault";
+}
+
+void CmdTechDrawNewPage::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Control().showDialog(new TaskDlgNewPage());
+}
+
+bool CmdTechDrawNewPage::isActive()
+{
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -166,8 +203,8 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate() : Command("TechDraw_PageTempl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("New Page From Template");
-    sToolTipText = QT_TR_NOOP("Creates a new page from a custom template");
+    sMenuText = QT_TR_NOOP("Insert Page Using Browser…");
+    sToolTipText = QT_TR_NOOP("Opens a file browser for directly selecting an SVG template");
     sWhatsThis = "TechDraw_PageTemplate";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PageTemplate";
@@ -224,6 +261,40 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
 }
 
 bool CmdTechDrawPageTemplate::isActive() { return hasActiveDocument(); }
+
+//===========================================================================
+// TechDraw_NewGroup
+//===========================================================================
+class CmdTechDrawNewGroup: public Gui::GroupCommand
+{
+public:
+    CmdTechDrawNewGroup()
+        : GroupCommand("TechDraw_NewGroup")
+    {
+        sAppModule = "TechDraw";
+        sGroup = QT_TR_NOOP("TechDraw");
+        sMenuText = QT_TR_NOOP("Insert New Page");
+        sToolTipText = sMenuText;
+        sWhatsThis = "TechDraw_NewGroup";
+        sStatusTip = sToolTipText;
+        sPixmap = "actions/TechDraw_PageDefault";
+
+        setCheckable(false);
+
+        addCommand("TechDraw_NewPage");
+        addCommand("TechDraw_PageTemplate");
+    }
+
+    const char* className() const override
+    {
+        return "CmdTechDrawNewGroup";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+};
 
 //===========================================================================
 // TechDraw_RedrawPage
@@ -739,7 +810,7 @@ CmdTechDrawSectionGroup::CmdTechDrawSectionGroup() : Command("TechDraw_SectionGr
 
 void CmdTechDrawSectionGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::SectionGrp - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::SectionGrp - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -757,7 +828,7 @@ void CmdTechDrawSectionGroup::activated(int iMsg)
             execComplexSection(this);
             break;
         default:
-            Base::Console().message("CMD::SectionGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::SectionGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1758,55 +1829,74 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
+    auto* document = page->getDocument();
+    const std::string pageName = page->getNameInDocument();
 
     const std::vector<App::DocumentObject*> spreads =
         getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
-    if (spreads.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one spreadsheet object"));
+    auto* spreadsheet = spreads.empty()
+        ? nullptr
+        : static_cast<Spreadsheet::Sheet*>(spreads.front());
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Spreadsheet View"));
+
+    std::string spreadsheetName;
+    if (spreadsheet) {
+        spreadsheetName = spreadsheet->getNameInDocument();
+    }
+    else {
+        spreadsheetName = document->getUniqueObjectName("Spreadsheet");
+        doCommand(Doc,
+                  "App.getDocument('%s').addObject('Spreadsheet::Sheet', '%s')",
+                  document->getName(),
+                  spreadsheetName.c_str());
+    }
+
+    const std::string viewName = document->getUniqueObjectName("Sheet");
+    doCommand(Doc,
+              "App.getDocument('%s').addObject('TechDraw::DrawViewSpreadsheet', '%s')",
+              document->getName(),
+              viewName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
+              document->getName(),
+              viewName.c_str(),
+              viewName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.Source = App.getDocument('%s').%s",
+              document->getName(),
+              viewName.c_str(),
+              document->getName(),
+              spreadsheetName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.addView(App.getDocument('%s').%s)",
+              document->getName(),
+              pageName.c_str(),
+              document->getName(),
+              viewName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.ViewObject.ClaimSheetAsChild = %s",
+              document->getName(),
+              viewName.c_str(),
+              spreadsheet ? "False" : "True");
+    updateActive();
+
+    auto* view = dynamic_cast<TechDraw::DrawViewSpreadsheet*>(document->getObject(viewName.c_str()));
+    if (!view) {
+        abortCommand();
         return;
     }
-    std::string SpreadName = spreads.front()->getNameInDocument();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
-    std::string FeatName = getUniqueObjectName("Sheet");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
-              FeatName.c_str(), FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
-              SpreadName.c_str());
-
-    // look for an owner view in the selection
-    auto baseView = CommandHelpers::firstViewInSelection(this);
-    if (baseView) {
-        auto baseName = baseView->getNameInDocument();
-        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
-                  FeatName.c_str(), baseName);
-    }
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
-    doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
-        PageName.c_str(), FeatName.c_str(), PageName.c_str());
-    updateActive();
-    commitCommand();
+    Gui::Control().showDialog(new TaskDlgSpreadsheetView(page, view, true), document);
+    doCommand(Gui,
+              "Gui.getDocument('%s').setEdit('%s')",
+              document->getName(),
+              viewName.c_str());
 }
 
 bool CmdTechDrawSpreadsheetView::isActive()
 {
-    //need a Page and a SpreadSheet::Sheet
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveSheet = false;
-    if (havePage) {
-        auto spreadSheetType(Spreadsheet::Sheet::getClassTypeId());
-        auto selSheets = getDocument()->getObjectsOfType(spreadSheetType);
-        if (!selSheets.empty()) {
-            haveSheet = true;
-        }
-    }
-    return (havePage && haveSheet);
+    return DrawGuiUtil::needPage(this);
 }
 
 
@@ -1913,8 +2003,68 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     commitCommand();
 }
 
-
 bool CmdTechDrawExportPageDXF::isActive() { return DrawGuiUtil::needPage(this); }
+
+//===========================================================================
+// TechDraw_ExportPagePDF
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExportPagePDF)
+
+CmdTechDrawExportPagePDF::CmdTechDrawExportPagePDF() : Command("TechDraw_ExportPagePDF")
+{
+    sGroup = QT_TR_NOOP("File");
+    sMenuText = QT_TR_NOOP("Export Page as PDF");
+    sToolTipText = QT_TR_NOOP("Exports the current page as a PDF");
+    sWhatsThis = "TechDraw_ExportPagePDF";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_ExportPagePDF";
+}
+
+void CmdTechDrawExportPagePDF::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto* mvp = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (mvp) {
+        mvp->exportAsPdf();
+    }
+}
+
+bool CmdTechDrawExportPagePDF::isActive() { return DrawGuiUtil::needPage(this); }
+
+//===========================================================================
+// TechDraw_ExportGroup
+//===========================================================================
+class CmdTechDrawExportGroup : public Gui::GroupCommand
+{
+public:
+    CmdTechDrawExportGroup()
+        : GroupCommand("TechDraw_ExportGroup")
+    {
+        sAppModule = "TechDraw";
+        sGroup = QT_TR_NOOP("TechDraw");
+        sMenuText = QT_TR_NOOP("Print All Pages");
+        sToolTipText = sMenuText;
+        sWhatsThis = "TechDraw_ExportGroup";
+        sStatusTip = sToolTipText;
+        sPixmap = "actions/TechDraw_PrintAll";
+
+        setCheckable(false);
+
+        addCommand("TechDraw_PrintAll");
+        addCommand("TechDraw_ExportPagePDF");
+        addCommand("TechDraw_ExportPageSVG");
+        addCommand("TechDraw_ExportPageDXF");
+    }
+
+    const char* className() const override
+    {
+        return "CmdTechDrawExportGroup";
+    }
+
+    bool isActive() override { return DrawGuiUtil::needPage(this); }
+};
 
 //===========================================================================
 // TechDraw_ProjectShape
@@ -1948,8 +2098,10 @@ void CreateTechDrawCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdTechDrawNewPage());
     rcCmdMgr.addCommand(new CmdTechDrawPageDefault());
     rcCmdMgr.addCommand(new CmdTechDrawPageTemplate());
+    rcCmdMgr.addCommand(new CmdTechDrawNewGroup());
     rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
     rcCmdMgr.addCommand(new CmdTechDrawPrintAll());
     rcCmdMgr.addCommand(new CmdTechDrawView());
@@ -1965,6 +2117,8 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageSVG());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageDXF());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPagePDF());
+    rcCmdMgr.addCommand(new CmdTechDrawExportGroup());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());

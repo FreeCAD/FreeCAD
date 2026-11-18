@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -400,7 +402,7 @@ bool TaskDlgPost::accept()
     }
     catch (const Base::Exception& e) {
         m_view->getDocument()->abortCommand();
-        QMessageBox::warning(nullptr, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
 
@@ -1468,7 +1470,7 @@ void TaskPostDataAtPoint::showValue(double pointValue, const char* unitStr)
     QString posZ = ui->centerZ->text();
 
     QString result = tr("%1 at (%2; %3; %4) is: %5 %6").arg(field, posX, posY, posZ, value, unit);
-    Base::Console().message("%s\n", result.toUtf8().data());
+    Base::Console().message("{}\n", result.toStdString());
 }
 
 std::string TaskPostDataAtPoint::toString(double val) const
@@ -1558,7 +1560,7 @@ void TaskPostClip::collectImplicitFunctions()
                 = getObject<Fem::FemPostClipFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromUtf8(funcs[i]->getNameInDocument()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }
@@ -1867,7 +1869,7 @@ void TaskPostCut::collectImplicitFunctions()
                 = getObject<Fem::FemPostCutFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromUtf8(funcs[i]->getNameInDocument()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }
@@ -1975,7 +1977,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWid
     ui->Slider->blockSignals(true);
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().log("init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
+    Base::Console().log("init: scalar_factor, slider_value: {}, {}: \n", scalar_factor, slider_value);
 }
 
 TaskPostScalarClip::~TaskPostScalarClip() = default;
@@ -2109,7 +2111,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWid
         * 100.;
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("init: warp_factor, slider_value: {}, {}: \n", warp_factor, slider_value);
 }
 
 TaskPostWarpVector::~TaskPostWarpVector() = default;
@@ -2171,7 +2173,7 @@ void TaskPostWarpVector::onSliderValueChanged(int slider_value)
     ui->Value->blockSignals(true);
     ui->Value->setValue(warp_factor);
     ui->Value->blockSignals(false);
-    Base::Console().log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("Change: warp_factor, slider_value: {}, {}: \n", warp_factor, slider_value);
 }
 
 void TaskPostWarpVector::onValueValueChanged(double warp_factor)
@@ -2189,7 +2191,7 @@ void TaskPostWarpVector::onValueValueChanged(double warp_factor)
         * 100.;
     ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
-    Base::Console().log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("Change: warp_factor, slider_value: {}, {}: \n", warp_factor, slider_value);
 }
 
 void TaskPostWarpVector::onMaxValueChanged(double)
@@ -2226,7 +2228,7 @@ void TaskPostWarpVector::onMaxValueChanged(double)
         ui->Value->blockSignals(true);
         ui->Value->setValue(warp_factor);
         ui->Value->blockSignals(false);
-    Base::Console().log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    Base::Console().log("Change: warp_factor, slider_value: {}, {}: \n", warp_factor, slider_value);
     }
     */
 }
