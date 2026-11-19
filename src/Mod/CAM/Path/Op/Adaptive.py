@@ -162,15 +162,19 @@ def discretize(edge, flipDirection=False):
 
 def _initHelixFeedProperties(obj, legacy=False):
     """Keep legacy entry feeds separate from new operations' ramp feeds."""
-    if not hasattr(obj, "HelixFeedVersion"):
+    # Keep the version in a local: a setup sheet's OpPrototype cannot read properties back.
+    if hasattr(obj, "HelixFeedVersion"):
+        version = obj.HelixFeedVersion
+    else:
+        version = 0 if legacy else 1
         obj.addProperty(
             "App::PropertyInteger",
             "HelixFeedVersion",
             "AdaptiveHelixEntry",
             "Helix entry feed: 0 uses VertFeed for compatibility; 1 uses RampFeed",
         )
-        obj.HelixFeedVersion = 0 if legacy else 1
-    obj.setEditorMode("HelixFeedVersion", 0 if obj.HelixFeedVersion == 0 else 2)
+        obj.HelixFeedVersion = version
+    obj.setEditorMode("HelixFeedVersion", 0 if version == 0 else 2)
 
 
 def _applyFeedRate(commands, feedRate):
