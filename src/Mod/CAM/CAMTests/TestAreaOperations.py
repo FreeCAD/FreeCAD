@@ -636,6 +636,18 @@ class TestAreaOperations(unittest.TestCase):
 
         self.assertEqual(a.num_curves(), 1, format_area(a, "Result"))
 
+    def test_union_duplicate_circles(self):
+        """Unioning an area containing two identical circles should give one circle."""
+        r = 2
+        holes = self.create_circle(5, 5, r)
+        holes.append(self.create_circle(5, 5, r).getCurves()[0])
+
+        a = area.Area()
+        a.Union(holes, fill=area.FillRule.Positive)
+
+        self.assertEqual(a.num_curves(), 1, format_area(a, "result"))
+        self.assertAreaNear(a, math.pi * r**2)
+
 
 if __name__ == "__main__":
     # Allow running this test file directly

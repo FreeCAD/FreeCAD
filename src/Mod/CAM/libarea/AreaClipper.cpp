@@ -27,6 +27,7 @@ bool CArea::HolesLinked()
 }
 
 double CArea::m_clipper_scale = CArea::default_clipper_scale;
+FillRule CArea::m_subject_fill = FillRule::EvenOdd;
 
 static const int min_arc_points = 4;
 
@@ -60,24 +61,24 @@ static double recenter(double phi, double phi_ref, int type)
     return phi;
 };
 
-void CArea::Subtract(const CArea& a2)
+void CArea::Subtract(const CArea& a2, std::optional<FillRule> fill)
 {
-    Clip(ClipType::Difference, a2);
+    Clip(ClipType::Difference, a2, fill);
 }
 
-void CArea::Intersect(const CArea& a2)
+void CArea::Intersect(const CArea& a2, std::optional<FillRule> fill)
 {
-    Clip(ClipType::Intersection, a2);
+    Clip(ClipType::Intersection, a2, fill);
 }
 
-void CArea::Union(const CArea& a2)
+void CArea::Union(const CArea& a2, std::optional<FillRule> fill)
 {
-    Clip(ClipType::Union, a2);
+    Clip(ClipType::Union, a2, fill);
 }
 
-void CArea::Xor(const CArea& a2)
+void CArea::Xor(const CArea& a2, std::optional<FillRule> fill)
 {
-    Clip(ClipType::Xor, a2);
+    Clip(ClipType::Xor, a2, fill);
 }
 
 void CArea::PopulateClipper(Clipper64& c, bool as_clip, ConversionMetadata& metadata) const
@@ -247,9 +248,9 @@ void CArea::_Clip(
     SetFromResult(openPaths, /*is_closed=*/false, /*assertOutputClosed=*/false, metadata, cNeg);
 }
 
-void CArea::Clip(ClipType op, const CArea& clip_area, FillRule fillType)
+void CArea::Clip(ClipType op, const CArea& clip_area, std::optional<FillRule> fillType)
 {
-    _Clip(op, clip_area, fillType);
+    _Clip(op, clip_area, fillType.value_or(m_subject_fill));
 }
 
 void CArea::ClipperNoop()
