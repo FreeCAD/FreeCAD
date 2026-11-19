@@ -151,7 +151,7 @@ def _check_dropped_data(raw: Dict[str, Any], machine: Machine, report: _Report, 
     output are fields the model has gained since the file was written.
     """
     try:
-        fresh = machine.to_dict()
+        fresh = machine.to_dict(keep_unknown=False)
     except Exception as exc:  # pragma: no cover - defensive
         report.warning("serialise-failed", f"could not re-serialise for comparison: {exc}", source)
         return

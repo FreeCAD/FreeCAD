@@ -20,6 +20,7 @@
 #                                                                              #
 ################################################################################
 
+import copy
 import json
 import Path
 import FreeCAD
@@ -254,6 +255,10 @@ class LinearAxis:
     parent: str | None = None
     joint_origin: list[float] = field(default_factory=lambda: [0, 0, 0])
 
+    # keys in the loaded axis this FreeCAD does not read, kept on the axis itself so an axis
+    # built new (the editor's machine Type) does not take another axis's keys
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
+
     def __post_init__(self):
         """Normalize direction vector and validate parameters after initialization"""
         if self.direction_vector is None or self.direction_vector.Length < 1e-6:
@@ -352,6 +357,10 @@ class RotaryAxis:
     solution_preference: str = "shortest"  # "shortest", "positive", "negative"
     allow_flip: bool = True
     wrap_strategy: WrapStrategy = WrapStrategy.UNWOUND
+
+    # keys in the loaded axis this FreeCAD does not read, kept on the axis itself so an axis
+    # built new (the editor's machine Type) does not take another axis's keys
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Normalize rotation vector and validate parameters after initialization"""
@@ -578,6 +587,10 @@ class Toolhead:
     # Capabilities (auto-generated based on type)
     capabilities: ToolheadCapabilities | None = None
 
+    # keys in the loaded toolhead this FreeCAD does not read, kept on the toolhead itself so
+    # they stay with it when toolheads are removed or reordered
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
+
     def __post_init__(self):
         """Set default values and capabilities"""
         if self.capabilities is None:
@@ -646,7 +659,7 @@ class Toolhead:
         """Legacy compatibility setter for toolhead_type."""
         self.toolhead_type = value
 
-    def to_dict(self):
+    def to_dict(self, keep_unknown=True):
         """Serialize to dictionary for JSON persistence"""
         data = {
             "name": self.name,
@@ -674,6 +687,9 @@ class Toolhead:
         if self.id is not None:
             data["id"] = self.id
 
+        if keep_unknown:
+            _restore_keys(data, self.unknown_keys)
+
         return data
 
     @classmethod
@@ -691,7 +707,7 @@ class Toolhead:
 
         # Keyword arguments so that adding or reordering a dataclass field
         # cannot silently shift every loaded value onto the wrong field.
-        return cls(
+        toolhead = cls(
             name=data["name"],
             toolhead_type=toolhead_type,
             id=data.get("id"),
@@ -708,6 +724,37 @@ class Toolhead:
             waterjet_pressure=data.get("waterjet_pressure"),
             plasma_amperage=data.get("plasma_amperage"),
         )
+        toolhead.unknown_keys = list(_unknown_keys(data, toolhead.to_dict()))
+        return toolhead
+
+
+def _unknown_keys(source, known, path=()):
+    """Yield (path, value) for each key in source that known, this FreeCAD's own
+    serialization of it, does not have."""
+    if isinstance(source, dict) and isinstance(known, dict):
+        for key, value in source.items():
+            if key in known:
+                yield from _unknown_keys(value, known[key], path + (key,))
+            else:
+                yield path + (key,), copy.deepcopy(value)
+
+
+def _restore_keys(data, unknown_keys):
+    """Put each kept (path, value) back into data."""
+    for path, value in unknown_keys:
+        _restore_key(data, path, value)
+
+
+def _restore_key(data, path, value):
+    """Put value back at path in data, unless what held it was removed."""
+    parent = data
+    for step in path[:-1]:
+        try:
+            parent = parent[step]
+        except (KeyError, TypeError):
+            return
+    if isinstance(parent, dict):
+        parent.setdefault(path[-1], copy.deepcopy(value))
 
 
 @dataclass
@@ -769,6 +816,10 @@ class Machine:
 
     # Dynamic state (for runtime)
     parameter_functions: dict[str, Callable] = field(default_factory=dict)
+
+    # keys in the loaded file this FreeCAD does not read, as (path, value); to_dict() writes
+    # them back so a save here keeps what another FreeCAD version wrote
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Initialize computed fields and handle backward compatibility"""
@@ -1118,7 +1169,7 @@ class Machine:
         config.description = "4-axis machine with B-axis rotary table (rotation around Y-axis)"
         return config
 
-    def to_dict(self):
+    def to_dict(self, keep_unknown=True):
         """Serialize configuration to dictionary for JSON persistence"""
         # Build flattened axes structure with enhanced fields
         axes = {}
@@ -1137,6 +1188,8 @@ class Machine:
                 "limits": {"min": axis_obj.min_limit, "max": axis_obj.max_limit},
                 "max_velocity": axis_obj.max_velocity,
             }
+            if keep_unknown:
+                _restore_keys(axes[axis_name], axis_obj.unknown_keys)
 
         # Add rotary axes
         for axis_name, axis_obj in self.rotary_axes.items():
@@ -1155,6 +1208,8 @@ class Machine:
                 "allow_flip": axis_obj.allow_flip,
                 "wrap_strategy": axis_obj.wrap_strategy.value,
             }
+            if keep_unknown:
+                _restore_keys(axes[axis_name], axis_obj.unknown_keys)
 
         data = {
             "freecad_version": self.freecad_version,
@@ -1174,7 +1229,7 @@ class Machine:
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
-                "toolheads": [toolhead.to_dict() for toolhead in self.toolheads],
+                "toolheads": [toolhead.to_dict(keep_unknown) for toolhead in self.toolheads],
             },
             "version": self.version,
         }
@@ -1240,6 +1295,9 @@ class Machine:
         }
         if self.processing.return_to:
             data["processing"]["return_to"] = list(self.processing.return_to)
+
+        if keep_unknown:
+            _restore_keys(data, self.unknown_keys)
 
         return data
 
@@ -1641,6 +1699,11 @@ class Machine:
             )
             return_to = processing_data.get("return_to", None)
             config.processing.return_to = tuple(return_to) if return_to is not None else None
+
+        written = config.to_dict()["machine"]["axes"]
+        for name, axis in {**config.linear_axes, **config.rotary_axes}.items():
+            axis.unknown_keys = list(_unknown_keys(axes[name], written[name]))
+        config.unknown_keys = list(_unknown_keys(data, config.to_dict()))
 
         return config
 
