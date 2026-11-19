@@ -680,7 +680,7 @@ class Toolhead:
     def from_dict(cls, data):
         """Deserialize from dictionary"""
         # Parse toolhead type
-        toolhead_type_str = data.get("toolhead_type", data.get("spindle_type", "rotary"))
+        toolhead_type_str = data.get("toolhead_type", "rotary")
         toolhead_type = ToolheadType(toolhead_type_str)
 
         # Parse laser focus range
@@ -702,7 +702,7 @@ class Toolhead:
             coolant_flood=data.get("coolant_flood", False),
             coolant_mist=data.get("coolant_mist", False),
             coolant_delay=data.get("coolant_delay", 0.0),
-            toolhead_wait=data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
+            toolhead_wait=data.get("toolhead_wait", 0.0),
             laser_wavelength=data.get("laser_wavelength"),
             laser_focus_range=laser_focus_range,
             waterjet_pressure=data.get("waterjet_pressure"),
@@ -1435,8 +1435,8 @@ class Machine:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Machine":
-        """Deserialize configuration from dictionary (supports both old and new formats)"""
-        machine_data = data.get("machine", data)  # Support both old and new formats
+        """Deserialize configuration from dictionary"""
+        machine_data = data.get("machine", {})
 
         # Extract basic configuration
         config = cls(
@@ -1455,58 +1455,7 @@ class Machine:
         for axis_name, axis_data in axes.items():
             axis_type = axis_data.get("type", "linear")
             limits = axis_data.get("limits", {})
-            joint = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
-
-            # Handle both old array format [[origin], [axis]] and new object format {"origin": [], "axis": []}
-            if isinstance(joint, dict) and "origin" in joint and "axis" in joint:
-                # New object format
-                joint_origin = joint.get("origin", [0, 0, 0])
-                axis_vector = joint.get("axis", [0, 0, 0])
-            elif isinstance(joint, list) and len(joint) >= 2:
-                # Old array format - need to detect which element is which
-                vec0 = (
-                    FreeCAD.Vector(joint[0][0], joint[0][1], joint[0][2])
-                    if len(joint[0]) >= 3
-                    else FreeCAD.Vector(0, 0, 0)
-                )
-                vec1 = (
-                    FreeCAD.Vector(joint[1][0], joint[1][1], joint[1][2])
-                    if len(joint[1]) >= 3
-                    else FreeCAD.Vector(0, 0, 0)
-                )
-
-                if axis_type == "linear":
-                    # For linear axes, check which vector has non-zero magnitude
-                    if vec0.Length > 1e-6:  # joint[0] is direction vector (old structure)
-                        axis_vector = [vec0.x, vec0.y, vec0.z]
-                        joint_origin = joint[1] if len(joint[1]) >= 3 else [0, 0, 0]
-                    elif vec1.Length > 1e-6:  # joint[1] is direction vector (new structure)
-                        axis_vector = [vec1.x, vec1.y, vec1.z]
-                        joint_origin = joint[0] if len(joint[0]) >= 3 else [0, 0, 0]
-                    else:
-                        # Both vectors are zero, use defaults
-                        axis_vector = [1, 0, 0]  # Default X-axis
-                        joint_origin = [0, 0, 0]
-                        Path.Log.warning(
-                            f"Invalid joint data for linear axis {axis_name}, using defaults"
-                        )
-                else:
-                    # For rotary axes, joint[1] is usually the rotation vector
-                    if vec1.Length > 1e-6:
-                        axis_vector = [vec1.x, vec1.y, vec1.z]
-                        joint_origin = joint[0] if len(joint[0]) >= 3 else [0, 0, 0]
-                    else:
-                        # Fallback - assume joint[0] is rotation vector
-                        axis_vector = [vec0.x, vec0.y, vec0.z]
-                        joint_origin = [0, 0, 0]
-                        Path.Log.warning(
-                            f"Invalid joint data for rotary axis {axis_name}, using defaults"
-                        )
-            else:
-                # Malformed joint data - use defaults
-                joint_origin = [0, 0, 0]
-                axis_vector = [1, 0, 0] if axis_type == "linear" else [0, 0, 1]
-                Path.Log.warning(f"Malformed joint data for axis {axis_name}, using defaults")
+            joint_origin, axis_vector = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
 
             if axis_type == "linear":
                 # Create linear axis with parsed joint data
@@ -1530,7 +1479,7 @@ class Machine:
                     parent=parent,
                     joint_origin=joint_origin,
                 )
-            elif axis_type in ["angular", "rotary"]:  # Support both old and new type names
+            elif axis_type == "rotary":
                 # Create rotary axis with parsed joint data
                 rotation_vec = FreeCAD.Vector(axis_vector[0], axis_vector[1], axis_vector[2])
 
@@ -1572,12 +1521,9 @@ class Machine:
                 "orientation_quaternion", [0, 0, 0, 1]
             )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
-            # A file from before rotation_strategy existed said only whether
-            # DWO was supported; that flag still selects the strategy.
-            strategy = kinematics_data.get("rotation_strategy")
-            if strategy is None:
-                strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
-            config.kinematics.rotation_strategy = RotationStrategy(strategy)
+            config.kinematics.rotation_strategy = RotationStrategy(
+                kinematics_data.get("rotation_strategy", "none")
+            )
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility
@@ -1590,14 +1536,13 @@ class Machine:
             config.secondary_rotary_axis = rotary_axis_names[1]
 
         # Parse toolheads if present
-        toolheads = machine_data.get("toolheads", machine_data.get("spindles", []))
+        toolheads = machine_data.get("toolheads", [])
         config.toolheads = [Toolhead.from_dict(s) for s in toolheads]
 
         # Parse post-processor settings if present
         post_data = data.get("postprocessor", {})
         if post_data:
             config.postprocessor_file_name = post_data.get("file_name", "")
-            config.postprocessor_args = post_data.get("args", "")
             config.postprocessor_properties = post_data.get("properties", {})
 
         # Load output options
@@ -1615,132 +1560,63 @@ class Machine:
 
             # Header options
             header_data = output_data.get("header", {})
-            # Handle backward compatibility - if header is a bool, use it for include_date
-            if isinstance(header_data, bool):
-                # Old structure: header was a boolean controlling all header output
-                config.output.output_header = header_data
-                config.output.header.include_date = header_data
-                config.output.header.include_description = header_data
-                config.output.header.include_document_name = header_data
-                config.output.header.include_machine_name = header_data
-                config.output.header.include_project_file = header_data
-                config.output.header.include_units = header_data
-                config.output.header.include_tool_list = header_data
-                config.output.header.include_fixture_list = header_data
-            else:
-                # New nested structure - output_header can be in header subsection or main output
-                config.output.output_header = header_data.get(
-                    "output_header", output_data.get("output_header", True)
-                )
-                config.output.header.include_date = header_data.get("include_date", True)
-                config.output.header.include_description = header_data.get(
-                    "include_description", True
-                )
-                config.output.header.include_document_name = header_data.get(
-                    "include_document_name", True
-                )
-                config.output.header.include_machine_name = header_data.get(
-                    "include_machine_name", True
-                )
-                config.output.header.include_project_file = header_data.get(
-                    "include_project_file", True
-                )
-                config.output.header.include_units = header_data.get("include_units", True)
-                config.output.header.include_tool_list = header_data.get("include_tool_list", True)
-                config.output.header.include_fixture_list = header_data.get(
-                    "include_fixture_list", True
-                )
+            config.output.output_header = header_data.get("output_header", True)
+            config.output.header.include_date = header_data.get("include_date", True)
+            config.output.header.include_description = header_data.get("include_description", True)
+            config.output.header.include_document_name = header_data.get(
+                "include_document_name", True
+            )
+            config.output.header.include_machine_name = header_data.get(
+                "include_machine_name", True
+            )
+            config.output.header.include_project_file = header_data.get(
+                "include_project_file", True
+            )
+            config.output.header.include_units = header_data.get("include_units", True)
+            config.output.header.include_tool_list = header_data.get("include_tool_list", True)
+            config.output.header.include_fixture_list = header_data.get(
+                "include_fixture_list", True
+            )
 
             # Comment options
             comments_data = output_data.get("comments", {})
-            # Handle backward compatibility - if comments is a bool, use it for enabled
-            if isinstance(comments_data, bool):
-                # Old structure: comments was a boolean controlling all comment output
-                config.output.comments.enabled = comments_data
-                config.output.comments.symbol = "("  # Default symbol
-                config.output.comments.include_operation_labels = False
-                config.output.comments.include_blank_lines = True
-                config.output.comments.output_bcnc_comments = False
-            else:
-                # New nested structure
-                config.output.comments.enabled = comments_data.get("enabled", True)
-                config.output.comments.symbol = comments_data.get("symbol", "(")
-                config.output.comments.include_operation_labels = comments_data.get(
-                    "include_operation_labels", False
-                )
-                config.output.comments.include_blank_lines = comments_data.get(
-                    "include_blank_lines", True
-                )
-                config.output.comments.output_bcnc_comments = comments_data.get(
-                    "output_bcnc_comments", False
-                )
+            config.output.comments.enabled = comments_data.get("enabled", True)
+            config.output.comments.symbol = comments_data.get("symbol", "(")
+            config.output.comments.include_operation_labels = comments_data.get(
+                "include_operation_labels", False
+            )
+            config.output.comments.include_blank_lines = comments_data.get(
+                "include_blank_lines", True
+            )
+            config.output.comments.output_bcnc_comments = comments_data.get(
+                "output_bcnc_comments", False
+            )
 
             # Formatting options
             formatting_data = output_data.get("formatting", {})
-            # Handle backward compatibility for old flat structure
-            if "line_numbers" in output_data and not formatting_data:
-                # Old structure: line_numbers was at top level
-                config.output.formatting.line_numbers = output_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = output_data.get(
-                    "line_number_start", 100
-                )
-                config.output.formatting.line_number_prefix = output_data.get(
-                    "line_number_prefix", "N"
-                )
-                config.output.formatting.line_increment = output_data.get("line_increment", 10)
-                config.output.formatting.command_space = output_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = output_data.get(
-                    "end_of_line_chars", "\n"
-                )
-            else:
-                # New nested structure
-                config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = formatting_data.get(
-                    "line_number_start", 100
-                )
-                config.output.formatting.line_number_prefix = formatting_data.get(
-                    "line_number_prefix", "N"
-                )
-                config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
-                config.output.formatting.command_space = formatting_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = formatting_data.get(
-                    "end_of_line_chars", "\n"
-                )
+            config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
+            config.output.formatting.line_number_start = formatting_data.get(
+                "line_number_start", 100
+            )
+            config.output.formatting.line_number_prefix = formatting_data.get(
+                "line_number_prefix", "N"
+            )
+            config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
+            config.output.formatting.command_space = formatting_data.get("command_space", " ")
+            config.output.formatting.end_of_line_chars = formatting_data.get(
+                "end_of_line_chars", "\n"
+            )
 
             # Precision options
             precision_data = output_data.get("precision", {})
-            # Handle backward compatibility for old flat structure
-            if "axis_precision" in output_data and not precision_data:
-                # Old structure: axis_precision was at top level
-                config.output.precision.axis = output_data.get("axis_precision", 3)
-                config.output.precision.feed = output_data.get("feed_precision", 3)
-                config.output.precision.spindle = output_data.get("spindle_precision", 0)
-            else:
-                # New nested structure
-                config.output.precision.axis = precision_data.get("axis", 3)
-                config.output.precision.feed = precision_data.get("feed", 3)
-                config.output.precision.spindle = precision_data.get("spindle", 0)
+            config.output.precision.axis = precision_data.get("axis", 3)
+            config.output.precision.feed = precision_data.get("feed", 3)
+            config.output.precision.spindle = precision_data.get("spindle", 0)
 
             # Duplicate options
             duplicates_data = output_data.get("duplicates", {})
-            # Handle backward compatibility for old flat structure
-            if "output_duplicate_parameters" in output_data and not duplicates_data:
-                # Old structure: output_duplicate_parameters was at top level
-                config.output.duplicates.commands = output_data.get(
-                    "output_duplicate_commands", True
-                )
-                config.output.duplicates.parameters = output_data.get(
-                    "output_duplicate_parameters", True
-                )
-            else:
-                # New nested structure
-                config.output.duplicates.commands = duplicates_data.get("commands", True)
-                config.output.duplicates.parameters = duplicates_data.get("parameters", True)
-
-            # Handle legacy output_comments field (for backward compatibility)
-            if "output_comments" in output_data and "comments" not in output_data:
-                # Old structure: output_comments was a boolean
-                config.output.comments.enabled = output_data.get("output_comments", True)
+            config.output.duplicates.commands = duplicates_data.get("commands", True)
+            config.output.duplicates.parameters = duplicates_data.get("parameters", True)
 
         # Load processing options
         processing_data = data.get("processing", {})

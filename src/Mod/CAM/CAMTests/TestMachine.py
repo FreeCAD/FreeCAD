@@ -537,7 +537,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
 
         with tempfile.TemporaryDirectory() as tmpdir:
             p = pathlib.Path(tmpdir)
-            fcm = {"machine": {"name": "Addon Machine", "axes": {}, "spindles": []}}
+            fcm = {"machine": {"name": "Addon Machine", "axes": {}, "toolheads": []}}
             (p / "addon_machine.fcm").write_text(json.dumps(fcm))
             MachineFactory.register_addon_machine_dir(p)
             templates = MachineFactory.list_addon_templates()
@@ -580,7 +580,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
 
         with tempfile.TemporaryDirectory() as tmpdir:
             p = pathlib.Path(tmpdir)
-            fcm = {"machine": {"name": "Community Mill", "axes": {}, "spindles": []}}
+            fcm = {"machine": {"name": "Community Mill", "axes": {}, "toolheads": []}}
             (p / "community_mill.fcm").write_text(json.dumps(fcm))
             MachineFactory.register_addon_machine_dir(p)
             configs = MachineFactory.list_configurations()
