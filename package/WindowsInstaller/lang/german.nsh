@@ -67,7 +67,4 @@ ${LangFileString} DialogUnPreferences 'Sie haben ausgewählt, die FreeCAD-Benutz
 						Sind Sie damit einverstanden?'
 ${LangFileString} SecUnProgramFilesDescription "Deinstalliert FreeCAD und all seine Komponenten."
 
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty.$\r$\n\
-                        The installer will remove all its content before installing. Continue?"
-${LangFileString} RMInstDirFailed "Failed to remove '$INSTDIR'.$\r$\n\
-                        Make sure you have sufficient permissions and that no files are in use."
+${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."
