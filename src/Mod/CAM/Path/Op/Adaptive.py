@@ -170,7 +170,7 @@ def _initHelixFeedProperties(obj, legacy=False):
             "Helix entry feed: 0 uses VertFeed for compatibility; 1 uses RampFeed",
         )
         obj.HelixFeedVersion = 0 if legacy else 1
-    obj.setEditorMode("HelixFeedVersion", 0 if obj.HelixFeedVersion == 0 else 2)
+    obj.setEditorMode("HelixFeedVersion", 0 if getattr(obj, "HelixFeedVersion", 1) == 0 else 2)
 
 
 def _applyFeedRate(commands, feedRate):
