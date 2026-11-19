@@ -1598,17 +1598,17 @@ class PostProcessor:
     def _expand_spindle_wait(self, postables):
         """Inject G4 dwell after spindle start commands (M3/M4).
 
-        When a spindle has spindle_wait > 0, inserts a G4 pause command
+        When the toolhead has toolhead_wait > 0, inserts a G4 pause command
         after each spindle start command to allow the spindle to reach speed.
 
         Subclasses can override to customize spindle wait behavior.
         """
 
-        spindle = self._machine.get_spindle_by_index(0)
-        if not (spindle and spindle.spindle_wait > 0):
+        toolheads = self._machine.toolheads
+        if not (toolheads and toolheads[0].toolhead_wait > 0):
             return
 
-        wait_time = spindle.spindle_wait
+        wait_time = toolheads[0].toolhead_wait
         for section_name, sublist in postables:
             for item in sublist:
                 if item.path:
@@ -1623,13 +1623,13 @@ class PostProcessor:
     def _expand_coolant_delay(self, postables):
         """Inject G4 dwell after coolant on commands.
 
-        When a spindle has coolant_delay > 0, inserts a G4 pause command
+        When the toolhead has coolant_delay > 0, inserts a G4 pause command
         after each coolant on command.
 
         Subclasses can override to customize coolant delay behavior.
         """
-        spindle = self._machine.get_spindle_by_index(0)  # FIXME: needs to be in .values
-        if not (spindle and spindle.coolant_delay > 0):
+        toolheads = self._machine.toolheads  # FIXME: needs to be in .values
+        if not (toolheads and toolheads[0].coolant_delay > 0):
             return
 
         for section_name, sublist in postables:
@@ -1639,7 +1639,7 @@ class PostProcessor:
                     for cmd in item.path.Commands:
                         new_commands.append(cmd)
                         if cmd.Name in Constants.MCODE_COOLANT_ON:
-                            pause_cmd = Path.Command("G4", {"P": spindle.coolant_delay})
+                            pause_cmd = Path.Command("G4", {"P": toolheads[0].coolant_delay})
                             new_commands.append(pause_cmd)
                     item.path = Path.Path(new_commands)
 

@@ -638,27 +638,6 @@ class Toolhead:
         """Check if this toolhead can control power."""
         return self.capabilities.has_power_control if self.capabilities else False
 
-    # Legacy compatibility properties
-    @property
-    def spindle_wait(self) -> float:
-        """Legacy compatibility property for toolhead_wait."""
-        return self.toolhead_wait
-
-    @spindle_wait.setter
-    def spindle_wait(self, value: float):
-        """Legacy compatibility setter for toolhead_wait."""
-        self.toolhead_wait = value
-
-    @property
-    def spindle_type(self) -> ToolheadType:
-        """Legacy compatibility property for toolhead_type."""
-        return self.toolhead_type
-
-    @spindle_type.setter
-    def spindle_type(self, value: ToolheadType):
-        """Legacy compatibility setter for toolhead_type."""
-        self.toolhead_type = value
-
     def to_dict(self, keep_unknown=True):
         """Serialize to dictionary for JSON persistence"""
         data = {
@@ -759,10 +738,10 @@ def _restore_key(data, path, value):
 
 @dataclass
 class Machine:
-    """Represents a CNC machine configuration with axes, spindles, and output settings.
+    """Represents a CNC machine configuration with axes, toolheads, and output settings.
 
     This class encapsulates all machine parameters including linear and rotary axes,
-    spindles, post-processor settings, and G-code generation options. It provides
+    toolheads, post-processor settings, and G-code generation options. It provides
     methods for serialization to/from JSON and various factory methods for common
     machine configurations (3-axis, 4-axis, 5-axis).
     """
@@ -772,7 +751,7 @@ class Machine:
     with post-processor settings.
 
     This is the single source of truth for all machine-related configuration,
-    including physical capabilities (axes, spindles) and G-code generation
+    including physical capabilities (axes, toolheads) and G-code generation
     preferences (output options, formatting, processing).
     """
 
@@ -958,7 +937,7 @@ class Machine:
         )
         return self
 
-    def add_spindle(
+    def add_toolhead(
         self,
         name,
         id=None,
@@ -1022,44 +1001,6 @@ class Machine:
     def get_axis_by_name(self, name):
         """Get a rotary axis by name"""
         return self.rotary_axes.get(name)
-
-    def get_spindle_by_index(self, index: int) -> Toolhead | None:
-        """Get toolhead by index (legacy compatibility method).
-
-        Args:
-            index: Index of the toolhead to retrieve
-
-        Returns:
-            Toolhead object if found, None otherwise
-        """
-        if 0 <= index < len(self.toolheads):
-            return self.toolheads[index]
-        return None
-
-    @property
-    def spindles(self) -> list[Toolhead]:
-        """Legacy compatibility property for toolheads."""
-        return self.toolheads
-
-    @spindles.setter
-    def spindles(self, value: list[Toolhead]):
-        """Legacy compatibility setter for toolheads."""
-        self.toolheads = value
-
-    def get_spindle_by_name(self, name):
-        """Get a toolhead by name (case-insensitive)"""
-        name_lower = name.lower()
-        for toolhead in self.toolheads:
-            if toolhead.name.lower() == name_lower:
-                return toolhead
-        raise ValueError(f"Toolhead with name '{name}' not found")
-
-    def get_spindle_by_id(self, id):
-        """Get a toolhead by ID"""
-        for toolhead in self.toolheads:
-            if toolhead.id == id:
-                return toolhead
-        raise ValueError(f"Toolhead with ID '{id}' not found")
 
     @classmethod
     def create_AC_table_config(cls, a_limits=(-120, 120), c_limits=(-360, 360)):
