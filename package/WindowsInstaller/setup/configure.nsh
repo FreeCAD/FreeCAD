@@ -34,7 +34,8 @@ Section -InstallData
    CreateShortCut "$DESKTOP\${APP_NAME} ${APP_SERIES_NAME}.lnk" "$INSTDIR\${APP_RUN}" "" "$INSTDIR\${APP_RUN}" "" "" "" "${APP_SHORTCUT_INFO}"
   ${endif}
 
-  # Uninstaller information
+  # The uninstaller embeds the shipped-file receipt.
+  WriteRegDWORD SHCTX ${APP_UNINST_KEY} "UninstallReceipt" 1
   ${If} $MultiUser.InstallMode == "CurrentUser"
     WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayName" "${APP_NAME} ${APP_VERSION} $(TEXT_INSTALL_CURRENTUSER)"
   ${Else}
@@ -52,18 +53,6 @@ Section -InstallData
   WriteRegDWORD SHCTX ${APP_UNINST_KEY} "NoModify" 0x00000001
   WriteRegDWORD SHCTX ${APP_UNINST_KEY} "NoRepair" 0x00000001
   WriteRegStr SHCTX ${APP_UNINST_KEY} "StartMenu" "$SMPROGRAMS\$StartmenuFolder"
-
-  # if we install over an older existing version, remove the old uninstaller information
-  # NSIS cannot handle numbers with leading zero, thus cut it off before comparing
-  StrCpy $1 $OldVersionNumber "" 1
-  StrCpy $2 ${APP_SERIES_KEY} "" 1
-  ${if} $1 < $2
-   DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}$OldVersionNumber"
-   DeleteRegKey SHCTX "SOFTWARE\${APP_NAME}$OldVersionNumber"
-   # also delete in the case of an emergency release
-   DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}$OldVersionNumber1"
-   DeleteRegKey SHCTX "SOFTWARE\${APP_NAME}$OldVersionNumber1"
-  ${endif}
 
 SectionEnd
 
@@ -93,9 +82,6 @@ Section -Configure
     # see https://nsis.sourceforge.io/Docs/AppendixB.html#library_install for a description of InstallLib
     !insertmacro InstallLib REGDLL NOTSHARED NOREBOOT_NOTPROTECTED ${FILES_THUMBS}\FCStdThumbnail.dll $SYSDIR\FCStdThumbnail.dll $SYSDIR
    ${endif}
-   # in any case remove the FCStdThumbnail.dll
-   RMDir /r "$INSTDIR\thumbnail"
-
    # Eventually refresh shell icons
    ${RefreshShellIcons}
   ${endif}

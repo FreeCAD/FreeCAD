@@ -14,9 +14,27 @@ Section "un.FreeCAD" un.SecUnProgramFiles
 
   SectionIn RO
 
-  # delete start menu folder
+  !insertmacro ReadPathAttrs "$INSTDIR"
+  IntOp $1 $0 & ${FILE_ATTRIBUTE_DIRECTORY}
+  ${If} $0 = -1
+  ${OrIf} $1 = 0
+    MessageBox MB_OK|MB_ICONSTOP "$(InvalidInstallPath)" /SD IDOK
+    Abort
+  ${EndIf}
+
+  SetOutPath "$TEMP"
+  DetailPrint "Uninstalling files from '$INSTDIR'"
+  SetDetailsPrint textonly
+  !insertmacro RemovePayload
+  Delete "$INSTDIR\install.log"
+  Delete "$INSTDIR\${SETUP_UNINSTALLER}"
+
+  RMDir "$INSTDIR"
+  SetDetailsPrint both
+
+  # Remove FreeCAD's Start Menu entries, without removing other shortcuts.
   ReadRegStr $0 SHCTX "${APP_UNINST_KEY}" "StartMenu"
-  RMDir /r "$0"
+  !insertmacro DeleteStartMenuLinks $0
   # delete desktop icon
   Delete "$DESKTOP\${APP_NAME} ${APP_SERIES_NAME}.lnk"
 
@@ -44,16 +62,6 @@ Section "un.FreeCAD" un.SecUnProgramFiles
    # see https://nsis.sourceforge.io/Docs/AppendixB.html#library_install for a description of UnInstallLib
    !insertmacro UnInstallLib REGDLL NOTSHARED NOREBOOT_NOTPROTECTED $SYSDIR\FCStdThumbnail.dll
   ${endif}
-
-  # Uninstaller itself
-  Delete "$INSTDIR\${SETUP_UNINSTALLER}"
-
-  # Application folder
-  SetOutPath "$TEMP"
-  DetailPrint "Uninstalling files from '$INSTDIR'"
-  SetDetailsPrint textonly
-  RMDir /r "$INSTDIR"
-  SetDetailsPrint both
 
   # Registry keys and values
   DeleteRegKey SHCTX "${APP_REGKEY_SETUP}"

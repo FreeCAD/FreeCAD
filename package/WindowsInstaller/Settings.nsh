@@ -31,11 +31,12 @@ These typically need to be modified for each FreeCAD release
 # when using a LibPack build set the redistributables directory location here
 # or with /D command line argument to makensis.exe
 #!define FILES_DEPS "${__FILEDIR__}\MSVCRedist"
+!define /ifndef FILES_DEPS ""
 
 #--------------------------------
-# get version info from freecadcmd
-!system '${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode "${__FILEDIR__}\write_version_nsh.py"' = 0
-!include "${__FILEDIR__}\version.nsh"
+# Generate the version and payload instructions from the staged build.
+!execute '"${FILES_FREECAD}\bin\freecadcmd.exe" --safe-mode "${__FILEDIR__}\write_version_nsh.py" --pass "${FILES_FREECAD}" "${FILES_DEPS}"' = 0
+!include /CHARSET=UTF8 "${__FILEDIR__}\version.nsh"
 !delfile "${__FILEDIR__}\version.nsh"
 
 !define APP_VERSION_EMERGENCY "" # use "1" for an emergency release of FreeCAD otherwise ""
