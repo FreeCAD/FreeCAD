@@ -67,7 +67,7 @@ ${LangFileString} DialogUnPreferences 'You chose to delete the FreeCAD user conf
 						Are you sure you want to proceed?'
 ${LangFileString} SecUnProgramFilesDescription "Uninstall FreeCAD and all of its components."
 
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty.$\r$\n\
-                        The installer will remove all its content before installing. Continue?"
-${LangFileString} RMInstDirFailed "Failed to remove '$INSTDIR'.$\r$\n\
-                        Make sure you have sufficient permissions and that no files are in use."
+${LangFileString} DirNotEmptyWarning "This folder already contains files or folders:$\r$\n$INSTDIR$\r$\n$\r$\nChoose an empty folder to install FreeCAD."
+${LangFileString} UnsafeLegacyFolder "Removing the old copy of FreeCAD could delete other files in this folder:$\r$\n$RegisteredDir$\r$\n$\r$\nRun Setup again and choose a new, empty folder. Then clean up the old folder by hand. Keep anything that isn't part of FreeCAD, and don't run the old uninstaller."
+${LangFileString} RegisteredUninstallFailed "Setup couldn't remove the old copy of FreeCAD, so it didn't install the new one."
+${LangFileString} InvalidInstallPath "FreeCAD Setup couldn't open this folder:$\r$\n$INSTDIR"

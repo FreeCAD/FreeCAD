@@ -270,33 +270,30 @@ FunctionEnd
 !macroend
 !define TrimQuotes `!insertmacro _TrimQuotes`
 
+!define FILE_ATTRIBUTE_DIRECTORY 0x10
+
+!macro ReadPathAttrs PATH
+  StrCpy $0 "${PATH}"
+  System::Call 'kernel32::GetFileAttributesW(w r0) i .r0'
+!macroend
+
 Function ValidateInstallDir
-  # if the $INSTDIR does not contain "FreeCAD" we must add a subfolder to avoid that FreeCAD will e.g.
-  # be installed directly to C:\programs - the uninstaller will then delete the whole
-  # C:\programs directory
-  StrCpy $String "$INSTDIR"
-  StrCpy $Search "${APP_NAME}"
-  Call StrPoint # function from Utils.nsh
-  ${if} $Pointer == "-1"
-    StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
-  ${endif}
   # Make sure install dir is empty, avoids library conflicts from mixed installs
-  Push $R0
-  ${DirState} "$INSTDIR" $R0
-  ${If} $R0 == 1
-    MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(DirNotEmptyWarning)" /SD IDYES IDYES SetRemoveInstDir IDNO RejectDir
-
-    SetRemoveInstDir:
-      StrCpy $RemoveInstDir "true"
-      Goto EndCheck
-
-    RejectDir:
-      Abort
-
-    EndCheck:
+  ${DirState} "$INSTDIR" $0
+  ${If} $0 == 1
+    MessageBox MB_OK|MB_ICONSTOP "$(DirNotEmptyWarning)" /SD IDOK
+    Abort
   ${EndIf}
-  Pop $R0
 FunctionEnd
+
+!macro DeleteStartMenuLinks PATH
+  ${If} ${PATH} != ""
+    Delete "${PATH}\${APP_NAME}.lnk"
+    Delete "${PATH}\${APP_WEBPAGE_INFO}.url"
+    Delete "${PATH}\${APP_WIKI_INFO}.url"
+    RMDir "${PATH}"
+  ${EndIf}
+!macroend
 
 !macro _DetailPrintToBoth DETAIL_MESSAGE
   SetDetailsPrint both
