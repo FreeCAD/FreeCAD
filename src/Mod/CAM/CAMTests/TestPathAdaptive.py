@@ -22,6 +22,7 @@
 import Constants
 import FreeCAD
 import Part
+import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
 import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
@@ -1427,6 +1428,14 @@ class TestAdaptiveHelixFeedMigration(PathTestBase):
                 self.assertEqual(obj.HelixFeedVersion, 0)
                 self.assertEqual(self.tc.RampFeed.Value, value)
                 self.assertEqual(list(self.tc.ExpressionEngine), before)
+
+    def testCreateWithPrototype(self):
+        """Verify Adaptive can be created on a SetupSheet's prototype, as the Job panel does."""
+        ptt = PathSetupSheetOpPrototype.OpPrototype("Adaptive")
+        PathAdaptive.Create("OpPrototype.Adaptive", ptt)
+        prop = ptt.getProperty("HelixFeedVersion")
+        self.assertEqual(prop.getValue(), 1)
+        self.assertEqual(prop.editorMode, 2)
 
     def testNewOperationSharingController(self):
         legacy = self.operation()
