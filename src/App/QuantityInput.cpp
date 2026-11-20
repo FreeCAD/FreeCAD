@@ -417,13 +417,15 @@ App::QuantityInputResult App::interpretQuantityInput(
      * in an input field evaluates to 0.5 mm because this is likely what the
      * user means in an input field and the expression is not stored anyway.
      *
-     * The quantity parser cannot properly make a distinction between a binary
-     * + and a unary +.  Because of this and because of other potential parse
-     * failures, parsing quantity expressions may fall back to the expression
-     * parser with the goal to yield a valid value in most cases.  When it
-     * falls back to the expression syntax, potential differences in syntax
-     * such as the division have already been settled in quantity parsing at
-     * that point.
+     * Additive input is evaluated by the expression parser such that each
+     * additive term without a unit gets the default unit (`1 + 5 mm` in an
+     * inch field is `1 in + 5 mm`).  The terms keep the quantity semantics for
+     * division (`1 + 10/2 mm` is `1 + (10/2) mm`).  Because of this and
+     * because of other potential parse failures, parsing quantity expressions
+     * may fall back to the expression parser with the goal to yield a valid
+     * value in most cases.  When it falls back to the expression syntax,
+     * potential differences in syntax such as the division have already been
+     * settled in quantity parsing at that point.
      *
      * All This gives us currently a QuantityInputGrammar::Quantity that exists
      * mainly for testing purposes, a QuantityInputGrammar::Expression only for
@@ -434,11 +436,13 @@ App::QuantityInputResult App::interpretQuantityInput(
     Base::Quantity quantity;
     std::shared_ptr<Expression> parsedExpression;
     bool quantityParse = grammar != QuantityInputGrammar::Expression;
+    bool additiveQuantity = false;
     try {
         if (grammar == QuantityInputGrammar::QuantityFirst) {
             // try QuantityFirst first
             if (hasAdditiveOperator(input, path, locale)) {
                 quantityParse = false;
+                additiveQuantity = true;
             }
             else {
                 try {
@@ -456,7 +460,9 @@ App::QuantityInputResult App::interpretQuantityInput(
             const std::string inputString(input);
             auto parsed = App::ExpressionParser::parseUserInput(owner, inputString.c_str(), locale);
             parsedExpression = std::shared_ptr<Expression>(std::move(parsed));
-            if (!owner) {
+            if (!owner || additiveQuantity) {
+                // Additive quantity input is evaluated by the expression parser, but the terms
+                // keep quantity semantics: `1 + 10/2 mm` means `1 + (10/2) mm`.
                 parsedExpression = std::shared_ptr<Expression>(
                     rewriteOwnerlessQuantityExpression(*parsedExpression, owner).release()
                 );
