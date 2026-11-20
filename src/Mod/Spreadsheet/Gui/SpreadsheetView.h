@@ -131,6 +131,8 @@ protected:
     void resizeColumn(int col, int newSize);
     void resizeRow(int col, int newSize);
 
+    void changeEvent(QEvent* event) override;
+
     Ui::Sheet* ui;
     Spreadsheet::Sheet* sheet;
     SpreadsheetDelegate* delegate;
