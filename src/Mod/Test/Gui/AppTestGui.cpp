@@ -26,6 +26,7 @@
 #include <Base/Interpreter.h>
 #include <Gui/Language/Translator.h>
 
+#include "ComponentZoo.h"
 #include "UnitTestImp.h"
 #include "UnitTestPy.h"
 
@@ -168,6 +169,7 @@ public:
         add_varargs_method("addTest", &Module::addTest, "addTest");
         add_varargs_method("runTest", &Module::runTest, "runTest");
         add_varargs_method("testILoggerBlocker", &Module::testILoggerBlocker, "testILoggerBlocker");
+        add_varargs_method("componentZoo", &Module::componentZoo, "Render component zoo pages");
         initialize("This module is the QtUnitGui module");  // register with Python
     }
 
@@ -219,6 +221,21 @@ private:
         bool success = dlg->runCurrentTest();
         return Py::Boolean(success);
     }
+    Py::Object componentZoo(const Py::Tuple& args)
+    {
+        const char* theme = nullptr;
+        PyObject* samples = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "sO!", &theme, &PyList_Type, &samples)) {
+            throw Py::Exception();
+        }
+        try {
+            return TestGui::componentZoo(theme, Py::List(samples));
+        }
+        catch (const Base::Exception& error) {
+            throw Py::RuntimeError(error.what());
+        }
+    }
+
     Py::Object testILoggerBlocker(const Py::Tuple& args)
     {
         (void)args;
