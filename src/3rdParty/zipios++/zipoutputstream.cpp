@@ -78,6 +78,10 @@ void ZipOutputStream::setMethod( StorageMethod method ) {
   ozf->setMethod( method ) ;
 }
 
+void ZipOutputStream::setStoreDate( bool store ) {
+  ozf->setStoreDate( store ) ;
+}
+
 
 ZipOutputStream::~ZipOutputStream() {
   // It's ok to call delete with a Null pointer.
