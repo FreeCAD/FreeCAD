@@ -452,7 +452,14 @@ void TaskMeasure::syncDisplayUnit()
     }
 
     // get the raw parseable unit (^2)
-    const std::string unit = unitSwitch->currentData().toString().toStdString();
+    std::string unit = unitSwitch->currentData().toString().toStdString();
+
+    // format multi-unit Building US length using the default
+    const bool isBuildingUSLength = Base::UnitsApi::isMultiUnitLength() && unit == "in";
+    if (isBuildingUSLength) {
+        unit.clear();
+    }
+
     if (_mMeasureObject->DisplayUnit.getStrValue() != unit) {
         _mMeasureObject->DisplayUnit.setValue(unit);
     }
