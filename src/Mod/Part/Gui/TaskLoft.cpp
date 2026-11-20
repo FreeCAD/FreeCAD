@@ -23,15 +23,11 @@
  ***************************************************************************/
 
 
-#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
-#include <Precision.hxx>
+#include <BRep_Tool.hxx>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTreeWidget>
-#include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
 
 
 #include <App/Application.h>
@@ -45,15 +41,51 @@
 #include <Gui/ViewProvider.h>
 
 #include <Mod/Part/App/PartFeature.h>
-
-#include <BRep_Tool.hxx>
-#include <TopExp_Explorer.hxx>
+#include <Mod/Part/App/TopoShape.h>
 
 #include "TaskLoft.h"
 #include "ui_TaskLoft.h"
 
 
 using namespace PartGui;
+
+namespace
+{
+
+enum class ProfileKind
+{
+    Unusable,
+    Vertex,
+    OpenWire,
+    ClosedWire,
+};
+
+constexpr int profileKindRole = Qt::UserRole + 1;
+
+/// Determine the profile kind for the purposes of Lofting
+ProfileKind classifyProfile(const Part::TopoShape& shape)
+{
+    // NOTE: These tests must match up with the different lofting mechanisms allowed by
+    // prepareProfiles() in Part/App/TopoShapeExpansion.cpp
+    Part::TopoShape profile = shape;
+    if (profile.countSubShapes(TopAbs_FACE) == 1) {
+        profile = profile.getSubTopoShape(TopAbs_FACE, 1).splitWires();
+    }
+    else if (profile.countSubShapes(TopAbs_WIRE) == 0 && profile.countSubShapes(TopAbs_EDGE) > 0) {
+        profile = profile.makeElementWires();
+    }
+
+    if (profile.countSubShapes(TopAbs_WIRE) == 1) {
+        TopoDS_Wire wire = TopoDS::Wire(profile.getSubShape(TopAbs_WIRE, 1));
+        return BRep_Tool::IsClosed(wire) ? ProfileKind::ClosedWire : ProfileKind::OpenWire;
+    }
+    if (profile.countSubShapes(TopAbs_VERTEX) == 1) {
+        return ProfileKind::Vertex;
+    }
+    return ProfileKind::Unusable;
+}
+
+}  // namespace
 
 class LoftWidget::Private
 {
@@ -111,48 +143,28 @@ void LoftWidget::findShapes()
         if (topoShape.isNull()) {
             continue;
         }
-        TopoDS_Shape shape = topoShape.getShape();
-        if (shape.IsNull()) {
+        if (topoShape.getShape().Infinite()) {
             continue;
         }
 
-        bool viable = false;
-        TopExp_Explorer xp(shape, TopAbs_WIRE);
-        int wireCount = 0;
-        bool allClosed = true;
-        for (; xp.More() && wireCount <= 1; xp.Next(), wireCount++) {
-            if (!BRep_Tool::IsClosed(TopoDS::Wire(xp.Current()))) {
-                allClosed = false;
-                break;
-            }
-        }
-        if (wireCount == 1 && allClosed) {
-            viable = true;
-        }
-        else if (!wireCount) {
-            int vertexCount = 0;
-            TopExp_Explorer xp(shape, TopAbs_VERTEX);
-            for (; xp.More() && vertexCount <= 1; xp.Next(), vertexCount++)
-                ;
-            if (vertexCount == 1) {
-                viable = true;
-            }
+        ProfileKind kind = classifyProfile(topoShape);
+        if (kind == ProfileKind::Unusable) {
+            continue;
         }
 
-        if (viable) {
-            QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromUtf8(obj->getNameInDocument());
-            QTreeWidgetItem* child = new QTreeWidgetItem();
-            child->setText(0, label);
-            child->setToolTip(0, label);
-            child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
-            if (vp) {
-                child->setIcon(0, vp->getIcon());
-            }
-            d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
+        QString label = QString::fromUtf8(obj->Label.getValue());
+        QString name = QString::fromUtf8(obj->getNameInDocument());
+        QTreeWidgetItem* child = new QTreeWidgetItem();
+        child->setText(0, label);
+        child->setToolTip(0, label);
+        child->setData(0, Qt::UserRole, name);
+        child->setData(0, profileKindRole, static_cast<int>(kind));
+        Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
+        if (vp) {
+            child->setIcon(0, vp->getIcon());
         }
-    }  // end for objs
+        d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
+    }
 }
 
 bool LoftWidget::accept()
@@ -190,10 +202,24 @@ bool LoftWidget::accept()
         );
         return false;
     }
+    bool hasOpenWire = false;
+    bool hasClosedWire = false;
     for (int i = 0; i < count; i++) {
         QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
         QString name = child->data(0, Qt::UserRole).toString();
         str << "App.getDocument('" << d->document.c_str() << "')." << name << ", ";
+
+        auto kind = static_cast<ProfileKind>(child->data(0, profileKindRole).toInt());
+        hasOpenWire = hasOpenWire || kind == ProfileKind::OpenWire;
+        hasClosedWire = hasClosedWire || kind == ProfileKind::ClosedWire;
+    }
+    if (hasOpenWire && hasClosedWire) {
+        QMessageBox::critical(
+            this,
+            tr("Incompatible Profiles"),
+            tr("Open and closed profiles cannot be combined in one loft.")
+        );
+        return false;
     }
 
     try {
