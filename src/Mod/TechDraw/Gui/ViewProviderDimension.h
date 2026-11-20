@@ -72,6 +72,8 @@ public:
     App::PropertyFloat GapFactorASME;
     App::PropertyFloat LineSpacingFactorISO;
 
+    App::PropertyBool ShowTextBackground;
+
     void attach(App::DocumentObject *pcFeat) override;
     bool useNewSelectionModel() const override {return false;}
     void updateData(const App::Property* prop) override;
