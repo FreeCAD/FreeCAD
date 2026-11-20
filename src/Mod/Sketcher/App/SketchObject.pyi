@@ -8,7 +8,10 @@ from Base.Axis import Axis
 from Part.App.Part2DObject import Part2DObject
 from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
-from typing import Final, List, Tuple, Union, overload
+from typing import Final, List, NewType, Tuple, Union, overload
+
+AnnotationId = NewType("AnnotationId", int)
+"""Identifies an annotation in its sketch. IDs are never reused."""
 
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
@@ -80,33 +83,27 @@ class SketchObject(Part2DObject):
               -2 if redundant constraints.
         """
 
-    def addAnnotation(self, data: dict, /) -> int:
+    def addAnnotation(self, data: dict, /) -> AnnotationId:
         """Create Text, Hatch, or Leader visual annotation from a dictionary. Return its stable ID."""
-        ...
 
-    def updateAnnotation(self, annotationId: int, changes: dict, /) -> None:
+    def updateAnnotation(self, annotationId: AnnotationId, changes: dict, /) -> None:
         """Atomically update annotation fields. Geometry and solver state are unchanged."""
-        ...
 
-    def delAnnotations(self, annotationIds: List[int], /) -> None:
+    def delAnnotations(self, annotationIds: List[AnnotationId], /) -> None:
         """Delete annotations by stable ID."""
-        ...
 
-    def getAnnotationFace(self, annotationId: int, /):
+    def getAnnotationFace(self, annotationId: AnnotationId, /):
         """Return a transient local face for a hatch, or raise for a broken boundary."""
-        ...
 
-    def getAnnotationStrokes(self, annotationId: int, /) -> List[Vector]:
+    def getAnnotationStrokes(self, annotationId: AnnotationId, /) -> List[Vector]:
         """Return pairs of local endpoints for hatch strokes or a leader and its arrowhead."""
-        ...
 
-    def getAnnotationPattern(self, annotationId: int, /) -> List[dict]:
+    def getAnnotationPattern(self, annotationId: AnnotationId, /) -> List[dict]:
         """Return a hatch's PAT line families in sketch coordinates.
 
         Each family is a dictionary with Origin, Direction (unit), Offset (from one line
         to the next) and Dashes (positive drawn, negative gap, zero dot), in millimetres.
         """
-        ...
 
     @overload
     def addGeometry(self, geo: Geometry, is_construction: bool = False, /) -> int: ...

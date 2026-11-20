@@ -277,7 +277,9 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
 
             // Cosmetics (text, hatch, leader) carry their own construction flag.
-            if (const long annotationId = Sketcher::Annotation::idFromSubName(subname)) {
+            if (const Sketcher::Annotation::Id annotationId
+                = Sketcher::Annotation::idFromSubName(subname);
+                annotationId != Sketcher::Annotation::NoId) {
                 const auto* annotation = Obj->findAnnotation(annotationId);
                 if (!annotation) {
                     continue;

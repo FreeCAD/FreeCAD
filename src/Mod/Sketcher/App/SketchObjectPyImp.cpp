@@ -128,7 +128,7 @@ PyObject* SketchObjectPy::delAnnotations(PyObject* args)
         return nullptr;
     }
     try {
-        std::vector<long> ids;
+        std::vector<Annotation::Id> ids;
         for (auto item : Py::Sequence(data)) {
             ids.push_back(Py::Long(item).as_long());
         }

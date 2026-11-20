@@ -1693,7 +1693,8 @@ App::DocumentObject *SketchObject::getSubObject(
     }
     // Only names that actually parse as annotations are claimed here; anything else
     // must fall through to the normal element handling below.
-    if (const long annotationId = Annotation::idFromSubName(subname)) {
+    if (const Annotation::Id annotationId = Annotation::idFromSubName(subname);
+        annotationId != Annotation::NoId) {
         for (const auto& annotation : Annotations.getValues()) {
             if (annotation.id != annotationId) {
                 continue;

@@ -99,11 +99,11 @@ public:
     App::PropertyInteger NextAnnotationId;
     /// Returns nullptr when the ID is unknown; prefer this wherever a stale
     /// subelement name or a queued event may outlive the annotation.
-    const Annotation* findAnnotation(long id) const;
-    const Annotation& getAnnotation(long id) const;
-    long addAnnotation(Annotation annotation);
-    void updateAnnotation(long id, Annotation annotation);
-    void delAnnotations(const std::vector<long>& ids);
+    const Annotation* findAnnotation(Annotation::Id id) const;
+    const Annotation& getAnnotation(Annotation::Id id) const;
+    Annotation::Id addAnnotation(Annotation annotation);
+    void updateAnnotation(Annotation::Id id, Annotation annotation);
+    void delAnnotations(const std::vector<Annotation::Id>& ids);
     Part::TopoShape annotationFace(const Annotation& annotation) const;
     std::vector<Base::Vector3d> annotationStrokes(const Annotation& annotation) const;
     /// Filled parts (triangles, three points each), such as a filled leader arrowhead.

@@ -19,7 +19,13 @@ struct SketcherExport Annotation
         Hatch,
         Leader
     };
-    long id = 0;
+    /// Identifies an annotation in its sketch. IDs are never reused, so that a link to
+    /// one (a selection, a TechDraw counterpart) cannot silently move to another.
+    using Id = long;
+    /// No annotation: allocated IDs start at 1.
+    static constexpr Id NoId = 0;
+
+    Id id = NoId;
     Kind kind = Kind::Text;
     std::string label;
     bool construction = false;
@@ -28,6 +34,7 @@ struct SketcherExport Annotation
     std::string html;
     double textSize = 3.5;
     double textWidth = 0;
+    /// Stable geometry IDs (GeometryFacade::getId()) of the hatch boundary.
     std::vector<long> boundary;
     double spacing = 2;
     /// A HatchPattern name; the pattern is scaled by spacing and turned by rotation.
@@ -45,8 +52,8 @@ struct SketcherExport Annotation
 
     /// "Annotation<id>" is the stable subelement name. One definition for App, Gui and
     /// selection, so a foreign name such as "AnnotationGroup" is never mistaken for one.
-    static long idFromSubName(std::string_view name);
-    static std::string subName(long id);
+    static Id idFromSubName(std::string_view name);
+    static std::string subName(Id id);
 
     PyObject* toPython() const;
     static Annotation fromPython(PyObject* values, Annotation initial);
@@ -62,7 +69,7 @@ public:
     {
         return values;
     }
-    long highestAllocatedId() const
+    Annotation::Id highestAllocatedId() const
     {
         return highestId;
     }
@@ -82,6 +89,6 @@ public:
 private:
     std::vector<Annotation> values;
     // Survives Paste/undo so a new annotation cannot reuse a linked identity.
-    long highestId = 0;
+    Annotation::Id highestId = Annotation::NoId;
 };
 }  // namespace Sketcher

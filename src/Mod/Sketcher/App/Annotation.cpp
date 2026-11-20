@@ -95,21 +95,21 @@ const std::vector<std::string>& Annotation::arrowStyles()
     return styles;
 }
 
-long Annotation::idFromSubName(std::string_view name)
+Annotation::Id Annotation::idFromSubName(std::string_view name)
 {
     if (!name.starts_with(subNamePrefix)) {
-        return 0;
+        return NoId;
     }
     const auto digits = name.substr(subNamePrefix.size());
-    long id = 0;
+    Id id = NoId;
     const auto parsed = std::from_chars(digits.data(), digits.data() + digits.size(), id);
-    if (parsed.ec != std::errc() || parsed.ptr != digits.data() + digits.size() || id <= 0) {
-        return 0;
+    if (parsed.ec != std::errc() || parsed.ptr != digits.data() + digits.size() || id <= NoId) {
+        return NoId;
     }
     return id;
 }
 
-std::string Annotation::subName(long id)
+std::string Annotation::subName(Id id)
 {
     return std::string(subNamePrefix) + std::to_string(id);
 }
@@ -155,7 +155,7 @@ Annotation Annotation::fromPython(PyObject* values, Annotation a)
         if (name == "Id") {
             // A new annotation gets its ID from the sketch, so a copied snapshot may carry
             // any ID; an existing one keeps its own.
-            if (a.id != 0 && Py::Long(value).as_long() != a.id) {
+            if (a.id != NoId && Py::Long(value).as_long() != a.id) {
                 throw Base::ValueError("Annotation IDs are read-only");
             }
         }
@@ -340,18 +340,18 @@ void PropertyAnnotationList::Restore(Base::XMLReader& reader)
         throw Base::ValueError("Unsupported annotation format version");
     }
     if (reader.hasAttribute("highestId")) {
-        highestId = std::max(highestId, reader.getAttribute<long>("highestId"));
+        highestId = std::max(highestId, reader.getAttribute<Annotation::Id>("highestId"));
     }
     const int count = reader.getAttribute<int>("count");
     if (count < 0 || count > 1000000) {
         throw Base::ValueError("Invalid annotation count");
     }
     std::vector<Annotation> restored;
-    std::set<long> ids;
+    std::set<Annotation::Id> ids;
     for (int i = 0; i < count; ++i) {
         reader.readElement("Annotation");
         Annotation a;
-        a.id = reader.getAttribute<long>("id");
+        a.id = reader.getAttribute<Annotation::Id>("id");
         // A type from a newer version is skipped, not allowed to drop every annotation.
         const std::string type = reader.getAttribute<const char*>("type");
         bool knownType = true;
@@ -416,7 +416,7 @@ void PropertyAnnotationList::Restore(Base::XMLReader& reader)
             Base::Console().warning("Skipped invalid sketch annotation {}: {}\n", a.id, error.what());
             continue;
         }
-        if (a.id <= 0 || !ids.insert(a.id).second) {
+        if (a.id <= Annotation::NoId || !ids.insert(a.id).second) {
             Base::Console().warning("Skipped sketch annotation with invalid ID {}\n", a.id);
             continue;
         }

@@ -375,7 +375,7 @@ void CmdSketcherCut::activated(int iMsg)
         std::vector<std::string> subNames;
         if (selection.size() == 1) {
             for (const auto& name : selection[0].getSubNames()) {
-                if (annotationIdFromSubName(name) == 0) {
+                if (annotationIdFromSubName(name) == Sketcher::Annotation::NoId) {
                     subNames.push_back(name);
                 }
             }

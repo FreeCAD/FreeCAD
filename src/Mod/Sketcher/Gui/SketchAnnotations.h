@@ -28,13 +28,16 @@ class QTimer;
 namespace SketcherGui
 {
 class ViewProviderSketch;
-/// Parses an "Annotation<id>" subelement name. Returns 0 for anything else, including
-/// names that merely start with the prefix, so stale or foreign names are ignored.
-long annotationIdFromSubName(std::string_view name);
+using AnnotationId = Sketcher::Annotation::Id;
+/// The ID a preview of an annotation not yet created is drawn with.
+constexpr AnnotationId PreviewAnnotationId = -1;
+/// Parses an "Annotation<id>" subelement name. Returns Annotation::NoId for anything else,
+/// including names that merely start with the prefix, so stale or foreign names are ignored.
+AnnotationId annotationIdFromSubName(std::string_view name);
 /// The stable subelement name for an annotation ID.
-std::string annotationSubName(long id);
+std::string annotationSubName(AnnotationId id);
 /// The Coin node name the manager gives an annotation's scene subtree.
-std::string annotationNodeName(long id);
+std::string annotationNodeName(AnnotationId id);
 class AnnotationManager: public QObject
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::AnnotationManager)
@@ -48,26 +51,27 @@ public:
     /// The camera moved: only re-raster text whose resolution no longer fits.
     void cameraChanged();
     void update();
-    long picked(const SoPickedPoint* point) const;
-    bool mouseButton(int button, bool pressed, Base::Vector3d position, long pickedId);
-    bool mouseMove(Base::Vector3d position, long pickedId);
+    AnnotationId picked(const SoPickedPoint* point) const;
+    bool mouseButton(int button, bool pressed, Base::Vector3d position, AnnotationId pickedId);
+    bool mouseMove(Base::Vector3d position, AnnotationId pickedId);
     bool cancelDrag();
     void create(Sketcher::Annotation::Kind kind);
     /// Text opens the in-view text tool; hatches and leaders open the editor dialog.
-    void edit(long id);
-    void remove(const std::vector<long>& ids);
+    void edit(AnnotationId id);
+    void remove(const std::vector<AnnotationId>& ids);
     void appendContextMenu(QMenu* menu);
     /// Adds or updates the annotation in one undo step. Returns false, having told the
     /// user why, when it was refused (invalid data).
     bool save(const Sketcher::Annotation& annotation, bool create);
-    /// Draws a not yet created annotation (ID -1 for a new one) until reset. Scene only:
-    /// the document is untouched; error(-1) reports why a new preview cannot be drawn.
+    /// Draws a not yet created annotation (PreviewAnnotationId for a new one) until reset.
+    /// Scene only: the document is untouched; error(PreviewAnnotationId) reports why a new
+    /// preview cannot be drawn.
     void setPreview(std::optional<Sketcher::Annotation> preview);
-    /// Hides a text while it is edited in the view (0: none).
-    void setTextEditing(long id);
-    std::string error(long id) const;
-    bool isVisible(long id) const;
-    void setVisible(const std::vector<long>& ids, bool visible);
+    /// Hides a text while it is edited in the view (Annotation::NoId: none).
+    void setTextEditing(AnnotationId id);
+    std::string error(AnnotationId id) const;
+    bool isVisible(AnnotationId id) const;
+    void setVisible(const std::vector<AnnotationId>& ids, bool visible);
     fastsignals::signal<void()> changed;
 
 private:
@@ -105,23 +109,23 @@ private:
         // Reused across scene rebuilds, so an unchanged raster is not copied to Coin again.
         Gui::CoinPtr<SoTexture2> texture;
     };
-    std::map<long, TextCache> textCache;
+    std::map<AnnotationId, TextCache> textCache;
     SoNodeSensor cameraSensor;
     fastsignals::connection selectionConnection;
-    std::map<long, Cache> cache;
+    std::map<AnnotationId, Cache> cache;
     bool updatePending = false;
     bool notifyPending = false;
     bool rebuildStaleStrokes = false;
     QTimer* boundarySettleTimer = nullptr;
     std::optional<Sketcher::Annotation> editorPreview;
-    long textEditing = 0;
-    long dragging = 0;
+    AnnotationId textEditing = Sketcher::Annotation::NoId;
+    AnnotationId dragging = Sketcher::Annotation::NoId;
     int dragVertex = -1;
     Base::Vector3d dragStart;
     Sketcher::Annotation dragOriginal;
     Sketcher::Annotation dragPreview;
     QElapsedTimer clickTimer;
-    long previousClick = 0;
+    AnnotationId previousClick = Sketcher::Annotation::NoId;
 };
 
 class TaskSketcherAnnotations: public Gui::TaskView::TaskBox
