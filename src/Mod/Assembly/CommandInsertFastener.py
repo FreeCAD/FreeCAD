@@ -115,8 +115,10 @@ class TaskAssemblyInsertFastener:
         # The only fastener was put in front of the user for lack of a hole: the first hole
         # that is added takes it
         self.placeholder = False
+        # The names of the joints made by this task: named after the fastener at the end
+        self.new_joints = []
 
-        self.doc.openTransaction("Edit Fasteners" if self.editing else "Insert Fasteners")
+        self.doc.openTransaction("Edit Fasteners" if self.editing else "Insert Fastener")
 
         # The holes selected before the tool, that get the fasteners of a new link
         self.pending_holes = [] if self.editing else self._selected_holes()
@@ -152,6 +154,7 @@ class TaskAssemblyInsertFastener:
             if self.has_length and hasattr(source, "Length"):
                 label += f"_{str(self._get_current_length()).replace('.', '_')}"
             source.Label = label.replace(" ", "_")
+        self._name_new_objects(source)
 
         source_group = self.doc.getObject("Source_shapes")
         if source_group:
@@ -162,6 +165,18 @@ class TaskAssemblyInsertFastener:
         self.doc.commitTransaction()
         self.assembly.recompute()
         return True
+
+    def _name_new_objects(self, source):
+        """Name the link and the joints made by this task after the fastener they use. The
+        fastener may have been made, renamed or changed after they were made."""
+        if source is None:
+            return
+        if not self.editing:
+            self.link.Label = source.Label
+        for name in self.new_joints:
+            joint = self.doc.getObject(name)
+            if joint is not None:
+                joint.Label = "Fixed_" + source.Label
 
     def reject(self):
         self.doc.abortTransaction()
@@ -508,11 +523,16 @@ class TaskAssemblyInsertFastener:
             self.link.Placement = self._screen_center()
             self.placeholder = True
             return
-        FastenerLinkObject.attach(self.link, self.pending_holes[0])
+        self._attach(self.link, self.pending_holes[0])
         for ref in self.pending_holes[1:]:
             component = FastenerLinkObject.addFastener(self.link, App.Placement())
-            FastenerLinkObject.attach(component, ref)
+            self._attach(component, ref)
         self.pending_holes = []
+
+    def _attach(self, component, ref):
+        joint = FastenerLinkObject.attach(component, ref)
+        if joint is not None:
+            self.new_joints.append(joint.Name)
 
     def _refresh(self):
         """After a change: compute, solve and show the fasteners"""
@@ -562,10 +582,10 @@ class TaskAssemblyInsertFastener:
 
         count = len(fasteners)
         if count and unattached:
-            text = translate("Assembly", "%1 fastener(s), %2 unattached.")
+            text = translate("Assembly", "Fasteners: %1, unattached: %2")
             text = text.replace("%1", str(count)).replace("%2", str(unattached))
         elif count:
-            text = translate("Assembly", "%1 fastener(s).").replace("%1", str(count))
+            text = translate("Assembly", "Fasteners: %1").replace("%1", str(count))
         else:
             text = translate(
                 "Assembly", "No circular edge selected: the fastener goes to the screen center."
@@ -581,7 +601,7 @@ class TaskAssemblyInsertFastener:
             if any(k[0] == ref[0] and k[1][0] == ref[1][0] for k in known):
                 continue
             component = self._component_for_new_hole()
-            FastenerLinkObject.attach(component, ref)
+            self._attach(component, ref)
             known.append(ref)
             added = True
         if added:
@@ -674,11 +694,11 @@ class CommandInsertFastener:
             "MenuText": App.Qt.translate("Assembly_InsertFastener", "Insert Fastener"),
             "ToolTip": App.Qt.translate(
                 "Assembly_InsertFastener",
-                "Insert standard fasteners into the Assembly.\n\n"
-                "Can be used only if the Fasteners workbench is installed. Get it from the addon manager.\n\n"
+                "Inserts standard fasteners into the Assembly.\n\n"
+                "Works only if the Fasteners workbench is installed. Available from the Addon Manager.\n\n"
                 "If circular edges are selected before running, the tool will auto-detect "
                 "the diameter and position the fasteners with Fixed Joints directly onto the holes.\n"
-                "If nothing is selected, the fastener spawns at the center of the screen.\n"
+                "If nothing is selected, the fastener is placed at the center of the screen.\n"
                 "Holes can be added and removed in the tool, and afterwards with a "
                 "double-click on the fasteners in the tree.",
             ),
