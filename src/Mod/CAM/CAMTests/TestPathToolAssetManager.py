@@ -10,6 +10,7 @@ from unittest.mock import Mock
 import pathlib
 import tempfile
 from typing import Any, Mapping, List, Type, Optional, cast
+from Path import Preferences
 from Path.Tool.assets import (
     AssetManager,
     FileStore,
@@ -378,15 +379,13 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Assert returned data matches store's result
         self.assertEqual(retrieved_data, expected_data)
 
-        # Test error handling (store not found)
-        non_existent_uri = AssetUri("type://id/1")
-        # Test error handling (asset not found in any store, including non-existent ones)
+        # Asset not found in any store, including unregistered ones (which
+        # are skipped on reads)
         non_existent_uri = AssetUri("type://id/1")
         with self.assertRaises(FileNotFoundError) as cm:
             manager.get_raw(non_existent_uri, store="non_existent_store")
-        self.assertIn(
-            "Asset 'type://id/1' not found in stores '['non_existent_store']'", str(cm.exception)
-        )
+        self.assertIn("Asset 'type://id/1' not found in stores", str(cm.exception))
+        self.assertIn("non_existent_store", str(cm.exception))
 
     def test_is_empty(self):
         # Setup AssetManager with a real MemoryStore
@@ -405,10 +404,18 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertTrue(manager.is_empty(store="memory_empty", asset_type="another_type"))
         self.assertFalse(manager.is_empty(store="memory_empty", asset_type="test_type"))
 
-        # Test error handling (store not found)
-        with self.assertRaises(ValueError) as cm:
-            manager.is_empty(store="non_existent_store")
-        self.assertIn("No store registered for name:", str(cm.exception))
+        # Unregistered stores are skipped on reads: nothing is visible there
+        self.assertTrue(manager.is_empty(store="non_existent_store"))
+
+        # Multi-store: empty only if every store in the list is empty
+        other_store = MemoryStore("memory_empty_other")
+        manager.register_store(other_store)
+        self.assertFalse(manager.is_empty(store=["memory_empty", "memory_empty_other"]))
+        self.assertTrue(
+            manager.is_empty(
+                store=["memory_empty", "memory_empty_other"], asset_type="another_type"
+            )
+        )
 
     def test_count_assets(self):
         # Setup AssetManager with a real MemoryStore
@@ -432,10 +439,15 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(manager.count_assets(store="memory_count", asset_type="type1"), 2)
         self.assertEqual(manager.count_assets(store="memory_count", asset_type="type2"), 1)
 
-        # Test error handling (store not found)
-        with self.assertRaises(ValueError) as cm:
-            manager.count_assets(store="non_existent_store")
-        self.assertIn("No store registered for name:", str(cm.exception))
+        # Unregistered stores are skipped on reads: nothing is visible there
+        self.assertEqual(manager.count_assets(store="non_existent_store"), 0)
+
+        # Multi-store: counts the merged result, deduplicated by asset id
+        other_store = MemoryStore("memory_count_other")
+        manager.register_store(other_store)
+        manager.add_raw("type1", "asset1", b"shadowed", "memory_count_other")
+        manager.add_raw("type1", "asset4", b"data4", "memory_count_other")
+        self.assertEqual(manager.count_assets(store=["memory_count", "memory_count_other"]), 4)
 
     def test_get_bulk(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class
@@ -472,6 +484,145 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test handling of non-existent store (should skip and not raise ValueError)
         # The test already asserts that the non-existent asset is None, which is the expected behavior.
         manager.get_bulk(uris, store="non_existent_store")
+
+    def test_list_assets_merges_multiple_stores_without_duplicates(self):
+        manager = AssetManager()
+        local_store = MemoryStore("memory_list_local")
+        remote_store = MemoryStore("memory_list_remote")
+        manager.register_store(local_store)
+        manager.register_store(remote_store)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
+
+        manager.add_raw(MockAsset.asset_type, "shared_id", b"local data", "memory_list_local")
+        manager.add_raw(MockAsset.asset_type, "remote_only", b"remote data", "memory_list_remote")
+
+        listed = manager.list_assets(
+            MockAsset.asset_type, store=["memory_list_local", "memory_list_remote"]
+        )
+
+        self.assertEqual(len(listed), 2)
+        self.assertEqual(
+            {str(uri) for uri in listed},
+            {
+                "mock_asset://shared_id/1",
+                "mock_asset://remote_only/1",
+            },
+        )
+
+    def test_write_target_uses_configured_default_store(self):
+        manager = AssetManager()
+        local_store = MemoryStore("local")
+        remote_store = MemoryStore("loobric")
+        manager.register_store(local_store)
+        manager.register_store(remote_store)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
+
+        previous_write_store = Preferences.getAssetStoreWriteStore()
+        Preferences.setAssetStoreWriteStore("loobric")
+        try:
+            uri = manager.add_raw(MockAsset.asset_type, "pref_target", b"prefer remote")
+            self.assertTrue(asyncio.run(remote_store.exists(uri)))
+            self.assertFalse(asyncio.run(local_store.exists(uri)))
+        finally:
+            Preferences.setAssetStoreWriteStore(previous_write_store)
+
+    def test_asset_observer_notifies_on_changes(self):
+        manager = AssetManager()
+        store = MemoryStore("memory_observer")
+        manager.register_store(store)
+        manager.register_asset(MockAsset, DummyAssetSerializer)
+
+        notifications = []
+        manager.add_asset_observer(
+            lambda store_name, uri, action: notifications.append((store_name, str(uri), action))
+        )
+
+        uri = manager.add_raw(MockAsset.asset_type, "notify_me", b"data", "memory_observer")
+        manager.delete(uri, store="memory_observer")
+
+        self.assertEqual(notifications[0][0], "memory_observer")
+        self.assertEqual(notifications[0][2], "created")
+        self.assertEqual(notifications[1][2], "deleted")
+
+    def test_notify_asset_changed_feeds_observers(self):
+        manager = AssetManager()
+        store = MemoryStore("memory_external")
+        manager.register_store(store)
+
+        notifications = []
+        manager.add_asset_observer(
+            lambda store_name, uri, action: notifications.append((store_name, str(uri), action))
+        )
+
+        # A store announcing an out-of-band change (e.g. a sync worker pull)
+        manager.notify_asset_changed("memory_external", "mock_asset://pulled_id/1", "created")
+
+        self.assertEqual(
+            notifications, [("memory_external", "mock_asset://pulled_id/1", "created")]
+        )
+
+        with self.assertRaises(ValueError):
+            manager.notify_asset_changed("memory_external", "mock_asset://pulled_id/1", "renamed")
+
+    def test_list_assets_applies_limit_offset_to_merged_result(self):
+        manager = AssetManager()
+        first_store = MemoryStore("memory_page_first")
+        second_store = MemoryStore("memory_page_second")
+        manager.register_store(first_store)
+        manager.register_store(second_store)
+
+        manager.add_raw(MockAsset.asset_type, "id_a", b"a", "memory_page_first")
+        manager.add_raw(MockAsset.asset_type, "id_b", b"b", "memory_page_first")
+        # Shadowed duplicate must not consume a slot in the merged result
+        manager.add_raw(MockAsset.asset_type, "id_a", b"a2", "memory_page_second")
+        manager.add_raw(MockAsset.asset_type, "id_c", b"c", "memory_page_second")
+
+        stores = ["memory_page_first", "memory_page_second"]
+        merged = manager.list_assets(MockAsset.asset_type, store=stores)
+        self.assertEqual(len(merged), 3)
+
+        page = manager.list_assets(MockAsset.asset_type, limit=2, offset=1, store=stores)
+        self.assertEqual(page, merged[1:3])
+
+        tail = manager.list_assets(MockAsset.asset_type, offset=2, store=stores)
+        self.assertEqual(tail, merged[2:])
+
+    def test_list_assets_attributed_first_store_wins(self):
+        manager = AssetManager()
+        first_store = MemoryStore("memory_attr_first")
+        second_store = MemoryStore("memory_attr_second")
+        manager.register_store(first_store)
+        manager.register_store(second_store)
+
+        manager.add_raw(MockAsset.asset_type, "shared_id", b"first", "memory_attr_first")
+        manager.add_raw(MockAsset.asset_type, "shared_id", b"second", "memory_attr_second")
+        manager.add_raw(MockAsset.asset_type, "second_only", b"second", "memory_attr_second")
+
+        attributed = manager.list_assets_attributed(
+            MockAsset.asset_type, store=["memory_attr_first", "memory_attr_second"]
+        )
+
+        by_id = {uri.asset_id: store_name for uri, store_name in attributed}
+        self.assertEqual(
+            by_id,
+            {
+                "shared_id": "memory_attr_first",
+                "second_only": "memory_attr_second",
+            },
+        )
+
+    def test_unregistered_write_store_raises(self):
+        manager = AssetManager()
+        manager.register_store(MemoryStore("local"))
+
+        with self.assertRaises(ValueError) as cm:
+            manager.add_raw("test_type", "test_id", b"data", "non_existent_store")
+        self.assertIn("No store registered for name:", str(cm.exception))
+        self.assertIn("AssetStoreWriteStore", str(cm.exception))
+
+        with self.assertRaises(ValueError) as cm:
+            manager.delete("test_type://test_id/1", store="non_existent_store")
+        self.assertIn("No store registered for name:", str(cm.exception))
 
     def test_fetch(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class
@@ -528,10 +679,8 @@ class TestPathToolAssetManager(unittest.TestCase):
             data2.decode("utf-8"),
         )
 
-        # Test error handling (store not found)
-        with self.assertRaises(ValueError) as cm:
-            manager.fetch(store="non_existent_store")
-        self.assertIn("No store registered for name:", str(cm.exception))
+        # Unregistered stores are skipped on reads: nothing is visible there
+        self.assertEqual(manager_filtered.fetch(store="non_existent_store"), [])
 
     def test_copy(self):
         # Setup AssetManager with two MemoryStores and MockAsset class
@@ -862,10 +1011,12 @@ class TestPathToolAssetManager(unittest.TestCase):
         non_existent_uri = AssetUri.build("test_type", "non_existent_id", "1")
         self.assertFalse(manager.exists(non_existent_uri, store="memory_exists"))
 
-        # Test exists for a non-existent store (should raise ValueError)
-        with self.assertRaises(ValueError) as cm:
-            manager.exists(test_uri, store="non_existent_store")
-        self.assertIn("No store registered for name:", str(cm.exception))
+        # Unregistered stores are skipped on reads: nothing is visible there
+        self.assertFalse(manager.exists(test_uri, store="non_existent_store"))
+
+        # An unregistered store in the search order does not hide the
+        # registered ones
+        self.assertTrue(manager.exists(test_uri, store=["non_existent_store", "memory_exists"]))
 
 
 if __name__ == "__main__":
