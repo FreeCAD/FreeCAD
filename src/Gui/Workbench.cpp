@@ -796,7 +796,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
               << "Separator";
     }
 #endif
-    *tool << "Std_Measure"
+    *tool << "Std_CommandPalette"
+          << "Std_Measure"
           << "Std_MassProperties"
           << "Std_UnitsCalculator"
           << "Std_ClarifySelection"
