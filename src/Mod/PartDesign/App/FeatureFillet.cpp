@@ -126,6 +126,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
         TopTools_ListOfShape aLarg;
         aLarg.Append(baseShape.getShape());
         if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
+            // LimitTolerance works in place and must not touch sub-shapes shared with the base
+            shape = shape.makeElementCopy();
             ShapeFix_ShapeTolerance aSFT;
             aSFT.LimitTolerance(
                 shape.getShape(),
