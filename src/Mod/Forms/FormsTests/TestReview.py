@@ -637,7 +637,7 @@ class ReviewTest(unittest.TestCase):
 
     def test_straighten_finds_the_dominant_eigenvector(self):
         points = [(math.sqrt(1.5), 0, 0), (-math.sqrt(1.5), 0, 0), (0, 1, 1), (0, -1, -1)]
-        center, axis = topology._largest_covariance_axis(points)
+        _center, axis = topology._largest_covariance_axis(points)
         self.assertAlmostEqual(abs(axis[1] + axis[2]), math.sqrt(2))
         self.assertAlmostEqual(axis[0], 0)
 

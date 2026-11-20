@@ -49,7 +49,7 @@ def _support_shape(reference, obj=None):
 def _linked_support(reference, obj=None, shape=None):
     if not reference or reference[0] is None:
         return None, None, None
-    source, names = reference
+    names = reference[1]
     shape = shape if shape is not None else _support_shape(reference, obj)
     if isinstance(names, str):
         names = (names,)

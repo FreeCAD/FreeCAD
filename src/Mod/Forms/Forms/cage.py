@@ -484,7 +484,7 @@ class ControlElementMapper:
                 path.reverse()
                 total = sum(shape_edges[item[2]].Length for item in path)
                 travelled = 0.0
-                for segment_start, segment_end, edge_index in path:
+                for segment_start, _segment_end, edge_index in path:
                     mapped.setdefault(edge_index, []).append(tuple(sorted(control_edge)))
                     length = float(shape_edges[edge_index].Length)
                     first_shape_vertex = next(

@@ -617,7 +617,7 @@ class CommandBridge:
         selections = _selected_boundary_edges()
         if len(selections) != 1:
             return False
-        obj, edges = next(iter(selections.items()))
+        edges = next(iter(selections.values()))
         mapper = _active_mapper()
         if mapper is None:
             return False

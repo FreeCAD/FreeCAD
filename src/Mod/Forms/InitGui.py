@@ -27,7 +27,6 @@ import os
 
 import FreeCAD as App
 import FreeCADGui as Gui
-from PySide import QtCore
 
 
 class FormsWorkbench(Gui.Workbench):

@@ -477,7 +477,7 @@ def resize_structured_cage(
 
     current_vertices = [tuple(float(component) for component in point) for point in vertices]
     current_segments = old_segments
-    current_keys, current_faces = topology(current_segments)
+    current_keys, _current_faces = topology(current_segments)
     if len(current_vertices) != len(current_keys):
         raise ValueError("Control points do not match the structured cage topology")
     current_vertex_sharpness = [max(0.0, float(value)) for value in (vertex_sharpness or ())]
@@ -1327,8 +1327,8 @@ def catmull_clark_patch_grids(vertices, faces, level, edge_sharpness=None, verte
             next_vertices,
             next_faces,
             old_map,
-            edge_map,
-            face_map,
+            _edge_map,
+            _face_map,
             next_edge_sharpness,
             next_vertex_sharpness,
         ) = _catmull_clark_step_details(

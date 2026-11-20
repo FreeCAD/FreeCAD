@@ -3,7 +3,6 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Part
 from PySide import QtCore, QtWidgets
 
 PRIMITIVES = ("Box", "Cylinder", "Quadball", "Sphere", "Pipe", "Face", "Torus", "Tube")

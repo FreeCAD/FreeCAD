@@ -243,8 +243,6 @@ class TestAdditiveForm(unittest.TestCase):
                 self.body.Tip = self.source
 
     def testPartDesignPipeLinksAndClaimsItsSketchPath(self):
-        import Sketcher
-
         sketch = self.body.newObject("Sketcher::SketchObject", "PipePath")
         center = App.Vector(20, 10, 10)
         sketch.addGeometry(Part.LineSegment(center, App.Vector(30, 10, 10)), False)

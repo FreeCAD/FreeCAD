@@ -233,8 +233,8 @@ def _make_surface(grid):
         raise ConversionError("B-spline patch samples must form at least a 2x2 grid")
     u_degree = min(3, u_count - 1)
     v_degree = min(3, v_count - 1)
-    u_parameters, u_full_knots = _clamped_interpolation_knots(u_count, u_degree)
-    v_parameters, v_full_knots = _clamped_interpolation_knots(v_count, v_degree)
+    _u_parameters, u_full_knots = _clamped_interpolation_knots(u_count, u_degree)
+    _v_parameters, v_full_knots = _clamped_interpolation_knots(v_count, v_degree)
     u_factor = _interpolation_factor(u_count, u_degree)
     v_factor = _interpolation_factor(v_count, v_degree)
 
