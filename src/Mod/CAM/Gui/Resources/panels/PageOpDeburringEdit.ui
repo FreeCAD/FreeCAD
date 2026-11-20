@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="main_layout">
+   <item>
+    <layout class="QGridLayout" name="layout_comboboxes">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_strategy">
+       <property name="text">
+        <string>Strategy</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="strategy"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_side">
+       <property name="text">
+        <string>Side</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="side"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_direction">
+       <property name="text">
+        <string>Direction</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="direction"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_sorting">
+       <property name="text">
+        <string>Sorting</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="sorting"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="layout_spinboxes">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_chamferWidth">
+       <property name="text">
+        <string>Chamfer width</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="chamferWidth">
+       <property name="minimum">
+        <double>0.01</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_chamferAngle">
+       <property name="text">
+        <string>Chamfer angle</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::QuantitySpinBox" name="chamferAngle">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>89</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_radialOffset">
+       <property name="text">
+        <string>Radial stock to leave</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="radialOffset"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_extraDepth">
+       <property name="text">
+        <string>Extra depth</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Gui::QuantitySpinBox" name="extraDepth"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="layout_checkboxes">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="splitArcs">
+       <property name="text">
+        <string>Split arcs</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="fromBottom">
+       <property name="text">
+        <string>Start from bottom</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="processCircles">
+       <property name="text">
+        <string>Process circles</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="processHoles">
+       <property name="text">
+        <string>Process holes</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="processPerimeter">
+       <property name="text">
+        <string>Process perimeter</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
