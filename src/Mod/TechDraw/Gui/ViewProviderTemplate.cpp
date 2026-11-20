@@ -24,6 +24,7 @@
 
 
 
+#include <QMenu>
 #include <QMessageBox>
 #include <QTextStream>
 
@@ -35,6 +36,7 @@
 
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
@@ -67,6 +69,22 @@ ViewProviderTemplate::ViewProviderTemplate() : m_myName(std::string())
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
     DisplayMode.setStatus(App::Property::Hidden, true);
+}
+
+void ViewProviderTemplate::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
+
+    // Parametric templates use this view provider too. Only an SVG template
+    // has a source file to read again.
+    auto* feature = getTemplate();
+    if (!feature || !feature->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
+        return;
+    }
+    if (auto* cmd = Gui::Application::Instance->commandManager().getCommandByName(
+            "TechDraw_ReloadTemplate")) {
+        cmd->addTo(menu);
+    }
 }
 
 void ViewProviderTemplate::attach(App::DocumentObject* pcFeat)
