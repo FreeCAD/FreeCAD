@@ -1,0 +1,121 @@
+TODO:
+- Che
+- Fix add_femelemt_geometry for if no groups are selected
+- allow multiple groups of materials and element types
+- Add stress to med reader
+- Make it possible to have materials as children of ElementGeometryLaminate
+- Run geodesics etc on Femmesh directly
+- Get forces working when applied on points and on faces
+
+force_objs = []
+for ref in obj.References:
+	for r in ref[1]:
+		o = getattr(ref[0].Shape, r)
+		force_objs.append(o)
+
+tot = 0
+for o in force_objs:
+	if type(o) == Part.Vertex:
+		tot += 1
+	elif type(o) == Part.Edge:
+		tot += o.Length
+	elif type(o) == Part.Face:
+		tot += o.Area
+
+print(tot)
+
+
+for getting fibre directions:
+
+thicknesses = []
+elements = []
+angles = []
+for i in range(1,len(geomesh_obj.TriangleFibreDirectionsIndex)):
+	if geomesh_obj.TriangleFibreDirectionsIndex[i-1] != geomesh_obj.TriangleFibreDirectionsIndex[i]:
+		ths = [lam_obj.Thicknesses[0]]
+		angs = [lam_obj.Orientations[0]]
+		elements.append(i)
+		for j in range(geomesh_obj.TriangleFibreDirectionsIndex[i-1], geomesh_obj.TriangleFibreDirectionsIndex[i]):
+			ths.append(geomesh_obj.TriangleThicknesses[i-1]/(geomesh_obj.TriangleFibreDirectionsIndex[i] - geomesh_obj.TriangleFibreDirectionsIndex[i-1]))
+			ang = geomesh_obj.IndexedTriangleFibreDirections[j]
+			if ang > 90:
+				ang -= 180
+			elif ang < -90:
+				ang += 180
+			angs.append(ang)
+		thicknesses.append(ths)
+		angles.append(angs)
+lam_obj.Windall = {'elements':elements, 'orientationlists':angles, 'thicknesslists':thicknesses}
+
+obj.Windall = {'elements':[364], 'orientationlists':[[0]], 'thicknesslists':[[0.18]]}
+obj.Windall = {'elements':[], 'orientationlists':[], 'thicknesslists':[]}
+
+
+
+Useful code snippets for med file reading:
+sys.path.append('/home/timbo/anaconda3/lib/python3.12/site-packages')
+import medcoupling as mc
+fname = '/home/timbo/AMRC/WindAll/Scratch-shell-CA/SolverCodeAster/FEMMeshGmsh.rmed'
+OPmesh = mc.ReadMeshFromFile(fname)
+
+#GET NODE COORDS
+nodes = []
+for id in OPmesh.getNodeIdsInUse()[0]:
+    nodes.append(Vector(OPmesh.getCoordinatesOfNode(id[0])))
+
+# Read Field  data
+m = mc.ReadMeshFromFile(medfile)
+field0 = mc.GetAllFieldNames(medfile)[0]
+print(field0)
+q = mc.ReadField(medfile, field0).getArrays()
+print('q0:', q[0])
+columns = [ q[0].getInfoOnComponent(i) for i in range(q[0].getNumberOfComponents()) ]
+print(columns)
+disp = q[0].toNumPyArray()  # this gets an output we can use
+print(disp)
+
+###!!!!!!NOTE: THIS IS USEFUL!!!!!!!
+q.getMaxValueInArray()
+
+
+## GMSH STUFF
+#SET MESH NAME
+OPmesh.setName('FEMMeshGmshy')
+mc.WriteUMesh(fname,OPmesh,True)
+
+
+Useful code snippets for assigning groups to meshes:
+import tempfile
+from femmesh import gmshtools
+
+unvGmshFd, unvGmshPath = tempfile.mkstemp(suffix=".unv")
+brepFd, brepPath = tempfile.mkstemp(suffix=".brep")
+geoFd, geoPath = tempfile.mkstemp(suffix=".geo")
+os.close(brepFd)
+os.close(geoFd)
+os.close(unvGmshFd)
+
+tools.temp_file_geometry = brepPath
+tools.temp_file_geo = geoPath
+tools.temp_file_mesh = unvGmshPath
+
+mesh = doc.getObject("FEMMeshGmsh")
+conFixed = doc.getObject("ConstraintFixed")
+tools = gmshtools.GmshTools(mesh)
+tools.group_elements = {'fixed': [c] for c in conFixed.References[0][1]}
+geoPath = '/home/timbo/AMRC/WindAll/Scratch-shell-CA/SolverCodeAster/medwriter.geo'
+
+tools.get_tmp_file_paths()
+tools.temp_file_mesh = '/home/timbo/AMRC/WindAll/Scratch-shell-CA/FEMMeshGmsh/Face004_Mesh.med'
+
+tools.update_mesh_data()
+
+tools.get_dimension()
+tools.get_region_data()
+tools.get_boundary_layer_data()
+
+
+tools.write_part_file()
+tools.write_geo()
+tools.get_gmsh_command()
+tools.run_gmsh_with_geo()
