@@ -259,7 +259,7 @@ def parse_diff(diff_lines: Iterator[str]) -> List[str]:
     return bad_lines
 
 
-def compare_inp_files(file_name1, file_name2):
+def compare_inp_files(file_name1, file_name2, ignored_prefixes=()):
     file1 = open(file_name1)
     f1 = file1.readlines()
     file1.close()
@@ -274,6 +274,7 @@ def compare_inp_files(file_name1, file_name2):
             li.startswith("**   written ")
             or li.startswith("**   file ")
             or li.startswith("17671.0,1")
+            or li.startswith(ignored_prefixes)
         )
     ]
     lf1 = force_unix_line_ends(lf1)
@@ -288,6 +289,7 @@ def compare_inp_files(file_name1, file_name2):
             li.startswith("**   written ")
             or li.startswith("**   file ")
             or li.startswith("17671.0,1")
+            or li.startswith(ignored_prefixes)
         )
     ]
     lf2 = force_unix_line_ends(lf2)

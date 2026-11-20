@@ -383,6 +383,8 @@ SET(FemTests_SRCS
     femtest/__init__.py
     femtest/test_commands.sh
     femtest/test_information.md
+    femtest/function_tests/__init__.py
+    femtest/function_tests/test_support_utils.py
 )
 
 SET(FemTestsApp_SRCS

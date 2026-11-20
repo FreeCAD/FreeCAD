@@ -27,6 +27,7 @@ __title__ = "Objects FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+import importlib.util
 import sys
 import unittest
 from os.path import join
@@ -87,7 +88,10 @@ class TestObjectCreate(unittest.TestCase):
         subtraction = 22
         if vtk_objects_used:
             subtraction += 12
-            if not ("BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__):
+            if not (
+                "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__
+                and importlib.util.find_spec("vtkmodules") is not None
+            ):
                 # remove the 3 data visualization objects that would be in the Analysis
                 # if they would be available (Lineplot, histogram, table)
                 subtraction += 3
@@ -97,7 +101,10 @@ class TestObjectCreate(unittest.TestCase):
         # if vtk used, but python API is not available, the vtk python based objects "def make" functions
         # have been counted, but will not be executed to create objects
         failed = 0
-        if vtk_objects_used and not ("BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__):
+        if vtk_objects_used and not (
+            "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__
+            and importlib.util.find_spec("vtkmodules") is not None
+        ):
             # the 7 objects also counted in subtraction, +3 additional objects that are
             # added directly to the analysis
             failed += 10
@@ -1280,7 +1287,10 @@ def create_all_fem_objects_doc(doc):
         ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
         ObjectsFem.makePostVtkFilterWarp(doc, vres)
         ObjectsFem.makePostVtkFilterContours(doc, vres)
-        if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+        if (
+            "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__
+            and importlib.util.find_spec("vtkmodules") is not None
+        ):
             ObjectsFem.makePostFilterGlyph(doc, vres)
 
             # data extraction objects

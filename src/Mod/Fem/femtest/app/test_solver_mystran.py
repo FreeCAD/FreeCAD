@@ -27,12 +27,13 @@ __title__ = "Solver mystran FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+import importlib
 import unittest
+import importlib.util
 from os.path import join
 
 import FreeCAD
 
-import femsolver.run
 from . import support_utils as testtools
 from .support_utils import fcc_print
 from .support_utils import get_namefromdef
@@ -44,6 +45,11 @@ class TestSolverMystran(unittest.TestCase):
     # ********************************************************************************************
     def setUp(self):
         # setUp is executed before every test
+
+        if importlib.util.find_spec("pyNastran") is None:
+            self.skipTest("pyNastran is not available")
+        if importlib.util.find_spec("vtkmodules") is None:
+            self.skipTest("VTK Python bindings are not available")
 
         # new document
         self.document = FreeCAD.newDocument(self.__class__.__name__)
@@ -99,7 +105,7 @@ class TestSolverMystran(unittest.TestCase):
         fcc_print("")
         from femexamples.ccx_cantilever_faceload import setup
 
-        setup(self.document, "mystran")
+        setup(self.document, "mystran", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -107,7 +113,7 @@ class TestSolverMystran(unittest.TestCase):
         fcc_print("")
         from femexamples.ccx_cantilever_nodeload import setup
 
-        setup(self.document, "mystran")
+        setup(self.document, "mystran", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -120,6 +126,9 @@ class TestSolverMystran(unittest.TestCase):
 
     # ********************************************************************************************
     def input_file_writing_test(self, base_name):
+        import femsolver.run
+        import pyNastran
+
         self.document.recompute()
 
         # get analysis working directory and save FreeCAD file
@@ -140,5 +149,14 @@ class TestSolverMystran(unittest.TestCase):
         inpfile_given = join(self.test_file_dir, base_name + self.ending)
         inpfile_totest = join(working_dir, self.infilename + self.ending)
         # fcc_print("Comparing {}  to  {}".format(inpfile_given, inpfile_totest))
-        ret = testtools.compare_inp_files(inpfile_given, inpfile_totest)
+        # pyNastran 1.5 no longer writes these mesh counts.
+        version = tuple(int(part) for part in pyNastran.__version__.split(".")[:2])
+        ignored_prefixes = ()
+        if version >= (1, 5):
+            ignored_prefixes = ("$pyNastran: nnodes=", "$pyNastran: nelements=")
+        ret = testtools.compare_inp_files(
+            inpfile_given,
+            inpfile_totest,
+            ignored_prefixes=ignored_prefixes,
+        )
         self.assertFalse(ret, f"Mystran write_solver_input for {base_name} test failed.\n{ret}")

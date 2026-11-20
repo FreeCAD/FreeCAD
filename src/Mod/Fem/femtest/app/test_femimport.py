@@ -119,6 +119,8 @@ class TestObjectexistence(unittest.TestCase):
             "Fem::ConstraintPressure",
             "Fem::ConstraintPulley",
             "Fem::ConstraintPython",
+            "Fem::ConstraintRigidBody",
+            "Fem::ConstraintSpring",
             "Fem::ConstraintTemperature",
             "Fem::ConstraintTransform",
             "Fem::DocumentObject",
@@ -127,11 +129,13 @@ class TestObjectexistence(unittest.TestCase):
             "Fem::FemAnalysisPython",
             "Fem::FemMeshObject",
             "Fem::FemMeshObjectPython",
+            "Fem::FemMeshShapeBaseObject",
             "Fem::FemMeshShapeBaseObjectPython",
             "Fem::FemMeshShapeNetgenObject",
             "Fem::FemMeshShapeObject",
             "Fem::FemResultObject",
             "Fem::FemResultObjectPython",
+            "Fem::FemSetElementNodesObject",
             "Fem::FemSetElementsObject",
             "Fem::FemSetFacesObject",
             "Fem::FemSetGeometryObject",
@@ -142,9 +146,13 @@ class TestObjectexistence(unittest.TestCase):
         ]
 
         expected_vtk_obj_types = [
+            "Fem::FemPostBoxFunction",
+            "Fem::FemPostBranchFilter",
+            "Fem::FemPostCalculatorFilter",
             "Fem::FemPostClipFilter",
             "Fem::FemPostContoursFilter",
             "Fem::FemPostCutFilter",
+            "Fem::FemPostCylinderFunction",
             "Fem::FemPostDataAlongLineFilter",
             "Fem::FemPostDataAtPointFilter",
             "Fem::FemPostFilter",
@@ -156,6 +164,7 @@ class TestObjectexistence(unittest.TestCase):
             "Fem::FemPostScalarClipFilter",
             "Fem::FemPostSphereFunction",
             "Fem::FemPostWarpVectorFilter",
+            "Fem::PostFilterPython",
         ]
 
         # if FEM VTK post processing is enabled, we need to add VTK post objects
