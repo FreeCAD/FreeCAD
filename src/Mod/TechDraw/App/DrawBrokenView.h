@@ -105,9 +105,9 @@ public:
 
 
 private:
-    TopoDS_Shape    breakShape(const TopoDS_Shape& shapeToBreak) const;
-    TopoDS_Shape    compressShape(const TopoDS_Shape& shapeToCompress) const;
-    TopoDS_Shape    apply1Break(const App::DocumentObject& breakObj, const TopoDS_Shape& inShape) const;
+    Part::TopoShape breakShape(const Part::TopoShape& shapeToBreak) const;
+    Part::TopoShape compressShape(const Part::TopoShape& shapeToCompress) const;
+    Part::TopoShape apply1Break(const App::DocumentObject& breakObj, const Part::TopoShape& inShape) const;
     TopoDS_Shape    makeHalfSpace(const Base::Vector3d& point,
                                   const Base::Vector3d& direction,
                                   const Base::Vector3d& pointInSpace) const;
@@ -128,10 +128,10 @@ private:
     bool isVertical(std::pair<Base::Vector3d, Base::Vector3d>, bool projected = false) const;
     bool isHorizontal(const TopoDS_Edge& edge, const bool projected = false) const;
 
-    TopoDS_Shape compressHorizontal(const TopoDS_Shape& inShape) const;
-    TopoDS_Shape compressVertical(const TopoDS_Shape& inShape) const;
+    Part::TopoShape compressHorizontal(const Part::TopoShape& inShape) const;
+    Part::TopoShape compressVertical(const Part::TopoShape& inShape) const;
 
-    static PieceLimitList getPieceLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction);
+    static PieceLimitList getPieceLimits(const std::vector<Part::TopoShape>& pieces, Base::Vector3d direction);
 
     double getExpandGaps(double pointCoord,
                          const BreakList& compressedBreakList,
@@ -147,10 +147,10 @@ private:
                                             const Base::Vector3d& moveDirection,
                                             const bool descend = false) const;
 
-    static std::vector<TopoDS_Shape> getPieces(const TopoDS_Shape& brokenShape);
-    static std::vector<TopoDS_Shape> getPiecesByType(const TopoDS_Shape& shapeToSearch,
-                                                     TopAbs_ShapeEnum desiredShapeType,
-                                                     TopAbs_ShapeEnum avoidShapeType = TopAbs_SHAPE);
+    static std::vector<Part::TopoShape> getPieces(const Part::TopoShape& brokenShape);
+    static std::vector<Part::TopoShape> getPiecesByType(const Part::TopoShape& shapeToSearch,
+                                                        TopAbs_ShapeEnum desiredShapeType,
+                                                        TopAbs_ShapeEnum avoidShapeType = TopAbs_SHAPE);
 
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);

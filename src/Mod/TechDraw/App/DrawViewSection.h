@@ -34,6 +34,7 @@
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyLinks.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"
@@ -125,8 +126,8 @@ public:
     void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
-    void sectionExec(TopoDS_Shape& s);
-    virtual void makeSectionCut(const TopoDS_Shape& baseShape);
+    void sectionExec(const Part::TopoShape& s);
+    virtual void makeSectionCut(const Part::TopoShape& baseShape);
     void postHlrTasks() override;
     virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }
@@ -134,10 +135,10 @@ public:
     bool waitingForResult() const override;
 
     virtual TopoDS_Shape makeCuttingTool(double shapeSize);
-    virtual TopoDS_Shape getShapeToCut();
+    virtual Part::TopoShape getShapeToCut();
     virtual bool isBaseValid() const;
-    virtual TopoDS_Shape prepareShape(const TopoDS_Shape& rawShape, double shapeSize);
-    virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
+    virtual Part::TopoShape prepareShape(const Part::TopoShape& rawShape, double shapeSize);
+    virtual Part::TopoShape getShapeToPrepare() const { return m_cutPieces; }
 
     //CS related methods
     void setCSFromBase(const std::string& sectionName);
@@ -155,16 +156,16 @@ public:
     virtual TopoDS_Compound alignSectionFaces(const TopoDS_Shape& faceIntersections);
     TopoDS_Compound mapToPage(const TopoDS_Shape& shapeToAlign);
     virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(const TopoDS_Compound& topoDSFaces);
-    virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces; }
+    virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces.getShape(); }
 
     void makeLineSets();
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
-    TopoDS_Shape getCutShape() const { return m_cutShape; }
-    TopoDS_Shape getCutShapeRaw() const { return m_cutShapeRaw; }
+    TopoDS_Shape getCutShape() const { return m_cutShape.getShape(); }
+    Part::TopoShape getCutShapeRaw() const { return m_cutShapeRaw; }
 
-    TopoDS_Shape getShapeForDetail() const override;
+    Part::TopoShape getShapeForDetail() const override;
 
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
@@ -201,17 +202,17 @@ protected:
     int prefCutSurface() const;
     bool trimAfterCut() const;
 
-    TopoDS_Shape m_cutShape;        // centered, scaled, rotated result of cut
-    TopoDS_Shape m_cutShapeRaw;     // copy of input to prepare shape
+    Part::TopoShape m_cutShape;     // centered, scaled, rotated result of cut
+    Part::TopoShape m_cutShapeRaw;  // copy of input to prepare shape
 
     void onDocumentRestored() override;
     void setupObject() override;
     void replaceSvgIncluded(const std::string& newSvgFile);
     void replacePatIncluded(const std::string& newPatFile);
 
-    TopoDS_Shape m_cutPieces;//the shape after cutting, but before centering & scaling
+    Part::TopoShape m_cutPieces;//the shape after cutting, but before centering & scaling
     gp_Ax2 m_projectionCS;
-    TopoDS_Shape m_preparedShape;//the shape after cutting, centering, scaling etc
+    Part::TopoShape m_preparedShape;//the shape after cutting, centering, scaling etc
 
     QMetaObject::Connection connectCutWatcher;
     QFutureWatcher<void> m_cutWatcher;
