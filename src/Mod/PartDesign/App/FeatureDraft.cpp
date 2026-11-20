@@ -331,6 +331,14 @@ App::DocumentObjectExecReturn* Draft::execute()
             );
         }
 
+        // OCCT can return an invalid solid, for example with large draft angles on
+        // rounded corners: https://github.com/Open-Cascade-SAS/OCCT/issues/1729
+        if (!shape.isValid()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "The draft produced an invalid solid. Try a smaller angle or a different neutral plane.")
+            );
+        }
+
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
