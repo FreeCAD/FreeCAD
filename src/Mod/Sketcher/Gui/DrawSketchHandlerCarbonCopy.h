@@ -279,7 +279,7 @@ public:
     {
         return {
             {tr("%1 pick sketch to copy", "Sketcher CarbonCopy: hint"),
-             {Gui::InputHint::UserInput::MouseLeft}},
+             {{Gui::MouseInput::MouseLeft}}},
         };
     }
 };
