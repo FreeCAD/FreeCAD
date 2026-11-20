@@ -29,6 +29,7 @@ if App.GuiUp:
     import FreeCADGui as Gui
     from PySide import QtCore, QtGui, QtWidgets
 
+import FastenerLinkObject
 import UtilsAssembly
 
 # Only active if Fasteners workbench is installed
@@ -43,15 +44,53 @@ try:
 except ImportError:
     FASTENERS_AVAILABLE = False
 
+translate = App.Qt.translate
+
+
+def isFastener(obj):
+    """Whether the object is a fastener of the Fasteners workbench"""
+    return (
+        FASTENERS_AVAILABLE
+        and obj is not None
+        and isinstance(getattr(obj, "Proxy", None), FastenerBase.FSBaseObject)
+    )
+
+
+if App.GuiUp:
+
+    class DeleteKeyFilter(QtCore.QObject):
+        """Calls back when Delete is pressed in the watched widget"""
+
+        def __init__(self, parent, callback):
+            super().__init__(parent)
+            self.callback = callback
+
+        def eventFilter(self, watched, event):
+            if event.type() == QtCore.QEvent.KeyPress and event.key() == QtCore.Qt.Key_Delete:
+                self.callback()
+                return True
+            return super().eventFilter(watched, event)
+
 
 class TaskAssemblyInsertFastener:
-    def __init__(self, assembly, view):
+    """Inserts fasteners in an assembly, or edits the fasteners of a fastener link.
+
+    The fasteners of one use of the tool are one fastener link (see FastenerLinkObject).
+    Everything is done in the document as the user goes, in a transaction that is committed
+    or aborted when the task ends.
+    """
+
+    def __init__(self, assembly, view, link=None):
         self.assembly = assembly
         self.view = view
-        self.doc = App.ActiveDocument
+        self.doc = assembly.Document
+        self.link = link
+        self.editing = link is not None
 
         self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyInsertFastener.ui")
         self.form.setMinimumWidth(400)
+        if self.editing:
+            self.form.setWindowTitle(translate("Assembly", "Edit Fasteners"))
 
         self.form.cb_category.currentTextChanged.connect(self.on_category_changed)
         self.form.le_search.textChanged.connect(self.on_search_changed)
@@ -59,92 +98,66 @@ class TaskAssemblyInsertFastener:
         self.form.cb_diameter.currentTextChanged.connect(self.on_diameter_changed)
         self.form.cb_length.currentTextChanged.connect(self.on_length_changed)
         self.form.sb_length.valueChanged.connect(self.on_length_changed)
-        self.form.cb_reverse.stateChanged.connect(self.on_reverse_checked)
+        self.form.pb_add_selected.clicked.connect(self.on_add_selected)
+        self.form.pb_add_unattached.clicked.connect(self.on_add_unattached)
+        self.form.lw_refs.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.form.lw_refs.customContextMenuRequested.connect(self.on_reference_menu)
+        self.deleteFilter = DeleteKeyFilter(self.form.lw_refs, self.on_delete_selected)
+        self.form.lw_refs.installEventFilter(self.deleteFilter)
 
         self.form.lw_type.setIconSize(QtCore.QSize(32, 32))
 
-        self.target_edges = []
-        self.links = []
-        self.temp_fastener = None
         self.is_updating = True
-
         self.has_length = True
         self.arbitrary_length = False
+        # The fastener that the link uses was made or changed by this task: name it at the end
+        self.rename_source = False
+        # The only fastener was put in front of the user for lack of a hole: the first hole
+        # that is added takes it
+        self.placeholder = False
 
-        self.doc.openTransaction("Insert Fasteners")
+        self.doc.openTransaction("Edit Fasteners" if self.editing else "Insert Fasteners")
 
-        self._analyze_selection()
+        # The holes selected before the tool, that get the fasteners of a new link
+        self.pending_holes = [] if self.editing else self._selected_holes()
         self._build_categories()
 
         cats = sorted(list(self.categories.keys()))
         self.form.cb_category.addItems(cats)
-        if "Screw" in cats:
-            self.form.cb_category.setCurrentText("Screw")
 
-        if self.target_edges:
-            self.form.info_label.setText(f"Found {len(self.target_edges)} circular edge(s).")
-            self.form.info_label.setStyleSheet("color: green;")
+        source = link.LinkedObject if self.editing else None
+        if isFastener(source):
+            self._show_fastener(source)
+            self.is_updating = False
         else:
-            self.form.info_label.setText("No circular edges selected. Spawning at screen center.")
-            self.form.info_label.setStyleSheet("color: gray;")
+            if "Screw" in cats:
+                self.form.cb_category.setCurrentText("Screw")
+            self.is_updating = False
+            self.on_category_changed()
 
-        self.is_updating = False
-        self.on_category_changed()
+        self._update_reference_list()
+
+    # ------------------------------------------------------------------------------------
+    # Task
 
     def accept(self):
-        t = self._get_current_type()
-        d = self.form.cb_diameter.currentText()
-        l = self._get_current_length()
-
-        if not t or not d:
+        if self.link is None:
             return self.reject()
 
-        if self.temp_fastener:
-            l_str = f"_{str(l).replace('.', '_')}" if self.has_length else ""
-            self.temp_fastener.Label = f"{t}_{d.replace('.', '_')}{l_str}".replace(" ", "_")
-
-        if self.target_edges:
-            joint_group = UtilsAssembly.getJointGroup(self.assembly)
-
-            # Import the Assembly Joint system
-            try:
-                import JointObject
-            except ImportError:
-                JointObject = None
-
-            for i, edge_info in enumerate(self.target_edges):
-                link = self.links[i]
-
-                comp, new_sub = UtilsAssembly.getComponentReference(
-                    self.assembly, edge_info["object"], edge_info["subname"]
-                )
-                if not comp:
-                    comp = edge_info["object"]
-                    new_sub = edge_info["subname"]
-
-                joint = joint_group.newObject("App::FeaturePython", "Joint")
-                joint.Label = f"Fixed_{link.LinkedObject.Label}"
-                joint.Visibility = False
-
-                if JointObject:
-                    JointObject.Joint(joint, 0)  # 0 = Fixed Joint Type
-                    if App.GuiUp:
-                        JointObject.ViewProviderJoint(joint.ViewObject)
-
-                    # Ref1 maps directly to the circular edge and uses the edge as the vertex (center point)
-                    ref1 = [comp, [new_sub, new_sub]]
-                    # Ref2 is the origin of the instanced Fastener Link (Empty subname/vertex)
-                    ref2 = [link, ["", ""]]
-
-                    joint.Proxy.setJointConnectors(joint, [ref1, ref2])
-                else:
-                    print("Error! JointObject.py not found.")
+        source = self.link.LinkedObject
+        if self.rename_source and isFastener(source):
+            t = source.Type
+            d = str(source.Diameter)
+            label = f"{t}_{d.replace('.', '_')}"
+            if self.has_length and hasattr(source, "Length"):
+                label += f"_{str(self._get_current_length()).replace('.', '_')}"
+            source.Label = label.replace(" ", "_")
 
         source_group = self.doc.getObject("Source_shapes")
         if source_group:
             source_group.purgeTouched()
-        for link in self.links:
-            link.purgeTouched()
+        for component in FastenerLinkObject.components(self.link):
+            component.purgeTouched()
 
         self.doc.commitTransaction()
         self.assembly.recompute()
@@ -154,6 +167,9 @@ class TaskAssemblyInsertFastener:
         self.doc.abortTransaction()
         self.doc.recompute()
         return True
+
+    # ------------------------------------------------------------------------------------
+    # Kind of fastener
 
     def _build_categories(self):
         self.categories = {}
@@ -166,41 +182,34 @@ class TaskAssemblyInsertFastener:
         if others:
             self.categories["Other"] = others
 
-    def _analyze_selection(self):
-        sel = Gui.Selection.getSelectionEx("*", 0)
-        for s in sel:
-            if not s.SubElementNames:
-                continue
-            for sub in s.SubElementNames:
-                moving_part, new_sub = UtilsAssembly.getComponentReference(
-                    self.assembly, s.Object, sub
-                )
-                if not moving_part:
-                    continue
+    def _show_fastener(self, fastener):
+        """Show the kind, diameter and length of a fastener, without changing anything.
+        Called with is_updating set."""
+        t = fastener.Type
+        for cat, types in self.categories.items():
+            if t in types:
+                self.form.cb_category.setCurrentText(cat)
+                break
+        self._fill_types()
+        for i in range(self.form.lw_type.count()):
+            item = self.form.lw_type.item(i)
+            if item.data(QtCore.Qt.UserRole) == t:
+                self.form.lw_type.setCurrentItem(item)
+                break
 
-                element_name = UtilsAssembly.getElementName(new_sub)
-                if not element_name.startswith("Edge"):
-                    continue
+        diameter = str(fastener.Diameter)
+        self.form.cb_diameter.clear()
+        self.form.cb_diameter.addItems(ScrewMaker.Instance.GetAllDiams(t))
+        self.form.cb_diameter.setCurrentText(diameter)
 
-                shape = moving_part.getSubObject(new_sub)
-                if not hasattr(shape, "Curve"):
-                    continue
-
-                curve = shape.Curve
-                if not curve.TypeId in ["Part::GeomCircle", "Part::GeomEllipse"] or not hasattr(
-                    curve, "Radius"
-                ):
-                    continue
-
-                self.target_edges.append(
-                    {
-                        "object": moving_part,
-                        "subname": new_sub,
-                        "center": curve.Center,
-                        "axis": curve.Axis,
-                        "radius": curve.Radius,
-                    }
-                )
+        self._show_length_widgets(t)
+        if self.has_length and hasattr(fastener, "Length"):
+            if self.arbitrary_length:
+                self.form.sb_length.setValue(float(fastener.Length.Value))
+            else:
+                self.form.cb_length.clear()
+                self.form.cb_length.addItems(ScrewMaker.Instance.GetAllLengths(t, diameter, False))
+                self.form.cb_length.setCurrentText(str(fastener.Length))
 
     def _get_current_type(self):
         curr_item = self.form.lw_type.currentItem()
@@ -208,11 +217,7 @@ class TaskAssemblyInsertFastener:
             return curr_item.data(QtCore.Qt.UserRole)
         return None
 
-    def on_category_changed(self):
-        if self.is_updating:
-            return
-        self.is_updating = True
-
+    def _fill_types(self):
         self.form.lw_type.clear()
         self.form.le_search.clear()
 
@@ -231,6 +236,11 @@ class TaskAssemblyInsertFastener:
 
             self.form.lw_type.addItem(item)
 
+    def on_category_changed(self):
+        if self.is_updating:
+            return
+        self.is_updating = True
+        self._fill_types()
         self.is_updating = False
 
         if self.form.lw_type.count() > 0:
@@ -253,6 +263,17 @@ class TaskAssemblyInsertFastener:
         if curr_item and curr_item.isHidden() and first_visible != -1:
             self.form.lw_type.setCurrentRow(first_visible)
 
+    def _show_length_widgets(self, t):
+        params = FastenersCmd.FSGetParams(t)
+        self.has_length = (
+            "Length" in params or "LenByDiamAndWidth" in params or "lengthArbitrary" in params
+        )
+        self.arbitrary_length = "lengthArbitrary" in params
+
+        self.form.labelLength.setVisible(self.has_length)
+        self.form.cb_length.setVisible(self.has_length and not self.arbitrary_length)
+        self.form.sb_length.setVisible(self.has_length and self.arbitrary_length)
+
     def on_type_changed(self):
         if self.is_updating:
             return
@@ -267,27 +288,11 @@ class TaskAssemblyInsertFastener:
         self.form.cb_diameter.clear()
         self.form.cb_diameter.addItems(diams)
 
-        params = FastenersCmd.FSGetParams(t)
-        self.has_length = (
-            "Length" in params or "LenByDiamAndWidth" in params or "lengthArbitrary" in params
-        )
-        self.arbitrary_length = "lengthArbitrary" in params
+        self._show_length_widgets(t)
 
-        if self.has_length:
-            self.form.labelLength.setVisible(True)
-            if self.arbitrary_length:
-                self.form.cb_length.setVisible(False)
-                self.form.sb_length.setVisible(True)
-            else:
-                self.form.cb_length.setVisible(True)
-                self.form.sb_length.setVisible(False)
-        else:
-            self.form.labelLength.setVisible(False)
-            self.form.cb_length.setVisible(False)
-            self.form.sb_length.setVisible(False)
-
-        if self.target_edges:
-            target_d = self.target_edges[0]["radius"] * 2
+        radius = self._first_hole_radius()
+        if radius is not None and diams:
+            target_d = radius * 2
             best_dia = diams[0]
             min_diff = float("inf")
             for d_str in diams:
@@ -340,6 +345,9 @@ class TaskAssemblyInsertFastener:
             return str(self.form.sb_length.value())
         return self.form.cb_length.currentText()
 
+    # ------------------------------------------------------------------------------------
+    # Source fastener
+
     def _get_or_create_source_group(self):
         source_group = self.doc.getObject("Source_shapes")
         if not source_group:
@@ -350,7 +358,7 @@ class TaskAssemblyInsertFastener:
     def _find_existing_fastener(self, t, d, l):
         source_group = self._get_or_create_source_group()
         for obj in source_group.Group:
-            if not hasattr(obj, "Proxy") or not isinstance(obj.Proxy, FastenerBase.FSBaseObject):
+            if not isFastener(obj):
                 continue
 
             if obj.Type != t or obj.Diameter != d:
@@ -370,6 +378,69 @@ class TaskAssemblyInsertFastener:
 
         return None
 
+    def _make_fastener(self, t):
+        fastener = self.doc.addObject("Part::FeaturePython", "Fastener")
+        FastenersCmd.FSScrewObject(fastener, t, None)
+        FastenersCmd.FSViewProviderTree(fastener.ViewObject)
+        self._get_or_create_source_group().addObject(fastener)
+        fastener.Visibility = False
+        return fastener
+
+    def _configure_fastener(self, fastener, t, d, l):
+        if hasattr(fastener, "Type") and fastener.Type != t:
+            compatible_types = fastener.Proxy.GetCompatibleTypes(t)
+            fastener.Type = compatible_types
+            fastener.Type = t
+
+        if hasattr(fastener, "Diameter"):
+            d_enums = fastener.getEnumerationsOfProperty("Diameter")
+            if d_enums is not None and d not in d_enums:
+                fastener.Diameter = d_enums + [d]
+            fastener.Diameter = d
+
+        if self.has_length and l is not None and hasattr(fastener, "Length"):
+            if not self.arbitrary_length:
+                l_enums = fastener.getEnumerationsOfProperty("Length")
+                if l_enums is not None and l not in l_enums:
+                    fastener.Length = l_enums + [l]
+            fastener.Length = l
+
+        try:
+            fastener.Proxy.execute(fastener)
+        except Exception as e:
+            App.Console.PrintWarning(f"Preview failed: {e}\n")
+
+    def _source_for(self, t, d, l):
+        """The fastener of this kind and size that the link is to use.
+
+        One that exists in the document is used again. Else the fastener that the link uses
+        is changed, if nothing else uses it and it is of the same kind, and a new fastener
+        is made otherwise. Returns the fastener, and the fastener that is not needed any
+        more once the link uses the returned one, or None.
+        """
+        current = self.link.LinkedObject if self.link is not None else None
+        mine = (
+            isFastener(current)
+            and not FastenerLinkObject.otherUsers(self.link)
+            and current in self._get_or_create_source_group().Group
+        )
+
+        existing = self._find_existing_fastener(t, d, l)
+        if existing is not None:
+            if existing != current:
+                self.rename_source = False  # not a fastener of this task
+            return existing, (current if mine and existing != current else None)
+
+        if mine and getattr(current, "Type", None) == t:
+            self._configure_fastener(current, t, d, l)
+            self.rename_source = True
+            return current, None
+
+        fastener = self._make_fastener(t)
+        self._configure_fastener(fastener, t, d, l)
+        self.rename_source = True
+        return fastener, (current if mine else None)
+
     def update_preview(self):
         t = self._get_current_type()
         d = self.form.cb_diameter.currentText()
@@ -378,83 +449,222 @@ class TaskAssemblyInsertFastener:
         if not t or not d:
             return
 
-        active_fastener = self._find_existing_fastener(t, d, l)
-
-        if active_fastener:
-            if self.temp_fastener:
-                self.doc.removeObject(self.temp_fastener.Name)
-                self.temp_fastener = None
+        source, unused = self._source_for(t, d, l)
+        if self.link is None:
+            self._create_link(source)
         else:
-            if self.temp_fastener and getattr(self.temp_fastener, "Type", "") != t:
-                self.doc.removeObject(self.temp_fastener.Name)
-                self.temp_fastener = None
+            FastenerLinkObject.setSource(self.link, source)
+        if unused is not None:
+            self.doc.removeObject(unused.Name)
 
-            if not self.temp_fastener:
-                self.temp_fastener = self.doc.addObject("Part::FeaturePython", "PreviewFastener")
-                FastenersCmd.FSScrewObject(self.temp_fastener, t, None)
-                FastenersCmd.FSViewProviderTree(self.temp_fastener.ViewObject)
-                source_group = self._get_or_create_source_group()
-                source_group.addObject(self.temp_fastener)
-                self.temp_fastener.Visibility = False
+        self._refresh()
 
-            if hasattr(self.temp_fastener, "Type") and self.temp_fastener.Type != t:
-                compatible_types = self.temp_fastener.Proxy.GetCompatibleTypes(t)
-                self.temp_fastener.Type = compatible_types
-                self.temp_fastener.Type = t
+    # ------------------------------------------------------------------------------------
+    # Fasteners and their holes
 
-            if hasattr(self.temp_fastener, "Diameter"):
-                d_enums = self.temp_fastener.getEnumerationsOfProperty("Diameter")
-                if d_enums is not None and d not in d_enums:
-                    self.temp_fastener.Diameter = d_enums + [d]
-                self.temp_fastener.Diameter = d
+    def _selected_holes(self):
+        """The circular edges of the components of the assembly that are selected, as joint
+        references"""
+        holes = []
+        own = FastenerLinkObject.components(self.link) if self.link is not None else []
+        for sel in Gui.Selection.getSelectionEx("*", 0):
+            for sub in sel.SubElementNames:
+                component, new_sub = UtilsAssembly.getComponentReference(
+                    self.assembly, sel.Object, sub
+                )
+                if not component or component in own:
+                    continue
+                ref = (component, [new_sub, new_sub])
+                if FastenerLinkObject.holeInfo(ref) is None:
+                    continue
+                if not any(h[0] == component and h[1][0] == new_sub for h in holes):
+                    holes.append(ref)
+        return holes
 
-            if self.has_length and l is not None and hasattr(self.temp_fastener, "Length"):
-                if not self.arbitrary_length:
-                    l_enums = self.temp_fastener.getEnumerationsOfProperty("Length")
-                    if l_enums is not None and l not in l_enums:
-                        self.temp_fastener.Length = l_enums + [l]
-                self.temp_fastener.Length = l
+    def _attached_holes(self):
+        """The references to the holes of the fasteners of the link, None when unattached"""
+        if self.link is None:
+            return []
+        return [
+            FastenerLinkObject.attachment(component)[1]
+            for component in FastenerLinkObject.components(self.link)
+        ]
 
-            try:
-                self.temp_fastener.Proxy.execute(self.temp_fastener)
-            except Exception as e:
-                App.Console.PrintWarning(f"Preview failed: {e}\n")
+    def _first_hole_radius(self):
+        holes = self.pending_holes if self.link is None else self._attached_holes()
+        for ref in holes:
+            info = FastenerLinkObject.holeInfo(ref) if ref else None
+            if info is not None:
+                return info["radius"]
+        return None
 
-            active_fastener = self.temp_fastener
+    def _screen_center(self):
+        x, y = self.view.getSize()
+        return App.Placement(self.view.getPointOnFocalPlane(x // 2, y // 2), App.Rotation())
 
-        if not self.links:
-            self._create_links(active_fastener)
-        else:
-            for link in self.links:
-                link.LinkedObject = active_fastener
+    def _create_link(self, source):
+        self.link = FastenerLinkObject.makeFastenerLink(self.assembly, source)
+        if not self.pending_holes:
+            self.link.Placement = self._screen_center()
+            self.placeholder = True
+            return
+        FastenerLinkObject.attach(self.link, self.pending_holes[0])
+        for ref in self.pending_holes[1:]:
+            component = FastenerLinkObject.addFastener(self.link, App.Placement())
+            FastenerLinkObject.attach(component, ref)
+        self.pending_holes = []
+
+    def _refresh(self):
+        """After a change: compute, solve and show the fasteners"""
+        import JointObject
 
         self.doc.recompute()
+        JointObject.solveIfAllowed(self.assembly)
+        self._update_reference_list()
 
-    def _create_links(self, fastener):
-        reverse = self.form.cb_reverse.isChecked()
-        rot = App.Rotation(App.Vector(1, 0, 0), 180) if reverse else App.Rotation()
-
-        if not self.target_edges:
-            link = self.assembly.newObject("App::Link", "FastenerLink")
-            link.LinkedObject = fastener
-            x, y = self.view.getSize()
-            screenCenter = self.view.getPointOnFocalPlane(x // 2, y // 2)
-            link.Placement.Base = screenCenter
-            link.Placement.Rotation = rot
-            self.links.append(link)
+    def _update_reference_list(self):
+        selected = [index.row() for index in self.form.lw_refs.selectedIndexes()]
+        self.form.lw_refs.clear()
+        if self.link is None:
+            holes = self.pending_holes
+            fasteners = [None] * len(holes)
         else:
-            for edge_info in self.target_edges:
-                link = self.assembly.newObject("App::Link", "FastenerLink")
-                link.LinkedObject = fastener
-                link.Placement = App.Placement(edge_info["center"], rot)
-                self.links.append(link)
+            fasteners = FastenerLinkObject.components(self.link)
+            holes = self._attached_holes()
 
-    def on_reverse_checked(self):
-        reverse = self.form.cb_reverse.isChecked()
-        rot = App.Rotation(App.Vector(1, 0, 0), 180) if reverse else App.Rotation()
-        for link in self.links:
-            link.Placement.Rotation = rot
-            link.purgeTouched()
+        unattached = 0
+        for component, ref in zip(fasteners, holes):
+            if ref:
+                text = f"{ref[0].Label} : {UtilsAssembly.getElementName(ref[1][0])}"
+            else:
+                text = translate("Assembly", "Unattached")
+                unattached += 1
+
+            row = QtWidgets.QWidget()
+            layout = QtWidgets.QHBoxLayout(row)
+            layout.setContentsMargins(4, 1, 4, 1)
+            layout.addWidget(QtWidgets.QLabel(text), 1)
+            if component is not None:
+                button = QtWidgets.QPushButton(translate("Assembly", "Reverse"))
+                button.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+                button.setToolTip(translate("Assembly", "Turns this fastener upside down"))
+                button.clicked.connect(lambda _=False, c=component: self.on_reverse(c))
+                layout.addWidget(button)
+
+            item = QtWidgets.QListWidgetItem()
+            item.setSizeHint(row.sizeHint())
+            self.form.lw_refs.addItem(item)
+            self.form.lw_refs.setItemWidget(item, row)
+
+        for row in selected:
+            if row < self.form.lw_refs.count():
+                self.form.lw_refs.item(row).setSelected(True)
+
+        count = len(fasteners)
+        if count and unattached:
+            text = translate("Assembly", "%1 fastener(s), %2 unattached.")
+            text = text.replace("%1", str(count)).replace("%2", str(unattached))
+        elif count:
+            text = translate("Assembly", "%1 fastener(s).").replace("%1", str(count))
+        else:
+            text = translate(
+                "Assembly", "No circular edge selected: the fastener goes to the screen center."
+            )
+        self.form.info_label.setText(text)
+
+    def on_add_selected(self):
+        if self.link is None:
+            return
+        known = [ref for ref in self._attached_holes() if ref]
+        added = False
+        for ref in self._selected_holes():
+            if any(k[0] == ref[0] and k[1][0] == ref[1][0] for k in known):
+                continue
+            component = self._component_for_new_hole()
+            FastenerLinkObject.attach(component, ref)
+            known.append(ref)
+            added = True
+        if added:
+            self._refresh()
+
+    def _component_for_new_hole(self):
+        """The fastener that goes on a hole that is added: an unattached fastener whose row
+        is selected, or the fastener that was waiting for a hole, else a new one"""
+        fasteners = FastenerLinkObject.components(self.link)
+        for index in sorted(index.row() for index in self.form.lw_refs.selectedIndexes()):
+            if index < len(fasteners):
+                if FastenerLinkObject.attachment(fasteners[index])[0] is None:
+                    self.form.lw_refs.item(index).setSelected(False)
+                    return fasteners[index]
+        if self.placeholder:
+            self.placeholder = False
+            if len(fasteners) == 1 and FastenerLinkObject.attachment(fasteners[0])[0] is None:
+                return fasteners[0]
+        return FastenerLinkObject.addFastener(self.link, App.Placement())
+
+    def on_add_unattached(self):
+        if self.link is None:
+            return
+        self.placeholder = False
+        FastenerLinkObject.addFastener(self.link, self._screen_center())
+        self._refresh()
+
+    def on_delete_selected(self):
+        if self.link is None:
+            return
+        rows = sorted({index.row() for index in self.form.lw_refs.selectedIndexes()}, reverse=True)
+        removed = False
+        for row in rows:
+            if len(FastenerLinkObject.components(self.link)) < 2:
+                break  # a link has at least one fastener
+            FastenerLinkObject.removeFastener(self.link, row)
+            removed = True
+        self.form.lw_refs.clearSelection()
+        if removed:
+            self._refresh()
+
+    def on_reference_menu(self, pos):
+        if not self.form.lw_refs.selectedIndexes():
+            return
+        menu = QtWidgets.QMenu(self.form.lw_refs)
+        action = menu.addAction(translate("Assembly", "Delete"))
+        action.triggered.connect(self.on_delete_selected)
+        menu.exec_(self.form.lw_refs.viewport().mapToGlobal(pos))
+
+    def on_reverse(self, component):
+        FastenerLinkObject.reverse(component)
+        self._refresh()
+
+
+def editFastenerLink(link):
+    """Open the task on the fasteners of a fastener link. Returns whether it was opened."""
+    if not FASTENERS_AVAILABLE:
+        App.Console.PrintWarning(
+            translate("Assembly", "Install the Fasteners workbench to edit these fasteners.") + "\n"
+        )
+        return False
+
+    assembly = link.getParentGeoFeatureGroup()
+    if assembly is None or not assembly.isDerivedFrom("Assembly::AssemblyObject"):
+        return False
+
+    link.Document.abortTransaction()  # Close the auto-transaction
+
+    task = Gui.Control.activeTaskDialog()
+    if task:
+        task.reject()
+
+    gui_doc = Gui.getDocument(link.Document.Name)
+    if UtilsAssembly.activeAssembly() != assembly:
+        gui_doc.setEdit(assembly)
+
+    panel = TaskAssemblyInsertFastener(assembly, gui_doc.activeView(), link)
+    dialog = Gui.Control.showDialog(panel)
+    if dialog is not None:
+        dialog.setAutoCloseOnTransactionChange(True)
+        dialog.setAutoCloseOnDeletedDocument(True)
+        dialog.setDocumentName(link.Document.Name)
+    return True
 
 
 class CommandInsertFastener:
@@ -468,7 +678,9 @@ class CommandInsertFastener:
                 "Can be used only if the Fasteners workbench is installed. Get it from the addon manager.\n\n"
                 "If circular edges are selected before running, the tool will auto-detect "
                 "the diameter and position the fasteners with Fixed Joints directly onto the holes.\n"
-                "If nothing is selected, the fastener spawns at the center of the screen.",
+                "If nothing is selected, the fastener spawns at the center of the screen.\n"
+                "Holes can be added and removed in the tool, and afterwards with a "
+                "double-click on the fasteners in the tree.",
             ),
             "Accel": "J",
             "CmdType": "ForEdit",

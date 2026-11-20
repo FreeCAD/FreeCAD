@@ -130,10 +130,15 @@ def number_of_components_in(assembly):
     return i
 
 
+# App::Link and its scripted variant, as opposed to the link arrays of Part, which also derive
+# from App::Link. The solver takes both kinds the same way (App::Link::isLink(), isLinkGroup()).
+LinkTypes = ("App::Link", "App::LinkPython")
+
+
 def isLink(obj):
     # If element count is not 0, then its a link group in which case the Link
     # is a container and it's the LinkElement that is linking to external doc.
-    return (obj.TypeId == "App::Link" and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
+    return (obj.TypeId in LinkTypes and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
 
 
 def isLinkArray(obj):
@@ -141,7 +146,7 @@ def isLinkArray(obj):
 
 
 def isLinkGroup(obj):
-    return obj.TypeId == "App::Link" and obj.ElementCount > 0
+    return obj.TypeId in LinkTypes and obj.ElementCount > 0
 
 
 def isSuppressedLinkElement(obj):
@@ -337,7 +342,7 @@ def getObjectInPart(objName, part):
     if part.Name == objName:
         return part
 
-    if part.TypeId == "App::Link":
+    if part.TypeId in LinkTypes:
         part = part.getLinkedObject()
 
     if part.TypeId in {
@@ -752,7 +757,7 @@ def removeObjsAndChilds(objs):
             return
 
         toremoveset.add(obj)
-        if obj.TypeId != "App::Link":
+        if obj.TypeId not in LinkTypes:
             for subobj in obj.OutList:
                 addsubobjs(subobj, toremoveset)
 
@@ -1469,7 +1474,7 @@ def createPart(partName, doc):
 def getLinkGroup(linkElement):
     if linkElement.TypeId == "App::LinkElement":
         for obj in linkElement.InList:
-            if obj.TypeId == "App::Link":
+            if obj.TypeId in LinkTypes:
                 if linkElement in obj.ElementList:
                     return obj
         print("Link Group not found.")

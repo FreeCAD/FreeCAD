@@ -105,10 +105,50 @@
        </item>
       </layout>
      </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QCheckBox" name="cb_reverse">
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelPositions">
+     <property name="text">
+      <string>Positions</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="lw_refs">
+     <property name="toolTip">
+      <string>The holes that hold a fastener. Press Delete to remove the selected fasteners.</string>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>140</height>
+      </size>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="positionButtonsLayout">
+     <item>
+      <widget class="QPushButton" name="pb_add_selected">
+       <property name="toolTip">
+        <string>Adds a fastener on each circular edge that is selected in the 3D view</string>
+       </property>
        <property name="text">
-        <string>Reverse orientation</string>
+        <string>Add Selected</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb_add_unattached">
+       <property name="toolTip">
+        <string>Adds a fastener that is not attached to a hole</string>
+       </property>
+       <property name="text">
+        <string>Add Unattached</string>
        </property>
       </widget>
      </item>
