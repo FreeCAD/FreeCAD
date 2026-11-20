@@ -16,6 +16,7 @@ from .geometry_winders import (
     _apply_endpoint_boundary_sections,
     _dense_path_length,
     _endpoint_balance_trim,
+    _endpoint_opening,
     _endpoint_side,
     _herse_curve_point,
     _sample_dense_path,
@@ -35,8 +36,13 @@ def tangent_flight_sections(
     landing_replaces_tread=True,
     winding_parameters=None,
     extra_widths=None,
+    exit_width=0.0,
 ):
-    """Return sections for paths containing tangential circular flights."""
+    """Return sections for paths containing tangential circular flights.
+
+    ``exit_width`` is the length of side a turned exit opens onto, the
+    flight width when 0.
+    """
 
     if not flight_specs or tread_count < 1:
         return [], 0.0
@@ -85,6 +91,7 @@ def tangent_flight_sections(
             primitives[-1]["width"],
             winding_coefficient,
             exit_direction,
+            exit_width,
         )
 
     for index, primitive in enumerate(primitives):
@@ -109,6 +116,12 @@ def tangent_flight_sections(
             0,
             True,
             start_angle,
+            _endpoint_opening(
+                primitives[0]["length"],
+                primitives[0]["width"],
+                winding_coefficient,
+                entry_direction,
+            ),
         )
     for index, primitive in enumerate(primitives):
         _append_primitive_range(
@@ -157,6 +170,13 @@ def tangent_flight_sections(
             len(primitives) - 1,
             False,
             end_angle,
+            _endpoint_opening(
+                primitives[-1]["length"],
+                primitives[-1]["width"],
+                winding_coefficient,
+                exit_direction,
+                exit_width,
+            ),
         )
 
     chunk_lengths = [_dense_path_length(chunk) for chunk in chunks]
@@ -190,6 +210,7 @@ def tangent_flight_sections(
             landing_replaces_tread,
             winding_parameters,
             extra_widths,
+            exit_width,
         )
 
     stair_chunk_counts = distribute_treads(
@@ -331,6 +352,7 @@ def tangent_flight_sections(
         entry_direction if primitives[0]["type"] == "Straight" else "Straight",
         exit_direction if primitives[-1]["type"] == "Straight" else "Straight",
         winding_coefficient,
+        exit_width,
     )
     return sections, going
 

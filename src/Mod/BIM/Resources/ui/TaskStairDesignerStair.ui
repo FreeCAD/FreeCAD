@@ -289,14 +289,31 @@
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="snap_position">
-     <property name="toolTip">
-      <string>With one external vertex selected, moves the stair origin to that vertex. With one external vertex and one stair vertex selected, moves the stair so the two vertices coincide.</string>
-     </property>
-     <property name="text">
-      <string>Snap position</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="positionLayout">
+     <item>
+      <widget class="QPushButton" name="snap_position">
+       <property name="toolTip">
+        <string>With one external vertex selected, moves the stair origin to that vertex. With one external vertex and one stair vertex selected, moves the stair so the two vertices coincide.</string>
+       </property>
+       <property name="text">
+        <string>Snap position</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="show_dragger">
+       <property name="toolTip">
+        <string>Shows a dragger in the 3D view to move and rotate the stair</string>
+       </property>
+       <property name="text">
+        <string>Show dragger</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer">

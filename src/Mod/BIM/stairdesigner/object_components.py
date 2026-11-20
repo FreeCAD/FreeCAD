@@ -94,6 +94,16 @@ def _set_tread_properties(tread):
             "ExtraHeight",
             "Signed adjustment to the rise below this tread",
         ),
+        (
+            "LeftOffset",
+            "Signed shift, along the stair's left side, of where this tread's "
+            "front meets it: positive values move it up the stair",
+        ),
+        (
+            "RightOffset",
+            "Signed shift, along the stair's right side, of where this tread's "
+            "front meets it: positive values move it up the stair",
+        ),
     ):
         value = 0.0
         if (
@@ -138,6 +148,24 @@ def _tread_extra_heights(stair, tread_count):
         index = int(getattr(tread, "Index", 0)) - 1
         if 0 <= index < len(result) and "ExtraHeight" in tread.PropertiesList:
             result[index] = _quantity_value(tread.ExtraHeight)
+    return result
+
+
+def _tread_side_offsets(stair, tread_count):
+    """Return stored per-tread ``(left, right)`` front end shifts in global
+    stair order."""
+
+    result = [(0.0, 0.0)] * max(int(tread_count), 0)
+    group = getattr(stair, "StepsGroup", None)
+    if not group:
+        return result
+    for tread in _generated_parts(group, stair, "Tread"):
+        index = int(getattr(tread, "Index", 0)) - 1
+        if 0 <= index < len(result):
+            result[index] = tuple(
+                _quantity_value(getattr(tread, name)) if name in tread.PropertiesList else 0.0
+                for name in ("LeftOffset", "RightOffset")
+            )
     return result
 
 

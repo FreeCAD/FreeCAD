@@ -94,7 +94,14 @@ class FlightProxy:
         _add_property(
             obj, "App::PropertyLength", "RightLength", "Flight", "Right-side length", 3500.0
         )
-        _add_property(obj, "App::PropertyLength", "Width", "Flight", "Flight width", 1000.0)
+        _add_property(
+            obj,
+            "App::PropertyLength",
+            "Width",
+            "Flight",
+            "Overall flight width; a wooden stair's stringers and handrail posts stand within it",
+            1000.0,
+        )
         _add_property(
             obj,
             "App::PropertyLength",
@@ -189,6 +196,14 @@ class FlightProxy:
             obj.ExitDirection = ["Straight", "To left", "To right"]
         _add_property(
             obj,
+            "App::PropertyLength",
+            "ExitWidth",
+            "Flight",
+            "Length of side a turned exit opens onto, along which the last riser "
+            "runs; the flight width when 0",
+        )
+        _add_property(
+            obj,
             "App::PropertyInteger",
             "NumberOfTreads",
             "Flight check",
@@ -212,6 +227,9 @@ class FlightProxy:
             obj.setEditorMode(name, 2 if circular else 0)
         for name in ("InnerRadius", "OuterRadius"):
             obj.setEditorMode(name, 0 if circular else 2)
+        if "ExitWidth" in obj.PropertiesList:
+            turned_exit = str(obj.FlightType) == "Straight" and str(obj.ExitDirection) != "Straight"
+            obj.setEditorMode("ExitWidth", 0 if turned_exit else 2)
 
     def onChanged(self, obj, prop):
         if getattr(self, "_updating", False) or FreeCAD.isRestoring() or obj.Document.Transacting:
@@ -232,6 +250,7 @@ class FlightProxy:
             "EndAngle",
             "EntryDirection",
             "ExitDirection",
+            "ExitWidth",
         }
         stringer_properties = {
             "LeftStringerType",
@@ -249,6 +268,8 @@ class FlightProxy:
             stair = obj.Document.getObject(obj.StairName)
             if stair and getattr(stair, "Proxy", None):
                 flights = get_flights(stair)
+                if prop == "ExitDirection":
+                    self._update_dimension_visibility(obj)
                 if prop in geometry_properties and prop == "FlightType":
                     self._update_dimension_visibility(obj)
                     if _is_circular_flight(obj) or _is_landing_flight(obj):
@@ -380,6 +401,90 @@ class ViewProviderStair:
 
     def attach(self, vobj):
         self.Object = vobj.Object
+        self.walking_line = None
+        if "ShowWalkingLine" not in vobj.PropertiesList:
+            vobj.addProperty(
+                "App::PropertyBool",
+                "ShowWalkingLine",
+                "Stair",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Shows the walking line on the steps, with each step's going along it",
+                ),
+                locked=True,
+            )
+        self._show_walking_line(vobj.Object)
+
+    def onChanged(self, vobj, prop):
+        # Only the view: the stair is not rebuilt.
+        if prop == "ShowWalkingLine":
+            self._show_walking_line(vobj.Object)
+
+    def updateData(self, obj, prop):
+        if prop in {"WalkingLinePoints", "WalkingLineCounts", "WalkingLineGoings"}:
+            self._show_walking_line(obj)
+
+    def _show_walking_line(self, obj):
+        """Draw each step's stretch of the walking line, on the step, with a
+        label giving its going."""
+
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None or not FreeCAD.GuiUp:
+            return
+        from pivy import coin
+
+        node = getattr(self, "walking_line", None)
+        if node is None:
+            node = coin.SoSeparator()
+            vobj.Annotation.addChild(node)
+            self.walking_line = node
+        node.removeAllChildren()
+        if not getattr(vobj, "ShowWalkingLine", False):
+            return
+        points = list(getattr(obj, "WalkingLinePoints", []))
+        counts = list(getattr(obj, "WalkingLineCounts", []))
+        goings = list(getattr(obj, "WalkingLineGoings", []))
+        color = coin.SoBaseColor()
+        color.rgb = (0.9, 0.1, 0.1)
+        style = coin.SoDrawStyle()
+        style.lineWidth = 2
+        node.addChild(color)
+        node.addChild(style)
+        label_type = coin.SoType.fromName("SoDatumLabel")
+        start = 0
+        for count, going in zip(counts, goings):
+            stretch = points[start : start + count]
+            start += count
+            if count < 2:
+                continue
+            step = coin.SoSeparator()
+            # Just above the step's top, the line and label on its plane.
+            lift = coin.SoTranslation()
+            lift.translation = (0.0, 0.0, stretch[0].z + 2.0)
+            step.addChild(lift)
+            coordinates = coin.SoCoordinate3()
+            coordinates.point.setValues(0, count, [(p.x, p.y, 0.0) for p in stretch])
+            line = coin.SoLineSet()
+            line.numVertices = count
+            step.addChild(coordinates)
+            step.addChild(line)
+            if not label_type.isBad():
+                label = label_type.createInstance()
+                label.datumtype = 1  # Distance, aligned
+                label.pnts.setValues(
+                    [
+                        coin.SbVec3f(stretch[0].x, stretch[0].y, 0.0),
+                        coin.SbVec3f(stretch[-1].x, stretch[-1].y, 0.0),
+                    ]
+                )
+                label.string = FreeCAD.Units.Quantity(going, FreeCAD.Units.Length).UserString
+                label.textColor = (0.9, 0.1, 0.1)
+                label.size = 14
+                label.lineWidth = 1
+                label.param1 = 0.0
+                label.param2 = 0.0
+                step.addChild(label)
+            node.addChild(step)
 
     def getIcon(self):
         import_module("Arch_rc")
@@ -404,6 +509,8 @@ class ViewProviderStair:
         task_panel = import_module("stairdesigner.taskpanel").StairDesignerTaskPanel
 
         if not FreeCADGui.Control.activeDialog():
+            # The stair left highlighted would hide the parts being edited.
+            FreeCADGui.Selection.clearSelection()
             FreeCADGui.Control.showDialog(task_panel(vobj.Object))
         return True
 
@@ -462,6 +569,7 @@ class ViewProviderComponentGroup:
 
         stair = vobj.Object.Document.getObject(vobj.Object.StairName)
         if stair and not FreeCADGui.Control.activeDialog():
+            FreeCADGui.Selection.clearSelection()
             section = getattr(vobj.Object, "PanelSection", "stairs")
             FreeCADGui.Control.showDialog(
                 task_panel(

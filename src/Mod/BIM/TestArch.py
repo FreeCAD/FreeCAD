@@ -30,6 +30,7 @@ from bimtests.TestArchMaterial import TestArchMaterial
 from bimtests.TestArchPanel import TestArchPanel
 from bimtests.TestArchWindow import TestArchWindow
 from bimtests.TestArchStairs import TestArchStairs
+from bimtests.TestArchStairDesigner import TestArchStairDesigner
 from bimtests.TestArchPipe import TestArchPipe
 from bimtests.TestArchCurtainWall import TestArchCurtainWall
 from bimtests.TestArchProfile import TestArchProfile

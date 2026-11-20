@@ -21,11 +21,19 @@ from stairdesigner.geometry_plan import (
     balanced_partition_is_valid,
     balanced_tread_faces,
     corner_post_sections,
+    even_walking_line_goings,
     fit_balanced_sections_to_footprint,
     fit_tangent_sections_to_footprint,
+    inner_corner_newel_sections,
     make_stair_footprint,
     make_tangent_stair_footprint,
+    newel_fan_plan,
+    newel_post_plan,
+    newel_post_square,
+    shift_section_ends,
     tangent_tread_faces,
+    walking_line_points,
+    walking_line_treads,
 )
 from stairdesigner.geometry_steps import (
     _section_band_faces,
@@ -57,6 +65,8 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         stair = make_stair()
         flight = get_flights(stair)[0]
         stair.Proxy._updating = True
+        # Check the plain boards against the steps they would be housing.
+        stair.StringerJoinery = False
         stair.FloorHeight = 2800
         stair.NumberOfSteps = 15
         stair.Nosing = 30
@@ -84,19 +94,22 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                     board = next(p for p in stair.StringersGroup.Group if p.Side == side)
                     board.Shape.check(True)
                     self.assertEqual(len(board.Shape.Solids), 1)
-                    y = 1000.0 if side == "Left" else 0.0
+                    # The steps' ends and the board's centre line, within the
+                    # stair's width by half a post.
+                    y = 965.0 if side == "Left" else 35.0
                     spans = []
                     for x in (1050.0, 1400.0, 1750.0, 2100.0, 2450.0):
                         probe = Part.makeLine(FreeCAD.Vector(x, y, 0), FreeCAD.Vector(x, y, 4000))
                         section = board.Shape.common(probe)
                         self.assertTrue(section.Edges)
                         spans.append((section.BoundBox.ZMin, section.BoundBox.ZMax))
+                    # The risers between the newels are balanced too, so the
+                    # board follows their varying pitch: it climbs steadily,
+                    # never back down.
                     for edge in (0, 1):
                         increments = [b[edge] - a[edge] for a, b in zip(spans, spans[1:])]
-                        for increment in increments[1:]:
-                            self.assertAlmostEqual(increment, increments[0], places=5)
-                    for bottom, top in spans[1:]:
-                        self.assertAlmostEqual(top - bottom, spans[0][1] - spans[0][0], places=5)
+                        for increment in increments:
+                            self.assertGreater(increment, 0.0)
 
                     posts = sorted(
                         (
@@ -121,8 +134,10 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                         probe = Part.makeLine(FreeCAD.Vector(x, y, 0), FreeCAD.Vector(x, y, 5000))
                         rail_tops.append(rail.Shape.common(probe).BoundBox.ZMax)
                     board_rise = (spans[-1][1] - spans[0][1]) / 1400.0
+                    # The straight rail between the newels follows the board's
+                    # mean pitch; the board's own pitch varies with the balance.
                     self.assertAlmostEqual(
-                        (rail_tops[-1] - rail_tops[0]) / 1000.0, board_rise, places=6
+                        (rail_tops[-1] - rail_tops[0]) / 1000.0, board_rise, delta=0.05
                     )
                     picket_lengths = [
                         p.Shape.BoundBox.ZLength
@@ -130,7 +145,8 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                         if p.Side == side and p.StairDesignerRole == "HandrailPicket"
                     ]
                     self.assertGreater(len(picket_lengths), 2)
-                    self.assertLess(max(picket_lengths) - min(picket_lengths), 1e-5)
+                    # So the pickets standing on the board vary a little.
+                    self.assertLess(max(picket_lengths) - min(picket_lengths), 75.0)
                     self.assertGreater(
                         posts[-1].Shape.BoundBox.ZMax - rail.Shape.BoundBox.ZMax, 200.0
                     )
@@ -141,14 +157,22 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                     )
                     clearances = []
                     for tread in treads[5:10]:
-                        x = tread.Shape.BoundBox.XMin
-                        probe = Part.makeLine(FreeCAD.Vector(x, y, 0), FreeCAD.Vector(x, y, 5000))
-                        top = board.Shape.common(probe).BoundBox.ZMax
-                        clearance = (top - tread.Shape.BoundBox.ZMax) / math.sqrt(1 + board_rise**2)
+                        # Where the tread meets the board: balanced treads
+                        # start earlier on their outer side.
+                        x = tread.Shape.common(strip).BoundBox.XMin
+                        top = self._top_at(board.Shape, x, y)
+                        # Square to the board's edge, at its local pitch.
+                        pitch = (
+                            self._top_at(board.Shape, x + 10.0, y)
+                            - self._top_at(board.Shape, x - 10.0, y)
+                        ) / 20.0
+                        clearance = (top - tread.Shape.BoundBox.ZMax) / math.sqrt(1 + pitch**2)
                         clearances.append(clearance)
                         self.assertGreaterEqual(clearance, board.NosingOffset.Value - 1e-5)
                         self.assertLessEqual(clearance, board.NosingOffset.Value + 20.0)
-                    self.assertAlmostEqual(min(clearances), board.NosingOffset.Value, places=5)
+                    # The board's pitches are fitted over the nosings: the
+                    # closest one is within a couple of millimetres.
+                    self.assertAlmostEqual(min(clearances), board.NosingOffset.Value, delta=2.0)
                     housing = Part.makeBox(
                         1500, 20, 4000, FreeCAD.Vector(1000, 980 if side == "Left" else 0, 0)
                     )
@@ -156,20 +180,29 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                     for tread in treads:
                         exposed = tread.Shape.common(housing).cut(support)
                         self.assertLess(exposed.Volume, 1e-4, f"Exposed tread {tread.Index}")
-                    # The first/last fan treads meet the actual posts. Their
-                    # nosings must not emerge beyond the post's flight face.
+
+                    # The first/last winders meet the actual posts. The fans,
+                    # wholly at a post on this side, must not emerge beyond
+                    # its flight face; a winder leaving the post is housed in
+                    # the board, as checked above.
+                    def is_fan(tread, post):
+                        inner = tread.Shape.common(strip).BoundBox
+                        return inner.XLength <= post.Shape.BoundBox.XLength + 0.01
+
                     for tread in treads[:4]:
                         self.assertGreater(tread.Shape.common(posts[0].Shape).Volume, 1e-5)
-                        self.assertLessEqual(
-                            tread.Shape.common(strip).BoundBox.XMax,
-                            posts[0].Shape.BoundBox.XMax + 0.01,
-                        )
+                        if is_fan(tread, posts[0]):
+                            self.assertLessEqual(
+                                tread.Shape.common(strip).BoundBox.XMax,
+                                posts[0].Shape.BoundBox.XMax + 0.01,
+                            )
                     for tread in treads[-4:]:
                         self.assertGreater(tread.Shape.common(posts[-1].Shape).Volume, 1e-5)
-                        self.assertGreaterEqual(
-                            tread.Shape.common(strip).BoundBox.XMin,
-                            posts[-1].Shape.BoundBox.XMin - 0.01,
-                        )
+                        if is_fan(tread, posts[-1]):
+                            self.assertGreaterEqual(
+                                tread.Shape.common(strip).BoundBox.XMin,
+                                posts[-1].Shape.BoundBox.XMin - 0.01,
+                            )
 
     def test_newel_stringer_custom_width_is_preserved(self):
         stair = make_stair()
@@ -190,6 +223,764 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         stair.StringerCustomWidth = False
         stair.Proxy.rebuild(stair)
         self.assertAlmostEqual(board.Width.Value, 310)
+
+    def test_fair_curve_bridges_short_hollows_and_clears_every_pin(self):
+        from stairdesigner.geometry_fairing import FairCurve, Pin, fair_curve
+
+        # Pins on one pitch: the batten lies straight on them.
+        straight = fair_curve([Pin(u, 0.5 * u) for u in (0.0, 250.0, 500.0, 750.0)], 400.0)
+        self.assertTrue(straight.is_straight())
+        self.assertAlmostEqual(straight.value(600.0), 300.0, places=6)
+        self.assertAlmostEqual(straight.value(-100.0), -50.0, places=6)
+
+        # One pin 30 mm low between its neighbours: the batten bridges the
+        # hollow instead of dipping into it, and never passes under a pin.
+        pins = [Pin(u, 0.5 * u - (30.0 if u == 500.0 else 0.0)) for u in range(0, 1001, 250)]
+        bridged = fair_curve(pins, 400.0)
+        for pin in pins:
+            self.assertGreaterEqual(bridged.value(pin.u), pin.value - 1e-6)
+        self.assertGreater(bridged.value(500.0), 0.5 * 500.0 - 10.0)
+        # A hollow several stiffness lengths long is followed.
+        long_pins = [
+            Pin(u, 0.5 * u - 30.0 * max(0.0, 1.0 - abs(u - 2500.0) / 1500.0))
+            for u in range(0, 5001, 250)
+        ]
+        followed = fair_curve(long_pins, 400.0)
+        self.assertLess(followed.value(2500.0), 0.5 * 2500.0 - 25.0)
+
+        # A clamped end arrives at its level with no pitch, and runs on level.
+        clamped = fair_curve(pins, 400.0, end_slope=0.0, end_value=520.0)
+        self.assertAlmostEqual(clamped.value(1000.0), 520.0, places=6)
+        self.assertAlmostEqual(clamped.slope(1000.0), 0.0, places=9)
+        self.assertAlmostEqual(clamped.value(1040.0), 520.0, places=6)
+        for pin in pins[:-1]:
+            self.assertGreaterEqual(clamped.value(pin.u), pin.value - 1e-6)
+
+        # The curve has no kink: its pitch is continuous across every knot.
+        for knot in bridged.knots[1:-1]:
+            self.assertAlmostEqual(bridged.slope(knot - 1e-6), bridged.slope(knot + 1e-6), places=5)
+        spline = FairCurve.through([(0.0, 0.0), (100.0, 10.0), (200.0, 40.0)], 0.0, 0.5)
+        self.assertAlmostEqual(spline.slope(0.0), 0.0, places=9)
+        self.assertAlmostEqual(spline.slope(200.0), 0.5, places=9)
+        self.assertAlmostEqual(spline.value(100.0), 10.0, places=9)
+        # One pin alone does not place a batten.
+        with self.assertRaises(ValueError):
+            fair_curve([Pin(0.0, 10.0), Pin(500.0, 0.0, False, 0.0)], 400.0)
+
+    def test_winder_board_profile_is_one_fair_curve_per_edge(self):
+        from stairdesigner.geometry_stringer_path import EdgeBlock, make_stringer_profile_face
+
+        # Nosings as winders space them along a wall board: flat around the
+        # corners, steep between them.
+        parameters = [0.0, 420.0, 740.0, 1000.0, 1225.0, 1455.0, 1885.0, 2180.0]
+        tops = [697.0, 867.0, 1082.0, 1295.0, 1505.0, 1701.0, 1900.0, 2001.0]
+        supports = [
+            (453.0, 582.0),
+            (762.0, 789.0),
+            (1018.0, 996.0),
+            (1244.0, 1204.0),
+            (1474.0, 1411.0),
+            (1909.0, 1618.0),
+        ]
+
+        def edges_at(face, u):
+            probe = Part.makeLine(FreeCAD.Vector(u, 0.0, -1000.0), FreeCAD.Vector(u, 0.0, 5000.0))
+            crossing = face.common(probe).BoundBox
+            return crossing.ZMin, crossing.ZMax
+
+        def check(face, levelled):
+            self.assertTrue(face.isValid())
+            kinds = [edge.Curve.TypeId for edge in face.OuterWire.Edges]
+            # One spline for the upper edge and one for the lower edge; the
+            # rest are the plumb ends and the level runs into the blocks.
+            self.assertEqual(kinds.count("Part::GeomBSplineCurve"), 2, kinds)
+            self.assertNotIn("Part::GeomCircle", kinds)
+            for u, top in zip(parameters, tops):
+                self.assertGreaterEqual(edges_at(face, min(max(u, 0.5), 2179.5))[1], top - 0.5, u)
+            for u, z in supports:
+                # 50 mm square to the board is more than that plumb.
+                self.assertLessEqual(edges_at(face, u)[0], z - 50.0 + 1e-3, u)
+            stations = [5.0 + 10.0 * index for index in range(218)]
+            for edge in (0, 1):
+                heights = [edges_at(face, u)[edge] for u in stations]
+                bends = [abs(a - 2.0 * b + c) for a, b, c in zip(heights, heights[1:], heights[2:])]
+                # No kink anywhere: over 10 mm the edge never turns as
+                # sharply as a 100 mm radius would.
+                self.assertLess(max(bends), 1.0, edge)
+                # The stair only climbs, and so do both edges.
+                self.assertTrue(all(b >= a - 1e-6 for a, b in zip(heights, heights[1:])), edge)
+                if levelled:
+                    self.assertAlmostEqual(heights[0], heights[1], places=3)
+
+        check(
+            make_stringer_profile_face(
+                (0.0, 0.0), (1.0, 0.0), parameters, tops, 235.0, supports=supports
+            ),
+            False,
+        )
+        blocked = make_stringer_profile_face(
+            (0.0, 0.0),
+            (1.0, 0.0),
+            parameters,
+            tops,
+            235.0,
+            supports=supports,
+            start_block=EdgeBlock(27.0, 705.0, 360.0),
+            end_block=EdgeBlock(2140.0, 2010.0, 1660.0),
+        )
+        check(blocked, True)
+        # The edges reach the blocks' levels and run level through them.
+        for u, (bottom, top) in ((10.0, (360.0, 705.0)), (2160.0, (1660.0, 2010.0))):
+            found = edges_at(blocked, u)
+            self.assertAlmostEqual(found[0], bottom, places=3)
+            self.assertAlmostEqual(found[1], top, places=3)
+
+        # Along a straight flight the edges stay straight lines.
+        regular = make_stringer_profile_face(
+            (0.0, 0.0),
+            (1.0, 0.0),
+            [250.0 * index for index in range(8)],
+            [300.0 + 180.0 * index for index in range(8)],
+            280.0,
+        )
+        self.assertTrue(
+            all(edge.Curve.TypeId == "Part::GeomLine" for edge in regular.OuterWire.Edges)
+        )
+
+    def test_corner_blocks_keep_the_housings_inside_the_wall_boards(self):
+        # Winders spanning a corner house a tread low beside the block. The
+        # block's underside may not stand above that housing, nor a ramp up
+        # to it cut the tread's end out of the board.
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        # A first flight wider than the second, with little timber asked
+        # under the steps: the third tread then reaches far along the first
+        # wall board, 100 mm below where a block halfway between the two
+        # boards' undersides would put its lower edge.
+        stair.Proxy._updating = True
+        stair.StringerJoinery = False
+        stair.WalkingLineOffset = 500.0
+        stair.StringerUndersideOffset = 15.0
+        stair.StringerNosingOffset = 20.0
+        stair.Proxy._updating = False
+        for flight, width, (left, right) in zip(
+            flights, (850.0, 700.0), ((855.0, 155.0), (2240.0, 1390.0))
+        ):
+            flight.Proxy._updating = True
+            flight.Width = width
+            flight.LeftLength = left
+            flight.RightLength = right
+            flight.Proxy._updating = False
+        stair.Proxy.rebuild(stair)
+        self.assertEqual(stair.GeometryStatus, "Balanced multi-flight stair")
+        timber = stair.StringerUndersideOffset.Value
+        treads = [
+            part.Shape for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"
+        ]
+        checked = 0
+        for board in stair.StringersGroup.Group:
+            if board.Side != "Left":
+                continue
+            bounds = board.Shape.BoundBox
+            slab = Part.makeBox(
+                bounds.XLength,
+                bounds.YLength,
+                stair.FloorHeight.Value + 1000.0,
+                FreeCAD.Vector(bounds.XMin, bounds.YMin, 0.0),
+            )
+            for tread in treads:
+                housed = tread.common(slab)
+                if housed.Volume < 1.0:
+                    continue
+                lowest = min(vertex.Point.z for vertex in housed.Vertexes)
+                if lowest < 1.0:
+                    continue
+                centre = housed.BoundBox.Center
+                for vertex in housed.Vertexes:
+                    point = vertex.Point
+                    if point.z > lowest + 1e-6:
+                        continue
+                    # Just inside the housing, off its faces.
+                    inside = (
+                        point + (FreeCAD.Vector(centre.x, centre.y, point.z) - point).normalize()
+                    )
+                    bottom = self._bottom_at(board.Shape, inside.x, inside.y)
+                    if bottom is None:
+                        continue
+                    self.assertLessEqual(bottom, point.z - timber + 0.5, (board.Label, point))
+                    checked += 1
+        self.assertGreater(checked, 8)
+
+    def test_deferred_rebuilds_wait_for_regenerate(self):
+        # The task panel's manual mode: changes only mark the stair until it
+        # is regenerated.
+        stair, _flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+
+        def top():
+            return max(part.Shape.BoundBox.ZMax for part in stair.StepsGroup.Group)
+
+        before = top()
+        stair.Proxy.defer_rebuilds(stair, True)
+        stair.FloorHeight = stair.FloorHeight.Value + 220.0
+        self.document.recompute()
+        self.assertAlmostEqual(top(), before, places=6)
+        self.assertTrue(stair.Proxy.rebuild_pending())
+        stair.Proxy.regenerate(stair)
+        self.assertFalse(stair.Proxy.rebuild_pending())
+        raised = top()
+        self.assertGreater(raised, before + 100.0)
+        # Still deferred after a regeneration; ending it rebuilds what waits.
+        stair.FloorHeight = stair.FloorHeight.Value - 220.0
+        self.assertAlmostEqual(top(), raised, places=6)
+        stair.Proxy.defer_rebuilds(stair, False)
+        self.assertFalse(stair.Proxy.rebuild_pending())
+        self.assertAlmostEqual(top(), before, places=6)
+
+    def test_exit_width_sets_where_a_turned_exit_opens(self):
+        # The second flight exits to the right, onto its inner side, x = 110,
+        # which ends at y = -1540. The last riser runs along that side from
+        # the exit newel, the flight width before its end by default. The
+        # last tread reaches the floor there, beyond the board.
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        last = flights[-1]
+        self.assertIn("ExitWidth", last.PropertiesList)
+        self.assertEqual(last.ExitWidth.Value, 0.0)
+
+        def newel_y():
+            tread = max(
+                (part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"),
+                key=lambda part: part.Shape.BoundBox.ZMax,
+            )
+            return max(
+                vertex.Point.y for vertex in tread.Shape.Vertexes if vertex.Point.x < 110.0 + 1e-6
+            )
+
+        self.assertAlmostEqual(newel_y(), -1540.0 + last.Width.Value, places=3)
+        last.ExitWidth = 500.0
+        self.document.recompute()
+        self.assertEqual(stair.GeometryStatus, "Balanced multi-flight stair")
+        self.assertAlmostEqual(newel_y(), -1540.0 + 500.0, places=3)
+        for part in stair.StepsGroup.Group + stair.StringersGroup.Group:
+            self.assertTrue(part.Shape.isValid(), part.Label)
+
+    def test_steps_are_housed_into_the_newel_posts(self):
+        # The treads around a newel end in it at the housing depth, as in a
+        # board: none passes through the post, and its fan treads meet it.
+        stair, _flights = self._short_inner_side_stair("Housed stringer")
+        depth = stair.StringerStepOverlap.Value
+        posts = [
+            part
+            for part in stair.HandrailsGroup.Group
+            # The newels on the inner side of the turns: at the corner between
+            # the flights and at the exit turning to the right.
+            if part.StairDesignerRole == "HandrailPost"
+            and part.Side == "Right"
+            and part.Shape.BoundBox.ZMin < stair.FloorHeight.Value - 1.0
+        ]
+        treads = [part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"]
+        self.assertTrue(posts)
+        newels = 0
+        for post in posts:
+            box = post.Shape.BoundBox
+            core = Part.makeBox(
+                box.XLength - 2.0 * depth,
+                box.YLength - 2.0 * depth,
+                box.ZLength,
+                FreeCAD.Vector(box.XMin + depth, box.YMin + depth, box.ZMin),
+            )
+            meeting = 0
+            for tread in treads:
+                # The joinery has housed the tread into the post: no part of
+                # the tread is left in its core.
+                self.assertLess(
+                    tread.Shape.common(core).Volume, 1.0, f"{tread.Label} in {post.Label}"
+                )
+                outline = Part.makeBox(
+                    box.XLength + 0.2,
+                    box.YLength + 0.2,
+                    box.ZLength,
+                    FreeCAD.Vector(box.XMin - 0.1, box.YMin - 0.1, box.ZMin),
+                )
+                meeting += tread.Shape.common(outline).Volume > 1e-3
+            newels += meeting >= 2
+        self.assertEqual(newels, len(posts))
+
+    def test_winders_end_at_the_newel_or_clear_of_it(self):
+        # A wide short first flight turning into a narrower one that exits to
+        # the side. Around the inner corner's newel and the exit's, centred
+        # on their corners, a riser ends at the corner (inside the post),
+        # against the post's face just past it, or a post's size away.
+        from stairdesigner.geometry_plan import _boundary_data
+
+        specs = [(505.0, 800.0, 0.0), (1800.0, 650.0, -90.0)]
+        sections, _going = balanced_winder_sections(
+            specs,
+            11,
+            1.0,
+            ["Herse balancing"],
+            exit_direction="To right",
+            winding_parameters=[(50.0, 50.0)],
+            nosing=30.0,
+            walking_line_offset=300.0,
+            exit_width=800.0,
+        )
+        footprint = make_stair_footprint(specs)
+        fitted = fit_balanced_sections_to_footprint(sections, footprint)
+        fans = corner_post_sections(fitted, "Straight", "To right", sections, 70.0)
+        fans = inner_corner_newel_sections(fans, footprint, 70.0)
+        self.assertTrue(
+            balanced_partition_is_valid(balanced_tread_faces(fans, footprint), footprint, 11)
+        )
+        boundary = _boundary_data(footprint)
+        vertices = boundary["vertices"]
+        orientation = 1.0 if boundary["signed_area"] > 0.0 else -1.0
+        newels = [fans[-1].right]
+        for index, corner in enumerate(vertices):
+            previous, following = vertices[index - 1], vertices[(index + 1) % len(vertices)]
+            turn = (corner[0] - previous[0]) * (following[1] - corner[1]) - (
+                corner[1] - previous[1]
+            ) * (following[0] - corner[0])
+            if turn * orientation < -1e-7:
+                newels.append(corner)
+        self.assertGreaterEqual(len(newels), 2)
+        at_faces = 0
+        for newel in newels:
+            for section in fans[1:-1]:
+                for end in (section.left, section.right):
+                    distance = math.dist(end, newel)
+                    if distance < 70.0 - 1e-6:
+                        self.assertTrue(
+                            distance < 1e-6 or abs(distance - 35.0) < 1e-6,
+                            f"riser ends {distance:.1f} mm from the newel at {newel}",
+                        )
+                        at_faces += abs(distance - 35.0) < 1e-6
+        # Here a riser balanced to meet the second flight's side 52 mm past
+        # the inner corner, clear of the post, ends against its face rather
+        # than being pulled through the post to its centre.
+        self.assertGreater(at_faces, 0)
+
+    def test_treads_turning_about_a_newel_keep_their_walking_line_going(self):
+        # The same stair: an 800 mm exit opening beside a 650 mm flight.
+        # Pulled onto the newel, the risers no longer cross the walking line
+        # at their stations; about the newel, they keep their end on the post
+        # and cross the walking line, round the newel, at equal goings.
+        specs = [(505.0, 800.0, 0.0), (1800.0, 650.0, -90.0)]
+        sections, _going = balanced_winder_sections(
+            specs,
+            11,
+            1.0,
+            ["Herse balancing"],
+            exit_direction="To right",
+            winding_parameters=[(50.0, 50.0)],
+            nosing=30.0,
+            walking_line_offset=300.0,
+            exit_width=800.0,
+        )
+        footprint = make_stair_footprint(specs)
+        fitted = fit_balanced_sections_to_footprint(sections, footprint)
+        pinned = corner_post_sections(fitted, "Straight", "To right", sections, 70.0)
+        pinned = inner_corner_newel_sections(pinned, footprint, 70.0)
+        fans, steps, _notched = newel_fan_plan(
+            pinned,
+            footprint,
+            "Straight",
+            "To right",
+            70.0,
+            walking_line=([800.0, 650.0], 300.0),
+        )
+        self.assertIsNone(steps)
+        faces = balanced_tread_faces(fans, footprint)
+        self.assertTrue(balanced_partition_is_valid(faces, footprint, 11))
+        newel = pinned[-1].right
+        moved = [
+            index for index, (before, after) in enumerate(zip(pinned, fans)) if before is not after
+        ]
+        self.assertTrue(moved)
+        for index in moved:
+            # The newel end stays; only the outer end moves.
+            self.assertEqual(fans[index].right, pinned[index].right)
+        around_exit = [
+            index
+            for index in range(1, len(fans) - 1)
+            if math.dist(fans[index].right, newel) < 35.0 + 1e-6
+        ]
+        self.assertGreaterEqual(len(around_exit), 2)
+        # The treads wholly about the newel, to the exit; the one from the
+        # last riser housed in the board keeps the walking line's place.
+        self.assertEqual(fans[around_exit[0]].left, pinned[around_exit[0]].left)
+        # The walking line runs round the newel 300 mm from the outer side.
+        radius = 650.0 - 300.0
+
+        def crossing(section):
+            fixed, outer = section.right, section.left
+            dx, dy = outer[0] - fixed[0], outer[1] - fixed[1]
+            length = math.hypot(dx, dy)
+            dx, dy = dx / length, dy / length
+            px, py = fixed[0] - newel[0], fixed[1] - newel[1]
+            b = px * dx + py * dy
+            t = -b + math.sqrt(b * b - (px * px + py * py - radius * radius))
+            return (fixed[0] + dx * t, fixed[1] + dy * t)
+
+        def goings(sections):
+            points = [crossing(sections[index]) for index in range(around_exit[0], len(sections))]
+            return [math.dist(a, b) for a, b in zip(points, points[1:])]
+
+        before = goings(pinned)
+        after = goings(fans)
+        self.assertGreater(max(before) / min(before), 1.2)
+        self.assertLess(max(after) / min(after), 1.001)
+
+    def test_risers_spread_along_the_newel_post(self):
+        # About the exit newel, the risers end apart along the post's faces
+        # in the stair, in order; the last tread opens beside the post onto
+        # the floor and takes no share of it, so the riser before it ends
+        # where the post meets the exit, with the exit line.
+        specs = [(505.0, 800.0, 0.0), (1800.0, 650.0, -90.0)]
+        sections, _going = balanced_winder_sections(
+            specs,
+            11,
+            1.0,
+            ["Herse balancing"],
+            exit_direction="To right",
+            winding_parameters=[(50.0, 50.0)],
+            nosing=30.0,
+            walking_line_offset=300.0,
+            exit_width=800.0,
+        )
+        footprint = make_stair_footprint(specs)
+        fitted = fit_balanced_sections_to_footprint(sections, footprint)
+        pinned = corner_post_sections(fitted, "Straight", "To right", sections, 70.0)
+        pinned = inner_corner_newel_sections(pinned, footprint, 70.0)
+        corner = pinned[-1].right
+        square = newel_post_square(corner, (1.0, 0.0), 30.0)
+        post = newel_post_square(corner, (1.0, 0.0), 70.0)
+        steps, notched = newel_post_plan(pinned, footprint, [square], [post])
+        self.assertIsNot(steps, pinned)
+        on_post = [index for index, section in enumerate(steps) if "right" in section.post_ends]
+        inner = [index for index in on_post if 0 < index < len(steps) - 1]
+        self.assertGreaterEqual(len(inner), 2)
+        ends = [steps[index].right for index in inner]
+        self.assertEqual(len({(round(x, 6), round(y, 6)) for x, y in ends}), len(ends))
+        self.assertLess(math.dist(steps[inner[-1]].right, steps[-1].right), 1e-6)
+        self.assertTrue(
+            balanced_partition_is_valid(
+                balanced_tread_faces(steps, notched), notched, len(steps) - 1
+            )
+        )
+
+    def test_side_offset_moves_one_step_front_along_its_side(self):
+        specs = [(505.0, 800.0, 0.0), (1800.0, 650.0, -90.0)]
+        sections, _going = balanced_winder_sections(
+            specs, 11, 1.0, ["Herse balancing"], walking_line_offset=300.0
+        )
+        footprint = make_stair_footprint(specs)
+        fitted = fit_balanced_sections_to_footprint(sections, footprint)
+        offsets = [(0.0, 0.0)] * len(fitted)
+        offsets[7] = (-10.0, 0.0)
+        shifted = shift_section_ends(fitted, footprint, offsets)
+        self.assertIsNotNone(shifted)
+        for index, (before, after) in enumerate(zip(fitted, shifted)):
+            if index == 7:
+                self.assertAlmostEqual(math.dist(before.left, after.left), 10.0, places=6)
+                self.assertEqual(after.right, before.right)
+                # Down the stair: toward the previous front on that side.
+                self.assertLess(
+                    math.dist(after.left, fitted[6].left), math.dist(before.left, fitted[6].left)
+                )
+            else:
+                self.assertIs(after, before)
+        # A shift past the next front would cross it.
+        offsets[7] = (1000.0, 0.0)
+        self.assertIsNone(shift_section_ends(fitted, footprint, offsets))
+
+        # Through the stair: a step's own offset moves only the steps beside
+        # that front.
+        stair, _flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        treads = {
+            part.Index: part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"
+        }
+        self.assertIn("LeftOffset", treads[6].PropertiesList)
+        before = {index: part.Shape.copy() for index, part in treads.items()}
+        treads[6].LeftOffset = -10.0
+        stair.Proxy.rebuild(stair, allow_structure_changes=True)
+        self.document.recompute()
+        changed = {
+            index
+            for index, part in treads.items()
+            if abs(part.Shape.Volume - before[index].Volume) > 1e-3
+            or part.Shape.BoundBox.Center.distanceToPoint(before[index].BoundBox.Center) > 1e-6
+        }
+        self.assertTrue(changed)
+        self.assertTrue(changed <= {5, 6}, changed)
+
+        # At a turned exit the last step runs on beyond the board to the
+        # floor: the riser before it, ending on the newel, can move along
+        # the newel out past the board.
+        stair, _flights = self._short_inner_side_stair("Housed stringer")
+        treads = {
+            part.Index: part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"
+        }
+        last = max(treads)
+        before = {index: part.Shape.copy() for index, part in treads.items()}
+        treads[last].RightOffset = 15.0
+        stair.Proxy.rebuild(stair, allow_structure_changes=True)
+        self.document.recompute()
+        changed = {
+            index
+            for index, part in treads.items()
+            if abs(part.Shape.Volume - before[index].Volume) > 1e-3
+        }
+        self.assertTrue(changed)
+        self.assertTrue(changed <= {last - 1, last}, changed)
+        self.assertLess(treads[last].Shape.Volume, before[last].Volume)
+        self.assertTrue(treads[last].Shape.isValid())
+
+    def test_walking_line_gives_each_step_its_going(self):
+        # The stair keeps, step by step, its stretch of the walking line at
+        # the step's top and the step's going along it, for the view.
+        stair, _flights = self._short_inner_side_stair("Housed stringer")
+        treads = sorted(
+            (part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"),
+            key=lambda part: part.Index,
+        )
+        counts = list(stair.WalkingLineCounts)
+        goings = list(stair.WalkingLineGoings)
+        points = list(stair.WalkingLinePoints)
+        self.assertEqual(len(counts), len(treads))
+        self.assertEqual(len(goings), len(treads))
+        self.assertEqual(sum(counts), len(points))
+        inverse = stair.getGlobalPlacement().inverse().toMatrix()
+        start = 0
+        for tread, count, going in zip(treads, counts, goings):
+            stretch = points[start : start + count]
+            start += count
+            self.assertGreaterEqual(count, 2, tread.Label)
+            length = sum((b - a).Length for a, b in zip(stretch, stretch[1:]))
+            self.assertAlmostEqual(length, going, delta=1e-6)
+            self.assertGreater(going, 100.0)
+            top = tread.Shape.copy()
+            top.transformShape(inverse)
+            for point in stretch:
+                self.assertAlmostEqual(point.z, top.BoundBox.ZMax, places=3)
+        # The treads sharing the turn about the inner corner's newel share
+        # its walking line evenly.
+        self.assertAlmostEqual(goings[0], goings[1], delta=0.1)
+
+    def test_even_walking_line_centres_a_wide_exit_and_opens_treads_outward(self):
+        # A turn about two newels into a second flight whose last steps turn
+        # on to an exit wider than the flight: the plan the balancing gives
+        # the even pass on a 795 then 645 wide stair.
+        newels = [
+            [(175.0, -525.0), (175.0, -555.0), (205.0, -555.0), (205.0, -525.0)],
+            [(205.0, 50.0), (175.0, 50.0), (175.0, 20.0), (205.0, 20.0)],
+        ]
+        plan = [
+            ((0.0, 830.0), (0.0, 35.0), 0, 0.0),
+            ((285.6, 830.0), (96.3, 35.0), 0, 184.4),
+            ((746.8, 830.0), (118.5, 35.0), 0, 368.9),
+            ((835.0, 389.4), (205.0, 50.0), 1, 553.3),
+            ((835.0, 70.6), (190.0, -66.5), 1, 737.7),
+            ((835.0, -179.7), (190.0, -196.3), 1, 922.1),
+            ((835.0, -395.2), (190.0, -357.3), 1, 1106.6),
+            ((835.0, -627.2), (205.0, -530.0), 1, 1291.0),
+            ((835.0, -1036.8), (205.0, -550.0), 1, 1475.4),
+            ((594.5, -1370.0), (190.0, -555.0), 1, 1659.8),
+            ((155.0, -1370.0), (155.0, -555.0), 1, 1844.3),
+        ]
+        sections = []
+        for left, right, flight, station in plan:
+            width = math.dist(left, right)
+            sections.append(
+                BalancedSection(
+                    center=((left[0] + right[0]) / 2.0, (left[1] + right[1]) / 2.0),
+                    tangent=((left[1] - right[1]) / width, (right[0] - left[0]) / width),
+                    left=left,
+                    right=right,
+                    station=station,
+                    width=width,
+                    flight_index=flight,
+                )
+            )
+
+        def face(points):
+            return Part.Face(
+                Part.makePolygon([FreeCAD.Vector(x, y, 0.0) for x, y in points + points[:1]])
+            )
+
+        footprint = face(
+            [
+                (175.0, 35.0),
+                (0.0, 35.0),
+                (0.0, 830.0),
+                (835.0, 830.0),
+                (835.0, -1370.0),
+                (155.0, -1370.0),
+                (155.0, -555.0),
+                (205.0, -555.0),
+                (205.0, -525.0),
+                (190.0, -525.0),
+                (190.0, 20.0),
+                (205.0, 20.0),
+                (205.0, 50.0),
+                (175.0, 50.0),
+            ]
+        )
+        outline = face(
+            [
+                (0.0, 830.0),
+                (835.0, 830.0),
+                (835.0, -1370.0),
+                (190.0, -1370.0),
+                (190.0, 35.0),
+                (0.0, 35.0),
+            ]
+        )
+        widths = [795.0, 645.0]
+        line = walking_line_points(sections, newels, widths, 500.0)
+        # In the middle of the steps: of the entry's 795, and of the exit's
+        # 815 from the newel's face to the wall, not of the flight's 645.
+        self.assertAlmostEqual(line[0][1], (35.0 + 830.0) / 2.0, delta=0.5)
+        self.assertAlmostEqual(line[-1][1], (-555.0 - 1370.0) / 2.0, delta=0.5)
+
+        for offset in (300.0, 500.0):
+            even = even_walking_line_goings(
+                sections, footprint, newels, widths, offset, 70.0, outline
+            )
+            self.assertIsNotNone(even, offset)
+            goings = [going for _points, going in walking_line_treads(even, newels, widths, offset)]
+            for going in goings:
+                self.assertAlmostEqual(going, goings[0], delta=0.5)
+            # No tread is wider on the inner side, the right, than on the
+            # outer: the risers next to one turned about a newel turn with it.
+            for index, (a, b) in enumerate(zip(even, even[1:])):
+                self.assertGreaterEqual(
+                    math.dist(a.left, b.left), math.dist(a.right, b.right) - 1e-6, (offset, index)
+                )
+
+    def _plan_points(self, shape):
+        return [
+            vertex.Point
+            for face in shape.Faces
+            if abs(face.normalAt(0, 0).z) > 1e-3
+            for vertex in face.Vertexes
+        ]
+
+    def test_stair_width_holds_its_stringers_and_posts(self):
+        # A flight's width is the opening the stair stands in: its housed
+        # boards and handrail posts stand within it, and its steps are
+        # narrower by the room they take on each side.
+        stair = make_stair(
+            floor_height=2800.0,
+            flight_length=3000.0,
+            width=900.0,
+            steps=15,
+            stair_type="Wood",
+        )
+        flight = get_flights(stair)[0]
+        flight.Proxy._updating = True
+        for side in ("Left", "Right"):
+            setattr(flight, f"{side}StringerType", "Housed stringer")
+        flight.LeftHandrailEnabled = False
+        flight.RightHandrailEnabled = True
+        flight.Proxy._updating = False
+        stair.Proxy.rebuild(stair, allow_structure_changes=True)
+        self.document.recompute()
+        self.assertEqual(stair.GeometryStatus, "Straight flight")
+        inverse = stair.getGlobalPlacement().inverse()
+
+        def local(shape):
+            shape = shape.copy()
+            shape.transformShape(inverse.toMatrix())
+            return shape.BoundBox
+
+        # A housed board stands out its thickness less its housing (20), a
+        # post half its size from the board's centre line (35).
+        for part in stair.StepsGroup.Group:
+            if part.StairDesignerRole == "Tread":
+                box = local(part.Shape)
+                self.assertAlmostEqual(box.YMin, 35.0, places=3)
+                self.assertAlmostEqual(box.YMax, 880.0, places=3)
+        parts = list(stair.StringersGroup.Group) + [
+            part for part in stair.HandrailsGroup.Group if part.StairDesignerRole == "HandrailPost"
+        ]
+        self.assertTrue(any(part.StairDesignerRole == "HandrailPost" for part in parts))
+        for part in parts:
+            box = local(part.Shape)
+            self.assertGreaterEqual(box.YMin, -1e-6, part.Label)
+            self.assertLessEqual(box.YMax, 900.0 + 1e-6, part.Label)
+
+        # Turning flights, with a newel at the inner corner and at the turned
+        # exit: the boards and posts stay within the stair's outline.
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+        # The boards run on below the first step, before the entry, and the
+        # one across the top under the floor, past the exit.
+        outline = make_stair_footprint([(460.0, 700.0, 0.0), (1890.0, 700.0, -90.0)]).fuse(
+            [
+                Part.makePlane(500.0, 700.0, FreeCAD.Vector(-500.0, 0.0, 0.0)),
+                Part.makePlane(310.0, 700.0, FreeCAD.Vector(-200.0, -1540.0, 0.0)),
+            ]
+        )
+        outline.Placement = stair.getGlobalPlacement()
+        parts = list(stair.StringersGroup.Group) + [
+            part for part in stair.HandrailsGroup.Group if part.StairDesignerRole == "HandrailPost"
+        ]
+        self.assertTrue(any(part.StairDesignerRole == "HandrailPost" for part in parts))
+        for part in parts:
+            for point in self._plan_points(part.Shape):
+                point = FreeCAD.Vector(point.x, point.y, outline.BoundBox.ZMin)
+                self.assertTrue(outline.isInside(point, 1e-3, True), (part.Label, point))
+        # The last step still reaches the floor along the turned exit.
+        exit_line = max(
+            (part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"),
+            key=lambda part: part.Index,
+        )
+        local_box = exit_line.Shape.copy()
+        local_box.transformShape(stair.getGlobalPlacement().inverse().toMatrix())
+        self.assertLessEqual(local_box.BoundBox.XMin, 110.0 + 1e-3)
+
+    def test_turned_exit_balances_like_a_turn_between_flights(self):
+        # A short first flight turning into a second one that exits to the
+        # side, as in a quarter-turn stair arriving beside a landing newel.
+        specs = [(460.0, 700.0, 0.0), (1850.0, 700.0, -90.0)]
+        sections, _going = balanced_winder_sections(
+            specs,
+            10,
+            1.0,
+            ["Herse balancing"],
+            exit_direction="To right",
+            winding_parameters=[(50.0, 50.0)],
+            nosing=30.0,
+            walking_line_offset=300.0,
+        )
+        footprint = make_stair_footprint(specs)
+        fitted = fit_balanced_sections_to_footprint(sections, footprint)
+        fans = corner_post_sections(fitted, "Straight", "To right", sections, 70.0)
+        fans = inner_corner_newel_sections(fans, footprint, 70.0)
+        faces = balanced_tread_faces(fans, footprint)
+        self.assertTrue(balanced_partition_is_valid(faces, footprint, 10))
+        # The exit's turn spreads over the second flight as the corner's does:
+        # at most one of its risers stays square to it.
+        second = [section for section in fans[1:-1] if section.flight_index == 1]
+        square = [
+            section for section in second if abs(section.tangent[0]) < math.sin(math.radians(1.0))
+        ]
+        self.assertLessEqual(len(square), 1)
+        # Its inner side, x = 110 here, narrows towards the exit newel.
+        newel = fans[-1].right
+        landings = sorted(
+            {
+                round(section.right[1], 6)
+                for section in second
+                if abs(section.right[0] - newel[0]) < 1e-6
+            }
+            - {round(newel[1], 6)},
+            reverse=True,
+        )
+        goings = [first - second for first, second in zip(landings, landings[1:] + [newel[1]])]
+        self.assertGreaterEqual(len(goings), 3)
+        for nearer, farther in zip(goings[-3:][1:], goings[-3:]):
+            self.assertLess(nearer, farther)
+        # Riser ends closer to the newel than its size die into it.
+        self.assertGreaterEqual(goings[-1], 70.0)
 
     def test_corner_post_winders_preserve_partition_and_outer_nosings(self):
         for length in (1800.0, 3500.0):
@@ -274,14 +1065,26 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                     flight.Proxy._updating = False
                     stair.Proxy.rebuild(stair)
                     self.assertEqual(stair.GeometryStatus, "Balanced entry/exit stair")
-                    self.assertEqual(len(stair.StringersGroup.Group), 2)
+                    roles = [part.StairDesignerRole for part in stair.StringersGroup.Group]
+                    self.assertEqual(roles.count("LeftStringer"), 1)
+                    self.assertEqual(roles.count("RightStringer"), 1)
+                    # Each board turning the corner is a part of its own, and
+                    # boards meeting there do not share timber.
+                    self.assertGreater(len(roles), 2)
+                    for side in ("Left", "Right"):
+                        boards = [p for p in stair.StringersGroup.Group if p.Side == side]
+                        for index, first in enumerate(boards):
+                            for second in boards[index + 1 :]:
+                                self.assertLess(first.Shape.common(second.Shape).Volume, 1.0)
                     for part in stair.StringersGroup.Group:
                         self.assertTrue(part.Shape.isValid())
                         self.assertTrue(part.Shape.Solids)
                         # isValid() alone misses C0 edges rejected by Check Geometry.
                         part.Shape.check(True)
                     if entry == "From left" and exit_direction == "To left":
-                        outer = next(p for p in stair.StringersGroup.Group if p.Side == "Right")
+                        outer = Part.makeCompound(
+                            [p.Shape for p in stair.StringersGroup.Group if p.Side == "Right"]
+                        )
                         for x in (0.0, flight.LeftLength.Value):
                             if kind == "Notched stringer":
                                 # Notched boards sit inside the tread edge.
@@ -289,7 +1092,7 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                             probe = Part.makeLine(
                                 FreeCAD.Vector(x, 500.0, -100.0), FreeCAD.Vector(x, 500.0, 4000.0)
                             )
-                            self.assertTrue(outer.Shape.common(probe).Edges)
+                            self.assertTrue(outer.common(probe).Edges)
 
     def test_winder_rail_clears_intermediate_nosings(self):
         from stairdesigner.geometry_handrails import (
@@ -356,17 +1159,1184 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
                 rail.Shape.check(True)
                 self.assertLess(rail.Shape.distToShape(post.Shape)[0], 1e-7)
 
+    def _short_inner_side_stair(self, stringer_type, handrails=True):
+        # The first flight's inner side (110) is shorter than the first going.
+        stair = make_stair(
+            floor_height=2280.0,
+            flight_length=460.0,
+            width=700.0,
+            steps=11,
+            stair_type="Wood",
+        )
+        stair.Proxy._updating = True
+        try:
+            stair.Nosing = 30.0
+            stair.WalkingLineOffset = 300.0
+            flights = resize_flights(stair, 2, width=700.0, rotations=["Right"])
+            for flight, (left, right) in zip(flights, ((810.0, 110.0), (2240.0, 1540.0))):
+                flight.Proxy._updating = True
+                flight.LeftLength = left
+                flight.RightLength = right
+                for side in ("Left", "Right"):
+                    setattr(flight, f"{side}StringerType", stringer_type)
+                    setattr(flight, f"{side}HandrailEnabled", handrails)
+                flight.Proxy._updating = False
+            flights[1].Proxy._updating = True
+            flights[1].ExitDirection = "To right"
+            flights[1].Proxy._updating = False
+        finally:
+            stair.Proxy._updating = False
+        stair.Proxy.rebuild(stair)
+        self.assertEqual(stair.GeometryStatus, "Balanced multi-flight stair")
+        return stair, flights
+
+    def test_short_inner_side_winders_and_exit_turn_rails(self):
+        # The first winder nosing crosses the whole second flight. It must
+        # not drag the following winders onto one point of the inner side,
+        # and the second flight, which turns at its exit, must butt the first
+        # one's rails and stringers at the corners.
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+
+        treads = [
+            part.Shape for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"
+        ]
+        # The first tread winds around the inner corner of the first flight;
+        # it must not run down the second flight's inner side. Its riser may
+        # end at the corner newel, the tread running on under it into the
+        # post, not past it.
+        self.assertGreater(
+            treads[0].BoundBox.YMin,
+            -max(stair.HandrailPostWidth.Value, stair.HandrailPostThickness.Value) / 2.0,
+        )
+        for first in range(len(treads)):
+            for second in range(first + 4, len(treads)):
+                with self.subTest(first=first, second=second):
+                    level = treads[second].copy()
+                    level.translate(
+                        FreeCAD.Vector(
+                            0.0,
+                            0.0,
+                            treads[first].BoundBox.ZMin - level.BoundBox.ZMin,
+                        )
+                    )
+                    self.assertLess(treads[first].common(level).Volume, 1.0)
+
+        def parts(role, side, flight):
+            return [
+                part
+                for part in stair.HandrailsGroup.Group
+                if part.StairDesignerRole == role
+                and part.Side == side
+                and part.SourceFlight == flight
+            ]
+
+        for side, corner in (("Left", (810.0, 700.0)), ("Right", (110.0, 0.0))):
+            with self.subTest(side=side):
+                posts = [
+                    part
+                    for part in stair.HandrailsGroup.Group
+                    if part.StairDesignerRole == "HandrailPost"
+                    and math.dist(
+                        (
+                            part.Shape.BoundBox.Center.x,
+                            part.Shape.BoundBox.Center.y,
+                        ),
+                        corner,
+                    )
+                    < 100.0
+                ]
+                self.assertEqual(len(posts), 1)
+                incoming = parts("HandrailTopRail", side, flights[0])
+                outgoing = min(
+                    parts("HandrailTopRail", side, flights[1]),
+                    key=lambda part: part.Shape.distToShape(posts[0].Shape)[0],
+                )
+                for rail in incoming + [outgoing]:
+                    self.assertLess(rail.Shape.distToShape(posts[0].Shape)[0], 1e-6)
+                stringer = next(
+                    part
+                    for part in stair.StringersGroup.Group
+                    if part.SourceFlight == flights[1] and part.Side == side
+                )
+                self.assertLess(stringer.Shape.distToShape(posts[0].Shape)[0], 1e-6)
+
+    def test_notched_stringer_newels_stay_whole_through_the_steps(self):
+        # Notched boards run under the tread ends, so the newels stand in the
+        # steps. The steps are notched around them; housing them would cut
+        # the posts in two and drop their lower part.
+        stair, flights = self._short_inner_side_stair("Notched stringer")
+        self.assertTrue(stair.StringerJoinery)
+        posts = [
+            part for part in stair.HandrailsGroup.Group if part.StairDesignerRole == "HandrailPost"
+        ]
+        steps = [
+            part for part in stair.StepsGroup.Group if part.StairDesignerRole in ("Tread", "Riser")
+        ]
+        for post in posts:
+            with self.subTest(post=post.Label):
+                self.assertEqual(len(post.Shape.Solids), 1)
+                # The post stops at the floor, not below it.
+                self.assertGreater(post.Shape.BoundBox.ZMin, -1e-6)
+                for step in steps:
+                    self.assertLess(post.Shape.common(step.Shape).Volume, 1e-3, step.Label)
+        corner = next(
+            post
+            for post in posts
+            if math.dist((post.Shape.BoundBox.Center.x, post.Shape.BoundBox.Center.y), (110.0, 0.0))
+            < 100.0
+        )
+        board = next(
+            part
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[0] and part.Side == "Right"
+        )
+        # The first flight's inner side is too short for a rail: the corner
+        # newel is the first post of that side and stands on the floor.
+        self.assertFalse(
+            [
+                post
+                for post in posts
+                if math.dist(
+                    (post.Shape.BoundBox.Center.x, post.Shape.BoundBox.Center.y), (0.0, 0.0)
+                )
+                < 100.0
+            ]
+        )
+        self.assertAlmostEqual(corner.Shape.BoundBox.ZMin, 0.0, places=6)
+        # The inner newel carries the first flight's board down to the floor.
+        self.assertLess(corner.Shape.BoundBox.ZMin, board.Shape.BoundBox.ZMin + 1e-6)
+        self.assertLess(corner.Shape.distToShape(board.Shape)[0], 1e-6)
+
+        def step_volume(x_min, x_max, y_min, y_max):
+            box = Part.makeBox(
+                x_max - x_min,
+                y_max - y_min,
+                stair.FloorHeight.Value + 1000.0,
+                FreeCAD.Vector(x_min, y_min, -500.0),
+            )
+            return sum(step.Shape.common(box).Volume for step in steps)
+
+        # The step overhang dies into the newels instead of passing their
+        # outer faces: beside the outer floor post, and at the inner corner.
+        first = next(post for post in posts if post.Shape.BoundBox.XMin < 0.0)
+        bounds = first.Shape.BoundBox
+        self.assertLess(bounds.YMax, 699.0)
+        self.assertLess(step_volume(bounds.XMin, bounds.XMax, bounds.YMax, 800.0), 1e-3)
+        bounds = corner.Shape.BoundBox
+        self.assertGreater(bounds.XMin, 111.0)
+        self.assertLess(step_volume(110.0, bounds.XMin, 0.0, bounds.YMin), 1e-3)
+        # The first flight's treads beside the corner newel are not overhang.
+        self.assertGreater(step_volume(110.0, bounds.XMin, bounds.YMin, bounds.YMax), 1000.0)
+
+    def test_housed_newel_board_follows_winder_nosings(self):
+        # The second flight's inner board ends at the exit newel and carries
+        # the steep winders of the corner. A straight board would have to be
+        # far wider than the stair's board to house them all.
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+        board = next(
+            part
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[1] and part.Side == "Right"
+        )
+        self.assertAlmostEqual(board.Width.Value, stair.StringerWidth.Value, places=6)
+        self.assertEqual(len(board.Shape.Solids), 1)
+        self.assertTrue(board.Shape.isValid())
+
+    @staticmethod
+    def _top_at(shape, x, y):
+        probe = Part.makeLine(FreeCAD.Vector(x, y, -1000.0), FreeCAD.Vector(x, y, 10000.0))
+        crossing = shape.common(probe)
+        return crossing.BoundBox.ZMax if crossing.Edges else None
+
+    @staticmethod
+    def _bottom_at(shape, x, y):
+        probe = Part.makeLine(FreeCAD.Vector(x, y, -1000.0), FreeCAD.Vector(x, y, 10000.0))
+        crossing = shape.common(probe)
+        return crossing.BoundBox.ZMin if crossing.Edges else None
+
+    def test_housed_boards_keep_timber_under_every_housing(self):
+        # Winders turning the corners and converging on the inner newel sink
+        # some step corners far below a regular board's lower edge.
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+        self.assertAlmostEqual(stair.StringerUndersideOffset.Value, 50.0)
+        closest = self._closest_housing_margins(stair, flights, 50.0)
+        # The lower edge follows the treads rather than one deep pitch: half
+        # of them keep the 50 mm square to the board under their closest
+        # corner, some 80 mm measured plumb at this pitch. It is one fair
+        # curve, which stands a few centimetres further off the others
+        # rather than bend at each of them.
+        self.assertLess(closest[(len(closest) - 1) // 2], 90.0)
+        self.assertLess(closest[len(closest) // 2], 120.0)
+
+    def test_housed_board_underside_position_is_adjustable(self):
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+        regular = self._closest_housing_margins(stair, flights, 50.0)
+        width = stair.StringerWidth.Value
+        stair.StringerUndersideOffset = 80.0
+        stair.Proxy.rebuild(stair)
+        self.assertAlmostEqual(stair.StringerWidth.Value, width + 30.0, places=6)
+        deeper = self._closest_housing_margins(stair, flights, 80.0)
+        self.assertGreater(deeper[len(deeper) // 2], regular[len(regular) // 2] + 25.0)
+        # Measured plumb, the same distance leaves less timber square to the
+        # sloping board, and a narrower automatic board.
+        self.assertEqual(stair.StringerUndersideOffsetDirection, "Perpendicular")
+        stair.StringerUndersideOffsetDirection = "Vertical"
+        stair.Proxy.rebuild(stair)
+        self.assertLess(stair.StringerWidth.Value, width + 30.0 - 5.0)
+        plumb = self._closest_housing_margins(stair, flights, 80.0)
+        self.assertLess(plumb[len(plumb) // 2], deeper[len(deeper) // 2] - 10.0)
+
+    def test_open_wedged_housings_let_the_steps_slide_in(self):
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        self.assertFalse(stair.StringerOpenHousings)
+        self.assertFalse(stair.StringerWedgedHousings)
+
+        def board():
+            return next(
+                part
+                for part in stair.StringersGroup.Group
+                if part.SourceFlight == flights[1] and part.Side == "Left"
+            ).Shape
+
+        # A straight tread of the second flight, which climbs towards -y, its
+        # end housed in the left board at x = 790: the board, its outer face
+        # on the stair's side at x = 810, stands 20 beyond the steps.
+        treads = [
+            part.Shape
+            for part in stair.StepsGroup.Group
+            if part.StairDesignerRole == "Tread"
+            and part.FlightIndex == 2
+            and abs(part.Shape.BoundBox.XMax - 790.0) < 1.0
+            and abs(part.Shape.BoundBox.XLength - 660.0) < 1.0
+        ]
+        self.assertGreater(len(treads), 2)
+        bounds = treads[len(treads) // 2].BoundBox
+        x = bounds.XMax - 3.0
+        # Behind the tread at its top, and under its back end.
+        behind = FreeCAD.Vector(x, bounds.YMin - 5.0, bounds.ZMax - 3.0)
+        under = FreeCAD.Vector(x, bounds.YMin + 30.0, bounds.ZMin - 4.0)
+
+        def solid_at(point):
+            return board().isInside(point, 1e-6, True)
+
+        self.assertTrue(solid_at(behind))
+        self.assertTrue(solid_at(under))
+        volume = board().Volume
+        stair.StringerOpenHousings = True
+        stair.Proxy.rebuild(stair)
+        self.assertTrue(board().isValid())
+        self.assertEqual(len(board().Solids), 1)
+        self.assertFalse(solid_at(behind))
+        self.assertTrue(solid_at(under))
+        # The housings stay within the board: its outer face is whole.
+        self.assertTrue(board().isInside(FreeCAD.Vector(805.0, behind.y, behind.z), 1e-6, True))
+        opened = board().Volume
+        self.assertLess(opened, volume)
+        stair.StringerWedgedHousings = True
+        stair.Proxy.rebuild(stair)
+        self.assertTrue(board().isValid())
+        self.assertEqual(len(board().Solids), 1)
+        self.assertFalse(solid_at(behind))
+        self.assertFalse(solid_at(under))
+        self.assertLess(board().Volume, opened)
+
+    def test_open_housings_let_the_risers_slide_up(self):
+        from stairdesigner.geometry_joinery import WEDGE_TAPER, _plan_section
+
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        # The short board standing on the floor keeps its housings closed:
+        # nothing slides into it from below.
+        short = next(
+            part.Name
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[0] and part.Side == "Right"
+        )
+        closed = stair.Document.getObject(short).Shape.Volume
+        # Where each riser, trimmed by the joinery, is housed in the boards
+        # as they are before it.
+        stair.StringerJoinery = False
+        stair.Proxy.rebuild(stair)
+        uncut = {board.Name: board.Shape.copy() for board in stair.StringersGroup.Group}
+        stair.StringerJoinery = True
+        stair.Proxy.rebuild(stair)
+        risers = [part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Riser"]
+        housed = []
+        for riser in risers:
+            for board in stair.StringersGroup.Group:
+                if board.Name == short:
+                    continue
+                housing = riser.Shape.common(uncut[board.Name])
+                if housing.Volume > 1.0:
+                    bounds = housing.BoundBox
+                    footprint = _plan_section(housing, bounds.Center.z)
+                    housed.append((board.Name, footprint.CenterOfMass, bounds))
+        self.assertGreater(len(housed), 4)
+
+        def wood(name, x, y, z0, z1):
+            line = Part.makeLine(FreeCAD.Vector(x, y, z0), FreeCAD.Vector(x, y, z1))
+            return sum(
+                edge.Length for edge in stair.Document.getObject(name).Shape.common(line).Edges
+            )
+
+        stair.StringerJoinery = True
+        stair.StringerOpenHousings = True
+        for wedged in (False, True):
+            stair.StringerWedgedHousings = wedged
+            stair.Proxy.rebuild(stair)
+            self.assertAlmostEqual(stair.Document.getObject(short).Shape.Volume, closed, delta=1.0)
+            for name, centre, bounds in housed:
+                board = stair.Document.getObject(name)
+                self.assertTrue(board.Shape.isValid())
+                self.assertEqual(len(board.Shape.Solids), 1)
+                # Nothing under the housing down to the lower edge.
+                self.assertLess(
+                    wood(
+                        name, centre.x, centre.y, board.Shape.BoundBox.ZMin - 5.0, bounds.ZMax - 0.5
+                    ),
+                    0.5,
+                    name,
+                )
+        # Wedged, the gap behind each riser follows it, angled ones too:
+        # open at its foot, closing towards its top.
+        stair.Proxy.rebuild(stair)
+        angled = 0
+        for riser in risers:
+            bounds = riser.Shape.BoundBox
+            section = _plan_section(riser.Shape, bounds.Center.z)
+            edge = max(section.OuterWire.Edges, key=lambda edge: edge.Length)
+            direction = edge.Vertexes[-1].Point - edge.Vertexes[0].Point
+            direction.z = 0.0
+            direction.normalize()
+            normal = FreeCAD.Vector(-direction.y, direction.x, 0.0)
+            for name, centre, housing_bounds in housed:
+                if abs(housing_bounds.ZMin - bounds.ZMin) > 1.0 or not section.isInside(
+                    FreeCAD.Vector(centre.x, centre.y, section.CenterOfMass.z), 1e-3, True
+                ):
+                    continue
+                height = housing_bounds.ZMax - housing_bounds.ZMin
+                gaps = []
+                checked = False
+                for side in (normal, -normal):
+                    back = max(vertex.Point.dot(side) for vertex in section.Vertexes)
+                    point = centre + side * (back - centre.dot(side) + 0.5 * WEDGE_TAPER * height)
+                    line = Part.makeLine(
+                        FreeCAD.Vector(point.x, point.y, housing_bounds.ZMin + 1.0),
+                        FreeCAD.Vector(point.x, point.y, housing_bounds.ZMax - 1.0),
+                    )
+                    # Only where the board stands behind the riser, not past
+                    # its end.
+                    if uncut[name].common(line).Length < height - 3.0:
+                        gaps.append(False)
+                        continue
+                    checked = True
+                    gaps.append(
+                        wood(
+                            name,
+                            point.x,
+                            point.y,
+                            housing_bounds.ZMin + 1.0,
+                            housing_bounds.ZMin + 0.2 * height,
+                        )
+                        < 0.5
+                        and wood(
+                            name,
+                            point.x,
+                            point.y,
+                            housing_bounds.ZMax - 0.2 * height,
+                            housing_bounds.ZMax - 1.0,
+                        )
+                        > 0.5
+                    )
+                if checked:
+                    self.assertEqual(sum(gaps), 1, name)
+                    if abs(direction.x) > 1e-3 and abs(direction.y) > 1e-3:
+                        angled += 1
+        self.assertGreater(angled, 0)
+
+    def test_wedges_fill_the_room_left_on_the_stock(self):
+        from stairdesigner.geometry_joinery import WEDGE_TAPER
+        from stairdesigner.stair_bom import default_materials, flat_pieces, stair_layout
+
+        stair, _flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        stair.StringerOpenHousings = True
+        stair.StringerWedgedHousings = True
+        stair.Proxy.rebuild(stair)
+        pieces = flat_pieces(stair)
+        wedges = [piece for piece in pieces if piece.kind == "Wedge"]
+        recorded = sum(
+            len(getattr(part, "TreadWedges", [])) + len(getattr(part, "RiserWedges", []))
+            for part in stair.StringersGroup.Group
+        )
+        self.assertGreater(recorded, 4)
+        self.assertEqual(len(wedges), recorded)
+        for wedge in wedges:
+            # Tapering 1 in 10 from its tip.
+            xs = [x for x, _y in wedge.outline]
+            ys = [y for _x, y in wedge.outline]
+            self.assertLessEqual(max(ys), WEDGE_TAPER * max(xs) + 1e-6)
+
+        materials, assignment = default_materials(stair, pieces)
+        self.assertEqual(assignment["Wedge"], assignment["Stringer"])
+        others = [piece for piece in pieces if piece.kind != "Wedge"]
+        without, _unassigned = stair_layout(materials, assignment, others)
+        layouts, unassigned = stair_layout(materials, assignment, pieces)
+        self.assertEqual(unassigned, [])
+        # The wedges take no stock of their own.
+        self.assertEqual(
+            [len(found.stocks) for found in layouts], [len(found.stocks) for found in without]
+        )
+        placed = [
+            item
+            for found in layouts
+            for stock in found.stocks
+            for item in stock.placed
+            if item.part.kind == "Wedge"
+        ]
+        offcuts = [piece for found in layouts for piece in found.unplaced if piece.kind == "Wedge"]
+        self.assertEqual(len(placed) + len(offcuts), len(wedges))
+        self.assertTrue(placed)
+        for found in layouts:
+            for stock in found.stocks:
+                faces = [
+                    Part.Face(
+                        Part.makePolygon(
+                            [FreeCAD.Vector(x, y, 0) for x, y in item.outline + item.outline[:1]]
+                        )
+                    )
+                    for item in stock.placed
+                ]
+                for index, face in enumerate(faces):
+                    for other in faces[index + 1 :]:
+                        self.assertLess(face.common(other).Area, 1.0)
+
+    def test_stringers_end_level_on_a_last_tread_with_no_riser(self):
+        # Without a final riser the last tread is the floor: the board over it
+        # runs on level instead of climbing a riser that is not there.
+        stair, _flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        floor = stair.FloorHeight.Value
+        for end_with_riser in (True, False):
+            stair.EndWithRiser = end_with_riser
+            stair.Proxy.rebuild(stair, allow_structure_changes=True)
+            self.document.recompute()
+            riser = stair.RiserHeight.Value
+            parts = [part for part in stair.StringersGroup.Group if not part.Shape.isNull()]
+            self.assertTrue(parts)
+            top = max(part.Shape.BoundBox.ZMax for part in parts)
+            # Still above the floor-level tread it houses, nowhere near a
+            # riser above it.
+            self.assertGreater(top, floor, end_with_riser)
+            self.assertLess(top, floor + 0.5 * riser, end_with_riser)
+            for part in parts:
+                self.assertTrue(part.Shape.isValid(), part.Label)
+
+    def test_bill_of_materials_lists_the_stock_of_every_member(self):
+        import csv
+        import io
+
+        from stairdesigner.stair_bom import stair_stock, stock_csv, stock_totals
+
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        self.assertNotIn("BomStockLayout", stair.PropertiesList)
+        treads = {
+            part.Label: part.Shape
+            for part in stair.StepsGroup.Group
+            if part.StairDesignerRole == "Tread"
+        }
+        rows = stair_stock(stair)
+        stringers = [row for row in rows if row["kind"] == "Stringer"]
+        self.assertTrue(stringers)
+        for row in stringers:
+            self.assertAlmostEqual(row["thickness"], stair.StringerThickness.Value, delta=1.0)
+            self.assertGreater(row["length"], row["width"])
+        # Every tread once, its stock as thick as the step.
+        tread_rows = [row for row in rows if row["kind"] == "Tread"]
+        self.assertEqual(
+            sorted(label for row in tread_rows for label in row["parts"]), sorted(treads)
+        )
+        for row in tread_rows:
+            self.assertAlmostEqual(row["thickness"], stair.StepThickness.Value, delta=1.0)
+        widest = max(row["width"] for row in tread_rows)
+
+        # Glued up from narrower planks: every tread is covered by its strips.
+        plank = 200.0
+        self.assertLess(plank, widest)
+        rows = stair_stock(stair, plank)
+        covered = {}
+        for row in rows:
+            if row["kind"] not in ("Tread", "Tread strip"):
+                continue
+            self.assertLessEqual(row["width"], plank + 1.0)
+            self.assertAlmostEqual(row["stock_width"], plank)
+            for label in row["parts"]:
+                if row["kind"] == "Tread strip":
+                    # Strips are numbered after their tread.
+                    label = label.rsplit(" (", 1)[0]
+                covered[label] = covered.get(label, 0.0) + row["length"] * row["width"]
+        self.assertEqual(sorted(covered), sorted(treads))
+        for label, shape in treads.items():
+            top = max(shape.Faces, key=lambda face: face.Area).Area
+            self.assertGreaterEqual(covered[label], top - 1.0, label)
+        self.assertIn(plank, [width for _thickness, width, _length in stock_totals(rows)])
+        table = list(csv.reader(io.StringIO(stock_csv(rows))))
+        self.assertEqual(table[0][0], "Part")
+        self.assertEqual(len(table), len(rows) + 3 + len(stock_totals(rows)))
+
+    def test_tapered_parts_pair_head_to_tail_on_the_stock(self):
+        from stairdesigner.stair_nesting import lay_out, polygon_area
+
+        # Two winder-like treads, nosing along X, tapering across it: turned
+        # half a turn, one fits along the other's back on a narrow plank.
+        tread = [(0.0, 0.0), (900.0, 0.0), (900.0, 400.0), (0.0, 120.0)]
+        other = [(0.0, 0.0), (900.0, 0.0), (900.0, 400.0), (0.0, 120.0)]
+        stocks, unplaced = lay_out([("a", tread), ("b", other)], 3000.0, 530.0, 5.0)
+        self.assertEqual(unplaced, [])
+        self.assertEqual(len(stocks), 1)
+        placed = stocks[0].placed
+        self.assertEqual(sorted(item.turned for item in placed), [False, True])
+        for item in placed:
+            self.assertAlmostEqual(polygon_area(item.outline), polygon_area(tread))
+            for x, y in item.outline:
+                self.assertTrue(-1e-6 <= x <= 3000.0 + 1e-6 and -1e-6 <= y <= 530.0 + 1e-6)
+            # Half a turn keeps the grain along the plank.
+            xs = [x for x, _y in item.outline]
+            self.assertAlmostEqual(max(xs) - min(xs), 900.0)
+        faces = [
+            Part.Face(
+                Part.makePolygon(
+                    [FreeCAD.Vector(x, y, 0) for x, y in item.outline + item.outline[:1]]
+                )
+            )
+            for item in placed
+        ]
+        self.assertLess(faces[0].common(faces[1]).Area, 1e-6)
+        self.assertGreaterEqual(faces[0].distToShape(faces[1])[0], 5.0 - 1e-6)
+        # A part larger than the stock is reported, not lost.
+        stocks, unplaced = lay_out(
+            [("big", [(0, 0), (4000, 0), (4000, 100), (0, 100)])], 3000.0, 300.0
+        )
+        self.assertEqual((stocks, unplaced), ([], ["big"]))
+
+    def test_stock_layout_counts_planks_and_exports_dxf(self):
+        from stairdesigner.stair_bom import (
+            Material,
+            default_materials,
+            flat_pieces,
+            set_stair_materials,
+            stair_layout,
+            stair_materials,
+        )
+        from stairdesigner.stair_dxf import stock_dxf
+
+        stair, _flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        pieces = flat_pieces(stair)
+        boards = [piece for piece in pieces if piece.kind == "Stringer"]
+        self.assertEqual(
+            len(boards),
+            len([part for part in stair.StringersGroup.Group if not part.Shape.isNull()]),
+        )
+        # Housed boards lie with their housings up, to the overlap's depth;
+        # mortises for the next board's tenon go deeper, never through.
+        overlap = stair.StringerStepOverlap.Value
+        for board in boards:
+            depths = [depth for depth, _outline in board.pockets + board.back_pockets]
+            self.assertIn(
+                round(overlap, 2), [depth for depth, _outline in board.pockets], board.label
+            )
+            self.assertLess(max(depths), board.thickness - 1.0, board.label)
+
+        materials, assignment = default_materials(stair, pieces)
+        # Each material keeps its own cut spacing.
+        materials[1].spacing = 3.2
+        set_stair_materials(stair, materials, assignment)
+        self.assertEqual(
+            [material.spacing for material in stair_materials(stair)[0]], [5.0, 3.2, 5.0]
+        )
+        longest = max(board.length for board in boards)
+        self.assertGreater(materials[0].length, longest)
+        # A board longer than the planks is reported, not dropped.
+        length = materials[0].length
+        materials[0].length = longest - 10.0
+        layouts, _unassigned = stair_layout(materials, assignment, pieces)
+        self.assertIn(max(boards, key=lambda board: board.length), layouts[0].unplaced)
+        materials[0].length = length
+        layouts, unassigned = stair_layout(materials, assignment, pieces)
+        self.assertEqual(unassigned, [])
+        self.assertEqual(len(layouts), 3)
+        for found in layouts:
+            self.assertEqual(found.unplaced, [])
+            material = found.material
+            for stock in found.stocks:
+                faces = []
+                for item in stock.placed:
+                    for x, y in item.outline:
+                        self.assertGreaterEqual(x, -1e-6)
+                        self.assertGreaterEqual(y, -1e-6)
+                        self.assertLessEqual(x, material.length + 1e-6)
+                        self.assertLessEqual(y, material.width + 1e-6)
+                    faces.append(
+                        Part.Face(
+                            Part.makePolygon(
+                                [
+                                    FreeCAD.Vector(x, y, 0)
+                                    for x, y in item.outline + item.outline[:1]
+                                ]
+                            )
+                        )
+                    )
+                for index, face in enumerate(faces):
+                    for other in faces[index + 1 :]:
+                        self.assertLess(face.common(other).Area, 1.0)
+        # Treads wider than their planks come as strips, all laid out.
+        treads = [found for found in layouts if found.material.name == assignment["Tread"]][0]
+        kinds = {item.part.kind for stock in treads.stocks for item in stock.placed}
+        self.assertIn("Tread strip", kinds)
+
+        # One panel for everything: the thinner risers get panels of their own.
+        panel = Material("Panel", 2500.0, 1250.0)
+        layouts, unassigned = stair_layout(
+            [panel], {"Stringer": "Panel", "Tread": "Panel", "Riser": "Panel"}, pieces
+        )
+        self.assertEqual(unassigned, [])
+        self.assertEqual(
+            [found.thickness for found in layouts],
+            [stair.StepThickness.Value, stair.RiserThickness.Value],
+        )
+        kinds = [
+            {item.part.kind for stock in found.stocks for item in stock.placed} for found in layouts
+        ]
+        self.assertNotIn("Tread strip", kinds[0])
+        self.assertEqual(kinds[1], {"Riser"})
+
+        text = stock_dxf(treads.stocks)
+        self.assertTrue(text.endswith("0\nEOF\n"))
+        self.assertEqual(
+            text.count("\nPOLYLINE\n"),
+            len(treads.stocks) + sum(len(stock.placed) for stock in treads.stocks),
+        )
+        stringers = [found for found in layouts if found.material.name == "Panel"][0]
+        self.assertIn("\nPOCKET_", stock_dxf(stringers.stocks))
+
+    def test_flat_pieces_know_how_they_lie_in_their_part(self):
+        from stairdesigner.stair_bom import flat_pieces
+
+        stair, _flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        pieces = [piece for piece in flat_pieces(stair) if piece.kind != "Wedge"]
+        self.assertGreater(len(pieces), 10)
+        sources = [piece.source.Name for piece in pieces]
+        checked = 0
+        for piece in pieces:
+            if sources.count(piece.source.Name) > 1:
+                # One of the boards of a part: the part reaches further.
+                continue
+            checked += 1
+            with self.subTest(piece=piece.label):
+                shape = piece.source.Shape
+                origin, along, across = piece.frame
+                self.assertAlmostEqual(along.Length, 1.0, places=9)
+                self.assertAlmostEqual(across.Length, 1.0, places=9)
+                self.assertAlmostEqual(along.dot(across), 0.0, places=9)
+                # The outline is measured from the frame's origin, along
+                # its axes: the part reaches as far as the outline does.
+                points = [
+                    point for edge in shape.Edges for point in edge.discretize(Deflection=0.05)
+                ]
+                # A winder's riser has its ends cut on the bevel: the board
+                # is longer than its face by up to its thickness.
+                bevel = piece.thickness if piece.kind == "Riser" else 0.0
+                for axis, size in ((along, piece.length), (across, piece.width)):
+                    reach = [point.dot(axis) for point in points]
+                    self.assertAlmostEqual(min(reach), origin.dot(axis), delta=0.3 + bevel)
+                    self.assertAlmostEqual(max(reach) - min(reach), size, delta=0.3 + bevel)
+                    self.assertGreaterEqual(max(reach) - min(reach), size - 0.3)
+        self.assertGreater(checked, 10)
+
+    def _closest_housing_margins(self, stair, flights, timber):
+        """Return each housed tread's smallest plumb margin to the second
+        flight's inner board underside, sorted, checking ``timber`` square
+        to the board under every corner."""
+
+        steps = [
+            (part.StairDesignerRole, part.Shape)
+            for part in stair.StepsGroup.Group
+            if part.StairDesignerRole in ("Tread", "Riser")
+        ]
+        board = next(
+            part
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[1] and part.Side == "Right"
+        )
+        bounds = board.Shape.BoundBox
+        # The board stands across x; its outer face, free of housings, is
+        # the low-x one.
+        slab = Part.makeBox(
+            bounds.XLength,
+            bounds.YLength,
+            stair.FloorHeight.Value,
+            FreeCAD.Vector(bounds.XMin, bounds.YMin, 0.0),
+        )
+        closest = []
+        for role, step in steps:
+            housed = step.common(slab)
+            if housed.Volume < 1.0:
+                continue
+            lowest = min(vertex.Point.z for vertex in housed.Vertexes)
+            if lowest < 1.0:
+                continue
+            margins = []
+            for vertex in housed.Vertexes:
+                point = vertex.Point
+                if point.z > lowest + 1e-6 or not bounds.YMin + 1.0 < point.y < bounds.YMax - 1.0:
+                    continue
+                bottom = self._bottom_at(board.Shape, bounds.XMin + 1.0, point.y)
+                if bottom is None:
+                    continue
+                margins.append(point.z - bottom)
+                self.assertLessEqual(bottom, point.z - timber + 1e-3, (point.y, point.z))
+            if margins and role == "Tread":
+                closest.append(min(margins))
+        self.assertGreater(len(closest), 3)
+        return sorted(closest)
+
+    def test_housed_board_starts_past_the_first_nosing(self):
+        # Without posts, nothing trims the board's front end.
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        tread = min(
+            (part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"),
+            key=lambda part: part.Shape.BoundBox.ZMin,
+        )
+        board = next(
+            part
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[0] and part.Side == "Left"
+        )
+        self.assertAlmostEqual(stair.StringerStartExtension.Value, 30.0)
+        # 30 mm beyond the nosing tip, which the board houses.
+        self.assertAlmostEqual(
+            board.Shape.BoundBox.XMin,
+            tread.Shape.BoundBox.XMin - 30.0,
+            places=3,
+        )
+
+    def test_short_inner_side_gets_a_short_board_on_the_floor(self):
+        # The first flight's 110 mm inner side is shorter than one going: its
+        # winders climb far too steeply for a board following their nosings.
+        # A short board stands on the floor there instead, from the first
+        # nosing to the corner newel, with no post in front and no rail.
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+        boards = [
+            part
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[0] and part.Side == "Right"
+        ]
+        self.assertEqual(len(boards), 1)
+        board = boards[0].Shape
+        self.assertTrue(board.isValid())
+        self.assertEqual(len(board.Solids), 1)
+        bounds = board.BoundBox
+        self.assertAlmostEqual(bounds.ZMin, 0.0, places=6)
+
+        posts = [
+            part for part in stair.HandrailsGroup.Group if part.StairDesignerRole == "HandrailPost"
+        ]
+
+        def near(post, x, y):
+            centre = post.Shape.BoundBox.Center
+            return math.dist((centre.x, centre.y), (x, y)) < 100.0
+
+        self.assertFalse([post for post in posts if near(post, 0.0, 0.0)])
+        self.assertFalse(
+            [
+                part
+                for part in stair.HandrailsGroup.Group
+                if part.StairDesignerRole == "HandrailTopRail"
+                and part.SourceFlight == flights[0]
+                and part.Side == "Right"
+            ]
+        )
+        # The corner newel stands on the floor and takes the board's end.
+        corner = next(post for post in posts if near(post, 110.0, 0.0))
+        self.assertAlmostEqual(corner.Shape.BoundBox.ZMin, 0.0, places=6)
+        self.assertLess(board.distToShape(corner.Shape)[0], 1e-6)
+
+        # Its winders are clipped where they converge on the newel: only the
+        # first tread ends in the board, which stands just above it, level,
+        # from as far in front of the nosing as any board starts.
+        treads = [
+            part.Shape for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"
+        ]
+        first = min(treads, key=lambda tread: tread.BoundBox.ZMin)
+        self.assertLess(first.distToShape(board)[0], 1e-6)
+        self.assertAlmostEqual(
+            bounds.ZMax, first.BoundBox.ZMax + stair.StringerNosingOffset.Value, places=3
+        )
+        self.assertAlmostEqual(
+            bounds.XMin, first.BoundBox.XMin - stair.StringerStartExtension.Value, places=3
+        )
+
+        # The first step keeps its square end, housed in the board.
+        nose = first.BoundBox.XMin
+        self.assertTrue(
+            first.isInside(FreeCAD.Vector(nose + 5.0, 37.0, first.BoundBox.ZMax - 1.0), 1e-6, True)
+        )
+
+    def test_short_board_shoulders_up_to_the_treads_it_houses(self):
+        from stairdesigner.geometry_stringer_shapes import make_short_housed_stringer_shape
+
+        # A side 190 long, along y = 0, the steps on its +y side.
+        def section(u, top):
+            return BalancedSection(
+                center=(u, 350.0),
+                tangent=(1.0, 0.0),
+                left=(u, 700.0),
+                right=(u, 0.0),
+                station=u,
+                width=700.0,
+                flight_index=0,
+                top_elevation=top,
+            )
+
+        sections = [section(0.0, 200.0), section(100.0, 400.0), section(190.0, 600.0)]
+
+        def tread(start, end, top):
+            return Part.makeBox(end - start, 300.0, 40.0, FreeCAD.Vector(start, 0.0, top - 40.0))
+
+        def board(steps):
+            # 40 thick, housing the steps 20 deep; 60 before the first riser,
+            # 20 of timber over the nosings of 30; the newel takes the treads
+            # starting within 90 of the corner.
+            shape = make_short_housed_stringer_shape(
+                sections, 200.0, "Right", 40.0, 20.0, 60.0, 20.0, 30.0, steps, 90.0
+            )
+            self.assertTrue(shape.isValid())
+            self.assertEqual(len(shape.Solids), 1)
+            return shape
+
+        def top(shape, x):
+            line = Part.makeLine(FreeCAD.Vector(x, -10.0, -10.0), FreeCAD.Vector(x, -10.0, 2000.0))
+            return max(vertex.Point.z for vertex in shape.common(line).Vertexes)
+
+        def front(shape):
+            return max(
+                vertex.Point.z
+                for vertex in shape.Vertexes
+                if abs(vertex.Point.x - shape.BoundBox.XMin) < 1e-6
+            )
+
+        # Three treads end in the board; the fourth starts at the newel.
+        treads = [
+            tread(-30.0, 100.0, 200.0),
+            tread(70.0, 120.0, 400.0),
+            tread(90.0, 190.0, 600.0),
+            tread(160.0, 400.0, 800.0),
+        ]
+        shape = board(treads)
+        bounds = shape.BoundBox
+        for value, expected in (
+            (bounds.XMin, -60.0),
+            (bounds.XMax, 190.0),
+            (bounds.YMin, -20.0),
+            (bounds.YMax, 20.0),
+            (bounds.ZMin, 0.0),
+            (bounds.ZMax, 620.0),
+        ):
+            self.assertAlmostEqual(value, expected, places=6)
+        # A plumb front as high as the first tread asks, then a quarter of
+        # an ellipse up to the level top, reached above the last nosing.
+        self.assertAlmostEqual(front(shape), 220.0, places=6)
+        self.assertAlmostEqual(top(shape, 0.0), 220.0 + 400.0 * 0.8, places=3)
+        self.assertAlmostEqual(top(shape, 90.0), 620.0, places=6)
+        self.assertAlmostEqual(top(shape, 150.0), 620.0, places=6)
+        # The timber kept in front of each nosing tip, and above it.
+        for start, level in ((-30.0, 200.0), (70.0, 400.0), (90.0, 600.0)):
+            for x, z in ((start - 19.0, level), (start, level + 19.0)):
+                self.assertTrue(shape.isInside(FreeCAD.Vector(x, 0.0, z), 1e-6, True), (x, z))
+
+        # A high tread far in front lifts the front for its nosing.
+        high = board([treads[0], tread(-30.0, 100.0, 560.0), treads[2]])
+        self.assertGreater(front(high), 500.0)
+        self.assertAlmostEqual(high.BoundBox.ZMax, 620.0, places=6)
+        for x, z in ((-49.0, 560.0), (-30.0, 579.0)):
+            self.assertTrue(high.isInside(FreeCAD.Vector(x, 0.0, z), 1e-6, True), (x, z))
+
+        # With only its first tread, or none given, the board is a level
+        # block above the first step.
+        for steps in (treads[:1], [treads[0], treads[3]], []):
+            block = board(steps)
+            self.assertAlmostEqual(block.BoundBox.ZMax, 220.0, places=6)
+            self.assertAlmostEqual(block.Volume, 250.0 * 40.0 * 220.0, places=3)
+
+    def test_rounded_first_step_frees_its_end(self):
+        # On a side too short for a regular board the rounded end stands in
+        # front of the corner newel, which carries the winders alone.
+        stair, flights = self._short_inner_side_stair("Housed stringer")
+        self.assertEqual(stair.RoundedFirstStep, "None")
+        stair.RoundedFirstStep = "Right"
+        self.assertFalse(
+            [
+                part
+                for part in stair.StringersGroup.Group
+                if part.SourceFlight == flights[0] and part.Side == "Right"
+            ]
+        )
+        tread = min(
+            (part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"),
+            key=lambda part: part.Shape.BoundBox.ZMin,
+        ).Shape
+        self.assertEqual(len(tread.Solids), 1)
+        self.assertTrue(tread.isValid())
+        bounds = tread.BoundBox
+        nose = bounds.XMin
+        # Through the whole thickness: the square corner at the nosing is
+        # gone, the arc keeps the middle of the step's end, and the wall side
+        # stays square. The steps end half a post (35) within the stair's
+        # sides, y = 0 and 700.
+        for z in (bounds.ZMin + 1.0, bounds.ZMax - 1.0):
+            with self.subTest(z=z):
+
+                def inside(x, y):
+                    return tread.isInside(FreeCAD.Vector(x, y, z), 1e-6, True)
+
+                self.assertFalse(inside(nose + 50.0, 37.0))
+                self.assertTrue(inside(nose + 50.0, 95.0))
+                self.assertTrue(inside(nose + 5.0, 660.0))
+
+    def test_rounded_first_step_starts_the_boards_at_the_second_riser(self):
+        for stringer_type in ("Housed stringer", "Notched stringer", "None"):
+            with self.subTest(stringer_type=stringer_type):
+                stair = make_stair(flight_length=3600.0, width=900.0, steps=16)
+                flight = get_flights(stair)[0]
+                for side in ("Left", "Right"):
+                    setattr(flight, f"{side}StringerType", stringer_type)
+                    setattr(flight, f"{side}HandrailEnabled", stringer_type != "None")
+                stair.Proxy.rebuild(stair)
+
+                def members():
+                    steps = sorted(
+                        (
+                            part
+                            for part in stair.StepsGroup.Group
+                            if part.StairDesignerRole == "Tread"
+                        ),
+                        key=lambda part: part.Shape.BoundBox.ZMin,
+                    )
+                    boards = list(stair.StringersGroup.Group) if stair.StringersGroup else []
+                    posts = (
+                        [
+                            part
+                            for part in stair.HandrailsGroup.Group
+                            if part.StairDesignerRole == "HandrailPost"
+                        ]
+                        if stair.HandrailsGroup
+                        else []
+                    )
+                    return steps, boards, posts
+
+                steps, boards, posts = members()
+                whole = steps[0].Shape.copy()
+                second = steps[1].Shape.Volume
+                riser = steps[1].Shape.BoundBox.XMin + stair.Nosing.Value
+                starts = {part.Side: part.Shape.BoundBox.XMin for part in boards}
+
+                stair.RoundedFirstStep = "Both sides"
+                steps, boards, posts = members()
+                tread = steps[0].Shape
+                self.assertTrue(tread.isValid())
+                self.assertEqual(len(tread.Solids), 1)
+                # The same bite out of both front corners, where it was.
+                removed = whole.cut(tread)
+                self.assertEqual(len(removed.Solids), 2)
+                first, last = sorted(removed.Solids, key=lambda solid: solid.BoundBox.YMin)
+                self.assertAlmostEqual(first.Volume, last.Volume, delta=1.0)
+                self.assertGreater(first.Volume, 1e5)
+                middle = whole.BoundBox.Center.y
+                self.assertAlmostEqual(
+                    middle - first.BoundBox.YMin, last.BoundBox.YMax - middle, places=3
+                )
+                self.assertAlmostEqual(tread.BoundBox.XMin, whole.BoundBox.XMin, places=6)
+                # The second step is whole, but for the posts now beside it.
+                self.assertGreater(steps[1].Shape.Volume, 0.95 * second)
+                self.assertAlmostEqual(
+                    steps[1].Shape.BoundBox.XMin, riser - stair.Nosing.Value, places=6
+                )
+                # The boards and the first posts stand behind the first step.
+                for part in boards:
+                    self.assertGreater(part.Shape.BoundBox.XMin, starts[part.Side] + 100.0)
+                    self.assertLess(part.Shape.BoundBox.XMin, riser + 1.0)
+                    self.assertTrue(part.Shape.isValid())
+                for side in ("Left", "Right"):
+                    if posts:
+                        post = min(
+                            (part for part in posts if part.Side == side),
+                            key=lambda part: part.Shape.BoundBox.XMin,
+                        )
+                        self.assertAlmostEqual(post.Shape.BoundBox.Center.x, riser, delta=100.0)
+                        self.assertGreater(post.Shape.BoundBox.XMin, starts.get(side, 0.0) + 100.0)
+
+                stair.RoundedFirstStep = "Left"
+                steps, boards, _posts = members()
+                removed = whole.cut(steps[0].Shape)
+                self.assertEqual(len(removed.Solids), 1)
+                self.assertGreater(removed.BoundBox.YMin, middle)
+                self.assertAlmostEqual(removed.Volume, first.Volume, delta=1.0)
+                for part in boards:
+                    if part.Side == "Right":
+                        self.assertAlmostEqual(part.Shape.BoundBox.XMin, starts["Right"], places=3)
+
+                stair.RoundedFirstStep = "None"
+                steps, _boards, _posts = members()
+                self.assertAlmostEqual(steps[0].Shape.Volume, whole.Volume, delta=1.0)
+
+    def test_shapes_cut_in_place_keep_their_part_placement(self):
+        from stairdesigner.object_utils import _set_global_shape
+
+        part = self.document.addObject("Part::Feature", "Placed")
+        part.Shape = Part.makeBox(100.0, 50.0, 20.0)
+        placement = FreeCAD.Placement(
+            FreeCAD.Vector(10.0, 35.0, 5.0), FreeCAD.Rotation(FreeCAD.Vector(0.0, 0.0, 1.0), 30.0)
+        )
+        part.Placement = placement
+        whole = part.Shape.copy()
+        corner = whole.Vertexes[0].Point
+        cut = whole.cut(Part.makeSphere(15.0, corner))
+        self.assertLess(cut.Volume, whole.Volume - 100.0)
+        _set_global_shape(part, cut)
+        self.assertTrue(part.Placement.isSame(placement, 1e-9))
+        self.assertAlmostEqual(part.Shape.Volume, cut.Volume, places=3)
+        self.assertLess(part.Shape.cut(cut).Volume, 1e-3)
+        self.assertLess(cut.cut(part.Shape).Volume, 1e-3)
+
+    def test_wall_boards_meet_level_at_corners(self):
+        # The stair rises through a corner, so two sloping boards cannot be
+        # flush across their thickness there. They meet on a level block,
+        # the lower one ramping up to it, at the flight seam and at the turn
+        # of the exit. Without posts, which would stand over both corners.
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        boards = {
+            part.SourceFlight: part.Shape
+            for part in stair.StringersGroup.Group
+            if part.Side == "Left"
+        }
+        first, second = boards[flights[0]], boards[flights[1]]
+        both = first.fuse(second)
+        thickness = stair.StringerThickness.Value
+        side = second.BoundBox
+        corners = (
+            # Flight seam: the second flight's side board crosses the first's.
+            (side.XMax - thickness, side.XMax, first.BoundBox.YMin, first.BoundBox.YMax),
+            # Exit turn: the end board crosses the side board.
+            (side.XMax - thickness, side.XMax, side.YMin, side.YMin + thickness),
+        )
+        for x_min, x_max, y_min, y_max in corners:
+            for probe in (self._top_at, self._bottom_at):
+                with self.subTest(corner=(x_min, y_min), edge=probe.__name__):
+                    heights = [
+                        probe(both, x, y)
+                        for x in (x_min + 2.0, (x_min + x_max) / 2.0, x_max - 2.0)
+                        for y in (y_min + 2.0, (y_min + y_max) / 2.0, y_max - 2.0)
+                    ]
+                    self.assertNotIn(None, heights)
+                    self.assertLess(max(heights) - min(heights), 1e-3)
+                    level = heights[0]
+                    # Both boards leave the block from its level, on either
+                    # face, above and below.
+                    for x, y in (
+                        (x_min - 1.0, y_min + 2.0),
+                        (x_min - 1.0, y_max - 2.0),
+                        (x_min + 2.0, y_min - 1.0),
+                        (x_max - 2.0, y_min - 1.0),
+                        (x_min + 2.0, y_max + 1.0),
+                        (x_max - 2.0, y_max + 1.0),
+                    ):
+                        height = probe(both, x, y)
+                        if height is not None:
+                            self.assertLess(abs(height - level), 1.0, (x, y))
+
+    def test_exit_turn_end_board_runs_past_the_last_nosing(self):
+        # Turning at its exit, the outer side's last board crosses the
+        # flight under the last tread, whose nosing overhangs its end.
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        last = max(
+            (part for part in stair.StepsGroup.Group if part.StairDesignerRole == "Tread"),
+            key=lambda part: part.Shape.BoundBox.ZMax,
+        )
+        # The end board is a part of its own, after the flight's main board.
+        board = next(
+            part
+            for part in stair.StringersGroup.Group
+            if part.SourceFlight == flights[1]
+            and part.Side == "Left"
+            and part.StairDesignerRole == "LeftStringerBoard"
+        )
+        self.assertIn(", end board", board.Label)
+        self.assertAlmostEqual(stair.StringerEndExtension.Value, 0.0)
+        self.assertLessEqual(board.Shape.BoundBox.XMin, last.Shape.BoundBox.XMin + 1e-3)
+
+    def test_short_flight_straight_part_stops_at_inner_corner(self):
+        from stairdesigner.geometry_winders import (
+            _herse_corner_trims,
+            _inner_corner_setbacks,
+        )
+
+        self.assertEqual(
+            tuple(round(value, 9) for value in _inner_corner_setbacks((0, 700, 0), (0, 900, -90))),
+            (450.0, 350.0),
+        )
+        self.assertEqual(_inner_corner_setbacks((0, 700, 0), (0, 700, 0)), (0.0, 0.0))
+        # Inner side 110: perpendicular nosings must stop 350 before the
+        # axis vertex, although 48% of the 460 axis would stop at 221.
+        specs = [(460.0, 700.0, 0.0), (1890.0, 700.0, -90.0)]
+        incoming, outgoing = _herse_corner_trims(specs, [(50.0, 1.0)])[0]
+        self.assertGreaterEqual(incoming, 350.0)
+        self.assertLessEqual(incoming, 460.0 * 0.98)
+        self.assertAlmostEqual(outgoing, 700.0)
+        # Unchanged where the requested zone already fits in the flight.
+        long_specs = [(3500.0, 1000.0, 0.0), (3500.0, 1000.0, 90.0)]
+        self.assertEqual(_herse_corner_trims(long_specs, [(50.0, 1.0)]), [(1000.0, 1000.0)])
+
+    def test_off_rail_nosing_does_not_drag_its_neighbours(self):
+        from stairdesigner.geometry_plan import (
+            _boundary_data,
+            _boundary_point,
+            _monotone_boundary_parameters,
+        )
+
+        footprint = make_stair_footprint([(1000.0, 500.0, 0.0)])
+        boundary = _boundary_data(footprint)
+        # The middle nosing crossed to the opposite side; the others are
+        # evenly spaced along the right side.
+        points = [(0.0, 0.0), (250.0, 0.0), (500.0, 500.0), (750.0, 0.0), (1000.0, 0.0)]
+        sections = [
+            BalancedSection(
+                center=(x, 250.0),
+                tangent=(1.0, 0.0),
+                left=(x, 500.0),
+                right=point,
+                station=x,
+                width=500.0,
+                flight_index=0,
+            )
+            for x, point in zip((0.0, 250.0, 500.0, 750.0, 1000.0), points)
+        ]
+        orientation = 1.0 if boundary["signed_area"] > 0.0 else -1.0
+        parameters = _monotone_boundary_parameters(points, sections, boundary, orientation)
+        for parameter, expected in zip(parameters, (0.0, 250.0, 500.0, 750.0, 1000.0)):
+            point = _boundary_point(parameter, boundary)
+            self.assertAlmostEqual(point[0], expected, places=6)
+            self.assertAlmostEqual(point[1], 0.0, places=6)
+
     def test_walking_line_offset_changes_winder_distribution(self):
         from stairdesigner.geometry_winders import _walking_path_stations
 
-        # The outside parallel of a quarter circle is exactly longer by d*pi/2.
+        # The walking line 300 from the inner side of a 1000 wide quarter
+        # turn runs 200 inside its middle: shorter by 200*pi/2. Past the
+        # middle, it runs in the middle.
         points = [
             (1000 * math.cos(i * math.pi / 2000), 1000 * math.sin(i * math.pi / 2000), 1000.0, 0)
             for i in range(1001)
         ]
         center = _walking_path_stations(points)[-1]
-        outside = _walking_path_stations(points, 300.0)[-1]
-        self.assertAlmostEqual(outside - center, 200 * math.pi / 2, delta=0.4)
+        inside = _walking_path_stations(points, 300.0)[-1]
+        self.assertAlmostEqual(center - inside, 200 * math.pi / 2, delta=0.4)
         self.assertEqual(_walking_path_stations(points, 1000.0)[-1], center)
         stair = make_stair()
         flight = get_flights(stair)[0]
@@ -374,7 +2344,8 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         flight.ExitDirection = "To left"
         going = stair.TreadWidth.Value
         first_shape = stair.StepsGroup.Group[0].Shape.copy()
-        stair.WalkingLineOffset = 500.0
+        # Nearer the inner side, the walking line is shorter.
+        stair.WalkingLineOffset = 300.0
         self.assertLess(stair.TreadWidth.Value, going)
         self.assertFalse(first_shape.isEqual(stair.StepsGroup.Group[0].Shape))
         self.assertEqual(stair.GeometryStatus, "Balanced entry/exit stair")
@@ -707,7 +2678,7 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         stair = make_stair(flight_length=1800.0, width=800.0)
         flights = resize_flights(stair, 3, length=1800.0, width=800.0)
 
-        self.assertAlmostEqual(stair.WalkingLineOffset.Value, 300.0)
+        self.assertAlmostEqual(stair.WalkingLineOffset.Value, 500.0)
         self.assertNotIn("WindingCoefficient", stair.PropertiesList)
         self.assertEqual(stair.StepsGroup.PanelSection, "steps")
         for flight in flights:
@@ -2089,6 +4060,10 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
             steps=10,
             stair_type="Wood",
         )
+        stair.Proxy._updating = True
+        # The broad-face checks below count the plain board faces.
+        stair.StringerJoinery = False
+        stair.Proxy._updating = False
         self.document.recompute()
 
         self.assertIsNone(stair.StringersGroup)
@@ -2457,6 +4432,8 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         )
         stair.Proxy._updating = True
         try:
+            # The coverage check below needs boards without housings.
+            stair.StringerJoinery = False
             flights = resize_flights(
                 stair,
                 2,
@@ -2541,6 +4518,8 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
             )
             stair.Proxy._updating = True
             try:
+                # Count only the board radii, not the housing faces.
+                stair.StringerJoinery = False
                 flights = resize_flights(
                     stair,
                     2,
@@ -2861,7 +4840,7 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
             steps=10,
             stair_type="Wood",
         )
-        self.assertAlmostEqual(stair.StringerStartExtension.Value, 0.0)
+        self.assertAlmostEqual(stair.StringerStartExtension.Value, 30.0)
         self.assertAlmostEqual(stair.StringerEndExtension.Value, 0.0)
         self.assertAlmostEqual(stair.HandrailPostAboveTopRail.Value, 70.0)
 
@@ -2893,10 +4872,13 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         post_centers = [
             (post.Shape.BoundBox.XMin + post.Shape.BoundBox.XMax) / 2.0 for post in posts
         ]
-        self.assertAlmostEqual(post_centers[0], 0.0)
+        # The housed board runs 30 mm past the first nosing by default, and
+        # the first post stands on its front end.
+        front = -(stair.Nosing.Value + 30.0)
+        self.assertAlmostEqual(post_centers[0], front)
         self.assertAlmostEqual(post_centers[1], 2400.0)
         # A 35 mm penetration into a 70 mm post ends at its center.
-        self.assertAlmostEqual(top_rail.Shape.BoundBox.XMin, 0.0)
+        self.assertAlmostEqual(top_rail.Shape.BoundBox.XMin, front)
         self.assertAlmostEqual(top_rail.Shape.BoundBox.XMax, 2400.0)
 
         stair.Proxy._updating = True
@@ -2920,11 +4902,21 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         post_centers = [
             (post.Shape.BoundBox.XMin + post.Shape.BoundBox.XMax) / 2.0 for post in posts
         ]
-        self.assertAlmostEqual(stringer.Shape.BoundBox.XMin, -100.0)
-        self.assertAlmostEqual(stringer.Shape.BoundBox.XMax, 2500.0)
-        self.assertAlmostEqual(post_centers[0], -100.0)
+        # The extended board is trimmed at the end posts and tenoned into
+        # them: its ends stop inside the posts rather than at their centers.
+        first_post = posts[0].Shape.BoundBox
+        last_post = posts[1].Shape.BoundBox
+        self.assertGreater(stringer.Shape.BoundBox.XMin, first_post.XMin)
+        self.assertLess(stringer.Shape.BoundBox.XMin, -100.0)
+        self.assertLess(stringer.Shape.BoundBox.XMax, last_post.XMax)
+        self.assertGreater(stringer.Shape.BoundBox.XMax, 2500.0)
+        self.assertLess(stringer.Shape.common(posts[0].Shape).Volume, 1e-3)
+        self.assertLess(stringer.Shape.common(posts[1].Shape).Volume, 1e-3)
+        # The start extension counts from the first nosing.
+        front = -(stair.Nosing.Value + 100.0)
+        self.assertAlmostEqual(post_centers[0], front)
         self.assertAlmostEqual(post_centers[1], 2500.0)
-        self.assertAlmostEqual(top_rail.Shape.BoundBox.XMin, -100.0)
+        self.assertAlmostEqual(top_rail.Shape.BoundBox.XMin, front)
         self.assertAlmostEqual(top_rail.Shape.BoundBox.XMax, 2500.0)
 
         stair.StairType = "Concrete"
@@ -2978,7 +4970,15 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
         self.assertFalse(shape.isNull())
         self.assertTrue(shape.isValid())
         self.assertEqual(len(shape.Solids), 1)
-        self.assertEqual(len(shape.Faces), 6)
+        # The edges are straight pitches or fair curves running evenly
+        # along the board, never looping back over it.
+        for edge in shape.Edges:
+            self.assertIn(edge.Curve.TypeId, ("Part::GeomLine", "Part::GeomBSplineCurve"))
+            along = [point.x for point in edge.discretize(Number=50)]
+            steps = [second - first for first, second in zip(along, along[1:])]
+            self.assertTrue(
+                all(step >= -1e-9 for step in steps) or all(step <= 1e-9 for step in steps)
+            )
         self.assertGreaterEqual(shape.BoundBox.XMin, -1e-7)
         self.assertLessEqual(shape.BoundBox.XMax, 1600.0 + 1e-7)
         self.assertGreaterEqual(shape.BoundBox.ZMin, -1e-7)
@@ -3829,3 +5829,488 @@ class TestArchStairDesigner(TestArchBase.TestArchBase):
             self.assertIsNone(self.document.getObject(name))
         self.assertEqual(self.document.Objects, [])
         self.assertEqual(self.document.getUniqueObjectName("Stair"), "Stair")
+
+    def _joinery_stair(self, flights=1):
+        stair = make_stair()
+        stair.Proxy._updating = True
+        stair.Nosing = 30
+        stair.RisersEnabled = True
+        stair.Proxy._updating = False
+        if flights > 1:
+            resize_flights(stair, flights, length=1800.0, width=1000.0)
+        for flight in get_flights(stair):
+            flight.Proxy._updating = True
+            flight.LeftStringerType = "Housed stringer"
+            flight.RightStringerType = "Housed stringer"
+            flight.LeftHandrailEnabled = True
+            flight.RightHandrailEnabled = True
+            flight.Proxy._updating = False
+        stair.Proxy.rebuild(stair)
+        return stair
+
+    def test_housed_stringers_house_steps_and_tenon_into_posts(self):
+        stair = self._joinery_stair()
+        stringers = list(stair.StringersGroup.Group)
+        steps = [p for p in stair.StepsGroup.Group if p.StairDesignerRole in ("Tread", "Riser")]
+        members = list(stair.HandrailsGroup.Group)
+        posts = [p for p in members if p.StairDesignerRole == "HandrailPost"]
+        pickets = [p for p in members if p.StairDesignerRole == "HandrailPicket"]
+        self.assertEqual(len(stringers), 2)
+        self.assertEqual(len(posts), 4)
+        for stringer in stringers:
+            shape = stringer.Shape
+            shape.check(True)
+            self.assertEqual(len(shape.Solids), 1)
+            envelope = Part.makeBox(
+                shape.BoundBox.XLength,
+                shape.BoundBox.YLength,
+                shape.BoundBox.ZLength,
+                FreeCAD.Vector(shape.BoundBox.XMin, shape.BoundBox.YMin, shape.BoundBox.ZMin),
+            )
+            for part in steps + pickets + posts:
+                # Nothing overlaps the board any more: every end is housed.
+                self.assertLess(shape.common(part.Shape).Volume, 1e-3, part.Label)
+            for step in steps:
+                self.assertGreater(step.Shape.common(envelope).Volume, 1.0, step.Label)
+            for picket in pickets:
+                if picket.Side == stringer.Side:
+                    self.assertGreater(picket.Shape.common(envelope).Volume, 1.0)
+            for post in posts:
+                if post.Side != stringer.Side:
+                    continue
+                bounds = post.Shape.BoundBox
+                post_box = Part.makeBox(
+                    bounds.XLength,
+                    bounds.YLength,
+                    bounds.ZLength,
+                    FreeCAD.Vector(bounds.XMin, bounds.YMin, bounds.ZMin),
+                )
+                tenon = shape.common(post_box)
+                mortise = post_box.cut(post.Shape)
+                self.assertGreater(tenon.Volume, 1000.0)
+                self.assertAlmostEqual(mortise.common(shape).Volume, tenon.Volume, delta=1.0)
+                # The tenon is a stub: shoulders keep it inside the board.
+                self.assertLess(tenon.BoundBox.YLength, stringer.Thickness.Value * 0.5)
+
+    def test_housed_stringer_profile_is_square_and_level_cut(self):
+        stair = self._joinery_stair()
+        stringer = next(p for p in stair.StringersGroup.Group if p.Side == "Left")
+        shape = stringer.Shape
+        floor_faces = [
+            face
+            for face in shape.Faces
+            if face.Surface.TypeId == "Part::GeomPlane"
+            and abs(abs(face.normalAt(0, 0).z) - 1.0) < 1e-9
+            and face.BoundBox.ZMax < 1e-6
+        ]
+        self.assertTrue(floor_faces, "The board foot must be a level floor cut")
+        self.assertGreaterEqual(shape.BoundBox.ZMin, -1e-6)
+        # The lower edge stays parallel to the pitch: no curl at the floor.
+        spans = []
+        for x in (600.0, 1500.0, 2400.0):
+            probe = Part.makeLine(FreeCAD.Vector(x, 990.0, -10), FreeCAD.Vector(x, 990.0, 4000))
+            spans.append(shape.common(probe).BoundBox)
+        for span in spans[1:]:
+            self.assertAlmostEqual(span.ZMin - spans[0].ZMin, span.ZMax - spans[0].ZMax, places=4)
+
+    def test_winder_stringers_meet_without_overlap_or_hooks(self):
+        stair = self._joinery_stair(flights=2)
+        self.assertEqual(stair.GeometryStatus, "Balanced multi-flight stair")
+        stringers = list(stair.StringersGroup.Group)
+        self.assertEqual(len(stringers), 4)
+        for stringer in stringers:
+            stringer.Shape.check(True)
+            self.assertEqual(len(stringer.Shape.Solids), 1, stringer.Label)
+            # No profile hook at a newel: the board stays below the floor
+            # height plus one board width.
+            self.assertLess(
+                stringer.Shape.BoundBox.ZMax,
+                stair.FloorHeight.Value + stringer.Width.Value,
+            )
+            for other in stringers:
+                if other is not stringer:
+                    self.assertLess(stringer.Shape.common(other.Shape).Volume, 1e-3)
+        outer = sorted((p for p in stringers if p.Side == "Right"), key=lambda p: p.FlightIndex)
+        # The outer boards meet at the corner at one common height.
+        corner = FreeCAD.Vector(outer[0].Shape.BoundBox.XMax, 0.0, 0.0)
+        tops = []
+        for board, offset in (
+            (outer[0], FreeCAD.Vector(-60.0, 10.0, 0.0)),
+            (outer[1], FreeCAD.Vector(-20.0, 60.0, 0.0)),
+        ):
+            point = corner + offset
+            probe = Part.makeLine(point, point + FreeCAD.Vector(0.0, 0.0, 4000.0))
+            tops.append(board.Shape.common(probe).BoundBox.ZMax)
+        self.assertAlmostEqual(tops[0], tops[1], delta=60.0)
+
+    def test_square_top_rail_keeps_its_thickness_on_any_pitch(self):
+        from stairdesigner.geometry_handrails import make_handrail_top_rail_shape
+
+        for rise in (0.0, 500.0, 1000.0):
+            path = {
+                "kind": "Linear",
+                "start": (0.0, 0.0),
+                "end": (1000.0, 0.0),
+                "tangent": (1.0, 0.0),
+                "length": 1000.0,
+                "top_elevations": [900.0, 900.0 + rise],
+                "support_elevations": [0.0, rise],
+                "cell_count": 1,
+            }
+            # A 50 x 40 rail between the centres of two 70 mm posts.
+            rail = make_handrail_top_rail_shape(path, "Square", 50.0, 40.0, 35.0, 70.0)
+            self.assertTrue(rail.isValid())
+            run = math.hypot(1000.0, rise)
+            # 40 mm square to the rail: its section is 50 x 40 whatever
+            # the pitch, and it stands deeper plumb as the pitch steepens.
+            self.assertAlmostEqual(rail.Volume, 50.0 * 40.0 * run, places=3)
+            probe = Part.makeLine(
+                FreeCAD.Vector(500.0, 0.0, 0.0), FreeCAD.Vector(500.0, 0.0, 3000.0)
+            )
+            crossing = rail.common(probe).BoundBox
+            self.assertAlmostEqual(crossing.ZMax, 900.0 + rise / 2.0, places=6)
+            self.assertAlmostEqual(crossing.ZLength, 40.0 * run / 1000.0, places=6)
+
+    def test_classic_rail_sections_stand_square_within_their_size(self):
+        from stairdesigner.geometry_handrails import make_handrail_top_rail_shape
+        from stairdesigner.geometry_profiles import RAIL_PROFILES
+
+        path = {
+            "kind": "Linear",
+            "start": (0.0, 0.0),
+            "end": (1000.0, 0.0),
+            "tangent": (1.0, 0.0),
+            "length": 1000.0,
+            "top_elevations": [900.0, 1600.0],
+            "support_elevations": [0.0, 700.0],
+            "cell_count": 1,
+        }
+        run = math.hypot(1000.0, 700.0)
+        # Section areas of a 60 x 45 rail, by construction.
+        areas = {
+            "Square": 60.0 * 45.0,
+            "Circular": math.pi * 30.0**2,
+            "Rounded": 60.0 * 45.0 - 2.0 * (1.0 - math.pi / 4.0) * 15.0**2,
+            "Oval": math.pi * 30.0 * 22.5,
+        }
+        self.assertEqual(RAIL_PROFILES[:2], ("Square", "Circular"))
+        for profile in RAIL_PROFILES:
+            with self.subTest(profile=profile):
+                rail = make_handrail_top_rail_shape(path, profile, 60.0, 45.0, 35.0, 70.0)
+                self.assertTrue(rail.isValid())
+                self.assertEqual(len(rail.Solids), 1)
+                # Cut plumb at both ends where the square rail is, and no
+                # wider than asked...
+                if profile != "Circular":
+                    for corner in (
+                        FreeCAD.Vector(-500.0, -500.0, 0.0),
+                        FreeCAD.Vector(1000.0, -500.0, 0.0),
+                        FreeCAD.Vector(-500.0, -530.0, 0.0),
+                        FreeCAD.Vector(-500.0, 30.0, 0.0),
+                    ):
+                        size = (500.0, 1000.0) if corner.y == -500.0 else (2000.0, 500.0)
+                        outside = Part.makeBox(size[0], size[1], 3000.0, corner)
+                        self.assertLess(rail.common(outside).Volume, 1e-3)
+                    for x in (0.5, 999.5):
+                        self.assertTrue(rail.slice(FreeCAD.Vector(1.0, 0.0, 0.0), x))
+                # ... its top on the rail's line whatever the pitch ...
+                probe = Part.makeLine(
+                    FreeCAD.Vector(500.0, 0.0, 0.0), FreeCAD.Vector(500.0, 0.0, 3000.0)
+                )
+                crossing = rail.common(probe).BoundBox
+                self.assertAlmostEqual(crossing.ZMax, 1250.0, places=4)
+                # ... and its section square to the rail, inside its size.
+                area = rail.Volume / run
+                self.assertLess(area, math.pi * 30.0**2 + 1e-3)
+                self.assertGreater(area, 0.7 * 60.0 * 45.0)
+                if profile in areas:
+                    self.assertAlmostEqual(area, areas[profile], delta=0.5)
+                if profile != "Circular":
+                    self.assertAlmostEqual(crossing.ZLength, 45.0 * run / 1000.0, places=3)
+
+    def test_worked_posts_keep_square_blocks_for_their_joints(self):
+        from stairdesigner.geometry_profiles import MEMBER_SHAPES, POST_CAPS, make_member_shape
+
+        def section(shape, elevation):
+            return Part.Face(shape.slice(FreeCAD.Vector(0.0, 0.0, 1.0), elevation)).Area
+
+        plain = 70.0 * 70.0
+        for shape in MEMBER_SHAPES:
+            for cap in POST_CAPS:
+                with self.subTest(shape=shape, cap=cap):
+                    post = make_member_shape(
+                        (0.0, 0.0), (1.0, 0.0), 0.0, 1300.0, shape, 70.0, 70.0, (350.0, 950.0), cap
+                    )
+                    self.assertTrue(post.isValid())
+                    self.assertEqual(len(post.Solids), 1)
+                    self.assertAlmostEqual(post.BoundBox.ZMin, 0.0, places=6)
+                    full = math.pi * 35.0**2 if shape == "Circular" else plain
+                    # Whole where the joints are cut, below and above.
+                    self.assertAlmostEqual(section(post, 200.0), full, delta=1.0)
+                    self.assertAlmostEqual(section(post, 1100.0), full, delta=1.0)
+                    middle = section(post, 650.0)
+                    if shape == "Chamfered":
+                        # Four 14 mm chamfers along the shaft.
+                        self.assertAlmostEqual(middle, plain - 2.0 * 14.0**2, delta=1.0)
+                    elif shape == "Turned":
+                        self.assertLess(middle, math.pi * 35.0**2)
+                        self.assertGreater(middle, math.pi * 12.0**2)
+                    else:
+                        self.assertAlmostEqual(middle, full, delta=1.0)
+                    # A ball or an acorn stands on the post; the other ends
+                    # are worked within its length.
+                    if cap in ("Ball", "Acorn"):
+                        self.assertGreater(post.BoundBox.ZMax, 1300.0 + 50.0)
+                    else:
+                        self.assertLess(post.BoundBox.ZMax, 1300.0 + 1e-6)
+                        tip = section(post, 1299.0)
+                        if cap == "Flat":
+                            self.assertAlmostEqual(tip, full, delta=1.0)
+                        else:
+                            self.assertLess(tip, 0.95 * full)
+        # Too short for a shaft between its blocks, a member stays square.
+        stub = make_member_shape(
+            (0.0, 0.0), (1.0, 0.0), 0.0, 400.0, "Turned", 70.0, 70.0, (150.0, 250.0)
+        )
+        self.assertAlmostEqual(stub.Volume, plain * 400.0, places=3)
+
+    def test_stair_takes_classic_handrail_shapes(self):
+        stair = self._joinery_stair()
+        self.assertEqual(stair.HandrailPostCap, "Flat")
+        stair.Proxy.defer_rebuilds(stair, True)
+        stair.HandrailPostShape = "Turned"
+        stair.HandrailPostCap = "Ball"
+        stair.HandrailPicketShape = "Chamfered"
+        stair.HandrailTopRailShape = "Moulded"
+        stair.Proxy.defer_rebuilds(stair, False)
+        members = {}
+        for part in stair.HandrailsGroup.Group:
+            members.setdefault(part.StairDesignerRole, []).append(part.Shape)
+            self.assertTrue(part.Shape.isValid(), part.Label)
+            self.assertEqual(len(part.Shape.Solids), 1, part.Label)
+        self.assertEqual(len(members["HandrailPost"]), 4)
+        plain = stair.HandrailPostWidth.Value * stair.HandrailPostThickness.Value
+        for post in members["HandrailPost"]:
+            # Turned, with its ball above the rail.
+            self.assertLess(post.Volume, 0.95 * plain * post.BoundBox.ZLength)
+        for rail in members["HandrailTopRail"]:
+            for post in members["HandrailPost"]:
+                self.assertLess(rail.common(post).Volume, 1e-3)
+            for picket in members["HandrailPicket"]:
+                self.assertLess(rail.common(picket).Volume, 1e-3)
+        for stringer in stair.StringersGroup.Group:
+            self.assertTrue(stringer.Shape.isValid())
+            self.assertEqual(len(stringer.Shape.Solids), 1)
+            for post in members["HandrailPost"]:
+                self.assertLess(stringer.Shape.common(post).Volume, 1e-3)
+
+    def test_handrail_joinery_tenons_the_rail_and_houses_the_pickets(self):
+        from stairdesigner.geometry_handrails import make_handrail_top_rail_shape
+        from stairdesigner.geometry_joinery import make_handrail_joinery
+
+        path = {
+            "kind": "Linear",
+            "start": (0.0, 0.0),
+            "end": (1000.0, 0.0),
+            "tangent": (1.0, 0.0),
+            "length": 1000.0,
+            "top_elevations": [900.0, 1400.0],
+            "support_elevations": [0.0, 500.0],
+            "cell_count": 1,
+        }
+        # A 50 x 40 rail entering 35 mm into two 70 mm posts, over two
+        # 20 mm pickets standing 10 mm into it.
+        rail = make_handrail_top_rail_shape(path, "Square", 50.0, 40.0, 35.0, 70.0)
+        posts = [
+            Part.makeBox(70.0, 70.0, 1600.0, FreeCAD.Vector(x - 35.0, -35.0, 0.0))
+            for x in (0.0, 1000.0)
+        ]
+        plumb = 40.0 * math.hypot(1000.0, 500.0) / 1000.0
+        pickets = [
+            Part.makeBox(
+                20.0, 20.0, 900.0 + 0.5 * x - plumb + 10.0, FreeCAD.Vector(x - 10.0, -10.0, 0.0)
+            )
+            for x in (330.0, 660.0)
+        ]
+        (jointed,), mortised = make_handrail_joinery([rail], posts, pickets)
+        self.assertTrue(jointed.isValid())
+        self.assertEqual(len(jointed.Solids), 1)
+        for post, original in zip(mortised, posts):
+            self.assertTrue(post.isValid())
+            self.assertEqual(len(post.Solids), 1)
+            self.assertLess(jointed.common(post).Volume, 1e-6)
+            # A tenon a third of the rail's width, as long as the rail went
+            # in, with a shoulder above and below it.
+            tenon = jointed.common(original)
+            self.assertAlmostEqual(tenon.BoundBox.YLength, 50.0 / 3.0, places=6)
+            self.assertAlmostEqual(tenon.BoundBox.XLength, 35.0, places=6)
+            self.assertAlmostEqual(tenon.Volume, 35.0 * 50.0 / 3.0 * plumb / 2.0, places=3)
+            self.assertAlmostEqual(original.Volume - post.Volume, tenon.Volume, places=3)
+        for picket in pickets:
+            self.assertLess(jointed.common(picket).Volume, 1e-6)
+            self.assertLess(jointed.distToShape(picket)[0], 1e-6)
+        # A rail running right through a post is no end joint: left alone.
+        through = Part.makeBox(70.0, 70.0, 1600.0, FreeCAD.Vector(465.0, -35.0, 0.0))
+        (same,), (untouched,) = make_handrail_joinery([rail], [through], [])
+        self.assertAlmostEqual(same.Volume, rail.Volume, places=6)
+        self.assertAlmostEqual(untouched.Volume, through.Volume, places=6)
+
+    def test_stair_joinery_finger_joints_boards_into_each_other(self):
+        from stairdesigner.geometry_joinery import make_stair_joinery
+
+        # A 40 mm board whose end butts the side of another 40 mm board,
+        # both 250 mm high: seven courses, three of them fingers.
+        incoming = Part.makeBox(1000.0, 40.0, 250.0)
+        crossing = Part.makeBox(40.0, 1000.0, 250.0, FreeCAD.Vector(1000.0, -480.0, 0.0))
+        (joined, housed), _posts, _steps = make_stair_joinery(
+            [incoming, crossing], [], [], finger_joints=True
+        )
+        for shape in (joined, housed):
+            self.assertTrue(shape.isValid())
+            self.assertEqual(len(shape.Solids), 1)
+        self.assertLess(joined.common(housed).Volume, 1e-6)
+        fingers = joined.Volume - incoming.Volume
+        self.assertAlmostEqual(fingers, 3.0 * 40.0 * 40.0 * 250.0 / 7.0, places=3)
+        self.assertAlmostEqual(crossing.Volume - housed.Volume, fingers, places=3)
+        # The fingers run right through the other board, which keeps the
+        # top and the bottom of the joint.
+        self.assertAlmostEqual(joined.BoundBox.XMax, 1040.0, places=6)
+        course = 250.0 / 7.0
+        for index in range(7):
+            point = FreeCAD.Vector(1020.0, 20.0, (index + 0.5) * course)
+            self.assertEqual(joined.isInside(point, 1e-6, False), index % 2 == 1, index)
+            self.assertEqual(housed.isInside(point, 1e-6, False), index % 2 == 0, index)
+
+    def test_finger_joint_type_interlocks_the_wall_boards(self):
+        stair, flights = self._short_inner_side_stair("Housed stringer", handrails=False)
+        self.assertEqual(stair.StringerJointType, "Mortise and tenon")
+        thickness = stair.StringerThickness.Value
+
+        def shares():
+            # How much of the corner block at the flight seam each of the
+            # two wall boards meeting there holds.
+            left = [part for part in stair.StringersGroup.Group if part.Side == "Left"]
+            first = next(part.Shape for part in left if part.SourceFlight == flights[0])
+            second = max(
+                (part.Shape for part in left if part.SourceFlight == flights[1]),
+                key=lambda shape: shape.Volume,
+            )
+            for shape in (first, second):
+                self.assertTrue(shape.isValid())
+                self.assertEqual(len(shape.Solids), 1)
+            self.assertLess(first.common(second).Volume, 1e-3)
+            bounds = first.BoundBox
+            square = Part.makeBox(
+                thickness,
+                bounds.YLength,
+                5000.0,
+                FreeCAD.Vector(bounds.XMax - thickness, bounds.YMin, -100.0),
+            )
+            held = [shape.common(square).Volume for shape in (first, second)]
+            return [volume / sum(held) for volume in held]
+
+        # A stub tenon is a small part of the block; fingers share it.
+        self.assertLess(min(shares()), 0.25)
+        stair.StringerJointType = "Finger joint"
+        self.assertGreater(min(shares()), 0.3)
+
+    def test_stair_joinery_butts_a_board_running_past_another(self):
+        from stairdesigner.geometry_joinery import make_stair_joinery
+
+        # The second board runs 20 mm past the first one, level with it:
+        # cut at the first, that end stands free beyond it.
+        first = Part.makeBox(1000.0, 40.0, 200.0, FreeCAD.Vector(0.0, 20.0, 200.0))
+        second = Part.makeBox(40.0, 800.0, 200.0, FreeCAD.Vector(20.0, 0.0, 200.0))
+        (kept, butted), _posts, _steps = make_stair_joinery([first, second], [], [])
+        self.assertEqual(len(butted.Solids), 1)
+        self.assertLess(kept.common(butted).Volume, 1e-6)
+        # The end beyond the first board is gone: the second one stops at
+        # it, but for its tenon.
+        self.assertGreater(butted.BoundBox.YMin, 20.0 + 1.0)
+        # A board crossing another mid-length is no butt joint: both of
+        # its halves stay.
+        crossing = Part.makeBox(40.0, 800.0, 200.0, FreeCAD.Vector(480.0, -380.0, 200.0))
+        (_kept, crossed), _posts, _steps = make_stair_joinery([first, crossing], [], [])
+        self.assertAlmostEqual(crossed.BoundBox.YMin, -380.0, places=6)
+        self.assertAlmostEqual(crossed.BoundBox.YMax, 420.0, places=6)
+
+    def test_notched_board_keeps_its_timber_under_winder_cuts(self):
+        from stairdesigner.geometry_stringer_path import notched_stringer_throat
+        from stairdesigner.geometry_stringer_shapes import make_notched_stringer_shape
+
+        # What a 250 mm board leaves under the cuts of regular 200 x 250
+        # steps with 40 mm treads, square to the board and plumb.
+        pitch = math.hypot(250.0, 200.0) / 250.0
+        throat = notched_stringer_throat(200.0, 250.0, 40.0, 250.0)
+        self.assertAlmostEqual(throat, 250.0 - 240.0 / pitch, places=9)
+
+        def board(stations):
+            sections = [
+                BalancedSection(
+                    center=(station, 450.0),
+                    tangent=(1.0, 0.0),
+                    left=(station, 900.0),
+                    right=(station, 0.0),
+                    station=float(index) * 250.0,
+                    width=900.0,
+                    flight_index=0,
+                    riser_index=index + 1,
+                )
+                for index, station in enumerate(stations)
+            ]
+            shape = make_notched_stringer_shape(
+                sections, 200.0, 40.0, "Left", 40.0, 250.0, 20.0, 0.0, 0.0, throat
+            )
+            self.assertTrue(shape.isValid())
+            self.assertEqual(len(shape.Solids), 1)
+            # The timber plumb under the inner corner of each cut.
+            return shape, [
+                (index * 200.0 - 40.0) - self._bottom_at(shape, stations[index] - 0.5, 860.0)
+                for index in range(1, len(stations) - 1)
+            ]
+
+        # Along a regular flight the lower edge stays the straight line the
+        # board's width sets below the nosings.
+        regular, timbers = board([250.0 * index for index in range(7)])
+        self.assertTrue(all(edge.Curve.TypeId == "Part::GeomLine" for edge in regular.Edges))
+        for timber in timbers:
+            self.assertAlmostEqual(timber, throat * pitch + 0.5 * 0.8, places=6)
+
+        # Winders stretch two steps to 450 and 500 mm along the board: a
+        # straight edge would leave some 20 mm under their cuts. The edge
+        # runs under them instead, keeping the regular step's timber.
+        _winding, timbers = board([0.0, 250.0, 700.0, 1200.0, 1450.0, 1700.0])
+        for timber in timbers:
+            self.assertGreaterEqual(timber, throat - 1e-3)
+            self.assertLess(timber, 2.0 * throat)
+
+    def test_stub_tenons_keep_their_minimum_thickness(self):
+        from stairdesigner.geometry_joinery import _tenon_from_face
+
+        # A third of the board, but never under 12 mm on a thin one.
+        for board, expected in ((27.0, 12.0), (45.0, 15.0)):
+            corners = [
+                FreeCAD.Vector(0.0, 0.0, 0.0),
+                FreeCAD.Vector(0.0, board, 0.0),
+                FreeCAD.Vector(0.0, board, 250.0),
+                FreeCAD.Vector(0.0, 0.0, 250.0),
+            ]
+            end = Part.Face(Part.makePolygon(corners + corners[:1]))
+            tenon = _tenon_from_face(end, FreeCAD.Vector(1.0, 0.0, 0.0), 45.0)
+            self.assertAlmostEqual(tenon.BoundBox.YLength, expected, places=6)
+            self.assertAlmostEqual(tenon.BoundBox.XLength, 45.0, places=6)
+            self.assertAlmostEqual(tenon.BoundBox.Center.y, board / 2.0, places=6)
+
+    def test_stair_joinery_tenons_board_into_abutting_board(self):
+        from stairdesigner.geometry_joinery import make_stair_joinery
+
+        # A 40 mm board whose end butts the side of another 40 mm board.
+        incoming = Part.makeBox(1000.0, 40.0, 250.0)
+        crossing = Part.makeBox(40.0, 1000.0, 250.0, FreeCAD.Vector(1000.0, -480.0, 0.0))
+        (joined, housed), posts, _steps = make_stair_joinery([incoming, crossing], [], [])
+        self.assertEqual(posts, [])
+        tenon = joined.Volume - incoming.Volume
+        self.assertGreater(tenon, 0.0)
+        self.assertAlmostEqual(crossing.Volume - housed.Volume, tenon, places=3)
+        self.assertLess(joined.common(housed).Volume, 1e-6)
+        self.assertLess(joined.BoundBox.XMax, 1040.0 - 1.0)

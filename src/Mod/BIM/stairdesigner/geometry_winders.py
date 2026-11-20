@@ -26,8 +26,12 @@ def balanced_winder_sections(
     nosing=0.0,
     extra_widths=None,
     walking_line_offset=None,
+    exit_width=0.0,
 ):
     """Return riser sections balanced from equal-going nosing lines.
+
+    ``exit_width`` is the length of side a turned exit opens onto, the
+    flight width when 0.
 
     ``flight_specs`` contains ``(length, width, heading_degrees)`` tuples.
     Quadratic transition curves spread each balanced turn approximately one
@@ -81,11 +85,14 @@ def balanced_winder_sections(
             winding_parameters,
             extra_widths,
             walking_line_offset,
+            exit_width,
         )
 
-    corner_trims = _herse_corner_trims(specs, corner_controls)
     start_trim = _endpoint_balance_trim(specs[0][0], specs[0][1], coefficient, entry_direction)
-    end_trim = _endpoint_balance_trim(specs[-1][0], specs[-1][1], coefficient, exit_direction)
+    end_trim = _endpoint_balance_trim(
+        specs[-1][0], specs[-1][1], coefficient, exit_direction, exit_width
+    )
+    corner_trims = _herse_corner_trims(specs, corner_controls, start_trim, end_trim)
     if corner_trims:
         incoming, outgoing = corner_trims[0]
         start_trim, incoming = _fit_transition_trims(start_trim, incoming, specs[0][0])
@@ -117,6 +124,8 @@ def balanced_winder_sections(
             0,
             True,
             start_angle,
+            _endpoint_opening(specs[0][0], specs[0][1], coefficient, entry_direction),
+            corner_controls[0][0] if corner_controls else 50.0,
         )
     else:
         append_point(vertices[0], specs[0][1], 0)
@@ -164,6 +173,8 @@ def balanced_winder_sections(
             len(specs) - 1,
             False,
             end_angle,
+            _endpoint_opening(specs[-1][0], specs[-1][1], coefficient, exit_direction, exit_width),
+            corner_controls[-1][0] if corner_controls else 50.0,
         )
 
     cumulative = _walking_path_stations(dense, walking_line_offset)
@@ -252,6 +263,7 @@ def balanced_winder_sections(
         entry_direction,
         exit_direction,
         coefficient,
+        exit_width,
     )
     return sections, going
 
@@ -297,21 +309,81 @@ def _herse_curve_point(start, corner, end, ratio, local):
     )
 
 
-def _herse_corner_trims(specs, corner_controls):
-    """Return the local balancing length on both sides of every turn."""
+def _herse_corner_trims(specs, corner_controls, start_trim=0.0, end_trim=0.0):
+    """Return the local balancing length on both sides of every turn.
 
+    Nosings in the straight parts are perpendicular to their flight, so a
+    straight part must stop at the turn's inner corner: beyond it such a
+    nosing no longer meets the inner side and crosses the adjacent flight.
+    A short flight therefore balances over its whole inner side.
+
+    A flight between two turns gives each of them at most 48% of its length.
+    The first and last flights give their single turn whatever their entry or
+    exit transition (``start_trim``, ``end_trim``) leaves of the 98% that
+    ``_fit_transition_trims`` allows, so a short end flight is not left with
+    perpendicular nosings past its inner corner.
+    """
+
+    last_flight = len(specs) - 1
     trims = []
     for index in range(len(specs) - 1):
         factor = corner_controls[index][1]
         incoming_length, incoming_width, _heading = specs[index]
         outgoing_length, outgoing_width, _heading = specs[index + 1]
+        incoming_setback, outgoing_setback = _inner_corner_setbacks(specs[index], specs[index + 1])
+        incoming_limit = (
+            incoming_length * 0.98 - float(start_trim) if index == 0 else incoming_length * 0.48
+        )
+        outgoing_limit = (
+            outgoing_length * 0.98 - float(end_trim)
+            if index + 1 == last_flight
+            else outgoing_length * 0.48
+        )
         trims.append(
             (
-                min(incoming_width * factor, incoming_length * 0.48),
-                min(outgoing_width * factor, outgoing_length * 0.48),
+                min(
+                    max(incoming_width * factor, incoming_setback),
+                    max(incoming_limit, incoming_length * 0.48),
+                ),
+                min(
+                    max(outgoing_width * factor, outgoing_setback),
+                    max(outgoing_limit, outgoing_length * 0.48),
+                ),
             )
         )
     return trims
+
+
+def _inner_corner_setbacks(incoming, outgoing):
+    """Return how far a turn's inner corner lies from the path vertex.
+
+    The distances are measured backwards along the incoming flight axis and
+    forwards along the outgoing one, from the vertex where the two flight
+    axes meet. ``incoming`` and ``outgoing`` are ``(length, width, heading)``.
+    """
+
+    first = math.radians(incoming[2])
+    second = math.radians(outgoing[2])
+    first_direction = (math.cos(first), math.sin(first))
+    second_direction = (math.cos(second), math.sin(second))
+    turn = first_direction[0] * second_direction[1] - first_direction[1] * second_direction[0]
+    if abs(turn) < 1e-7:
+        return 0.0, 0.0
+    side = 1.0 if turn > 0.0 else -1.0
+    first_offset = side * max(float(incoming[1]), 0.01) / 2.0
+    second_offset = side * max(float(outgoing[1]), 0.01) / 2.0
+    # Inner side lines: first_offset * n1 + t * d1 and second_offset * n2 + u * d2.
+    relative = (
+        -second_direction[1] * second_offset + first_direction[1] * first_offset,
+        second_direction[0] * second_offset - first_direction[0] * first_offset,
+    )
+    incoming_parameter = (
+        relative[0] * second_direction[1] - relative[1] * second_direction[0]
+    ) / turn
+    outgoing_parameter = (
+        relative[0] * first_direction[1] - relative[1] * first_direction[0]
+    ) / turn
+    return max(-incoming_parameter, 0.0), max(outgoing_parameter, 0.0)
 
 
 def _endpoint_side(direction):
@@ -323,12 +395,40 @@ def _endpoint_side(direction):
     return 0.0
 
 
-def _endpoint_balance_trim(length, width, coefficient, direction):
+def _endpoint_opening(length, width, coefficient, direction, requested=0.0):
+    """Return the length of side a turned entry or exit opens onto.
+
+    The first or last riser runs along the flight's side over that length:
+    ``requested`` when given, else the flight width. It leaves the flight
+    room for its other turn.
+    """
+
     if not _endpoint_side(direction):
         return 0.0
+    opening = (
+        float(requested)
+        if float(requested) > 1e-7
+        else max(float(width), 0.01) * max(float(coefficient), 0.75)
+    )
+    return min(opening, max(float(length), 0.01) * 0.48)
+
+
+def _endpoint_balance_trim(length, width, coefficient, direction, requested=0.0):
+    """Return the flight length a turned entry or exit balances over.
+
+    The walking line turns at the middle of the opening, like at a corner
+    between two flights, so its transition reaches as far along the flight
+    before that turn as a Herse turn does before its corner: one flight
+    width for a unit coefficient. Callers fit it with the flight's other
+    turn into the flight length.
+    """
+
+    opening = _endpoint_opening(length, width, coefficient, direction, requested)
+    if not opening:
+        return 0.0
     return min(
-        max(float(width), 0.01) * max(float(coefficient), 0.75),
-        max(float(length), 0.01) * 0.48,
+        opening / 2.0 + max(float(width), 0.01) * max(float(coefficient), 0.75),
+        max(float(length), 0.01) * 0.98,
     )
 
 
@@ -356,20 +456,29 @@ def _append_endpoint_transition(
     flight_index,
     is_start,
     boundary_angle,
+    opening=None,
+    local=50.0,
 ):
-    """Append a quadratic Herse transition between a side and flight axis."""
+    """Append a Herse transition between a side and the flight axis.
+
+    The walking line turns at the middle of the ``opening`` the entry or exit
+    makes along the side, as at a corner between flights, and joins the axis
+    ``trim`` from the flight's end. ``opening`` defaults to ``trim``: the
+    transition then starts half the opening before its turn.
+    """
 
     side = _endpoint_side(requested_direction)
     if not side or trim <= 1e-9:
         append_point(vertex, width, flight_index)
         return
+    opening = trim if opening is None else min(float(opening), float(trim))
     normal = (-direction[1], direction[0])
     side_offset = side * width / 2.0
     boundary_offset = side * width / 2.0 * _safe_angle_tangent(boundary_angle)
     if is_start:
-        join = trim
-        chord_length = max(join - boundary_offset, 0.01)
+        chord_length = max(opening - boundary_offset, 0.01)
         endpoint_station = boundary_offset + chord_length / 2.0
+        join = max(trim, endpoint_station + 0.01)
         endpoint = (
             vertex[0] + direction[0] * endpoint_station + normal[0] * side_offset,
             vertex[1] + direction[1] * endpoint_station + normal[1] * side_offset,
@@ -385,9 +494,9 @@ def _append_endpoint_transition(
         first, middle, last = endpoint, control, axis
         first_width, last_width = chord_length, width
     else:
-        join = -trim
-        chord_length = max(trim + boundary_offset, 0.01)
+        chord_length = max(opening + boundary_offset, 0.01)
         endpoint_station = boundary_offset - chord_length / 2.0
+        join = min(-trim, endpoint_station - 0.01)
         endpoint = (
             vertex[0] + direction[0] * endpoint_station + normal[0] * side_offset,
             vertex[1] + direction[1] * endpoint_station + normal[1] * side_offset,
@@ -407,15 +516,9 @@ def _append_endpoint_transition(
         if not is_start and sample == 0:
             continue
         ratio = sample / 64.0
-        inverse = 1.0 - ratio
-        point = (
-            inverse * inverse * first[0]
-            + 2.0 * inverse * ratio * middle[0]
-            + ratio * ratio * last[0],
-            inverse * inverse * first[1]
-            + 2.0 * inverse * ratio * middle[1]
-            + ratio * ratio * last[1],
-        )
+        # The same curve as a turn between flights, cornering at the middle
+        # of the opening.
+        point = _herse_curve_point(first, middle, last, ratio, local)
         transition_width = first_width + (last_width - first_width) * ratio
         append_point(point, transition_width, flight_index)
 
@@ -430,8 +533,13 @@ def _apply_endpoint_boundary_sections(
     entry_direction,
     exit_direction,
     coefficient,
+    exit_width=0.0,
 ):
-    """Make straight entry/exit sections coincide with angled end cuts."""
+    """Make straight entry/exit sections coincide with angled end cuts.
+
+    A turned exit's last riser runs along ``exit_width`` of the side, the
+    flight width when 0.
+    """
 
     if not sections:
         return sections
@@ -487,7 +595,9 @@ def _apply_endpoint_boundary_sections(
         normal = (-direction[1], direction[0])
         boundary_offset = side * width / 2.0 * _safe_angle_tangent(angle)
         length = specs[0][0] if start else specs[-1][0]
-        trim = _endpoint_balance_trim(length, width, coefficient, requested)
+        trim = _endpoint_opening(
+            length, width, coefficient, requested, 0.0 if start else exit_width
+        )
         if start:
             first_station = boundary_offset
             second_station = trim
@@ -647,12 +757,11 @@ def _landing_winder_sections(
     winding_parameters=None,
     extra_widths=None,
     walking_line_offset=None,
+    exit_width=0.0,
 ):
     """Return sections with each landing kept as one unsampled corner interval."""
 
     corner_controls = _winding_controls(len(specs) - 1, coefficient, winding_parameters)
-    corner_trims = _herse_corner_trims(specs, corner_controls)
-
     chunks = [[]]
 
     def append_point(chunk, point, width, flight_index):
@@ -661,10 +770,15 @@ def _landing_winder_sections(
         else:
             chunk.append((point[0], point[1], width, flight_index))
 
-    start_trim = _endpoint_balance_trim(specs[0][0], specs[0][1], coefficient, entry_direction)
-    end_trim = _endpoint_balance_trim(specs[-1][0], specs[-1][1], coefficient, exit_direction)
+    # Its landings take fixed lengths of the flights: the endpoint
+    # transitions keep to the opening, half of it before their turn.
+    start_trim = _endpoint_opening(specs[0][0], specs[0][1], coefficient, entry_direction)
+    end_trim = _endpoint_opening(
+        specs[-1][0], specs[-1][1], coefficient, exit_direction, exit_width
+    )
     if len(specs) == 1:
         start_trim, end_trim = _fit_transition_trims(start_trim, end_trim, specs[0][0])
+    corner_trims = _herse_corner_trims(specs, corner_controls, start_trim, end_trim)
     if start_trim:
         _append_endpoint_transition(
             lambda point, width, owner: append_point(chunks[-1], point, width, owner),
@@ -769,6 +883,7 @@ def _landing_winder_sections(
             winding_parameters,
             extra_widths=extra_widths,
             walking_line_offset=walking_line_offset,
+            exit_width=exit_width,
         )
 
     chunk_tread_counts = distribute_treads(chunk_lengths, distributed_tread_count)
@@ -851,6 +966,7 @@ def _landing_winder_sections(
         entry_direction,
         exit_direction,
         coefficient,
+        exit_width,
     )
     return sections, going
 
@@ -862,17 +978,17 @@ def _dense_path_length(points):
     )
 
 
-def _walking_path_stations(points, outer_offset=None):
-    """Measure going on the outer parallel of the balanced walking path.
+def _walking_path_stations(points, inner_offset=None):
+    """Measure going on the walking line, a parallel of the balanced path.
 
-    An offset curve gains ``offset * turning_angle`` in length at a turn.
-    Measuring only the central curve therefore overestimates the number of
-    straight treads and leaves too few winders. Clamp the requested distance
-    to the outer half of narrow flights. None retains the centre-line API.
+    The walking line runs in the middle of the flight, or ``inner_offset``
+    from its inner side where that is nearer. An offset curve loses
+    ``offset * turning_angle`` in length at a turn toward its side, so the
+    turns shorten it. None measures the centre line.
     """
     lengths = [math.hypot(b[0] - a[0], b[1] - a[1]) for a, b in zip(points, points[1:])]
     additions = [0.0] * len(lengths)
-    if outer_offset is not None:
+    if inner_offset is not None and float(inner_offset) > 0.0:
         for index in range(1, len(points) - 1):
             a, b, c = points[index - 1 : index + 2]
             first = (b[0] - a[0], b[1] - a[1])
@@ -883,8 +999,9 @@ def _walking_path_stations(points, outer_offset=None):
                     first[0] * second[0] + first[1] * second[1],
                 )
             )
-            offset = max(b[2] / 2.0 - max(float(outer_offset), 0.0), 0.0)
-            extra = offset * angle / 2.0
+            # Toward the inner side of the turn, shortening it.
+            offset = b[2] / 2.0 - min(b[2] / 2.0, float(inner_offset))
+            extra = -offset * angle / 2.0
             additions[index - 1] += extra
             additions[index] += extra
     cumulative = [0.0]

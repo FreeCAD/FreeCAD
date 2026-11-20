@@ -70,6 +70,111 @@ def get_flights(stair):
     ]
 
 
+def first_step_rounded(stair, side):
+    """Tell whether a wooden stair's first step is rounded on ``side``.
+
+    A rounded end stands free in front of the stair: that side's board and
+    rail start at the second riser. Only a straight flight entered straight
+    has such an end: a stair entered from the side has its first step
+    against a board there.
+    """
+
+    flights = get_flights(stair)
+    return (
+        bool(flights)
+        and str(stair.StairType) != "Concrete"
+        and str(flights[0].FlightType).startswith("Straight")
+        and str(flights[0].EntryDirection) == "Straight"
+        and str(getattr(stair, "RoundedFirstStep", "None")) in (side, "Both sides")
+    )
+
+
+def _side_insets(stair, flights):
+    """Return each flight's ``(left, right)`` room beyond its steps' ends.
+
+    A flight's width is the stair's whole width, as the opening it stands
+    in: its boards and handrail posts stand within it, and its steps end
+    short of it by the room they take on each side. A housed board stands
+    out its thickness less the steps' housing in it, a notched one runs
+    under the steps' ends; a post stands out half
+    its size from the board's centre line, or from the steps' ends without
+    a board, less the handrail's offset in. Only a wooden stair of straight
+    flights has boards and posts beside its steps.
+    """
+
+    if str(stair.StairType) != "Wood" or any(
+        _is_circular_flight(flight) or _is_landing_flight(flight) for flight in flights
+    ):
+        return [(0.0, 0.0)] * len(flights)
+    stringers = list(getattr(getattr(stair, "StringersGroup", None), "Group", []) or [])
+    post = (
+        max(
+            _quantity_value(stair.HandrailPostWidth),
+            _quantity_value(stair.HandrailPostThickness),
+        )
+        / 2.0
+    )
+    insets = []
+    for flight in flights:
+        sides = []
+        for side in ("Left", "Right"):
+            stringer_type = str(getattr(flight, f"{side}StringerType", "None"))
+            thickness = _quantity_value(stair.StringerThickness)
+            overlap = _quantity_value(stair.StringerStepOverlap)
+            part = next(
+                (
+                    part
+                    for part in stringers
+                    if getattr(part, "SourceFlight", None) == flight
+                    and str(getattr(part, "Side", "")) == side
+                ),
+                None,
+            )
+            if part is not None:
+                if getattr(part, "OverrideThickness", False):
+                    thickness = _quantity_value(part.Thickness)
+                if getattr(part, "OverrideStepOverlap", False):
+                    overlap = _quantity_value(part.StepOverlap)
+            # The board's centre line, out from the steps' ends.
+            if stringer_type == "Housed stringer":
+                center = thickness / 2.0 - overlap
+            elif stringer_type in ("Notched stringer", "Cut stringer"):
+                # Under the steps' ends.
+                center = -(overlap + thickness / 2.0)
+            else:
+                center = None
+            room = 0.0 if center is None else center + thickness / 2.0
+            if bool(getattr(flight, f"{side}HandrailEnabled", False)):
+                room = max(
+                    room,
+                    (center or 0.0) - _quantity_value(stair.HandrailOffset) + post,
+                )
+            sides.append(max(room, 0.0))
+        insets.append(tuple(sides))
+    return insets
+
+
+def _turned_opening(stair, flight, at_start):
+    """Return how far beyond its boards' plan a turned entry or exit opens.
+
+    The steps there reach the floor at the stair's outline, past the room
+    the turned side's board and posts take (see ``_side_insets``). 0 for a
+    straight entry or exit.
+    """
+
+    flights = get_flights(stair)
+    if flight not in flights:
+        return 0.0
+    direction = str(flight.EntryDirection if at_start else flight.ExitDirection).lower()
+    if direction == "straight":
+        return 0.0
+    # As the stair's plan last took them.
+    insets = getattr(getattr(stair, "Proxy", None), "plan_insets", None)
+    if insets is None or len(insets) != len(flights):
+        insets = _side_insets(stair, flights)
+    return insets[flights.index(flight)][0 if "left" in direction else 1]
+
+
 def _is_circular_flight(flight):
     return str(flight.FlightType).startswith("Circular")
 
@@ -292,6 +397,24 @@ def _child_placement(stair):
     """Return the placement for geometry already expressed in stair space."""
 
     return FreeCAD.Placement() if _uses_native_container_placement(stair) else stair.Placement
+
+
+def _set_global_shape(part, shape):
+    """Assign a shape built in document coordinates, keeping the placement.
+
+    The part's placement moves whatever shape it is given, so the shape is
+    first taken back to the part's own coordinates, geometry included: a
+    shape that only carried the inverse placement would lose it again as
+    the part's placement is restored.
+    """
+
+    placement = part.Placement
+    part.Shape = (
+        shape.copy()
+        if placement.isIdentity()
+        else shape.transformed(placement.inverse().toMatrix(), True)
+    )
+    part.Placement = placement
 
 
 def _combined_placement(stair, local_placement):

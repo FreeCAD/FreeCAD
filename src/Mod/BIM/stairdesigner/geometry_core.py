@@ -41,6 +41,8 @@ class BalancedSection:
     profile_nosing_aligned: bool = False
     top_elevation: float = None
     profile_at_newel: bool = False
+    # The sides, "left" or "right", whose end lies on a newel post.
+    post_ends: tuple = ()
 
 
 @dataclass(frozen=True)
@@ -250,6 +252,7 @@ def _translated_section(section, distance):
         riser_index=section.riser_index,
         profile_nosing_aligned=section.profile_nosing_aligned,
         top_elevation=section.top_elevation,
+        profile_at_newel=section.profile_at_newel,
     )
 
 

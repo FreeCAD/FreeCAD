@@ -62,12 +62,65 @@ def _percent_spin(value=50):
     return spin
 
 
+class _ItemEditorGuard(QtCore.QObject):
+    """Keep a view's embedded editors from reacting to passing input.
+
+    The wheel over an unfocused editor scrolls the view instead of focusing
+    the editor and changing its value. Typed keys that an editor leaves
+    unused reach the view, whose type-to-search would move its current row.
+    """
+
+    NAME = "stair_designer_item_editor_guard"
+
+    def __init__(self, view):
+        super().__init__(view)
+        self.setObjectName(self.NAME)
+        self._view = view
+
+    def eventFilter(self, watched, event):
+        if watched is self._view:
+            if (
+                event.type() == QtCore.QEvent.KeyPress
+                and event.text().isprintable()
+                and event.text()
+                and not event.modifiers() & (QtCore.Qt.ControlModifier | QtCore.Qt.AltModifier)
+            ):
+                return True
+            return False
+        if event.type() == QtCore.QEvent.Wheel and not watched.hasFocus():
+            QtCore.QCoreApplication.sendEvent(self._view.viewport(), event)
+            return True
+        return False
+
+
+def _prepare_item_editor(view, widget):
+    """Prepare ``widget`` to be embedded in the item ``view``.
+
+    The editor only takes focus when clicked or tabbed to, and a typed value
+    applies once validated (Enter, Tab, focus out): every value rebuilds the
+    stair, and the intermediate values of a number being typed are not meant.
+    """
+
+    guard = view.findChild(QtCore.QObject, _ItemEditorGuard.NAME)
+    if guard is None:
+        guard = _ItemEditorGuard(view)
+        view.installEventFilter(guard)
+    widget.setFocusPolicy(QtCore.Qt.StrongFocus)
+    widget.installEventFilter(guard)
+    if isinstance(widget, QtGui.QAbstractSpinBox):
+        widget.setKeyboardTracking(False)
+
+
 class _FlightTreeWidget(QtGui.QTreeWidget):
     """Flight tree that owns and consumes its Delete-key action."""
 
     def __init__(self, delete_callback, parent=None):
         super().__init__(parent)
         self._delete_callback = delete_callback
+
+    def setItemWidget(self, item, column, widget):
+        _prepare_item_editor(self, widget)
+        super().setItemWidget(item, column, widget)
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Delete:

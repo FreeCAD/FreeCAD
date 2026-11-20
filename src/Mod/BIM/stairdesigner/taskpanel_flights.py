@@ -67,6 +67,13 @@ class FlightPanelMixin:
             record["inner_radius"] = _length_spin(_value(flight.InnerRadius), 1.0)
             record["outer_radius"] = _length_spin(_value(flight.OuterRadius), 1.0)
             record["width"] = _length_spin(_value(flight.Width), 1.0)
+            record["width"].setToolTip(
+                translate(
+                    "BIM",
+                    "The flight's overall width. On a wooden stair, the stringers and "
+                    "handrail posts stand within it, and the steps are narrower.",
+                )
+            )
             record["angle"] = self._angle_spin(_value(flight.Angle))
             rotation = QtGui.QComboBox()
             rotation.addItem(translate("BIM", "Left"), "Left")
@@ -188,8 +195,23 @@ class FlightPanelMixin:
                 exit_direction.addItem(translate("BIM", "To right"), "To right")
                 self._select_data(exit_direction, str(flight.ExitDirection))
                 record["exit_direction"] = exit_direction
+                # 0 follows the flight width; shown as that width.
+                exit_width = _value(getattr(flight, "ExitWidth", 0.0))
+                record["exit_width_auto"] = exit_width <= 1e-7
+                record["exit_width"] = _length_spin(
+                    _value(flight.Width) if record["exit_width_auto"] else exit_width,
+                    1.0,
+                )
+                record["exit_width"].setToolTip(
+                    translate(
+                        "BIM",
+                        "Length of side the exit opens onto, along which the last "
+                        "riser runs. Follows the flight width until changed",
+                    )
+                )
                 parameters.append((translate("BIM", "End angle"), record["end_angle"]))
                 parameters.append((translate("BIM", "Exit direction"), exit_direction))
+                parameters.append((translate("BIM", "Exit width"), record["exit_width"]))
             turn_type_item = None
             for label, editor in parameters:
                 child = QtGui.QTreeWidgetItem(root)
@@ -197,6 +219,9 @@ class FlightPanelMixin:
                 self.flight_tree.setItemWidget(child, 1, editor)
                 if editor is record.get("turn_type"):
                     turn_type_item = child
+                if editor is record.get("exit_width"):
+                    record["exit_width_item"] = child
+                    child.setHidden(not self._turned_exit(record))
             if turn_type_item is not None:
                 record["winding_items"] = []
                 hide_winding = str(flight.TurnType) == "Landing"
@@ -236,10 +261,18 @@ class FlightPanelMixin:
                     editor.valueChanged.connect(
                         lambda _value, current=record: (self._endpoint_angle_changed(current))
                     )
-            for key in ("entry_direction", "exit_direction"):
-                editor = record.get(key)
-                if editor:
-                    editor.currentIndexChanged.connect(self._apply)
+            editor = record.get("entry_direction")
+            if editor:
+                editor.currentIndexChanged.connect(self._apply)
+            editor = record.get("exit_direction")
+            if editor:
+                editor.currentIndexChanged.connect(
+                    lambda _index, current=record: self._exit_direction_changed(current)
+                )
+            if record.get("exit_width") is not None:
+                record["exit_width"].valueChanged.connect(
+                    lambda _value, current=record: self._exit_width_changed(current)
+                )
             flight_type.currentIndexChanged.connect(
                 lambda _index, current=record: self._flight_type_changed(current)
             )
@@ -273,9 +306,36 @@ class FlightPanelMixin:
         )
         self._apply()
 
+    @staticmethod
+    def _turned_exit(record):
+        editor = record.get("exit_direction")
+        return editor is not None and str(editor.itemData(editor.currentIndex())) != "Straight"
+
+    def _exit_direction_changed(self, record):
+        if self._loading:
+            return
+        item = record.get("exit_width_item")
+        if item is not None:
+            item.setHidden(not self._turned_exit(record))
+        self._apply()
+
+    def _exit_width_changed(self, record):
+        if self._loading:
+            return
+        # Set back to the flight width, it follows that width again.
+        record["exit_width_auto"] = (
+            abs(record["exit_width"].value() - record["width"].value()) < 1e-6
+        )
+        self._apply()
+
     def _turn_geometry_changed(self, record):
         if self._loading:
             return
+        exit_width = record.get("exit_width")
+        if exit_width is not None and record.get("exit_width_auto"):
+            blocked = exit_width.blockSignals(True)
+            exit_width.setValue(record["width"].value())
+            exit_width.blockSignals(blocked)
         index = self.flight_editors.index(record)
         if self._editor_flight_type(record).startswith("Circular"):
             self._sync_flight_radius_editors(index)
@@ -456,6 +516,7 @@ class FlightPanelMixin:
         self.stair.Proxy.rebuild(self.stair, allow_structure_changes=True)
         self.stair.Document.recompute()
         self._refresh_diagnostics()
+        self._update_regenerate_button()
 
     def _show_flight_context_menu(self, position):
         clicked = self.flight_tree.itemAt(position)
@@ -516,3 +577,4 @@ class FlightPanelMixin:
         self.stair.Proxy.rebuild(self.stair, allow_structure_changes=True)
         self.stair.Document.recompute()
         self._refresh_diagnostics()
+        self._update_regenerate_button()

@@ -7,6 +7,14 @@ import FreeCADGui
 
 translate = FreeCAD.Qt.translate
 
+_PARAMETERS = "User parameter:BaseApp/Preferences/Mod/BIM"
+_SHOW_DRAGGER = "StairDesignerShowDragger"
+_AUTO_UPDATE = "StairDesignerAutoUpdate"
+
+
+def _show_dragger_preference():
+    return FreeCAD.ParamGet(_PARAMETERS).GetBool(_SHOW_DRAGGER, True)
+
 
 def _belongs_to_stair(obj, stair):
     """Return whether an object is the stair or one of its generated children."""
@@ -97,11 +105,19 @@ class PositionPanelMixin:
         self._position_dragger_scale_node = None
         self._position_dragger_syncing = False
 
+    def _show_dragger_toggled(self, checked):
+        FreeCAD.ParamGet(_PARAMETERS).SetBool(_SHOW_DRAGGER, bool(checked))
+        if checked:
+            self._setup_position_dragger()
+        else:
+            self._remove_position_dragger()
+
     def _setup_position_dragger(self):
         if (
             getattr(self, "_closed", False)
             or not FreeCAD.GuiUp
             or self._position_dragger is not None
+            or not _show_dragger_preference()
         ):
             return
         try:

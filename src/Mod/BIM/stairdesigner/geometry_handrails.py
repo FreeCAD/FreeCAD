@@ -16,6 +16,7 @@ from .geometry_helical import (
     _make_helical_band_solid,
 )
 
+from .geometry_profiles import make_member_shape, rail_profile_face
 from .geometry_stringer_path import (
     _circular_stringer_data,
     _stringer_elevations,
@@ -223,6 +224,104 @@ def handrail_picket_fractions(
     return [(index + 1) / (picket_count + 1) for index in range(picket_count)]
 
 
+def _straight_profiled_rail(
+    rail_shape, width, thickness, start, end, tangent, normal, top, extrusion
+):
+    """Return a straight rail of a classic section, or ``None``.
+
+    The section stands square to the rail; its ends are cut plumb where
+    the plain rail's are.
+    """
+
+    axis = FreeCAD.Vector(extrusion)
+    length = axis.Length
+    if length < 1e-6:
+        return None
+    axis.normalize()
+    across = FreeCAD.Vector(normal[0], normal[1], 0.0)
+    down = axis.cross(across)
+    if down.z > 0.0:
+        down = -down
+    level = math.hypot(axis.x, axis.y)
+    if level < 1e-6:
+        return None
+    # Long enough for both plumb cuts to pass through the whole section.
+    reach = thickness * abs(axis.z) / level + 1.0
+    try:
+        face = rail_profile_face(
+            rail_shape,
+            width,
+            thickness,
+            FreeCAD.Vector(start[0], start[1], top) - axis * reach,
+            across,
+            down,
+        )
+        if face is None:
+            return None
+        solid = face.extrude(axis * (length + 2.0 * reach))
+        bounds = solid.BoundBox
+        corners = [
+            FreeCAD.Vector(
+                point[0] + normal[0] * side * width,
+                point[1] + normal[1] * side * width,
+                bounds.ZMin - 1.0,
+            )
+            for point, side in ((start, -1.0), (end, -1.0), (end, 1.0), (start, 1.0))
+        ]
+        slab = Part.Face(Part.makePolygon(corners + corners[:1])).extrude(
+            FreeCAD.Vector(0.0, 0.0, bounds.ZLength + 2.0)
+        )
+        result = solid.common(slab)
+    except (Part.OCCError, ValueError):
+        return None
+    if result.isNull() or not result.isValid() or len(result.Solids) != 1:
+        return None
+    return result.Solids[0]
+
+
+def _helical_profiled_rail(path, profile, rail_shape, width, thickness, front, rear):
+    """Return a helical rail of a classic section swept along its top
+    line, upright all the way, or ``None``."""
+
+    centre = _CircularProfile(
+        path["center"], path["radius"], path["radius"], profile.start_angle, profile.sweep
+    )
+    try:
+        edge = _helical_profile_edge(centre, path["radius"], front, rear)
+        if edge is None:
+            return None
+        origin = edge.valueAt(edge.FirstParameter)
+        axis = edge.tangentAt(edge.FirstParameter)
+        across = FreeCAD.Vector(origin.x - path["center"][0], origin.y - path["center"][1], 0.0)
+        across.normalize()
+        down = axis.cross(across)
+        if down.z > 0.0:
+            down = -down
+        face = rail_profile_face(rail_shape, width, thickness, origin, across, down)
+        if face is None:
+            return None
+        sweep = Part.BRepOffsetAPI.MakePipeShell(Part.Wire([edge]))
+        sweep.setBiNormalMode(FreeCAD.Vector(0.0, 0.0, 1.0))
+        sweep.add(face.OuterWire)
+        if not sweep.isReady():
+            return None
+        sweep.build()
+        sweep.makeSolid()
+        result = sweep.shape()
+    except (Part.OCCError, ValueError, RuntimeError, AttributeError):
+        return None
+    if result.isNull() or not result.isValid() or len(result.Solids) != 1:
+        return None
+    return result
+
+
+def handrail_plumb_depth(thickness, slope):
+    """Return how deep a rail ``thickness`` thick, or across, stands plumb
+    under its top line when it runs at ``slope``."""
+
+    return float(thickness) * math.sqrt(1.0 + float(slope) * float(slope))
+
+
 def make_handrail_top_rail_shape(
     path,
     rail_shape,
@@ -231,7 +330,14 @@ def make_handrail_top_rail_shape(
     post_penetration,
     post_size,
 ):
-    """Create one straight extrusion or one exact helical top rail."""
+    """Create one straight extrusion or one exact helical top rail.
+
+    A square rail is ``thickness`` thick square to its pitch, whatever the
+    pitch: its plumb depth under the top line grows with it. The other
+    sections of ``RAIL_PROFILES`` stand square to the rail within its
+    ``width`` and ``thickness``; where one cannot be built the rail is
+    square.
+    """
 
     width = max(float(width), 0.01)
     thickness = max(float(thickness), 0.01)
@@ -243,6 +349,7 @@ def make_handrail_top_rail_shape(
     top_front = path["top_elevations"][0]
     top_rear = path["top_elevations"][-1]
     slope = (top_rear - top_front) / path["length"] if path["length"] > 1e-9 else 0.0
+    depth = handrail_plumb_depth(thickness, slope)
 
     if path["kind"] == "Circular":
         direction = 1.0 if path["sweep"] >= 0.0 else -1.0
@@ -256,13 +363,19 @@ def make_handrail_top_rail_shape(
         )
         extended_front = top_front - slope * terminal_offset
         extended_rear = top_rear + slope * terminal_offset
+        if str(rail_shape) not in ("Square", "Circular"):
+            profiled = _helical_profiled_rail(
+                path, profile, rail_shape, width, thickness, extended_front, extended_rear
+            )
+            if profiled is not None:
+                return profiled
         if str(rail_shape) != "Circular":
             result = _make_helical_band_solid(
                 profile,
                 extended_front,
                 extended_rear,
-                extended_front - thickness,
-                extended_rear - thickness,
+                extended_front - depth,
+                extended_rear - depth,
             )
             return result if result is not None else Part.Shape()
 
@@ -274,7 +387,8 @@ def make_handrail_top_rail_shape(
             profile.sweep,
         )
         radius = width / 2.0
-        vertical_radius = radius / math.sqrt(1.0 + slope * slope)
+        # A round rail's top stands this far plumb above its axis.
+        vertical_radius = handrail_plumb_depth(radius, slope)
         center_front = extended_front - vertical_radius
         center_rear = extended_rear - vertical_radius
         edge = _helical_profile_edge(
@@ -313,11 +427,18 @@ def make_handrail_top_rail_shape(
         end[1] - start[1],
         extended_rear - extended_front,
     )
+    if str(rail_shape) not in ("Square", "Circular"):
+        profiled = _straight_profiled_rail(
+            rail_shape, width, thickness, start, end, tangent, normal, extended_front, extrusion
+        )
+        if profiled is not None:
+            return profiled
     if str(rail_shape) == "Circular":
         radius = width / 2.0
         axis = FreeCAD.Vector(extrusion)
         axis.normalize()
-        vertical_radius = radius * math.sqrt(max(1.0 - axis.z * axis.z, 0.0))
+        # A round rail's top stands this far plumb above its axis.
+        vertical_radius = radius / max(math.sqrt(max(1.0 - axis.z * axis.z, 0.0)), 0.01)
         center = FreeCAD.Vector(
             start[0],
             start[1],
@@ -333,12 +454,12 @@ def make_handrail_top_rail_shape(
         FreeCAD.Vector(
             start[0] - normal[0] * width / 2.0,
             start[1] - normal[1] * width / 2.0,
-            extended_front - thickness,
+            extended_front - depth,
         ),
         FreeCAD.Vector(
             start[0] + normal[0] * width / 2.0,
             start[1] + normal[1] * width / 2.0,
-            extended_front - thickness,
+            extended_front - depth,
         ),
         FreeCAD.Vector(
             start[0] + normal[0] * width / 2.0,
@@ -365,9 +486,19 @@ def make_handrail_vertical_member_shape(
     member_shape,
     width,
     thickness,
+    blocks=None,
+    cap="Flat",
 ):
-    """Create one vertical post or picket."""
+    """Create one vertical post or picket.
 
+    A member worked to a classic shape, or with a worked top end, is made
+    by ``make_member_shape``, which describes ``blocks`` and ``cap``.
+    """
+
+    if str(member_shape) not in ("Square", "Circular") or str(cap) != "Flat":
+        return make_member_shape(
+            point, tangent, bottom, top, member_shape, width, thickness, blocks, cap
+        )
     bottom = float(bottom)
     top = max(float(top), bottom + 0.01)
     width = max(float(width), 0.01)

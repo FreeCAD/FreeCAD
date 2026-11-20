@@ -207,9 +207,12 @@ SET(bimcommands_SRCS
 SET(stairdesigner_SRCS
     stairdesigner/__init__.py
     stairdesigner/geometry_core.py
+    stairdesigner/geometry_fairing.py
     stairdesigner/geometry_handrails.py
     stairdesigner/geometry_helical.py
+    stairdesigner/geometry_joinery.py
     stairdesigner/geometry_plan.py
+    stairdesigner/geometry_profiles.py
     stairdesigner/geometry_steps.py
     stairdesigner/geometry_straight.py
     stairdesigner/geometry_stringer_path.py
@@ -225,7 +228,11 @@ SET(stairdesigner_SRCS
     stairdesigner/object_steps.py
     stairdesigner/object_stringers.py
     stairdesigner/object_utils.py
+    stairdesigner/stair_bom.py
+    stairdesigner/stair_dxf.py
+    stairdesigner/stair_nesting.py
     stairdesigner/taskpanel.py
+    stairdesigner/taskpanel_bom.py
     stairdesigner/taskpanel_flights.py
     stairdesigner/taskpanel_handrails.py
     stairdesigner/taskpanel_position.py

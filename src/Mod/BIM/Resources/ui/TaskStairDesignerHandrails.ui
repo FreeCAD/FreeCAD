@@ -106,298 +106,309 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="picket_group">
-     <property name="title">
-      <string>Picket Parameters</string>
+    <widget class="QTabWidget" name="handrail_member_tabs">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <layout class="QFormLayout" name="picketForm">
-      <item row="0" column="0">
-       <widget class="QLabel" name="picketShapeLabel">
-        <property name="text">
-         <string>Shape</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="handrail_picket_shape"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="picketWidthLabel">
-        <property name="text">
-         <string>Width / diameter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_picket_width">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="picketThicknessLabel">
-        <property name="text">
-         <string>Thickness</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_picket_thickness">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="picketStringerPenetrationLabel">
-        <property name="text">
-         <string>Penetration in stringer</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_picket_stringer_penetration">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="picketTopRailPenetrationLabel">
-        <property name="text">
-         <string>Penetration in top rail</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_picket_top_rail_penetration">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="post_group">
-     <property name="title">
-      <string>Post Parameters</string>
-     </property>
-     <layout class="QFormLayout" name="postForm">
-      <item row="0" column="0">
-       <widget class="QLabel" name="postShapeLabel">
-        <property name="text">
-         <string>Shape</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="handrail_post_shape"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="postWidthLabel">
-        <property name="text">
-         <string>Width / diameter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_post_width">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="postThicknessLabel">
-        <property name="text">
-         <string>Thickness</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_post_thickness">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="postAboveLabel">
-        <property name="text">
-         <string>Length above top rail</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_post_above">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="postBelowLabel">
-        <property name="text">
-         <string>Length below stringer</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_post_below">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="top_rail_group">
-     <property name="title">
-      <string>Top rail Parameters</string>
-     </property>
-     <layout class="QFormLayout" name="topRailForm">
-      <item row="0" column="0">
-       <widget class="QLabel" name="topRailShapeLabel">
-        <property name="text">
-         <string>Shape</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="handrail_top_rail_shape"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="topRailWidthLabel">
-        <property name="text">
-         <string>Width / diameter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_top_rail_width">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="topRailThicknessLabel">
-        <property name="text">
-         <string>Thickness</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_top_rail_thickness">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="topRailPenetrationLabel">
-        <property name="text">
-         <string>Penetration in posts</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="handrail_top_rail_penetration">
-        <property name="suffix">
-         <string> mm</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="maximum">
-         <double>1000000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QWidget" name="picket_tab">
+      <attribute name="title">
+       <string>Pickets</string>
+      </attribute>
+      <layout class="QFormLayout" name="picketForm">
+       <item row="0" column="0">
+        <widget class="QLabel" name="picketShapeLabel">
+         <property name="text">
+          <string>Shape</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="handrail_picket_shape"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="picketWidthLabel">
+         <property name="text">
+          <string>Width / diameter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_picket_width">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="picketThicknessLabel">
+         <property name="text">
+          <string>Thickness</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_picket_thickness">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="picketStringerPenetrationLabel">
+         <property name="text">
+          <string>Penetration in stringer</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_picket_stringer_penetration">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="picketTopRailPenetrationLabel">
+         <property name="text">
+          <string>Penetration in top rail</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_picket_top_rail_penetration">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="post_tab">
+      <attribute name="title">
+       <string>Posts</string>
+      </attribute>
+      <layout class="QFormLayout" name="postForm">
+       <item row="0" column="0">
+        <widget class="QLabel" name="postShapeLabel">
+         <property name="text">
+          <string>Shape</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="handrail_post_shape"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="postWidthLabel">
+         <property name="text">
+          <string>Width / diameter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_post_width">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="postThicknessLabel">
+         <property name="text">
+          <string>Thickness</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_post_thickness">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="postAboveLabel">
+         <property name="text">
+          <string>Length above top rail</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_post_above">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="postBelowLabel">
+         <property name="text">
+          <string>Length below stringer</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_post_below">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="postCapLabel">
+         <property name="text">
+          <string>Top end</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="handrail_post_cap"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="top_rail_tab">
+      <attribute name="title">
+       <string>Top Rail</string>
+      </attribute>
+      <layout class="QFormLayout" name="topRailForm">
+       <item row="0" column="0">
+        <widget class="QLabel" name="topRailShapeLabel">
+         <property name="text">
+          <string>Shape</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="handrail_top_rail_shape"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="topRailWidthLabel">
+         <property name="text">
+          <string>Width / diameter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_top_rail_width">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="topRailThicknessLabel">
+         <property name="text">
+          <string>Thickness</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_top_rail_thickness">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="topRailPenetrationLabel">
+         <property name="text">
+          <string>Penetration in posts</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="handrail_top_rail_penetration">
+         <property name="suffix">
+          <string> mm</string>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>

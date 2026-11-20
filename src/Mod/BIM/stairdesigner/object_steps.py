@@ -7,6 +7,7 @@ import Part
 
 from .geometry_core import balanced_section_top
 from .geometry_plan import balanced_tread_faces
+from .geometry_stringer_path import straight_stringer_sections, stringer_flight_runs
 from .geometry_steps import (
     balanced_plan_geometry,
     make_balanced_concrete_shape,
@@ -35,7 +36,65 @@ from .object_utils import (
     _child_placement,
     _combined_placement,
     _quantity_value,
+    _set_global_shape,
+    first_step_rounded,
+    get_flights,
 )
+
+
+def _rounded_first_step_cutter(stair, sections, side, riser_height, placement):
+    """Return the region that rounds the first step's free corner.
+
+    The first step's end stands free on that side, in front of the board
+    starting at the second riser. Its corner is rounded in plan from the
+    nosing to that riser, as on traditional stairs, and by no more than
+    half the step's width, which leaves room for the other side's.
+    ``sections`` are the first flight's, which ``placement`` takes to the
+    document. Returns ``None`` when the first step has no room for it.
+    """
+
+    if len(sections) < 2:
+        return None
+    first = sections[0]
+    origin = FreeCAD.Vector(*getattr(first, side.lower()), 0.0)
+    other = FreeCAD.Vector(*getattr(first, "right" if side == "Left" else "left"), 0.0)
+    along = FreeCAD.Vector(*first.tangent, 0.0)
+    if along.Length < 1e-9 or (other - origin).Length < 1e-9:
+        return None
+    along.normalize()
+    across = other - origin
+    across = (across - along * across.dot(along)).normalize()
+    nose = origin - along * _quantity_value(stair.Nosing)
+    second = FreeCAD.Vector(*getattr(sections[1], side.lower()), 0.0)
+    radius = min((second - nose).dot(along), (other - origin).Length / 2.0)
+    if radius < 1.0:
+        return None
+    # The square clears the nosing and the tread's side by a margin.
+    margin = 50.0
+    bottom = -margin
+
+    def point(forward, inward):
+        return nose + along * forward + across * inward + FreeCAD.Vector(0.0, 0.0, bottom)
+
+    square = Part.Face(
+        Part.makePolygon(
+            [
+                point(-margin, -margin),
+                point(radius, -margin),
+                point(radius, radius),
+                point(-margin, radius),
+                point(-margin, -margin),
+            ]
+        )
+    )
+    disc = Part.Face(
+        Part.Wire(Part.makeCircle(radius, point(radius, radius), FreeCAD.Vector(0.0, 0.0, 1.0)))
+    )
+    # Up to the first step's top only: the steps above are left whole.
+    top = balanced_section_top(first, 0, riser_height) + 1.0
+    cutter = square.cut(disc).extrude(FreeCAD.Vector(0.0, 0.0, top - bottom))
+    cutter.transformShape(placement.toMatrix())
+    return cutter
 
 
 class StairStepsMixin:
@@ -233,6 +292,12 @@ class StairStepsMixin:
                 for side in ("left", "right")
                 if getattr(front, side) == getattr(rear, side)
             }
+            # Ends on a newel post: their bands stop at the post too.
+            | {
+                getattr(section, side)
+                for section in sections
+                for side in getattr(section, "post_ends", ())
+            }
             if not concrete_dressing
             else set()
         )
@@ -324,6 +389,50 @@ class StairStepsMixin:
             riser.Placement = _child_placement(stair)
             if FreeCAD.GuiUp:
                 riser.ViewObject.ShapeColor = (0.58, 0.36, 0.18)
+
+    def _round_first_step(self, stair, layouts, balanced_sections, riser_height):
+        """Round the first step's end on the sides the stair asks it for."""
+
+        group = stair.StepsGroup
+        sides = [side for side in ("Left", "Right") if first_step_rounded(stair, side)]
+        if not group or not sides:
+            return
+        if balanced_sections:
+            runs = stringer_flight_runs(
+                balanced_sections,
+                [str(flight.FlightType) for flight in get_flights(stair)],
+            )
+            sections = runs[0][1] if runs else []
+            placement = _child_placement(stair)
+        elif len(layouts) == 1:
+            layout = layouts[0]
+            sections = straight_stringer_sections(
+                layout["metrics"],
+                layout["width"],
+                layout["tread_goings"],
+                layout["section_top_elevations"],
+            )
+            # A single flight's sections are the flight's own.
+            placement = _combined_placement(stair, layout["placement"])
+        else:
+            return
+        steps = [
+            part
+            for part in group.Group
+            if str(getattr(part, "StairDesignerRole", "")) in ("Tread", "Riser")
+            and not part.Shape.isNull()
+        ]
+        for side in sides:
+            cutter = _rounded_first_step_cutter(stair, sections, side, riser_height, placement)
+            if cutter is None:
+                continue
+            for part in steps:
+                shape = part.Shape
+                if not shape.BoundBox.intersect(cutter.BoundBox):
+                    continue
+                rounded = shape.cut(cutter)
+                if len(rounded.Solids) == 1 and abs(rounded.Volume - shape.Volume) > 1e-6:
+                    _set_global_shape(part, rounded.Solids[0])
 
     def _update_concrete(
         self,

@@ -12,13 +12,14 @@ from .geometry_handrails import (
     handrail_picket_fractions,
     fit_handrail_to_nosings,
     make_handrail_path,
+    handrail_plumb_depth,
     make_handrail_top_rail_shape,
     make_handrail_vertical_member_shape,
     sample_handrail_path,
 )
+from .geometry_joinery import make_handrail_joinery
 from .geometry_steps import _local_step_expansion_faces, _section_band_faces
 from .geometry_stringer_path import (
-    boundary_stringer_runs,
     straight_stringer_sections,
     stringer_flight_runs,
 )
@@ -32,21 +33,119 @@ from .object_components import (
 )
 
 from .object_stringers import (
-    _layout_stringer_run_plane,
+    _board_length,
+    _endpoint_boundary_boards,
+    _flight_side_stringers,
+    _housed_end_extension,
+    _housed_start_extension,
     _line_intersection,
     _planar_stringer_runs,
+    _too_short_to_house,
+    _straight_flight_plane,
     _stringer_center_line,
-    _stringer_run_plane,
 )
 
 from .object_utils import (
     _add_link_property,
     _add_property,
     _child_placement,
-    _has_endpoint_angle,
     _quantity_value,
+    _set_global_shape,
+    first_step_rounded,
     get_flights,
 )
+
+# A handrail span shorter than this at either end of a side is not built: two
+# posts that close are one newel. The neighbouring span's post serves it.
+HANDRAIL_MINIMUM_END_SPAN = 200.0
+
+
+def _newel_overhang_shift(sample, side, stringer, offset, width):
+    """Return the plan vector from a post's outer face to the step ends.
+
+    A notched board lies under the steps, which overhang its outer face by
+    the step overlap. A post on the board reaching at least that face carries
+    the step ends, so the overhang beside it is trimmed back to the post.
+    ``None`` when the post already covers the step ends or stands inside
+    the board line, where the steps rightly pass outside it.
+    """
+
+    if stringer is None:
+        return None
+    tangent_length = max(math.hypot(*sample["tangent"]), 1e-9)
+    tangent = (
+        sample["tangent"][0] / tangent_length,
+        sample["tangent"][1] / tangent_length,
+    )
+    outward = (-tangent[1], tangent[0]) if side == "Left" else (tangent[1], -tangent[0])
+    # Square posts are ``width`` across the rail; for circular ones it is the
+    # diameter.
+    gap = offset - width / 2.0
+    if gap <= 1e-6 or gap > _quantity_value(stringer.StepOverlap) + 1e-6:
+        return None
+    return (outward[0] * gap, outward[1] * gap)
+
+
+def _convex_hull(points):
+    points = sorted(set(points))
+    if len(points) < 3:
+        return points
+
+    def cross(origin, first, second):
+        return (first[0] - origin[0]) * (second[1] - origin[1]) - (first[1] - origin[1]) * (
+            second[0] - origin[0]
+        )
+
+    lower = []
+    upper = []
+    for point in points:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], point) <= 1e-9:
+            lower.pop()
+        lower.append(point)
+    for point in reversed(points):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], point) <= 1e-9:
+            upper.pop()
+        upper.append(point)
+    return lower[:-1] + upper[:-1]
+
+
+def _newel_step_cutter(post, shifts, footprint=None):
+    """Return the region between ``post`` and the step ends it carries.
+
+    ``shifts`` are the plan vectors from the post's outer faces to the step
+    ends, one per board meeting the post; a corner newel has two. With the
+    stair ``footprint`` the region keeps out of the steps lying deeper inside
+    the outline than the overhang: beside a newel at an inner corner, past
+    the end of one flight's side, the other flight's steps are not overhang.
+    """
+
+    bounds = post.BoundBox
+    section = [
+        (round(point.x, 9), round(point.y, 9))
+        for edge in post.Edges
+        if edge.BoundBox.ZMax < bounds.ZMin + 1e-6
+        for point in edge.discretize(24)
+    ]
+    offsets = [(0.0, 0.0)]
+    for shift in shifts:
+        offsets += [(x + shift[0], y + shift[1]) for x, y in offsets]
+    hull = _convex_hull([(x + dx, y + dy) for x, y in section for dx, dy in offsets])
+    if len(hull) < 3:
+        return None
+    wire = Part.makePolygon([FreeCAD.Vector(x, y, bounds.ZMin) for x, y in hull + hull[:1]])
+    height = FreeCAD.Vector(0.0, 0.0, bounds.ZLength)
+    try:
+        cutter = Part.Face(wire).extrude(height).cut(post)
+        if footprint is not None and not footprint.isNull() and footprint.Faces:
+            gap = max(math.hypot(*shift) for shift in shifts)
+            # Everything deeper than the overhang inside the outline is tread.
+            # Sharp joins keep the full corner square at an inner corner.
+            core = footprint.makeOffset2D(-gap, 2)
+            core.translate(FreeCAD.Vector(0.0, 0.0, bounds.ZMin - footprint.BoundBox.ZMin))
+            cutter = cutter.cut(core.extrude(height))
+    except (Part.OCCError, ValueError):
+        return None
+    return cutter if not cutter.isNull() and cutter.Volume > 1e-3 else None
 
 
 def _sync_handrail_parts(
@@ -149,6 +248,30 @@ def _sync_handrail_parts(
 class StairHandrailMixin:
     """Implementation methods grouped by responsibility."""
 
+    def _update_handrail_joinery(self, stair):
+        """Tenon the top rails into their posts and house the pickets in
+        the rails, once all handrail members exist."""
+
+        group = stair.HandrailsGroup
+        if not group:
+            return
+        members = {"HandrailTopRail": [], "HandrailPost": [], "HandrailPicket": []}
+        for part in group.Group:
+            role = getattr(part, "StairDesignerRole", "")
+            if role in members and not part.Shape.isNull():
+                members[role].append(part)
+        rails, posts = members["HandrailTopRail"], members["HandrailPost"]
+        if not rails:
+            return
+        rail_shapes, post_shapes = make_handrail_joinery(
+            [part.Shape for part in rails],
+            [part.Shape for part in posts],
+            [part.Shape for part in members["HandrailPicket"]],
+        )
+        for part, shape in zip(rails + posts, rail_shapes + post_shapes):
+            if not shape.isSame(part.Shape):
+                _set_global_shape(part, shape)
+
     def _update_handrails(
         self,
         stair,
@@ -159,6 +282,9 @@ class StairHandrailMixin:
         riser_height,
         allow_structure_changes,
     ):
+        # Regions beside the newels that the steps must not overhang; the
+        # joinery trims the steps to them.
+        self._newel_step_cutters = []
         flights = get_flights(stair)
         any_enabled = any(
             bool(getattr(flight, f"{side}HandrailEnabled", False))
@@ -208,12 +334,14 @@ class StairHandrailMixin:
         picket_thickness = _quantity_value(stair.HandrailPicketThickness)
         picket_path_size = picket_width if picket_shape == "Circular" else picket_thickness
         post_shape = str(stair.HandrailPostShape)
+        post_cap = str(getattr(stair, "HandrailPostCap", "Flat"))
         post_width = _quantity_value(stair.HandrailPostWidth)
         post_thickness = _quantity_value(stair.HandrailPostThickness)
         post_path_size = post_width if post_shape == "Circular" else post_thickness
         global_offset = _quantity_value(stair.HandrailOffset)
         desired = []
-        post_positions = set()
+        post_positions = {}
+        post_records = []
         first_flight_index = flight_runs[0][0]
         last_flight_index = flight_runs[-1][0]
         concrete_support_faces = []
@@ -293,21 +421,8 @@ class StairHandrailMixin:
                         flights[flight_index].FlightType
                     ).startswith("Straight"):
                         continue
-                    plane = (
-                        _layout_stringer_run_plane(
-                            layouts[flight_index],
-                            prepared_side,
-                        )
-                        if str(flights[flight_index].FlightType) == "Straight"
-                        and _has_endpoint_angle(flights[flight_index])
-                        else _stringer_run_plane(
-                            sections,
-                            prepared_side,
-                            max(
-                                _quantity_value(flights[flight_index].Width),
-                                0.01,
-                            ),
-                        )
+                    plane = _straight_flight_plane(
+                        flights, flight_index, layouts, sections, prepared_side
                     )
                     center_line = _stringer_center_line(
                         plane[1],
@@ -344,7 +459,7 @@ class StairHandrailMixin:
                     corner_post_points[(prepared_side, outgoing_index, 0)] = junction
 
         rail_runs = []
-        for flight_index, sections in flight_runs:
+        for flight_run_index, (flight_index, sections) in enumerate(flight_runs):
             flight = flights[flight_index]
             endpoint = (
                 balanced_footprint is not None
@@ -358,8 +473,14 @@ class StairHandrailMixin:
             )
             for side in ("Left", "Right"):
                 runs = (
-                    boundary_stringer_runs(
-                        sections, side, balanced_footprint, include_post_sections=True
+                    _endpoint_boundary_boards(
+                        flight_runs,
+                        flights,
+                        flight_run_index,
+                        prepared_handrail_runs.get(side, {}).get(flight_index),
+                        side,
+                        balanced_footprint,
+                        include_post_sections=True,
                     )
                     if endpoint
                     else [sections]
@@ -373,15 +494,24 @@ class StairHandrailMixin:
             flight = flights[flight_index]
             if not bool(getattr(flight, f"{side}HandrailEnabled", False)):
                 continue
-            stringer = next(
-                (
-                    part
-                    for part in stringers
-                    if getattr(part, "SourceFlight", None) == flight
-                    and str(getattr(part, "Side", "")) == side
-                ),
-                None,
+            prepared_sections = prepared_handrail_runs.get(side, {}).get(flight_index, sections)
+            # A side too short for a regular board is measured from its
+            # first riser to its corner, whatever stands there.
+            short_span = (
+                _board_length(sections, side)
+                if not endpoint and _too_short_to_house(stair, flight, sections, side)
+                else None
             )
+            if (
+                not endpoint
+                and flight_index == first_flight_index
+                and first_step_rounded(stair, side)
+            ):
+                # Behind a rounded first step the rail starts at the second
+                # riser, as the board does.
+                sections = sections[1:]
+                prepared_sections = prepared_sections[1:]
+            stringer = next(iter(_flight_side_stringers(stringers, flight, side)), None)
             center_offset = 0.0
             if stringer is not None:
                 thickness = _quantity_value(stringer.Thickness)
@@ -391,11 +521,7 @@ class StairHandrailMixin:
                     if str(stringer.StringerType) == "Housed stringer"
                     else overlap + thickness / 2.0
                 )
-            path_sections = (
-                sections
-                if endpoint
-                else prepared_handrail_runs.get(side, {}).get(flight_index, sections)
-            )
+            path_sections = sections if endpoint else prepared_sections
             post_tops = None
             if (
                 endpoint
@@ -419,22 +545,25 @@ class StairHandrailMixin:
                     # The rail follows the board between the newels. Fan
                     # elevations determine post height, not the rail pitch.
                     path_sections = path_sections[first : last + 1]
+            start_extension = (
+                # The first post stands on the board's front end.
+                _housed_start_extension(stair, flight, str(stringer.StringerType))
+                if stringer is not None
+                and str(stringer.StringerType) == "Housed stringer"
+                and flight_index == first_flight_index
+                and run_index == 0
+                else 0.0
+            )
             path = make_handrail_path(
                 path_sections,
                 riser_height,
                 side,
                 center_offset + global_offset,
                 _quantity_value(stair.HandrailHeightAboveNosing),
+                start_extension,
                 (
-                    _quantity_value(stair.StringerStartExtension)
-                    if stringer is not None
-                    and str(stringer.StringerType) == "Housed stringer"
-                    and flight_index == first_flight_index
-                    and run_index == 0
-                    else 0.0
-                ),
-                (
-                    _quantity_value(stair.StringerEndExtension)
+                    # The last post stands on the board's far end.
+                    _housed_end_extension(stair, flight, side, str(stringer.StringerType))
                     if stringer is not None
                     and flight_index == last_flight_index
                     and run_index == run_count - 1
@@ -447,9 +576,48 @@ class StairHandrailMixin:
                 fit_handrail_to_nosings(path, path_sections, side)
             if post_tops is not None:
                 path["post_tops"] = post_tops
+            path["span"] = path["length"] if short_span is None else short_span
             prepared_runs.append(
                 (flight_index, side, sections, run_index, endpoint, stringer, center_offset, path)
             )
+
+        floor_flights = {}
+        shared_post_shifts = []
+        for side in ("Left", "Right"):
+            indices = [index for index, run in enumerate(prepared_runs) if run[1] == side]
+            dropped = set()
+            for ordered in (indices, indices[::-1]):
+                for position, index in enumerate(ordered[:-1]):
+                    following = ordered[position + 1]
+                    if (
+                        following in dropped
+                        or prepared_runs[index][-1]["span"] >= HANDRAIL_MINIMUM_END_SPAN
+                        or prepared_runs[index][0] == prepared_runs[following][0]
+                    ):
+                        break
+                    dropped.add(index)
+            kept = [index for index in indices if index not in dropped]
+            if kept and kept[0] != indices[0]:
+                # The first kept span starts at the stair's first post.
+                floor_flights[side] = prepared_runs[kept[0]][0]
+            # The steps of a dropped span still overhang the post it shares
+            # with the kept spans.
+            for index in dropped:
+                flight_index, _side, _sections, _run, _endpoint, stringer, offset, path = (
+                    prepared_runs[index]
+                )
+                end = 1 if index < kept[0] else 0
+                sample = sample_handrail_path(path, float(end))
+                corner_point = corner_post_points.get((side, flight_index, end))
+                if corner_point is not None:
+                    sample = dict(sample)
+                    sample["point"] = corner_point
+                shift = _newel_overhang_shift(
+                    sample, side, stringer, offset + global_offset, post_width
+                )
+                if shift is not None:
+                    shared_post_shifts.append((tuple(sample["point"][:2]), shift))
+            prepared_runs = [run for index, run in enumerate(prepared_runs) if index not in dropped]
 
         # Fit every board first, then join rails at a common corner elevation.
         # Independently raised rails otherwise leave a step beside a short post.
@@ -497,10 +665,8 @@ class StairHandrailMixin:
                 if path["length"] > 1e-9
                 else 0.0
             )
-            rail_depth = (
-                rail_width / math.sqrt(1.0 + path_slope * path_slope)
-                if rail_shape == "Circular"
-                else rail_thickness
+            rail_depth = handrail_plumb_depth(
+                rail_width if rail_shape == "Circular" else rail_thickness, path_slope
             )
             top_rail_shape = make_handrail_top_rail_shape(
                 path,
@@ -526,8 +692,15 @@ class StairHandrailMixin:
                 }
             )
 
+            # A flight side can be built from several boards.
+            boards = [
+                part
+                for part in _flight_side_stringers(stringers, flight, side)
+                if not part.Shape.isNull()
+            ]
+
             def stringer_span(sample):
-                if stringer is None or stringer.Shape.isNull():
+                if not boards:
                     return None
                 tangent = sample["tangent"]
                 inward = (tangent[1], -tangent[0]) if side == "Left" else (-tangent[1], tangent[0])
@@ -539,10 +712,13 @@ class StairHandrailMixin:
                     FreeCAD.Vector(point[0], point[1], -100000.0),
                     FreeCAD.Vector(point[0], point[1], 100000.0),
                 )
-                intersection = stringer.Shape.common(probe)
-                if not intersection.Vertexes:
+                elevations = [
+                    vertex.Point.z
+                    for board in boards
+                    for vertex in board.Shape.common(probe).Vertexes
+                ]
+                if not elevations:
                     return None
-                elevations = [vertex.Point.z for vertex in intersection.Vertexes]
                 return min(elevations), max(elevations)
 
             def concrete_support(
@@ -630,9 +806,36 @@ class StairHandrailMixin:
                     round(junction_sample["point"][0], 6),
                     round(junction_sample["point"][1], 6),
                 )
-                if position_key in post_positions:
+                # A flight that turns at its entry or exit butts its
+                # neighbour at their common seam, where that neighbour has
+                # already placed its post.
+                newel_shift = _newel_overhang_shift(
+                    sample, side, stringer, center_offset + global_offset, post_width
+                )
+                placed_post = post_positions.get(position_key) or next(
+                    (
+                        record
+                        for record in post_records
+                        if math.dist(sample["point"][:2], record["point"]) < 1e-6
+                    ),
+                    None,
+                )
+                if placed_post is not None:
+                    if newel_shift is not None:
+                        placed_post["shifts"].append(newel_shift)
                     continue
-                post_positions.add(position_key)
+                placed_post = {
+                    "point": tuple(sample["point"][:2]),
+                    "shifts": [
+                        shift
+                        for point, shift in shared_post_shifts
+                        if math.dist(point, sample["point"][:2]) < 1e-6
+                    ],
+                }
+                if newel_shift is not None:
+                    placed_post["shifts"].append(newel_shift)
+                post_positions[position_key] = placed_post
+                post_records.append(placed_post)
                 span = stringer_span(attachment_sample)
                 local_concrete_support = concrete_support(
                     sample,
@@ -640,34 +843,48 @@ class StairHandrailMixin:
                     post_width,
                     post_thickness,
                 )
-                first_floor_post = flight_index == 0 and run_index == 0 and post_index == 0
+                first_floor_post = (
+                    run_index == 0
+                    and post_index == 0
+                    and flight_index == floor_flights.get(side, 0)
+                )
                 if first_floor_post:
                     bottom = 0.0
                 elif str(stair.StairType) == "Wood" and span:
-                    bottom = span[0] - _quantity_value(stair.HandrailPostBelowStringer)
+                    # A board resting on the floor does not take the post
+                    # through it.
+                    bottom = max(span[0] - _quantity_value(stair.HandrailPostBelowStringer), 0.0)
                 elif local_concrete_support is not None:
                     bottom = local_concrete_support
                 else:
                     bottom = sample["support"]
                 top = max(sample["top"], path.get("post_tops", (sample["top"],) * 2)[post_index])
                 top += _quantity_value(stair.HandrailPostAboveTopRail)
+                # A worked post stays square where its joints are cut: up
+                # past the boards, and down from under the rail, by a rise
+                # for the neighbouring flight's board and rail.
+                block = max(float(riser_height), post_width, post_thickness) + 20.0
+                placed_post["shape"] = make_handrail_vertical_member_shape(
+                    sample["point"],
+                    sample["tangent"],
+                    bottom,
+                    top,
+                    post_shape,
+                    post_width,
+                    post_thickness,
+                    blocks=(
+                        (span[1] if span else bottom) + block,
+                        sample["top"] - rail_depth - block,
+                    ),
+                    cap=post_cap,
+                )
                 desired.append(
                     {
                         "role": "HandrailPost",
                         "flight": flight,
                         "side": side,
                         "element_index": run_index * 2 + post_index,
-                        "shape": (
-                            make_handrail_vertical_member_shape(
-                                sample["point"],
-                                sample["tangent"],
-                                bottom,
-                                top,
-                                post_shape,
-                                post_width,
-                                post_thickness,
-                            )
-                        ),
+                        "shape": placed_post["shape"],
                         "label": (
                             f"{translate('BIM', 'Flight')} "
                             f"{flight_index + 1}: {side_label} "
@@ -722,6 +939,16 @@ class StairHandrailMixin:
                                 picket_shape,
                                 picket_width,
                                 picket_thickness,
+                                # Square where it enters the board and the
+                                # rail, and a little beyond.
+                                blocks=(
+                                    bottom
+                                    + _quantity_value(stair.HandrailPicketStringerPenetration)
+                                    + 2.5 * max(picket_width, picket_thickness),
+                                    top
+                                    - _quantity_value(stair.HandrailPicketTopRailPenetration)
+                                    - 2.5 * max(picket_width, picket_thickness),
+                                ),
                             )
                         ),
                         "label": (
@@ -732,6 +959,15 @@ class StairHandrailMixin:
                         ),
                     }
                 )
+        self._newel_step_cutters = [
+            cutter
+            for cutter in (
+                _newel_step_cutter(record["shape"], record["shifts"], balanced_footprint)
+                for record in post_records
+                if record["shifts"] and "shape" in record
+            )
+            if cutter is not None
+        ]
         _sync_handrail_parts(
             group,
             stair,
