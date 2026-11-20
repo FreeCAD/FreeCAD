@@ -45,6 +45,11 @@ class SoSwitch;
 class SoTransform;
 class SoTranslation;
 
+namespace Gui
+{
+class SoFCPlacementIndicatorKit;
+}
+
 namespace PartGui
 {
 class SoBrepFaceSet;
@@ -68,20 +73,10 @@ class TaskSketcher3DTool;
 
 using Color3f = std::array<float, 3>;
 
-constexpr float kAxisHandleLength = 10.0F;
-constexpr float kPlaneOverlaySize = kAxisHandleLength;
 constexpr float kPlaneTransparency = 0.88F;
-constexpr float kAxisHandleArrowLength = 1.8F;
-constexpr float kAxisHandleLineWidth = 1.6F;
-constexpr float kAxisHandleTransparency = 0.35F;
-constexpr float kArrowHeadHalfWidthFactor = 0.55F;
-constexpr float kActiveAxisHandleEmissiveScale = 0.18F;
-constexpr float kInactiveAxisHandleEmissiveScale = 0.06F;
 constexpr int kPlaneQuadVertexCount = 4;
 constexpr float kSnapMarkerRadius = 0.6F;
 
-constexpr Color3f kActiveAxisHandleColor {1.0F, 0.05F, 0.05F};
-constexpr Color3f kInactiveAxisHandleColor {0.36F, 0.40F, 0.48F};
 constexpr Color3f kPlaneOverlayColor {0.25F, 0.45F, 0.90F};
 constexpr Color3f kSnapMarkerDiffuseColor {1.0F, 0.55F, 0.0F};
 constexpr Color3f kSnapMarkerEmissiveColor {0.6F, 0.3F, 0.0F};
@@ -211,11 +206,9 @@ private:
 
     void ensurePlaneOverlay();
     void updatePlaneOverlay();
-    void updatePlaneScale();
     void updateActivePlaneFrame();
     void updatePlaneOverlayTransform();
     void updatePlaneOverlaySize(const Base::Vector3d& cursorPos);
-    void applyActivePlaneChanges();
     const Sketcher3D::GeomReferencePlane3D* getActiveReferencePlane() const;
 
     // ---------------Snap overlay----------------------------------------------
@@ -244,9 +237,10 @@ private:
     int activeUserPlaneGeoId {-1};
     Base::Vector3d planeBase {0.0, 0.0, 0.0};
     SoSeparator* planeOverlay {nullptr};
+    SoTranslation* planeOverlayOrigin {nullptr};
     SoTransform* planeOverlayTransform {nullptr};
     SoScale* planeOverlayScale {nullptr};
-    float planeOverlaySize {0.0F};
+    Gui::SoFCPlacementIndicatorKit* spaceHandleTriad {nullptr};
 
     // Reference geometry overlay nodes
     SoSeparator* referenceGeometryRoot {nullptr};

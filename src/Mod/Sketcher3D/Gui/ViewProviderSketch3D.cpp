@@ -47,7 +47,7 @@
 #include <Base/Rotation.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Inventor/SoAutoZoomTranslation.h>
+#include <Gui/Inventor/SoFCPlacementIndicatorKit.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Utilities.h>
@@ -98,53 +98,26 @@ void setEmissiveColor(SoMaterial* material, const Color3f& color, float scale = 
     material->emissiveColor.setValue(color[0] * scale, color[1] * scale, color[2] * scale);
 }
 
-SoSeparator* addAxisArrow(
-    const SbVec3f& dir,
-    const SbVec3f& side,
-    const char* name,
-    const Color3f& color,
-    float emScale
-)
-{
-    auto* axisSep = new SoSeparator();
-    axisSep->setName(name);
-
-    auto* material = new SoMaterial();
-    setDiffuseColor(material, color);
-    setEmissiveColor(material, color, emScale);
-    material->transparency.setValue(kAxisHandleTransparency);
-    axisSep->addChild(material);
-
-    auto* style = new SoDrawStyle();
-    style->lineWidth.setValue(kAxisHandleLineWidth);
-    axisSep->addChild(style);
-
-    SbVec3f end = dir * kAxisHandleLength;
-    SbVec3f arrowBase = end - dir * kAxisHandleArrowLength;
-    SbVec3f sideVec = side * (kAxisHandleArrowLength * kArrowHeadHalfWidthFactor);
-
-    auto* coords = new SoCoordinate3();
-    coords->point.setNum(4);
-    coords->point.set1Value(0, SbVec3f(0.0F, 0.0F, 0.0F));
-    coords->point.set1Value(1, end);
-    coords->point.set1Value(2, arrowBase + sideVec);
-    coords->point.set1Value(3, arrowBase - sideVec);
-    axisSep->addChild(coords);
-
-    auto* lineSet = new SoIndexedLineSet();
-    const int32_t lineIndices[] = {0, 1, -1, 1, 2, -1, 1, 3, -1};
-    lineSet->coordIndex.setValues(0, 9, lineIndices);
-    axisSep->addChild(lineSet);
-
-    return axisSep;
-}
-
 float planeSizeFromFrame(const ViewProviderSketch3D::ActivePlaneFrame& frame, const Base::Vector3d& cursor)
 {
     Base::Vector3d d = cursor - frame.origin;
     double alongU = std::abs(d * frame.xAxis);
     double alongV = std::abs(d * frame.yAxis);
-    return std::max(kAxisHandleLength, static_cast<float>(std::max(alongU, alongV)));
+    return static_cast<float>(std::max(alongU, alongV));
+}
+
+int spaceHandleTriadAxesForPlane(ViewProviderSketch3D::ActivePlane plane)
+{
+    using Axis = Gui::SoFCPlacementIndicatorKit::Axis;
+    switch (plane) {
+        case ViewProviderSketch3D::ActivePlane::YZ:
+            return Axis::Y | Axis::Z;
+        case ViewProviderSketch3D::ActivePlane::ZX:
+            return Axis::X | Axis::Z;
+        case ViewProviderSketch3D::ActivePlane::XY:
+        default:
+            return Axis::X | Axis::Y;
+    }
 }
 
 }  // namespace
@@ -566,9 +539,10 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
         pcRoot->removeChild(planeOverlay);
         planeOverlay->unref();
         planeOverlay = nullptr;
+        planeOverlayOrigin = nullptr;
         planeOverlayTransform = nullptr;
         planeOverlayScale = nullptr;
-        planeOverlaySize = kPlaneOverlaySize;
+        spaceHandleTriad = nullptr;
     }
 
     Gui::ToolBarManager::getInstance()->setState(
@@ -693,7 +667,7 @@ bool ViewProviderSketch3D::keyPressed(bool pressed, int key)
         }
         if (!pressed && activeUserPlaneGeoId >= 0) {
             activeUserPlaneGeoId = -1;
-            applyActivePlaneChanges();
+            updatePlaneOverlay();
             return true;
         }
         return false;
@@ -726,20 +700,13 @@ void ViewProviderSketch3D::setActiveBasePlane(ActivePlane p)
 {
     activeBasePlane = p;
     activeUserPlaneGeoId = -1;
-    applyActivePlaneChanges();
+    updatePlaneOverlay();
 }
 
 void ViewProviderSketch3D::setActiveUserPlane(int geoId)
 {
     activeUserPlaneGeoId = geoId;
-    applyActivePlaneChanges();
-}
-
-void ViewProviderSketch3D::applyActivePlaneChanges()
-{
-    updateActivePlaneFrame();
-    updatePlaneScale();
-    updatePlaneOverlayTransform();
+    updatePlaneOverlay();
 }
 
 void ViewProviderSketch3D::updateActivePlaneFrame()
@@ -779,13 +746,14 @@ void ViewProviderSketch3D::updateActivePlaneFrame()
 
 void ViewProviderSketch3D::updatePlaneOverlayTransform()
 {
-    auto& frame = getActivePlaneFrame();
-
-    planeOverlayTransform->translation.setValue(frame.origin.x, frame.origin.y, frame.origin.z);
+    const auto& frame = getActivePlaneFrame();
+    planeOverlayOrigin->translation.setValue(frame.origin.x, frame.origin.y, frame.origin.z);
 
     auto rot
         = Base::Rotation::makeRotationByAxes(frame.xAxis, Base::Vector3d(0, 0, 0), frame.normal, "ZXY");
     planeOverlayTransform->rotation.setValue(Base::convertTo<SbRotation>(rot));
+
+    spaceHandleTriad->axes.setValue(spaceHandleTriadAxesForPlane(activeBasePlane));
 }
 
 void ViewProviderSketch3D::setPlaneBase(const Base::Vector3d& base)
@@ -814,8 +782,12 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     pick->style.setValue(SoPickStyle::UNPICKABLE);
     planeOverlay->addChild(pick);
 
+    planeOverlayOrigin = new SoTranslation();
+    planeOverlay->addChild(planeOverlayOrigin);
+
+    auto* planeSep = new SoSeparator();
     planeOverlayTransform = new SoTransform();
-    planeOverlay->addChild(planeOverlayTransform);
+    planeSep->addChild(planeOverlayTransform);
 
     auto* quadSep = new SoSeparator();
     quadSep->setName("Sketcher3DPlaneQuad");
@@ -847,39 +819,15 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     face->numVertices.set1Value(0, kPlaneQuadVertexCount);
     quadSep->addChild(face);
 
-    planeOverlay->addChild(quadSep);
+    planeSep->addChild(quadSep);
+    planeOverlay->addChild(planeSep);
 
-    auto* handleSep = new SoSeparator();
-    handleSep->setName("Sketcher3DAxisHandleAutoZoom");
-    handleSep->addChild(new Gui::SoAutoZoomTranslation());
-
-    // Axis arrows
-    auto* handle = new SoSeparator();
-    handle->setName("Sketcher3DAxisHandle");
-    handle->addChild(addAxisArrow(
-        {1.0F, 0.0F, 0.0F},
-        {0.0F, 1.0F, 0.0F},
-        "Sketcher3DAxisHandleX",
-        kActiveAxisHandleColor,
-        kActiveAxisHandleEmissiveScale
-    ));
-    handle->addChild(addAxisArrow(
-        {0.0F, 1.0F, 0.0F},
-        {1.0F, 0.0F, 0.0F},
-        "Sketcher3DAxisHandleY",
-        kActiveAxisHandleColor,
-        kActiveAxisHandleEmissiveScale
-    ));
-    handle->addChild(addAxisArrow(
-        {0.0F, 0.0F, 1.0F},
-        {1.0F, 0.0F, 0.0F},
-        "Sketcher3DAxisHandleZ",
-        kInactiveAxisHandleColor,
-        kInactiveAxisHandleEmissiveScale
-    ));
-    handleSep->addChild(handle);
-
-    planeOverlay->addChild(handleSep);
+    using Part = Gui::SoFCPlacementIndicatorKit::Part;
+    spaceHandleTriad = new Gui::SoFCPlacementIndicatorKit();
+    spaceHandleTriad->setName("Sketcher3DSpaceHandleTriad");
+    spaceHandleTriad->parts.setValue(Part::Axes | Part::ArrowHeads);
+    spaceHandleTriad->axisLength.setValue(2);
+    planeOverlay->addChild(spaceHandleTriad);
 
     pcRoot->addChild(planeOverlay);
     updatePlaneOverlay();
@@ -888,24 +836,13 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
 void ViewProviderSketch3D::updatePlaneOverlay()
 {
     updateActivePlaneFrame();
-    updatePlaneScale();
     updatePlaneOverlayTransform();
-}
-
-void ViewProviderSketch3D::updatePlaneScale()
-{
-    planeOverlayScale->scaleFactor.setValue(planeOverlaySize, planeOverlaySize, 1.0F);
 }
 
 void ViewProviderSketch3D::updatePlaneOverlaySize(const Base::Vector3d& cursorPos)
 {
-    float updatedSize = planeSizeFromFrame(getActivePlaneFrame(), cursorPos);
-    if (std::abs(planeOverlaySize - updatedSize) <= Precision::Confusion()) {
-        return;
-    }
-
-    planeOverlaySize = updatedSize;
-    updatePlaneScale();
+    float size = planeSizeFromFrame(getActivePlaneFrame(), cursorPos);
+    planeOverlayScale->scaleFactor.setValue(size, size, 1.0F);
 }
 
 Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
