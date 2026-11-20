@@ -123,16 +123,19 @@
  *      Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
  *
  ****************************************************************************/
-#pragma once
+#ifndef KDL_FRAMES_H
+#define KDL_FRAMES_H
 
 
 #include "utilities/kdl-config.h"
 #include "utilities/utility.h"
+#include "utilities/hash_combine.h"
+
+#include <functional>
 
 /////////////////////////////////////////////////////////////
 
 namespace KDL {
-
 
 
 class Vector;
@@ -238,7 +241,7 @@ public:
      double Normalize(double eps=epsilon);
 
      //!    @return the norm of the vector
-     double Norm() const;
+     double Norm(double eps=epsilon) const;
 
 
 
@@ -311,8 +314,8 @@ public:
                 double Xy,double Yy,double Zy,
                 double Xz,double Yz,double Zz);
     inline Rotation(const Vector& x,const Vector& y,const Vector& z);
-    // default copy constructor is sufficient
 
+    inline Rotation(const Rotation& arg);
 
      inline Rotation& operator=(const Rotation& arg);
 
@@ -640,9 +643,9 @@ public:
      //! @return the identity transformation Frame(Rotation::Identity(),Vector::Zero()).
      inline static Frame Identity();
 
-     //! The twist \<t_this\> is expressed wrt the current
+     //! The twist <t_this> is expressed wrt the current
      //! frame.  This frame is integrated into an updated frame with
-     //! \<samplefrequency\>.  Very simple first order integration rule.
+     //! <samplefrequency>.  Very simple first order integration rule.
      inline void Integrate(const Twist& t_this,double frequency);
 
     /*
@@ -711,6 +714,7 @@ public:
 	 //! The literal inequality operator!=().
      inline friend bool operator!=(const Frame& a,const Frame& b);
 };
+
 
 /**
  * \brief represents both translational and rotational velocities.
@@ -789,8 +793,8 @@ public:
 // = Friends
     friend class Rotation;
     friend class Frame;
-
 };
+
 
 /**
  * 	\brief represents both translational and rotational acceleration.
@@ -951,8 +955,6 @@ public:
 
     friend class Rotation;
     friend class Frame;
-
-
 };
 
 
@@ -1016,7 +1018,7 @@ public:
      double Normalize(double eps=epsilon);
 
      //!  @return the norm of the vector
-     double Norm() const;
+     double Norm(double eps=epsilon) const;
 
      //! projects v in its XY plane, and sets *this to these values
      inline void Set3DXY(const Vector& v);
@@ -1061,6 +1063,8 @@ public:
 
     Rotation2(double ca,double sa):s(sa),c(ca){}
 
+    Rotation2(const Rotation2& arg);
+
      inline Rotation2& operator=(const Rotation2& arg);
      inline Vector2 operator*(const Vector2& v) const;
      //!    Access to elements 0..1,0..1, bounds are checked when NDEBUG is not set
@@ -1089,6 +1093,7 @@ public:
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
      inline friend bool Equal(const Rotation2& a,const Rotation2& b,double eps);
 };
+
 
 //! A 2D frame class, for further documentation see the Frames class
 //! for methods with unchanged semantics.
@@ -1119,7 +1124,7 @@ public:
      inline Frame2 Inverse() const;
      inline Vector2 Inverse(const Vector2& arg) const;
      inline Frame2& operator = (const Frame2& arg);
-     inline Vector2 operator * (const Vector2& arg);
+     inline Vector2 operator * (const Vector2& arg) const;
      inline friend Frame2 operator *(const Frame2& lhs,const Frame2& rhs);
      inline void SetIdentity();
      inline void Integrate(const Twist& t_this,double frequency);
@@ -1250,16 +1255,102 @@ IMETHOD Twist addDelta(const Twist& a,const Twist&da,double dt=1);
  */
 IMETHOD Wrench addDelta(const Wrench& a,const Wrench&da,double dt=1);
 
-} // namespace KDL
-
 #ifdef KDL_INLINE
-//    #include "vector.inl"
-//   #include "wrench.inl"
-    //#include "rotation.inl"
-    //#include "frame.inl"
-    //#include "twist.inl"
-    //#include "vector2.inl"
-    //#include "rotation2.inl"
-    //#include "frame2.inl"
 #include "frames.inl"
+#endif
+
+}
+
+template<> struct std::hash<KDL::Vector>
+{
+    std::size_t operator()(KDL::Vector const& v) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, v.x());
+        KDL::hash_combine(seed, v.y());
+        KDL::hash_combine(seed, v.z());
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Rotation>
+{
+    std::size_t operator()(KDL::Rotation const& r) const noexcept
+    {
+        size_t seed = 0;
+        double x, y, z, w;
+        r.GetQuaternion(x, y, z, w);
+        KDL::hash_combine(seed, x);
+        KDL::hash_combine(seed, y);
+        KDL::hash_combine(seed, z);
+        KDL::hash_combine(seed, w);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Frame>
+{
+    std::size_t operator()(KDL::Frame const& f) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, f.p);
+        KDL::hash_combine(seed, f.M);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Wrench>
+{
+    std::size_t operator()(KDL::Wrench const& w) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, w.force);
+        KDL::hash_combine(seed, w.torque);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Twist>
+{
+    std::size_t operator()(KDL::Twist const& t) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, t.vel);
+        KDL::hash_combine(seed, t.rot);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Vector2>
+{
+    std::size_t operator()(KDL::Vector2 const& v) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, v.x());
+        KDL::hash_combine(seed, v.y());
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Rotation2>
+{
+    std::size_t operator()(KDL::Rotation2 const& r) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, r.GetRot());
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::Frame2>
+{
+    std::size_t operator()(KDL::Frame2 const& f) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, f.p);
+        KDL::hash_combine(seed, f.M);
+        return seed;
+    }
+};
+
 #endif

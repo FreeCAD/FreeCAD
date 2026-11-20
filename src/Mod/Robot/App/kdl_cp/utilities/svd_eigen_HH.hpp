@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
 // Version: 1.0
@@ -23,13 +21,12 @@
 
 
 //Based on the svd of the KDL-0.2 library by Erwin Aertbelien
-#pragma once
+#ifndef SVD_EIGEN_HH_HPP
+#define SVD_EIGEN_HH_HPP
 
 
 #include <Eigen/Core>
 #include <algorithm>
-
-using namespace Eigen;
 
 namespace KDL
 {
@@ -64,8 +61,9 @@ namespace KDL
      * @param V matrix<double>(nxn)
      * @param tmp vector<double> n
      * @param maxiter defaults to 150
-     * @param epsilon defaults to 1e-300
+     *
      * @return -2 if maxiter exceeded, 0 otherwise
      */
-    int svd_eigen_HH(const MatrixXd& A,MatrixXd& U,VectorXd& S,MatrixXd& V,VectorXd& tmp,int maxiter=150,double epsilon=1e-300);
+    int svd_eigen_HH(const Eigen::MatrixXd& A,Eigen::MatrixXd& U,Eigen::VectorXd& S,Eigen::MatrixXd& V,Eigen::VectorXd& tmp,int maxiter=150,double epsilon=1e-300);
 }
+#endif

@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_KINFAM_IO_HPP
+#define KDL_KINFAM_IO_HPP
 
 #include <iostream>
 #include <fstream>
@@ -54,6 +55,13 @@ std::istream& operator >>(std::istream& is, Jacobian& jac);
 std::ostream& operator <<(std::ostream& os, const JntSpaceInertiaMatrix& jntspaceinertiamatrix);
 std::istream& operator >>(std::istream& is, JntSpaceInertiaMatrix& jntspaceinertiamatrix);
 
+//Builds a string containing the "branches" of a Tree using indentation or another
+//user-supplied pattern, so that it is easier to visualize its structure. It is
+//also possible to specify a "preamble", ie, a string to be included at the
+//beginning of each new line.
+std::string tree2str(const Tree& tree, const std::string& separator="  ", const std::string& preamble="");
+std::string tree2str(const SegmentMap::const_iterator it, const std::string& separator="  ", const std::string& preamble="", unsigned int level=0);
+
     /*
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
@@ -72,3 +80,4 @@ std::istream& operator >>(std::istream& is, std::vector<T>& vec) {
 ;
     */
 }
+#endif

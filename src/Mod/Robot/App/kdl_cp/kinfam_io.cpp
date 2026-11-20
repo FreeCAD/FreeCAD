@@ -23,6 +23,7 @@
 
 #include "kinfam_io.hpp"
 #include "frames_io.hpp"
+#include <sstream>
 
 namespace KDL {
 std::ostream& operator <<(std::ostream& os, const Joint& joint) {
@@ -30,7 +31,7 @@ std::ostream& operator <<(std::ostream& os, const Joint& joint) {
               <<", axis: "<<joint.JointAxis() << ", origin"<<joint.JointOrigin()<<"]";
 }
 
-std::istream& operator >>(std::istream& is, Joint& /*joint*/) {
+std::istream& operator >>(std::istream& is, Joint& joint) {
 	return is;
 }
 
@@ -39,7 +40,7 @@ std::ostream& operator <<(std::ostream& os, const Segment& segment) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, Segment& /*segment*/) {
+std::istream& operator >>(std::istream& is, Segment& segment) {
 	return is;
 }
 
@@ -51,7 +52,7 @@ std::ostream& operator <<(std::ostream& os, const Chain& chain) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, Chain& /*chain*/) {
+std::istream& operator >>(std::istream& is, Chain& chain) {
 	return is;
 }
 
@@ -69,7 +70,7 @@ std::ostream& operator <<(std::ostream& os, SegmentMap::const_iterator root) {
 	return os << "\n";
 }
 
-std::istream& operator >>(std::istream& is, Tree& /*tree*/) {
+std::istream& operator >>(std::istream& is, Tree& tree) {
 	return is;
 }
 
@@ -81,7 +82,7 @@ std::ostream& operator <<(std::ostream& os, const JntArray& array) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, JntArray& /*array*/) {
+std::istream& operator >>(std::istream& is, JntArray& array) {
 	return is;
 }
 
@@ -96,7 +97,7 @@ std::ostream& operator <<(std::ostream& os, const Jacobian& jac) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, Jacobian& /*jac*/) {
+std::istream& operator >>(std::istream& is, Jacobian& jac) {
 	return is;
 }
 std::ostream& operator <<(std::ostream& os, const JntSpaceInertiaMatrix& jntspaceinertiamatrix) {
@@ -110,8 +111,24 @@ std::ostream& operator <<(std::ostream& os, const JntSpaceInertiaMatrix& jntspac
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, JntSpaceInertiaMatrix& /*jntspaceinertiamatrix*/) {
+std::istream& operator >>(std::istream& is, JntSpaceInertiaMatrix& jntspaceinertiamatrix) {
 	return is;
 }
+
+
+std::string tree2str(const SegmentMap::const_iterator it, const std::string& separator, const std::string& preamble, unsigned int level) {
+	std::stringstream out;
+	out << preamble;
+	for(unsigned int i=0; i<level; i++)
+		out << separator;
+	out << it->first << "(q_nr: " << GetTreeElementQNr(it->second) << ")\n";
+	for (unsigned int i = 0; i < GetTreeElementChildren(it->second).size(); i++)
+		out << tree2str(GetTreeElementChildren(it->second)[i], separator, preamble, level+1);
+	return out.str();
 }
 
+std::string tree2str(const Tree& tree, const std::string& separator, const std::string& preamble) {
+	return tree2str(tree.getRootSegment(), separator, preamble, 0);
+}
+
+}

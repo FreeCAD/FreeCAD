@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_JNTARRAY_HPP
+#define KDL_JNTARRAY_HPP
 
 #include "frames.hpp"
 #include "jacobian.hpp"
@@ -91,6 +92,7 @@ class MyTask : public RTT::TaskContext
          * @post all elements in data have 0 value
          */
         explicit JntArray(unsigned int size);
+
         /** Copy constructor 
          * @note Will correctly copy an empty object
          */
@@ -140,18 +142,6 @@ class MyTask : public RTT::TaskContext
         friend void Subtract(const JntArray& src1,const JntArray& src2,JntArray& dest);
         friend void Multiply(const JntArray& src,const double& factor,JntArray& dest);
         friend void Divide(const JntArray& src,const double& factor,JntArray& dest);
-        /**
-        * Function to multiply a KDL::Jacobian with a KDL::JntArray
-        * to get a KDL::Twist, it should not be used to calculate the
-        * forward velocity kinematics, the solver classes are built
-        * for this purpose.
-        * J*q = t
-        *
-        * @param jac J
-        * @param src q
-        * @param dest t
-        * @post dest == (KDL::Twist::)Zero() if 0 == src.rows() (ie src is empty)
-        */
         friend void MultiplyJacobian(const Jacobian& jac, const JntArray& src, Twist& dest);
         friend void SetToZero(JntArray& array);
         friend bool Equal(const JntArray& src1,const JntArray& src2,double eps);
@@ -235,3 +225,5 @@ class MyTask : public RTT::TaskContext
     bool Equal(const JntArray& src1,const JntArray& src2,double eps=epsilon);
 
 }
+
+#endif

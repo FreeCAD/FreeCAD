@@ -26,7 +26,6 @@
  *   Suite 330, Boston, MA  02111-1307  USA                                *
  *                                                                         *
  ***************************************************************************/
-// clazy:excludeall=rule-of-two-soft
 
 /**
  * \file frames.inl
@@ -34,7 +33,7 @@
  *
  */
 
-namespace KDL {
+
 
 IMETHOD Vector::Vector(const Vector & arg)
 {
@@ -515,6 +514,11 @@ Rotation::Rotation(const Vector& x,const Vector& y,const Vector& z)
     data[2] = z.data[0];data[5] = z.data[1];data[8] = z.data[2];
 }
 
+Rotation::Rotation(const Rotation& arg) {
+    int count=9;
+    while (count--) data[count] = arg.data[count];
+}
+
 Rotation& Rotation::operator=(const Rotation& arg) {
     int count=9;
     while (count--) data[count] = arg.data[count];
@@ -842,7 +846,9 @@ IMETHOD void Vector2::Set3DPlane(const Frame& F_someframe_XY,const Vector& v_som
     data[1]=tmp(1);
 }
 
-
+IMETHOD Rotation2::Rotation2(const Rotation2& arg) {
+    c=arg.c;s=arg.s;
+}
 
 IMETHOD Rotation2& Rotation2::operator=(const Rotation2& arg) {
     c=arg.c;s=arg.s;
@@ -928,7 +934,7 @@ IMETHOD Frame2 operator *(const Frame2& lhs,const Frame2& rhs)
     return Frame2(lhs.M*rhs.M,lhs.M*rhs.p+lhs.p);
 }
 
-IMETHOD Vector2 Frame2::operator *(const Vector2 & arg)
+IMETHOD Vector2 Frame2::operator *(const Vector2 & arg) const
 {
     return M*arg+p;
 }
@@ -1154,7 +1160,7 @@ IMETHOD Vector addDelta(const Vector& a,const Vector&da,double dt) {
 }
 
 IMETHOD Rotation addDelta(const Rotation& a,const Vector&da,double dt) {
-	return a*Rot(a.Inverse(da)*dt);
+	return Rot(da*dt)*a;
 }
 IMETHOD Frame addDelta(const Frame& a,const Twist& da,double dt) {
 	return Frame(
@@ -1270,7 +1276,7 @@ IMETHOD void posrandom(Frame& F) {
 
 IMETHOD bool operator==(const Frame& a,const Frame& b ) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b,epsilon);
+    return Equal(a,b);
 #else
         return (a.p == b.p &&
                 a.M == b.M );
@@ -1283,7 +1289,7 @@ IMETHOD bool operator!=(const Frame& a,const Frame& b) {
 
 IMETHOD bool operator==(const Vector& a,const Vector& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b,epsilon);
+    return Equal(a,b);
 #else
         return (a.data[0]==b.data[0]&&
                 a.data[1]==b.data[1]&&
@@ -1297,7 +1303,7 @@ IMETHOD bool operator!=(const Vector& a,const Vector& b) {
 
 IMETHOD bool operator==(const Twist& a,const Twist& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b,epsilon);
+    return Equal(a,b);
 #else
         return (a.rot==b.rot &&
                 a.vel==b.vel  );
@@ -1310,7 +1316,7 @@ IMETHOD bool operator!=(const Twist& a,const Twist& b) {
 
 IMETHOD bool operator==(const Wrench& a,const Wrench& b ) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b,epsilon);
+    return Equal(a,b);
 #else
     return (a.force==b.force &&
             a.torque==b.torque );
@@ -1326,7 +1332,7 @@ IMETHOD bool operator!=(const Rotation& a,const Rotation& b) {
 
 IMETHOD bool operator==(const Vector2& a,const Vector2& b) {
 #ifdef KDL_USE_EQUAL
-    return Equal(a,b,epsilon);
+    return Equal(a,b);
 #else
         return (a.data[0]==b.data[0]&&
                 a.data[1]==b.data[1] );
@@ -1337,4 +1343,3 @@ IMETHOD bool operator!=(const Vector2& a,const Vector2& b) {
     return !operator==(a,b);
 }
 
-} // namespace KDL

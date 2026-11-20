@@ -1,6 +1,5 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-#pragma once
+#ifndef VELOCITYPROFILE_SPLINE_H
+#define VELOCITYPROFILE_SPLINE_H
 
 #include "velocityprofile.hpp"
 
@@ -17,7 +16,7 @@ public:
     VelocityProfile_Spline(const VelocityProfile_Spline &p);
 
 	virtual ~VelocityProfile_Spline();
-	
+
     virtual void SetProfile(double pos1, double pos2);
     /**
      * Generate linear interpolation coefficients.
@@ -65,3 +64,4 @@ private:
     double duration_;
 };
 }
+#endif // VELOCITYPROFILE_CUBICSPLINE_H

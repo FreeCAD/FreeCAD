@@ -43,7 +43,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#pragma once
+#ifndef KDL_ROTATIONALINTERPOLATION_H
+#define KDL_ROTATIONALINTERPOLATION_H
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -106,7 +107,7 @@ class RotationalInterpolation
 		static RotationalInterpolation* Read(std::istream& is);
 
 		/**
-		 * virtual constructor,  construction by copying.
+		 * virtual constructor,  construction by copying ..
 		 */
 		virtual RotationalInterpolation* Clone() const = 0;
 
@@ -114,3 +115,6 @@ class RotationalInterpolation
 	};
 
 }
+
+
+#endif

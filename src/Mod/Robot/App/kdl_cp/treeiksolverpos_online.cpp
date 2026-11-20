@@ -37,12 +37,9 @@ TreeIkSolverPos_Online::TreeIkSolverPos_Online(const double& nr_of_jnts,
                                                const double x_dot_rot_max,
                                                TreeFkSolverPos& fksolver,
                                                TreeIkSolverVel& iksolver) :
-                                               q_min_(nr_of_jnts),
-                                               q_max_(nr_of_jnts),
-                                               q_dot_max_(nr_of_jnts),
                                                fksolver_(fksolver),
                                                iksolver_(iksolver),
-                                               q_dot_(nr_of_jnts)
+                                               q_dot_(static_cast<unsigned int>(nr_of_jnts))
 {
     q_min_ = q_min;
     q_max_ = q_max;
@@ -145,7 +142,7 @@ void TreeIkSolverPos_Online::enforceJointVelLimits()
   }
 
   // scales q_out, if one joint exceeds the maximum value
-  if (max_exceeded)
+  if ( max_exceeded == true )
   {
     Multiply(q_dot_, ( 1.0 / ( 1.0 + rel_os_max ) ), q_dot_);
   }

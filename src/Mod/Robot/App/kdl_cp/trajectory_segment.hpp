@@ -43,7 +43,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#pragma once
+#ifndef KDL_MOTION_TRAJECTORY_SEGMENT_H
+#define KDL_MOTION_TRAJECTORY_SEGMENT_H
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -67,12 +68,12 @@ namespace KDL {
 		bool aggregate;
 	public:
 		/**
-		 * This constructor assumes that \a geom and \<_motprof\> are initialised correctly.
+		 * This constructor assumes that \a geom and <_motprof> are initialised correctly.
 		 */
 		Trajectory_Segment(Path* _geom, VelocityProfile* _motprof, bool _aggregate=true);
 
 		/**
-		 * This constructor assumes that \a geom is initialised and \<_motprof\> needs to be
+		 * This constructor assumes that \a geom is initialised and <_motprof> needs to be
 		 * set according to \a duration.
 		 */
 		Trajectory_Segment(Path* _geom, VelocityProfile* _motprof, double duration, bool _aggregate=true);
@@ -108,3 +109,6 @@ namespace KDL {
 
 
 }
+
+
+#endif

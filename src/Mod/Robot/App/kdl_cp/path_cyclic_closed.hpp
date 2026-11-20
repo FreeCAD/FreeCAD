@@ -43,7 +43,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#pragma once
+#ifndef KDL_MOTION_PATH_CYCLIC_CLOSED_H
+#define KDL_MOTION_PATH_CYCLIC_CLOSED_H
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -86,3 +87,6 @@ namespace KDL {
 
 
 }
+
+
+#endif

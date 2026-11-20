@@ -44,7 +44,8 @@
  *		$Id: error.h,v 1.1.1.1.2.2 2003/04/04 15:39:43 pissaris Exp $
  *		$Name:  $ 
  ****************************************************************************/
-#pragma once
+#ifndef ERROR_H_84822 // to make it unique, a random number
+#define ERROR_H_84822
 
 #include "utility.h"
 #include <string.h>
@@ -71,7 +72,7 @@ class Error_IO : public Error {
 	std::string msg;
 	int typenr;
 public:
-	Error_IO(const std::string& _msg="Unspecified I/O Error",int /*typenr*/=0):msg(_msg) {}
+	Error_IO(const std::string& _msg="Unspecified I/O Error",int typenr=0):msg(_msg) {}
     virtual const char* Description() const {return msg.c_str();}
     virtual int GetType() const {return typenr;}
 };
@@ -246,3 +247,5 @@ public:
 
 
 }
+
+#endif

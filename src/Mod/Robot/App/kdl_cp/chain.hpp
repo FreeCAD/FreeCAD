@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_CHAIN_HPP
+#define KDL_CHAIN_HPP
 
 #include "segment.hpp"
 #include <string>
@@ -86,9 +87,21 @@ namespace KDL {
          */
         const Segment& getSegment(unsigned int nr)const;
 
+        /**
+         * Request the nr'd segment of the chain. There is no boundary
+         * checking.
+         *
+         * @param nr the nr of the segment starting from 0
+         *
+         * @return a reference to the nr'd segment
+         */
+        Segment& getSegment(unsigned int nr);
+
         virtual ~Chain();
     };
 
 
 
 }//end of namespace KDL
+
+#endif

@@ -87,36 +87,6 @@ Trajectory& Trajectory::operator=(const Trajectory& Trac)
     return *this;
 }
 
-double Trajectory::getLength(int n) const
-{
-    if (pcTrajectory) {
-        if (n < 0) {
-            return pcTrajectory->GetPath()->PathLength();
-        }
-        else {
-            return pcTrajectory->Get(n)->GetPath()->PathLength();
-        }
-    }
-    else {
-        return 0;
-    }
-}
-
-double Trajectory::getDuration(int n) const
-{
-    if (pcTrajectory) {
-        if (n < 0) {
-            return pcTrajectory->Duration();
-        }
-        else {
-            return pcTrajectory->Get(n)->Duration();
-        }
-    }
-    else {
-        return 0;
-    }
-}
-
 Placement Trajectory::getPosition(double time) const
 {
     if (pcTrajectory) {
