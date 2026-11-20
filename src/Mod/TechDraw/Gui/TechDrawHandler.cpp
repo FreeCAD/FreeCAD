@@ -39,6 +39,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/InputHint.h>
 
 #include "MDIViewPage.h"
 #include "QGVPage.h"
@@ -54,6 +55,11 @@ TechDrawHandler::TechDrawHandler() : Gui::ToolHandler(), viewPage(nullptr)
 
 TechDrawHandler::~TechDrawHandler()
 {}
+
+std::list<Gui::InputHint> TechDrawHandler::getToolHints() const
+{
+    return {};
+}
 
 void TechDrawHandler::activate(QGVPage* vp)
 {
