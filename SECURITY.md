@@ -21,9 +21,9 @@ FreeCAD implements security fixes to the current release series, and to the curr
 
 | Version | Supported          |
 |---------| ------------------ |
-| 26.3dev  | :white_check_mark: |
-| 1.1     | :white_check_mark: |
-| < 1.1   | :x:                |
+| 27.1dev  | :white_check_mark: |
+| 26.3     | :white_check_mark: |
+| < 26.3   | :x:                |
 
 ## Reporting a Vulnerability
 
