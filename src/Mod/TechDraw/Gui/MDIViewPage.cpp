@@ -48,7 +48,6 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
