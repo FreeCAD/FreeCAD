@@ -1371,10 +1371,10 @@ class TestAddSpindleHelper(unittest.TestCase):
         self.assertIsNone(toolhead.laser_wavelength)
         self.assertEqual(toolhead.plasma_amperage, 45)
 
-    def test220_add_spindle_sets_named_fields(self):
+    def test220_add_toolhead_sets_named_fields(self):
         machine = Machine.create_3axis_config()
         machine.toolheads = []
-        machine.add_spindle("Spindle", id="th1", max_power_kw=3.0, max_rpm=24000, min_rpm=6000)
+        machine.add_toolhead("Spindle", id="th1", max_power_kw=3.0, max_rpm=24000, min_rpm=6000)
 
         toolhead = machine.toolheads[0]
         self.assertEqual(toolhead.name, "Spindle")

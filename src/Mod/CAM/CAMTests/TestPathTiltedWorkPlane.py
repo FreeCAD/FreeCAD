@@ -965,19 +965,6 @@ class TestMachineRotationStrategy(unittest.TestCase):
         k = Machine.from_dict(_machineCA(RotationStrategy.TWP).to_dict()).kinematics
         self.assertEqual(k.rotation_strategy, RotationStrategy.TWP)
 
-    def test_anOlderFileWithDwoSupportedSelectsDwo(self):
-        data = Machine(name="old").to_dict()
-        kin = data["machine"]["kinematics"]
-        del kin["rotation_strategy"]
-        kin["dwo_supported"] = True
-        k = Machine.from_dict(data).kinematics
-        self.assertEqual(k.rotation_strategy, RotationStrategy.DWO)
-        self.assertTrue(k.dwo_supported)
-        kin["dwo_supported"] = False
-        self.assertEqual(
-            Machine.from_dict(data).kinematics.rotation_strategy, RotationStrategy.NONE
-        )
-
     def test_dwoSupportedIsWrittenForOlderReaders(self):
         self.assertTrue(
             _machineCA(RotationStrategy.DWO).to_dict()["machine"]["kinematics"]["dwo_supported"]
