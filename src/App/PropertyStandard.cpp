@@ -82,9 +82,11 @@ PropertyInteger::~PropertyInteger() = default;
 
 void PropertyInteger::setValue(long lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    if( lValue != _lValue ) {
+        aboutToSetValue();
+        _lValue = lValue;
+        hasSetValue();
+    }
 }
 
 long PropertyInteger::getValue() const
@@ -100,9 +102,7 @@ PyObject* PropertyInteger::getPyObject()
 void PropertyInteger::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _lValue = PyLong_AsLong(value);
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
         std::string error = std::string("type must be int, not ");
@@ -133,9 +133,7 @@ Property* PropertyInteger::Copy() const
 
 void PropertyInteger::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
-    hasSetValue();
+    setValue( dynamic_cast<const PropertyInteger&>(from)._lValue );
 }
 
 void PropertyInteger::setPathValue(const ObjectIdentifier& path, const boost::any& value)
@@ -315,23 +313,29 @@ void PropertyEnumeration::setEnums(const std::vector<std::string>& Enums)
 
 void PropertyEnumeration::setValue(const char* value)
 {
-    aboutToSetValue();
-    _enum.setValue(value);
-    hasSetValue();
+    if( value != _enum ) {
+        aboutToSetValue();
+        _enum.setValue(value);
+        hasSetValue();
+    }
 }
 
 void PropertyEnumeration::setValue(long value)
 {
-    aboutToSetValue();
-    _enum.setValue(value);
-    hasSetValue();
+    if(value != _enum.getInt()) {
+        aboutToSetValue();
+        _enum.setValue(value);
+        hasSetValue();
+    }
 }
 
 void PropertyEnumeration::setValue(const Enumeration& source)
 {
-    aboutToSetValue();
-    _enum = source;
-    hasSetValue();
+    if(source!=_enum) {
+        aboutToSetValue();
+        _enum = source;
+        hasSetValue();
+    }
 }
 
 long PropertyEnumeration::getValue() const
@@ -420,8 +424,6 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
     // get the value of my Attribute
     long val = reader.getAttribute<long>("value");
 
-    aboutToSetValue();
-
     if (reader.hasAttribute("CustomEnum")) {
         reader.readElement("CustomEnumList");
         int count = reader.getAttribute<long>("count");
@@ -447,8 +449,7 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
         val = getValue();
     }
 
-    _enum.setValue(val);
-    hasSetValue();
+    setValue(val);
 }
 
 PyObject* PropertyEnumeration::getPyObject()
@@ -464,7 +465,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
         long val = PyLong_AsLong(value);
-        if (_enum.isValid()) {
+        if (_enum.isValid() && val != _enum.getInt()) {	// don't bypass the exception on out of range by calling setValue
             aboutToSetValue();
             _enum.setValue(val, true);
             hasSetValue();
@@ -474,9 +475,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
     if (PyUnicode_Check(value)) {
         std::string str = PyUnicode_AsUTF8(value);
         if (_enum.contains(str.c_str())) {
-            aboutToSetValue();
-            _enum.setValue(str);
-            hasSetValue();
+            setValue(str.c_str());
         }
         else {
             FC_THROWM(Base::ValueError,
@@ -690,22 +689,27 @@ long PropertyIntegerConstraint::getStepSize() const
     return 1;
 }
 
+void PropertyIntegerConstraint::setValue(long lValue)
+{
+    if (_ConstStruct) {
+        if (lValue > _ConstStruct->UpperBound) {
+            lValue = _ConstStruct->UpperBound;
+        }
+        else if (lValue < _ConstStruct->LowerBound) {
+            lValue = _ConstStruct->LowerBound;
+        }
+    }
+    if(lValue != _lValue) {
+        aboutToSetValue();
+        _lValue = lValue;
+        hasSetValue();
+    }
+}
+
 void PropertyIntegerConstraint::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
-        long temp = PyLong_AsLong(value);
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
-            }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
-            }
-        }
-
-        aboutToSetValue();
-        _lValue = temp;
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
         long valConstr[] = {0,
@@ -1155,9 +1159,11 @@ PropertyFloat::~PropertyFloat() = default;
 
 void PropertyFloat::setValue(double lValue)
 {
-    aboutToSetValue();
-    _dValue = lValue;
-    hasSetValue();
+    if(lValue != _dValue) {
+        aboutToSetValue();
+        _dValue = lValue;
+        hasSetValue();
+    }
 }
 
 double PropertyFloat::getValue() const
@@ -1173,14 +1179,10 @@ PyObject* PropertyFloat::getPyObject()
 void PropertyFloat::setPyObject(PyObject* value)
 {
     if (PyFloat_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyFloat_AsDouble(value);
-        hasSetValue();
+        setValue(PyFloat_AsDouble(value));
     }
     else if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyLong_AsLong(value);
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
         std::string error = std::string("type must be float or int, not ");
@@ -1211,9 +1213,7 @@ Property* PropertyFloat::Copy() const
 
 void PropertyFloat::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyFloat&>(from)._dValue);
 }
 
 void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any& value)
@@ -1308,37 +1308,31 @@ double PropertyFloatConstraint::getStepSize() const
     return 1.0;
 }
 
+void PropertyFloatConstraint::setValue(double lValue)
+{
+    if (_ConstStruct) {
+        if (lValue > _ConstStruct->UpperBound) {
+            lValue = _ConstStruct->UpperBound;
+        }
+        else if (lValue < _ConstStruct->LowerBound) {
+            lValue = _ConstStruct->LowerBound;
+        }
+    }
+
+    if(lValue!=_dValue) {
+        aboutToSetValue();
+        _dValue = lValue;
+        hasSetValue();
+    }
+}
+
 void PropertyFloatConstraint::setPyObject(PyObject* value)
 {
     if (PyFloat_Check(value)) {
-        double temp = PyFloat_AsDouble(value);
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
-            }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
-            }
-        }
-
-        aboutToSetValue();
-        _dValue = temp;
-        hasSetValue();
+        setValue(PyFloat_AsDouble(value));
     }
     else if (PyLong_Check(value)) {
-        double temp = static_cast<double>(PyLong_AsLong(value));
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
-            }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
-            }
-        }
-
-        aboutToSetValue();
-        _dValue = temp;
-        hasSetValue();
+        setValue(static_cast<double>(PyLong_AsLong(value)));
     }
     else {
         double valConstr[] = {0.0,
@@ -2319,9 +2313,11 @@ PropertyBool::~PropertyBool() = default;
 
 void PropertyBool::setValue(bool lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    if(_lValue != lValue) {
+        aboutToSetValue();
+        _lValue = lValue;
+        hasSetValue();
+    }
 }
 
 bool PropertyBool::getValue() const
@@ -2550,23 +2546,33 @@ PropertyColor::~PropertyColor() = default;
 
 void PropertyColor::setValue(const Base::Color& col)
 {
-    aboutToSetValue();
-    _cCol = col;
-    hasSetValue();
+    if( col != _cCol) {
+        aboutToSetValue();
+        _cCol = col;
+        hasSetValue();
+    }
 }
 
 void PropertyColor::setValue(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cCol.setPackedValue(rgba);
-    hasSetValue();
+    if(rgba != _cCol.getPackedValue()) {
+        aboutToSetValue();
+        _cCol.setPackedValue(rgba);
+        hasSetValue();
+    }
 }
 
 void PropertyColor::setValue(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    _cCol.set(r, g, b, a);
-    hasSetValue();
+    if( _cCol.r != r ||
+        _cCol.g != g ||
+        _cCol.b != b ||
+        _cCol.a != a ) {
+
+        aboutToSetValue();
+        _cCol.set(r, g, b, a);
+        hasSetValue();
+    }
 }
 
 const Base::Color& PropertyColor::getValue() const
@@ -2828,9 +2834,11 @@ PropertyMaterial::~PropertyMaterial() = default;
 
 void PropertyMaterial::setValue(const Material& mat)
 {
-    aboutToSetValue();
-    _cMat = mat;
-    hasSetValue();
+    if( mat != _cMat) {
+        aboutToSetValue();
+        _cMat = mat;
+        hasSetValue();
+    }
 }
 
 void PropertyMaterial::setValue(const Base::Color& col)
