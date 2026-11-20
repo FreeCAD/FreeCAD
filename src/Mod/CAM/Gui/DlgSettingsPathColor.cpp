@@ -24,6 +24,9 @@
 
 
 #include "DlgSettingsPathColor.h"
+#include <Gui/PreferencePages/ThemeDefaults.h>
+
+#include "PropertyPage.h"
 #include "ui_DlgSettingsPathColor.h"
 
 
@@ -92,6 +95,14 @@ void DlgSettingsPathColor::loadSettings()
     ui->ToolBitDimensionColorDark->onRestore();
     ui->ToolBitDimensionHighlightColor->onRestore();
     ui->ToolBitArtworkBrightness->onRestore();
+}
+
+void DlgSettingsPathColor::resetSettingsToDefaults()
+{
+    Gui::Dialog::PreferencePage::resetSettingsToDefaults();
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    Gui::ThemeDefaults::applyWidgetColors(this);
+    loadSettings();
 }
 
 /**
