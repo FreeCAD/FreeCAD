@@ -66,6 +66,39 @@ class JUST_SAVE(object):
     pass
 
 
+class PointCloudSliceDetail(object):
+    """TempoVis SceneDetail managing per-point-cloud back clip plane for sketcher section view.
+
+    Writes PointCloudSliceActive and SectionPlacement C++ properties on point cloud
+    ViewProviders. The C++ onChanged handler then updates the SoClipPlane node directly.
+    TempoVis tv.restore() automatically disables the slice on exit from sketch editing."""
+
+    class_id = "SDPointCloudSlice"
+
+    def __init__(self, obj, enable=None, placement=None):
+        self.objname = obj.Name
+        self.doc = obj.Document
+        self.key = self.objname
+        self.data = None
+        self.mild_restore = False
+        if enable is not None:
+            self.data = (enable, placement)
+
+    def scene_value(self):
+        return (False, App.Placement())
+
+    def apply_data(self, val):
+        enable, placement = val
+        vp = self.doc.getObject(self.objname).ViewObject
+        vp.PointCloudSliceActive = enable
+        if enable:
+            vp.SectionPlacement = placement
+
+    @property
+    def full_key(self):
+        return (self.class_id, self.doc.Name if self.doc else None, self.key)
+
+
 class TempoVis(object):
     """TempoVis - helper object to save visibilities of objects before doing
     some GUI editing, hiding or showing relevant stuff during edit, and
@@ -500,6 +533,15 @@ class TempoVis(object):
         sketch.ViewObject.SectionView = (
             enable if enable is not None else not sketch.ViewObject.SectionView
         )
+
+        sv_active = sketch.ViewObject.SectionView
+        for obj in doc.Objects:
+            if not hasattr(obj.ViewObject, "SliceLength"):
+                continue
+            try:
+                self.modify(PointCloudSliceDetail(obj, sv_active, pla))
+            except (AttributeError, ReferenceError):
+                continue
 
     def activateWorkbench(self, wb_name):
         from .SceneDetails.Workbench import Workbench
