@@ -220,6 +220,8 @@ private:
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
     ToolBarAreaWidget* findToolBarAreaWidget() const;
+    /// Whether the toolbar areas beside the menus are shown in the window
+    bool hasMenuBarAreas() const;
 
 private:
     QStringList toolbarNames;

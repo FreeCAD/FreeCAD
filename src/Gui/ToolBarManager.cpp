@@ -505,6 +505,17 @@ void ToolBarManager::setupMenuBar()
     }
 }
 
+bool ToolBarManager::hasMenuBarAreas() const
+{
+    if (getMainWindow()->isCustomTitleBar()) {
+        return true;  // the areas of the title bar
+    }
+    // The areas are corner widgets of the menu bar. A native menu bar is drawn by the
+    // system outside of the window (macOS, global menus on Linux) and shows none.
+    auto menuBar = getMainWindow()->menuBar();
+    return menuBar && !menuBar->isNativeMenuBar();
+}
+
 void ToolBarManager::setupConnection()
 {
     auto refreshParams = [this](const char* name) {
@@ -918,6 +929,9 @@ void ToolBarManager::restoreState() const
     std::map<int, QToolBar*> sbToolBars;
     std::map<int, QToolBar*> mbRightToolBars;
     std::map<int, QToolBar*> mbLeftToolBars;
+    // Without these areas, their toolbars stay in the toolbar areas of the main window.
+    // Their place beside the menus is kept in the parameters, for when the areas are back.
+    const bool menuBarAreas = hasMenuBarAreas();
     QList<ToolBar*> toolbars = toolBars();
     for (const QString& it : toolbarNames) {
         QToolBar* toolbar = findToolBar(toolbars, it);
@@ -932,12 +946,12 @@ void ToolBarManager::restoreState() const
                 sbToolBars[idx] = toolbar;
                 continue;
             }
-            idx = hMenuBarLeft->GetInt(toolbarName, -1);
+            idx = menuBarAreas ? hMenuBarLeft->GetInt(toolbarName, -1) : -1;
             if (idx >= 0) {
                 mbLeftToolBars[idx] = toolbar;
                 continue;
             }
-            idx = hMenuBarRight->GetInt(toolbarName, -1);
+            idx = menuBarAreas ? hMenuBarRight->GetInt(toolbarName, -1) : -1;
             if (idx >= 0) {
                 mbRightToolBars[idx] = toolbar;
                 continue;
@@ -977,6 +991,9 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
         }
     }
 
+    if (!hasMenuBarAreas()) {
+        menuBar = nullptr;  // nowhere to drop a toolbar beside the menus
+    }
     if ((!menuBar || !menuBar->isVisible()) && titleBarDropRect.isEmpty()) {
         if (!statusBar) {
             return false;

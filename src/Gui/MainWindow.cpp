@@ -1719,9 +1719,11 @@ void MainWindow::populateToolBarMenu(QMenu* menu)
     QList<QToolBar*> toolbars = this->findChildren<QToolBar*>();
     for (const auto& toolbar : toolbars) {
         if (auto parent = toolbar->parentWidget()) {
+            // Toolbars docked in the menu bar or the custom title bar live in a
+            // ToolBarAreaWidget; ask its owner instead of guessing from the parent chain.
             if (parent == this || parent == statusBar() || parent->parentWidget() == statusBar()
-                || (isCustomTitleBar() && parent->parentWidget() == menuWidget())
-                || (!isCustomTitleBar() && parent->parentWidget() == menuBar())) {
+                || parent->parentWidget() == menuBar()
+                || ToolBarManager::getInstance()->toolBarAreaWidget(toolbar)) {
                 QAction* action = toolbar->toggleViewAction();
                 action->setToolTip(tr("Toggles this toolbar"));
                 action->setStatusTip(tr("Toggles this toolbar"));
