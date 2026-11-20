@@ -33,6 +33,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -46,6 +47,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Base/Color.h>
 #include "SoBrepEdgeSet.h"
+#include "SoBrepHiddenSelection.h"
 #include "ViewProviderExt.h"
 
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -289,6 +291,14 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
         return;
     }
 
+    // Selected edges hidden behind other geometry are drawn dashed in a delayed pass.
+    if (hiddenSelection.isHiddenPass(action)) {
+        renderHiddenSelection(action, ctx);
+        return;
+    }
+    if (hasHiddenSelection(ctx)) {
+        hiddenSelection.schedule(action);
+    }
 
     bool hasContextHighlight = ctx && !ctx->hl.empty();
     bool hasFaceHighlight = viewProvider && viewProvider->isFaceHighlightActive();
@@ -573,6 +583,33 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
             }
         }
     }
+}
+
+bool SoBrepEdgeSet::hasHiddenSelection(const SelContextPtr& ctx) const
+{
+    // Only selected edges, not a whole selected object: drawing every hidden edge of a
+    // selected object through the object itself would bury it in dashes.
+    return ctx && !ctx->sl.empty() && ctx->sl[0] >= 0;
+}
+
+void SoBrepEdgeSet::renderHiddenSelection(SoGLRenderAction* action, SelContextPtr ctx)
+{
+    if (!hasHiddenSelection(ctx)) {
+        return;
+    }
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords || !validIndexes(coords, ctx->sl)) {
+        return;
+    }
+    // Same width as the visible selection, so the two meet without a step.
+    HiddenSelectionPass::renderDashedLines(
+        action,
+        this,
+        ctx->sl.data(),
+        static_cast<int>(ctx->sl.size()),
+        ctx->selectionColor,
+        SoLineWidthElement::get(action->getState())
+    );
 }
 
 bool SoBrepEdgeSet::validIndexes(const SoCoordinateElement* coords, const std::vector<int32_t>& pts) const

@@ -43,6 +43,7 @@ void DlgSettingsSelection::saveSettings()
 {
     ui->checkBoxPreselection->onSave();
     ui->checkBoxSelection->onSave();
+    ui->checkBoxHiddenSelection->onSave();
     ui->HighlightColor->onSave();
     ui->SelectionColor->onSave();
     ui->spinPickRadius->onSave();
@@ -57,6 +58,7 @@ void DlgSettingsSelection::loadSettings()
 {
     ui->checkBoxPreselection->onRestore();
     ui->checkBoxSelection->onRestore();
+    ui->checkBoxHiddenSelection->onRestore();
     ui->HighlightColor->onRestore();
     ui->SelectionColor->onRestore();
     ui->spinPickRadius->onRestore();

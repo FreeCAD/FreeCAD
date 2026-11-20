@@ -34,6 +34,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoPointSizeElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
@@ -43,6 +44,7 @@
 #include <Gui/Inventor/So3DAnnotation.h>
 
 #include "ViewProviderExt.h"
+#include "SoBrepHiddenSelection.h"
 #include "SoBrepPointSet.h"
 
 
@@ -57,6 +59,8 @@ enum class OverlayDepthMode
     RespectDepth,
     /// Render above model geometry for hover and preselection feedback.
     DrawOnTop,
+    /// Render only where other geometry is in front, for the hidden part of a selection.
+    HiddenOnly,
 };
 
 static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
@@ -86,6 +90,9 @@ static void applyOverlayDepthState(SoState* state, OverlayDepthMode depthMode)
         case OverlayDepthMode::RespectDepth:
             SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0f, 1.0f));
             return;
+        case OverlayDepthMode::HiddenOnly:
+            HiddenSelectionPass::applyDepthState(state);
+            return;
     }
 }
 
@@ -95,7 +102,8 @@ static void renderOverlayPoints(
     const int32_t* indices,
     int numIndices,
     const SbColor& color,
-    OverlayDepthMode depthMode
+    OverlayDepthMode depthMode,
+    float transparency = 0.0f
 )
 {
     if (!action || !pointSet || !indices || numIndices <= 0) {
@@ -123,9 +131,15 @@ static void renderOverlayPoints(
     applyOverlayPrimitiveState(state, pointSet);
     applyOverlayDepthState(state, depthMode);
 
+    const bool hasTransparency = transparency > 0.0f;
+    if (hasTransparency) {
+        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+        SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+    }
+
     SoLazyElement::setEmissive(state, &color);
-    uint32_t packedColor = color.getPackedValue(0.0);
-    SoLazyElement::setPacked(state, pointSet, 1, &packedColor, false);
+    uint32_t packedColor = color.getPackedValue(transparency);
+    SoLazyElement::setPacked(state, pointSet, 1, &packedColor, hasTransparency);
 
     float ps = SoPointSizeElement::get(state);
     if (ps < 4.0f) {
@@ -188,6 +202,15 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     if (ctx2 && ctx2->selectionIndex.empty()) {
         return;
     }
+    // Selected vertices hidden behind other geometry are drawn faded in a delayed pass.
+    if (hiddenSelection.isHiddenPass(action)) {
+        renderHiddenSelection(action, ctx);
+        return;
+    }
+    if (hasHiddenSelection(ctx)) {
+        hiddenSelection.schedule(action);
+    }
+
     if (selContext2->checkGlobal(ctx)) {
         ctx = selContext2;
     }
@@ -444,6 +467,41 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx
             SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
         }
     }
+}
+
+bool SoBrepPointSet::hasHiddenSelection(const SelContextPtr& ctx) const
+{
+    // Only selected vertices, not a whole selected object.
+    return ctx && !ctx->selectionIndex.empty() && !ctx->isSelectAll();
+}
+
+void SoBrepPointSet::renderHiddenSelection(SoGLRenderAction* action, SelContextPtr ctx)
+{
+    if (!hasHiddenSelection(ctx)) {
+        return;
+    }
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords) {
+        return;
+    }
+
+    const int startIndex = this->startIndex.getValue();
+    std::vector<int32_t> pointIndices;
+    pointIndices.reserve(ctx->selectionIndex.size());
+    for (auto idx : ctx->selectionIndex) {
+        if (idx >= startIndex && idx < coords->getNum()) {
+            pointIndices.push_back(static_cast<int32_t>(idx));
+        }
+    }
+    renderOverlayPoints(
+        action,
+        overlayPointSet,
+        pointIndices.data(),
+        static_cast<int>(pointIndices.size()),
+        ctx->selectionColor,
+        OverlayDepthMode::HiddenOnly,
+        HiddenSelectionPass::PointTransparency
+    );
 }
 
 void SoBrepPointSet::doAction(SoAction* action)
