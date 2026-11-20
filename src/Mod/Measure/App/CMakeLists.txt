@@ -44,6 +44,8 @@ SET(MeasureModule_SRCS
     MeasureDiameter.h
     MeasureRadius.cpp
     MeasureRadius.h
+    MeasureSnap.cpp
+    MeasureSnap.h
 
     MassPropertiesObject.cpp
     MassPropertiesObject.h
