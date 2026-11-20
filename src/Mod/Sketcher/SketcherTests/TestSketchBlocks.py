@@ -154,6 +154,23 @@ class TestSketchBlocks(unittest.TestCase):
         self.assertEqual(s.GeometryCount, 5)
         self.assertAlmostEqual(s.Geometry[s.Constraints[index].Second].Radius, 5, places=5)
 
+    def testReloadWithFewerGeometriesKeepsConstraints(self):
+        # After a first reload the members follow the handle. Reloading then with fewer
+        # geometries left a dropped member in the group's Third index, past the last geometry:
+        # the next index check rejected every constraint and adding one replaced them all.
+        s = self.sketch
+        index = SketcherBlock.reload(s, self.insert())
+        self.write(True)
+        index = SketcherBlock.reload(s, index)
+        self.doc.recompute()
+        group = s.Constraints[index]
+        self.assertEqual((s.GeometryCount, group.Third), (2, -2000))
+        s.addConstraint(Sketcher.Constraint("Distance", group.First, 20.0))
+        self.doc.recompute()
+        self.assertEqual([c.Type for c in s.Constraints], ["Group", "Distance"])
+        self.assertEqual(s.solve(), 0)
+        self.assertAlmostEqual(s.Geometry[s.Constraints[index].Second].Radius, 10, places=5)
+
     def testInvalidSourceLeavesGroupUnchanged(self):
         index = self.insert()
         before = self.snapshot()

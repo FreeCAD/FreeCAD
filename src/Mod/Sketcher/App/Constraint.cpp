@@ -627,6 +627,13 @@ bool Constraint::isElementsEmpty() const
 void Constraint::truncateElements(size_t newSize)
 {
     if (newSize < elements.size()) {
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+        // First/Second/Third hold the first three elements: clear the dropped ones there too,
+        // getGeoId() and the constraint index checks read them whatever the element count.
+        for (size_t i = newSize; i < elements.size() && i < 3; ++i) {
+            setElement(i, GeoElementId());
+        }
+#endif
         elements.resize(newSize);
     }
 }
