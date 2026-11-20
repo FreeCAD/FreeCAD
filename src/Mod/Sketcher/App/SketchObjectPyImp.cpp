@@ -938,6 +938,11 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
                     << " for the constraint with index " << Index;
                 break;
         }
+        if (status == SketchSolveStatus::ConflictingConstraints
+            || status == SketchSolveStatus::RedundantConstraints) {
+            Py_Return;
+        }
+
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
