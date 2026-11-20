@@ -312,18 +312,8 @@ void QGIViewSection::updatePlacementConnector()
         }
     }
 
-    const auto* complexSection =
-        dynamic_cast<const TechDraw::DrawComplexSection*>(section);
-    // Simple and offset sections project relative to SectionOrigin.
-    // Aligned sections retain their separately centered geometry.
-    const Base::Vector3d projectionOrigin =
-        complexSection && complexSection->ProjectionStrategy.getValue() != 0
-        ? section->getCutCentroid() : sectionOrigin;
-    const Base::Vector3d cutCenter = section->projectPoint(
-        projectionOrigin, false);
     Base::Vector3d sectionAnchorOffset =
-        (section->projectPoint(sectionOrigin, false) - cutCenter)
-        * section->getScale();
+        section->getSectionOriginInView() * section->getScale();
     sectionAnchorOffset.RotateZ(
         Base::toRadians(section->Rotation.getValue()));
     const QPointF sectionAnchor = mapToScene(QPointF(

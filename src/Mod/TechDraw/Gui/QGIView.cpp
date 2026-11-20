@@ -475,11 +475,8 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
         break;
     }
 
-    const Base::Vector3d cutCenter = sectionView->projectPoint(
-        sectionView->getCutCentroid(), false);
     Base::Vector3d sectionAnchorOffset =
-        (sectionView->projectPoint(sectionOrigin, false) - cutCenter)
-        * sectionView->getScale();
+        sectionView->getSectionOriginInView() * sectionView->getScale();
     sectionAnchorOffset.RotateZ(
         Base::toRadians(sectionView->Rotation.getValue()));
     const QPointF sectionAnchorLocal(

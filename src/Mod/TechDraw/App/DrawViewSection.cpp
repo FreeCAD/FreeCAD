@@ -1306,6 +1306,15 @@ Base::Vector3d DrawViewSection::getCutCentroid() const
     return Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 }
 
+//! return where SectionOrigin lies in this view, relative to the view origin,
+//! in projected coordinates before scaling and rotation (Y up, as
+//! projectPoint(point, false)). prepareShape moves the cut by -SectionOrigin, so
+//! a planar section is drawn around SectionOrigin.
+Base::Vector3d DrawViewSection::getSectionOriginInView() const
+{
+    return Base::Vector3d(0.0, 0.0, 0.0);
+}
+
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {

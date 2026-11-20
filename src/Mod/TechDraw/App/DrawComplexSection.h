@@ -130,6 +130,7 @@ public:
     App::DocumentObject* getGeneratedProfile() const;
     bool isPartialSection() const;
     AlignedSectionBoundaryInfo alignedSectionBoundaryInfo() const;
+    Base::Vector3d getSectionOriginInView() const override;
     std::pair<Base::Vector3d, Base::Vector3d>
         partialSectionBoundaryPoints() const;
     std::pair<Base::Vector3d, Base::Vector3d>
@@ -234,6 +235,7 @@ private:
     double m_alignedCenterPosition{0.0};
     double m_alignedEndPosition{0.0};
     Base::Vector3d m_alignedMovementDirection {0.0, 0.0, 0.0};
+    Base::Vector3d m_alignedSectionOrigin {0.0, 0.0, 0.0};
 
     static const char* ProjectionStrategyEnums[];       //NOLINT
     static const char* SectionViewAlignmentEnums[];     //NOLINT

@@ -181,6 +181,7 @@ public:
     TopoDS_Shape makeFaceFromWires(std::vector<TopoDS_Wire> &inWires);
 
     Base::Vector3d getCutCentroid() const;
+    virtual Base::Vector3d getSectionOriginInView() const;
     bool checkSectionCS() const;
 
 public Q_SLOTS:

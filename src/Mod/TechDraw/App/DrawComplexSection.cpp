@@ -233,6 +233,18 @@ DrawComplexSection::alignedSectionBoundaryInfo() const
     return result;
 }
 
+//! Offset sections are drawn around SectionOrigin like planar sections. Aligned
+//! sections are unfolded and centred on their material interval, so the
+//! section origin is the profile centre station at its height along the
+//! reference axis (see makeAlignedPieces).
+Base::Vector3d DrawComplexSection::getSectionOriginInView() const
+{
+    if (ProjectionStrategy.getValue() == 0 || !m_alignedBoundaryValid) {
+        return DrawViewSection::getSectionOriginInView();
+    }
+    return m_alignedSectionOrigin;
+}
+
 std::pair<Base::Vector3d, Base::Vector3d>
 DrawComplexSection::partialSectionBoundaryPoints() const
 {
@@ -900,6 +912,11 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     m_alignedEndPosition = axisMaximum - axisCenter;
     m_alignedMovementDirection =
         Base::convertTo<Base::Vector3d>(gMovementVector);
+    // Pieces keep their height along the reference axis (distributePiece), so
+    // the origin sits at the centre station, displaced like a piece would be.
+    m_alignedSectionOrigin = m_alignedMovementDirection * m_alignedCenterPosition
+        + Base::convertTo<Base::Vector3d>(alignmentAxis)
+            * -SectionOrigin.getValue().Dot(uRotateAxis);
 }
 
 //! tries to find the intersection faces of the cut shape and the cutting tool.
