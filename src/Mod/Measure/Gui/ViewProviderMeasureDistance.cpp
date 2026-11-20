@@ -26,6 +26,13 @@
 
 #include <sstream>
 #include <QApplication>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/engines/SoComposeRotation.h>
@@ -34,6 +41,7 @@
 #include <Inventor/engines/SoDecomposeVec3f.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFontStyle.h>
@@ -70,6 +78,138 @@ using namespace MeasureGui;
 using namespace Measure;
 
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureDistance, MeasureGui::ViewProviderMeasureBase)
+
+SO_NODE_SOURCE(MeasureGui::DimensionLabel)
+
+void MeasureGui::DimensionLabel::initClass()
+{
+    // the parent is looked up by the name of the class as written here, so it can't be qualified
+    SO_NODE_INIT_CLASS(DimensionLabel, SoFrameLabel, "SoFrameLabel");
+}
+
+MeasureGui::DimensionLabel::DimensionLabel()
+{
+    SO_NODE_CONSTRUCTOR(MeasureGui::DimensionLabel);
+}
+
+MeasureGui::DimensionLabel::~DimensionLabel()
+{
+    clearObstacles();
+}
+
+void MeasureGui::DimensionLabel::avoidOverlapWith(DimensionLabel* label)
+{
+    label->ref();
+    earlierLabels.push_back(label);
+}
+
+void MeasureGui::DimensionLabel::avoidOverlapWith(
+    Gui::SoFrameLabel* label,
+    const AnchorFunction& anchorInWorld
+)
+{
+    label->ref();
+    laterLabels.push_back({label, anchorInWorld});
+}
+
+void MeasureGui::DimensionLabel::clearObstacles()
+{
+    for (auto label : earlierLabels) {
+        label->unref();
+    }
+    for (auto& later : laterLabels) {
+        later.label->unref();
+    }
+    earlierLabels.clear();
+    laterLabels.clear();
+}
+
+static SbBox2f getScreenRect(Gui::SoFrameLabel* label, SoState* state, const SbVec3f& anchorInWorld)
+{
+    label->prepareImage(state);
+    SbVec2s imageSize;
+    int numComponents {};
+    label->image.getValue(imageSize, numComponents);
+
+    const SbViewVolume& viewVolume = SoViewVolumeElement::get(state);
+    const SbVec2s viewportSize = SoViewportRegionElement::get(state).getViewportSizePixels();
+
+    SbVec3f screenPoint;
+    viewVolume.projectToScreen(anchorInWorld, screenPoint);
+    // a SoImage is drawn with its lower left corner on the origin
+    SbVec2f lowerLeft(
+        screenPoint[0] * static_cast<float>(viewportSize[0]),
+        screenPoint[1] * static_cast<float>(viewportSize[1])
+    );
+    return {lowerLeft, lowerLeft + SbVec2f(imageSize[0], imageSize[1])};
+}
+
+void MeasureGui::DimensionLabel::GLRender(SoGLRenderAction* action)
+{
+    SoState* state = action->getState();
+    // the position depends on the other labels, so this can't be cached
+    SoCacheElement::invalidate(state);
+
+    const SbMatrix& modelMatrix = SoModelMatrixElement::get(state);
+    SbVec3f anchor;
+    modelMatrix.multVecMatrix(SbVec3f(0.0F, 0.0F, 0.0F), anchor);
+    screenRect = getScreenRect(this, state, anchor);
+
+    std::vector<SbBox2f> obstacles;
+    for (auto label : earlierLabels) {
+        if (label->screenRect.hasArea()) {
+            obstacles.push_back(label->screenRect);
+        }
+    }
+    for (auto& later : laterLabels) {
+        SbBox2f rect = getScreenRect(later.label, state, later.anchorInWorld());
+        if (rect.hasArea()) {
+            obstacles.push_back(rect);
+        }
+    }
+
+    const float gap = 2.0F;
+    float shift = 0.0F;
+    bool moved = true;
+    for (size_t pass = 0; moved && pass <= obstacles.size(); ++pass) {
+        moved = false;
+        for (const auto& obstacle : obstacles) {
+            if (!screenRect.intersect(obstacle)) {
+                continue;
+            }
+            SbVec2f offset(0.0F, obstacle.getMin()[1] - gap - screenRect.getMax()[1]);
+            screenRect.setBounds(screenRect.getMin() + offset, screenRect.getMax() + offset);
+            shift += offset[1];
+            moved = true;
+        }
+    }
+
+    if (shift == 0.0F) {
+        inherited::GLRender(action);
+        return;
+    }
+
+    // translate the label parallel to the screen, at the depth of the anchor
+    const SbViewVolume& viewVolume = SoViewVolumeElement::get(state);
+    const SbVec2s viewportSize = SoViewportRegionElement::get(state).getViewportSizePixels();
+    SbVec3f screenPoint;
+    viewVolume.projectToScreen(anchor, screenPoint);
+    SbLine line;
+    viewVolume.projectPointToLine(
+        SbVec2f(screenPoint[0], screenPoint[1] + (shift / static_cast<float>(viewportSize[1]))),
+        line
+    );
+    SbVec3f target = anchor;
+    SbPlane(viewVolume.getProjectionDirection(), anchor).intersect(line, target);
+    SbVec3f translation;
+    modelMatrix.inverse().multDirMatrix(target - anchor, translation);
+
+    state->push();
+    SoModelMatrixElement::translateBy(state, this, translation);
+    inherited::GLRender(action);
+    state->pop();
+}
+
 
 SO_KIT_SOURCE(MeasureGui::DimensionLinear)
 
@@ -213,19 +353,43 @@ void MeasureGui::DimensionLinear::setupDimension()
     textTransform->translation.connectFrom(&textVecCalc->oA);
     textSep->addChild(textTransform);
 
-    auto textNode = new SoFrameLabel();
-    textNode->justification = SoText2::CENTER;
-    textNode->string.connectFrom(&text);
-    textNode->textColor.connectFrom(&dColor);
-    textNode->backgroundColor.connectFrom(&backgroundColor);
-    textNode->size.connectFrom(&fontSize);
-    textNode->name.setValue("Helvetica");
-    textSep->addChild(textNode);
+    label = new DimensionLabel();
+    label->justification = SoText2::CENTER;
+    label->string.connectFrom(&text);
+    label->textColor.connectFrom(&dColor);
+    label->backgroundColor.connectFrom(&backgroundColor);
+    label->size.connectFrom(&fontSize);
+    label->name.setValue("Helvetica");
+    textSep->addChild(label);
 
     // this prevents the 2d text from screwing up the bounding box for a viewall
     SoResetTransform* rTrans = new SoResetTransform;
     rTrans->whatToReset = SoResetTransform::BBOX;
     textSep->addChild(rTrans);
+}
+
+void MeasureGui::DimensionLinear::avoidLabelOverlapWith(DimensionLinear* dimension)
+{
+    if (label && dimension->label) {
+        label->avoidOverlapWith(dimension->label);
+    }
+}
+
+void MeasureGui::DimensionLinear::avoidLabelOverlapWith(
+    Gui::SoFrameLabel* otherLabel,
+    const DimensionLabel::AnchorFunction& anchorInWorld
+)
+{
+    if (label) {
+        label->avoidOverlapWith(otherLabel, anchorInWorld);
+    }
+}
+
+void MeasureGui::DimensionLinear::clearLabelObstacles()
+{
+    if (label) {
+        label->clearObstacles();
+    }
 }
 
 
@@ -439,8 +603,47 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     dimDeltaZ->dColor.setValue(colorZ);
     dimDeltaZ->fontSize.connectFrom(&fieldFontSize);
 
+    // the labels are drawn in this order
+    dimDeltaY->avoidLabelOverlapWith(dimDeltaX);
+    dimDeltaZ->avoidLabelOverlapWith(dimDeltaX);
+    dimDeltaZ->avoidLabelOverlapWith(dimDeltaY);
+
+    // the label with the distance is drawn after these, so work out where it will be
+    auto mainLabelAnchor = [this] {
+        SbMatrix frame;
+        frame.setTransform(
+            pcTransform->translation.getValue(),
+            pcTransform->rotation.getValue(),
+            pcTransform->scaleFactor.getValue(),
+            pcTransform->scaleOrientation.getValue(),
+            pcTransform->center.getValue()
+        );
+        SbVec3f inFrame;
+        frame.multVecMatrix(pLabelTranslation->translation.getValue(), inFrame);
+        SbVec3f inWorld;
+        globalMatrix.multVecMatrix(inFrame, inWorld);
+        return inWorld;
+    };
+    dimDeltaX->avoidLabelOverlapWith(pLabel, mainLabelAnchor);
+    dimDeltaY->avoidLabelOverlapWith(pLabel, mainLabelAnchor);
+    dimDeltaZ->avoidLabelOverlapWith(pLabel, mainLabelAnchor);
+
+    // remember the model matrix of the global coordinate space
+    pGlobalMatrixCallback = new SoCallback();
+    pGlobalMatrixCallback->ref();
+    pGlobalMatrixCallback->setCallback(
+        [](void* userData, SoAction* action) {
+            if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+                static_cast<ViewProviderMeasureDistance*>(userData)->globalMatrix
+                    = SoModelMatrixElement::get(action->getState());
+            }
+        },
+        this
+    );
+
     pDeltaDimensionSwitch = new SoSwitch();
     pDeltaDimensionSwitch->ref();
+    pGlobalSeparator->addChild(pGlobalMatrixCallback);
     pGlobalSeparator->addChild(pDeltaDimensionSwitch);
 
     pDeltaDimensionSwitch->addChild(dimDeltaX);
@@ -453,8 +656,14 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
 
 ViewProviderMeasureDistance::~ViewProviderMeasureDistance()
 {
+    // the callback and the labels use this view provider
+    pGlobalMatrixCallback->setCallback(nullptr, nullptr);
+    for (int i = 0; i < pDeltaDimensionSwitch->getNumChildren(); ++i) {
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(i))->clearLabelObstacles();
+    }
     pCoords->unref();
     pLines->unref();
+    pGlobalMatrixCallback->unref();
     pDeltaDimensionSwitch->unref();
 }
 
