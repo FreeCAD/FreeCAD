@@ -454,18 +454,41 @@ class GmshTools(ObjectTools):
             for ge in new_group_elements:
                 if ge not in self.group_elements:
                     self.group_elements[ge] = True
-
-                    # build the group!
-                    new_group = fem_mesh.addGroup(ge, "All")
-                    for element in new_group_elements[ge]:
-                        for grp_idx in fem_mesh.Groups:
-                            if fem_mesh.getGroupName(grp_idx) == element:
-                                fem_mesh.addGroupElements(
-                                    new_group, list(fem_mesh.getGroupElements(grp_idx))
-                                )
-                                break
+                    self.add_analysis_groups(ge, new_group_elements[ge])
                 else:
                     Console.PrintError("  A group with this name exists already.\n")
+
+    def add_analysis_groups(self, name, shape_groups):
+        # meshtools finds the groups of an analysis member by "<name>_<type>s" and by type
+        fem_mesh = self.obj.FemMesh
+        # A mesh group object is of type All and may have the label of a shape element
+        group_ids = {
+            fem_mesh.getGroupName(i): i
+            for i in fem_mesh.Groups
+            if fem_mesh.getGroupElementType(i) != "All"
+        }
+        # A partial group would lose references, without one the geometric search answers
+        if not all(shape_group in group_ids for shape_group in shape_groups):
+            return
+
+        elements_by_type = {}
+        for shape_group in shape_groups:
+            group_id = group_ids[shape_group]
+            elements_by_type.setdefault(fem_mesh.getGroupElementType(group_id), []).extend(
+                fem_mesh.getGroupElements(group_id)
+            )
+
+        nodes = set()
+        for element_type, elements in elements_by_type.items():
+            for element in elements:
+                nodes.update(fem_mesh.getElementNodes(element))
+            # A vertex is its node, no element group for it
+            if element_type != "0DElement":
+                new_group = fem_mesh.addGroup(f"{name}_{element_type}s", element_type)
+                fem_mesh.addGroupElements(new_group, elements)
+        if nodes:
+            new_group = fem_mesh.addGroup(f"{name}_Nodes", "Node")
+            fem_mesh.addGroupElements(new_group, sorted(nodes))
 
     def rename_groups(self):
         # salomemesh adds a suffix to the names of element groups if there are also nodes
