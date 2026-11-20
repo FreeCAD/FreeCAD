@@ -1613,6 +1613,7 @@ class _ViewProviderSite:
         """
 
         self.Object = vobj.Object
+        self.trueNorthRotationSceneGraph = None
         from pivy import coin
 
         basesep = coin.SoSeparator()
@@ -1932,6 +1933,7 @@ class _ViewProviderSite:
         self.trueNorthRotation = coin.SoTransform()
         sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
         sg.insertChild(self.trueNorthRotation, 0)
+        self.trueNorthRotationSceneGraph = sg
         self.updateTrueNorthRotation()
 
     def removeTrueNorthRotation(self):
@@ -1940,14 +1942,11 @@ class _ViewProviderSite:
             return
         if self.trueNorthRotation is None:
             return
-        if not FreeCADGui.ActiveDocument.ActiveView:
-            return
-        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
-            return
-
-        sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-        sg.removeChild(self.trueNorthRotation)
+        sg = self.trueNorthRotationSceneGraph
+        if sg and sg.findChild(self.trueNorthRotation) >= 0:
+            sg.removeChild(self.trueNorthRotation)
         self.trueNorthRotation = None
+        self.trueNorthRotationSceneGraph = None
 
     def updateTrueNorthRotation(self):
 
