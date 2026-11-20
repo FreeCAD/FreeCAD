@@ -27,7 +27,6 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
-#include <BRepTools.hxx>
 #include <BRepTools_ShapeSet.hxx>
 #include <OSD_OpenFile.hxx>
 #include <Standard_Failure.hxx>
@@ -661,7 +660,6 @@ void PropertyPartShape::saveToFile(Base::Writer& writer) const
 
 void PropertyPartShape::loadFromFile(Base::Reader& reader)
 {
-    BRep_Builder builder;
     // create a temporary file and copy the content from the zip stream
     Base::FileInfo fi(App::Application::getTempFileName());
 
@@ -678,9 +676,13 @@ void PropertyPartShape::loadFromFile(Base::Reader& reader)
 
     // Read the shape from the temp file, if the file is empty the stored shape was already empty.
     // If it's still empty after reading the (non-empty) file there must occurred an error.
-    TopoDS_Shape shape;
+    TopoShape shape;
     if (ulSize > 0) {
-        if (!BRepTools::Read(shape, static_cast<Standard_CString>(fi.filePath().c_str()), builder)) {
+        try {
+            Base::ifstream brep(fi, std::ios::in | std::ios::binary);
+            shape.importBrep(brep);
+        }
+        catch (const Base::Exception&) {
             // Note: Do NOT throw an exception here because if the tmp. created file could
             // not be read it's NOT an indication for an invalid input stream 'reader'.
             // We only print an error message but continue reading the next files from the
@@ -702,29 +704,18 @@ void PropertyPartShape::loadFromFile(Base::Reader& reader)
 
     // delete the temp file
     fi.deleteFile();
-    setValue(shape);
+    setValue(shape.getShape());
 }
 
 void PropertyPartShape::loadFromStream(Base::Reader& reader)
 {
-    // Save locale before calling OCCT. TopTools_ShapeSet::Read imbues the stream
-    // with std::locale::classic() and restores it on return, but uses a non-RAII
-    // pattern. When exceptions propagate out (due to the exception mask below),
-    // the locale is not restored, leaving the stream with the classic locale whose
-    // internal data is statically allocated and must not be freed.
-    auto savedLocale = reader.getloc();
     try {
-        reader.exceptions(std::istream::failbit | std::istream::badbit);
-        BRep_Builder builder;
-        TopoDS_Shape shape;
-        BRepTools::Read(shape, reader, builder);
-        setValue(shape);
+        TopoShape shape;
+        shape.importBrep(reader);
+        setValue(shape.getShape());
     }
-    catch (const std::exception&) {
-        reader.imbue(savedLocale);
-        if (!reader.eof()) {
-            Base::Console().warning("Failed to load BRep file {}\n", reader.getFileName());
-        }
+    catch (const Base::Exception&) {
+        Base::Console().warning("Failed to load BRep file {}\n", reader.getFileName());
     }
 }
 
