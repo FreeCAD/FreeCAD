@@ -201,6 +201,11 @@ void SystemHandler::installSegfaultHandler()
 #elif defined(FC_OS_LINUX)
     std::signal(SIGSEGV, segmentation_fault_handler);
 #endif
+    installExceptionTranslator();
+}
+
+void SystemHandler::installExceptionTranslator()
+{
 #if defined(FC_SE_TRANSLATOR)
     _set_se_translator(my_se_translator_filter);
 #endif
