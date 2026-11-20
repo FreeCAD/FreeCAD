@@ -9,6 +9,7 @@
 
 #include "customtitlebarkit/export.h"
 
+class QAbstractButton;
 class QMenu;
 class QMenuBar;
 
@@ -16,6 +17,7 @@ class CUSTOMTITLEBARKIT_EXPORT FoldableMenuBar : public QWidget {
     Q_OBJECT
     Q_PROPERTY(bool foldable READ isFoldable WRITE setFoldable)
     Q_PROPERTY(bool expanded READ isExpanded WRITE setExpanded NOTIFY expandedChanged)
+    Q_PROPERTY(bool pinned READ isPinned WRITE setPinned NOTIFY pinnedChanged)
     Q_PROPERTY(int revealWidth READ revealWidth WRITE setRevealWidth)
 
 public:
@@ -51,11 +53,23 @@ public:
     void setExpanded(bool expanded);
     bool isExpanded() const;
 
+    /// Pin button shown after the last menu when foldable. It is made checkable,
+    /// and its checked state is the pinned state. Takes ownership; nullptr removes it.
+    void setPinButton(QAbstractButton *button);
+    QAbstractButton *pinButton() const;
+
+    /// Pinned (foldable mode only): the menu items stay shown in the layout,
+    /// next to the brand, and push the widgets that follow them.
+    /// Unpinning folds them again.
+    void setPinned(bool pinned);
+    bool isPinned() const;
+
     int revealWidth() const;
     void setRevealWidth(int w);
 
 Q_SIGNALS:
     void expandedChanged(bool expanded);
+    void pinnedChanged(bool pinned);
 
 protected:
     void enterEvent(QEnterEvent *event) override;

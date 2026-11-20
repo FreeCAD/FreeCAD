@@ -8,6 +8,7 @@
 
 #include "customtitlebarkit/export.h"
 
+class QAbstractButton;
 class QMenuBar;
 class QWidget;
 class CustomTitleBarWindow;
@@ -46,11 +47,15 @@ class CUSTOMTITLEBARKIT_EXPORT FoldableMenuIntegration : public MenuIntegration 
 public:
     explicit FoldableMenuIntegration(QWidget *brandWidget = nullptr, QObject *parent = nullptr);
 
+    /// Pin button shown after the last menu, see FoldableMenuBar::setPinButton().
+    void setPinButton(QAbstractButton *pinButton);
+
     void install(QMenuBar *menuBar, CustomTitleBarWindow *window) override;
     void uninstall(CustomTitleBarWindow *window) override;
 
 private:
     QWidget *m_brandWidget = nullptr;
+    QAbstractButton *m_pinButton = nullptr;
     FoldableMenuBar *m_foldableBar = nullptr;
 };
 

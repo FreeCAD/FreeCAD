@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16">
+  <title>Unpin the menu bar</title>
+  <g fill="none" stroke="#505050" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 1.5h6"/>
+    <path d="M6.5 1.5v4.25L4.25 8.5h7.5L9.5 5.75V1.5z" fill="#505050"/>
+    <path d="M8 8.5v6"/>
+  </g>
+</svg>

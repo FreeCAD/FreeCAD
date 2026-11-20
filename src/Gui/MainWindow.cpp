@@ -52,6 +52,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QToolBar>
+#include <QToolButton>
 #include <QUrlQuery>
 #include <QWhatsThis>
 #include <QWindow>
@@ -350,10 +351,20 @@ struct MainWindowP
     std::string hiddenDockWindows;
     fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
+    QPointer<QToolButton> menuPinButton;  // pins the folded menu bar of the custom title bar
     bool _restoring = false;
     QTime _showNormal;
     void restoreWindowState(const QByteArray&);
 };
+
+/// The tool tip of the pin button of the custom title bar says what a click does
+static void updateMenuPinToolTip(QToolButton* button)
+{
+    button->setToolTip(
+        button->isChecked() ? MainWindow::tr("Folds the menu bar behind the application button")
+                            : MainWindow::tr("Keeps the menu bar shown in the title bar")
+    );
+}
 
 }  // namespace Gui
 
@@ -386,7 +397,36 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
             logoBtn->setFlat(true);
             logoBtn->setCursor(Qt::PointingHandCursor);
 
-            setMenuIntegration(new FoldableMenuIntegration(logoBtn, this));
+            // Shown after the last menu: pins the menu bar in the title bar, or folds it again.
+            // A dark style sheet can give other icons with qproperty-icon (off and on).
+            auto hMainWindow = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/MainWindow"
+            );
+            auto* pinBtn = new QToolButton(this);
+            pinBtn->setObjectName(QStringLiteral("titleBarPinBtn"));
+            QIcon pinIcon(QStringLiteral(":/icons/titlebar-menu-pin.svg"));
+            pinIcon.addFile(
+                QStringLiteral(":/icons/titlebar-menu-unpin.svg"),
+                QSize(),
+                QIcon::Normal,
+                QIcon::On
+            );
+            pinBtn->setIcon(pinIcon);
+            pinBtn->setIconSize(QSize(16, 16));
+            pinBtn->setAutoRaise(true);
+            pinBtn->setFocusPolicy(Qt::NoFocus);
+            pinBtn->setCheckable(true);
+            pinBtn->setChecked(hMainWindow->GetBool("CustomTitleBarMenuPinned", false));
+            updateMenuPinToolTip(pinBtn);
+            connect(pinBtn, &QToolButton::toggled, this, [pinBtn, hMainWindow](bool pinned) {
+                hMainWindow->SetBool("CustomTitleBarMenuPinned", pinned);
+                updateMenuPinToolTip(pinBtn);
+            });
+            d->menuPinButton = pinBtn;
+
+            auto* menuIntegration = new FoldableMenuIntegration(logoBtn, this);
+            menuIntegration->setPinButton(pinBtn);
+            setMenuIntegration(menuIntegration);
         }
     }
 
@@ -2678,6 +2718,9 @@ void MainWindow::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         d->sizeLabel->setText(tr("Dimension"));
+        if (d->menuPinButton) {
+            updateMenuPinToolTip(d->menuPinButton.data());
+        }
 
         CommandManager& rclMan = Application::Instance->commandManager();
         std::vector<Command*> cmd = rclMan.getAllCommands();

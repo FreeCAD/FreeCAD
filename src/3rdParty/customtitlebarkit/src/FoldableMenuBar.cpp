@@ -3,11 +3,14 @@
 
 #include "customtitlebarkit/FoldableMenuBar.h"
 
+#include <QAbstractButton>
 #include <QActionEvent>
+#include <QFrame>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMouseEvent>
+#include <QPointer>
 #include <QPropertyAnimation>
 #include <QTimer>
 
@@ -17,24 +20,60 @@ struct FoldableMenuBar::Impl {
     QMenuBar *menuBar = nullptr;
     QWidget *menuContainer = nullptr;
     QWidget *menuWrapper = nullptr;   // inside container, has border trick for centering
+    QPointer<QAbstractButton> pinButton;   // inside container, right after menuWrapper
+    QWidget *pinnedSeparator = nullptr;    // in the layout after the pinned container
     QTimer *collapseTimer = nullptr;
     QPropertyAnimation *animation = nullptr;
     QList<QWidget *> maskTargets;
     bool foldable = false;
     bool overlayExpand = true;
     bool expanded = true;
+    bool pinned = false;
     int revealWidth = 0;
+
+    /// The menu items fold and unfold: foldable and not pinned
+    bool folds() const {
+        return foldable && !pinned;
+    }
+
+    /// Extra width of the overlay, given to the menu bar wrapper
+    static constexpr int overlaySlack = 4;
+
+    bool hasPinButton() const {
+        return pinButton && !pinButton->isHidden();
+    }
+
+    /// Width uncovered by the reveal: the menu items, then the pin button,
+    /// which comes after the slack of the overlay
+    int contentWidth() const {
+        int width = menuBar->sizeHint().width();
+        if (hasPinButton())
+            width += overlaySlack + pinButton->sizeHint().width();
+        return width;
+    }
 
     void updateClip() {
         if (!menuBar) return;
-        if (!foldable || revealWidth >= menuBar->sizeHint().width()) {
+        if (!folds() || revealWidth >= contentWidth()) {
             menuBar->clearMask();
+            if (pinButton)
+                pinButton->clearMask();
         }
         else if (revealWidth <= 0) {
             menuBar->setMask(QRegion(-1, -1, 1, 1));
+            if (pinButton)
+                pinButton->setMask(QRegion(-1, -1, 1, 1));
         }
         else {
             menuBar->setMask(QRegion(0, 0, revealWidth, menuBar->height()));
+            if (pinButton) {
+                // The menu bar starts the container, the pin button ends it
+                int pinReveal = revealWidth - pinButton->x();
+                if (pinReveal <= 0)
+                    pinButton->setMask(QRegion(-1, -1, 1, 1));
+                else
+                    pinButton->setMask(QRegion(0, 0, pinReveal, pinButton->height()));
+            }
         }
     }
 
@@ -63,7 +102,7 @@ struct FoldableMenuBar::Impl {
         // or opens the menu: unfold first, so that both happen on a menu bar that shows.
         // A folded menu bar is masked out, so the mouse cannot make an item current.
         QObject::connect(menuBar, &QMenuBar::hovered, self, [this, self]() {
-            if (!foldable || expanded) return;
+            if (!folds() || expanded) return;
             collapseTimer->stop();
             self->setExpanded(true);
             // The menu that Alt+mnemonic opens is placed right after this
@@ -74,7 +113,7 @@ struct FoldableMenuBar::Impl {
 
     void connectMenuCollapse(FoldableMenuBar *self, QMenu *menu) {
         QObject::connect(menu, &QMenu::aboutToHide, self, [this, self]() {
-            if (foldable && !self->underMouse() && !isMouseOverOverlay()) {
+            if (folds() && !self->underMouse() && !isMouseOverOverlay()) {
                 collapseTimer->start();
             }
         });
@@ -89,8 +128,61 @@ struct FoldableMenuBar::Impl {
         if (brandWidget)
             x += brandWidget->geometry().right() + 1 + layout->spacing();
 
-        menuContainer->setGeometry(x, origin.y(),
-                                   menuBar->sizeHint().width() + 4, self->height());
+        int width = contentWidth() + (hasPinButton() ? 0 : overlaySlack);
+        menuContainer->setGeometry(x, origin.y(), width, self->height());
+    }
+
+    /// Pinned menu items are followed by what the menu bar covers when it unfolds:
+    /// a line tells them apart. It ends the layout, after the container.
+    void updatePinnedSeparator() {
+        layout->removeWidget(pinnedSeparator);
+        if (foldable && pinned) {
+            layout->addWidget(pinnedSeparator);
+            pinnedSeparator->show();
+        }
+        else {
+            pinnedSeparator->hide();
+        }
+    }
+
+    /// Pinned: the container leaves the overlay for the layout, after the brand,
+    /// and shows the menu items whole, without mask and without folding.
+    /// Returns whether the menu items were folded.
+    bool applyPinned(FoldableMenuBar *self) {
+        collapseTimer->stop();
+        animation->stop();
+        clearOverlayMasks();
+        if (menuContainer->parent() != self)
+            menuContainer->setParent(self);
+        if (layout->indexOf(menuContainer) < 0)
+            layout->addWidget(menuContainer);
+        menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
+        menuContainer->show();
+        updatePinnedSeparator();
+        revealWidth = contentWidth();
+        updateClip();
+        bool wasFolded = !expanded;
+        expanded = true;
+        return wasFolded;
+    }
+
+    /// Unpinned: the menu items, still shown, fold like after a click on the brand.
+    /// In overlay mode, the container goes back from the layout to the overlay first,
+    /// so that the widgets after it take their place again under the folding menu.
+    void releasePinned(FoldableMenuBar *self) {
+        updatePinnedSeparator();
+        if (overlayExpand) {
+            layout->removeWidget(menuContainer);
+            if (QWidget *win = self->window()) {
+                menuContainer->setParent(win);
+                positionOverlay(self);
+                menuContainer->show();
+                menuContainer->raise();
+            }
+        }
+        expanded = true;
+        self->setRevealWidth(contentWidth());
+        self->setExpanded(false);
     }
 
     /// Mask target widgets to hide their content in the overlay region.
@@ -154,7 +246,8 @@ FoldableMenuBar::FoldableMenuBar(QWidget *parent)
     // underneath so only menu items are visible in the overlay region.
     d->menuContainer = new QWidget(this);
 
-    auto *containerLayout = new QVBoxLayout(d->menuContainer);
+    // Horizontal: the menu bar wrapper, then the pin button if any (setPinButton()).
+    auto *containerLayout = new QHBoxLayout(d->menuContainer);
     containerLayout->setContentsMargins(0, 0, 0, 0);
     containerLayout->setSpacing(0);
 
@@ -167,6 +260,22 @@ FoldableMenuBar::FoldableMenuBar(QWidget *parent)
     wrapperLayout->setSpacing(0);
     wrapperLayout->addWidget(d->menuBar, 0, Qt::AlignVCenter);
     containerLayout->addWidget(d->menuWrapper);
+
+    // Line after the pinned menu items (updatePinnedSeparator()), over the whole height
+    // of the title bar. Its holder spaces it; style sheets colour the line by its name.
+    d->pinnedSeparator = new QWidget(this);
+    auto *separatorLayout = new QHBoxLayout(d->pinnedSeparator);
+    separatorLayout->setContentsMargins(4, 0, 6, 0);
+    separatorLayout->setSpacing(0);
+    auto *separatorLine = new QFrame(d->pinnedSeparator);
+    separatorLine->setObjectName(QStringLiteral("titleBarMenuSeparator"));
+    separatorLine->setFrameShape(QFrame::NoFrame);
+    separatorLine->setFixedWidth(1);
+    separatorLine->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    separatorLine->setBackgroundRole(QPalette::Mid);
+    separatorLine->setAutoFillBackground(true);
+    separatorLayout->addWidget(separatorLine);
+    d->pinnedSeparator->hide();
 
     // Overlay is default — menuContainer is NOT in the layout (floats over content).
     // In non-overlay mode it gets added to the layout in setOverlayExpand(false).
@@ -195,6 +304,8 @@ FoldableMenuBar::FoldableMenuBar(QWidget *parent)
         }
         if (d->expanded) {
             d->menuBar->clearMask();
+            if (d->pinButton)
+                d->pinButton->clearMask();
         }
     });
 
@@ -203,7 +314,7 @@ FoldableMenuBar::FoldableMenuBar(QWidget *parent)
     d->collapseTimer->setSingleShot(true);
     d->collapseTimer->setInterval(400);
     connect(d->collapseTimer, &QTimer::timeout, this, [this]() {
-        if (d->foldable && !underMouse() && !d->isMouseOverOverlay()
+        if (d->folds() && !underMouse() && !d->isMouseOverOverlay()
             && !d->isAnyMenuVisible() && !d->isKeyboardActive()) {
             setExpanded(false);
         }
@@ -315,6 +426,14 @@ void FoldableMenuBar::setFoldable(bool foldable)
             d->menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
         }
     }
+
+    // Pinning is a choice between folded and unfolded: only foldable menu items offer it
+    if (d->pinButton)
+        d->pinButton->setVisible(foldable);
+    if (foldable && d->pinned)
+        d->applyPinned(this);
+    else
+        d->updatePinnedSeparator();
 }
 
 bool FoldableMenuBar::isFoldable() const
@@ -350,6 +469,10 @@ void FoldableMenuBar::setOverlayExpand(bool overlay)
             d->menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
         }
     }
+
+    // Pinned menu items stay in the layout in both modes
+    if (d->foldable && d->pinned)
+        d->applyPinned(this);
 }
 
 bool FoldableMenuBar::isOverlayExpand() const
@@ -366,13 +489,15 @@ void FoldableMenuBar::setOverlayMaskTargets(const QList<QWidget *> &targets)
 void FoldableMenuBar::setExpanded(bool expanded)
 {
     if (d->expanded == expanded) return;
+    // Pinned menu items do not fold: unpin them instead
+    if (!expanded && d->foldable && d->pinned) return;
     d->expanded = expanded;
 
     if (d->foldable) {
         if (d->animation->state() == QAbstractAnimation::Running)
             d->animation->stop();
 
-        int targetWidth = d->menuBar->sizeHint().width();
+        int targetWidth = d->contentWidth();
 
         if (expanded) {
             if (d->overlayExpand) {
@@ -414,6 +539,64 @@ bool FoldableMenuBar::isExpanded() const
     return d->expanded;
 }
 
+void FoldableMenuBar::setPinButton(QAbstractButton *button)
+{
+    if (d->pinButton == button) return;
+
+    if (d->pinButton) {
+        disconnect(d->pinButton.data(), nullptr, this, nullptr);
+        d->menuContainer->layout()->removeWidget(d->pinButton.data());
+        d->pinButton->clearMask();
+        d->pinButton->setParent(nullptr);
+    }
+    d->pinButton = button;
+    if (button) {
+        button->setCheckable(true);
+        button->setParent(d->menuContainer);
+        button->setVisible(d->foldable);
+        static_cast<QHBoxLayout *>(d->menuContainer->layout())
+            ->addWidget(button, 0, Qt::AlignVCenter);
+        // Queued: the button moves with the container when the state changes,
+        // which is better not done inside its own mouse release
+        connect(button, &QAbstractButton::toggled, this, &FoldableMenuBar::setPinned,
+                Qt::QueuedConnection);
+        setPinned(button->isChecked());
+        d->updateClip();
+    }
+}
+
+QAbstractButton *FoldableMenuBar::pinButton() const
+{
+    return d->pinButton;
+}
+
+void FoldableMenuBar::setPinned(bool pinned)
+{
+    if (d->pinned == pinned) return;
+    d->pinned = pinned;
+    if (d->pinButton && d->pinButton->isChecked() != pinned)
+        d->pinButton->setChecked(pinned);
+
+    if (d->foldable) {
+        d->collapseTimer->stop();
+        d->animation->stop();
+        if (pinned) {
+            if (d->applyPinned(this))
+                Q_EMIT expandedChanged(true);
+        }
+        else {
+            d->releasePinned(this);
+        }
+    }
+
+    Q_EMIT pinnedChanged(pinned);
+}
+
+bool FoldableMenuBar::isPinned() const
+{
+    return d->pinned;
+}
+
 void FoldableMenuBar::enterEvent(QEnterEvent *event)
 {
     d->collapseTimer->stop();
@@ -422,7 +605,7 @@ void FoldableMenuBar::enterEvent(QEnterEvent *event)
 
 void FoldableMenuBar::leaveEvent(QEvent *event)
 {
-    if (d->foldable) {
+    if (d->folds()) {
         d->collapseTimer->start();
     }
     QWidget::leaveEvent(event);
@@ -441,7 +624,7 @@ bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == d->brandWidget && event->type() == QEvent::MouseButtonPress) {
         auto *mouseEvent = static_cast<QMouseEvent *>(event);
-        if (mouseEvent->button() == Qt::LeftButton && d->foldable) {
+        if (mouseEvent->button() == Qt::LeftButton && d->folds()) {
             d->collapseTimer->stop();
             mouseEvent->accept();
             return true;
@@ -452,7 +635,7 @@ bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
         auto *mouseEvent = static_cast<QMouseEvent *>(event);
         if (mouseEvent->button() == Qt::LeftButton
             && d->brandWidget->rect().contains(mouseEvent->position().toPoint())
-            && d->foldable) {
+            && d->folds()) {
             d->collapseTimer->stop();
             setExpanded(!d->expanded);
             mouseEvent->accept();
@@ -468,7 +651,7 @@ bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
     }
 
     // Keyboard navigation ended (Esc, Alt again, a click elsewhere): fold again
-    if (obj == d->menuBar && event->type() == QEvent::FocusOut && d->foldable) {
+    if (obj == d->menuBar && event->type() == QEvent::FocusOut && d->folds()) {
         d->collapseTimer->start();
     }
 
@@ -477,7 +660,7 @@ bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
         if (event->type() == QEvent::Enter) {
             d->collapseTimer->stop();
         } else if (event->type() == QEvent::Leave) {
-            if (d->foldable && !d->isAnyMenuVisible())
+            if (d->folds() && !d->isAnyMenuVisible())
                 d->collapseTimer->start();
         }
     }

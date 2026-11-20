@@ -5,6 +5,7 @@
 #include "customtitlebarkit/CustomTitleBarWindow.h"
 #include "customtitlebarkit/FoldableMenuBar.h"
 
+#include <QAbstractButton>
 #include <QHBoxLayout>
 #include <QMenuBar>
 #include <QVBoxLayout>
@@ -62,6 +63,13 @@ FoldableMenuIntegration::FoldableMenuIntegration(QWidget *brandWidget, QObject *
 {
 }
 
+void FoldableMenuIntegration::setPinButton(QAbstractButton *pinButton)
+{
+    m_pinButton = pinButton;
+    if (m_foldableBar)
+        m_foldableBar->setPinButton(pinButton);
+}
+
 void FoldableMenuIntegration::install(QMenuBar *menuBar, CustomTitleBarWindow *window)
 {
     m_foldableBar = new FoldableMenuBar(window->leftArea());
@@ -71,6 +79,8 @@ void FoldableMenuIntegration::install(QMenuBar *menuBar, CustomTitleBarWindow *w
 
     if (m_brandWidget)
         m_foldableBar->setBrandWidget(m_brandWidget);
+    if (m_pinButton)
+        m_foldableBar->setPinButton(m_pinButton);
 
     auto *layout = window->leftArea()->layout();
     if (!layout) {
@@ -90,6 +100,12 @@ void FoldableMenuIntegration::uninstall(CustomTitleBarWindow *window)
             m_foldableBar->setBrandWidget(nullptr);
             m_brandWidget->setParent(nullptr);
             m_brandWidget->hide();
+        }
+        // Reclaim the pin button as well; it keeps its checked (pinned) state
+        if (m_foldableBar->pinButton()) {
+            m_pinButton = m_foldableBar->pinButton();
+            m_foldableBar->setPinButton(nullptr);
+            m_pinButton->hide();
         }
         // Reparent the QMenuBar out so it survives deletion of the FoldableMenuBar,
         // and restore it to a clean state (foldable mode leaves it hidden + disabled).
