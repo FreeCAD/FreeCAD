@@ -430,6 +430,7 @@ void AttachEngine::setUp(
 void AttachEngine::setUp(const AttachEngine& another)
 {
     this->docName = another.docName;
+    this->ownerName = another.ownerName;
     this->objNames = another.objNames;
     this->subnames = another.subnames;
     this->shadowSubs = another.shadowSubs;
@@ -1618,7 +1619,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 );
             }
             if (pr.HasSymmetryAxis()) {
-                Base::Console().warning(
+                logWarning(
                     "AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor has "
                     "axis of symmetry. Second and third axes of inertia are undefined.\n"
                 );
@@ -1868,7 +1869,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 catch (Standard_Failure& e) {
                     // ignore. This is probably due to insufficient continuity.
                     dd = gp_Vec(0., 0., 0.);
-                    Base::Console().warning(
+                    logWarning(
                         "AttachEngine3D::calculateAttachedPlacement: can't "
                         "calculate second derivative of curve. OCC error: {}\n",
                         e.GetMessageString()
@@ -1884,7 +1885,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     B = T.Crossed(N);
                 }
                 else {
-                    Base::Console().warning(
+                    logWarning(
                         "AttachEngine3D::calculateAttachedPlacement: path curve second derivative "
                         "is below 1e-14, cannot align X-axis.\n"
                     );
@@ -2871,7 +2872,7 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                     );
                 }
                 if (distancer.NbSolution() > 1) {
-                    Base::Console().warning(
+                    logWarning(
                         "AttachEngineLine::calculateAttachedPlacement: "
                         "proximity calculation gave {} solutions, ambiguous.\n",
                         int(distancer.NbSolution())
@@ -3194,7 +3195,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
             }
 
             if (points.size() > 1) {
-                Base::Console().warning(
+                logWarning(
                     "AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave {} "
                     "solutions, ambiguous.\n",
                     int(points.size())
@@ -3219,7 +3220,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
         );
     }
     if (distancer.NbSolution() > 1) {
-        Base::Console().warning(
+        logWarning(
             "AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave {} "
             "solutions, ambiguous.\n",
             int(distancer.NbSolution())
