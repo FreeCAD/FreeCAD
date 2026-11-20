@@ -33,6 +33,7 @@
 #include <TopLoc_Location.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
+#include <gp_Pln.hxx>
 
 
 #include <App/Expression.h>
@@ -905,6 +906,27 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
     return false;
 }
 
+/// Returns true if all faces of the object lie in one plane, so they can form one Loft profile.
+static bool areCoplanarFaces(App::DocumentObject* obj, const std::vector<std::string>& faces)
+{
+    std::vector<Part::TopoShape> shapes;
+    for (const auto& face : faces) {
+        shapes.push_back(
+            Part::Feature::getTopoShape(
+                obj,
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                    | Part::ShapeOption::Transform,
+                face.c_str()
+            )
+        );
+        if (shapes.back().isNull()) {
+            return false;
+        }
+    }
+    gp_Pln plane;
+    return Part::TopoShape().makeElementCompound(shapes).findPlane(plane);
+}
+
 
 void prepareProfileBased(
     PartDesign::Body* pcActiveBody,
@@ -949,8 +971,10 @@ void prepareProfileBased(
             && !feature->isDerivedFrom<Part::Part2DObject>() && cmdSubs.size() > 1
             && std::all_of(cmdSubs.begin(), cmdSubs.end(), [](const std::string& sub) {
                    return sub.compare(0, 4, "Face") == 0;
-               })) {
-            // SelectionEx groups faces of one object; only the first face is the profile.
+               })
+            && !areCoplanarFaces(feature, cmdSubs)) {
+            // SelectionEx groups faces of one object. Coplanar faces form one multi-face
+            // profile; faces in different planes are a profile followed by sections.
             sameObjectSections.assign(cmdSubs.begin() + 1, cmdSubs.end());
             cmdSubs.resize(1);
         }
