@@ -246,6 +246,14 @@ bool ViewProviderBody::isActiveBody()
 
 App::DocumentObject* ViewProviderBody::getDeleteTarget(App::DocumentObject* context) const
 {
+    // The only body of its document is what is being modelled, not a component among
+    // others: what is selected in it is deleted as if the body was active. An instance of
+    // it (a Link) is still deleted as a whole.
+    const App::Document* doc = getObject()->getDocument();
+    if (context == getObject() && doc && doc->countObjectsOfType<PartDesign::Body>() == 1) {
+        return nullptr;
+    }
+
     auto* activeView = Gui::Application::Instance->activeView();
     if (!activeView) {
         return context;
