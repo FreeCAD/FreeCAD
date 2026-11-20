@@ -45,10 +45,9 @@ import Path.Main.Job as PathJob
 import Path.Op.Drilling as PathDrilling
 import Path.Tool.Controller as PathToolController
 from Path.Tool.toolbit import ToolBit
-from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine, Toolhead, ToolheadType
 import CAMTests.PathTestUtils as PathTestUtils
 import CAMTests.PostTestMocks as PostTestMocks
+import CAMTests.PostTestSupport as PostTestSupport
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
@@ -106,24 +105,12 @@ class TestDrillingPostIntegration(PathTestUtils.PathTestBase):
         mockjob.Tools.Group = [self.toolController]
         mockjob.Operations.Group = [operation]
 
-        post = PostProcessorFactory.get_post_processor(mockjob, postname)
-        post._machine = Machine.create_3axis_config()
-        post._machine.name = f"Test {postname}"
+        machine = PostTestSupport.make_machine(f"Test {postname}")
         # Must be set before apply_configuration_bundle(): it snapshots
         # machine.processing.* into post.values and only runs once per post.
-        post._machine.processing.translate_drill_cycles = translate_drill_cycles
-        post.apply_configuration_bundle()
-        post._machine.toolheads = [
-            Toolhead(
-                name="Default Toolhead",
-                toolhead_type=ToolheadType.ROTARY,
-                min_rpm=0,
-                max_rpm=24000,
-                max_power_kw=1.0,
-            )
-        ]
-
-        sections = post.export2()
+        machine.processing.translate_drill_cycles = translate_drill_cycles
+        post = PostTestSupport.load_post(mockjob, postname)
+        sections = PostTestSupport.run_export2(mockjob, machine, post)
         self.assertIsNotNone(sections, "export2() returned None")
         return sections[0][1]
 

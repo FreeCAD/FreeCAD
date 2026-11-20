@@ -24,93 +24,28 @@
 
 
 import Path
-from CAMTests import PathTestUtils
-from CAMTests import PostTestMocks
+from CAMTests import PostTestSupport
 from Path.Post.Processor import (
-    PostProcessorFactory,
     SCOPE_JOB,
     SCOPE_MACHINE,
     properties_in_scope,
 )
-from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
+from Machine.models.machine import OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestLinuxCNCPost(PathTestUtils.PathTestBase):
+class TestLinuxCNCPost(PostTestSupport.MachinePostTestBase):
     """Test LinuxCNC-specific features of the linuxcnc_post.py postprocessor.
 
     This test suite focuses on LinuxCNC-specific functionality such as path blending modes.
     Generic postprocessor functionality is tested in TestGenericPost.
     """
 
-    @classmethod
-    def setUpClass(cls):
-        """setUpClass()...
-
-        This method is called upon instantiation of this test class.  Add code
-        and objects here that are needed for the duration of the test() methods
-        in this class.  In other words, set up the 'global' test environment
-        here; use the `setUp()` method to set up a 'local' test environment.
-        This method does not have access to the class `self` reference, but it
-        is able to call static methods within this same class.
-        """
-
-        # Create mock job with default operation and tool controller
-        cls.job, cls.profile_op, cls.tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
-
-        # Create postprocessor using the mock job
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "linuxcnc")
-
-    @classmethod
-    def tearDownClass(cls):
-        """tearDownClass()...
-
-        This method is called prior to destruction of this test class.  Add
-        code and objects here that cleanup the test environment after the
-        test() methods in this class have been executed.  This method does not
-        have access to the class `self` reference.  This method
-        is able to call static methods within this same class.
-        """
-        # No cleanup needed for mock objects
-        pass
-
-    # Setup and tear down methods called before and after each unit test
-
-    def setUp(self):
-        """setUp()...
-
-        This method is called prior to each `test()` method.  Add code and
-        objects here that are needed for multiple `test()` methods.
-        """
-        # allow a full length "diff" if an error occurs
-        self.maxDiff = None
-        # reinitialize the postprocessor data structures between tests
-        self.post.reinitialize()
-        # Create a machine configuration for each test
-        self.post._machine = Machine.create_3axis_config()
-        self.post._machine.name = "Test LinuxCNC Machine"
-        self.post.apply_configuration_bundle()
-        # Add a default toolhead (required by export2)
-        toolhead = Toolhead(
-            name="Default Toolhead",
-            toolhead_type=ToolheadType.ROTARY,
-            min_rpm=0,
-            max_rpm=24000,
-            max_power_kw=1.0,
-        )
-        self.post._machine.toolheads = [toolhead]
-
-    def tearDown(self):
-        """tearDown()...
-
-        This method is called after each test() method. Add cleanup instructions here.
-        Such cleanup instructions will likely undo those in the setUp() method.
-        """
-        pass
+    POST_NAME = "linuxcnc"
+    MACHINE_NAME = "Test LinuxCNC Machine"
+    QUIET = False
 
     def _gcode_and_preamble(self):
         """convenience to get the preamble stuff"""

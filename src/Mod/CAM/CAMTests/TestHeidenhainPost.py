@@ -31,11 +31,9 @@ import re
 
 import Path
 import Constants
-from CAMTests import PathTestUtils
-from CAMTests import PostTestMocks
-from Path.Post.Processor import PostProcessorFactory, VALID_SCOPES, property_scope
+from CAMTests import PostTestSupport
 from Path.Post.CAMErrors import CAMValueError
-from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
+from Machine.models.machine import OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
@@ -47,57 +45,18 @@ def strip_numbers(lines):
     return [re.sub(r"^\d+ ", "", line) for line in lines]
 
 
-class TestHeidenhainPost(PathTestUtils.PathTestBase):
+class TestHeidenhainPost(PostTestSupport.MachinePostTestBase):
     """Klartext conversion, block numbering and cycle output of heidenhain_post.py."""
 
-    @classmethod
-    def setUpClass(cls):
-        cls.job, cls.profile_op, cls.tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
-        cls.job.Machine = "heidenhain"
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "heidenhain")
+    POST_NAME = "heidenhain"
+    MACHINE_NAME = "Test Heidenhain"
 
-    def setUp(self):
-        self.maxDiff = None
-
-        machine = Machine.create_3axis_config()
-        machine.name = "Test Heidenhain"
-        machine.output.units = OutputUnits.METRIC
-        machine.output.output_header = False
-        machine.output.comments.enabled = False
-        machine.output.precision.axis = 3
+    def configure_machine(self, machine):
         machine.output.precision.feed = 0
-        machine.output.precision.spindle = 0
-        machine.output.duplicates.commands = True
-        machine.output.duplicates.parameters = True
-        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
-        machine.toolheads = [
-            Toolhead(
-                name="Spindle",
-                toolhead_type=ToolheadType.ROTARY,
-                min_rpm=0,
-                max_rpm=12000,
-                max_power_kw=10.0,
-            )
-        ]
-        # Tests set the paths they need; start every export from an empty operation.
-        self.profile_op.Path = Path.Path([])
-        self.post._machine = machine
-        self.post.apply_configuration_bundle()
 
     # ------------------------------------------------------------------
     # helpers
     # ------------------------------------------------------------------
-
-    def export(self, commands=None):
-        """Run export2() on the given commands and return the output text."""
-        if commands is not None:
-            self.profile_op.Path = Path.Path(
-                [Path.Command(c) if isinstance(c, str) else c for c in commands]
-            )
-        self.post.apply_configuration_bundle()
-        return self.post.export2()[0][1]
 
     def blocks(self, commands=None):
         """Export and return the lines without block numbers."""
@@ -122,14 +81,6 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
     def test_default_file_extension(self):
         """Klartext programs are .h files."""
         self.assertEqual("h", self.post.get_file_extension())
-
-    def test_property_schema_is_well_formed(self):
-        """Every property declares a valid scope and reaches the values dict."""
-        for prop in self.post.get_full_property_schema():
-            self.assertIn(property_scope(prop), VALID_SCOPES, prop["name"])
-            if prop["type"] == "choice":
-                self.assertIn(prop["default"], prop["choices"], prop["name"])
-            self.assertIn(prop["name"].upper(), self.post.values, prop["name"])
 
     def test_drill_cycles_not_translated_by_default(self):
         """Every drill cycle CAM emits has a native cycle, so none are expanded."""
@@ -803,24 +754,3 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
         }
         supported -= {"G55", "G56", "G57", "G58", "G59", "G74"}  # same code path as G54 / G84
         self.assertEqual(set(), supported - tried, "add these to the coverage list")
-
-    def test_cam_allowed_commands_are_classified(self):
-        """Every command the base post can hand over is either supported or deliberately not."""
-        rejected = {
-            "G38.2",  # probing: no TCH PROBE support
-            "G18",  # arc planes: a Klartext arc takes its plane from its coordinates
-            "G19",
-            "G91",  # incremental mode: Path commands are absolute
-            "G92",  # coordinate offset
-            "G93",
-            "G95",
-            "G96",
-            "G88",
-            "G89",
-        }
-        allowed = set(
-            Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING
-        )
-        unclassified = allowed - set(self.post.GCodeSupported) - rejected
-        self.assertEqual(set(), unclassified)
-        self.assertEqual(set(), rejected & set(self.post.GCodeSupported))

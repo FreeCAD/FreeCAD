@@ -32,12 +32,10 @@ import unittest
 
 import Path
 import Constants
-from CAMTests import PathTestUtils
-from CAMTests import PostTestMocks
+from CAMTests import PostTestSupport
 from Path.Base.MachineState import MachineState
-from Path.Post.Processor import PostProcessorFactory
 from Path.Post.CAMErrors import CAMValueError
-from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
+from Machine.models.machine import OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -45,47 +43,26 @@ Path.Log.trackModule(Path.Log.thisModule())
 eol = "\n"  # for fstrings
 
 
-class TestOpenSBPPost(PathTestUtils.PathTestBase):
+class TestOpenSBPPost(PostTestSupport.MachinePostTestBase):
     """Test OpenSBP-specific features of the opensbp_post.py postprocessor.
 
     OpenSBP uses native ShopBot commands instead of standard G-code.
     These tests verify command conversion for the major command categories.
     """
 
-    _first_time = True
+    POST_NAME = "opensbp"
+    MACHINE_NAME = "Test ShopBot Machine"
+    QUIET = False
 
-    @classmethod
-    def setUpClass(cls):
-        cls.job, cls.profile_op, cls.tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
-        cls.job.Machine = "opensbp"
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "opensbp")
-
-    @classmethod
-    def tearDownClass(cls):
-        pass
+    def configure_machine(self, machine):
+        # Predictable output
+        machine.output.duplicates.parameters = True
+        machine.output.duplicates.commands = True
+        machine.output.units = OutputUnits.METRIC
+        machine.toolheads = [PostTestSupport.make_toolhead(max_rpm=18000, max_power_kw=3.0)]
 
     def setUp(self):
-        self.maxDiff = None
-
-        # Predictable output
-        self.post._machine = Machine.create_3axis_config()
-        self.post._machine.output.duplicates.parameters = True
-        self.post._machine.output.duplicates.commands = True
-        self.post._machine.output.units = OutputUnits.METRIC
-
-        self.post.apply_configuration_bundle()
-
-        self.post._machine.name = "Test ShopBot Machine"
-        toolhead = Toolhead(
-            name="Default Toolhead",
-            toolhead_type=ToolheadType.ROTARY,
-            min_rpm=0,
-            max_rpm=18000,
-            max_power_kw=3.0,
-        )
-        self.post._machine.toolheads = [toolhead]
+        super().setUp()
         # Reset tracked speeds before each test
         self.post._current_move_speed_xy = None
         self.post._current_move_speed_z = None
@@ -94,9 +71,6 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         if "machine_state" in dir(self.post):
             self.post.machine_state = None
-
-    def tearDown(self):
-        pass
 
     def any_line_startswith(self, gcode, lines):
         """Test if it has at least one"""
