@@ -44,15 +44,27 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem(item, surface);
     surface->setCommand("S&urface");  // codespell:ignore urface
-    *surface << "Part_Extrude"
-             << "Part_Loft"
-             << "Surface_IntersectionCurve"
-             << "Surface_Filling"
+    *surface << "Surface_Filling"
              << "Surface_GeomFillSurface"
              << "Surface_Sections"
              << "Surface_ExtendFace"
+             << "Separator"
              << "Surface_CurveOnMesh"
-             << "Surface_BlendCurve";
+             << "Surface_IntersectionCurve"
+             << "Surface_BlendCurve"
+             << "Separator"
+             << "Part_Extrude"
+             << "Part_Revolve"
+             << "Part_Mirror"
+             << "Part_MakeFace"
+             << "Part_RuledSurface"
+             << "Part_Loft"
+             << "Part_Sweep"
+             << "Part_CrossSections"
+             << "Part_Offset"
+             << "Part_Offset2D"
+             << "Part_Thickness"
+             << "Part_ProjectionOnSurface";
     /*
      *surface << "Surface_Cut";
      */
@@ -66,18 +78,32 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
     surface->setCommand("Surface");
-    *surface << "Part_Extrude"
-             << "Part_Loft"
-             << "Surface_IntersectionCurve"
-             << "Surface_Filling"
+    *surface << "Surface_Filling"
              << "Surface_GeomFillSurface"
              << "Surface_Sections"
              << "Surface_ExtendFace"
+             << "Separator"
              << "Surface_CurveOnMesh"
+             << "Surface_IntersectionCurve"
              << "Surface_BlendCurve";
     /*
      *surface << "Surface_Cut";
      */
+
+    // Part tools that create or modify the curves and surfaces used in surface modeling
+    Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
+    part->setCommand("Part Tools");
+    *part << "Part_Extrude"
+          << "Part_Revolve"
+          << "Part_Mirror"
+          << "Part_MakeFace"
+          << "Part_RuledSurface"
+          << "Part_Loft"
+          << "Part_Sweep"
+          << "Part_CrossSections"
+          << "Part_CompOffset"
+          << "Part_Thickness"
+          << "Part_ProjectionOnSurface";
 
     return root;
 }
