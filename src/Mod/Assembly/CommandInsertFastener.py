@@ -117,6 +117,10 @@ class TaskAssemblyInsertFastener:
         self.placeholder = False
         # The names of the joints made by this task: named after the fastener at the end
         self.new_joints = []
+        # The label of the fastener that the edited link uses: the link is named after the
+        # fastener at the end if it still has this label
+        source = link.LinkedObject if self.editing else None
+        self.source_label = source.Label if source is not None else None
 
         self.doc.openTransaction("Edit Fasteners" if self.editing else "Insert Fastener")
 
@@ -168,15 +172,16 @@ class TaskAssemblyInsertFastener:
 
     def _name_new_objects(self, source):
         """Name the link and the joints made by this task after the fastener they use. The
-        fastener may have been made, renamed or changed after they were made."""
+        fastener may have been made, renamed or changed after they were made. An edited link
+        keeps a name that the user gave it."""
         if source is None:
             return
-        if not self.editing:
+        if not self.editing or self.link.Label == self.source_label:
             self.link.Label = source.Label
         for name in self.new_joints:
             joint = self.doc.getObject(name)
             if joint is not None:
-                joint.Label = "Fixed_" + source.Label
+                joint.Label = FastenerLinkObject.jointLabel(source)
 
     def reject(self):
         self.doc.abortTransaction()

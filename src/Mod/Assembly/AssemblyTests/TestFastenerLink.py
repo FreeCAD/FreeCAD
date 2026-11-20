@@ -248,6 +248,34 @@ class TestFastenerLink(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(FastenerLinkObject.otherUsers(link), [other])
 
+    def testLabelsKeepTheSizeOfTheFastener(self):
+        """The links and the joints are named after the fastener, whose name ends with its
+        size: the unique numbers of the document must not replace these digits."""
+        params = App.ParamGet("User parameter:BaseApp/Preferences/Document")
+        self.addCleanup(params.SetBool, "DuplicateLabels", params.GetBool("DuplicateLabels"))
+        params.SetBool("DuplicateLabels", False)
+        self.fastener.Label = "ISO4762_M5_10"
+        first = self.makeLink([self.hole(20), self.hole(50)])
+        second = self.makeLink([self.hole(80)])
+        for link in (first, second):
+            link.Label = self.fastener.Label
+            self.assertEqual(link.Label, "ISO4762_M5_10")
+        self.assertEqual(self.fastener.Label, "ISO4762_M5_10")
+
+        joints = [
+            FastenerLinkObject.attachment(component)[0]
+            for link in (first, second)
+            for component in FastenerLinkObject.components(link)
+        ]
+        labels = [joint.Label for joint in joints]
+        self.assertEqual(len(set(labels)), 3)
+        for label in labels:
+            self.assertTrue(label.startswith("ISO4762_M5_10_Fixed"), label)
+        # A joint named again after the fastener keeps its size as well
+        joints[1].Label = FastenerLinkObject.jointLabel(self.fastener)
+        self.assertTrue(joints[1].Label.startswith("ISO4762_M5_10_Fixed"), joints[1].Label)
+        self.assertNotEqual(joints[1].Label, joints[0].Label)
+
     def testSaveAndRestore(self):
         link = self.makeLink([self.hole(20), self.hole(50)])
         name = link.Name

@@ -49,6 +49,12 @@ class FastenerLink:
     def __init__(self, link):
         link.Proxy = self
 
+    def allowDuplicateLabel(self, link):
+        # Like the assembly links, the fastener links are named after the fastener they use,
+        # and several use the same fastener. A unique number would replace the digits that
+        # end the name of a fastener: its size.
+        return True
+
     def dumps(self):
         return None
 
@@ -135,6 +141,13 @@ def _groundings(component):
     return [obj for obj in component.InList if getattr(obj, "ObjectToGround", None) == component]
 
 
+def jointLabel(fastener):
+    """The label of a joint that holds a fastener on its hole. The fastener comes first: the
+    unique number that the document adds to a label in use goes after the name of the
+    fastener, and does not replace the digits that end it."""
+    return fastener.Label + "_Fixed"
+
+
 def attachment(component):
     """The joint that holds a fastener on a hole, and its reference to the hole:
     (joint, reference). (None, None) for an unattached fastener."""
@@ -217,7 +230,7 @@ def attach(component, ref):
     if App.GuiUp:
         JointObject.ViewProviderJoint(joint.ViewObject)
     linked = component.getLinkedObject()
-    joint.Label = "Fixed_" + (linked.Label if linked else component.Label)
+    joint.Label = jointLabel(linked if linked else component)
     joint.Visibility = False
     # The edge, with the edge itself as vertex: its center. Then the origin of the fastener.
     joint.Reference1 = (ref[0], [ref[1][0], ref[1][0]])
