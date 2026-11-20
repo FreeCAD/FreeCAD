@@ -1433,6 +1433,7 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu()
         menuCommands.emplace_back("Std_ViewFitAll");
         menuCommands.emplace_back("Std_ViewFitSelection");
         menuCommands.emplace_back("Std_AlignToSelection");
+        menuCommands.emplace_back("Std_ToggleObjects");
         menuCommands.emplace_back("Separator");
         menuCommands.emplace_back("NaviCubeDraggableCmd");
     }
