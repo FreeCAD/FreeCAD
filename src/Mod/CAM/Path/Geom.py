@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2016 sliptonic
 # SPDX-FileCopyrightText: 2021 Schildkroet
 # SPDX-FileNotice: Part of the FreeCAD project.
 

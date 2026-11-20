@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2025 Samuel Abels <knipknap@gmail.com>
+# SPDX-FileCopyrightText: 2025 Samuel Abels
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
