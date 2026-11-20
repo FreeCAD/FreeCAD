@@ -21,7 +21,6 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
 #include <App/CleanupProcess.h>
 
@@ -45,8 +44,10 @@
 #include "MaterialFilterOptionsPy.h"
 #include "MaterialLibraryPy.h"
 #include "MaterialManagerPy.h"
+#include "MaterialObserverPython.h"
 #include "MaterialPropertyPy.h"
 #include "MaterialPy.h"
+#include "MaterialsModulePy.h"
 
 namespace Materials
 {
@@ -56,12 +57,10 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Materials")
     {
-        initialize("This module is the Materials module.");  // register with Python
+        initialize(MaterialsModulePy::moduleDocumentation());  // register with Python
     }
 
     ~Module() override = default;
-
-private:
 };
 
 PyObject* initModule()
@@ -73,13 +72,20 @@ PyObject* initModule()
 
 PyMOD_INIT_FUNC(Materials)
 {
-#ifdef FC_DEBUG
     App::CleanupProcess::registerCleanup([]() {
+        Materials::MaterialObserverPython::cleanup();
+#ifdef FC_DEBUG
         Materials::MaterialManager::cleanup();
         Materials::ModelManager::cleanup();
-    });
 #endif
+    });
     PyObject* module = Materials::initModule();
+    if (!module) {
+        return nullptr;
+    }
+    if (Materials::MaterialsModulePy::addModuleMethods(module) < 0) {
+        return nullptr;
+    }
 
     Base::Console().log("Loading Material module… done\n");
 
