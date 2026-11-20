@@ -453,15 +453,18 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/square_pipe_end_twisted_edgeforces.inp
     femtest/data/calculix/square_pipe_end_twisted_nodeforces.inp
     femtest/data/calculix/thermomech_bimetal.inp
+    femtest/data/calculix/thermomech_bimetal_temperature_tables.inp
 )
 
 SET(FemTestsElmer_SRCS
     femtest/data/elmer/__init__.py
     femtest/data/elmer/box_static_0_mm.sif
+    femtest/data/elmer/ccxcantilever_electrical_table_0_mm.sif
     femtest/data/elmer/ccxcantilever_faceload_0_mm.sif
     femtest/data/elmer/ccxcantilever_faceload_1_si.sif
     femtest/data/elmer/ccxcantilever_nodeload_0_mm.sif
     femtest/data/elmer/ccxcantilever_prescribeddisplacement_0_mm.sif
+    femtest/data/elmer/ccxcantilever_temperature_tables_0_mm.sif
     femtest/data/elmer/group_mesh.geo
     femtest/data/elmer/ELMERSOLVER_STARTINFO
 )
@@ -599,6 +602,7 @@ SET(FemTools_SRCS
     femtools/errors.py
     femtools/femutils.py
     femtools/geomtools.py
+    femtools/materialtables.py
     femtools/membertools.py
     femtools/migrate_app.py
     femtools/objecttools.py

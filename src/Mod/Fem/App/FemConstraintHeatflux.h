@@ -47,6 +47,7 @@ public:
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyThermalTransferCoefficient FilmCoef;
     App::PropertyFloat Emissivity;
+    App::PropertyEnumeration EmissivitySource;
     App::PropertyHeatFlux DistributedHeatFlux;
     App::PropertyEnumeration ConstraintType;
     App::PropertyBool CavityRadiation;

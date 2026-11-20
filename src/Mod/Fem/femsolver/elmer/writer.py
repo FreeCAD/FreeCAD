@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+import math
 import os
 import os.path
 import subprocess
@@ -47,6 +48,7 @@ from . import sifio
 from .. import settings
 from femtools import constants
 from femtools import femutils
+from femtools import materialtables
 from femtools import membertools
 from .equations import deformation_writer as DEF_writer
 from .equations import elasticity_writer as EL_writer
@@ -95,6 +97,13 @@ class Writer:
         self._usedVarNames = set()
         self._builder = sifio.Builder()
         self._handledObjects = set()
+        self._solverIds = None
+        self._unwrittenTables = {}
+        # Radiating faces with the card's emissivity, face -> (constraint, cavity)
+        self._cardEmissivity = {}
+        self._cardEmissivityLow = {}
+        # Radiating faces with the constraint's own, face -> (constraint, cavity, value)
+        self._constraintEmissivity = {}
         self._handleUnits()
         self._handleConstants()
         self.scanning_file = "scanning.dat"
@@ -123,10 +132,239 @@ class Writer:
         self._handleMultiframeMode()
         self._addOutputSolver()
 
+    def _writtenTables(self):
+        """(body, keyword, table) of every temperature table the sif holds"""
+        # A later material can put a scalar over a table, only what reached the sif counts
+        tables = []
+        for body in self._builder.getBodyNames():
+            material = self._builder.getBodySection(body, sifio.MATERIAL)
+            for key in material.keys() if material is not None else []:
+                if isinstance(material[key], TemperatureTable):
+                    tables.append((body, key, material[key]))
+        return tables
+
+    def solverOrderNotes(self):
+        """Solvers reading an electrical conductivity table before the Heat solver of the body"""
+        # Elmer runs its solvers by their number, the one the written sif gave them
+        steady = self.solver.SimulationType == "Steady State"
+        if self._solverIds is None or (steady and self.solver.SteadyStateMaxIterations > 1):
+            return []
+        if steady:
+            effect = (
+                "with one steady state iteration it reads the electrical conductivity table at "
+                "the starting temperature. Give the Heat equation a higher Priority, or raise "
+                "Steady State Max Iterations."
+            )
+        else:
+            effect = (
+                "at each time step it reads the electrical conductivity table at the temperature "
+                "of the previous time step. Give the Heat equation a higher Priority."
+            )
+        number = self._solverIds.getId
+        notes = []
+        electric = {b for b, key, _table in self._writtenTables() if key == "Electric Conductivity"}
+        for body in sorted(electric):
+            equation = self._builder.getBodySection(body, sifio.EQUATION)
+            if equation is None or "Active Solvers" not in equation:
+                continue
+            # Only Exec Solver = Always, the default, runs in the coupled loop (MainUtils.F90)
+            active = [
+                s
+                for s in equation["Active Solvers"]
+                if "Exec Solver" not in s or str(s["Exec Solver"]).strip().lower() == "always"
+            ]
+            solvers = [(s, s["Procedure"] if "Procedure" in s else "") for s in active]
+            heats = sorted(
+                (s for s, procedure in solvers if procedure == "HeatSolve/HeatSolver"), key=number
+            )
+            for solver, procedure in solvers:
+                # One Heat run earlier is enough, the reader sees the temperature it computed
+                if procedure not in CONDUCTIVITY_READERS or not heats:
+                    continue
+                if number(heats[0]) < number(solver):
+                    continue
+                note = f"{solver['Equation']} runs before {heats[0]['Equation']}: {effect}"
+                if note not in notes:
+                    notes.append(note)
+        return notes
+
     def write_solver_input(self):
         self._writeBlocks()
+        # Judged on what reaches the sif, a later material can put a scalar over a table
+        written = self._writtenTables()
+        self.checkElectricalTables(written)
+        cavityNotes = self.checkCardEmissivity()
         self._writeSif()
         self._writeStartinfo()
+        # Told once the input is written, a refused or failed write announces nothing
+        notes = []
+        for _body, _key, table in written:
+            if table.note not in notes:
+                notes.append(table.note)
+        for label, skipped in self._unwrittenTables.values():
+            verb = "isn't" if len(skipped) == 1 else "aren't"
+            note = (
+                f"{label}: {' and '.join(skipped)} {verb} written for Elmer yet, it uses the "
+                "single values of the card where there are some."
+            )
+            if skipped and note not in notes:
+                notes.append(note)
+        for note in notes + cavityNotes + self.solverOrderNotes():
+            Console.PrintWarning(f"{note}\n")
+
+    def bodiesOfFace(self, name):
+        """The bodies a boundary of the meshed shape belongs to, Solids or Faces in 2D"""
+        shape = self.getMesh().Shape.Shape
+        try:
+            element = shape.getElement(name)
+        except (IndexError, ValueError):
+            return []
+        if shape.Solids:
+            return [
+                f"Solid{i + 1}"
+                for i, solid in enumerate(shape.Solids)
+                if any(element.isSame(face) for face in solid.Faces)
+            ]
+        return [
+            f"Face{i + 1}"
+            for i, face in enumerate(shape.Faces)
+            if any(element.isSame(edge) for edge in face.Edges)
+        ]
+
+    def cardEmissivityFace(self, face, label, cavity):
+        # The last constraint written on a face wins, as in the sif, its checks wait for the end
+        self._cardEmissivity[face] = (label, cavity)
+        self._constraintEmissivity.pop(face, None)
+        section = self._builder.getBoundarySection(face)
+        if section is not None and "Emissivity" in section:
+            del section["Emissivity"]
+
+    def constraintEmissivityFace(self, face, emissivity, label, cavity):
+        self._constraintEmissivity[face] = (label, cavity, emissivity)
+        self._cardEmissivity.pop(face, None)
+        self.boundary(face, "Emissivity", emissivity)
+
+    def cardEmissivityBodies(self):
+        """The bodies a face taking its emissivity from the card belongs to"""
+        return {body for face in self._cardEmissivity for body in self.bodiesOfFace(face)}
+
+    def dropMaterial(self, body, key):
+        # A later card without the key must not leave the value of the card it replaced
+        section = self._builder.getBodySection(body, sifio.MATERIAL)
+        if section is not None and key in section:
+            del section[key]
+
+    def cardEmissivity(self, obj, name):
+        """The emissivity of a material card as an Elmer value, table first, None without one"""
+        rows = materialtables.sorted_rows(
+            getattr(obj, "EmissivityTable", []), "EmissivityTable", obj.Label
+        )
+        values = [cells[0].Value for _t, cells in rows]
+        # A card can hold the model with its value left empty
+        scalar = str(obj.Material.get("Emissivity", "")).strip()
+        if scalar and not rows:
+            try:
+                values = [float(scalar)]
+            except ValueError:
+                raise WriteError(
+                    f"{obj.Label}: can't read the emissivity '{scalar}' for {name}, write a "
+                    "number between 0 and 1 such as 0.3."
+                ) from None
+        for value in values:
+            if not 0.0 <= value <= 1.0:
+                raise WriteError(
+                    f"{obj.Label}: the emissivity {value:g} for {name} is outside 0 to 1, "
+                    "check the card."
+                )
+        # Kept for the cavity check, a later card without emissivity clears it
+        self._cardEmissivityLow.pop(name, None)
+        if values:
+            self._cardEmissivityLow[name] = min(values)
+        if rows:
+            return self.convertTable(obj, "EmissivityTable", "", "emissivity")
+        return values[0] if values else None
+
+    def checkCardEmissivity(self):
+        # No Emissivity on the boundary nor in the material, Elmer reads zero and the face goes dark
+        notes = []
+        tables = False
+        # The winning constraint of each face only, its own value under the card's bounds
+        for face, (label, cavity, emissivity) in self._constraintEmissivity.items():
+            if not 0.0 <= emissivity <= 1.0:
+                raise WriteError(
+                    f"{label}: the emissivity {emissivity:g} for {face} is outside 0 to 1, "
+                    "check the constraint."
+                )
+            if cavity and emissivity <= 0.0:
+                raise WriteError(
+                    f"{label}: {face} is in a cavity with an emissivity of 0, Elmer divides by "
+                    "it. Give it a small positive value."
+                )
+        for face, (label, cavity) in self._cardEmissivity.items():
+            bodies = self.bodiesOfFace(face)
+            if not bodies:
+                raise WriteError(
+                    f"{label}: {face} bounds no body of the mesh, the card of its body can't "
+                    "be found. Reference a face of a solid, an edge of a face in 2D."
+                )
+            heated = [body for body in bodies if body in self.heatBodies()]
+            if not heated:
+                raise WriteError(
+                    f"{label}: {face} takes its emissivity from the material card of "
+                    f"{' and '.join(bodies)}, which no Heat equation covers. Add the body to a "
+                    "Heat equation, or set EmissivitySource to Constraint."
+                )
+            found = {}
+            for body in heated:
+                material = self._builder.getBodySection(body, sifio.MATERIAL)
+                if material is not None and "Emissivity" in material.keys():
+                    found[body] = material["Emissivity"]
+            if not found:
+                raise WriteError(
+                    f"{label}: {face} takes its emissivity from the material card, and the card "
+                    f"of {' and '.join(heated)} has none. Give the card an emissivity, or set "
+                    "EmissivitySource to Constraint."
+                )
+            # Between 2 bodies Elmer reads the first parent holding it, GetParentMatProp
+            if len({str(value) for value in found.values()}) > 1:
+                raise WriteError(
+                    f"{label}: {face} lies between {' and '.join(found)}, whose cards give "
+                    "different emissivities. Set EmissivitySource to Constraint for this face."
+                )
+            # RadiationFactors.F90 divides by the emissivity of a cavity face, zero gives NaN
+            if cavity and any(self._cardEmissivityLow.get(body, 1.0) <= 0.0 for body in found):
+                raise WriteError(
+                    f"{label}: {face} is in a cavity and its card gives an emissivity of 0, "
+                    "Elmer divides by it. Give it a small positive value."
+                )
+            tables = tables or (
+                cavity and any(isinstance(v, TemperatureTable) for v in found.values())
+            )
+        if not tables:
+            return notes
+        # Gebhart factors stay those of the initial temperature unless updated, RadiationFactors.F90
+        # MainUtils.F90 reads this spelling only to skip a first pass at an emissivity of 0.5
+        for body in self._builder.getBodyNames():
+            equation = self._builder.getBodySection(body, sifio.EQUATION)
+            if equation is None or "Active Solvers" not in equation:
+                continue
+            for solver in equation["Active Solvers"]:
+                if "Procedure" in solver and solver["Procedure"] == "HeatSolve/HeatSolver":
+                    solver["Update Gebhart Factors"] = True
+        steady = self.solver.SimulationType == "Steady State"
+        if steady and self.solver.SteadyStateMaxIterations < 2:
+            notes.append(
+                "A cavity emissivity varies with temperature and the factors are only updated "
+                "between steady state iterations: raise Steady State Max Iterations, with one "
+                "they stay those of the initial temperature."
+            )
+        elif not steady:
+            notes.append(
+                "A cavity emissivity varies with temperature and the factors are updated once "
+                "per time step, at the temperature of the previous step: keep the steps short "
+                "where the temperature moves fast."
+            )
+        return notes
 
     def _handleUnits(self):
         # Elmer solver writer no longer uses FreeCAD unit system
@@ -410,6 +648,17 @@ class Writer:
     # -------------------------------------------------------------------------------------------
     # Heat
 
+    def heatBodies(self):
+        # The bodies a Temperature field exists on, as _handleHeat assigns them
+        bodies = set()
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+                if equation.References:
+                    bodies.update(equation.References[0][1])
+                else:
+                    bodies.update(self.getAllBodies())
+        return bodies
+
     def _handleHeat(self):
         HeatW = heat_writer.Heatwriter(self, self.solver)
         for equation in self.solver.Group:
@@ -634,6 +883,38 @@ class Writer:
         density = self.convert(m["Density"], "M/L^3")
         return density
 
+    def convertTable(self, obj, table, unit, quantity):
+        """A FEM material table as an Elmer value, None when the table is empty"""
+        rows = materialtables.sorted_rows(getattr(obj, table, []), table, obj.Label)
+        # A ratio has no unit to convert, emissivity
+        points = [
+            (temperature, self.convert(cells[0], unit) if unit else cells[0].Value)
+            for temperature, cells in rows
+        ]
+        return temperature_table(points, f"{obj.Label} {quantity}")
+
+    def electricalConductivityTable(self, obj):
+        """The electrical conductivity table of a material, None without one"""
+        return self.convertTable(
+            obj, "ElectricalConductivityTable", "S/m", "electrical conductivity"
+        )
+
+    def elasticTables(self, obj, name):
+        # E, nu and alpha against temperature are a later step, a later material on the body wins
+        skipped = [table for table in ("ElasticTable", "ExpansionTable") if getattr(obj, table, [])]
+        self._unwrittenTables[name] = (obj.Label, skipped)
+
+    def checkElectricalTables(self, written):
+        # Without a Temperature field Elmer stops, or reads zero where it's missing
+        for body, key, table in written:
+            if key == "Electric Conductivity" and body not in self.heatBodies():
+                raise WriteError(
+                    f"{table.label}: the table on {body} needs a Heat equation active on "
+                    f"{body}, Elmer has no temperature to read it at. Add one with a higher "
+                    "Priority than the equation reading the table, or clear the table to use "
+                    "the single conductivity value."
+                )
+
     def _hasExpression(self, equation):
         for obj, exp in equation.ExpressionEngine:
             if obj == equation:
@@ -748,6 +1029,7 @@ class Writer:
         with open(sifPath, "w") as fstream:
             sif = sifio.Sif(self._builder)
             sif.write(fstream)
+        self._solverIds = sif.ids
 
     def handled(self, obj):
         self._handledObjects.add(obj)
@@ -788,6 +1070,102 @@ class Writer:
 
 class WriteError(Exception):
     pass
+
+
+class TemperatureTable(str):
+    """An Elmer Variable Temperature value that keeps the label and range note of its table
+
+    A str, since sifio writes as it is any string that starts with Variable, and the
+    builder stores it like any other value.
+    """
+
+    def __new__(cls, value, label, note):
+        table = super().__new__(cls, value)
+        table.label = label
+        table.note = note
+        return table
+
+
+# Elmer extrapolates linearly outside a table (SearchInterval in fem/src/GeneralUtils.F90)
+# CalculiX keeps the edge value. A flat point on each side gives Elmer the same behaviour
+TABLE_FLOOR_K = 0.0
+TABLE_CEILING_K = 1.0e6
+
+# The Elmer procedures that read Electric Conductivity, CalcFields for the Joule heat
+# solverOrderNotes checks them against the Heat solver of each body
+CONDUCTIVITY_READERS = (
+    "StatCurrentSolve/StatCurrentSolver",
+    "MagnetoDynamics/WhitneyAVSolver",
+    "MagnetoDynamics/WhitneyAVHarmonicSolver",
+    "MagnetoDynamics/MagnetoDynamicsCalcFields",
+    "MagnetoDynamics2D/MagnetoDynamics2D",
+    "MagnetoDynamics2D/MagnetoDynamics2DHarmonic",
+)
+
+
+def temperature_table(points, label):
+    """Elmer value of (temperature in K, value) points sorted by temperature
+
+    A single point is written as a scalar: Elmer reads a one row table as value * T
+    (InterpolateCurve in fem/src/GeneralUtils.F90).
+    """
+    # No table, the caller writes the single value of the card
+    if not points:
+        return None
+    check_finite(points, label)
+    if len(points) == 1:
+        return points[0][1]
+    # Compared as written, 2 temperatures printed alike make Elmer refuse the table
+    for (first, _), (second, _) in zip(points, points[1:]):
+        if float(f"{first:.13g}") == float(f"{second:.13g}"):
+            raise WriteError(
+                f"{label}: the temperature table gives two values at {first:g} K, keep one."
+            )
+    # The ends as written, 999999.99999999 prints as the ceiling itself
+    first, last = (float(f"{t:.13g}") for t in (points[0][0], points[-1][0]))
+    low, high = flat_point(first, -1), flat_point(last, 1)
+    # A margin past 1e308 K overflows, the card itself is finite
+    if not (math.isfinite(low) and math.isfinite(high)):
+        raise WriteError(
+            f"{label}: the temperature table reaches {max(abs(first), abs(last)):g} K, "
+            "too large to add the flat points that keep its end values."
+        )
+    note = table_range_note(points, label)
+    points = [(low, points[0][1])] + points + [(high, points[-1][1])]
+    rows = "\n".join(f"    {temperature:.13g} {value:.13g}" for temperature, value in points)
+    return TemperatureTable(f"Variable Temperature\n  Real\n{rows}\n  End", label, note)
+
+
+def flat_point(end, side):
+    """Temperature of the flat point past an end of a table, side -1 below it and 1 above
+
+    Any flat segment past an end gives Elmer a zero slope to extrapolate with. The floor
+    or the ceiling when the end lies inside them, else a margin that grows with the end,
+    past 1e13 K one kelvin vanishes in the 13 written digits.
+    """
+    bound = TABLE_FLOOR_K if side < 0 else TABLE_CEILING_K
+    if side * (bound - end) > 0:
+        return bound
+    return end + side * (1.0 + abs(end))
+
+
+def check_finite(points, label):
+    # A quantity like 1e309 K parses to inf and would reach the sif as is
+    for temperature, value in points:
+        if not (math.isfinite(temperature) and math.isfinite(value)):
+            raise WriteError(
+                f"{label}: the temperature table holds a value Elmer can't read "
+                f"({temperature:g} K, {value:g}), check the card."
+            )
+
+
+def table_range_note(points, label):
+    # The user can't see from the sif alone that the result left the data
+    low, high = points[0][0], points[-1][0]
+    return (
+        f"{label}: the table covers {low:g} K to {high:g} K, "
+        f"outside it the value at the nearest end is kept."
+    )
 
 
 ##  @}

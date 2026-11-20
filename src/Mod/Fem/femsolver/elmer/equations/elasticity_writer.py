@@ -459,6 +459,7 @@ class ElasticityWriter:
                         "Set for the materials to what solid they belong to.\n"
                     )
                 self.write.material(name, "Name", m["Name"])
+                self.write.elasticTables(obj, name)
                 if "Density" in m:
                     self.write.material(name, "Density", self.write.getDensity(m))
                 self.write.material(name, "Youngs Modulus", self._getYoungsModulus(m))
