@@ -72,6 +72,9 @@ public:
 
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
+    //! breaks come from the legacy break objects, whose mapping is not combined
+    //! with view breaks
+    bool supportsViewBreaks() const override { return false; }
     PyObject *getPyObject() override;
     const char* getViewProviderName() const override
     {

@@ -202,6 +202,7 @@ private:
                     ? dynamic_cast<DrawViewPart*>(view->getViewObject())
                     : nullptr;
                 if (view && view->isVisible() && object
+                    && object->supportsViewBreaks()
                     && object->findParentPage() == getPage()) {
                     return view;
                 }

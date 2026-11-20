@@ -129,6 +129,9 @@ struct ViewBreakDefinition
 std::vector<ViewBreakDefinition> viewBreakDefinitions(const DrawViewPart& view)
 {
     std::vector<ViewBreakDefinition> result;
+    if (!view.supportsViewBreaks()) {
+        return result;
+    }
     const auto& objects = view.Breaks.getValues();
     result.reserve(objects.size());
     for (auto* object : objects) {
@@ -401,7 +404,7 @@ DrawViewBreak* DrawViewPart::addBreak(
 )
 {
     App::Document* document = getDocument();
-    if (!document) {
+    if (!document || !supportsViewBreaks()) {
         return nullptr;
     }
 

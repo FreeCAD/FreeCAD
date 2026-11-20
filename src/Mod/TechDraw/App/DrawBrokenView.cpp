@@ -172,13 +172,9 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape safeShape = BuilderCopy.Shape();
     m_unbrokenCenter = SU::findCentroidVec(safeShape, getProjectionCS());
-    setBreakSourceCentroid(m_unbrokenCenter);
 
     TopoDS_Shape brokenShape = breakShape(safeShape);
     m_compressedShape = compressShape(brokenShape);
-    if (getBreakCount() > 0) {
-        m_compressedShape = applyViewBreaks(m_compressedShape);
-    }
 
     partExec(m_compressedShape);
 

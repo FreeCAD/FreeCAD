@@ -143,6 +143,8 @@ public:
 
     App::PropertyLinkList Breaks;
 
+    //! true if execute() applies the Breaks to the projected geometry
+    virtual bool supportsViewBreaks() const { return true; }
     std::size_t getBreakCount() const;
     DrawViewBreak* getBreakObject(std::size_t index) const;
     DrawViewBreak* addBreak(const Base::Vector3d& firstPoint,
