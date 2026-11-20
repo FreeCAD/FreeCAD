@@ -527,6 +527,26 @@ class TestAreaOperations(unittest.TestCase):
         expected = x * (2 * r) + math.pi * r**2
         self.assertAreaNear(a, expected)
 
+    def test_thicken_point(self):
+        """Test thickening a curve of one point into a circle."""
+        r = 2
+        a = make_area(make_curve([(5, 5)]))
+
+        a.Thicken(r)
+
+        self.assertEqual(len(a.getCurves()), 1, format_area(a, "result"))
+        self.assertAreaNear(a, math.pi * r**2)
+
+    def test_thicken_zero_length(self):
+        """Test thickening a curve of a zero length segment into a circle."""
+        r = 2
+        a = make_area(make_curve([(5, 5), (5, 5)]))
+
+        a.Thicken(r)
+
+        self.assertEqual(len(a.getCurves()), 1, format_area(a, "result"))
+        self.assertAreaNear(a, math.pi * r**2)
+
     def test_reorder(self):
         """Test Reorder doesn't break the area."""
         a = self.create_square(0, 0, 10)
@@ -615,6 +635,18 @@ class TestAreaOperations(unittest.TestCase):
         a.Offset(3.2050)
 
         self.assertEqual(a.num_curves(), 1, format_area(a, "Result"))
+
+    def test_union_duplicate_circles(self):
+        """Unioning an area containing two identical circles should give one circle."""
+        r = 2
+        holes = self.create_circle(5, 5, r)
+        holes.append(self.create_circle(5, 5, r).getCurves()[0])
+
+        a = area.Area()
+        a.Union(holes, fill=area.FillRule.Positive)
+
+        self.assertEqual(a.num_curves(), 1, format_area(a, "result"))
+        self.assertAreaNear(a, math.pi * r**2)
 
 
 if __name__ == "__main__":
