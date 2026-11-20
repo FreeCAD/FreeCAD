@@ -300,10 +300,10 @@
         <file>zoom-selection.svg</file>
         <file>window-help.svg</file>
         <file>window-help-dark.svg</file>
-        <file>titlebar-menu-pin.svg</file>
-        <file>titlebar-menu-pin-dark.svg</file>
-        <file>titlebar-menu-unpin.svg</file>
-        <file>titlebar-menu-unpin-dark.svg</file>
+        <file>titlebar-menu-pin-black.svg</file>
+        <file>titlebar-menu-pin-white.svg</file>
+        <file>titlebar-menu-unpin-black.svg</file>
+        <file>titlebar-menu-unpin-white.svg</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>

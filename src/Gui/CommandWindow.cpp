@@ -341,7 +341,7 @@ Action* StdCmdToolBarMenu::createAction()
 //===========================================================================
 // Std_DlgToggleTitleToolBarLock
 //===========================================================================
-DEF_STD_CMD_C(StdCmdToggleTitleToolBarLock)
+DEF_STD_CMD_AC(StdCmdToggleTitleToolBarLock)
 
 StdCmdToggleTitleToolBarLock::StdCmdToggleTitleToolBarLock()
     : Command("Std_DlgToggleTitleToolBarLock")
@@ -379,6 +379,12 @@ void StdCmdToggleTitleToolBarLock::activated(int iMsg)
     if (auto* action = getAction()) {
         action->setChecked(toggled);
     }
+}
+
+bool StdCmdToggleTitleToolBarLock::isActive()
+{
+    // Without the custom title bar, these toolbars follow Std_ToggleToolBarLock
+    return ToolBarManager::getInstance()->hasTitleToolBarLock();
 }
 
 //===========================================================================

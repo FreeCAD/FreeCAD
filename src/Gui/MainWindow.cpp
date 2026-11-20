@@ -407,15 +407,15 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
             logoBtn->setCursor(Qt::PointingHandCursor);
 
             // Shown after the last menu: pins the menu bar in the title bar, or folds it again.
-            // A dark style sheet can give other icons with qproperty-icon (off and on).
+            // Style sheets give the icons of their theme with qproperty-icon (off and on).
             auto hMainWindow = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/MainWindow"
             );
             auto* pinBtn = new QToolButton(this);
             pinBtn->setObjectName(QStringLiteral("titleBarPinBtn"));
-            QIcon pinIcon(QStringLiteral(":/icons/titlebar-menu-pin.svg"));
+            QIcon pinIcon(QStringLiteral(":/icons/titlebar-menu-pin-black.svg"));
             pinIcon.addFile(
-                QStringLiteral(":/icons/titlebar-menu-unpin.svg"),
+                QStringLiteral(":/icons/titlebar-menu-unpin-black.svg"),
                 QSize(),
                 QIcon::Normal,
                 QIcon::On
@@ -1765,7 +1765,11 @@ void MainWindow::onToolBarMenuAboutToShow()
     menu->addSeparator();
 
     Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
-    Application::Instance->commandManager().getCommandByName("Std_DlgToggleTitleToolBarLock")->addTo(menu);
+    if (ToolBarManager::getInstance()->hasTitleToolBarLock()) {
+        Application::Instance->commandManager()
+            .getCommandByName("Std_DlgToggleTitleToolBarLock")
+            ->addTo(menu);
+    }
 }
 
 void MainWindow::populateToolBarMenu(QMenu* menu)

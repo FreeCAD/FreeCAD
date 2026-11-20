@@ -169,6 +169,8 @@ public:
     void retranslate() const;
 
     bool areToolBarsLocked() const;
+    /// Whether the toolbars of the menu bar and status bar areas have their own lock
+    bool hasTitleToolBarLock() const;
     bool areTitleToolBarsLocked() const;
     void setToolBarsLocked(bool locked) const;
     void setTitleToolBarsLocked(bool locked) const;

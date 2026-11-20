@@ -1289,8 +1289,19 @@ bool Gui::ToolBarManager::areToolBarsLocked() const
     return hGeneral->GetBool("LockToolBars", false);
 }
 
+bool Gui::ToolBarManager::hasTitleToolBarLock() const
+{
+    // Only with the custom title bar have the toolbars of the menu bar and status bar areas
+    // their own lock. Otherwise they follow the lock of all toolbars.
+    auto mainWindow = getMainWindow();
+    return mainWindow && mainWindow->isCustomTitleBar();
+}
+
 bool Gui::ToolBarManager::areTitleToolBarsLocked() const
 {
+    if (!hasTitleToolBarLock()) {
+        return areToolBarsLocked();
+    }
     return hGeneral->GetBool("LockTitleToolBars", true);
 }
 
@@ -1303,6 +1314,10 @@ void Gui::ToolBarManager::setToolBarsLocked(bool locked) const
 
 void Gui::ToolBarManager::setTitleToolBarsLocked(bool locked) const
 {
+    if (!hasTitleToolBarLock()) {
+        setToolBarsLocked(locked);
+        return;
+    }
     hGeneral->SetBool("LockTitleToolBars", locked);
 
     setTitleToolbarsMovable(!locked);
@@ -1310,10 +1325,12 @@ void Gui::ToolBarManager::setTitleToolBarsLocked(bool locked) const
 
 void Gui::ToolBarManager::setMovable(bool movable) const
 {
+    const bool titleToolBarLock = hasTitleToolBarLock();
     for (auto& tb : toolBars()) {
         auto parent = tb->parentWidget();
-        if (parent == statusBarAreaWidget || parent == menuBarLeftAreaWidget
-            || parent == menuBarRightAreaWidget) {
+        if (titleToolBarLock
+            && (parent == statusBarAreaWidget || parent == menuBarLeftAreaWidget
+                || parent == menuBarRightAreaWidget)) {
             continue;
         }
         tb->setMovable(movable);

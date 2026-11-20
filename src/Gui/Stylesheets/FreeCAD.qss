@@ -2843,6 +2843,7 @@ WindowDecorationButton:pressed {
 
 /* Pin button after the last menu of the foldable menu bar */
 QToolButton#titleBarPinBtn {
+    qproperty-icon: url(:/icons/titlebar-menu-pin-@StylesheetIconsColor.svg) off, url(:/icons/titlebar-menu-unpin-@StylesheetIconsColor.svg) on;
     background-color: transparent;
     border: none;
     border-radius: 3px;

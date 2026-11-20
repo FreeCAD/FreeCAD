@@ -94,17 +94,19 @@ void FoldableMenuIntegration::install(QMenuBar *menuBar, CustomTitleBarWindow *w
 void FoldableMenuIntegration::uninstall(CustomTitleBarWindow *window)
 {
     if (m_foldableBar) {
-        // Reclaim the brand widget before the FoldableMenuBar is destroyed
+        // Reclaim the brand widget before the FoldableMenuBar is destroyed. The window
+        // keeps it until the next install(), so that it is not leaked.
         if (m_foldableBar->brandWidget()) {
             m_brandWidget = m_foldableBar->brandWidget();
             m_foldableBar->setBrandWidget(nullptr);
-            m_brandWidget->setParent(nullptr);
+            m_brandWidget->setParent(window);
             m_brandWidget->hide();
         }
         // Reclaim the pin button as well; it keeps its checked (pinned) state
         if (m_foldableBar->pinButton()) {
             m_pinButton = m_foldableBar->pinButton();
             m_foldableBar->setPinButton(nullptr);
+            m_pinButton->setParent(window);
             m_pinButton->hide();
         }
         // Reparent the QMenuBar out so it survives deletion of the FoldableMenuBar,
