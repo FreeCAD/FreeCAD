@@ -416,6 +416,30 @@ class TestCore(AssemblyTestBase):
             ),
         )
 
+    def test_bom_separates_mirrored_assembly_link_from_regular_one(self):
+        """A sub-assembly inserted mirrored (assembly link with a negative Scale) is not
+        counted as one more occurrence of the regular sub-assembly."""
+        sub = self.doc.addObject("Assembly::AssemblyObject", "SubAssembly")
+        sub.newObject("Part::Box", "SubBox")
+        regular = self.assembly.newObject("Assembly::AssemblyLink", "Regular")
+        regular.LinkedObject = sub
+        mirrored = self.assembly.newObject("Assembly::AssemblyLink", "Mirrored")
+        mirrored.LinkedObject = sub
+        mirrored.Scale = -1
+        bom = self.assembly.newObject("Assembly::BomObject", "BillOfMaterials")
+        bom.columnsNames = ["Name", "Quantity"]
+        bom.detailSubAssemblies = False
+
+        self.doc.recompute()
+
+        suffix = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Assembly").GetString(
+            "BomMirroredSuffix", " (mirrored)"
+        )
+        self.assertEqual(int(float(bom.get("B2"))), 1)
+        self.assertEqual({bom.get("A2"), bom.get("A3")}, {sub.Label, sub.Label + suffix})
+        self.assertEqual(int(float(bom.get("B3"))), 1)
+        self.assertNotIn("Invalid", bom.State)
+
     def _point(self, sub):
         shape = Part.getShape(self.assembly, sub, App.Matrix(), True)
         self.assertGreater(len(shape.Vertexes), 0, sub)
