@@ -943,7 +943,6 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
         }
         if (status == SketchSolveStatus::ConflictingConstraints
             || status == SketchSolveStatus::RedundantConstraints) {
-            PySys_WriteStdout("Warning: %s\n", str.str().c_str());
             Py_Return;
         }
 
