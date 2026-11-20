@@ -579,12 +579,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     bEs = [e for e in face.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)]
                     edgeslist.extend(bEs)
 
-        flattenEdges = []
-        for edge in edgeslist:
-            if flattened := self._flattenWire(obj, edge, obj.FinalDepth.Value):
-                _, flatWire = flattened
-                flattenEdges.extend(flatWire.Edges)
-
+        flattenEdges = [Path.Geom.makeHorizontal(e, obj.FinalDepth.Value) for e in edgeslist]
         for se in Part.getSortedClusters(flattenEdges):
             wire = Part.Wire(se)
             if wire.isClosed():
@@ -625,11 +620,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _processClosedWire(self, obj, wire):
         """_processClosedWire(obj, base, edges) ... returns envelope of the closed wire"""
         shapeTups = []
-        _, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-        if f := flatWire.Wires[0]:
-            shape = Part.Face(f)
-            if shapeEnv := PathUtils.getEnvelope(shape, depthparams=self.depthparams):
-                shapeTups.append((shapeEnv, False, "pathProfile"))
+        shape = Part.Face(wire)
+        if shapeEnv := PathUtils.getEnvelope(shape, depthparams=self.depthparams):
+            shapeTups.append((shapeEnv, False, "pathProfile"))
         if not shapeTups:
             Path.Log.error(self.inaccessibleMsg)
 
@@ -646,45 +639,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             shapeTups.append((Part.Compound(owires), False, "OpenEdge"))
 
         return shapeTups
-
-    def _flattenWire(self, obj, wire, trgtDep):
-        """_flattenWire(obj, wire)... Returns a flattened version of the wire"""
-        Path.Log.debug("_flattenWire()")
-        wBB = wire.BoundBox
-
-        if not Path.Geom.isRoughly(wBB.ZLength, 0):
-            Path.Log.debug("Wire is not horizontally co-planar. Flattening it.")
-
-            # Extrude non-horizontal wire
-            extFwdLen = (wBB.ZLength + 2.0) * 2.0
-            mbbEXT = wire.extrude(FreeCAD.Vector(0, 0, extFwdLen))
-
-            # Create cross-section of shape and translate
-            sliceZ = wire.BoundBox.ZMin + (extFwdLen / 2)
-            crsectFaceShp = self._makeCrossSection(mbbEXT, sliceZ, trgtDep)
-            if crsectFaceShp is not False:
-                return (wire, crsectFaceShp)
-            else:
-                return False
-        else:
-            srtWire = Part.Wire(Part.__sortEdges__(wire.Edges))
-            srtWire.translate(FreeCAD.Vector(0, 0, trgtDep - srtWire.BoundBox.ZMin))
-
-        return (wire, srtWire)
-
-    def _makeCrossSection(self, shape, sliceZ, zHghtTrgt=False):
-        """_makeCrossSection(shape, sliceZ, zHghtTrgt=None)...
-        Creates cross-section objectc from shape.  Translates cross-section to zHghtTrgt if available.
-        Makes face shape from cross-section object. Returns face shape at zHghtTrgt."""
-        Path.Log.debug("_makeCrossSection()")
-        # Create cross-section of shape and translate
-        if slcs := shape.slice(FreeCAD.Vector(0, 0, 1), sliceZ):
-            comp = Part.Compound(slcs)
-            if zHghtTrgt is not False:
-                comp.translate(FreeCAD.Vector(0, 0, zHghtTrgt - comp.BoundBox.ZMin))
-            return comp
-
-        return False
 
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):
