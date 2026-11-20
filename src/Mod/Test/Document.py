@@ -1723,6 +1723,23 @@ class DocumentGroupCases(unittest.TestCase):
         self.assertIn(part, objects_in_chain)
         self.assertIn(group, objects_in_chain)
 
+    def testIssue33551(self):
+        obj = self.Doc.addObject("App::FeatureTest", "Obj")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(obj)
+        outer = self.Doc.addObject("App::Part", "Outer")
+        outer.addObject(part)
+        group = self.Doc.addObject("App::DocumentObjectGroup", "Group")
+        group.addObject(outer)
+        link = self.Doc.addObject("App::Link", "Link")
+        link.LinkedObject = group
+        holder = self.Doc.addObject("App::Part", "Holder")
+        holder.addObject(link)
+        self.Doc.recompute()
+
+        parents = {(parent.Name, subname) for parent, subname in obj.Parents}
+        self.assertEqual(parents, {("Holder", "Link.Outer.Part.Obj."), ("Outer", "Part.Obj.")})
+
     def testIssue0003150Part2(self):
         self.box = self.Doc.addObject("App::FeatureTest")
         self.cyl = self.Doc.addObject("App::FeatureTest")
