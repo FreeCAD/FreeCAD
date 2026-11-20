@@ -61,6 +61,7 @@
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <Standard_DomainError.hxx>
 #include <Standard_Version.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
@@ -190,15 +191,14 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
 {
     tol3d = tol3d * tol3d;
     std::list<EdgePoints> edge_points;
-    TopExp_Explorer xp;
     for (std::list<TopoDS_Edge>::iterator it = edges.begin(); it != edges.end(); ++it) {
         EdgePoints ep;
-        xp.Init(*it, TopAbs_VERTEX);
-        ep.v1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-        xp.Next();
-        ep.v2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+        TopoDS_Vertex V1, V2;
+        TopExp::Vertices(*it, V1, V2);
+        ep.v1 = BRep_Tool::Pnt(V1);
+        ep.v2 = BRep_Tool::Pnt(V2);
         ep.it = it;
-        ep.edge = *it;
+        ep.edge = TopoDS::Edge(it->Oriented(TopAbs_FORWARD));
         edge_points.push_back(ep);
     }
 
@@ -241,9 +241,13 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
                 BRepLib::BuildCurves3d(pEI->edge);
                 const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
                 if (!curve.IsNull()) {
+                    // reverse the edge, preserving vertices
                     first = curve->ReversedParameter(first);
                     last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                    TopoDS_Vertex vFirst, vLast;
+                    TopExp::Vertices(pEI->edge, vFirst, vLast);
+                    TopoDS_Edge edgeReversed
+                        = BRepBuilderAPI_MakeEdge(curve->Reversed(), vLast, vFirst, last, first);
                     sorted.push_back(edgeReversed);
                 }
                 edges.erase(pEI->it);
@@ -257,9 +261,13 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
                 BRepLib::BuildCurves3d(pEI->edge);
                 const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
                 if (!curve.IsNull()) {
+                    // reverse the edge, preserving vertices
                     first = curve->ReversedParameter(first);
                     last = curve->ReversedParameter(last);
-                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                    TopoDS_Vertex vFirst, vLast;
+                    TopExp::Vertices(pEI->edge, vFirst, vLast);
+                    TopoDS_Edge edgeReversed
+                        = BRepBuilderAPI_MakeEdge(curve->Reversed(), vLast, vFirst, last, first);
                     sorted.push_front(edgeReversed);
                 }
                 edges.erase(pEI->it);
