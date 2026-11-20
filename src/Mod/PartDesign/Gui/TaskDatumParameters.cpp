@@ -29,6 +29,7 @@
 
 
 #include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Gui/MainWindow.h>
@@ -153,9 +154,10 @@ bool TaskDlgDatumParameters::accept()
             for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
                 if (pcActiveBody && !pcActiveBody->hasObject(obj)
                     && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                    App::SubObjectT sobjT(obj, subs[index].c_str());
                     auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(
-                        obj,
-                        subs[index],
+                        sobjT.getSubObject(),
+                        sobjT.getOldElementName(),
                         dlg.radioIndependent->isChecked()
                     );
                     if (copy) {
@@ -174,6 +176,11 @@ bool TaskDlgDatumParameters::accept()
 
             pcDatum->AttachmentSupport.setValues(copyObjects, copySubValues);
         }
+    }
+
+    // the attacher only recomputes the datum so a new dependent copy needs its shape first
+    for (auto obj : copies) {
+        obj->recomputeFeature();
     }
 
     if (!PartGui::TaskDlgAttacher::accept()) {

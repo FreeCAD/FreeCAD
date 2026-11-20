@@ -397,6 +397,75 @@ class CreateBody(unittest.TestCase):
 #       FreeCAD.closeDocument("SketchGuiTest")
 
 
+class TestDatumAttachedToOtherBody(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestDatumAttachedToOtherBody")
+        self.Other = self.Doc.addObject("PartDesign::Body", "Other")
+        sketch = self.Other.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.AttachmentSupport = [(self.Other.Origin.OriginFeatures[3], "")]
+        sketch.MapMode = "FlatFace"
+        sketch.addGeometry(Part.Circle(App.Vector(), App.Vector(0, 0, 1), 5))
+        self.Pad = self.Other.newObject("PartDesign::Pad", "Pad")
+        self.Pad.Profile = sketch
+        self.Pad.Length = 10
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Doc.recompute()
+        faces = self.Pad.Shape.Faces
+        top = max(range(len(faces)), key=lambda i: faces[i].CenterOfMass.z)
+        self.Face = "Face" + str(top + 1)
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
+
+    def attachAndCopy(self, support, option):
+        datum = self.Body.newObject("PartDesign::Plane", "DatumPlane")
+        datum.AttachmentSupport = support
+        datum.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        def dismiss():
+            dialog = QApplication.activeModalWidget()
+            if isinstance(dialog, QtGui.QMessageBox):
+                QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
+
+        def choose():
+            dialog = QApplication.activeModalWidget()
+            if dialog is not None:
+                button = dialog.findChild(QtGui.QRadioButton, option)
+                if button is not None:
+                    button.setChecked(True)
+                QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
+                QtCore.QTimer.singleShot(500, dismiss)
+
+        Gui.getDocument(self.Doc.Name).setEdit(datum.Name)
+        QtCore.QTimer.singleShot(500, choose)
+        Gui.Control.activeTaskDialog().accept()
+        self.Doc.recompute()
+
+        copy = datum.AttachmentSupport[0][0]
+        self.assertIn(copy, self.Body.Group)
+        self.assertEqual(copy.TypeId, "PartDesign::ShapeBinder")
+        self.assertTrue(datum.isValid())
+        self.assertAlmostEqual(datum.Placement.Base.z, 10)
+        self.assertLess(
+            datum.Placement.Rotation.multVec(App.Vector(0, 0, 1)).cross(App.Vector(0, 0, 1)).Length,
+            1e-7,
+        )
+        return copy
+
+    def testIndependentCopyOfFaceInOtherBody(self):
+        copy = self.attachAndCopy([(self.Other, "Pad." + self.Face)], "radioIndependent")
+        self.assertEqual(copy.Support, [])
+
+    def testDependentCopyOfFaceInOtherBody(self):
+        copy = self.attachAndCopy([(self.Other, "Pad." + self.Face)], "radioDependent")
+        self.assertEqual(copy.Support, [(self.Pad, (self.Face,))])
+
+    def testDependentCopyOfFeatureInOtherBody(self):
+        copy = self.attachAndCopy([(self.Pad, self.Face)], "radioDependent")
+        self.assertEqual(copy.Support, [(self.Pad, (self.Face,))])
+
+
 class TestShapeBinder(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestShapeBinder")
