@@ -3,7 +3,6 @@
 """Generated component groups and part lifecycle helpers."""
 
 import FreeCAD
-import Part
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -28,19 +27,6 @@ def _make_component_group(stair, property_name, label, section):
     stair.addObject(group)
     setattr(stair, property_name, group)
     return group
-
-
-def _global_component_shape(parts):
-    """Collect manufactured solids, excluding plan and configuration objects."""
-    shapes = []
-    for part in parts:
-        if not hasattr(part, "Shape") or part.Shape.isNull():
-            continue
-        shape = part.Shape.copy()
-        shape.Placement = part.getGlobalPlacement()
-        if shape.Solids:
-            shapes.append(shape)
-    return Part.makeCompound(shapes) if shapes else Part.Shape()
 
 
 def _set_generated_properties(obj, stair, role):

@@ -57,6 +57,7 @@ from .object_utils import (
     _flight_length,
     _side_insets,
     _flight_path_dimension,
+    _global_component_shape,
     _is_circular_flight,
     _is_landing_flight,
     _quantity_value,
@@ -185,8 +186,6 @@ class StairBaseMixin:
 
     def getIfcShape(self, obj):
         """Return the stair body in global coordinates for IFC export."""
-        from .object_components import _global_component_shape
-
         parts = []
         for group in (obj.StepsGroup, obj.StringersGroup):
             if group:

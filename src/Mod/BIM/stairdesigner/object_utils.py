@@ -5,6 +5,7 @@
 import math
 
 import FreeCAD
+import Part
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -415,6 +416,19 @@ def _set_global_shape(part, shape):
         else shape.transformed(placement.inverse().toMatrix(), True)
     )
     part.Placement = placement
+
+
+def _global_component_shape(parts):
+    """Collect manufactured solids, excluding plan and configuration objects."""
+    shapes = []
+    for part in parts:
+        if not hasattr(part, "Shape") or part.Shape.isNull():
+            continue
+        shape = part.Shape.copy()
+        shape.Placement = part.getGlobalPlacement()
+        if shape.Solids:
+            shapes.append(shape)
+    return Part.makeCompound(shapes) if shapes else Part.Shape()
 
 
 def _combined_placement(stair, local_placement):

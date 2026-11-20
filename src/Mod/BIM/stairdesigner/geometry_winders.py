@@ -1064,12 +1064,12 @@ def _fit_sections_to_flight_footprint(sections, specs, vertices, directions):
             continue
         normal = (-section.tangent[1], section.tangent[0])
         intervals = []
-        for index, (length, width, _heading) in enumerate(specs):
-            direction = directions[index]
+        for flight, (length, width, _heading) in enumerate(specs):
+            direction = directions[flight]
             side = (-direction[1], direction[0])
             relative = (
-                section.center[0] - vertices[index][0],
-                section.center[1] - vertices[index][1],
+                section.center[0] - vertices[flight][0],
+                section.center[1] - vertices[flight][1],
             )
             local_point = (
                 relative[0] * direction[0] + relative[1] * direction[1],
@@ -1082,7 +1082,7 @@ def _fit_sections_to_flight_footprint(sections, specs, vertices, directions):
             interval = _line_rectangle_interval(
                 local_point,
                 local_line,
-                (-start_extensions[index], length + end_extensions[index]),
+                (-start_extensions[flight], length + end_extensions[flight]),
                 (-width / 2.0, width / 2.0),
             )
             if interval:

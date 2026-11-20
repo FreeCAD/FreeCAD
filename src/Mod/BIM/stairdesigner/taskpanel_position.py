@@ -234,30 +234,22 @@ class PositionPanelMixin:
     def _remove_position_dragger(self):
         sensor = self._position_dragger_camera_sensor
         if sensor is not None:
-            try:
-                sensor.detach()
-            except (AttributeError, RuntimeError):
-                pass
+            sensor.detach()
         self._position_dragger_camera_sensor = None
         self._position_dragger_camera = None
         self._position_dragger_scale_node = None
         view = self._position_dragger_view
         dragger = self._position_dragger
         if view is not None and dragger is not None:
-            for callback_type, callback in self._position_dragger_callbacks:
-                try:
-                    view.removeDraggerCallback(
-                        dragger,
-                        callback_type,
-                        callback,
-                    )
-                except (AttributeError, RuntimeError):
-                    pass
-        if self._position_dragger_root is not None and dragger is not None:
             try:
-                self._position_dragger_root.removeChild(dragger)
-            except (AttributeError, RuntimeError):
+                for callback_type, callback in self._position_dragger_callbacks:
+                    view.removeDraggerCallback(dragger, callback_type, callback)
+            except RuntimeError:
+                # The 3D view was closed during the edit, and its dragger
+                # callbacks went with it.
                 pass
+        if self._position_dragger_root is not None and dragger is not None:
+            self._position_dragger_root.removeChild(dragger)
         self._position_dragger_callbacks = []
         self._position_dragger = None
         self._position_dragger_view = None

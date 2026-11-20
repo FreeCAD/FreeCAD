@@ -326,6 +326,7 @@ def _make_sectioned_helical_band_solid(
     try:
         result = result.removeSplitter()
     except Part.OCCError:
+        # Refining only merges coplanar faces: the fused solid is kept as is.
         pass
     if result.isValid() and len(result.Solids) == 1:
         return result

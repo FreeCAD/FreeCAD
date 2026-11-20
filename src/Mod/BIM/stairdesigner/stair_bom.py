@@ -334,6 +334,7 @@ def _flatten(kind, label, piece, normal):
             if union.Area > largest.Area + 1.0:
                 outline = _face_outline(union)
         except (Part.OCCError, ValueError):
+            # Faces that do not fuse leave the outline of the largest face.
             pass
     x0 = min(x for x, _y in outline)
     y0 = min(y for _x, y in outline)

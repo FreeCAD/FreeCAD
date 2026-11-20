@@ -546,13 +546,6 @@ class StairDesignerTaskPanel(
             gui_doc.resetEdit()
         return True
 
-    def __del__(self):
-        try:
-            self._remove_position_dragger()
-            self._remove_selection_observer()
-        except (AttributeError, RuntimeError):
-            pass
-
     def open(self):
         gui_doc = FreeCADGui.ActiveDocument
         if not self.stair.Document.getBookedTransactionID():

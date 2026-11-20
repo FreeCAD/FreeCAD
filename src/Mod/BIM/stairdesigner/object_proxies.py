@@ -11,6 +11,7 @@ translate = FreeCAD.Qt.translate
 
 from .object_utils import (
     _add_property,
+    _global_component_shape,
     _is_circular_flight,
     _is_landing_flight,
     get_flights,
@@ -346,8 +347,6 @@ class ComponentGroupProxy:
     Type = "StairDesignerComponentGroup"
 
     def getIfcShape(self, obj):
-        from .object_components import _global_component_shape
-
         return _global_component_shape(obj.Group)
 
     def __init__(self, obj, stair=None, section="stairs"):
