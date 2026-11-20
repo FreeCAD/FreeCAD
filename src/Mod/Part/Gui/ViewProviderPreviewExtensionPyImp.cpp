@@ -71,6 +71,8 @@ Py::Object ViewProviderPreviewExtensionPy::getPreviewRootNode() const
             throw Py::RuntimeError("Preview extension is not attached");
         }
 
+        // Initialize the SWIG types even if the caller has not imported Pivy yet.
+        Py::Module coin(PyImport_ImportModule("pivy.coin"), true);
         PyObject* pointer
             = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();
@@ -93,6 +95,7 @@ Py::Object ViewProviderPreviewExtensionPy::getPreviewShapeNode() const
 
         // pivy has no wrapper for the concrete SoPreviewShape type, so it is
         // handed out as its SoSeparator base.
+        Py::Module coin(PyImport_ImportModule("pivy.coin"), true);
         PyObject* pointer
             = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();

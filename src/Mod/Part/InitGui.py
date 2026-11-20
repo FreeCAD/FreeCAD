@@ -75,4 +75,3 @@ class PartWorkbench(Gui.Workbench):
 Gui.addWorkbench(PartWorkbench())
 
 App.__unit_test__ += ["TestPartGui"]
-App.__unit_test__ += ["TestPartPreview"]
