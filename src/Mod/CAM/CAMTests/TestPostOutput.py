@@ -27,7 +27,6 @@ import unittest
 
 import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine
 import Constants
 import Path
 import Path.Post.Command as PathCommand
@@ -109,8 +108,6 @@ class TestFileNameGenerator(unittest.TestCase):
         cls.macro = FreeCAD.getUserMacroDir()
 
         # Create a simple geometry object for the job
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -760,7 +757,6 @@ class TestExport2Integration(unittest.TestCase):
                 "early_tool_prep": False,
                 "filter_inefficient_moves": False,
                 "split_arcs": False,
-                "tool_change": True,
                 "translate_rapid_moves": False,
             },
             "version": 1,
@@ -784,8 +780,7 @@ class TestExport2Integration(unittest.TestCase):
         self.assertNotIn(" F", gcode)
 
         # Output G0 F's if asked
-
-        machine.processing.f_for_rapid_moves = True
+        machine.postprocessor_properties["f_for_rapid_moves"] = True
         post = self._create_postprocessor(machine)
 
         # convert_command_to_gcode level: no spurious F
@@ -798,11 +793,10 @@ class TestExport2Integration(unittest.TestCase):
         gcode = post.convert_command_to_gcode(cmd)
         self.assertIn(" F", gcode)
 
-        # Don't output G0 F's if they are zero (e.g. tool wasn't setup with rapid speed)
-
+        # set zero F if tool wasn't setup with rapid speed
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
-        self.assertNotIn(" F", gcode)
+        self.assertIn(" F0", gcode)
 
     def test003_arc_center_words_follow_the_plane(self):
         """K is dropped under G17, J under G18, I under G19. A plane word in a
@@ -849,6 +843,61 @@ class TestExport2Integration(unittest.TestCase):
         cmd = Path.Command("G9999", {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
         gcode = post.convert_command_to_gcode(cmd)
         self.assertIn("G9999", gcode)
+
+    def test005_feed_move_never_runs_at_rapid_feed(self):
+        """
+        A G1 must run at its own feed, never at the F of an earlier G0.
+
+        F is modal on the control: a G0 F also sets the feed of the next G1.
+        So after a G0 that writes F, the next G1 must write its F again,
+        also when duplicate parameters are off and the F is the same as before.
+
+        Path (F in mm/s):          Control (F in mm/min):
+            G1 Z-1 F100                G1 Z-1.000 F6000.000
+            G1 X10 F100                G1 X10.000
+            G0 Z5 F3000                G0 Z5.000 [F180000.000]
+            G0 X20 F3000               G0 X20.000
+            G1 Z-1 F100                G1 Z-1.000 F6000.000   <- must have F
+        """
+        commands = [
+            Path.Command("G0", {"Z": 5.0, "F": 100.0}),
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            Path.Command("G1", {"Z": -1.0, "F": 100.0}),
+            Path.Command("G1", {"X": 10.0, "F": 100.0}),
+            Path.Command("G0", {"Z": 5.0, "F": 3000.0}),
+            Path.Command("G0", {"X": 20.0, "F": 3000.0}),
+            Path.Command("G1", {"Z": -1.0, "F": 100.0}),
+            Path.Command("G1", {"X": 30.0, "F": 100.0}),
+        ]
+        cut_feed = 6000.0  # 100 mm/s
+
+        for f_for_rapid_moves in (False, True):
+            for duplicates in (False, True):
+                with self.subTest(f_for_rapid_moves=f_for_rapid_moves, duplicates=duplicates):
+                    machine = self._create_machine(output_duplicate_parameters=duplicates)
+                    machine.postprocessor_properties["f_for_rapid_moves"] = f_for_rapid_moves
+                    with self._modify_operation_path(commands):
+                        gcode = self._run_export2(machine)[0][1]
+
+                    body = gcode.split("(TestProfile)")[-1]
+                    lines = [l.strip() for l in body.splitlines() if l.strip()[:2] in ("G0", "G1")]
+
+                    # Simulate the modal F of the control.
+                    modal_f = None
+                    cuts = 0
+                    for line in lines:
+                        for word in line.split():
+                            if word.startswith("F"):
+                                modal_f = float(word[1:])
+                        if line.startswith("G1"):
+                            cuts += 1
+                            self.assertEqual(
+                                modal_f,
+                                cut_feed,
+                                f"'{line}' runs at F{modal_f}, not F{cut_feed}:\n"
+                                + "\n".join(lines),
+                            )
+                    self.assertEqual(cuts, 4, "\n".join(lines))
 
     # ===== 010-019: Basic smoke tests =====
 
@@ -1380,14 +1429,148 @@ G1 X20.000 Y10.000 F6000.000
         lines = gcode.split("\n")
 
         for i, line in enumerate(lines):
-            if line.startswith("(Block-name:"):
-                if i + 2 < len(lines):
-                    self.assertEqual(
-                        lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
-                    )
-                    self.assertEqual(
-                        lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
-                    )
+            if line.startswith("(Block-name:") and i + 2 < len(lines):
+                self.assertEqual(
+                    lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
+                )
+                self.assertEqual(
+                    lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
+                )
+
+    def test104_bcnc_block_position(self):
+        """
+        Test that the bCNC block headers are in the correct position:
+            - each operation has a block header before its first move
+            - the post_amble block header is before the postamble lines
+        """
+        machine = self._create_machine(output_bcnc_comments=True, comments_enabled=False)
+        machine.postprocessor_properties["postamble"] = "M2"
+
+        results = self._run_export2(machine)
+        gcode = self._get_first_section_gcode(results)
+        lines = gcode.split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertGreater(len(names), 1, "Each operation should have a bCNC block header")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertEqual(names.count("(Block-name: post_amble)"), 1)
+
+        first_move = next(i for i, l in enumerate(lines) if l.startswith(("G0", "G1")))
+        self.assertLess(
+            lines.index(names[0]), first_move, "Operation block header should precede its moves"
+        )
+
+        post_amble = lines.index("(Block-name: post_amble)")
+        last_m2 = len(lines) - 1 - lines[::-1].index("M2")
+        self.assertLess(post_amble, last_m2, "post_amble block should precede the postamble")
+
+    def _bcnc_block_layout(self, sublist):
+        """The bCNC block names of a section, each with the labels of the items in the block."""
+        layout = []
+        for item in sublist:
+            if item.label == "Post: bCNC block":
+                layout.append((item.path.Commands[0].Name, []))
+            elif layout:
+                layout[-1][1].append(item.label)
+        return layout
+
+    def _bcnc_postable(self, item_type, label, command, data=None):
+        return PostList.Postable(
+            item_type=item_type,
+            label=label,
+            path=Path.Path([Path.Command(command)]),
+            source=None,
+            data=data or {},
+        )
+
+    def test105_bcnc_tool_change_and_fixture_blocks(self):
+        """
+        Test that a tool change and a Job fixture each have their own bCNC block.
+
+        If the tool change of Op2 is in the block of Op1, then a disabled Op1
+        block makes Op2 run with the tool of Op1.
+        """
+        post = self._create_postprocessor(self._create_machine(output_bcnc_comments=True))
+        postables = [
+            (
+                "allitems",
+                [
+                    self._bcnc_postable("fixture", "Fixture", "G54"),
+                    self._bcnc_postable("tool_controller", "T1", "M6 T1"),
+                    self._bcnc_postable("operation", "Op1", "G0 X1"),
+                    self._bcnc_postable("tool_controller", "T2", "M6 T2"),
+                    self._bcnc_postable("operation", "Op2", "G0 X2"),
+                ],
+            )
+        ]
+
+        result = post._expand_bcnc_commands(postables)
+
+        self.assertEqual(
+            self._bcnc_block_layout(result[0][1]),
+            [
+                ("(Block-name: Fixture)", ["Fixture"]),
+                ("(Block-name: T1)", ["T1"]),
+                ("(Block-name: Op1)", ["Op1"]),
+                ("(Block-name: T2)", ["T2"]),
+                ("(Block-name: Op2)", ["Op2"]),
+            ],
+        )
+
+    def test106_bcnc_operation_setup_in_operation_block(self):
+        """
+        Test that the fixture selection and the pose change of a work plane
+        are in the bCNC block of their operation, not in the previous block.
+        """
+        post = self._create_postprocessor(self._create_machine(output_bcnc_comments=True))
+        setup = {Constants.DATA_OPERATION_SETUP: True}
+        postables = [
+            (
+                "allitems",
+                [
+                    self._bcnc_postable("operation", "Op1", "G0 X1"),
+                    self._bcnc_postable("fixture", "Fixture", "G55", dict(setup)),
+                    self._bcnc_postable("rotation", "Rotary positioning", "G0 A90", dict(setup)),
+                    self._bcnc_postable("operation", "Op2", "G0 X2"),
+                ],
+            )
+        ]
+
+        result = post._expand_bcnc_commands(postables)
+
+        self.assertEqual(
+            self._bcnc_block_layout(result[0][1]),
+            [
+                ("(Block-name: Op1)", ["Op1"]),
+                ("(Block-name: Op2)", ["Fixture", "Rotary positioning", "Op2"]),
+            ],
+        )
+
+    def test107_bcnc_block_sequence(self):
+        """
+        Test the bCNC block sequence of a complete Job: the Header block,
+        the fixture block, the operation block, post_amble.
+        The pre-item lines are after the header of their block.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.comments.output_bcnc_comments = True
+
+        results = self._run_export2(machine)
+        lines = self._get_first_section_gcode(results).split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertEqual(names[0], "(Block-name: Header)")
+        self.assertEqual(names[-2], "(Block-name: TestProfile)")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertIn("(Block-name: Fixture)", names)
+        self.assertEqual(len(names), len(set(names)), "Each block name occurs one time")
+
+        self.assertLess(lines.index("(Block-name: Header)"), lines.index("(preamble)"))
+        self.assertLess(lines.index("(Block-name: Fixture)"), lines.index("(prefixture)"))
+        self.assertLess(lines.index("(Block-name: TestProfile)"), lines.index("(preoperation)"))
+        # The pose change of the operation is in the block of the operation
+        self.assertLess(lines.index("(Block-name: TestProfile)"), lines.index("(prerotary)"))
 
     # ===== 110-119: _expand_tool_change tests =====
 

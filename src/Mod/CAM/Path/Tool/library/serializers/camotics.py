@@ -1,25 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Samuel Abels
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 import uuid
 import json
 from typing import Mapping, List, Optional, Type
@@ -31,9 +30,7 @@ from ...shape import ToolBitShape, ToolBitShapeEndmill
 from ..models.library import Library
 
 SHAPEMAP = {
-    "ballend": "Ballnose",
     "endmill": "Cylindrical",
-    "taperedballnose": "Ballnose",
     "v-bit": "Conical",
     "vbit": "Conical",
     "chamfer": "Snubnose",
@@ -110,7 +107,10 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             toolitem["length"] = round(tool.get_length().getValueAs(unit).Value, decimals)
 
-            toolitem["shape"] = SHAPEMAP.get(tool._tool_bit_shape.name.lower(), "Cylindrical")
+            if tool._tool_bit_shape.ball_end:
+                toolitem["shape"] = "Ballnose"
+            else:
+                toolitem["shape"] = SHAPEMAP.get(tool._tool_bit_shape.name.lower(), "Cylindrical")
             toollist[str(tool_no)] = toolitem
 
         return json.dumps(toollist, indent=2).encode("utf-8")

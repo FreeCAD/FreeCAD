@@ -977,13 +977,17 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
 
         machine = Machine(name="Test CA Machine")
         machine.rotary_axes["C"] = RotaryAxis(
-            name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
+            name="C",
+            rotation_vector=Vector(0, 0, 1),
+            role=AxisRole.TABLE_ROTARY,
+            parent="A",
+            sequence=0,
         )
         machine.rotary_axes["A"] = RotaryAxis(
             name="A",
             rotation_vector=Vector(1, 0, 0),
             role=AxisRole.TABLE_ROTARY,
-            parent="C",
+            parent=None,
             sequence=1,
         )
         self.job.Proxy.getMachine = lambda: machine
@@ -1107,7 +1111,7 @@ class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
             min_limit=-360,
             max_limit=360,
             role=AxisRole.TABLE_ROTARY,
-            parent=None,
+            parent="A",
             sequence=0,
         )
         machine.rotary_axes["A"] = RotaryAxis(
@@ -1116,7 +1120,7 @@ class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
             min_limit=-120,
             max_limit=120,
             role=AxisRole.TABLE_ROTARY,
-            parent="C",
+            parent=None,
             sequence=1,
         )
         self.job.Proxy.getMachine = lambda: machine

@@ -231,6 +231,8 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/dovetail.py
     Path/Tool/toolbit/models/drill.py
     Path/Tool/toolbit/models/endmill.py
+    Path/Tool/toolbit/models/keyway.py
+    Path/Tool/toolbit/models/lollipop.py
     Path/Tool/toolbit/models/radius.py
     Path/Tool/toolbit/models/probe.py
     Path/Tool/toolbit/models/reamer.py
@@ -305,6 +307,8 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/dovetail.py
     Path/Tool/shape/models/drill.py
     Path/Tool/shape/models/endmill.py
+    Path/Tool/shape/models/keyway.py
+    Path/Tool/shape/models/lollipop.py
     Path/Tool/shape/models/radius.py
     Path/Tool/shape/models/icon.py
     Path/Tool/shape/models/probe.py
@@ -360,7 +364,9 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
     Path/Post/scripts/generic_sheet_cutting_post.py
+    Path/Post/scripts/generic_multi_axis_industrial_post.py
     Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/haas_post.py
     Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
     Path/Post/scripts/heidenhain_post.py
@@ -510,9 +516,11 @@ SET(Tools_SRCS
 )
 
 SET(Tools_Bit_SRCS
+    Tools/Bit/250_Lollipop.fctb
     Tools/Bit/30degree_Vbit.fctb
     Tools/Bit/3.175mm_Endmill.fctb
     Tools/Bit/375-16_Tap.fctb
+    Tools/Bit/375_Keyway.fctb
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/45degree_Vbit.fctb
     Tools/Bit/5mm-thread-cutter.fctb
@@ -544,6 +552,10 @@ SET(Tools_Shape_SRCS
     Tools/Shape/drill.svg
     Tools/Shape/endmill.fcstd
     Tools/Shape/endmill.svg
+    Tools/Shape/keyway.fcstd
+    Tools/Shape/keyway.svg
+    Tools/Shape/lollipop.fcstd
+    Tools/Shape/lollipop.svg
     Tools/Shape/radius.fcstd
     Tools/Shape/radius.svg
     Tools/Shape/probe.fcstd
@@ -588,7 +600,9 @@ SET(Tests_SRCS
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericSheetCutting.py
+    CAMTests/TestGenericMultiAxisIndustrial.py
     CAMTests/TestGrblPost.py
+    CAMTests/TestHaasPost.py
     CAMTests/TestHeidenhainPost.py
     CAMTests/TestEstlCamPost.py
     CAMTests/TestKineticNCBeamicon2LegacyPost.py
@@ -619,6 +633,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillable.py
     CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFeedRate.py
     CAMTests/TestPathFlute.py
     CAMTests/TestPathFollowWireGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
@@ -626,6 +641,7 @@ SET(Tests_SRCS
     CAMTests/TestPathHelix.py
     CAMTests/TestPathHelpers.py
     CAMTests/TestPathHelixGenerator.py
+    CAMTests/TestPathJobRemove.py
     CAMTests/TestPathLeadInOutGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py

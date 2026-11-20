@@ -167,14 +167,16 @@ public:
     static bool m_please_abort;  // the user sets this from another thread, to tell
                                  // MakeOnePocketCurve to finish with no result.
     static double m_clipper_scale;
+    static Clipper2Lib::FillRule m_subject_fill;
     static constexpr double default_clipper_scale = 10000.0;
 
     void append(const CCurve& curve);
     void move(CCurve&& curve);
-    void Subtract(const CArea& a2);
-    void Intersect(const CArea& a2);
-    void Union(const CArea& a2);
-    void Xor(const CArea& a2);
+    // fill: fill rule for the operation; if not given, the subject_fill setting is used
+    void Subtract(const CArea& a2, std::optional<Clipper2Lib::FillRule> fill = std::nullopt);
+    void Intersect(const CArea& a2, std::optional<Clipper2Lib::FillRule> fill = std::nullopt);
+    void Union(const CArea& a2, std::optional<Clipper2Lib::FillRule> fill = std::nullopt);
+    void Xor(const CArea& a2, std::optional<Clipper2Lib::FillRule> fill = std::nullopt);
 
     // Offsets wires; input wires must be closed shapes
     void Offset(double offset);
@@ -225,13 +227,14 @@ public:
     CAREA_PARAM_DECLARE(bool, fit_arcs)
     CAREA_PARAM_DECLARE(double, accuracy)
     CAREA_PARAM_DECLARE(double, clipper_scale)
+    CAREA_PARAM_DECLARE(Clipper2Lib::FillRule, subject_fill)
 
     void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ConversionMetadata& metadata) const;
 
     void Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
-        Clipper2Lib::FillRule fillType = Clipper2Lib::FillRule::EvenOdd
+        std::optional<Clipper2Lib::FillRule> fillType = std::nullopt  // nullopt: use subject_fill
     );
 
     // Reorders open paths so they match the original input order and direction.

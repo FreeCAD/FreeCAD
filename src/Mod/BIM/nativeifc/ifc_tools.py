@@ -348,7 +348,8 @@ def create_children(
         result.extend(create_child(obj, child))
     assign_groups(children)
     # TEST: mark new objects to recompute
-    QtCore.QTimer.singleShot(0, lambda: recompute([get_object(c) for c in children]))
+    objs = [get_object(c) for c in children]
+    QtCore.QTimer.singleShot(0, lambda: recompute(objs))
     return result
 
 
@@ -1804,7 +1805,10 @@ def recompute(children):
     doc = None
     for c in children:
         if c:
-            c.touch()
+            try:
+                c.touch()
+            except ReferenceError:
+                continue
             doc = c.Document
     if doc:
         doc.recompute()

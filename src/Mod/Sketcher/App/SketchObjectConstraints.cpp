@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <cmath>
@@ -2050,11 +2047,14 @@ void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& G
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
-void SketchObject::getDirectlyCoincidentPoints(
+int SketchObject::getDirectlyCoincidentPoints(
     const int GeoId1,
     const int GeoId2,
     std::vector<int>& GeoIds3,
-    std::vector<PointPos>& PosIds3
+    std::vector<PointPos>& PosIds3,
+    bool includePointOnObject,
+    bool verticesOnly,
+    bool ignoreMidPoint
 ) const
 {
     std::vector<int> constraints;
@@ -2067,6 +2067,10 @@ void SketchObject::getDirectlyCoincidentPoints(
             continue;
         }
 
+        if (ignoreMidPoint && (con->getElement(0).Pos == PointPos::mid || con->getElement(1).Pos == PointPos::mid || con->getElement(2).Pos == PointPos::mid)) {
+            continue;
+        }
+
         if (con->Type == Sketcher::ConstraintType::Coincident) {
             if (con->getElement(0).GeoId == GeoId1) {
                 GeoIds3.push_back(con->getElement(0).GeoId);
@@ -2076,8 +2080,19 @@ void SketchObject::getDirectlyCoincidentPoints(
                 GeoIds3.push_back(con->getElement(1).GeoId);
                 PosIds3.push_back(con->getElement(1).Pos);
             }
+        } else if (includePointOnObject && con->Type == Sketcher::ConstraintType::PointOnObject) {
+            if (con->getElement(0).GeoId == GeoId1 || (con->getElement(1).Pos == Sketcher::PointPos::none && verticesOnly)) {
+                GeoIds3.push_back(con->getElement(0).GeoId);
+                PosIds3.push_back(con->getElement(0).Pos);
+            }
+            else {
+                GeoIds3.push_back(con->getElement(1).GeoId);
+                PosIds3.push_back(con->getElement(1).Pos);
+            }
         }
     }
+
+    return GeoIds3.size();
 }
 
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)

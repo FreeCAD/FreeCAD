@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <array>
 #include <limits>
@@ -3866,8 +3863,10 @@ protected:
             pnt2 = Obj->getPoint(selPoints[1].GeoId, selPoints[1].PosId);
         }
 
-        bool isHorizontal = std::abs(pnt1.y - pnt2.y) < Precision::Confusion();
-        bool isVertical = std::abs(pnt1.x - pnt2.x) < Precision::Confusion();
+        // Coincident points have no axis to prefer.
+        bool isCoincident = (pnt1 - pnt2).Length() < Precision::Confusion();
+        bool isHorizontal = !isCoincident && std::abs(pnt1.y - pnt2.y) < Precision::Confusion();
+        bool isVertical = !isCoincident && std::abs(pnt1.x - pnt2.x) < Precision::Confusion();
 
         double minX, minY, maxX, maxY;
         minX = min(pnt1.x, pnt2.x);
@@ -7150,25 +7149,61 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (! isLineSegment(*geo1) && ! isLineSegment(*geo2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("One of the selected edges should be a line."));
-                return;
-            }
-
-            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
-            //     // unsupported until tangent to B-spline at any point implemented.
-            //     Gui::TranslatedUserWarning(
-            //         Obj,
-            //         QObject::tr("Wrong selection"),
-            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-            //     return;
-            // }
-
             if (isLineSegment(*geo1)) {
                 std::swap(GeoId1, GeoId2);
+            }
+
+            if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
+                std::vector<int> nGeoId3;
+                std::vector<PointPos> nPosId3;
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, true);
+
+                if (found > 1) {  // too many intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Too many intersection points found.")
+                    );
+                    return;
+                }
+                if (found == 0) {  // no intersection points
+                    // check if they are joined by midpoint
+                    if (Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, false) > 0) {
+                        Gui::TranslatedUserWarning(
+                            Obj,
+                            QObject::tr("Wrong selection"),
+                            QObject::tr("Edges are joined by midpoint.")
+                        );
+                        return;
+                    }
+
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("No intersection points found.")
+                    );
+                    return;
+                }
+
+                GeoId3 = nGeoId3[0];
+                PosId3 = nPosId3[0];
+
+                // edge, edge, vertex perpendicularity
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+                Gui::cmdAppObjectArgs(
+                    selection->getObject(),
+                    "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
+                    GeoId1,
+                    GeoId2,
+                    GeoId3,
+                    static_cast<int>(PosId3)
+                );
+
+                removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+                commitCommand();
+                tryAutoRecompute(Obj);
+                getSelection().clearSelection();
+                return;
             }
 
             if (isBsplinePole(Obj, GeoId1)) {
@@ -7344,25 +7379,46 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (! isLineSegment(*geo1) && ! isLineSegment(*geo2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("One of the selected edges should be a line."));
-                return;
-            }
-
-            // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
-            //     // unsupported until tangent to B-spline at any point implemented.
-            //     Gui::TranslatedUserWarning(
-            //         Obj,
-            //         QObject::tr("Wrong selection"),
-            //         QObject::tr("Perpendicular to B-spline edge currently unsupported."));
-            //     return;
-            // }
-
             if (isLineSegment(*geo1)) {
                 std::swap(GeoId1, GeoId2);
+            }
+
+            if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
+                std::vector<int> nGeoId3;
+                std::vector<PointPos> nPosId3;
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, true);
+
+                if (found > 1) {  // too many intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Too many intersection points found.")
+                    );
+                    return;
+                }
+                if (found == 0) {  // no intersection points
+                    // check if they are joined by midpoint
+                    if (Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, false) > 0) {
+                        Gui::TranslatedUserWarning(
+                            Obj,
+                            QObject::tr("Wrong selection"),
+                            QObject::tr("Edges are joined by midpoint.")
+                        );
+                        return;
+                    }
+
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("No intersection points found.")
+                    );
+                    return;
+                }
+
+                GeoId3 = nGeoId3[0];
+                PosId3 = nPosId3[0];
+
+                break;
             }
 
             if (isBsplinePole(Obj, GeoId1)) {

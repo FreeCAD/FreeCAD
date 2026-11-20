@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -675,11 +672,23 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
-    void getDirectlyCoincidentPoints(
-        const int GeoId1,
-        const int GeoId2,
+
+    /// Returns two synced lists of all the geometries connecting GeoId1 and GeoId2.
+    /// GeoIds3 will only contain the GeoId1, except using verticesOnly = true, in which case it
+    /// could be GeoId2 for some entries.
+    /// If includePointOnObject == false, it'll only include Coincident constraint, so the output
+    /// will automatically only be vertices.
+    /// If PointOnObject constraints are included, the output can contain edges, use verticesOnly =
+    /// true to return the vertex connected to the edge instead of the edge itself
+    /// ignoreMidPoints ignores constraints using PointPos::mid
+    int getDirectlyCoincidentPoints(
+        int GeoId1,
+        int GeoId2,
         std::vector<int>& GeoIds3,
-        std::vector<PointPos>& PosIds3
+        std::vector<PointPos>& PosIds3,
+        bool includePointOnObject = false,
+        bool verticesOnly = false,
+        bool ignoreMidPoints = false
     ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 

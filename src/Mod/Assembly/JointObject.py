@@ -1294,7 +1294,6 @@ class RigidGroupJoint:
             "RigidGroup",
             QT_TRANSLATE_NOOP("App::Property", "List of references to compnents to group together"),
         )
-        joint.ObjectsToRigidGroup = objects_to_rigid_group
 
         joint.addProperty(
             "App::PropertyPlacementList",
@@ -1302,6 +1301,9 @@ class RigidGroupJoint:
             "RigidGroup",
             "Relative placements for restore",
         )
+
+        joint.ObjectsToRigidGroup = objects_to_rigid_group
+
         joint.setPropertyStatus("RigidPlacements", "Hidden")
         joint.setPropertyStatus("RigidPlacements", "ReadOnly")
 

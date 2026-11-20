@@ -64,7 +64,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             "\n\nSurround expressing characters with {{expression}}"
             "\nExample:"
             "\nG0 Z{{VarSet.HeightZ.Value+5}}"
-            "\nG0 X{{Profile.PathCommands[3].x}} Y{{Profile.Path.Commands[3].y}}"
+            "\nG0 X{{Profile.Path.Commands[3].x}} Y{{Profile.Path.Commands[3].y}}"
             "\n\nUse ! at the start of the line to individually disable post processing "
             "on a given line when 'Post Process Output' is enabled"
             "\nExample:"

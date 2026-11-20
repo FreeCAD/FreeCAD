@@ -271,7 +271,7 @@ QIcon BitmapFactoryInst::iconFromTheme(const char* name, const QIcon& fallback)
 
     QIcon icon = QIcon::fromTheme(iconName, fallback);
     if (icon.isNull()) {
-        const QPixmap px = pixmap(name);
+        const QPixmap px = findPixmapNoFallback(name);
         if (!px.isNull()) {
             icon.addPixmap(px);
         }

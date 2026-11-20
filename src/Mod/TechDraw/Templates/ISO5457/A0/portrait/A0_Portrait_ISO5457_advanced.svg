@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="841mm"
+   height="1189mm"
+   viewBox="0 0 841 1189"
+   version="1.1"
+   id="svg"
+   sodipodi:docname="A0_Portrait_ISO5457_advanced.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+  <defs
+     id="defs20" />
+  <sodipodi:namedview
+     id="namedview20"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.30098807"
+     inkscape:cx="1282.4428"
+     inkscape:cy="2852.2725"
+     inkscape:window-width="3840"
+     inkscape:window-height="1571"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg" />
+  <title
+     id="title">Drawing sheet ISO 5457 - A0T - Advanced</title>
+  <metadata
+     id="metadata">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:title>Drawing sheet ISO 5457 - A0T - Advanced</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benjamin May</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <text
+     id="upper_marker_1"
+     x="44.900024"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">1</text>
+  <text
+     id="upper_marker_2"
+     x="94.900024"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">2</text>
+  <text
+     id="upper_marker_3"
+     x="144.89975"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">3</text>
+  <text
+     id="upper_marker_4"
+     x="194.89966"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">4</text>
+  <text
+     id="upper_marker_5"
+     x="244.89966"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">5</text>
+  <text
+     id="upper_marker_6"
+     x="294.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">6</text>
+  <text
+     id="upper_marker_7"
+     x="344.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">7</text>
+  <text
+     id="upper_marker_8"
+     x="394.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">8</text>
+  <text
+     id="upper_marker_9"
+     x="444.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">9</text>
+  <text
+     id="upper_marker_10"
+     x="494.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">10</text>
+  <text
+     id="upper_marker_11"
+     x="544.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">11</text>
+  <text
+     id="upper_marker_12"
+     x="594.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">12</text>
+  <text
+     id="upper_marker_13"
+     x="644.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">13</text>
+  <text
+     id="upper_marker_14"
+     x="694.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">14</text>
+  <text
+     id="upper_marker_15"
+     x="744.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">15</text>
+  <text
+     id="upper_marker_1-0"
+     x="45.459797"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">1</text>
+  <text
+     id="upper_marker_2-9"
+     x="95.459793"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">2</text>
+  <text
+     id="upper_marker_3-4"
+     x="145.45952"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">3</text>
+  <text
+     id="upper_marker_4-8"
+     x="195.45944"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">4</text>
+  <text
+     id="upper_marker_5-8"
+     x="245.45944"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">5</text>
+  <text
+     id="upper_marker_6-2"
+     x="295.46017"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">6</text>
+  <text
+     id="upper_marker_7-4"
+     x="345.46017"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">7</text>
+  <text
+     id="upper_marker_8-5"
+     x="395.46017"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">8</text>
+  <text
+     id="upper_marker_9-5"
+     x="445.46017"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">9</text>
+  <text
+     id="upper_marker_10-1"
+     x="495.46017"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">10</text>
+  <text
+     id="upper_marker_11-7"
+     x="545.46014"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">11</text>
+  <text
+     id="upper_marker_12-1"
+     x="595.46014"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">12</text>
+  <text
+     id="upper_marker_13-1"
+     x="645.46014"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">13</text>
+  <text
+     id="upper_marker_14-5"
+     x="695.46014"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">14</text>
+  <text
+     id="upper_marker_15-2"
+     x="745.46014"
+     y="1182.7667"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">15</text>
+  <text
+     id="upper_marker_16"
+     x="794.90039"
+     y="18.324997"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">16</text>
+  <text
+     id="lower_marker_24"
+     x="802.87518"
+     y="1182.637"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">A0</text>
+  <text
+     id="left_marker_1"
+     x="7.3764358"
+     y="20.064125"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">A</text>
+  <text
+     id="left_marker_2"
+     x="7.3764358"
+     y="70.064125"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">B</text>
+  <text
+     id="left_marker_3"
+     x="7.3764358"
+     y="120.06428"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">C</text>
+  <text
+     id="left_marker_4"
+     x="7.3764358"
+     y="170.06429"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">D</text>
+  <text
+     id="left_marker_5"
+     x="7.3764358"
+     y="220.06429"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">E</text>
+  <text
+     id="left_marker_6"
+     x="7.3764358"
+     y="270.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">F</text>
+  <text
+     id="left_marker_7"
+     x="7.3764358"
+     y="320.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">G</text>
+  <text
+     id="left_marker_8"
+     x="7.3764358"
+     y="370.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">H</text>
+  <text
+     id="left_marker_9"
+     x="7.3764358"
+     y="420.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">J</text>
+  <text
+     id="left_marker_10"
+     x="7.3764358"
+     y="470.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">K</text>
+  <text
+     id="left_marker_11"
+     x="7.3764358"
+     y="520.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">L</text>
+  <text
+     id="left_marker_12"
+     x="7.3764358"
+     y="570.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">M</text>
+  <text
+     id="left_marker_13"
+     x="7.3764358"
+     y="620.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">N</text>
+  <text
+     id="left_marker_14"
+     x="7.3764358"
+     y="670.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">P</text>
+  <text
+     id="left_marker_15"
+     x="7.3764358"
+     y="720.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">Q</text>
+  <text
+     id="left_marker_16"
+     x="7.3764358"
+     y="770.06396"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">R</text>
+  <text
+     id="left_marker_16-7"
+     x="7.2680817"
+     y="819.00177"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan22">S</tspan></text>
+  <text
+     id="left_marker_16-6"
+     x="7.2580447"
+     y="869.75262"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan23">T</tspan></text>
+  <text
+     id="left_marker_16-1"
+     x="7.4185233"
+     y="918.44305"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan24">U</tspan></text>
+  <text
+     id="left_marker_16-4"
+     x="7.3231044"
+     y="967.8421"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan25">V</tspan></text>
+  <text
+     id="left_marker_16-2"
+     x="7.3086419"
+     y="1018.2952"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan26">W</tspan></text>
+  <text
+     id="left_marker_16-3"
+     x="7.2537017"
+     y="1069.3669"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan27">X</tspan></text>
+  <text
+     id="left_marker_16-22"
+     x="7.3939414"
+     y="1119.0826"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan28">Y</tspan></text>
+  <text
+     id="left_marker_16-16"
+     x="7.2941799"
+     y="1165.7678"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none;-inkscape-font-specification:'osifont, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"><tspan
+       sodipodi:role="line"
+       id="tspan29">Z</tspan></text>
+  <rect
+     id="drawing_space_frame"
+     x="20.00371"
+     y="-831.00317"
+     width="1159"
+     height="821"
+     style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round"
+     transform="rotate(90)" />
+  <g
+     id="centring_marks"
+     style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round"
+     transform="rotate(90,420.49972,420.50343)">
+    <path
+       id="top_centering"
+       d="M 594.5,5 V 15" />
+    <path
+       id="right_centering"
+       d="m 1184,420.5 h -10" />
+    <path
+       id="bottom_centering"
+       d="M 594.5,836 V 826" />
+    <path
+       id="left_centering"
+       d="M 15,420.5 H 25" />
+  </g>
+  <g
+     id="grid_reference_borders"
+     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round"
+     transform="rotate(90,420.49972,420.50343)">
+    <rect
+       id="grid_reference_border"
+       x="15"
+       y="5"
+       width="1169"
+       height="831" />
+    <path
+       id="upper_border_1"
+       d="m 44.5,5 v 5" />
+    <path
+       id="upper_border_2"
+       d="m 94.5,5 v 5" />
+    <path
+       id="upper_border_3"
+       d="m 144.5,5 v 5" />
+    <path
+       id="upper_border_4"
+       d="m 194.5,5 v 5" />
+    <path
+       id="upper_border_5"
+       d="m 244.5,5 v 5" />
+    <path
+       id="upper_border_6"
+       d="m 294.5,5 v 5" />
+    <path
+       id="upper_border_7"
+       d="m 344.5,5 v 5" />
+    <path
+       id="upper_border_8"
+       d="m 394.5,5 v 5" />
+    <path
+       id="upper_border_9"
+       d="m 444.5,5 v 5" />
+    <path
+       id="upper_border_10"
+       d="m 494.5,5 v 5" />
+    <path
+       id="upper_border_11"
+       d="m 544.5,5 v 5" />
+    <path
+       id="upper_border_13"
+       d="m 644.5,5 v 5" />
+    <path
+       id="upper_border_14"
+       d="m 694.5,5 v 5" />
+    <path
+       id="upper_border_15"
+       d="m 744.5,5 v 5" />
+    <path
+       id="upper_border_16"
+       d="m 794.5,5 v 5" />
+    <path
+       id="upper_border_17"
+       d="m 844.5,5 v 5" />
+    <path
+       id="upper_border_18"
+       d="m 894.5,5 v 5" />
+    <path
+       id="upper_border_19"
+       d="m 944.5,5 v 5" />
+    <path
+       id="upper_border_20"
+       d="m 994.5,5 v 5" />
+    <path
+       id="upper_border_21"
+       d="m 1044.5,5 v 5" />
+    <path
+       id="upper_border_22"
+       d="m 1094.5,5 v 5" />
+    <path
+       id="upper_border_23"
+       d="m 1144.5,5 v 5" />
+    <path
+       id="right_border_1"
+       d="m 1184,70.5 h -5" />
+    <path
+       id="right_border_2"
+       d="m 1184,120.5 h -5" />
+    <path
+       id="right_border_3"
+       d="m 1184,170.5 h -5" />
+    <path
+       id="right_border_4"
+       d="m 1184,220.5 h -5" />
+    <path
+       id="right_border_5"
+       d="m 1184,270.5 h -5" />
+    <path
+       id="right_border_6"
+       d="m 1184,320.5 h -5" />
+    <path
+       id="right_border_7"
+       d="m 1184,370.5 h -5" />
+    <path
+       id="right_border_9"
+       d="m 1184,470.5 h -5" />
+    <path
+       id="right_border_10"
+       d="m 1184,520.5 h -5" />
+    <path
+       id="right_border_11"
+       d="m 1184,570.5 h -5" />
+    <path
+       id="right_border_12"
+       d="m 1184,620.5 h -5" />
+    <path
+       id="right_border_13"
+       d="m 1184,670.5 h -5" />
+    <path
+       id="right_border_14"
+       d="m 1184,720.5 h -5" />
+    <path
+       id="right_border_15"
+       d="m 1184,770.5 h -5" />
+    <path
+       id="lower_border_1"
+       d="m 44.5,836 v -5" />
+    <path
+       id="lower_border_2"
+       d="m 94.5,836 v -5" />
+    <path
+       id="lower_border_3"
+       d="m 144.5,836 v -5" />
+    <path
+       id="lower_border_4"
+       d="m 194.5,836 v -5" />
+    <path
+       id="lower_border_5"
+       d="m 244.5,836 v -5" />
+    <path
+       id="lower_border_6"
+       d="m 294.5,836 v -5" />
+    <path
+       id="lower_border_7"
+       d="m 344.5,836 v -5" />
+    <path
+       id="lower_border_8"
+       d="m 394.5,836 v -5" />
+    <path
+       id="lower_border_9"
+       d="m 444.5,836 v -5" />
+    <path
+       id="lower_border_10"
+       d="m 494.5,836 v -5" />
+    <path
+       id="lower_border_11"
+       d="m 544.5,836 v -5" />
+    <path
+       id="lower_border_13"
+       d="m 644.5,836 v -5" />
+    <path
+       id="lower_border_14"
+       d="m 694.5,836 v -5" />
+    <path
+       id="lower_border_15"
+       d="m 744.5,836 v -5" />
+    <path
+       id="lower_border_16"
+       d="m 794.5,836 v -5" />
+    <path
+       id="lower_border_17"
+       d="m 844.5,836 v -5" />
+    <path
+       id="lower_border_18"
+       d="m 894.5,836 v -5" />
+    <path
+       id="lower_border_19"
+       d="m 944.5,836 v -5" />
+    <path
+       id="lower_border_20"
+       d="m 994.5,836 v -5" />
+    <path
+       id="lower_border_21"
+       d="m 1044.5,836 v -5" />
+    <path
+       id="lower_border_22"
+       d="m 1094.5,836 v -5" />
+    <path
+       id="lower_border_23"
+       d="m 1144.5,836 v -5" />
+    <path
+       id="left_border_1"
+       d="m 15,70.5 h 5" />
+    <path
+       id="left_border_2"
+       d="m 15,120.5 h 5" />
+    <path
+       id="left_border_3"
+       d="m 15,170.5 h 5" />
+    <path
+       id="left_border_4"
+       d="m 15,220.5 h 5" />
+    <path
+       id="left_border_5"
+       d="m 15,270.5 h 5" />
+    <path
+       id="left_border_6"
+       d="m 15,320.5 h 5" />
+    <path
+       id="left_border_7"
+       d="m 15,370.5 h 5" />
+    <path
+       id="left_border_9"
+       d="m 15,470.5 h 5" />
+    <path
+       id="left_border_10"
+       d="m 15,520.5 h 5" />
+    <path
+       id="left_border_11"
+       d="m 15,570.5 h 5" />
+    <path
+       id="left_border_12"
+       d="m 15,620.5 h 5" />
+    <path
+       id="left_border_13"
+       d="m 15,670.5 h 5" />
+    <path
+       id="left_border_14"
+       d="m 15,720.5 h 5" />
+    <path
+       id="left_border_15"
+       d="m 15,770.5 h 5" />
+  </g>
+  <g
+     id="trimming_marks"
+     style="fill:#000000;stroke:none"
+     transform="rotate(90,420.49972,420.50343)">
+    <path
+       id="top_left_trimming"
+       d="M 0,0 H 10 V 5 H 5 v 5 H 0 Z" />
+    <path
+       id="top_right_trimming"
+       d="m 1189,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path
+       id="bottom_right_trimming"
+       d="m 1189,841 h -10 v -5 h 5 v -5 h 5 z" />
+    <path
+       id="bottom_left_trimming"
+       d="m 0,841 h 10 v -5 H 5 v -5 H 0 Z" />
+  </g>
+  <!-- Title block -->
+  <g
+     id="g21"
+     transform="translate(-347.9974,348.00223)">
+    <g
+       id="title_block_labels"
+       style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+      <text
+         id="legal_owner_label"
+         x="1139.5"
+         y="786.59998">Owner:</text>
+      <text
+         id="identification_number_label"
+         x="1079.5"
+         y="810.59998">Drawing number:</text>
+      <text
+         id="revision_index_label"
+         x="1139.5"
+         y="822.59998">Revision:</text>
+      <text
+         id="date_of_issue_label"
+         x="1099.5"
+         y="822.59998">Issue date:</text>
+      <text
+         id="sheet_number_label"
+         x="1159.5"
+         y="822.59998">Sheet:</text>
+      <text
+         id="language_code_label"
+         x="1079.5"
+         y="822.59998">Language:</text>
+      <text
+         id="title_label"
+         x="999.5"
+         y="786.59998">Title, supplementary title:</text>
+      <text
+         id="responsible_department_label"
+         x="1139.5"
+         y="810.59998">Responsible department:</text>
+      <text
+         id="approval_person_label"
+         x="1079.5"
+         y="798.59998">Approved by:</text>
+      <text
+         id="creator_label"
+         x="1079.5"
+         y="786.59998">Created by:</text>
+      <text
+         id="document_type label"
+         x="999.5"
+         y="810.59998">Document type:</text>
+      <text
+         id="document_status_label"
+         x="999.5"
+         y="822.59998">Document status:</text>
+      <text
+         id="sheet_scale_label"
+         x="1119.5"
+         y="774.59998">Scale:</text>
+      <text
+         id="general_tolerances_label"
+         x="1079.5"
+         y="774.59998">General tolerances:</text>
+      <text
+         id="part_material_label"
+         x="999.5"
+         y="774.59998">Part Material:</text>
+    </g>
+    <g
+       id="g20">
+      <g
+         id="title_block_borders"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+        <rect
+           id="title_block_frame"
+           x="999"
+           y="783"
+           width="180"
+           height="48"
+           style="stroke-width:0.7" />
+        <rect
+           id="legal_owner_border"
+           x="1139"
+           y="783"
+           width="40"
+           height="24" />
+        <rect
+           id="identification_number_border"
+           x="1079"
+           y="807"
+           width="60"
+           height="12" />
+        <rect
+           id="revision_index_border"
+           x="1139"
+           y="819"
+           width="20"
+           height="12" />
+        <rect
+           id="date_of_issue_border"
+           x="1099"
+           y="819"
+           width="40"
+           height="12" />
+        <rect
+           id="sheet_number_border"
+           x="1159"
+           y="819"
+           width="20"
+           height="12" />
+        <rect
+           id="language_code_border"
+           x="1079"
+           y="819"
+           width="20"
+           height="12" />
+        <rect
+           id="title_border"
+           x="999"
+           y="783"
+           width="80"
+           height="24" />
+        <rect
+           id="responsible_department_border"
+           x="1139"
+           y="807"
+           width="40"
+           height="12" />
+        <rect
+           id="approval_person_border"
+           x="1079"
+           y="795"
+           width="60"
+           height="12" />
+        <rect
+           id="creator_border"
+           x="1079"
+           y="783"
+           width="60"
+           height="12" />
+        <rect
+           id="document_type_border"
+           x="999"
+           y="807"
+           width="80"
+           height="12" />
+        <rect
+           id="document_status_border"
+           x="999"
+           y="819"
+           width="80"
+           height="12" />
+      </g>
+      <g
+         id="title_block_data_fields"
+         style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+        <text
+           id="legal_owner_1_data_field"
+           x="1159"
+           y="792.09998"
+           freecad:editable="legal_owner_1"
+           freecad:autofill="organization"
+           style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan
+             id="tspan1" /></text>
+        <text
+           id="legal_owner_2_data_field"
+           x="1159"
+           y="796.09998"
+           freecad:editable="legal_owner_2"
+           style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan
+             id="tspan2" /></text>
+        <text
+           id="legal_owner_3_data_field"
+           x="1159"
+           y="800.09998"
+           freecad:editable="legal_owner_3"
+           style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan
+             id="tspan3" /></text>
+        <text
+           id="legal_owner_4_data_field"
+           x="1159"
+           y="804.09998"
+           freecad:editable="legal_owner_4"
+           style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan
+             id="tspan4" /></text>
+        <text
+           id="identification_number_data_field"
+           x="1080"
+           y="816.20001"
+           freecad:editable="drawing_number"><tspan
+             id="tspan5">DN</tspan></text>
+        <text
+           id="revision_index_data_field"
+           x="1149"
+           y="828.20001"
+           freecad:editable="revision_index"
+           style="text-align:center;text-anchor:middle"><tspan
+             id="tspan6">AAA</tspan></text>
+        <text
+           id="date_of_issue_data_field"
+           x="1100"
+           y="828.20001"
+           freecad:editable="date_of_issue"
+           freecad:autofill="date"><tspan
+             id="tspan7">YYYY-MM-DD</tspan></text>
+        <text
+           id="sheet_number_data_field"
+           x="1169"
+           y="828.20001"
+           freecad:editable="sheet_number"
+           freecad:autofill="sheet"
+           style="text-align:center;text-anchor:middle"><tspan
+             id="tspan8">X / Y</tspan></text>
+        <text
+           id="language_data_field"
+           x="1089"
+           y="828.20001"
+           freecad:editable="language_code"
+           style="text-align:center;text-anchor:middle"><tspan
+             id="tspan9">EN</tspan></text>
+        <text
+           id="title_data_field"
+           x="1000"
+           y="792.20001"
+           freecad:editable="title"
+           freecad:autofill="title"><tspan
+             id="tspan10">ISO 7200 titleblock</tspan></text>
+        <text
+           id="supplementary_title_1_data_field"
+           x="1000"
+           y="798.20001"
+           freecad:editable="supplementary_title_1"><tspan
+             id="tspan11">ST1</tspan></text>
+        <text
+           id="supplementary_title_2_data_field"
+           x="1000"
+           y="804.20001"
+           freecad:editable="supplementary_title_2"><tspan
+             id="tspan12">ST2</tspan></text>
+        <text
+           id="responsible_department_data_field"
+           x="1140"
+           y="816.20001"
+           freecad:editable="responsible_department"><tspan
+             id="tspan13">RD</tspan></text>
+        <text
+           id="approval_person_data_field"
+           x="1080"
+           y="804.20001"
+           freecad:editable="approval_person"><tspan
+             id="tspan14">B. Hecate</tspan></text>
+        <text
+           id="creator_data_field"
+           x="1080"
+           y="792.20001"
+           freecad:editable="creator"
+           freecad:autofill="author"><tspan
+             id="tspan15">A. Nemesis</tspan></text>
+        <text
+           id="document_type_data_field"
+           x="1000"
+           y="816.20001"
+           freecad:editable="document_type"><tspan
+             id="tspan16">Component Drawing</tspan></text>
+        <text
+           id="document_status_data_field"
+           x="1000"
+           y="828.20001"
+           freecad:editable="document_status"><tspan
+             id="tspan17">In preparation</tspan></text>
+        <text
+           id="sheet_scale_data_field"
+           x="1129"
+           y="780.20001"
+           freecad:editable="scale"
+           freecad:autofill="scale"
+           style="text-align:center;text-anchor:middle"><tspan
+             id="tspan18">1 : 1</tspan></text>
+        <text
+           id="general_tolerances_data_field"
+           x="1080"
+           y="780.20001"
+           freecad:editable="general_tolerances"><tspan
+             id="tspan19">ISO 2768-m</tspan></text>
+        <text
+           id="part_material_data_field"
+           x="1000"
+           y="780.20001"
+           freecad:editable="part_material"><tspan
+             id="tspan20">Stainless steel Mat.No. 1.4301</tspan></text>
+      </g>
+      <g
+         id="extras_outlines"
+         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
+        <path
+           id="first_angle_trapezoid"
+           d="m 1158,766 -10,2.5 v 5 l 10,2.5 z" />
+        <circle
+           id="first_angle_inner circle"
+           cx="1165"
+           cy="771"
+           r="2.5" />
+        <circle
+           id="first_angle_outer circle"
+           cx="1165"
+           cy="771"
+           r="5" />
+      </g>
+      <g
+         id="extras_centre_lines"
+         style="fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:6, 0.75, 0.125, 0.75">
+        <path
+           id="first_angle_horizontal"
+           d="m 1147,771 h 24"
+           style="stroke-dashoffset:0.25" />
+        <path
+           id="first_angle_vertical"
+           d="M 1165,777 V 765"
+           style="stroke-dashoffset:4.625" />
+      </g>
+    </g>
+  </g>
+  <text
+     id="left_marker_1-5"
+     x="833.74908"
+     y="19.016687"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">A</text>
+  <text
+     id="left_marker_2-0"
+     x="833.74908"
+     y="69.016685"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">B</text>
+  <text
+     id="left_marker_3-2"
+     x="833.74908"
+     y="119.01685"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">C</text>
+  <text
+     id="left_marker_4-8"
+     x="833.74908"
+     y="169.01685"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">D</text>
+  <text
+     id="left_marker_5-6"
+     x="833.74908"
+     y="219.01685"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">E</text>
+  <text
+     id="left_marker_6-0"
+     x="833.74908"
+     y="269.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">F</text>
+  <text
+     id="left_marker_7-2"
+     x="833.74908"
+     y="319.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">G</text>
+  <text
+     id="left_marker_8-4"
+     x="833.74908"
+     y="369.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">H</text>
+  <text
+     id="left_marker_9-8"
+     x="833.74908"
+     y="419.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">J</text>
+  <text
+     id="left_marker_10-6"
+     x="833.74908"
+     y="469.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">K</text>
+  <text
+     id="left_marker_11-5"
+     x="833.74908"
+     y="519.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">L</text>
+  <text
+     id="left_marker_12-0"
+     x="833.74908"
+     y="569.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">M</text>
+  <text
+     id="left_marker_13-9"
+     x="833.74908"
+     y="619.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">N</text>
+  <text
+     id="left_marker_14-0"
+     x="833.74908"
+     y="669.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">P</text>
+  <text
+     id="left_marker_15-0"
+     x="833.74908"
+     y="719.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">Q</text>
+  <text
+     id="left_marker_16-61"
+     x="833.74908"
+     y="769.01654"
+     style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">R</text>
+  <text
+     id="left_marker_16-7-3"
+     x="833.64069"
+     y="817.95435"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan22-8"
+       x="833.64069"
+       y="817.95435">S</tspan></text>
+  <text
+     id="left_marker_16-6-9"
+     x="833.63068"
+     y="868.7052"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan23-3"
+       x="833.63068"
+       y="868.7052">T</tspan></text>
+  <text
+     id="left_marker_16-1-4"
+     x="833.79114"
+     y="917.39563"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan24-4"
+       x="833.79114"
+       y="917.39563">U</tspan></text>
+  <text
+     id="left_marker_16-4-6"
+     x="833.69574"
+     y="966.79468"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan25-0"
+       x="833.69574"
+       y="966.79468">V</tspan></text>
+  <text
+     id="left_marker_16-2-6"
+     x="833.68127"
+     y="1017.2478"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan26-6"
+       x="833.68127"
+       y="1017.2478">W</tspan></text>
+  <text
+     id="left_marker_16-3-1"
+     x="833.62634"
+     y="1068.3195"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan27-8"
+       x="833.62634"
+       y="1068.3195">X</tspan></text>
+  <text
+     id="left_marker_16-22-4"
+     x="833.76654"
+     y="1118.0352"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan28-9"
+       x="833.76654"
+       y="1118.0352">Y</tspan></text>
+  <text
+     id="left_marker_16-16-6"
+     x="833.66681"
+     y="1164.7203"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.5px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none"><tspan
+       sodipodi:role="line"
+       id="tspan29-3"
+       x="833.66681"
+       y="1164.7203">Z</tspan></text>
+</svg>

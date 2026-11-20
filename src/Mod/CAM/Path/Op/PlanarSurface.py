@@ -63,6 +63,7 @@ from Path.Base.Generator import (
     surface_postprocess,
     surface_waterline,
 )
+from Path.Tool.shape import ToolBitShape
 
 Part = LazyLoader("Part", globals(), "Part")
 
@@ -1442,7 +1443,7 @@ class ObjectSurface(PathOp.ObjectOp):
         radius = tool_diam / 2.0
         shape_type = tool_params.get("tool_type") or ""
         c_rad = tool_params.get("corner_radius", 0.0)
-        is_3d = shape_type in ("ballend", "bullnose")
+        is_3d = shape_type == "bullnose" or ToolBitShape.is_ball_end(shape_type)
 
         if tool_diam == 0.0 or (not is_3d and "endmill" not in shape_type):
             Path.Log.error(

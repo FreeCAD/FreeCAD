@@ -39,3 +39,27 @@ target_link_libraries(App_tests_run PRIVATE
     ${Python3_LIBRARIES}
     FreeCADApp
 )
+
+add_test(
+    NAME PythonSignalHandlers
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/PythonSignalHandlers.py
+            $<TARGET_FILE_DIR:FreeCADMainPy>
+)
+set_tests_properties(PythonSignalHandlers PROPERTIES TIMEOUT 60)
+if(WIN32)
+    set_tests_properties(PythonSignalHandlers PROPERTIES
+        ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+endif()
+
+if(BUILD_PART)
+    add_test(
+        NAME PythonModelingSignalHandlers
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/PythonSignalHandlers.py
+                $<TARGET_FILE_DIR:FreeCADMainPy> $<TARGET_FILE_DIR:Part>
+    )
+    set_tests_properties(PythonModelingSignalHandlers PROPERTIES TIMEOUT 60)
+    if(WIN32)
+        set_tests_properties(PythonModelingSignalHandlers PROPERTIES
+            ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+    endif()
+endif()
