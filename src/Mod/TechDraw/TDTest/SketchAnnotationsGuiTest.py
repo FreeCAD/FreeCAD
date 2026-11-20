@@ -7,7 +7,6 @@ import FreeCADGui as Gui
 import Part
 import TechDraw
 import TechDrawGui
-import SketchAnnotations as Adapter
 from SketcherTests.GuiTestCase import SketcherGuiTestCase
 from .TechDrawTestUtilities import createPageWithSVGTemplate
 

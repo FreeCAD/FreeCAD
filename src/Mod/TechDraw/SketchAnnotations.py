@@ -18,10 +18,6 @@ _TYPES = {
 }
 _GROUP = "Sketch annotation"
 _busy = False
-# The adapter stays dormant until a document actually holds a drawing page. Until then
-# it must not cost anything: a document observer with a slotChangedObject is called for
-# every property change of every object in every document.
-_active = False
 # A view whose projection is still running is retried, but never forever.
 _MAX_PENDING_RETRIES = 40
 _RETRY_INTERVAL = 100
@@ -274,7 +270,7 @@ def synchronize(doc):
     """Update the native counterparts in a document; also available headlessly."""
     global _busy
     if _busy or doc.Restoring:
-        return
+        return False
     _activate()
     _busy = True
     try:
@@ -327,6 +323,7 @@ def synchronize(doc):
                         try:
                             _set(obj, "AnnotationStatus", str(exc))
                         except Exception:
+                            # The error is reported above; the object may not take a status.
                             pass
         # Retain counterparts and identity through source deletion/undo. Suppress content.
         for key, obj in existing.items():
@@ -348,6 +345,10 @@ def synchronize(doc):
 
 class _Observer:
     def __init__(self):
+        # The adapter stays dormant until a document actually holds a drawing page. Until
+        # then it must not cost anything: a document observer with a slotChangedObject is
+        # called for every property change of every object in every document.
+        self.attached = False
         self.pending = set()
         self.queued = False
         self.retries = {}
@@ -438,10 +439,9 @@ def _hasPage(doc):
 
 def _activate():
     """Attach the reconciling observer. Idempotent, and never called on import."""
-    global _active
-    if _active:
+    if _observer.attached:
         return
-    _active = True
+    _observer.attached = True
     App.addDocumentObserver(_observer)
     if App.GuiUp:
         installGuiObserver()
@@ -459,16 +459,16 @@ class _Sentinel:
             if obj.isDerivedFrom("TechDraw::DrawPage"):
                 _activate()
                 _observer.queue(obj.Document)
-        except Exception:
-            pass
+        except Exception as exc:
+            App.Console.PrintError("Sketch annotations: " + str(exc) + "\n")
 
     def slotFinishRestoreDocument(self, doc):
         try:
             if _hasPage(doc):
                 _activate()
                 _observer.queue(doc)
-        except Exception:
-            pass
+        except Exception as exc:
+            App.Console.PrintError("Sketch annotations: " + str(exc) + "\n")
 
 
 _sentinel = _Sentinel()

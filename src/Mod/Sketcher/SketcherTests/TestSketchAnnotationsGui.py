@@ -525,7 +525,7 @@ class TestSketchAnnotationsGui(SketcherGuiTestCase):
 
         # The inner loop becomes a hole: only the frame is hatched.
         self.click_sketch(view, viewport, 50, 5)
-        self.assertEqual(len(self.selected_edges()), 8)
+        self.assertEqual(self.selected_edges(), sorted("Edge%d" % (i + 1) for i in outer + inner))
         pattern = widget.findChild(QtGui.QComboBox, "hatchPattern")
         pattern.setCurrentIndex(pattern.findData("ANSI32"))
         self.flush_gui(50)
@@ -555,7 +555,7 @@ class TestSketchAnnotationsGui(SketcherGuiTestCase):
         self.key_click(viewport, QtCore.Qt.Key_Return)
         self.assertEqual(len(self.s.Annotations), 2)
         self.click_sketch(view, viewport, 60, 10)
-        self.assertEqual(len(self.selected_edges()), 4)
+        self.assertEqual(self.selected_edges(), sorted("Edge%d" % (i + 1) for i in outer))
         self.click_sketch(view, viewport, 50, 20)
         self.assertEqual(self.selected_edges(), [])
         self.key_click(viewport, QtCore.Qt.Key_Escape)

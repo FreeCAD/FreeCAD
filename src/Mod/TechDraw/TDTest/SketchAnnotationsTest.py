@@ -4,8 +4,6 @@ import tempfile
 import unittest
 import FreeCAD as App
 import Part
-import Sketcher
-import TechDraw
 import SketchAnnotations as Adapter
 from .TechDrawTestUtilities import createPageWithSVGTemplate
 
