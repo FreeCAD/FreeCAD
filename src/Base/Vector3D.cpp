@@ -460,6 +460,12 @@ Vector3<float_type> Vector3<float_type>::Normalized() const
 }
 
 template<class float_type>
+bool Vector3<float_type>::isFinite() const
+{
+    return std::isfinite(x) && std::isfinite(y) && std::isfinite(z);
+}
+
+template<class float_type>
 bool Vector3<float_type>::IsNull() const
 {
     float_type n {0.0};
