@@ -2,19 +2,29 @@
 
 """Typed public method signatures for the ``FreeCADGui.UiLoader`` PyCXX type."""
 
+# source: `Gui/UiLoader.cpp`
+
+from PySide import QtCore, QtWidgets
 from os import PathLike
 
 class UiLoader:
     """Qt Designer UI loader used by the FreeCAD GUI wrappers."""
 
     def load(
-        self, source: str | PathLike[str] | object, parent: object | None = None, /
-    ) -> object | None:
+        self,
+        source: str | PathLike[str] | QtCore.QIODevice,
+        parent: QtWidgets.QWidget | None = None,
+        /,
+    ) -> QtWidgets.QWidget | None:
         """Load one `.ui` source and return the created widget tree."""
 
     def createWidget(
-        self, class_name: str, parent: object | None = None, name: str = "", /
-    ) -> object | None:
+        self,
+        class_name: str,
+        parent: QtWidgets.QWidget | None = None,
+        name: str = "",
+        /,
+    ) -> QtWidgets.QWidget | None:
         """Create one widget by Qt class name."""
 
     def availableWidgets(self) -> list[str]:

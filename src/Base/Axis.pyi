@@ -31,19 +31,21 @@ class Axis(PyObjectBase):
     direction : Base.Vector
     """
 
-    Base: Vector = ...
+    Base: Vector
     """Base position vector of the Axis."""
 
-    Direction: Vector = ...
+    Direction: Vector
     """Direction vector of the Axis."""
 
     # fmt: off
     @overload
     def __init__(self) -> None: ...
+
     @overload
-    def __init__(self, axis: Axis) -> None: ...
+    def __init__(self, axis: Axis, /) -> None: ...
+
     @overload
-    def __init__(self, base: Vector, direction: Vector) -> None: ...
+    def __init__(self, base: Vector, direction: Vector, /) -> None: ...
     # fmt: on
 
     def copy(self) -> Axis:

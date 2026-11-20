@@ -2,7 +2,8 @@
 
 from Metadata import export, constmethod, sequence_protocol, class_declarations, typing_only
 from PyObjectBase import PyObjectBase
-from typing import overload, Sequence
+from typing import Any, Self, overload
+from collections.abc import Sequence
 
 @export(
     TwinPointer="Vector3d",
@@ -60,49 +61,65 @@ class Vector(PyObjectBase):
     Licence: LGPL
     """
 
-    Length: float = 0.0
+    Length: float
     """Gets or sets the length of this vector."""
 
-    x: float = 0.0
+    x: float
     """Gets or sets the X component of this vector."""
 
-    y: float = 0.0
+    y: float
     """Gets or sets the Y component of this vector."""
 
-    z: float = 0.0
+    z: float
     """Gets or sets the Z component of this vector."""
 
     # fmt: off
     @overload
-    def __init__(self, x: float = 0, y: float = 0, z: float = 0) -> None: ...
+    def __init__(self, x: float = 0.0, y: float = 0.0, z: float = 0.0, /) -> None: ...
     @overload
-    def __init__(self, vector: "Vector") -> None: ...
+    def __init__(self, vector: Vector, /) -> None: ...
     @overload
-    def __init__(self, seq: Sequence[float]) -> None: ...
+    def __init__(self, seq: Sequence[float], /) -> None: ...
     # fmt: on
 
     @typing_only
-    def __add__(self, vector2: "Vector", /) -> "Vector": ...
+    def __add__(self, vector2: Vector, /) -> Vector: ...
     @typing_only
-    def __sub__(self, vector2: "Vector", /) -> "Vector": ...
-    @typing_only
-    @overload
-    def __mul__(self, factor: float, /) -> "Vector": ...
+    def __sub__(self, vector2: Vector, /) -> Vector: ...
     @typing_only
     @overload
-    def __mul__(self, vector2: "Vector", /) -> float: ...
+    def __mul__(self, factor: float, /) -> Vector: ...
     @typing_only
-    def __rmul__(self, factor: float, /) -> "Vector": ...
+    @overload
+    def __mul__(self, vector2: Vector, /) -> float: ...
     @typing_only
-    def __truediv__(self, factor: float, /) -> "Vector": ...
+    def __rmul__(self, factor: float, /) -> Vector: ...
+    @typing_only
+    def __truediv__(self, factor: float, /) -> Vector: ...
+    @typing_only
+    def __mod__(self, vector2: Vector, /) -> Vector: ...
+    @typing_only
+    def __neg__(self) -> Vector: ...
+    @typing_only
+    def __pos__(self) -> Vector: ...
+    @typing_only
+    def __abs__(self) -> Vector: ...
+    @typing_only
+    @overload
+    def __getitem__(self, index: int, /) -> float: ...
+    @typing_only
+    @overload
+    def __getitem__(self, index: slice[int | None], /) -> tuple[float, ...]: ...
+    @typing_only
+    def __setitem__(self, index: int, value: float, /) -> None: ...
     @constmethod
-    def __reduce__(self) -> tuple:
+    def __reduce__(self) -> tuple[Any, tuple[float, float, float]]:
         """
         Serialization of Vector objects.
         """
 
     @constmethod
-    def add(self, vector2: "Vector", /) -> "Vector":
+    def add(self, vector2: Vector, /) -> Vector:
         """
         Returns the sum of this vector and `vector2`.
 
@@ -110,7 +127,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def sub(self, vector2: "Vector", /) -> "Vector":
+    def sub(self, vector2: Vector, /) -> Vector:
         """
         Returns the difference of this vector and `vector2`.
 
@@ -118,12 +135,12 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def negative(self) -> "Vector":
+    def negative(self) -> Vector:
         """
         Returns the negative (opposite) of this vector.
         """
 
-    def scale(self, x: float, y: float, z: float, /) -> "Vector":
+    def scale(self, x: float, y: float, z: float, /) -> Self:
         """
         Scales in-place this vector by the given factor in each component.
 
@@ -135,7 +152,7 @@ class Vector(PyObjectBase):
             z-component factor scale.
         """
 
-    def multiply(self, factor: float, /) -> "Vector":
+    def multiply(self, factor: float, /) -> Self:
         """
         Multiplies in-place each component of this vector by a single factor.
         Equivalent to scale(factor, factor, factor).
@@ -144,7 +161,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def dot(self, vector2: "Vector", /) -> float:
+    def dot(self, vector2: Vector, /) -> float:
         """
         Returns the scalar product (dot product) between this vector and `vector2`.
 
@@ -152,7 +169,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def cross(self, vector2: "Vector", /) -> "Vector":
+    def cross(self, vector2: Vector, /) -> Vector:
         """
         Returns the vector product (cross product) between this vector and `vector2`.
 
@@ -160,7 +177,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def isOnLineSegment(self, vector1: "Vector", vector2: "Vector", /) -> bool:
+    def isOnLineSegment(self, vector1: Vector, vector2: Vector, /) -> bool:
         """
         Checks if this vector is on the line segment generated by `vector1` and `vector2`.
 
@@ -169,20 +186,20 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def getAngle(self, vector2: "Vector", /) -> float:
+    def getAngle(self, vector2: Vector, /) -> float:
         """
         Returns the angle in radians between this vector and `vector2`.
 
         vector2 : Base.Vector
         """
 
-    def normalize(self) -> "Vector":
+    def normalize(self) -> Self:
         """
         Normalizes in-place this vector to the length of 1.0.
         """
 
     @constmethod
-    def isEqual(self, vector2: "Vector", tol: float, /) -> bool:
+    def isEqual(self, vector2: Vector, tol: float, /) -> bool:
         """
         Checks if the distance between the points represented by this vector
         and `vector2` is less or equal to the given tolerance.
@@ -192,7 +209,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def isParallel(self, vector2: "Vector", tol: float, /) -> bool:
+    def isParallel(self, vector2: Vector, tol: float, /) -> bool:
         """
         Checks if this vector and `vector2` are
         parallel less or equal to the given tolerance.
@@ -202,7 +219,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def isNormal(self, vector2: "Vector", tol: float, /) -> bool:
+    def isNormal(self, vector2: Vector, tol: float, /) -> bool:
         """
         Checks if this vector and `vector2` are
         normal less or equal to the given tolerance.
@@ -211,7 +228,7 @@ class Vector(PyObjectBase):
         tol : float
         """
 
-    def projectToLine(self, point: "Vector", dir: "Vector", /) -> "Vector":
+    def projectToLine(self, point: Vector, dir: Vector, /) -> Self:
         """
         Projects `point` on a line that goes through the origin with the direction `dir`.
         The result is the vector from `point` to the projected point.
@@ -224,7 +241,7 @@ class Vector(PyObjectBase):
         dir : Base.Vector
         """
 
-    def projectToPlane(self, base: "Vector", normal: "Vector", /) -> "Vector":
+    def projectToPlane(self, base: Vector, normal: Vector, /) -> Self:
         """
         Projects in-place this vector on a plane defined by a base point
         represented by `base` and a normal defined by `normal`.
@@ -234,7 +251,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def distanceToPoint(self, point2: "Vector", /) -> float:
+    def distanceToPoint(self, point2: Vector, /) -> float:
         """
         Returns the distance to another point represented by `point2`.
 
@@ -242,7 +259,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def distanceToLine(self, base: "Vector", dir: "Vector", /) -> float:
+    def distanceToLine(self, base: Vector, dir: Vector, /) -> float:
         """
         Returns the distance between the point represented by this vector
         and a line defined by a base point represented by `base` and a
@@ -253,7 +270,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def distanceToLineSegment(self, point1: "Vector", point2: "Vector", /) -> "Vector":
+    def distanceToLineSegment(self, point1: Vector, point2: Vector, /) -> Vector:
         """
         Returns the vector between the point represented by this vector and the point
         on the line segment with the shortest distance. The line segment is defined by
@@ -264,7 +281,7 @@ class Vector(PyObjectBase):
         """
 
     @constmethod
-    def distanceToPlane(self, base: "Vector", normal: "Vector", /) -> float:
+    def distanceToPlane(self, base: Vector, normal: Vector, /) -> float:
         """
         Returns the distance between this vector and a plane defined by a
         base point represented by `base` and a normal defined by `normal`.

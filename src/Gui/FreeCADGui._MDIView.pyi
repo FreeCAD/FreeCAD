@@ -2,13 +2,15 @@
 
 """Typed public method signatures for the ``FreeCADGui._MDIView`` PyCXX type."""
 
+# source: `Gui/MDIViewPy.cpp`
+
 from typing import Literal, TypeAlias, overload
 
 from Base.Metadata import deprecated
-from FreeCAD import DocumentObject
+from App.DocumentObject import DocumentObject
 
 _ActiveObjectReference: TypeAlias = tuple[DocumentObject, DocumentObject, str]
-_EmptyActiveObjectReference: TypeAlias = tuple[None, None, str]
+_EmptyActiveObjectReference: TypeAlias = tuple[None, None, Literal[""]]
 
 class _MDIView:
     """Base MDI view wrapper for FreeCAD GUI view types."""
@@ -45,18 +47,21 @@ class _MDIView:
         self,
         name: str,
         document_object: DocumentObject | None = None,
-        subname: str | None = None,
+        subname: str = ...,
         /,
     ) -> None:
         """Set one active object slot for the view."""
 
     @overload
-    def getActiveObject(self, name: str, resolve: Literal[True] = True, /) -> DocumentObject | None:
+    def getActiveObject(
+        self,
+        name: str,
+        resolve: Literal[False],
+        /,
+    ) -> _ActiveObjectReference | _EmptyActiveObjectReference: ...
+    @overload
+    def getActiveObject(self, name: str, resolve: bool = True, /) -> DocumentObject | None:
         """Return the resolved active object for one slot name."""
 
-    @overload
-    def getActiveObject(
-        self, name: str, resolve: Literal[False], /
-    ) -> _ActiveObjectReference | _EmptyActiveObjectReference: ...
     def cast_to_base(self) -> _MDIView:
         """Return this view as the base MDI view wrapper."""

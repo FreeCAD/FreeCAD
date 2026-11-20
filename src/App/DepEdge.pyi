@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileNotice: Part of the FreeCAD project.
 
-from PyObjectBase import PyObjectBase
-
+from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import export
 from DocumentObject import DocumentObject
 from typing import Final
@@ -14,7 +13,7 @@ from typing import Final
     Delete=True,
 )
 class DepEdge(PyObjectBase):
-    FromObj: Final[DocumentObject] = None
-    FromProp: Final[str] = ""
-    ToObj: Final[DocumentObject] = None
-    ToProp: Final[str] = ""
+    FromObj: Final[DocumentObject]
+    FromProp: Final[str]
+    ToObj: Final[DocumentObject]
+    ToProp: Final[str]
