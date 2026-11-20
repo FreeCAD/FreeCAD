@@ -51,6 +51,27 @@ struct FoldableMenuBar::Impl {
         return overlayExpand && menuContainer && menuContainer->underMouse();
     }
 
+    /// The menu bar is being driven from the keyboard (Alt, then the arrow keys)
+    bool isKeyboardActive() const {
+        return menuBar && menuBar->hasFocus();
+    }
+
+    /// Follow a menu bar: the menus added to it, and its activation from the keyboard.
+    void watchMenuBar(FoldableMenuBar *self) {
+        menuBar->installEventFilter(self);
+        // Alt and Alt+mnemonic make an item current before the menu bar takes the focus
+        // or opens the menu: unfold first, so that both happen on a menu bar that shows.
+        // A folded menu bar is masked out, so the mouse cannot make an item current.
+        QObject::connect(menuBar, &QMenuBar::hovered, self, [this, self]() {
+            if (!foldable || expanded) return;
+            collapseTimer->stop();
+            self->setExpanded(true);
+            // The menu that Alt+mnemonic opens is placed right after this
+            menuContainer->layout()->activate();
+            menuWrapper->layout()->activate();
+        });
+    }
+
     void connectMenuCollapse(FoldableMenuBar *self, QMenu *menu) {
         QObject::connect(menu, &QMenu::aboutToHide, self, [this, self]() {
             if (foldable && !self->underMouse() && !isMouseOverOverlay()) {
@@ -183,10 +204,12 @@ FoldableMenuBar::FoldableMenuBar(QWidget *parent)
     d->collapseTimer->setInterval(400);
     connect(d->collapseTimer, &QTimer::timeout, this, [this]() {
         if (d->foldable && !underMouse() && !d->isMouseOverOverlay()
-            && !d->isAnyMenuVisible()) {
+            && !d->isAnyMenuVisible() && !d->isKeyboardActive()) {
             setExpanded(false);
         }
     });
+
+    d->watchMenuBar(this);
 }
 
 FoldableMenuBar::~FoldableMenuBar()
@@ -234,8 +257,8 @@ void FoldableMenuBar::setMenuBar(QMenuBar *menuBar)
             d->connectMenuCollapse(this, menu);
     }
 
-    // Watch for future menus added to this QMenuBar
-    d->menuBar->installEventFilter(this);
+    // Watch for future menus added to this QMenuBar, and for its keyboard activation
+    d->watchMenuBar(this);
 
     // Apply current foldable state
     if (d->foldable && !d->expanded) {
@@ -245,9 +268,8 @@ void FoldableMenuBar::setMenuBar(QMenuBar *menuBar)
 
 QMenu *FoldableMenuBar::addMenu(const QString &title)
 {
-    auto *menu = d->menuBar->addMenu(title);
-    d->connectMenuCollapse(this, menu);
-    return menu;
+    // Its collapse is connected when the menu bar reports the new action (eventFilter)
+    return d->menuBar->addMenu(title);
 }
 
 void FoldableMenuBar::setBrandWidget(QWidget *brand)
@@ -443,6 +465,11 @@ bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
         auto *actionEvent = static_cast<QActionEvent *>(event);
         if (auto *menu = actionEvent->action()->menu())
             d->connectMenuCollapse(this, menu);
+    }
+
+    // Keyboard navigation ended (Esc, Alt again, a click elsewhere): fold again
+    if (obj == d->menuBar && event->type() == QEvent::FocusOut && d->foldable) {
+        d->collapseTimer->start();
     }
 
     // In overlay mode, track mouse on the floating container
