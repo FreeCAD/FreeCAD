@@ -177,6 +177,24 @@ TEST_F(Expression, tokenizeConstant)
     EXPECT_EQ(std::get<0>(result[4]), App::ExpressionParser::CONSTANT);
 }
 
+// https://github.com/FreeCAD/FreeCAD/issues/15302
+TEST_F(Expression, tokenizeReservedWordsAfterDot)
+{
+    auto result = App::ExpressionParser::tokenize("_math.pi * pi + _self.N");
+    ASSERT_EQ(result.size(), 9);
+    EXPECT_EQ(std::get<0>(result[2]), App::ExpressionParser::IDENTIFIER);
+    EXPECT_EQ(std::get<2>(result[2]), "pi");
+    EXPECT_EQ(std::get<0>(result[4]), App::ExpressionParser::CONSTANT);
+    EXPECT_EQ(std::get<0>(result[8]), App::ExpressionParser::IDENTIFIER);
+    EXPECT_EQ(std::get<2>(result[8]), "N");
+
+    // A trailing '.' must not carry over into the next call
+    App::ExpressionParser::tokenize("Box.");
+    result = App::ExpressionParser::tokenize("pi");
+    ASSERT_EQ(result.size(), 1);
+    EXPECT_EQ(std::get<0>(result[0]), App::ExpressionParser::CONSTANT);
+}
+
 TEST_F(Expression, tokenizeEqual)
 {
     auto result = App::ExpressionParser::tokenize("==");
