@@ -235,7 +235,7 @@ int DrawPage::getOrientation() const
 
 int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 {
-    if (!docObj) {
+    if (!canHold(docObj)) {
         return -1;
     }
 
@@ -248,20 +248,10 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
         return Views.getSize();
     }
 
-    if (!docObj->isDerivedFrom<DrawView>()
-        && !docObj->isDerivedFrom<App::Link>()) {
-        return -1;
-    }
-
+    // canHold(): either a view or a link to one
     auto* view = freecad_cast<DrawView*>(docObj);
-
     if (!view) {
-        auto* link = dynamic_cast<App::Link*>(docObj);
-        if (!link) {
-            return -1;
-        }
-
-        view = freecad_cast<DrawView*>(link->getLinkedObject());
+        view = freecad_cast<DrawView*>(docObj->getLinkedObject());
         if (!view) {
             return -1;
         }
@@ -297,10 +287,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 //Note Views might be removed from document elsewhere so need to check if a View is still in Document here
 int DrawPage::removeView(App::DocumentObject* docObj)
 {
-    if (!docObj
-        || (!docObj->isDerivedFrom<DrawView>()
-            && !docObj->isDerivedFrom<App::Link>()
-            && !isSketch(docObj))) {
+    if (!canRemove(docObj)) {
         return -1;
     }
 
@@ -417,6 +404,26 @@ bool DrawPage::isSketch(const App::DocumentObject* obj)
 {
     return obj
         && obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"));
+}
+
+bool DrawPage::canHold(const App::DocumentObject* obj)
+{
+    if (!obj) {
+        return false;
+    }
+    if (obj->isDerivedFrom<DrawView>() || isSketch(obj)) {
+        return true;
+    }
+    if (!obj->isDerivedFrom<App::Link>()) {
+        return false;
+    }
+    const App::DocumentObject* linked = obj->getLinkedObject();
+    return linked && linked->isDerivedFrom<DrawView>();
+}
+
+bool DrawPage::canRemove(const App::DocumentObject* obj)
+{
+    return canHold(obj) || (obj && obj->isDerivedFrom<App::Link>());
 }
 
 std::vector<App::DocumentObject*> DrawPage::getSketches() const

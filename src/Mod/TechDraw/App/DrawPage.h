@@ -93,6 +93,11 @@ public:
     bool isUnsetting() { return nowUnsetting; }
     void requestPaint();
     static bool isSketch(const App::DocumentObject* obj);
+    /// What addView() accepts: a view, a link to a view or a sketch.
+    static bool canHold(const App::DocumentObject* obj);
+    /// What removeView() accepts: what a page can hold, plus any link, because a link the page
+    /// holds may since point at another object or at nothing and must stay removable.
+    static bool canRemove(const App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getSketches() const;
     std::vector<App::DocumentObject*> getViews() const;
     std::vector<App::DocumentObject*> getAllViews() const;
