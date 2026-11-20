@@ -52,6 +52,10 @@ SET(MeasureGui_SRCS
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
+    MeasureSnapManager.cpp
+    MeasureSnapManager.h
+    MeasureSnapIndicator.cpp
+    MeasureSnapIndicator.h
     SoScreenSpaceScale.cpp
     SoScreenSpaceScale.h
     ViewProviderMassPropertiesResult.cpp
