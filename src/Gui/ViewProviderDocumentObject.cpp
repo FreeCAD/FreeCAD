@@ -38,6 +38,8 @@
 #include <App/GroupExtension.h>
 #include <App/Link.h>
 #include <App/Origin.h>
+#include <App/PropertyPythonObject.h>
+#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 
 #include "ViewProviderDocumentObjectPy.h"
@@ -701,6 +703,87 @@ int ViewProviderDocumentObject::replaceObject(App::DocumentObject* oldObj, App::
 bool ViewProviderDocumentObject::showInTree() const
 {
     return ShowInTree.getValue();
+}
+
+namespace
+{
+
+/** Name of the Python class implementing a scripted object, if there is one.
+ *
+ * Scripted objects all report the same TypeId - App::FeaturePython and
+ * friends - so the type alone does not distinguish an Assembly joint from a
+ * Draft wire. The Proxy's class is what actually identifies them.
+ */
+QString proxyClassName(const App::DocumentObject* obj)
+{
+    auto* prop = freecad_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
+    if (!prop) {
+        return {};
+    }
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Object proxy = prop->getValue();
+        if (proxy.isNone()) {
+            return {};
+        }
+        // A document restored without its Python module keeps the class name
+        // as a plain string, which is still the most useful thing to show.
+        if (proxy.isString()) {
+            return QString::fromStdString(Py::String(proxy).as_std_string("utf-8"));
+        }
+        if (!proxy.hasAttr("__class__")) {
+            return QString::fromUtf8(proxy.ptr()->ob_type->tp_name);
+        }
+
+        Py::Object cls = proxy.getAttr("__class__");
+        QString name = QString::fromStdString(
+            Py::String(cls.getAttr("__name__")).as_std_string("utf-8")
+        );
+        if (cls.hasAttr("__module__")) {
+            const auto module = Py::String(cls.getAttr("__module__")).as_std_string("utf-8");
+            if (!module.empty() && module != "__main__" && module != "builtins") {
+                name = QStringLiteral("%1.%2").arg(QString::fromStdString(module), name);
+            }
+        }
+        return name;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;  // clear the Python error state
+        e.reportException();
+        return {};
+    }
+}
+
+}  // namespace
+
+QString ViewProviderDocumentObject::getToolTip() const
+{
+    App::DocumentObject* obj = getObject();
+    if (!obj) {
+        return {};
+    }
+
+    const QString label = QString::fromUtf8(obj->Label.getValue()).toHtmlEscaped();
+
+    QStringList lines;
+    lines << QStringLiteral("<b>%1</b>").arg(label);
+    lines << QObject::tr("Type: %1").arg(QString::fromLatin1(obj->getTypeId().getName()));
+
+    const QString proxy = proxyClassName(obj);
+    if (!proxy.isEmpty()) {
+        lines << QObject::tr("Proxy: %1").arg(proxy.toHtmlEscaped());
+    }
+
+    lines << QObject::tr("Internal name: %1").arg(QString::fromUtf8(obj->getNameInDocument()));
+
+    const char* description = obj->Label2.getValue();
+    if (description && description[0]) {
+        lines << QString();
+        lines << QString::fromUtf8(description).toHtmlEscaped();
+    }
+
+    return lines.join(QStringLiteral("<br/>"));
 }
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
