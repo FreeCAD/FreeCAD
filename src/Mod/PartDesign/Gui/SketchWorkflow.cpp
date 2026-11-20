@@ -366,8 +366,30 @@ private:
         auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selectedObject, sub, independent);
 
         addToBodyOrPart(copy);
+        placeCopyAtSource(copy, selectedObject, independent);
 
         return copy;
+    }
+
+    // makeCopy keeps the coordinates of the source, not those of the body or part holding the copy
+    void placeCopyAtSource(App::DocumentObject* copy, App::DocumentObject* source, bool independent)
+    {
+        auto* binder = freecad_cast<PartDesign::ShapeBinder*>(copy);
+        auto* feature = freecad_cast<App::GeoFeature*>(source);
+        if (!binder || !feature) {
+            return;
+        }
+        if (!independent) {
+            binder->TraceSupport.setValue(true);
+            return;
+        }
+
+        Base::Placement sourceCS = feature->globalPlacement()
+            * feature->Placement.getValue().inverse();
+        Base::Placement targetCS = binder->globalPlacement() * binder->Placement.getValue().inverse();
+        Part::TopoShape shape = binder->Shape.getShape();
+        shape.setPlacement(targetCS.inverse() * sourceCS * shape.getPlacement());
+        binder->Shape.setValue(shape);
     }
 
     std::string supportFromCopy(App::DocumentObject* copy)
