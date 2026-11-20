@@ -85,15 +85,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="tbSectionTwoPointsPartial">
-        <property name="toolTip"><string>Two points partial view</string></property>
-        <property name="text"><string>Two points partial view</string></property>
-        <property name="icon"><iconset resource="Resources/TechDraw.qrc"><normaloff>:/icons/actions/section-2points-partial.svg</normaloff>:/icons/actions/section-2points-partial.svg</iconset></property>
-        <property name="checkable"><bool>true</bool></property>
-        <property name="autoExclusive"><bool>true</bool></property>
-       </widget>
-      </item>
-      <item>
        <widget class="QToolButton" name="tbSectionCenterTwoPoints">
         <property name="toolTip"><string>Center and 2 points</string></property>
         <property name="text"><string>Center and 2 points</string></property>

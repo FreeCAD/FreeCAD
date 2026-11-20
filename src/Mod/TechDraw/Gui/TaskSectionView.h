@@ -89,7 +89,6 @@ public:
         CenterAndPoint,
         CenterAndTwoPoints,
         TwoPoints,
-        TwoPointsPartial,
         SketchBased
     };
 
@@ -113,10 +112,6 @@ public:
     void resetInteractivePreview();
     void updateTemporarySectionLine(const QPointF& center,
                                     const Base::Vector3d& displayedDirection);
-    void updateTemporarySectionLineFromEndpoints(
-        const QPointF& first,
-        const QPointF& second,
-        const Base::Vector3d& displayedDirection);
     void updateTemporarySectionLineEndpoint(
         const QPointF& center,
         const QPointF& endpoint,

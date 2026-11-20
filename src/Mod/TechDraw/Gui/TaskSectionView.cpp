@@ -972,7 +972,6 @@ void TaskSectionView::setUiCommon(const QPointF& center)
     connectPositionButton(ui->tbSectionVertical);
     connectPositionButton(ui->tbSectionCenterDirection);
     connectPositionButton(ui->tbSectionCenterPoint);
-    connectPositionButton(ui->tbSectionTwoPointsPartial);
     connectPositionButton(ui->tbSectionCenterTwoPoints);
     connectPositionButton(ui->tbSectionTwoPoints);
     connectPositionButton(ui->tbSectionSketchBased);
@@ -1291,9 +1290,6 @@ TaskSectionView::PositionMode TaskSectionView::positionMode() const
     if (ui->tbSectionCenterPoint->isChecked()) {
         return PositionMode::CenterAndPoint;
     }
-    if (ui->tbSectionTwoPointsPartial->isChecked()) {
-        return PositionMode::TwoPointsPartial;
-    }
     if (ui->tbSectionCenterTwoPoints->isChecked()) {
         return PositionMode::CenterAndTwoPoints;
     }
@@ -1554,30 +1550,6 @@ void TaskSectionView::updateTemporarySectionLine(
         m_temporaryEndAlong = bounds.second;
     }
     drawTemporarySingleOffset();
-}
-
-void TaskSectionView::updateTemporarySectionLineFromEndpoints(
-    const QPointF& first,
-    const QPointF& second,
-    const Base::Vector3d& displayedDirection)
-{
-    const double length = std::hypot(
-        second.x() - first.x(), second.y() - first.y());
-    if (length <= std::numeric_limits<double>::epsilon()) {
-        return;
-    }
-
-    // Unlike the center-based placement modes, Two points defines the actual
-    // finite extent of the section line. Mark both ends as explicitly placed
-    // before using the common updater so it does not replace them with the
-    // padded bounds of the base view.
-    m_temporaryStartAlong = -length * 0.5;
-    m_temporaryEndAlong = length * 0.5;
-    m_endpointsEdited = true;
-    m_startEndpointEdited = true;
-    m_endEndpointEdited = true;
-    updateTemporarySectionLine(
-        (first + second) * 0.5, displayedDirection);
 }
 
 void TaskSectionView::updateTemporarySectionLineEndpoint(
@@ -4928,11 +4900,7 @@ public:
                 m_direction = Base::Vector3d(1.0, 0.0, 0.0);
             }
             if (m_task->positionMode()
-                == TaskSectionView::PositionMode::TwoPointsPartial) {
-                updateFirstEndpointPreview(m_center, m_direction);
-            }
-            else if (m_task->positionMode()
-                     == TaskSectionView::PositionMode::CenterAndPoint) {
+                == TaskSectionView::PositionMode::CenterAndPoint) {
                 updateHalfPreview(m_center, m_direction);
             }
             else {
@@ -5053,10 +5021,7 @@ public:
             }
 
             const QPointF reference =
-                (positionMode
-                    == TaskSectionView::PositionMode::TwoPoints
-                 || positionMode
-                    == TaskSectionView::PositionMode::TwoPointsPartial)
+                positionMode == TaskSectionView::PositionMode::TwoPoints
                 ? m_firstPoint : m_center;
             QPointF delta = localPoint - reference;
             if (std::hypot(delta.x(), delta.y()) < 1.0) {
@@ -5104,10 +5069,7 @@ public:
                 }
             }
 
-            if (positionMode
-                    == TaskSectionView::PositionMode::TwoPoints
-                || positionMode
-                    == TaskSectionView::PositionMode::TwoPointsPartial) {
+            if (positionMode == TaskSectionView::PositionMode::TwoPoints) {
                 double length = QPointF::dotProduct(delta, tangent);
                 if (length < 0.0) {
                     tangent *= -1.0;
@@ -5120,15 +5082,7 @@ public:
                 tangent *= -1.0;
                 m_direction = Base::Vector3d(
                     -tangent.y(), -tangent.x(), 0.0);
-                if (positionMode
-                    == TaskSectionView::PositionMode::TwoPointsPartial) {
-                    m_task->updateTemporarySectionLineFromEndpoints(
-                        m_firstPoint, secondPoint, m_direction);
-                }
-                else {
-                    m_task->updateTemporarySectionLine(
-                        m_center, m_direction);
-                }
+                m_task->updateTemporarySectionLine(m_center, m_direction);
             }
             else {
                 m_direction = Base::Vector3d(
@@ -5176,9 +5130,7 @@ public:
             m_lockedOrigin = toSectionOrigin(m_center);
             m_task->adoptTemporarySectionLine(m_preview.release(), m_baseItem);
             if (m_task->positionMode()
-                    != TaskSectionView::PositionMode::TwoPoints
-                && m_task->positionMode()
-                    != TaskSectionView::PositionMode::TwoPointsPartial) {
+                != TaskSectionView::PositionMode::TwoPoints) {
                 if (m_task->positionMode()
                     == TaskSectionView::PositionMode::CenterAndPoint) {
                     const QPointF tangent(-m_direction.y, -m_direction.x);
@@ -5296,9 +5248,7 @@ private:
                         "%1 select base view for sketch-based section");
                 }
                 else if (m_task->positionMode()
-                             == TaskSectionView::PositionMode::TwoPoints
-                         || m_task->positionMode()
-                             == TaskSectionView::PositionMode::TwoPointsPartial) {
+                         == TaskSectionView::PositionMode::TwoPoints) {
                     action = QObject::tr(
                         "%1 place first section-line point");
                 }
@@ -5343,7 +5293,6 @@ private:
                     action = QObject::tr("%1 place first section-line point");
                     break;
                 case TaskSectionView::PositionMode::TwoPoints:
-                case TaskSectionView::PositionMode::TwoPointsPartial:
                     action = QObject::tr("%1 place second section-line point");
                     break;
                 default:
@@ -5545,44 +5494,6 @@ private:
         m_preview->setEnds(Base::Vector3d(start.x(), start.y(), 0.0),
                            Base::Vector3d(end.x(), end.y(), 0.0));
         m_preview->setDirection(sceneDirection.x(), -sceneDirection.y());
-        m_preview->draw();
-    }
-
-    void updateFirstEndpointPreview(
-        const QPointF& endpoint,
-        const Base::Vector3d& direction)
-    {
-        if (!m_preview || !m_baseItem) {
-            return;
-        }
-
-        QPointF tangent(-direction.y, -direction.x);
-        const double tangentLength = std::hypot(
-            tangent.x(), tangent.y());
-        if (tangentLength
-            <= std::numeric_limits<double>::epsilon()) {
-            return;
-        }
-        tangent /= tangentLength;
-        const auto bounds = sectionLineBounds(
-            m_baseItem, endpoint, direction);
-        const double length = bounds.second - bounds.first;
-        // Keep the visual left end under the cursor while seeking the first
-        // point. Reordering identical endpoints does not change the displayed
-        // segment; the provisional far end must be placed on the opposite
-        // side of the cursor. The committed Two points ordering is unchanged.
-        const QPointF start = m_baseItem->mapToScene(
-            endpoint - tangent * length);
-        const QPointF end = m_baseItem->mapToScene(endpoint);
-        const QPointF directionStart = end;
-        const QPointF arrowEnd = m_baseItem->mapToScene(
-            endpoint + QPointF(direction.x, -direction.y));
-        const QPointF sceneDirection = arrowEnd - directionStart;
-        m_preview->setEnds(
-            Base::Vector3d(start.x(), start.y(), 0.0),
-            Base::Vector3d(end.x(), end.y(), 0.0));
-        m_preview->setDirection(
-            sceneDirection.x(), -sceneDirection.y());
         m_preview->draw();
     }
 
