@@ -397,15 +397,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         mode = "G99" if obj.KeepToolDown else "G98"
 
-        # Validate that SafeHeight doesn't exceed ClearanceHeight
         safe_height = obj.SafeHeight.Value
         clear_height = obj.ClearanceHeight.Value
-        if safe_height > clear_height:
-            Path.Log.warning(
-                f"SafeHeight ({safe_height}) is above ClearanceHeight ({clear_height}). "
-                f"Using ClearanceHeight instead."
-            )
-            safe_height = clear_height
 
         # PeckRetract (R) only applies to peck cycles; a non-peck cycle just retracts
         # to SafeHeight like it did before PeckRetract existed. An R at or below the
@@ -578,12 +571,27 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         Path.Log.track()
         machinestate = PathMachineState.MachineState()
 
-        if not hasattr(obj.ToolController.Tool, "Pitch"):
+        # Get pitch in mm as a float (no unit string)
+        pitch = float(getattr(obj.ToolController.Tool, "Pitch", 0))
+        if not pitch:
+            Path.Log.error(
+                translate(
+                    "CAM_Drilling", "%s: Tapping strategy requires a Tap tool with non-zero Pitch"
+                )
+                % obj.Label
+            )
+            return
+
+        spindle_speed = getattr(obj.ToolController, "SpindleSpeed", 0)
+        print("spindle_speed", spindle_speed)
+        if not spindle_speed:
+            print("  not spindle_speed")
             Path.Log.error(
                 translate(
                     "CAM_Drilling",
-                    "Tapping strategy requires a Tap tool with Pitch",
+                    "%s: Tapping strategy requires a ToolController with non-zero SpindleSpeed",
                 )
+                % obj.Label
             )
             return
 
@@ -592,15 +600,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Determine retract mode
         mode = "G99" if obj.KeepToolDown else "G98"
 
-        # Validate that SafeHeight doesn't exceed ClearanceHeight
         safe_height = obj.SafeHeight.Value
         clear_height = obj.ClearanceHeight.Value
-        if safe_height > clear_height:
-            Path.Log.warning(
-                f"SafeHeight ({safe_height}) is above ClearanceHeight ({clear_height}). "
-                f"Using ClearanceHeight instead."
-            )
-            safe_height = clear_height
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
@@ -649,27 +650,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             isRightHand = (
                 getattr(obj.ToolController.Tool, "SpindleDirection", "Forward") == "Forward"
             )
-
-            # Get pitch in mm as a float (no unit string)
-            pitch = getattr(obj.ToolController.Tool, "Pitch", None)
-            if pitch is None or pitch == 0:
-                Path.Log.error(
-                    translate(
-                        "CAM_Drilling",
-                        "Tapping strategy requires a Tap tool with non-zero Pitch",
-                    )
-                )
-                continue
-
-            spindle_speed = getattr(obj.ToolController, "SpindleSpeed", None)
-            if spindle_speed is None or spindle_speed == 0:
-                Path.Log.error(
-                    translate(
-                        "CAM_Drilling",
-                        "Tapping strategy requires a ToolController with non-zero SpindleSpeed",
-                    )
-                )
-                continue
 
             # Save Z position before canned cycle for G98 retract
             z_before_cycle = machinestate.Z
