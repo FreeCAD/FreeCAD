@@ -5,6 +5,7 @@
 #include <limits>
 #include <set>
 #include <unordered_set>
+#include <Precision.hxx>
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -51,7 +52,16 @@ int SketchObject::addLayer(const std::string& name)
 {
     const auto layers = getLayers();
     validateLayerName(name, layers, -1);
-    const long next = std::max(NextLayerId.getValue(), static_cast<long>(layers.rbegin()->first) + 1);
+    long next = std::max(NextLayerId.getValue(), static_cast<long>(layers.rbegin()->first) + 1);
+    // Never hand out an id still stored on geometry, e.g. after a round trip through a
+    // FreeCAD version that keeps geometryLayer but drops Layers and NextLayerId: that
+    // geometry would silently join the new layer.
+    for (const auto* list : {&Geometry, &ExternalGeo}) {
+        for (const auto* geo : list->getValues()) {
+            const long stored = GeometryFacade::getFacade(geo)->getGeometryLayerId();
+            next = std::max(next, stored + 1);
+        }
+    }
     if (next >= std::numeric_limits<int>::max()) {
         throw Base::ValueError("Too many sketch layers");
     }
@@ -240,6 +250,12 @@ bool SketchObject::constraintUsesLayers(const Constraint* constraint) const
     return true;
 }
 
+bool SketchObject::constraintAcceptedByLayers(const Constraint* constraint) const
+{
+    return constraint->Type == InternalAlignment || constraint->Type == Group
+        || constraint->Type == Text || constraintUsesLayers(constraint);
+}
+
 void SketchObject::checkGeometryUnlocked(int geoId) const
 {
     if (geoId == GeoEnum::GeoUndef || geoId == GeoEnum::HAxis || geoId == GeoEnum::VAxis) {
@@ -297,10 +313,13 @@ void PropertyLayerGeometryList::validateValue(const std::vector<Part::Geometry*>
             throw Base::ValueError("Cannot delete geometry on a locked layer");
         }
         const auto replacement = GeometryFacade::getFacade(found->second);
+        // The solver writes locked geometry back too; conics lose a few ulps of their
+        // coordinates on that round trip, which far from the origin exceeds 1e-12.
         if (old->getGeometryLayerId() != replacement->getGeometryLayerId()
             || old->getConstruction() != replacement->getConstruction()
             || old->getInternalType() != replacement->getInternalType()
-            || (!followsLinks && !geo->isSame(*found->second, 1e-12, 1e-12))) {
+            || (!followsLinks
+                && !geo->isSame(*found->second, Precision::Confusion(), Precision::Confusion()))) {
             throw Base::ValueError("Cannot modify geometry on a locked layer");
         }
     }

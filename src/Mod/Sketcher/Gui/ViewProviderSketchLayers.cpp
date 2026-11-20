@@ -126,37 +126,39 @@ void ViewProviderSketch::setLayerVisible(int layerId, bool visible)
 
 void ViewProviderSketch::refreshLayers()
 {
+    // Property defaults notify during construction, before attach() supplies the sketch.
+    const auto* sketch = getSketchObject();
+    if (!sketch || !sketch->getDocument()) {
+        return;
+    }
+
     if (isInEditMode()) {
-        const auto selection = Gui::Selection().getSelectionEx(
-            getSketchObject()->getDocument()->getName()
+        const auto selection = Gui::Selection().getSelectionT(
+            sketch->getDocument()->getName(),
+            Gui::ResolveMode::NoResolve
         );
         for (const auto& object : selection) {
-            if (object.getObject() != getSketchObject()) {
+            if (object.getSubObject() != sketch) {
                 continue;
             }
-            for (const auto& name : object.getSubNames()) {
-                int id;
-                Sketcher::PointPos pos;
-                bool hidden = getSketchObject()->geoIdFromShapeType(name.c_str(), id, pos)
-                    && !isGeometryVisible(id);
-                if (name.starts_with("Constraint")) {
-                    const int index = Sketcher::PropertyConstraintList::getIndexFromConstraintName(
-                        name
-                    );
-                    const auto& constraints = getSketchObject()->Constraints.getValues();
-                    hidden = index >= 0 && index < static_cast<int>(constraints.size())
-                        && !isConstraintVisible(constraints[index]);
-                }
-                if (hidden) {
-                    // Interactive selections use the mapped name on the edit path.
-                    rmvSelection(name);
-                    // Scripts can also select the sketch directly with an unmapped name.
-                    Gui::Selection().rmvSelection(
-                        getSketchObject()->getDocument()->getName(),
-                        getSketchObject()->getNameInDocument(),
-                        name.c_str()
-                    );
-                }
+            const std::string name = object.getElementName();
+            int id;
+            Sketcher::PointPos pos;
+            bool hidden = sketch->geoIdFromShapeType(name.c_str(), id, pos) && !isGeometryVisible(id);
+            if (name.starts_with("Constraint")) {
+                const int index = Sketcher::PropertyConstraintList::getIndexFromConstraintName(name);
+                const auto& constraints = sketch->Constraints.getValues();
+                hidden = index >= 0 && index < static_cast<int>(constraints.size())
+                    && !isConstraintVisible(constraints[index]);
+            }
+            if (hidden) {
+                // Remove the selection by its own path (the sketch itself, or the Body that
+                // owns it in edit mode) and element spelling (raw or mapped).
+                Gui::Selection().rmvSelection(
+                    object.getDocumentName().c_str(),
+                    object.getObjectName().c_str(),
+                    object.getSubName().c_str()
+                );
             }
         }
         Gui::Selection().rmvPreselect();

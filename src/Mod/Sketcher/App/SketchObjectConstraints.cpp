@@ -869,12 +869,11 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
 
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
 
+    // Layer suppression is applied by the solver, not here: managed operations
+    // (trim, split, fillet, ...) rebuild existing constraints through this
+    // function and must not lose those that are merely suppressed.
     std::vector<Constraint*> newVals(vals);
-    for (auto* constraint : ConstraintList) {
-        if (constraintUsesLayers(constraint)) {
-            newVals.push_back(constraint);
-        }
-    }
+    newVals.insert(newVals.end(), ConstraintList.begin(), ConstraintList.end());
     for (std::size_t i = vals.size(); i < newVals.size(); i++) {
         Constraint* cnew = newVals[i]->clone();
         newVals[i] = cnew;
@@ -947,9 +946,6 @@ int SketchObject::addConstraint(const Constraint* constraint)
 
 int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 {
-    if (!constraintUsesLayers(constraint.get())) {
-        return -1;
-    }
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 

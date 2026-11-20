@@ -31,6 +31,17 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         finally:
             self.layerPrefs.SetBool("ShowLayers", self.previousShowLayers)
 
+    def testCreationInitializesViewProvider(self):
+        # VisualLayerList changes while the view provider is still being
+        # constructed and has no sketch object attached to it yet.
+        Gui.activeDocument().resetEdit()
+        self.flush_gui()
+        created = self.doc.addObject("Sketcher::SketchObject", "NewSketch")
+        self.assertIsNotNone(created.ViewObject)
+        self.assertEqual(created.GeometryCount, 0)
+        self.assertEqual(created.Layers, {"0": "Default"})
+        self.assertEqual(created.ViewObject.HiddenLayers, [])
+
     @staticmethod
     def item_id(item):
         # The generic layer widget keeps string ids; -1 stands for its "Add Layer" row.
@@ -44,6 +55,15 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             for i in range(self.tree.topLevelItemCount())
             if self.item_id(self.tree.topLevelItem(i)) == layer
         )
+
+    def layer_settings_control(self):
+        checkbox = Gui.getMainWindow().findChild(QtGui.QCheckBox, "showSketchLayersCheckbox")
+        self.assertIsNotNone(checkbox)
+        menu = checkbox.parentWidget()
+        while menu is not None and not isinstance(menu, QtGui.QMenu):
+            menu = menu.parentWidget()
+        self.assertIsNotNone(menu)
+        return checkbox, menu
 
     def remove_layer(
         self, layer, destination=0, delete=False, cancel=False, context=False, populated=True
@@ -158,13 +178,22 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         s.addExternal(source.Name, "Edge1")
         s.setGeometryLayer([-3], layer)
         self.doc.recompute()
-        # Explicit layer selection includes its hidden geometry and constraints.
+        # Hidden geometry stays unselected so that Delete cannot remove items
+        # the user cannot see. Showing the layer makes its contents selectable.
         s.ViewObject.HiddenLayers = [layer]
         self.flush_gui(100)
 
         def selected():
             return {name for obj in Gui.Selection.getSelectionEx() for name in obj.SubElementNames}
 
+        self.layer_action(layer, "Select Layer Geometry")
+        self.assertEqual(selected(), set())
+        self.layer_action(layer, "Select Layer Constraints")
+        self.assertEqual(selected(), set())
+        self.layer_action(layer, "Select Layer Contents")
+        self.assertEqual(selected(), set())
+        s.ViewObject.HiddenLayers = []
+        self.flush_gui(100)
         self.layer_action(layer, "Select Layer Geometry")
         geometry = selected()
         self.assertIn("Edge1", geometry)
@@ -353,17 +382,16 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.assertTrue(curves_shown())
         self.assertEqual(s.ViewObject.HiddenLayers, [layer])
         Gui.Selection.addSelection(s, "Edge1")
-        action = Gui.getMainWindow().findChild(QtGui.QAction, "showSketchLayers")
-        self.assertIsNotNone(action)
-        action.parent().aboutToShow.emit()
-        self.assertFalse(action.isChecked())
-        action.trigger()
+        checkbox, menu = self.layer_settings_control()
+        menu.aboutToShow.emit()
+        self.assertFalse(checkbox.isChecked())
+        checkbox.click()
         self.flush_gui(100)
         self.assertTrue(self.layerPrefs.GetBool("ShowLayers"))
         self.assertTrue(box.isVisible())
         self.assertFalse(curves_shown())
         self.assertFalse(Gui.Selection.getSelectionEx())
-        action.trigger()
+        checkbox.click()
         self.flush_gui(100)
         self.assertFalse(box.isVisible())
         self.assertTrue(curves_shown())
@@ -599,6 +627,42 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.flush_gui(100)
         selected = {name for obj in Gui.Selection.getSelectionEx() for name in obj.SubElementNames}
         self.assertEqual(selected, {"Edge2", "Constraint2"})
+
+    def testHideDeselectsRawAndMappedBodyPaths(self):
+        s = self.sketch
+        Gui.activeDocument().resetEdit()
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        body.addObject(s)
+        s.addGeometry(Part.LineSegment(App.Vector(30, 0, 0), App.Vector(40, 0, 0)))
+        layer = s.addLayer("Hidden profile")
+        s.setGeometryLayer([0], layer)
+        self.doc.recompute()
+        self.assertTrue(Gui.activeDocument().setEdit(body.Name, 0, s.Name + "."))
+        self.flush_gui(100)
+        self.tree = Gui.getMainWindow().findChild(QtGui.QTreeWidget, "sketchLayers")
+        self.layer_action(layer, "Select Layer Geometry")
+        mapped = Gui.Selection.getSelectionEx(self.doc.Name, 0)
+        self.assertEqual(len(mapped), 1)
+        self.assertEqual(mapped[0].Object, body)
+        mapped_path = mapped[0].SubElementNames[0]
+        self.assertTrue(mapped_path.startswith(s.Name + "."), mapped_path)
+
+        for root, path in ((s, "Edge1"), (body, s.Name + ".Edge1"), (body, mapped_path)):
+            with self.subTest(root=root.Name, path=path):
+                s.ViewObject.HiddenLayers = []
+                Gui.Selection.clearSelection()
+                Gui.Selection.addSelection(root, path)
+                Gui.Selection.addSelection(s, "Edge2")
+                before = {
+                    name for obj in Gui.Selection.getSelectionEx() for name in obj.SubElementNames
+                }
+                self.assertEqual(before, {"Edge1", "Edge2"})
+                s.ViewObject.HiddenLayers = [layer]
+                self.flush_gui(100)
+                selected = {
+                    name for obj in Gui.Selection.getSelectionEx() for name in obj.SubElementNames
+                }
+                self.assertEqual(selected, {"Edge2"})
 
     def testGeometryContextMenu(self):
         s = self.sketch
@@ -1115,8 +1179,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         self.assertNotEqual(s.Geometry[0].Content, before)
 
     def testShowLayersCheckboxAlignment(self):
-        action = Gui.getMainWindow().findChild(QtGui.QAction, "showSketchLayers")
-        menu = action.parent()
+        checkbox, menu = self.layer_settings_control()
         menu.popup(Gui.getMainWindow().mapToGlobal(QtCore.QPoint(100, 100)))
         try:
             self.flush_gui(100)
@@ -1129,7 +1192,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
             boxes["Show layers"].click()
             self.flush_gui(100)
             self.assertFalse(self.layerPrefs.GetBool("ShowLayers"))
-            self.assertFalse(action.isChecked())
+            self.assertFalse(checkbox.isChecked())
         finally:
             menu.close()
 

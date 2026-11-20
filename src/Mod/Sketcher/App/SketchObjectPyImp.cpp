@@ -492,6 +492,9 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
             PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
             return nullptr;
         }
+        if (!this->getSketchObjectPtr()->constraintAcceptedByLayers(constr)) {
+            return Py::new_reference_to(Py::Long(-1));
+        }
         int ret = this->getSketchObjectPtr()->addConstraint(constr);
         // this solve is necessary because:
         // 1. The addition of constraint is part of a command addition
@@ -540,17 +543,21 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
                 return nullptr;
             }
         }
-        int ret = getSketchObjectPtr()->addConstraints(values) + 1;
+        std::vector<Constraint*> accepted;
+        for (auto* constraint : values) {
+            if (getSketchObjectPtr()->constraintAcceptedByLayers(constraint)) {
+                accepted.push_back(constraint);
+            }
+        }
+        int nextId = getSketchObjectPtr()->Constraints.getSize();
+        if (!accepted.empty()) {
+            getSketchObjectPtr()->addConstraints(accepted);
+        }
         std::size_t numCon = values.size();
         Py::Tuple tuple(numCon);
-        int accepted = 0;
-        for (auto* constraint : values) {
-            accepted += getSketchObjectPtr()->constraintUsesLayers(constraint);
-        }
-        int nextId = ret - accepted;
         for (std::size_t i = 0; i < numCon; ++i) {
-            const int conId = getSketchObjectPtr()->constraintUsesLayers(values[i]) ? nextId++ : -1;
-            tuple.setItem(i, Py::Long(conId));
+            const bool added = getSketchObjectPtr()->constraintAcceptedByLayers(values[i]);
+            tuple.setItem(i, Py::Long(added ? nextId++ : -1));
         }
         return Py::new_reference_to(tuple);
     }

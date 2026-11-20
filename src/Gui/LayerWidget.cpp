@@ -972,8 +972,11 @@ QComboBox* LayerWidget::patternPicker(const LayerInfo* layer)
             layerModel->defaultsGroup()->SetInt(PatternKey, static_cast<long>(pattern));
             return;
         }
-        applyChange(QT_TRANSLATE_NOOP("Command", "Change layer pattern"), [this, id, pattern]() {
-            layerModel->setLayerPattern(id, pattern);
+        // Rebuilding the list must happen after the combo box's own event handling.
+        QTimer::singleShot(0, this, [this, id, pattern]() {
+            applyChange(QT_TRANSLATE_NOOP("Command", "Change layer pattern"), [this, id, pattern]() {
+                layerModel->setLayerPattern(id, pattern);
+            });
         });
     });
     return picker;

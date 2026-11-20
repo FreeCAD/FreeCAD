@@ -112,6 +112,9 @@ public:
     bool layerUsesConstraints(int layerId) const;
     bool geometryUsesConstraints(int geoId) const;
     bool constraintUsesLayers(const Constraint* constraint) const;
+    /// Whether a user may add *constraint* given the layers' "Use constraints" state.
+    /// Structural constraints (internal alignment, groups, text) are always accepted.
+    bool constraintAcceptedByLayers(const Constraint* constraint) const;
     void checkGeometryUnlocked(int geoId) const;
     std::set<int> getLockedGeometry() const;
     std::set<int> getUnconstrainedGeometry() const;

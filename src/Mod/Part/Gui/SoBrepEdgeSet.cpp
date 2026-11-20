@@ -809,6 +809,7 @@ void SoBrepEdgeSet::setEdgeMapping(std::vector<int> lineToEdgeIn)
 {
     lineToEdge = std::move(lineToEdgeIn);
     hasEdgeMapping = true;
+    patternsDirty = true;
 
     int maxEdge = 0;
     for (int edge : lineToEdge) {

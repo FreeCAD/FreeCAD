@@ -4,6 +4,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <QTimer>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -525,9 +526,17 @@ LayerWidgetPy::LayerWidgetPy(const Py::Object& adapter)
 
 LayerWidgetPy::~LayerWidgetPy()
 {
-    // Once shown in a panel, the widget belongs to it.
+    // Once shown in a panel, the widget belongs to it. The usual idiom
+    // `self.form = LayerWidget(adapter).form` releases this object before the
+    // panel takes the widget, so decide only once control is back in the event
+    // loop; a posted deleteLater() would not be cancelled by a later setParent().
     if (widget && !widget->parent()) {
-        widget->deleteLater();
+        QPointer<LayerWidget> w = widget;
+        QTimer::singleShot(0, w, [w]() {
+            if (w && !w->parent() && !w->isVisible()) {
+                delete w.data();
+            }
+        });
     }
 }
 

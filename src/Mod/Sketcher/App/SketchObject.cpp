@@ -750,6 +750,11 @@ SketchSolveStatus SketchObject::setTextAndFont(
     bool hasExistingText = firstTextGeoId != GeoEnum::GeoUndef;
     bool handleLast = handleGeoId > firstTextGeoId;
 
+    // The glyphs belong to the handle's layer, not to the active one. Refuse a locked
+    // layer before anything is deleted.
+    checkGeometryUnlocked(handleGeoId);
+    const int textLayer = getGeometryLayer(handleGeoId);
+
     if (hasExistingText) {
         // Check if text is construction or normal geos
         auto* geo1 = getGeometry(firstTextGeoId);
@@ -796,6 +801,7 @@ SketchSolveStatus SketchObject::setTextAndFont(
         if (isConstruction) {
             Sketcher::GeometryFacade::setConstruction(geo_ptr.get(), isConstruction);
         }
+        Sketcher::GeometryFacade::getFacade(geo_ptr.get())->setGeometryLayerId(textLayer);
         // Add the raw pointer to the new vector.
         newGeosRawPtrs.push_back(geo_ptr.get());
         // Release ownership from the unique_ptr. The SketchObject will now manage this memory.
