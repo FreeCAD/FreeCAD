@@ -29,7 +29,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide.QtGui import QFileDialog
 from Path import Preferences
 from Path.Post.Utils import apply_path_substitutions
-from PathScripts.PathUtils import findParentJob
+from PathScripts import PathUtils
 import FreeCAD
 import FreeCADGui
 import Path
@@ -56,15 +56,17 @@ class CommandCAMSanity:
         }
 
     def IsActive(self):
-        if not (selection := FreeCADGui.Selection.getSelection()):
-            return False
-        return bool(findParentJob(selection[0]))
+        return bool(PathUtils.GetJobs())
 
     def Activated(self):
-        if not (selection := FreeCADGui.Selection.getSelection()):
-            return False
-        if not (job := findParentJob(selection[0])):
-            return False
+        job = None
+        if not job and (selection := FreeCADGui.Selection.getSelection()):
+            job = PathUtils.findParentJob(selection[0])
+        if not job and (jobs := PathUtils.GetJobs()):
+            job = PathUtils.UserInput.chooseJob(jobs)
+        if not job:
+            Path.Log.info(translate("CAM_Sanity", "Sanity Check not executed. Job not defined"))
+            return
 
         # Ask the user for a filename to save the report to
 
@@ -130,15 +132,17 @@ class CommandCAMQuickValidate:
         }
 
     def IsActive(self):
-        if not (selection := FreeCADGui.Selection.getSelection()):
-            return False
-        return bool(findParentJob(selection[0]))
+        return bool(PathUtils.GetJobs())
 
     def Activated(self):
-        if not (selection := FreeCADGui.Selection.getSelection()):
-            return False
-        if not (job := findParentJob(selection[0])):
-            return False
+        job = None
+        if not job and (selection := FreeCADGui.Selection.getSelection()):
+            job = PathUtils.findParentJob(selection[0])
+        if not job and (jobs := PathUtils.GetJobs()):
+            job = PathUtils.UserInput.chooseJob(jobs)
+        if not job:
+            Path.Log.info(translate("CAM_Sanity", "Sanity Check not executed. Job not defined"))
+            return
 
         try:
             all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(job)
