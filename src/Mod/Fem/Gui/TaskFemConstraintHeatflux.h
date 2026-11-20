@@ -64,6 +64,11 @@ private Q_SLOTS:
     void onEmissivityChanged(double val);
     void onHeatFluxChanged(double val);
     void onConstrTypeChanged(int val);
+    void onFluxDistributionChanged(int val);
+    void onTableSourceChanged(int val);
+    void onTableSheetChanged(int val);
+    void onTableFileChanged(const QString& fileName);
+    void onTableRowsChanged();
     void Conv();
     void Rad();
     void Flux();
@@ -76,6 +81,7 @@ protected:
 
 private:
     void updateUI();
+    void updateTableWidgets();
     std::unique_ptr<Ui_TaskFemConstraintHeatflux> ui;
 };
 

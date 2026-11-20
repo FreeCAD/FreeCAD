@@ -28,11 +28,14 @@
 
 #include <QAction>
 #include <QMessageBox>
+#include <QPlainTextEdit>
 #include <limits>
 #include <sstream>
 
 
+#include <App/Document.h>
 #include <Gui/Command.h>
+#include <Gui/FileDialog.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintHeatflux.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -146,6 +149,68 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
 
     ui->qsb_heat_flux->setValue(pcConstraint->DistributedHeatFlux.getQuantityValue());
 
+    // Heat flux given at points, filled before the signals are connected
+    for (const auto& item : pcConstraint->FluxDistribution.getEnumVector()) {
+        ui->cb_flux_distribution->addItem(QString::fromUtf8(item.c_str()));
+    }
+    ui->cb_flux_distribution->setCurrentIndex(pcConstraint->FluxDistribution.getValue());
+    for (const auto& item : pcConstraint->TableSource.getEnumVector()) {
+        ui->cb_table_source->addItem(QString::fromUtf8(item.c_str()));
+    }
+    ui->cb_table_source->setCurrentIndex(pcConstraint->TableSource.getValue());
+    ui->cb_table_sheet->addItem(QString());
+    App::Document* doc = pcConstraint->getDocument();
+    for (auto sheet : doc->getObjectsOfType(Base::Type::fromName("Spreadsheet::Sheet"))) {
+        ui->cb_table_sheet->addItem(
+            QString::fromUtf8(sheet->Label.getValue()),
+            QString::fromUtf8(sheet->getNameInDocument())
+        );
+    }
+    if (App::DocumentObject* sheet = pcConstraint->TableSheet.getValue()) {
+        ui->cb_table_sheet->setCurrentIndex(
+            ui->cb_table_sheet->findData(QString::fromUtf8(sheet->getNameInDocument()))
+        );
+    }
+    ui->fc_table_file->setFilter(tr("CSV files (*.csv);;All files (*)"));
+    ui->fc_table_file->setFileName(QString::fromUtf8(pcConstraint->TableFile.getValue()));
+    QStringList rows;
+    for (const auto& row : pcConstraint->TableRows.getValues()) {
+        rows << QString::fromUtf8(row.c_str());
+    }
+    ui->pte_table_rows->setPlainText(rows.join(QLatin1Char('\n')));
+    updateTableWidgets();
+
+    connect(
+        ui->cb_flux_distribution,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintHeatflux::onFluxDistributionChanged
+    );
+    connect(
+        ui->cb_table_source,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintHeatflux::onTableSourceChanged
+    );
+    connect(
+        ui->cb_table_sheet,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintHeatflux::onTableSheetChanged
+    );
+    connect(
+        ui->fc_table_file,
+        &FileChooser::fileNameChanged,
+        this,
+        &TaskFemConstraintHeatflux::onTableFileChanged
+    );
+    connect(
+        ui->pte_table_rows,
+        &QPlainTextEdit::textChanged,
+        this,
+        &TaskFemConstraintHeatflux::onTableRowsChanged
+    );
+
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -214,6 +279,64 @@ void TaskFemConstraintHeatflux::onHeatFluxChanged(double val)
 {
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     pcConstraint->DistributedHeatFlux.setValue(val);
+}
+
+void TaskFemConstraintHeatflux::onFluxDistributionChanged(int val)
+{
+    ConstraintView->getObject<Fem::ConstraintHeatflux>()->FluxDistribution.setValue(val);
+    updateTableWidgets();
+}
+
+void TaskFemConstraintHeatflux::onTableSourceChanged(int val)
+{
+    ConstraintView->getObject<Fem::ConstraintHeatflux>()->TableSource.setValue(val);
+    updateTableWidgets();
+}
+
+void TaskFemConstraintHeatflux::onTableSheetChanged(int val)
+{
+    auto pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
+    QString name = ui->cb_table_sheet->itemData(val).toString();
+    App::DocumentObject* sheet = nullptr;
+    if (!name.isEmpty()) {
+        sheet = pcConstraint->getDocument()->getObject(name.toUtf8().constData());
+    }
+    pcConstraint->TableSheet.setValue(sheet);
+}
+
+void TaskFemConstraintHeatflux::onTableFileChanged(const QString& fileName)
+{
+    ConstraintView->getObject<Fem::ConstraintHeatflux>()->TableFile.setValue(
+        fileName.toUtf8().constData()
+    );
+}
+
+void TaskFemConstraintHeatflux::onTableRowsChanged()
+{
+    std::vector<std::string> rows;
+    const QStringList lines = ui->pte_table_rows->toPlainText().split(QLatin1Char('\n'));
+    for (const QString& line : lines) {
+        if (!line.trimmed().isEmpty()) {
+            rows.push_back(line.trimmed().toStdString());
+        }
+    }
+    ConstraintView->getObject<Fem::ConstraintHeatflux>()->TableRows.setValues(rows);
+}
+
+void TaskFemConstraintHeatflux::updateTableWidgets()
+{
+    // Only the widgets of the chosen distribution and table source are shown
+    const bool table = ui->cb_flux_distribution->currentIndex() == 1;
+    const int source = ui->cb_table_source->currentIndex();
+    ui->lbl_heat_flux->setVisible(!table);
+    ui->qsb_heat_flux->setVisible(!table);
+    ui->lbl_table_source->setVisible(table);
+    ui->cb_table_source->setVisible(table);
+    ui->lbl_table_sheet->setVisible(table && source == 0);
+    ui->cb_table_sheet->setVisible(table && source == 0);
+    ui->pte_table_rows->setVisible(table && source == 1);
+    ui->lbl_table_file->setVisible(table && source == 2);
+    ui->fc_table_file->setVisible(table && source == 2);
 }
 
 void TaskFemConstraintHeatflux::Conv()
