@@ -99,7 +99,7 @@
          "Specify how to handle open wires. 'None' means combine without openeration.\n"           \
          "'Edges' means separate to edges before Union. ClipperLib seems to have an.\n"            \
          "urge to close open wires.",                                                              \
-         (None)(Union)(Edges)))AREA_PARAMS_DEFLECTION AREA_PARAMS_CLIPPER_FILL
+         (None)(Union)(Edges)))AREA_PARAMS_DEFLECTION
 
 #define AREA_PARAMS_FIT_ARCS ((bool, fit_arcs, FitArcs, true, "Enable arc fitting"))
 
@@ -119,7 +119,7 @@
              "ClipperLib operate on integers. This is the scale factor to convert\n" \
              "floating points.", \
              App::PropertyFloat) \
-        )
+        ) AREA_PARAMS_CLIPPER_FILL
 
 /** Pocket parameters
  *
