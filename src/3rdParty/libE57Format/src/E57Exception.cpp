@@ -253,7 +253,7 @@ namespace e57
          case ErrorHomogeneousViolation:
             return "attempted to add an E57 Element that would have made the children of a "
                    "homogeneous Vector have "
-                   "different types (E57_ERROR_HOMOGENEOUS_VIOLATION)";
+                   "different types (ErrorHomogeneousViolation)";
          case ErrorValueNotRepresentable:
             return "a value could not be represented in the requested type "
                    "(ErrorValueNotRepresentable)";
@@ -361,6 +361,17 @@ namespace e57
          case ErrorData3DReadInvalidZeroRecords:
             return "trying to read an invalid Data3D with zero records - check for zero records "
                    "before trying to read this Data3D section (ErrorInvalidZeroRecordsData3D)";
+
+         case ErrorPathNameEmpty:
+            return "E57 path name is empty (ErrorPathNameEmpty)";
+         case ErrorPathNameMalformed:
+            return "E57 path name is not well formed (ErrorPathNameMalformed)";
+         case ErrorPathNameExtensionNotRegistered:
+            return "E57 path name uses an unregistered extension "
+                   "(ErrorPathNameExtensionNotRegistered)";
+
+         case ErrorBadInputDataSize:
+            return "file or buffer size is not an integral multiple of 1024 bytes";
 
          default:
             return "unknown error (" + std::to_string( ecode ) + ")";

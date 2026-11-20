@@ -301,6 +301,11 @@ CompressedVectorNode::writer
 */
 Node CompressedVectorNode::prototype() const
 {
+   if ( impl_->getPrototype() == nullptr )
+   {
+      throw E57_EXCEPTION2( ErrorBadPrototype, "(missing prototype section)" );
+   }
+
    return Node( impl_->getPrototype() );
 }
 
