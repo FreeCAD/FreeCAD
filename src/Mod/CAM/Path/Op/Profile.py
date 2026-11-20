@@ -105,15 +105,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyEnumeration",
-                "HandleMultipleFeatures",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Choose how to process multiple Base Geometry features.",
-                ),
-            ),
-            (
                 "App::PropertyDistance",
                 "OffsetExtra",
                 "Profile",
@@ -268,10 +259,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "CW"), "CW"),
                 (translate("PathProfile", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
-            "HandleMultipleFeatures": [
-                (translate("PathProfile", "Collectively"), "Collectively"),
-                (translate("PathProfile", "Individually"), "Individually"),
-            ],
             "Side": [
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
@@ -306,7 +293,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         for the operation's properties."""
         return {
             "Direction": "CW",
-            "HandleMultipleFeatures": "Individually",
             "OffsetExtra": 0.0,
             "Side": "Outside",
             "UseComp": True,
