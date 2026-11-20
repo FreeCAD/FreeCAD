@@ -14,6 +14,7 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <App/GeoFeature.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Document.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <GeomAPI_Interpolate.hxx>
@@ -27,6 +28,7 @@
 #include <TColStd_HArray1OfReal.hxx>
 #include <TColStd_HArray1OfBoolean.hxx>
 #include <Base/Exception.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FeatureFreehandBSpline.h"
 
@@ -236,6 +238,14 @@ TopoDS_Shape supportShape(App::DocumentObject* object, const std::string& name)
             | Part::ShapeOption::NeedSubElement,
         name.c_str()
     );
+    // Transform only applies the reference's own placement. Add the placement of the parts or
+    // bodies containing it to work in global coordinates, like the global placement of the curve.
+    auto group = App::GeoFeatureGroupExtension::getGroupOfObject(object);
+    if (group && !shape.IsNull()) {
+        const auto placement
+            = group->getExtensionByType<App::GeoFeatureGroupExtension>()->globalGroupPlacement();
+        shape.Move(Part::Tools::fromPlacement(placement));
+    }
     if (!shape.IsNull() && (shape.ShapeType() == TopAbs_WIRE || shape.ShapeType() == TopAbs_COMPOUND)
         && !TopExp_Explorer(shape, TopAbs_FACE).More()) {
         TopExp_Explorer edges(shape, TopAbs_EDGE);

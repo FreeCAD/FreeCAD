@@ -304,7 +304,7 @@ class TestFreehandBSplineGui(unittest.TestCase):
                             self.Core.Qt.NoModifier,
                         )
                         self.Widgets.QApplication.sendEvent(spin, event)
-            self.fail("Could not click coordinate " + axis)
+            raise self.failureException("Could not click coordinate " + axis)
 
         spin = find_editor("X")
         self.assertTrue(self.gl.rect().contains(spin.geometry()))

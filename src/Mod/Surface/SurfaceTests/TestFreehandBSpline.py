@@ -17,7 +17,7 @@ class TestFreehandBSpline(unittest.TestCase):
         App.closeDocument(self.doc.Name)
 
     def curve(self, points):
-        obj = self.doc.addObject("Surface::FreehandBSpline", "Curve")
+        obj = self.doc.addObject(f"{Surface.__name__}::FreehandBSpline", "Curve")
         obj.Points = [App.Vector(*p) for p in points]
         self.doc.recompute()
         self.assertTrue(obj.isValid(), obj.getStatusString())
@@ -91,6 +91,42 @@ class TestFreehandBSpline(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(curve.Points[0], pad.Shape.Vertexes[vertex].Point)
         self.assertTrue(curve.isValid(), curve.getStatusString())
+
+    def test_point_support_in_placed_part(self):
+        part = self.doc.addObject("App::Part", "Part")
+        part.Placement = App.Placement(App.Vector(100, 0, 0), App.Rotation(App.Vector(0, 0, 1), 30))
+        line = Part.makeLine(App.Vector(0, 2, 0), App.Vector(20, 2, 0))
+        inner = self.doc.addObject("Part::Feature", "InnerSupport")
+        inner.Shape = line
+        part.addObject(inner)
+        outer = self.doc.addObject("Part::Feature", "OuterSupport")
+        outer.Shape = line
+
+        def check(curve, curveFrame, support, supportFrame):
+            curve.Support = [(support, ("Vertex1",)), (support, ("Edge1",))]
+            curve.SupportPointIndices = [0, 1]
+            curve.SupportParameters = [App.Vector(), App.Vector(0.25, 0, 0)]
+            curve.TangentSupport = [(support, ("Edge1",))]
+            curve.TangentPointIndices = [0]
+            self.doc.recompute()
+            self.assertTrue(curve.isValid(), curve.getStatusString())
+            # Compare in global coordinates, given the placement of the containing part
+            for index, point in ((0, App.Vector(0, 2, 0)), (1, App.Vector(5, 2, 0))):
+                locked = curveFrame.multVec(curve.Points[index])
+                self.assertLess((locked - supportFrame.multVec(point)).Length, 1e-7)
+            edge = curve.Shape.Edges[0]
+            tangent = curveFrame.Rotation.multVec(edge.tangentAt(edge.FirstParameter))
+            direction = supportFrame.Rotation.multVec(App.Vector(1, 0, 0))
+            self.assertLess(tangent.cross(direction).Length, 1e-7)
+
+        points = [(0, 0, 0), (5, 8, 0), (15, 0, 0)]
+        inside = self.curve(points)
+        part.addObject(inside)
+        check(inside, part.Placement, inner, part.Placement)
+        check(self.curve(points), App.Placement(), inner, part.Placement)
+        inside = self.curve(points)
+        part.addObject(inside)
+        check(inside, part.Placement, outer, App.Placement())
 
     def test_reference_tangents(self):
         curve = self.curve([(0, 0, 0), (5, 8, 3), (15, 0, 0)])
