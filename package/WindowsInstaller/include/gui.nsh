@@ -44,8 +44,37 @@ BrandingText " "
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
 
 # Specify the installation directory.
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE ValidateInstallDir
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE SelectInstallDir
 !insertmacro MUI_PAGE_DIRECTORY
+
+Function SelectInstallDir
+  Call ReadRegisteredDir
+  ${If} $RegisteredDir != ""
+  ${AndIf} $RegisteredDir == "$INSTDIR"
+    IfFileExists "$INSTDIR\${SETUP_UNINSTALLER}" 0 +3
+    MessageBox MB_YESNO|MB_ICONQUESTION "$(AlreadyInstalled)" IDYES +2
+    Abort
+    Return
+  ${EndIf}
+
+  ${DirState} "$INSTDIR" $0
+  ${If} $0 != 1
+    Return
+  ${EndIf}
+
+  ${GetFileName} "$INSTDIR" $0
+  ${If} $0 != "${APP_DIR}"
+    ${DirState} "$INSTDIR\${APP_DIR}" $0
+    ${If} $0 != 1
+      # Show the dedicated folder before the user confirms it.
+      StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
+      SendMessage $mui.DirectoryPage.Directory ${WM_SETTEXT} 0 "STR:$INSTDIR"
+      Abort
+    ${EndIf}
+  ${EndIf}
+
+  Call ValidateInstallDir
+FunctionEnd
 
 # Define which components to install.
 !insertmacro MUI_PAGE_COMPONENTS

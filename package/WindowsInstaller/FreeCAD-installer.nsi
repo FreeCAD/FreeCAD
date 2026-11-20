@@ -46,6 +46,7 @@ ManifestDPIAware true
 
 # Set of various macros and functions
 !include include\utils.nsh
+!include include\legacyUpgrade.nsh
 
 # set up the installer pages
 !include include\gui.nsh

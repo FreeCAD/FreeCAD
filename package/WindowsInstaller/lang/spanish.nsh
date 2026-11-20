@@ -66,7 +66,4 @@ ${LangFileString} DialogUnPreferences 'Eligió eliminar la configuración de usu
 						¿Está de acuerdo con esto?'
 ${LangFileString} SecUnProgramFilesDescription "Desinstala FreeCAD y todos sus componentes."
 
-${LangFileString} DirNotEmptyWarning "La carpeta seleccionada '$INSTDIR' no está vacia.$\r$\n\
-                        El instalador eliminará todo su contenido antes de instalar. ¿Continuar?"
-${LangFileString} RMInstDirFailed "No se ha podido eliminar '$INSTDIR'.$\r$\n\
-                        Asegúrese de tener suficientes permisos y que ningún archivo esté en use."
+${LangFileString} DirNotEmptyWarning "La carpeta seleccionada '$INSTDIR' no está vacia. Elija una carpeta vacía."
