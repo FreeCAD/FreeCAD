@@ -25,6 +25,7 @@ add_executable(Part_tests_run
         PartFeatures.cpp
         PartTestHelpers.cpp
         PreviewExtension.cpp
+        PropertyLinkElementReferences.cpp
         PropertyTopoShape.cpp
         Tools.cpp
         TopoDS_Shape.cpp
