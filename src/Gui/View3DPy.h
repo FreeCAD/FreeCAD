@@ -118,6 +118,10 @@ public:
     Py::Object setName(const Py::Tuple&);
     Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict&);
     Py::Object hasClippingPlane();
+    Py::Object setSectionCapping(const Py::Tuple& args);
+    Py::Object isSectionCapping();
+    Py::Object getSectionCapStatus();
+    Py::Object getSectionCaps();
     Py::Object graphicsView();
     Py::Object setCornerCrossVisible(const Py::Tuple& args);
     Py::Object isCornerCrossVisible();

@@ -47,6 +47,7 @@
 #include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
 
+#include "Inventor/SoFCSectionCap.h"
 #include "View3DPy.h"
 
 #include "Camera.h"
@@ -327,6 +328,29 @@ void View3DInventorPy::init_type()
         "hasClippingPlane",
         &View3DInventorPy::hasClippingPlane,
         "hasClippingPlane(): check whether this clipping plane is active"
+    );
+    add_varargs_method(
+        "setSectionCapping",
+        &View3DInventorPy::setSectionCapping,
+        "setSectionCapping(on=True): fill the cuts of the active clip planes in each part's\n"
+        "material, hatched and outlined.  Opaque closed solids only; changes no document object."
+    );
+    add_noargs_method(
+        "isSectionCapping",
+        &View3DInventorPy::isSectionCapping,
+        "isSectionCapping(): whether section caps are on"
+    );
+    add_noargs_method(
+        "getSectionCaps",
+        &View3DInventorPy::getSectionCaps,
+        "getSectionCaps() -> [{key, component, plane, status, color, hatch}]: what the cap\n"
+        "renderer did per occurrence and plane in the last frame (not proof of pixels)"
+    );
+    add_noargs_method(
+        "getSectionCapStatus",
+        &View3DInventorPy::getSectionCapStatus,
+        "getSectionCapStatus(): what the cap renderer did in the last frame\n"
+        "('capped', 'no-plane', 'no-geometry', 'no-cap', 'no-stencil', 'off')"
     );
     add_noargs_method(
         "graphicsView",
@@ -2653,6 +2677,48 @@ Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py
 Py::Object View3DInventorPy::hasClippingPlane()
 {
     return Py::Boolean(getView3DInventorPtr()->getViewer()->hasClippingPlane());
+}
+
+Py::Object View3DInventorPy::setSectionCapping(const Py::Tuple& args)
+{
+    PyObject* on = Py_True;
+    if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
+        throw Py::Exception();
+    }
+    getView3DInventorPtr()->getViewer()->setSectionCapping(on == Py_True);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isSectionCapping()
+{
+    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapping());
+}
+
+Py::Object View3DInventorPy::getSectionCaps()
+{
+    Py::List out;
+    const auto* cap = getView3DInventorPtr()->getViewer()->getSectionCap();
+    if (!cap) {
+        return out;
+    }
+    for (const auto& rec : cap->lastRecords()) {
+        const SbColor& c = rec.color;
+        Py::Dict d;
+        d.setItem("key", Py::String(rec.key));
+        d.setItem("component", Py::String(rec.component));
+        d.setItem("plane", Py::Long(rec.plane));
+        d.setItem("status", Py::String(rec.status));
+        d.setItem("color", Py::TupleN(Py::Float(c[0]), Py::Float(c[1]), Py::Float(c[2])));
+        d.setItem("hatch", Py::String(rec.hatch));
+        out.append(d);
+    }
+    return out;
+}
+
+Py::Object View3DInventorPy::getSectionCapStatus()
+{
+    const auto* cap = getView3DInventorPtr()->getViewer()->getSectionCap();
+    return Py::String(cap ? cap->lastStatus() : std::string("off"));
 }
 
 Py::Object View3DInventorPy::graphicsView()
