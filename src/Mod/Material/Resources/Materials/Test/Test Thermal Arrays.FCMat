@@ -1,0 +1,15 @@
+---
+# SPDX-License-Identifier: LGPL-2.1-or-later
+General:
+  UUID: "12cc83fb-d1d4-460e-a8fc-5236afef6ad0"
+  Name: "Test Thermal Arrays"
+  Author: "The FreeCAD project association"
+  License: "LGPL-2.1-or-later"
+  Description: "This material is for testing purposes only. It does not describe any real material."
+Models:
+  ThermalArrays:
+    UUID: 'a51e4cba-ad0b-4a32-9914-5a2b264ecc57'
+    ThermalProperties:
+      - [["400 K", "393 W/m/K", "397 J/kg/K", "17.2 µm/m/K"],
+         ["300 K", "401 W/m/K", "385 J/kg/K", "16.5 µm/m/K"],
+         ["200 K", "413 W/m/K", "",           ""]]

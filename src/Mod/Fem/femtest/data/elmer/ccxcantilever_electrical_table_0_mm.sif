@@ -1,0 +1,152 @@
+Check Keywords "Warn"
+
+Header
+  Mesh DB "."
+End
+
+Solver 1
+  Calculate Principal = Logical True
+  Displace mesh = Logical True
+  Eigen Analysis = Logical False
+  Equation = String "Stress Solver"
+  Geometric Stiffness = Logical False
+  Linear System Abort Not Converged = Logical False
+  Linear System Direct Method = String "Umfpack"
+  Linear System Precondition Recompute = Integer 1
+  Linear System Residual Output = Integer 1
+  Linear System Solver = String "Direct"
+  Optimize Bandwidth = Logical True
+  Procedure = File "StressSolve" "StressSolver"
+  Stabilize = Logical True
+  Steady State Convergence Tolerance = Real 1e-05
+  Variable = String "Displacement"
+  Variable DOFs = Integer 3
+End
+
+Solver 2
+  Bubbles = Logical True
+  Equation = String "Heat"
+  Exec Solver = String "Always"
+  Linear System Abort Not Converged = Logical False
+  Linear System Convergence Tolerance = Real 1e-10
+  Linear System Iterative Method = String "BiCGStab"
+  Linear System Max Iterations = Integer 500
+  Linear System Precondition Recompute = Integer 1
+  Linear System Preconditioning = String "ILU0"
+  Linear System Residual Output = Integer 1
+  Linear System Solver = String "Iterative"
+  Nonlinear System Convergence Tolerance = Real 1e-07
+  Nonlinear System Max Iterations = Integer 20
+  Nonlinear System Newton After Iterations = Integer 3
+  Nonlinear System Newton After Tolerance = Real 0.001
+  Nonlinear System Relaxation Factor = Real 1.0
+  Optimize Bandwidth = Logical True
+  Procedure = File "HeatSolve" "HeatSolver"
+  Stabilize = Logical False
+  Steady State Convergence Tolerance = Real 1e-05
+  Variable = String "Temperature"
+End
+
+Solver 3
+  Calculate Joule Heating = Logical False
+  Calculate Nodal Heating = Logical False
+  Calculate Volume Current = Logical True
+  Constant Weights = Logical False
+  Equation = String "Stat Current Solver"
+  Exec Solver = String "Always"
+  Linear System Abort Not Converged = Logical False
+  Linear System Convergence Tolerance = Real 1e-10
+  Linear System Iterative Method = String "BiCGStab"
+  Linear System Max Iterations = Integer 500
+  Linear System Precondition Recompute = Integer 1
+  Linear System Preconditioning = String "ILU0"
+  Linear System Residual Output = Integer 1
+  Linear System Solver = String "Iterative"
+  Nonlinear System Convergence Tolerance = Real 1e-07
+  Nonlinear System Max Iterations = Integer 20
+  Nonlinear System Newton After Iterations = Integer 3
+  Nonlinear System Newton After Tolerance = Real 0.001
+  Nonlinear System Relaxation Factor = Real 1.0
+  Optimize Bandwidth = Logical True
+  Procedure = File "StatCurrentSolve" "StatCurrentSolver"
+  Stabilize = Logical True
+  Steady State Convergence Tolerance = Real 1e-05
+  Variable = String "Potential"
+  Variable DOFs = Integer 1
+End
+
+Simulation
+  Coordinate Mapping(3) = Integer 1 2 3
+  Coordinate Scaling = Real 0.001
+  Coordinate System = String "Cartesian"
+  Max Output Level = Integer 10
+  Simulation Type = String "Steady State"
+  Steady State Max Iterations = Integer 1
+  Steady State Min Iterations = Integer 0
+  Use Mesh Names = Logical True
+End
+
+Constants
+  Stefan Boltzmann = Real 5.67037e-08
+End
+
+Body 1
+  Body Force = Integer 1
+  Equation = Integer 1
+  Material = Integer 1
+  Name = String "Solid1"
+End
+
+Material 1
+  Density = Real 8960.0
+  Electric Conductivity = Variable Temperature
+  Real
+    0 60000
+    900 60000
+    1500 70000
+    1000000 70000
+  End
+  Heat Capacity = Real 385.0
+  Heat Conductivity = Real 401.0
+  Name = String "CalculiX-Steel"
+  Poisson ratio = Real 0.3
+  Youngs Modulus = Real 210000000000.0
+End
+
+Equation 1
+  Active Solvers(4) = Integer 1 2 3 4
+End
+
+Solver 4
+  Binary Output = Logical False
+  Coordinate Scaling Revert = Logical True
+  Equation = String "ResultOutput"
+  Exec Solver = String "After simulation"
+  Output Directory = File "Result"
+  Output File Name = File "FreeCAD"
+  Procedure = File "ResultOutputSolve" "ResultOutputSolver"
+  Save Geometry Ids = Logical False
+  Vtu Format = Logical True
+  Vtu Time Collection = Logical True
+End
+
+Body Force 1
+  Joule Heat = Logical False
+End
+
+Boundary Condition 1
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Face1"
+End
+
+Boundary Condition 2
+  Force 1 = Real -0.0
+  Force 1 Normalize by Area = Logical True
+  Force 2 = Real -0.0
+  Force 2 Normalize by Area = Logical True
+  Force 3 = Real -9000000.0
+  Force 3 Normalize by Area = Logical True
+  Name = String "Face2"
+End

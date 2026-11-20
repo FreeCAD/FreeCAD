@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+import math
 import os
 import os.path
 import subprocess
@@ -47,6 +48,7 @@ from . import sifio
 from .. import settings
 from femtools import constants
 from femtools import femutils
+from femtools import materialtables
 from femtools import membertools
 from .equations import deformation_writer as DEF_writer
 from .equations import elasticity_writer as EL_writer
@@ -95,6 +97,8 @@ class Writer:
         self._usedVarNames = set()
         self._builder = sifio.Builder()
         self._handledObjects = set()
+        self._solverIds = None
+        self._unwrittenTables = {}
         self._handleUnits()
         self._handleConstants()
         self.scanning_file = "scanning.dat"
@@ -123,10 +127,84 @@ class Writer:
         self._handleMultiframeMode()
         self._addOutputSolver()
 
+    def _writtenTables(self):
+        """(body, keyword, table) of every temperature table the sif holds"""
+        # A later material can put a scalar over a table, only what reached the sif counts
+        tables = []
+        for body in self._builder.getBodyNames():
+            material = self._builder.getBodySection(body, sifio.MATERIAL)
+            for key in material.keys() if material is not None else []:
+                if isinstance(material[key], TemperatureTable):
+                    tables.append((body, key, material[key]))
+        return tables
+
+    def solverOrderNotes(self):
+        """Solvers reading an electrical conductivity table before the Heat solver of the body"""
+        # Elmer runs its solvers by their number, the one the written sif gave them
+        steady = self.solver.SimulationType == "Steady State"
+        if self._solverIds is None or (steady and self.solver.SteadyStateMaxIterations > 1):
+            return []
+        if steady:
+            effect = (
+                "with one steady state iteration it reads the electrical conductivity table at "
+                "the starting temperature. Give the Heat equation a higher Priority, or raise "
+                "Steady State Max Iterations."
+            )
+        else:
+            effect = (
+                "at each time step it reads the electrical conductivity table at the temperature "
+                "of the previous time step. Give the Heat equation a higher Priority."
+            )
+        number = self._solverIds.getId
+        notes = []
+        electric = {b for b, key, _table in self._writtenTables() if key == "Electric Conductivity"}
+        for body in sorted(electric):
+            equation = self._builder.getBodySection(body, sifio.EQUATION)
+            if equation is None or "Active Solvers" not in equation:
+                continue
+            # Only Exec Solver = Always, the default, runs in the coupled loop (MainUtils.F90)
+            active = [
+                s
+                for s in equation["Active Solvers"]
+                if "Exec Solver" not in s or str(s["Exec Solver"]).strip().lower() == "always"
+            ]
+            solvers = [(s, s["Procedure"] if "Procedure" in s else "") for s in active]
+            heats = sorted(
+                (s for s, procedure in solvers if procedure == "HeatSolve/HeatSolver"), key=number
+            )
+            for solver, procedure in solvers:
+                # One Heat run earlier is enough, the reader sees the temperature it computed
+                if procedure not in CONDUCTIVITY_READERS or not heats:
+                    continue
+                if number(heats[0]) < number(solver):
+                    continue
+                note = f"{solver['Equation']} runs before {heats[0]['Equation']}: {effect}"
+                if note not in notes:
+                    notes.append(note)
+        return notes
+
     def write_solver_input(self):
         self._writeBlocks()
+        # Judged on what reaches the sif, a later material can put a scalar over a table
+        written = self._writtenTables()
+        self.checkElectricalTables(written)
         self._writeSif()
         self._writeStartinfo()
+        # Told once the input is written, a refused or failed write announces nothing
+        notes = []
+        for _body, _key, table in written:
+            if table.note not in notes:
+                notes.append(table.note)
+        for label, skipped in self._unwrittenTables.values():
+            verb = "isn't" if len(skipped) == 1 else "aren't"
+            note = (
+                f"{label}: {' and '.join(skipped)} {verb} written for Elmer yet, it uses the "
+                "single values of the card where there are some."
+            )
+            if skipped and note not in notes:
+                notes.append(note)
+        for note in notes + self.solverOrderNotes():
+            Console.PrintWarning(f"{note}\n")
 
     def _handleUnits(self):
         # Elmer solver writer no longer uses FreeCAD unit system
@@ -410,6 +488,17 @@ class Writer:
     # -------------------------------------------------------------------------------------------
     # Heat
 
+    def heatBodies(self):
+        # The bodies a Temperature field exists on, as _handleHeat assigns them
+        bodies = set()
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+                if equation.References:
+                    bodies.update(equation.References[0][1])
+                else:
+                    bodies.update(self.getAllBodies())
+        return bodies
+
     def _handleHeat(self):
         HeatW = heat_writer.Heatwriter(self, self.solver)
         for equation in self.solver.Group:
@@ -634,6 +723,34 @@ class Writer:
         density = self.convert(m["Density"], "M/L^3")
         return density
 
+    def convertTable(self, obj, table, unit, quantity):
+        """A FEM material table as an Elmer value, None when the table is empty"""
+        rows = materialtables.sorted_rows(getattr(obj, table, []), table, obj.Label)
+        points = [(temperature, self.convert(cells[0], unit)) for temperature, cells in rows]
+        return temperature_table(points, f"{obj.Label} {quantity}")
+
+    def electricalConductivityTable(self, obj):
+        """The electrical conductivity table of a material, None without one"""
+        return self.convertTable(
+            obj, "ElectricalConductivityTable", "S/m", "electrical conductivity"
+        )
+
+    def elasticTables(self, obj, name):
+        # E, nu and alpha against temperature are a later step, a later material on the body wins
+        skipped = [table for table in ("ElasticTable", "ExpansionTable") if getattr(obj, table, [])]
+        self._unwrittenTables[name] = (obj.Label, skipped)
+
+    def checkElectricalTables(self, written):
+        # Without a Temperature field Elmer stops, or reads zero where it's missing
+        for body, key, table in written:
+            if key == "Electric Conductivity" and body not in self.heatBodies():
+                raise WriteError(
+                    f"{table.label}: the table on {body} needs a Heat equation active on "
+                    f"{body}, Elmer has no temperature to read it at. Add one with a higher "
+                    "Priority than the equation reading the table, or clear the table to use "
+                    "the single conductivity value."
+                )
+
     def _hasExpression(self, equation):
         for obj, exp in equation.ExpressionEngine:
             if obj == equation:
@@ -748,6 +865,7 @@ class Writer:
         with open(sifPath, "w") as fstream:
             sif = sifio.Sif(self._builder)
             sif.write(fstream)
+        self._solverIds = sif.ids
 
     def handled(self, obj):
         self._handledObjects.add(obj)
@@ -788,6 +906,102 @@ class Writer:
 
 class WriteError(Exception):
     pass
+
+
+class TemperatureTable(str):
+    """An Elmer Variable Temperature value that keeps the label and range note of its table
+
+    A str, since sifio writes as it is any string that starts with Variable, and the
+    builder stores it like any other value.
+    """
+
+    def __new__(cls, value, label, note):
+        table = super().__new__(cls, value)
+        table.label = label
+        table.note = note
+        return table
+
+
+# Elmer extrapolates linearly outside a table (SearchInterval in fem/src/GeneralUtils.F90)
+# CalculiX keeps the edge value. A flat point on each side gives Elmer the same behaviour
+TABLE_FLOOR_K = 0.0
+TABLE_CEILING_K = 1.0e6
+
+# The Elmer procedures that read Electric Conductivity, CalcFields for the Joule heat
+# solverOrderNotes checks them against the Heat solver of each body
+CONDUCTIVITY_READERS = (
+    "StatCurrentSolve/StatCurrentSolver",
+    "MagnetoDynamics/WhitneyAVSolver",
+    "MagnetoDynamics/WhitneyAVHarmonicSolver",
+    "MagnetoDynamics/MagnetoDynamicsCalcFields",
+    "MagnetoDynamics2D/MagnetoDynamics2D",
+    "MagnetoDynamics2D/MagnetoDynamics2DHarmonic",
+)
+
+
+def temperature_table(points, label):
+    """Elmer value of (temperature in K, value) points sorted by temperature
+
+    A single point is written as a scalar: Elmer reads a one row table as value * T
+    (InterpolateCurve in fem/src/GeneralUtils.F90).
+    """
+    # No table, the caller writes the single value of the card
+    if not points:
+        return None
+    check_finite(points, label)
+    if len(points) == 1:
+        return points[0][1]
+    # Compared as written, 2 temperatures printed alike make Elmer refuse the table
+    for (first, _), (second, _) in zip(points, points[1:]):
+        if float(f"{first:.13g}") == float(f"{second:.13g}"):
+            raise WriteError(
+                f"{label}: the temperature table gives two values at {first:g} K, keep one."
+            )
+    # The ends as written, 999999.99999999 prints as the ceiling itself
+    first, last = (float(f"{t:.13g}") for t in (points[0][0], points[-1][0]))
+    low, high = flat_point(first, -1), flat_point(last, 1)
+    # A margin past 1e308 K overflows, the card itself is finite
+    if not (math.isfinite(low) and math.isfinite(high)):
+        raise WriteError(
+            f"{label}: the temperature table reaches {max(abs(first), abs(last)):g} K, "
+            "too large to add the flat points that keep its end values."
+        )
+    note = table_range_note(points, label)
+    points = [(low, points[0][1])] + points + [(high, points[-1][1])]
+    rows = "\n".join(f"    {temperature:.13g} {value:.13g}" for temperature, value in points)
+    return TemperatureTable(f"Variable Temperature\n  Real\n{rows}\n  End", label, note)
+
+
+def flat_point(end, side):
+    """Temperature of the flat point past an end of a table, side -1 below it and 1 above
+
+    Any flat segment past an end gives Elmer a zero slope to extrapolate with. The floor
+    or the ceiling when the end lies inside them, else a margin that grows with the end,
+    past 1e13 K one kelvin vanishes in the 13 written digits.
+    """
+    bound = TABLE_FLOOR_K if side < 0 else TABLE_CEILING_K
+    if side * (bound - end) > 0:
+        return bound
+    return end + side * (1.0 + abs(end))
+
+
+def check_finite(points, label):
+    # A quantity like 1e309 K parses to inf and would reach the sif as is
+    for temperature, value in points:
+        if not (math.isfinite(temperature) and math.isfinite(value)):
+            raise WriteError(
+                f"{label}: the temperature table holds a value Elmer can't read "
+                f"({temperature:g} K, {value:g}), check the card."
+            )
+
+
+def table_range_note(points, label):
+    # The user can't see from the sif alone that the result left the data
+    low, high = points[0][0], points[-1][0]
+    return (
+        f"{label}: the table covers {low:g} K to {high:g} K, "
+        f"outside it the value at the nearest end is kept."
+    )
 
 
 ##  @}
