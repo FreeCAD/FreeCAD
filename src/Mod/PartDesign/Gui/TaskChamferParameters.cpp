@@ -222,6 +222,9 @@ void TaskChamferParameters::onTypeChanged(int index)
         chamfer->recomputeFeature();
         // hide the chamfer if there was a computation error
         hideOnError();
+        if (gizmoContainer && !gizmoContainer->visible.getValue() && !chamfer->isError()) {
+            setGizmoPositions();
+        }
     }
 }
 
@@ -234,6 +237,9 @@ void TaskChamferParameters::onSizeChanged(double len)
         chamfer->recomputeFeature();
         // hide the chamfer if there was a computation error
         hideOnError();
+        if (gizmoContainer && !gizmoContainer->visible.getValue() && !chamfer->isError()) {
+            setGizmoPositions();
+        }
     }
 }
 
@@ -246,6 +252,9 @@ void TaskChamferParameters::onSize2Changed(double len)
         chamfer->recomputeFeature();
         // hide the chamfer if there was a computation error
         hideOnError();
+        if (gizmoContainer && !gizmoContainer->visible.getValue() && !chamfer->isError()) {
+            setGizmoPositions();
+        }
     }
 }
 
@@ -258,6 +267,9 @@ void TaskChamferParameters::onAngleChanged(double angle)
         chamfer->recomputeFeature();
         // hide the chamfer if there was a computation error
         hideOnError();
+        if (gizmoContainer && !gizmoContainer->visible.getValue() && !chamfer->isError()) {
+            setGizmoPositions();
+        }
     }
 }
 
