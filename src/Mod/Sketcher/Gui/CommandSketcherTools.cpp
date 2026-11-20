@@ -1235,7 +1235,8 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
 void CmdSketcherSymmetry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
+    // A selected group is mirrored whole, as it is translated, rotated and scaled.
+    std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true, true);
 
     if (!listOfGeoIds.empty()) {
         ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSymmetry>(listOfGeoIds));

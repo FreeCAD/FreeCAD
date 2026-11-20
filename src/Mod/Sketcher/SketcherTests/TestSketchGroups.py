@@ -183,6 +183,148 @@ class TestSketchGroups(unittest.TestCase):
             self.assertEqual(s.solve(), 0)
             self.assertVector(s.Geometry[self.circle].Center, before + delta)
 
+    def flatGroup(self):
+        # A group with more than two members: the handle and the first two members fit in
+        # the First/Second/Third slots, the last member only exists in the elements list.
+        s = self.sketch
+        handle = self.line(10)
+        members = [
+            s.addGeometry(Part.LineSegment(App.Vector(12, 0, 0), App.Vector(15, 3, 0))),
+            s.addGeometry(Part.Circle(App.Vector(13, 6, 0), App.Vector(0, 0, 1), 1)),
+            s.addGeometry(Part.LineSegment(App.Vector(16, 0, 0), App.Vector(17, 3, 0))),
+        ]
+        s.addConstraint(self.group(handle, members))
+        self.assertEqual(s.solve(), 0)
+        return [handle] + members
+
+    def testCopyKeepsWholeGroup(self):
+        # Issue #32374: copying a group must give a second group made of the copies.
+        s = self.sketch
+        geos = self.flatGroup()
+        s.addCopy(geos, App.Vector(30, 0, 0), False)
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 2)
+        self.assertEqual(s.solve(), 0)
+
+        # A copy that leaves the handle out does not create a group.
+        s.addCopy(geos[1:], App.Vector(0, 30, 0), False)
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 2)
+        self.assertEqual(s.solve(), 0)
+
+    def testMirrorKeepsWholeGroup(self):
+        # Issue #32374: mirroring a group must give a second group made of the mirrored
+        # geometries, and not share the original members with it.
+        s = self.sketch
+        geos = self.flatGroup()
+        mirrored = s.addSymmetric(geos, -2)
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 2)
+        self.assertEqual(s.solve(), 0)
+
+        last, mirroredLast = geos[-1], mirrored[-1]
+        before = s.Geometry[last].StartPoint
+        mirroredBefore = s.Geometry[mirroredLast].StartPoint
+        # Keep the mirrored handle rigid so dragging it translates its group.
+        s.addConstraint(Sketcher.Constraint("Vertical", mirrored[0]))
+        s.addConstraint(Sketcher.Constraint("Distance", mirrored[0], 10.0))
+        self.assertEqual(s.solve(), 0)
+        delta = App.Vector(-5, 4, 0)
+        handleStart = s.Geometry[mirrored[0]].StartPoint
+        s.moveGeometry(mirrored[0], 1, handleStart + delta, 0)
+        self.assertEqual(s.solve(), 0)
+        self.assertVector(s.Geometry[mirroredLast].StartPoint, mirroredBefore + delta)
+        self.assertVector(s.Geometry[last].StartPoint, before)
+
+    def testMirrorWithSymmetryConstraintsKeepsWholeGroup(self):
+        # The Mirror tool asks for symmetry constraints by default: the mirrored geometries
+        # must be a group then too, and follow the original through the handles.
+        s = self.sketch
+        geos = self.flatGroup()
+        mirrored = s.addSymmetric(geos, -2, 0, True)
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 2)
+        self.assertEqual(s.solve(), 0)
+        self.assertEqual(s.MalformedConstraints, [])
+
+        last, mirroredLast = geos[-1], mirrored[-1]
+        before = s.Geometry[last].StartPoint
+        mirroredBefore = s.Geometry[mirroredLast].StartPoint
+        self.assertVector(mirroredBefore, App.Vector(-before.x, before.y, 0))
+        # Keep the handle rigid so dragging it translates its group.
+        s.addConstraint(Sketcher.Constraint("Vertical", geos[0]))
+        s.addConstraint(Sketcher.Constraint("Distance", geos[0], 10.0))
+        self.assertEqual(s.solve(), 0)
+        delta = App.Vector(3, 4, 0)
+        s.moveGeometry(geos[0], 1, s.Geometry[geos[0]].StartPoint + delta, 0)
+        self.assertEqual(s.solve(), 0)
+        self.assertVector(s.Geometry[last].StartPoint, before + delta)
+        self.assertVector(
+            s.Geometry[mirroredLast].StartPoint,
+            mirroredBefore + App.Vector(-delta.x, delta.y, 0),
+        )
+
+    def assertValidIndices(self):
+        count = self.sketch.GeometryCount
+        for c in self.sketch.Constraints:
+            for geo in (c.First, c.Second, c.Third):
+                self.assertTrue(geo == -2000 or -2 <= geo < count, (c.Type, geo))
+
+    def assertGroupFollowsHandle(self, handle, geos):
+        # Keep the handle rigid so dragging it translates the whole group.
+        s = self.sketch
+        s.addConstraint(Sketcher.Constraint("Vertical", handle))
+        s.addConstraint(Sketcher.Constraint("Distance", handle, s.Geometry[handle].length()))
+        self.assertEqual(s.solve(), 0)
+        before = [s.Geometry[g].StartPoint for g in geos]
+        delta = App.Vector(-5, 4, 0)
+        s.moveGeometry(handle, 1, s.Geometry[handle].StartPoint + delta, 0)
+        self.assertEqual(s.solve(), 0)
+        for geo, point in zip(geos, before):
+            self.assertVector(s.Geometry[geo].StartPoint, point + delta)
+
+    def testSplitMemberKeepsGroup(self):
+        # Splitting a member deleted the group and its handle in the middle of the operation,
+        # so the split geometry was replaced at a stale index.
+        s = self.sketch
+        handle, first, circle, last = self.flatGroup()
+        s.split(last, App.Vector(16.5, 1.5, 0))
+        self.assertEqual(s.GeometryCount, 5)
+        self.assertValidIndices()
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 1)
+        self.assertVector(s.Geometry[handle].StartPoint, App.Vector(10, 0, 0))
+        self.assertVector(s.Geometry[first].StartPoint, App.Vector(12, 0, 0))
+        self.assertAlmostEqual(s.Geometry[circle].Radius, 1)
+        self.assertVector(s.Geometry[last].StartPoint, App.Vector(16, 0, 0))
+        self.assertVector(s.Geometry[4].EndPoint, App.Vector(17, 3, 0))
+        self.assertEqual(s.solve(), 0)
+        self.assertGroupFollowsHandle(handle, [first, last, 4])
+
+    def testSplitHandleKeepsMembers(self):
+        # A click on a group member selects the handle, so splitting the handle must not delete
+        # a member in its place.
+        s = self.sketch
+        handle, first, circle, last = self.flatGroup()
+        s.split(handle, App.Vector(10, 5, 0))
+        self.assertEqual(s.GeometryCount, 5)
+        self.assertValidIndices()
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 1)
+        self.assertVector(s.Geometry[handle].StartPoint, App.Vector(10, 0, 0))
+        self.assertVector(s.Geometry[first].StartPoint, App.Vector(12, 0, 0))
+        self.assertAlmostEqual(s.Geometry[circle].Radius, 1)
+        self.assertVector(s.Geometry[last].StartPoint, App.Vector(16, 0, 0))
+        self.assertEqual(s.solve(), 0)
+
+    def testTrimMemberKeepsGroup(self):
+        s = self.sketch
+        handle, first, circle, last = self.flatGroup()
+        cutter = s.addGeometry(Part.LineSegment(App.Vector(15, 1.5, 0), App.Vector(20, 1.5, 0)))
+        s.trim(last, App.Vector(16.2, 0.6, 0))
+        self.assertEqual(s.GeometryCount, 5)
+        self.assertValidIndices()
+        self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 1)
+        self.assertVector(s.Geometry[handle].StartPoint, App.Vector(10, 0, 0))
+        self.assertVector(s.Geometry[first].StartPoint, App.Vector(12, 0, 0))
+        self.assertAlmostEqual(s.Geometry[circle].Radius, 1)
+        self.assertVector(s.Geometry[last].StartPoint, App.Vector(16.5, 1.5, 0))
+        self.assertVector(s.Geometry[cutter].StartPoint, App.Vector(15, 1.5, 0))
+
     def testDeepHierarchy(self):
         s = self.sketch
         circle = s.addGeometry(Part.Circle(App.Vector(1, 2, 0), App.Vector(0, 0, 1), 2))
