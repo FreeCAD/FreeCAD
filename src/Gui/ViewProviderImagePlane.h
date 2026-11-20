@@ -52,6 +52,10 @@ public:
     bool doubleClicked() override;
     void onChanged(const App::Property* prop) override;
 
+protected:
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+
 private:
     void resizePlane(float xsize, float ysize);
     void loadImage();
@@ -71,6 +75,7 @@ private:
     SoCoordinate3* pcCoords;
     SoTexture2* texture;
     SoShapeHints* shapeHints;
+    bool imageEditing = false;
     static const char* LightingEnums[];
 };
 
