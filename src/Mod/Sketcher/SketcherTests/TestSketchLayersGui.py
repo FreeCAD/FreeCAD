@@ -685,7 +685,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                     action for action in layer_actions if action.text() == "Destination"
                 )
                 destination.trigger()
-            except Exception as error:
+            except Exception:
                 import traceback
 
                 errors.append(traceback.format_exc())
@@ -694,6 +694,7 @@ class TestSketchLayersGui(SketcherGuiTestCase):
                     if menu:
                         menu.close()
                 except RuntimeError:
+                    # Triggering the action can already have deleted the menu.
                     pass
 
         QtCore.QTimer.singleShot(100, choose_layer)
@@ -745,10 +746,16 @@ class TestSketchLayersGui(SketcherGuiTestCase):
         # Use model indexes for children to avoid PySide item-wrapper ownership changes.
         model = self.tree.model()
         parent = self.tree.indexFromItem(self.row(layer), 0)
-        for row in range(model.rowCount(parent)):
-            if model.index(row, 1, parent).data() == text:
-                return model.index(row, 2, parent)
-        self.fail("Missing layer setting: " + text)
+        index = next(
+            (
+                model.index(row, 2, parent)
+                for row in range(model.rowCount(parent))
+                if model.index(row, 1, parent).data() == text
+            ),
+            None,
+        )
+        self.assertIsNotNone(index, "Missing layer setting: " + text)
+        return index
 
     def set_setting(self, layer, text, checked):
         self.tree.model().setData(self.setting_row(layer, text), checked, QtCore.Qt.CheckStateRole)
@@ -997,7 +1004,6 @@ class TestSketchLayersGui(SketcherGuiTestCase):
 
     def testLayerColorPatternAndSolverOverrideRendering(self):
         s = self.sketch
-        normal = self.scene_node("CurvesMaterials0")
         s.addGeometry(Part.LineSegment(App.Vector(0, 10, 0), App.Vector(20, 10, 0)), True)
         s.solve()
         self.flush_gui(100)

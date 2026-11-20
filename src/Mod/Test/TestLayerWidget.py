@@ -161,10 +161,16 @@ class TestLayerWidget(unittest.TestCase):
     def child(self, tree, layer_id, text):
         model = tree.model()
         parent = tree.indexFromItem(self.row(tree, layer_id), 0)
-        for row in range(model.rowCount(parent)):
-            if model.index(row, 1, parent).data() == text:
-                return model.index(row, 2, parent)
-        self.fail("Missing setting " + text)
+        index = next(
+            (
+                model.index(row, 2, parent)
+                for row in range(model.rowCount(parent))
+                if model.index(row, 1, parent).data() == text
+            ),
+            None,
+        )
+        self.assertIsNotNone(index, "Missing setting " + text)
+        return index
 
     def testMinimalAdapterHidesOptionalFeatures(self):
         adapter = MemoryLayers()
