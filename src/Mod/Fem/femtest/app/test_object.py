@@ -37,6 +37,13 @@ import ObjectsFem
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
+try:
+    import pyNastran
+except ImportError:
+    pynastran_available = False
+else:
+    pynastran_available = True
+
 
 class TestObjectCreate(unittest.TestCase):
     fcc_print("import TestObjectCreate")
@@ -72,6 +79,8 @@ class TestObjectCreate(unittest.TestCase):
         # if FEM VTK post processing is disabled, we are not able to create VTK post objects
         vtk_objects_used = "BUILD_FEM_VTK" in FreeCAD.__cmake__
         count_defmake = testtools.get_defmake_count(vtk_objects_used)
+        if not pynastran_available:
+            count_defmake -= 1  # Mystran requires pyNastran
 
         # TODO if the children are added to the analysis, they show up twice on Tree
         # thus they are not added to the analysis group ATM
@@ -1299,7 +1308,8 @@ def create_all_fem_objects_doc(doc):
     analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculiX(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
-    analysis.addObject(ObjectsFem.makeSolverMystran(doc))
+    if pynastran_available:
+        analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
     ObjectsFem.makeEquationDeformation(doc, sol)
