@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg20"
+   sodipodi:docname="PartDesign_Rib.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview20"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="15.964777"
+     inkscape:cx="13.185276"
+     inkscape:cy="36.423934"
+     inkscape:window-width="2560"
+     inkscape:window-height="1382"
+     inkscape:window-x="2560"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg20" />
+  <defs
+     id="defs11">
+    <linearGradient
+       id="plate"
+       x1="7"
+       y1="30"
+       x2="44"
+       y2="55"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#fce94f"
+         id="stop1" />
+      <stop
+         offset="1"
+         stop-color="#edd400"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       id="upright"
+       x1="9"
+       y1="13"
+       x2="21"
+       y2="34"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#edd400"
+         id="stop3" />
+      <stop
+         offset="1"
+         stop-color="#c4a000"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="rib"
+       x1="18"
+       y1="23"
+       x2="32"
+       y2="43"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#fce94f"
+         id="stop5" />
+      <stop
+         offset="1"
+         stop-color="#edd400"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="top"
+       x1="17"
+       y1="14"
+       x2="48"
+       y2="47"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#ef2929"
+         id="stop7" />
+      <stop
+         offset="1"
+         stop-color="#cc0000"
+         id="stop8" />
+    </linearGradient>
+    <path
+       id="plateFace"
+       d="M3 37 19 27 59 45 43 55Z" />
+    <path
+       id="uprightFace"
+       d="M7 15 23 5 23 29 7 39Z" />
+    <path
+       id="ribFace"
+       d="M15 15 46 48 15 34Z" />
+    <path
+       id="topFace"
+       d="M15 15 19 12.5 50 45.5 46 48Z" />
+    <clipPath
+       id="plateClip">
+      <use
+         xlink:href="#plateFace"
+         id="use8" />
+    </clipPath>
+    <clipPath
+       id="uprightClip">
+      <use
+         xlink:href="#uprightFace"
+         id="use9" />
+    </clipPath>
+    <clipPath
+       id="ribClip">
+      <use
+         xlink:href="#ribFace"
+         id="use10" />
+    </clipPath>
+    <clipPath
+       id="topClip">
+      <use
+         xlink:href="#topFace"
+         id="use11" />
+    </clipPath>
+  </defs>
+  <!-- Each face is painted fill, clipped highlight, then outline. This keeps
+       every visible edge above highlights while preserving face occlusion. -->
+  <g
+     stroke="#302b00"
+     stroke-width="2"
+     stroke-linejoin="round"
+     id="g17"
+     transform="translate(0.13464925,0.06732462)">
+    <use
+       xlink:href="#plateFace"
+       fill="url(#plate)"
+       stroke="none"
+       id="use12"
+       style="fill:url(#plate)" />
+    <path
+       d="M 10,38 43,52 55,45"
+       fill="none"
+       stroke="#fce94f"
+       clip-path="url(#plateClip)"
+       id="path12" />
+    <use
+       xlink:href="#plateFace"
+       fill="none"
+       id="use13" />
+    <path
+       d="m 3,37 40,18 v 4 L 3,41 Z"
+       fill="#c4a000"
+       id="path13" />
+    <path
+       d="M 43,55 59,45 v 4 L 43,59 Z"
+       fill="#edd400"
+       id="path14" />
+    <use
+       xlink:href="#uprightFace"
+       fill="url(#upright)"
+       stroke="none"
+       id="use14"
+       style="fill:url(#upright)" />
+    <path
+       d="M 9,18 21,10 V 27"
+       fill="none"
+       stroke="#fce94f"
+       clip-path="url(#uprightClip)"
+       id="path15" />
+    <use
+       xlink:href="#uprightFace"
+       fill="none"
+       id="use15" />
+    <path
+       d="M 2.9989943,12.998994 7.0010057,14.99397 6.8663564,38.664383 2.9989943,36.938705 Z"
+       fill="#c4a000"
+       id="path16"
+       style="stroke-width:1.99799"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       d="M 3,13 19,3 23,5 7,15 Z"
+       fill="#fce94f"
+       id="path17" />
+  </g>
+  <!-- The broad triangular side and narrow sloping top identify the rib. -->
+  <g
+     stroke-width="2"
+     stroke-linejoin="round"
+     id="g20"
+     transform="translate(-0.20197387,0.94254474)">
+    <use
+       xlink:href="#ribFace"
+       fill="url(#rib)"
+       id="use17"
+       style="fill:url(#rib)" />
+    <path
+       d="M 17,21 V 33 L 40,43"
+       fill="none"
+       stroke="#fce94f"
+       clip-path="url(#ribClip)"
+       id="path18" />
+    <use
+       xlink:href="#ribFace"
+       fill="none"
+       stroke="#302b00"
+       id="use18" />
+    <use
+       xlink:href="#topFace"
+       fill="url(#top)"
+       id="use19"
+       style="fill:url(#top)" />
+    <path
+       d="M 19,15.5 46.5,45"
+       fill="none"
+       stroke="#ef2929"
+       stroke-width="1"
+       clip-path="url(#topClip)"
+       id="path19" />
+    <use
+       xlink:href="#topFace"
+       fill="none"
+       stroke="#a40000"
+       id="use20" />
+  </g>
+</svg>
