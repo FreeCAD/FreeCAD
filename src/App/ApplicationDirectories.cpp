@@ -760,33 +760,59 @@ fs::path ApplicationDirectories::findHomePath(const char* sCall)
 #include <cstdlib>
 #include <sys/param.h>
 
+namespace
+{
+
+// Resolved path of the running executable, or empty on failure.
+fs::path executablePath()
+{
+    uint32_t sz = 0;
+    _NSGetExecutablePath(nullptr, &sz);
+
+    std::string buf(sz + 1, '\0');
+    if (_NSGetExecutablePath(buf.data(), &sz) != 0) {
+        return {};
+    }
+
+    std::array<char, PATH_MAX> resolved {};
+    if (!realpath(buf.c_str(), resolved.data())) {
+        return {};
+    }
+    return Base::FileInfo::stringToPath(resolved.data());
+}
+
+}  // namespace
+
+fs::path ApplicationDirectories::findBundleResources()
+{
+    // FreeCAD.app/Contents/MacOS/FreeCAD -> FreeCAD.app/Contents/Resources
+    const fs::path exeDir = executablePath().parent_path();
+    const fs::path contents = exeDir.parent_path();
+    if (exeDir.filename() != "MacOS" || contents.filename() != "Contents") {
+        return {};
+    }
+
+    const fs::path resources = contents / "Resources";
+    // Conda bundles keep their prefix here; native bundles use Contents instead.
+    if (!fs::is_directory(resources / "bin") || !fs::is_directory(resources / "lib")) {
+        return {};
+    }
+    return resources;
+}
+
 fs::path ApplicationDirectories::findHomePath(const char* sCall)
 {
     // If Python is initialized at this point, then we're being run from
     // MainPy.cpp, which hopefully rewrote argv[0] to point at the
     // FreeCAD shared library.
     if (!Py_IsInitialized()) {
-        uint32_t sz = 0;
+        // The bundle keeps the installation prefix apart from its executable.
+        if (const fs::path resources = findBundleResources(); !resources.empty()) {
+            return resources / "";
+        }
 
-        // function only returns "sz" if the first arg is too small to hold value
-        _NSGetExecutablePath(nullptr, &sz);
-
-        if (const auto buf = new char[++sz]; _NSGetExecutablePath(buf, &sz) == 0) {
-            std::array<char, PATH_MAX> resolved{};
-            const char* path = realpath(buf, resolved.data());
-            delete [] buf;
-
-            if (path) {
-                const std::string Call(resolved.data());
-                std::string TempHomePath;
-                std::string::size_type pos = Call.find_last_of(fs::path::preferred_separator);
-                TempHomePath.assign(Call,0,pos);
-                pos = TempHomePath.find_last_of(fs::path::preferred_separator);
-                TempHomePath.assign(TempHomePath,0,pos+1);
-                return Base::FileInfo::stringToPath(TempHomePath);
-            }
-        } else {
-            delete [] buf;
+        if (const fs::path exe = executablePath(); !exe.empty()) {
+            return exe.parent_path().parent_path() / "";
         }
     }
 
@@ -834,6 +860,13 @@ fs::path ApplicationDirectories::findHomePath(const char* sCall)
 
 #else
 # error "std::string ApplicationDirectories::findHomePath(const char*) not implemented"
+#endif
+
+#if !defined(FC_OS_MACOSX)
+fs::path ApplicationDirectories::findBundleResources()
+{
+    return {};
+}
 #endif
 
 std::tuple<int, int> ApplicationDirectories::extractVersionFromConfigMap(const std::map<std::string,std::string> &config)
