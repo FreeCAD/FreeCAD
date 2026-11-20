@@ -185,6 +185,89 @@ Part::TopoShape extrude(const Part::TopoShape& profile, const gp_Vec& direction,
     shifted.makeElementTransform(profile, shift);
     return shifted.makeElementPrism(direction * (extent + extent));
 }
+
+bool isWholeObject(const App::PropertyLinkSub& link)
+{
+    const char* name = subName(link);
+    return !name || !*name;
+}
+
+// Replace both profiles by extrusions long enough to contain their whole intersection.
+void extrudeProfiles(
+    Part::TopoShape& first,
+    const gp_Vec& direction1,
+    Part::TopoShape& second,
+    const gp_Vec& direction2
+)
+{
+    const double sine = direction1.Crossed(direction2).Magnitude();
+    if (sine <= Precision::Angular()) {
+        throw Base::ValueError("The extrusion directions must not be parallel.");
+    }
+    Bnd_Box bounds;
+    BRepBndLib::Add(first.getShape(), bounds);
+    BRepBndLib::Add(second.getShape(), bounds);
+    // For p + t*d1 = q + u*d2, |t| and |u| <= |q-p| / sin(angle).
+    constexpr double toleranceMargin = 10.0;
+    const double extent = (std::max(bounds.CornerMin().Distance(bounds.CornerMax()), 1.0) / sine)
+        + (toleranceMargin * Precision::Confusion());
+    first = extrude(first, direction1, extent);
+    second = extrude(second, direction2, extent);
+}
+
+Part::TopoShape intersect(const Part::TopoShape& first, const Part::TopoShape& second)
+{
+    Part::TopoShape result;
+    gp_Pln plane1, plane2;
+    if (unboundedPlane(first, plane1) && unboundedPlane(second, plane2)) {
+        // The Boolean section algorithm can return an empty result for two infinite faces.
+        IntAna_QuadQuadGeo intersection(plane1, plane2, Precision::Angular(), Precision::Confusion());
+        if (!intersection.IsDone() || intersection.TypeInter() != IntAna_Line) {
+            throw Base::ValueError("The planes do not intersect in a unique line.");
+        }
+        BRepBuilderAPI_MakeEdge edge(intersection.Line(1));
+        result.makeElementShape(edge, {first, second}, Part::OpCodes::Section);
+    }
+    else {
+        BRepAlgoAPI_Section section;
+        section.Init1(first.getShape());
+        section.Init2(second.getShape());
+        section.Approximation(true);
+        section.Build();
+        if (!section.IsDone()) {
+            throw Base::ValueError("The intersection calculation failed.");
+        }
+        result.makeElementShape(section, {first, second}, Part::OpCodes::Section);
+    }
+    if (!result.hasSubShape(TopAbs_VERTEX) && !result.hasSubShape(TopAbs_EDGE)) {
+        throw Base::ValueError("The inputs do not intersect.");
+    }
+    return result;
+}
+
+// Join the intersection edges into wires, keeping disconnected wires and isolated points.
+Part::TopoShape joinIntersection(const Part::TopoShape& result)
+{
+    // Unbounded plane intersections have no endpoint vertices and cannot be joined into wires.
+    const auto edges = result.getSubTopoShapes(TopAbs_EDGE);
+    const bool boundedEdges = std::all_of(edges.begin(), edges.end(), [](const auto& edge) {
+        return edge.hasSubShape(TopAbs_VERTEX);
+    });
+    if (edges.empty() || !boundedEdges) {
+        return result;
+    }
+    std::vector<Part::TopoShape> pieces {result.makeElementWires()};
+    for (TopExp_Explorer vertex(result.getShape(), TopAbs_VERTEX, TopAbs_EDGE); vertex.More();
+         vertex.Next()) {
+        pieces.push_back(result.getSubTopoShape(TopAbs_VERTEX, result.findShape(vertex.Current())));
+    }
+    if (pieces.size() == 1) {
+        return pieces.front();
+    }
+    Part::TopoShape compound;
+    compound.makeElementCompound(pieces);
+    return compound;
+}
 }  // namespace
 
 App::DocumentObjectExecReturn* IntersectionCurve::execute()
@@ -204,75 +287,16 @@ App::DocumentObjectExecReturn* IntersectionCurve::execute()
         if (Mode.getValue() == 2 && !profiles) {
             throw Base::ValueError("ExtrudedProfiles requires two curves containing no faces.");
         }
-        const bool wholeProfiles = profiles && (!subName(Curve1) || !*subName(Curve1))
-            && (!subName(Curve2) || !*subName(Curve2));
+        const bool wholeProfiles = profiles && isWholeObject(Curve1) && isWholeObject(Curve2);
         if ((Mode.getValue() == 0 && wholeProfiles) || Mode.getValue() == 2) {
-            const auto direction1 = extrusionDirection(Curve1, first, Direction1);
-            const auto direction2 = extrusionDirection(Curve2, second, Direction2);
-            const double sine = direction1.Crossed(direction2).Magnitude();
-            if (sine <= Precision::Angular()) {
-                throw Base::ValueError("The extrusion directions must not be parallel.");
-            }
-            Bnd_Box bounds;
-            BRepBndLib::Add(first.getShape(), bounds);
-            BRepBndLib::Add(second.getShape(), bounds);
-            // For p + t*d1 = q + u*d2, |t| and |u| <= |q-p| / sin(angle).
-            constexpr double toleranceMargin = 10.0;
-            const double extent = (std::max(bounds.CornerMin().Distance(bounds.CornerMax()), 1.0)
-                                   / sine)
-                + (toleranceMargin * Precision::Confusion());
-            first = extrude(first, direction1, extent);
-            second = extrude(second, direction2, extent);
+            extrudeProfiles(
+                first,
+                extrusionDirection(Curve1, first, Direction1),
+                second,
+                extrusionDirection(Curve2, second, Direction2)
+            );
         }
-        Part::TopoShape result;
-        gp_Pln plane1, plane2;
-        if (unboundedPlane(first, plane1) && unboundedPlane(second, plane2)) {
-            // The Boolean section algorithm can return an empty result for two infinite faces.
-            IntAna_QuadQuadGeo intersection(plane1, plane2, Precision::Angular(), Precision::Confusion());
-            if (!intersection.IsDone() || intersection.TypeInter() != IntAna_Line) {
-                throw Base::ValueError("The planes do not intersect in a unique line.");
-            }
-            BRepBuilderAPI_MakeEdge edge(intersection.Line(1));
-            result.makeElementShape(edge, {first, second}, Part::OpCodes::Section);
-        }
-        else {
-            BRepAlgoAPI_Section section;
-            section.Init1(first.getShape());
-            section.Init2(second.getShape());
-            section.Approximation(true);
-            section.Build();
-            if (!section.IsDone()) {
-                throw Base::ValueError("The intersection calculation failed.");
-            }
-            result.makeElementShape(section, {first, second}, Part::OpCodes::Section);
-        }
-        if (!result.hasSubShape(TopAbs_VERTEX) && !result.hasSubShape(TopAbs_EDGE)) {
-            throw Base::ValueError("The inputs do not intersect.");
-        }
-        // Unbounded plane intersections have no endpoint vertices and cannot be joined into wires.
-        const auto edges = result.getSubTopoShapes(TopAbs_EDGE);
-        const bool boundedEdges = std::all_of(edges.begin(), edges.end(), [](const auto& edge) {
-            return edge.hasSubShape(TopAbs_VERTEX);
-        });
-        if (!edges.empty() && boundedEdges) {
-            // Preserve disconnected wires and isolated intersection points.
-            std::vector<Part::TopoShape> pieces {result.makeElementWires()};
-            for (TopExp_Explorer vertex(result.getShape(), TopAbs_VERTEX, TopAbs_EDGE); vertex.More();
-                 vertex.Next()) {
-                pieces.push_back(
-                    result.getSubTopoShape(TopAbs_VERTEX, result.findShape(vertex.Current()))
-                );
-            }
-            if (pieces.size() > 1) {
-                Part::TopoShape compound;
-                compound.makeElementCompound(pieces);
-                result = compound;
-            }
-            else {
-                result = pieces.front();
-            }
-        }
-        Shape.setValue(result);
+        Shape.setValue(joinIntersection(intersect(first, second)));
         return StdReturn;
     }
     catch (const Standard_Failure& error) {
