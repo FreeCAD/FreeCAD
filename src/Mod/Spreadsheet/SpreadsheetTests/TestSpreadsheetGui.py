@@ -1,0 +1,85 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2021 Chris Hennes
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
+import unittest
+import FreeCAD
+
+from PySide import QtCore, QtWidgets
+import FreeCADGui
+
+# ----------------------------------------------------------------------------------
+# define the functions to test the FreeCAD Spreadsheet GUI
+# ----------------------------------------------------------------------------------
+
+
+class SpreadsheetGuiCases(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument()
+        self.sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        self.view_provider = self.sheet.ViewObject
+
+    def getTableView(self):
+        return self.view_provider.getView()
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def injectSimpleData(self):
+        """A utility function to initialize a blank sheet with some known data"""
+        self.sheet.clearAll()
+        self.sheet.set("A1", "1")
+        self.sheet.set("A2", "2")
+        self.sheet.set("A3", "3")
+        self.sheet.set("A4", "4")
+        self.sheet.set("B1", "5")
+        self.sheet.set("B2", "6")
+        self.sheet.set("B3", "7")
+        self.sheet.set("B4", "8")
+        self.sheet.set("C1", "9")
+        self.sheet.set("C2", "10")
+        self.sheet.set("C3", "11")
+        self.sheet.set("C4", "12")
+        self.sheet.set("D1", "13")
+        self.sheet.set("D2", "14")
+        self.sheet.set("D3", "15")
+        self.sheet.set("D4", "16")
+        self.doc.recompute()
+
+    def testCopySingleCell(self):
+        self.injectSimpleData()
+
+        # Make sure we target the spreadsheet widget
+        self.view_provider.doubleClicked()
+        main_window = FreeCADGui.getMainWindow()
+        QtWidgets.QApplication.setActiveWindow(main_window)
+        subwindow = main_window.findChild(QtWidgets.QMdiArea).activeSubWindow()
+        subwindow.findChild(QtWidgets.QGraphicsView).setFocus()
+        FreeCADGui.updateGui()
+
+        view = self.getTableView()
+        view.select("A1", QtCore.QItemSelectionModel.ClearAndSelect.value)
+        view.setCurrentIndex("A1")
+        FreeCAD.Gui.runCommand("Std_Copy", 0)
+        view.select("E5", QtCore.QItemSelectionModel.ClearAndSelect.value)
+        view.setCurrentIndex("E5")
+        FreeCAD.Gui.runCommand("Std_Paste", 0)
+        self.doc.recompute()
+        self.assertEqual(self.sheet.get("A1"), self.sheet.get("E5"))
