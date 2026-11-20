@@ -469,6 +469,47 @@ class TestDatumPlane(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
 
+    def copyDatumFromOtherBody(self, option):
+        other = self.Doc.addObject("PartDesign::Body", "Other")
+        source = other.newObject("PartDesign::Plane", "Source")
+        source.AttachmentSupport = [(other.Origin.OriginFeatures[4], "")]
+        source.MapMode = "FlatFace"
+        source.AttachmentOffset = App.Placement(App.Vector(1, 2, 3), App.Rotation(10, 20, 30))
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        datum = body.newObject("PartDesign::Plane", "DatumPlane")
+        datum.AttachmentSupport = [(source, "")]
+        datum.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        def choose():
+            dialog = QApplication.activeModalWidget()
+            if dialog is not None:
+                button = dialog.findChild(QtGui.QRadioButton, option)
+                if button is not None:
+                    button.setChecked(True)
+                QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
+
+        Gui.getDocument(self.Doc.Name).setEdit(datum.Name)
+        QtCore.QTimer.singleShot(500, choose)
+        Gui.Control.activeTaskDialog().accept()
+        self.Doc.recompute()
+
+        copy = datum.AttachmentSupport[0][0]
+        self.assertEqual(copy.TypeId, "PartDesign::Plane")
+        self.assertIn(copy, body.Group)
+        self.assertTrue(copy.Placement.isSame(source.Placement, 1e-7))
+        self.assertTrue(datum.Placement.isSame(source.Placement, 1e-7))
+        return source, copy
+
+    def testCopyDatumFromOtherBodyIndependent(self):
+        _, copy = self.copyDatumFromOtherBody("radioIndependent")
+        self.assertEqual(copy.AttachmentSupport, [])
+
+    def testCopyDatumFromOtherBodyDependent(self):
+        source, copy = self.copyDatumFromOtherBody("radioDependent")
+        self.assertEqual(copy.AttachmentSupport[0][0], source)
+        self.assertEqual(copy.MapMode, "FlatFace")
+
     def testDefaultColor(self):
         """
         A datum object uses a different default color than a Part feature.

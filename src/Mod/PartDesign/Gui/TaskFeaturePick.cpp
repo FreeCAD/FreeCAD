@@ -422,7 +422,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         // TODO Replace it with commands (2015-09-11, Fat-Zer)
         if (obj->isDerivedFrom<Part::Datum>()) {
             auto* doc = App::GetApplication().getActiveDocument();
-            copy = doc->addObject<Part::Datum>(name.c_str());
+            copy = doc->addObject(obj->getTypeId().getName(), name.c_str());
 
             // we need to reference the individual datums and make again datums. This is important
             // as datum adjust their size dependent on the part size, hence simply copying the shape
