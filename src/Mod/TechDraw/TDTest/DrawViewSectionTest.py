@@ -113,6 +113,40 @@ class DrawViewSectionTest(unittest.TestCase):
         FreeCAD.ActiveDocument.removeObject(custom_section.Name)
         self.assertIsNotNone(FreeCAD.ActiveDocument.getObject(custom_profile_name))
 
+    def testGeneratedProfileSharedBySections(self):
+        """A generated profile still used by another section is not removed."""
+        document = FreeCAD.ActiveDocument
+        document.UndoMode = 1
+        profile = document.addObject("Part::Feature", "SectionProfile")
+        sections = []
+        for _ in range(2):
+            section = document.addObject(
+                "TechDraw::DrawComplexSection", "ComplexSection"
+            )
+            self.page.addView(section)
+            section.BaseView = self.view
+            section.CuttingToolWireObject = profile
+            sections.append(section)
+        profile_name = profile.Name
+        first_name = sections[0].Name
+
+        document.openTransaction("Remove section")
+        document.removeObject(first_name)
+        document.commitTransaction()
+        self.assertIsNone(document.getObject(first_name))
+        self.assertIsNotNone(document.getObject(profile_name))
+        self.assertEqual(sections[1].CuttingToolWireObject, profile)
+
+        document.undo()
+        self.assertEqual(
+            document.getObject(first_name).CuttingToolWireObject, profile
+        )
+
+        # The profile is still removed with the last section that uses it.
+        document.removeObject(first_name)
+        document.removeObject(sections[1].Name)
+        self.assertIsNone(document.getObject(profile_name))
+
     def testPartialSectionEndpointCoordinates(self):
         """A translated profile must close perpendicular to its section line."""
         frame = FreeCAD.ActiveDocument.addObject("Part::Feature", "Frame")

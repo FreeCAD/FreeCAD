@@ -308,10 +308,22 @@ void DrawComplexSection::unsetupObject()
 
     DrawViewSection::unsetupObject();
 
-    if (document && !document->isAnyRestoring() && !profileName.empty()
-        && document->getObject(profileName.c_str())) {
-        document->removeObject(profileName.c_str());
+    if (!document || document->isAnyRestoring() || profileName.empty()) {
+        return;
     }
+    App::DocumentObject* remainingProfile = document->getObject(profileName.c_str());
+    if (!remainingProfile) {
+        return;
+    }
+    // The generated profile belongs to this section, but it can still be linked
+    // by another object (e.g. a section pasted without its dependencies).
+    // Removing it would break that object, so only remove an unused profile.
+    for (App::DocumentObject* user : remainingProfile->getInList()) {
+        if (user != this && user->isAttachedToDocument() && !user->isRemoving()) {
+            return;
+        }
+    }
+    document->removeObject(profileName.c_str());
 }
 
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
