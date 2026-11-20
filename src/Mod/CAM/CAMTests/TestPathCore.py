@@ -261,3 +261,27 @@ G0 Z0.500000
         check_ramp_cycle_time(h_feed)
         check_ramp_cycle_time(v_feed)
         check_ramp_cycle_time((h_feed + v_feed) / 2)
+
+    def test_cleared_area_plunge_retract(self):
+        """A plunge followed by a retract at the same XY clears a circle the size of the tool."""
+        diameter = 2
+        bbox = FreeCAD.BoundBox(-10, -10, -10, 10, 10, 10)
+
+        def area_cleared(commands):
+            path = Path.Path([Path.Command(c) for c in commands])
+            area = path.getClearedArea(diameter, 0, bbox)
+            area.setParams(Fill=1)  # return a Face, instead of wires
+            return area.getShape().Area
+
+        plunge_gcodes = [["G0 X5 Y5 Z10", "G1 Z-1"]]  # plunge
+        plunge_gcodes.append(plunge_gcodes[-1] + ["G0 Z10"])  # plunge, retract
+        plunge_gcodes.append(plunge_gcodes[-1] + ["G1 Z-1"])  # plunge, retract, plunge
+        areas_cleared = [area_cleared(gcode) for gcode in plunge_gcodes]
+
+        # Each cleared area is the tool circle, oversized by getClearedArea's buffer of
+        # 3 * Accuracy. Assert that the area is as expected
+        accuracy = Path.Area.getDefaultParams()["Accuracy"]
+        radius = diameter / 2 + 3 * accuracy
+        for gcode, area in zip(plunge_gcodes, areas_cleared):
+            with self.subTest(gcode=gcode):
+                self.assertAlmostEqual(area, math.pi * radius**2)
