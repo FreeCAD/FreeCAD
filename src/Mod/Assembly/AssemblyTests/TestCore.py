@@ -726,3 +726,90 @@ class TestCore(AssemblyTestBase):
 
     def test_link_array_joint_on_point_pattern(self):
         self._check_pattern_array_joint("Point")
+
+    def _make_nested_sub_assembly(self, rigid_hinge):
+        """A "Door" assembly with a panel joined to a part of its "Hinge" sub-assembly,
+        used as a flexible sub-assembly of a parent assembly."""
+        hinge = self.doc.addObject("Assembly::AssemblyObject", "Hinge")
+        hinge_joints = hinge.newObject("Assembly::JointGroup", "HingeJoints")
+        leaf1 = hinge.newObject("Part::Box", "Leaf1")
+        leaf2 = hinge.newObject("Part::Box", "Leaf2")
+        leaf2.Placement.Base = App.Vector(0, 0, 10)
+        joint = hinge_joints.newObject("App::FeaturePython", "HingeJoint")
+        JointObject.Joint(joint, 0)
+        joint.Reference1 = (leaf1, ["Face6", "Vertex6"])
+        joint.Reference2 = (leaf2, ["Face5", "Vertex5"])
+        ground = hinge_joints.newObject("App::FeaturePython", "HingeGround")
+        JointObject.GroundedJoint(ground, leaf1)
+        self.doc.recompute()
+        hinge.solve()
+
+        panel = self.assembly.newObject("Part::Box", "Panel")
+        panel.Placement.Base = App.Vector(0, 0, 20)
+        hinge_link = self.assembly.newObject("Assembly::AssemblyLink", "HingeLink")
+        hinge_link.LinkedObject = hinge
+        hinge_link.Rigid = rigid_hinge
+        self.doc.recompute()
+        door_joint = self.jointgroup.newObject("App::FeaturePython", "DoorJoint")
+        JointObject.Joint(door_joint, 0)
+        if rigid_hinge:
+            door_joint.Reference1 = (hinge_link, ["Leaf2.Face6", "Leaf2.Vertex6"])
+        else:
+            local_leaf2 = next(
+                obj
+                for obj in hinge_link.Group
+                if obj.TypeId == "App::Link" and obj.LinkedObject == leaf2
+            )
+            door_joint.Reference1 = (local_leaf2, ["Face6", "Vertex6"])
+        door_joint.Reference2 = (panel, ["Face5", "Vertex5"])
+        self.doc.recompute()
+
+        parent = self.doc.addObject("Assembly::AssemblyObject", "ParentAssembly")
+        instance = parent.newObject("Assembly::AssemblyLink", "Instance")
+        instance.LinkedObject = self.assembly
+        instance.Rigid = False
+        self.doc.recompute()
+
+        local_hinge = next(o for o in instance.Group if o.TypeId == "Assembly::AssemblyLink")
+        local_panel = next(o for o in instance.Group if o.TypeId == "App::Link")
+        local_group = next(o for o in instance.Group if o.TypeId == "Assembly::JointGroup")
+        self.assertEqual(local_hinge.LinkedObject, hinge_link)
+        self.assertEqual(local_panel.LinkedObject, panel)
+        self.assertEqual(len(local_group.Group), 1)
+        return parent, local_hinge, local_panel, local_group.Group[0]
+
+    def test_flexible_assembly_link_maps_joint_to_nested_flexible_sub_assembly(self):
+        """Issue #31362: the joints of a flexible sub-assembly that reference a part of one of
+        its own flexible sub-assemblies were not mapped onto the corresponding part of the
+        nested assembly link ("Could not map external component"), so the copies kept
+        referencing the parts of the sub-assembly itself, and the parent assembly did not
+        solve the joints of the nested sub-assembly."""
+        parent, local_hinge, local_panel, local_joint = self._make_nested_sub_assembly(False)
+        self.assertFalse(local_hinge.Rigid)
+        local_leaves = {
+            obj.LinkedObject.Name: obj for obj in local_hinge.Group if obj.TypeId == "App::Link"
+        }
+        local_leaf1, local_leaf2 = local_leaves["Leaf1"], local_leaves["Leaf2"]
+        self.assertEqual(local_joint.Reference1, (local_leaf2, ["Face6", "Vertex6"]))
+        self.assertEqual(local_joint.Reference2, (local_panel, ["Face5", "Vertex5"]))
+
+        leaf1, leaf2 = self.doc.getObject("Leaf1"), self.doc.getObject("Leaf2")
+        relative = leaf1.Placement.inverse().multiply(leaf2.Placement)
+        parent_joints = parent.newObject("Assembly::JointGroup", "ParentJoints")
+        ground = parent_joints.newObject("App::FeaturePython", "ParentGround")
+        JointObject.GroundedJoint(ground, local_panel)
+        self.doc.recompute()
+        local_leaf1.Placement = App.Placement(App.Vector(100, 37, -5), App.Rotation(30, 10, 0))
+        local_leaf2.Placement = App.Placement(App.Vector(-40, 12, 60), App.Rotation(0, 20, 45))
+        parent.solve()
+        # The joint of the nested hinge holds its leaves together in the parent assembly.
+        solved = local_leaf1.Placement.inverse().multiply(local_leaf2.Placement)
+        self.assertTrue(solved.isSame(relative, 1e-6), f"{solved} != {relative}")
+
+    def test_flexible_assembly_link_maps_joint_to_nested_rigid_sub_assembly(self):
+        """A joint on a rigid sub-assembly of a flexible sub-assembly references the whole
+        nested assembly link."""
+        _, local_hinge, local_panel, local_joint = self._make_nested_sub_assembly(True)
+        self.assertTrue(local_hinge.Rigid)
+        self.assertEqual(local_joint.Reference1, (local_hinge, ["Leaf2.Face6", "Leaf2.Vertex6"]))
+        self.assertEqual(local_joint.Reference2, (local_panel, ["Face5", "Vertex5"]))
