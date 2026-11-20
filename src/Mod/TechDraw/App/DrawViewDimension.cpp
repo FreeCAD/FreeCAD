@@ -759,6 +759,24 @@ double DrawViewDimension::getProjectedDimValue() const
             pts.invertY();
             pts.scale(scale);
         }
+        else if (getViewPart()->hasAppliedViewBreaks()) {
+            // View breaks moved the pieces of the projected geometry. Measure between the
+            // model points the references were projected from, in the view's rotated plane.
+            pts.invertY();
+            pts.scale(1 / scale);
+            const DrawViewPart* viewPart = getViewPart();
+            const gp_Ax2 viewAxes = viewPart->getRotatedCS();
+            const auto xAxis = Base::convertTo<Base::Vector3d>(viewAxes.XDirection());
+            const auto yAxis = Base::convertTo<Base::Vector3d>(viewAxes.YDirection());
+            auto unbroken = [viewPart, &xAxis, &yAxis](const Base::Vector3d& point2d) {
+                const Base::Vector3d point3d = viewPart->mapPointFromBrokenView(point2d);
+                return Base::Vector3d(point3d.Dot(xAxis), point3d.Dot(yAxis), 0.0);
+            };
+            pts.first(unbroken(pts.first()));
+            pts.second(unbroken(pts.second()));
+            pts.invertY();
+            pts.scale(scale);
+        }
         Base::Vector3d dimVec = pts.first() - pts.second();
         if (Type.isValue("Distance")) {
             result = dimVec.Length() / scale;

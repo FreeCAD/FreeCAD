@@ -156,6 +156,8 @@ public:
         getBreakLinePoints(std::size_t index) const;
     Base::Vector3d getBreakLineDirection(std::size_t index) const;
     Base::Vector3d mapPointFromBrokenView(const Base::Vector3d& point2d) const;
+    //! true when the current geometry is built from a shape cut and moved by view breaks
+    bool hasAppliedViewBreaks() const { return m_viewBreaksApplied; }
 
     short mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
@@ -308,6 +310,7 @@ protected:
     Base::Vector3d m_saveCentroid;//centroid before centering shape in origin
     Base::Vector3d m_breakSourceCentroid;
     Base::Vector3d m_breakResultCentroid;
+    bool m_viewBreaksApplied{false};
 
     std::vector<TechDraw::VertexPtr> m_referenceVerts;
 
