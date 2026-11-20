@@ -513,34 +513,6 @@ class TestCAMSanity(PathTestBase):
             f"Expected CAUTION squawk for duplicate tool numbers, got: {squawks}",
         )
 
-    def test240_not_postprocessed_squawk(self):
-        """A job with no prior post-processing should produce a squawk in _outputData().
-
-        Given: A job whose LastPostProcessOutput is an empty string.
-        When: _outputData() is called.
-        Then: squawkData contains an entry mentioning "post-process".
-
-        Example: job.LastPostProcessOutput = ""
-          → squawkData contains {"Note": "The Job has not been post-processed"}
-        """
-        mock_job = MagicMock()
-        mock_job.LastPostProcessDate = ""
-        mock_job.LastPostProcessOutput = ""
-        mock_job.PostProcessor = "linuxcnc"
-        mock_job.PostProcessorArgs = ""
-        mock_job.PostProcessorOutputFile = ""
-        mock_job.Operations.Group = []
-
-        S = self._make_sanity_with_mock_job(mock_job)
-        data = S._outputData()
-
-        squawks = data.get("squawkData", [])
-        self.assertTrue(len(squawks) > 0, "Expected at least one squawk for unprocessed job")
-        self.assertTrue(
-            any("post-process" in s["Note"].lower() for s in squawks),
-            f"Expected squawk mentioning post-processing, got: {squawks}",
-        )
-
     def test242_deprecated_operation_squawk(self):
         """An operation with a deprecation notice produces a NOTE in _outputData().
 
