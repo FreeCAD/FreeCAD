@@ -112,7 +112,6 @@ def render_stub_lines(
             if known_signature.doc:
                 rendered.append(f"def {method.python_name}{signature_text} -> {returns}:")
                 rendered.extend(render_docstring_lines(known_signature.doc))
-                rendered.append("    ...")
             else:
                 rendered.append(f"def {method.python_name}{signature_text} -> {returns}: ...")
         return tuple(rendered)
