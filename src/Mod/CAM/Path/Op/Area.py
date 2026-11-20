@@ -474,20 +474,27 @@ class ObjectOp(PathOp.ObjectOp):
         # Initiate depthparams and calculate operation heights for operation
         self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
 
-        shapes = self.areaOpShapes(obj)
+        shapeTups = self.areaOpShapes(obj)
 
         # Sorting shapes
         if (
-            len(shapes) > 1
-            and getattr(obj, "SortingMode", None) != "Manual"
-            and getattr(obj, "HandleMultipleFeatures", False) != "Collectively"
+            len(shapeTups) > 1
+            and obj.SortingMode != "Manual"
+            and obj.HandleMultipleFeatures != "Collectively"
         ):
             locations = []
-            for s in shapes:
-                shp = s[0]
-                locations.append({"x": shp.BoundBox.XMax, "y": shp.BoundBox.YMax, "shape": s})
-            locations = PathUtils.sort_locations(locations, ["x", "y"])
-            shapes = [j["shape"] for j in locations]
+            for i, tup in enumerate(shapeTups):
+                bb = tup[0].BoundBox
+                locations.append({"x": bb.XMin, "y": bb.YMin, "index": i})
+
+            start = self.startPoint(obj)
+            startPoint = [start.x, start.y]
+            end = self.toFrame(obj.EndPoint)
+            endPoint = [end.x, end.y] if obj.UseEndPoint else None
+            locations = PathUtils.sort_locations_tsp(
+                locations, ["x", "y"], startPoint=startPoint, endPoint=endPoint
+            )
+            shapeTups = [shapeTups[loc["index"]] for loc in locations]
 
         # Adjust tuples length received from other PathWB tools/operations
         rshapes = []
