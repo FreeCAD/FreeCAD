@@ -1782,9 +1782,7 @@ class PostProcessor:
                     tool_change_seen = True
                     pending_z = None
 
-                    Path.Log.debug(
-                        f"Tool change detected: T{item.data['tool_number']}"
-                    )
+                    Path.Log.debug(f"Tool change detected: T{item.data['tool_number']}")
                     continue
 
                 if not item.path:
@@ -1806,43 +1804,34 @@ class PostProcessor:
                         continue
 
                     # Process movement commands after a tool change.
-                    if (
-                        tool_change_seen
-                        and cmd.Name in Constants.GCODE_MOVE_ALL
-                    ):
+                    if tool_change_seen and cmd.Name in Constants.GCODE_MOVE_ALL:
 
-                        has_xy = (
-                            "X" in cmd.Parameters or "Y" in cmd.Parameters
-                        )
+                        has_xy = "X" in cmd.Parameters or "Y" in cmd.Parameters
                         has_z = "Z" in cmd.Parameters
 
                         # CASE 1: Combined XY/Z movement.
                         if has_xy and has_z:
 
-                            Path.Log.debug(
-                                f"Decomposing combined XY/Z move: {cmd.Name}"
-                            )
+                            Path.Log.debug(f"Decomposing combined XY/Z move: {cmd.Name}")
 
                             # Extract XY and rotational parameters.
                             xy_params = {
-                                k: v for k, v in cmd.Parameters.items()
+                                k: v
+                                for k, v in cmd.Parameters.items()
                                 if k in ("X", "Y", "A", "B", "C")
                             }
 
                             # Extract Z and all remaining parameters.
                             z_params = {
-                                k: v for k, v in cmd.Parameters.items()
+                                k: v
+                                for k, v in cmd.Parameters.items()
                                 if k not in ("X", "Y", "A", "B", "C")
                             }
 
                             if xy_params:
-                                new_commands.append(
-                                    Path.Command(cmd.Name, xy_params)
-                                )
+                                new_commands.append(Path.Command(cmd.Name, xy_params))
 
-                            new_commands.append(
-                                Path.Command(cmd.Name, z_params)
-                            )
+                            new_commands.append(Path.Command(cmd.Name, z_params))
 
                             changed = True
                             tool_change_seen = False
@@ -1852,9 +1841,7 @@ class PostProcessor:
                         # CASE 2: Z-only movement.
                         if has_z and not has_xy:
 
-                            Path.Log.debug(
-                                f"Holding initial Z move: {cmd.Parameters}"
-                            )
+                            Path.Log.debug(f"Holding initial Z move: {cmd.Parameters}")
 
                             # Temporarily hold the Z movement.
                             pending_z = cmd
@@ -1864,9 +1851,7 @@ class PostProcessor:
                         # CASE 3: XY movement.
                         if has_xy:
 
-                            Path.Log.debug(
-                                f"Processing XY move: {cmd.Parameters}"
-                            )
+                            Path.Log.debug(f"Processing XY move: {cmd.Parameters}")
 
                             # Add XY movement first.
                             new_commands.append(cmd)
@@ -1892,9 +1877,7 @@ class PostProcessor:
                 if changed:
                     item.path = Path.Path(new_commands)
 
-                    Path.Log.debug(
-                        f"Updated path for {item.label}"
-                    )
+                    Path.Log.debug(f"Updated path for {item.label}")
 
     def _expand_bcnc_commands(self, postables):
         """Inject or remove bCNC block annotation commands.
