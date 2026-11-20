@@ -40,9 +40,17 @@ def _configured_blender():
     executable = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Forms").GetString(
         "BlenderExecutable", ""
     )
-    if executable and Path(executable).is_file():
-        return executable
-    return None
+    if not executable:
+        return None
+    if not Path(executable).is_file():
+        # An explicit choice must not be replaced by whichever Blender happens
+        # to be found on PATH; it may be a different, incompatible version.
+        raise BlenderBridgeError(
+            f"The Forms preference 'BlenderExecutable' is set to '{executable}', "
+            "which is not an existing file. Correct it, or clear it to find Blender "
+            "automatically."
+        )
+    return executable
 
 
 def _version_key(path):
@@ -54,7 +62,11 @@ def _version_key(path):
 
 
 def find_blender_executable():
-    """Return a configured or conventionally installed Blender executable."""
+    """Return a configured or conventionally installed Blender executable.
+
+    Raise BlenderBridgeError when the ``BlenderExecutable`` preference is set
+    but does not name an existing file. Return None when no Blender is found.
+    """
     configured = _configured_blender()
     if configured:
         return configured
@@ -96,7 +108,9 @@ def run_blender_script(
         "--disable-autoexec",
     ]
     if source_file is not None:
-        command.append(str(source_file))
+        # Blender parses this positional argument like its options, so a
+        # relative name such as "-scene.blend" must not reach it verbatim.
+        command.append(os.path.abspath(source_file))
     command.extend(
         [
             "--python-exit-code",

@@ -160,10 +160,12 @@ class FlattenTool(ToolController):
             source, face_name = self.flatten_reference
             source_placement = self.session._global_placement(source)
             if face_name:
+                # Shape geometry already carries source.Placement.
+                parent_placement = source_placement * source.Placement.inverse()
                 face = source.Shape.getElement(face_name)
-                origin = source_placement.multVec(face.CenterOfMass)
+                origin = parent_placement.multVec(face.CenterOfMass)
                 u_value, v_value = face.Surface.parameter(face.CenterOfMass)
-                normal = source_placement.Rotation.multVec(face.normalAt(u_value, v_value))
+                normal = parent_placement.Rotation.multVec(face.normalAt(u_value, v_value))
             else:
                 origin = source_placement.Base
                 normal = source_placement.Rotation.multVec(App.Vector(0, 0, 1))

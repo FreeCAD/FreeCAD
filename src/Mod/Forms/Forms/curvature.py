@@ -52,8 +52,10 @@ def _uv(side, t):
     return ((t, 0.0), (1.0, t), (1.0 - t, 1.0), (0.0, 1.0 - t))[side]
 
 
-def _configuration(obj):
+def _configuration(obj, start=None):
     cage = ControlCage.from_object(obj)
+    if start is not None:
+        cage = ControlCage(start, cage.faces, cage.vertex_sharpness, cage.edge_sharpness)
     if len(cage.connected_components()) != 1:
         raise ConversionError("Curvature Match requires one connected control cage")
     if (getattr(obj, "TMeshData", "") or getattr(obj, "LocalEdgeInserts", ())
@@ -198,10 +200,16 @@ def _failure(errors):
             "Add control rows near the opening or adjust the Match tolerances.")
 
 
-def solve_curvature_match(obj):
-    """Move nearby controls only; reject unachievable matches before publishing them."""
+def solve_curvature_match(obj, start=None):
+    """Move nearby controls only; reject unachievable matches before publishing them.
+
+    The solve starts from the control points *start*, by default the stored
+    cage, and stores and returns the solved control points. The result
+    depends on the start, so a caller that solves again after the support
+    changed passes the same unsolved cage each time.
+    """
     np = _numpy()
-    cage, variables, level = _configuration(obj)
+    cage, variables, level = _configuration(obj, start)
     tolerances = _tolerances(obj)
     samples, scale = _samples(obj, cage, level)
     locations = tuple(tuple(sample[:3]) for sample in samples)
@@ -209,8 +217,9 @@ def solve_curvature_match(obj):
     original = _jets(cage.vertices, faces, edges, corners, level, locations)
     errors = _errors(original, samples)
     if all(a <= b for a, b in zip(errors, tolerances)):
+        obj.ControlPoints = [App.Vector(*point) for point in cage.vertices]
         _store_errors(obj, errors)
-        return
+        return list(obj.ControlPoints)
     weights = _weights(len(cage.vertices), faces, edges, corners, level, variables, locations)
     delta = np.zeros((len(variables), 3))
 
@@ -275,7 +284,7 @@ def solve_curvature_match(obj):
                 points[vertex] = tuple(np.array(points[vertex]) + change)
             obj.ControlPoints = [App.Vector(*point) for point in points]
             _store_errors(obj, errors)
-            return
+            return list(obj.ControlPoints)
     raise ConversionError(_failure(errors))
 
 

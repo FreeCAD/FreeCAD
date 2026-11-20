@@ -52,15 +52,39 @@ def _object_color(obj):
         return [0.8, 0.8, 0.8, 1.0]
 
 
-def _is_body(obj):
+def _is_partdesign_result(obj):
+    """Return whether *obj*'s shape is a Body result rather than its own cage.
+
+    A Part Design Form feature stores its tool cage, but its Shape is the
+    Body solid after the additive, subtractive, or face-replacing operation.
+    An additive Form without a base feature is the exception: like a native
+    additive feature without a base, its Shape is the Form itself.
+    """
     try:
-        return obj.isDerivedFrom("PartDesign::Body")
+        if obj.isDerivedFrom("PartDesign::Body"):
+            return True
+        if not obj.isDerivedFrom("PartDesign::Feature"):
+            return False
     except (AttributeError, RuntimeError):
         return False
+    return not _is_additive_form_without_base(obj)
+
+
+def _is_additive_form_without_base(obj):
+    from .additive import PartDesignFormProxy, _partdesign_operation
+
+    if not isinstance(getattr(obj, "Proxy", None), PartDesignFormProxy):
+        return False
+    if _partdesign_operation(obj) != "Additive":
+        return False
+    base = getattr(obj, "BaseFeature", None)
+    return base is None or base.Shape.isNull()
 
 
 def _can_export_cage(obj):
-    if _is_body(obj) or not str(getattr(obj, "FormType", "")).startswith("Forms::"):
+    if _is_partdesign_result(obj) or not str(getattr(obj, "FormType", "")).startswith(
+        "Forms::"
+    ):
         return False
     if any(
         getattr(obj, name, None)

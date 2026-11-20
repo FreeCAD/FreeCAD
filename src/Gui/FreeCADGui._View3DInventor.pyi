@@ -315,11 +315,9 @@ class _View3DInventor:
 
     def activateToolHandler(self, icon_name: str, /) -> bool:
         """Activate the shared tool-handler cursor using a registered SVG icon."""
-        ...
 
     def deactivateToolHandler(self) -> None:
         """Deactivate the shared tool-handler cursor."""
-        ...
 
     @deprecated(
         deprecated_in="26.3",

@@ -14,3 +14,12 @@ def suite():
     result.addTests(TestReview.suite())
     result.addTests(TestCurvature.suite())
     return result
+
+
+def load_tests(loader, tests, pattern):
+    """Expose the package suite to ``unittest`` name loading.
+
+    FreeCAD's test runner calls ``loadTestsFromName("FormsTests")``, which
+    only honours a ``load_tests`` hook, not a ``suite()`` function.
+    """
+    return suite()

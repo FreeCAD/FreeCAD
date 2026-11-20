@@ -25,12 +25,16 @@
 
 import FreeCAD as App
 from .cage import update_object_shape
+from .controlcage import clear_match_data
 
 
 def reset_cage(obj, vertices, faces):
     """Replace parametric topology and reset all index-dependent properties."""
+    encoded_faces = [" ".join(str(index) for index in face) for face in faces]
+    if list(obj.ControlFaces) != encoded_faces or len(obj.ControlPoints) != len(vertices):
+        clear_match_data(obj)
     obj.ControlPoints = [App.Vector(*point) for point in vertices]
-    obj.ControlFaces = [" ".join(str(index) for index in face) for face in faces]
+    obj.ControlFaces = encoded_faces
     obj.VertexSharpness = [0.0] * len(vertices)
     obj.EdgeSharpness = []
     obj.LocalEdgeInserts = []
@@ -159,6 +163,22 @@ class FormFeatureProxy:
                 "Match",
                 "Control edges creased from corners of a tangent matched opening",
             )
+        if "MatchFreeControlPoints" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyVectorList",
+                "MatchFreeControlPoints",
+                "Match",
+                "Control-cage vertices as edited, before Match moves them",
+            )
+        if "MatchSolvedControlPoints" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyVectorList",
+                "MatchSolvedControlPoints",
+                "Match",
+                "Control-cage vertices as Match last wrote them",
+            )
+        obj.setEditorMode("MatchFreeControlPoints", 2)
+        obj.setEditorMode("MatchSolvedControlPoints", 2)
         obj.setEditorMode("MatchBoundary", 2)
         obj.setEditorMode("MatchParameters", 2)
         obj.setEditorMode("MatchCornerVertices", 2)

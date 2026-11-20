@@ -190,7 +190,8 @@ class StraightenTool(ToolController):
                 raise ValueError("Select one straight edge or axis")
             source, element_name = self.straighten_references[0]
             edge, _name = self.session._reference_edge(source, element_name)
-            placement = self.session._global_placement(source)
+            # Shape geometry already carries source.Placement.
+            placement = self.session._global_placement(source) * source.Placement.inverse()
             first = inverse.multVec(placement.multVec(edge.Vertexes[0].Point))
             second = inverse.multVec(placement.multVec(edge.Vertexes[-1].Point))
             direction = second.sub(first)
@@ -201,9 +202,8 @@ class StraightenTool(ToolController):
             points = []
             for source, element_name in self.straighten_references:
                 point, _name = self.session._reference_point(source, element_name)
-                points.append(
-                    inverse.multVec(self.session._global_placement(source).multVec(point))
-                )
+                placement = self.session._global_placement(source) * source.Placement.inverse()
+                points.append(inverse.multVec(placement.multVec(point)))
             origin = points[0]
             direction = points[1].sub(points[0])
         return (

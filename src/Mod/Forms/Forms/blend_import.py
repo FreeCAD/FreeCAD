@@ -157,13 +157,15 @@ def _create_feature(document, source_file, blender_version, data):
     vertices, faces, edges = _validate_cage(data)
     vertex_values = data.get("vertex_sharpness", ())
     try:
-        vertex_values = [max(0.0, float(value)) for value in vertex_values]
+        vertex_values = [float(value) for value in vertex_values]
     except (TypeError, ValueError) as error:
         raise BlendImportError("The Blender control cage has invalid vertex creases") from error
     if len(vertex_values) not in (0, len(vertices)):
         raise BlendImportError("The Blender control cage has incomplete vertex creases")
+    # Check before clamping: max(0.0, nan) is 0.0, which would hide the NaN.
     if any(not math.isfinite(value) for value in vertex_values):
         raise BlendImportError("The Blender control cage has non-finite vertex creases")
+    vertex_values = [max(0.0, value) for value in vertex_values]
 
     encoded_edges = []
     for value in data.get("edge_sharpness", ()):
@@ -172,7 +174,9 @@ def _create_feature(document, source_file, blender_version, data):
         except (IndexError, TypeError, ValueError) as error:
             raise BlendImportError("The Blender control cage has invalid edge creases") from error
         edge = tuple(sorted((first, second)))
-        if edge not in edges or sharpness < 0.0 or not math.isfinite(sharpness):
+        if not math.isfinite(sharpness):
+            raise BlendImportError("The Blender control cage has non-finite edge creases")
+        if edge not in edges or sharpness < 0.0:
             raise BlendImportError("A Blender edge crease does not reference a control edge")
         if sharpness > 0.0:
             encoded_edges.append(f"{edge[0]} {edge[1]} {sharpness:.12g}")
@@ -227,9 +231,15 @@ def import_file(filename, document, executable=None):
     if not path.is_file():
         raise BlendImportError(f"Blender file does not exist: {filename}")
     payload = _run_blender(path, executable=executable)
-    if payload.get("format") != "AstoCAD Forms control cage" or payload.get("version") != 1:
+    if (
+        not isinstance(payload, dict)
+        or payload.get("format") != "AstoCAD Forms control cage"
+        or payload.get("version") != 1
+    ):
         raise BlendImportError("Blender produced an unsupported control-cage format")
     objects = payload.get("objects") or []
+    if not isinstance(objects, list) or not isinstance(payload.get("rejected") or [], list):
+        raise BlendImportError("Blender produced malformed control-cage data")
     if not objects:
         rejected = payload.get("rejected") or []
         details = "\n".join(f"• {reason}" for reason in rejected)

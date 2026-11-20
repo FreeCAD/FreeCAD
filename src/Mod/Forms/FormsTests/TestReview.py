@@ -21,6 +21,19 @@ from Forms.edit_journal import EditJournal
 from Forms.preview import mesh_preview
 
 
+def _content(obj):
+    """Return the serialized object without the archive's entry timestamps.
+
+    dumpContent() is a zip archive whose entries carry the time of the dump,
+    so raw bytes differ whenever two dumps straddle a two-second boundary.
+    """
+    import io
+    import zipfile
+
+    with zipfile.ZipFile(io.BytesIO(bytes(obj.dumpContent(0)))) as archive:
+        return {name: archive.read(name) for name in archive.namelist()}
+
+
 class ReviewTest(unittest.TestCase):
     def setUp(self):
         self.doc = App.newDocument("FormsReviewRegression")
@@ -42,7 +55,7 @@ class ReviewTest(unittest.TestCase):
         points[0] += App.Vector(0, 0, 7)
         obj.LocalControlPoints = points
         self.doc.recompute()
-        before = obj.dumpContent(0)
+        before = _content(obj)
         edge = next(iter(ControlCage.from_object(obj).edge_counts()))
         for operation, args in (
             (Forms.insert_edge_loop, (edge,)), (Forms.erase_and_fill, ([0],)),
@@ -51,7 +64,7 @@ class ReviewTest(unittest.TestCase):
             with self.subTest(operation=operation.__name__):
                 with self.assertRaisesRegex(ValueError, "existing local edits"):
                     operation(obj, *args)
-                self.assertEqual(before, obj.dumpContent(0))
+                self.assertEqual(before, _content(obj))
 
     def test_bridge_subdivided_boundaries_retains_local_displacements(self):
         from Forms.model import object_tmesh
@@ -81,10 +94,10 @@ class ReviewTest(unittest.TestCase):
                 boundaries = [edge for edge, count in mesh.edge_counts().items() if count == 1]
                 first = next(edge for edge in boundaries if all(mesh.vertices[v][2] < 0 for v in edge))
                 second = next(edge for edge in boundaries if all(mesh.vertices[v][2] > 0 for v in edge))
-                before = obj.dumpContent(0)
+                before = _content(obj)
                 with self.assertRaisesRegex(ValueError, "exactly two"):
                     Forms.bridge_boundaries(obj, [first])
-                self.assertEqual(before, obj.dumpContent(0))
+                self.assertEqual(before, _content(obj))
                 Forms.bridge_boundaries(obj, [first, second])
                 self.doc.recompute()
                 cage = ControlCage.from_object(obj)
@@ -101,12 +114,12 @@ class ReviewTest(unittest.TestCase):
         obj = Forms.create_box(self.doc)
         Forms.subdivide_faces(obj, [0])
         self.doc.recompute()
-        before = obj.dumpContent(0)
+        before = _content(obj)
         from Forms.model import object_tmesh
         edge = next(iter(object_tmesh(obj).atomic_edges()))
         with self.assertRaisesRegex(ValueError, "open boundary"):
             Forms.bridge_boundaries(obj, [edge])
-        self.assertEqual(before, obj.dumpContent(0))
+        self.assertEqual(before, _content(obj))
 
     @unittest.skipUnless(App.GuiUp, "Bridge command requires FreeCADGui")
     def test_gui_bridge_local_boundaries_and_undo(self):
@@ -531,6 +544,97 @@ class ReviewTest(unittest.TestCase):
         session.dragger_finished(session.dragger)
         session.reject()
 
+    def test_rejected_edit_restores_the_shape_shown_outside_edit_mode(self):
+        # FreeCAD never calls unsetEdit() when setEdit() returns False, which
+        # is how the shared Forms editor reports an expected modeling error.
+        from Forms.additive import ViewProviderPartDesignForm
+        from Forms.primitives import ViewProviderFormFace
+        from Forms.viewprovider import ViewProviderForm
+
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        source = body.newObject("PartDesign::Feature", "Source")
+        source.Shape = Part.makeBox(20, 20, 10)
+        form = Forms.create_additive_form(
+            body, source, "Box", placement=App.Placement(App.Vector(15, 10, 5), App.Rotation())
+        )
+        face = Forms.create_face(self.doc)
+        self.doc.recompute()
+        combined_volume = form.Shape.Volume
+
+        with patch.object(ViewProviderForm, "setEdit", return_value=False):
+            provider = object.__new__(ViewProviderPartDesignForm)
+            self.assertFalse(provider.setEdit(SimpleNamespace(Object=form), 0))
+            provider = object.__new__(ViewProviderFormFace)
+            self.assertFalse(provider.setEdit(SimpleNamespace(Object=face), 0))
+
+        self.assertFalse(form.EditingForm)
+        self.assertEqual(form.CombinationStatus, "Valid fused additive form")
+        self.assertAlmostEqual(form.Shape.Volume, combined_volume, places=6)
+        self.assertFalse(getattr(face.Proxy, "_show_edit_shape", False))
+
+    def test_moving_a_form_into_a_body_keeps_its_expressions(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.set("A1", "30 mm")
+        sheet.setAlias("A1", "size")
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        source = Forms.create_box(self.doc)
+        source.setExpression("Length", "Sheet.size")
+        source.setExpression("Width", "Length / 2")
+        # FreeCAD stores a reference to the object itself as relative, so it
+        # must follow the new feature after the source is removed.
+        source.setExpression("Height", f"{source.Name}.Length")
+        self.doc.recompute()
+
+        result = Forms.move_form_to_body(source, body)
+        sheet.set("A1", "50 mm")
+        self.doc.recompute()
+
+        self.assertEqual(
+            sorted(str(path).lstrip(".") for path, _expression in result.ExpressionEngine),
+            ["Height", "Length", "Width"],
+        )
+        self.assertAlmostEqual(result.Length.Value, 50.0)
+        self.assertAlmostEqual(result.Width.Value, 25.0)
+        self.assertAlmostEqual(result.Height.Value, 50.0)
+        self.assertIn("Up-to-date", result.State)
+        self.assertAlmostEqual(result.FormShape.BoundBox.XLength, 50.0, delta=1.0)
+
+    def test_public_api_exports_and_forwards_every_option(self):
+        import inspect
+
+        from Forms import additive, box, form, operations, pipe, primitives, surface
+
+        public = {
+            name
+            for name, value in vars(Forms).items()
+            if inspect.isfunction(value) and value.__module__ == "Forms"
+        }
+        self.assertEqual(public.difference(Forms.__all__), set())
+        implementations = {
+            "create_box": box,
+            "create_form": form,
+            "create_pipe": pipe,
+            "create_surface": surface,
+            "create_additive_form": additive,
+            "create_subtractive_form": additive,
+            "move_form_to_body": additive,
+            "match_boundary": additive,
+        }
+        for name in ("create_cylinder", "create_sphere", "create_quadball", "create_face",
+                     "create_torus", "create_tube"):
+            implementations[name] = primitives
+        for name in ("delete_faces", "dissolve_edges", "erase_and_fill", "fill_holes",
+                     "bridge_boundaries", "unweld_segment", "weld_boundaries", "thicken_surface",
+                     "insert_edge_loop", "insert_edge", "insert_point_edges", "subdivide_faces",
+                     "set_edge_crease", "straighten_control_points", "flatten_control_points"):
+            implementations[name] = operations
+        for name, module in implementations.items():
+            with self.subTest(function=name):
+                self.assertEqual(
+                    list(inspect.signature(getattr(Forms, name)).parameters),
+                    list(inspect.signature(getattr(module, name)).parameters),
+                )
+
     def test_straighten_finds_the_dominant_eigenvector(self):
         points = [(math.sqrt(1.5), 0, 0), (-math.sqrt(1.5), 0, 0), (0, 1, 1), (0, -1, -1)]
         center, axis = topology._largest_covariance_axis(points)
@@ -643,6 +747,7 @@ class ReviewTest(unittest.TestCase):
         self.assertIsNotNone(restored.ViewObject.Proxy._cage_coordinates)
         self.assertTrue(restored.Shape.isValid())
 
+    @unittest.skipUnless(App.GuiUp, "Task panels require FreeCADGui")
     def test_task_panel_bindings_follow_the_primitive_type(self):
         from Forms.taskpanels import bind_edit_panel
 
@@ -718,11 +823,11 @@ class ReviewTest(unittest.TestCase):
         obj = Forms.create_box(self.doc)
         Forms.subdivide_faces(obj, [0])
         self.doc.recompute()
-        before = obj.dumpContent(0)
+        before = _content(obj)
         with patch.object(brep, "_make_surface", side_effect=AssertionError("BRep fitting in preview")):
             vertices, faces = mesh_preview(obj)
         self.assertTrue(vertices and faces)
-        self.assertEqual(before, obj.dumpContent(0))
+        self.assertEqual(before, _content(obj))
 
 
 def suite():

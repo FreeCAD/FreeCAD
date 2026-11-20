@@ -277,7 +277,8 @@ class FormEditToolsMixin:
             if len(shape.Vertexes) == 1:
                 return shape.Vertexes[0].Point, "Vertex1"
         if "Point" in str(getattr(source, "TypeId", "")):
-            return App.Vector(), ""
+            # Match shape coordinates, which already carry source.Placement.
+            return App.Vector(source.Placement.Base), ""
         raise ValueError("Select a vertex or datum point")
 
 

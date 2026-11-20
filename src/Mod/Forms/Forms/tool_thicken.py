@@ -3,7 +3,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
-from .capabilities import require_base_topology
+from .capabilities import reject_form_surface, require_base_topology
 from .cage import ControlCage
 from .feedback import MODELING_ERRORS, report_modeling_error
 from .taskpanels import load_panel
@@ -30,6 +30,7 @@ class ThickenTool(ToolController):
         if self.session.cleaned or self.session.has_active_tool():
             return False
         require_base_topology(self.session.obj, "Thicken")
+        reject_form_surface(self.session.obj, "Thicken")
         cage = ControlCage.from_object(self.session.obj)
         if cage.is_closed:
             raise ValueError("Thicken currently requires an open Form surface")

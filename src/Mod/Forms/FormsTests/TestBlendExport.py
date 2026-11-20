@@ -86,6 +86,62 @@ class BlendExportTest(unittest.TestCase):
         self.assertEqual(exported["kind"], "MESH")
         self.assertTrue(exported["faces"])
 
+    def test_part_design_form_exports_its_body_result(self):
+        from Forms.additive import create_partdesign_form
+
+        document = App.newDocument("FormsTestBlendExportPartDesignForm")
+        body = document.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::AdditiveBox", "Box")
+        base.Length = base.Width = base.Height = 40.0
+        document.recompute()
+        form = create_partdesign_form(body, base, "Box", operation="Subtractive")
+        form.FormPlacement = App.Placement(App.Vector(20.0, 20.0, 20.0), App.Rotation())
+        document.recompute()
+
+        exported = build_payload([form], deflection=0.5)["objects"][0]
+
+        # The cutting tool's cage is not the object the user sees: export the
+        # Body solid with the cut, as for any other Part Design feature.
+        self.assertEqual(exported["kind"], "MESH")
+        bounds = App.BoundBox()
+        for point in exported["vertices"]:
+            bounds.add(App.Vector(*point))
+        self.assertAlmostEqual(bounds.XLength, 40.0, places=6)
+        self.assertAlmostEqual(bounds.ZLength, 40.0, places=6)
+
+    def test_part_design_form_without_base_exports_like_part_design(self):
+        from Forms.additive import create_partdesign_form
+        from Forms.blend_export import _shape_payload
+
+        document = App.newDocument("FormsTestBlendExportWithoutBase")
+        body = document.addObject("PartDesign::Body", "Body")
+        form = create_partdesign_form(
+            body, None, "Box", placement=App.Placement(App.Vector(100, 0, 0), App.Rotation())
+        )
+        document.recompute()
+
+        exported = build_payload([form], deflection=0.5)["objects"][0]
+
+        # Like a native additive feature without a base, the Form is the Body
+        # solid itself, so it stays an editable subdivision cage.
+        self.assertEqual(exported["kind"], "SUBDIVISION")
+        self.assertEqual(len(exported["vertices"]), len(form.ControlPoints))
+        cage = App.BoundBox()
+        for point in exported["vertices"]:
+            cage.add(App.Vector(*point))
+        mesh = App.BoundBox()
+        for point in _shape_payload(form, 0.5)["vertices"]:
+            mesh.add(App.Vector(*point))
+        self.assertTrue(cage.Center.isEqual(mesh.Center, 1.0e-6))
+        self.assertAlmostEqual(cage.Center.x, 100.0, places=6)
+
+        # A subtractive Form without a base has no result to export.
+        other = document.addObject("PartDesign::Body", "OtherBody")
+        cut = create_partdesign_form(other, None, "Box", operation="Subtractive")
+        document.recompute()
+        with self.assertRaisesRegex(BlendExportError, "has no shape"):
+            build_payload([cut], deflection=0.5)
+
     def test_advanced_local_form_topology_falls_back_to_shape(self):
         document = App.newDocument("FormsTestBlendExportLocal")
         obj = create_box(document)
@@ -122,6 +178,41 @@ class BlendExportTest(unittest.TestCase):
 
             self.assertEqual(destination.read_bytes(), b"previous blend contents")
             self.assertEqual(list(Path(temporary).glob(".*.tmp")), [])
+
+    def test_exported_view_does_not_clip_metre_sized_parts(self):
+        import json
+
+        from Forms.blender_bridge import find_blender_executable, run_blender_script
+
+        if not find_blender_executable():
+            self.skipTest("Blender integration requires an installed Blender")
+        document = App.newDocument("FormsTestBlendExportClipping")
+        obj = create_box(document)
+        document.recompute()
+        probe = (
+            "import bpy, json, sys\n"
+            "spaces = [space for screen in bpy.data.screens for area in screen.areas\n"
+            "          for space in area.spaces if space.type == 'VIEW_3D']\n"
+            "json.dump({'scale': bpy.context.scene.unit_settings.scale_length,\n"
+            "           'clip': [[space.clip_start, space.clip_end] for space in spaces]},\n"
+            "          open(sys.argv[sys.argv.index('--') + 1], 'w'))\n"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            blend = Path(temporary) / "clipping.blend"
+            script = Path(temporary) / "probe.py"
+            output = Path(temporary) / "clipping.json"
+            script.write_text(probe, encoding="utf-8")
+            self.assertEqual(export_file([obj], str(blend)), [])
+            run_blender_script(script, (output,), source_file=blend, operation="probing")
+            result = json.loads(output.read_text(encoding="utf-8"))
+
+        self.assertAlmostEqual(result["scale"], 0.001, places=6)
+        self.assertTrue(result["clip"])
+        for clip_start, clip_end in result["clip"]:
+            # 1 BU is 1 mm: parts several metres long stay inside the far plane,
+            # and the depth range is no wider than Blender's factory one.
+            self.assertGreaterEqual(clip_end, 100000.0)
+            self.assertLessEqual(clip_end / clip_start, 1.0e5 * 1.001)
 
     def test_export_file_runs_blender_with_built_payload(self):
         document = App.newDocument("FormsTestBlendExportRun")

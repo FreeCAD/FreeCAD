@@ -89,6 +89,10 @@ def open(filename):
         App.closeDocument(document.Name)
         _show_error(error)
         return None
+    except Exception:
+        # The document exists only for this import; do not leave it behind.
+        App.closeDocument(document.Name)
+        raise
     _show_rejected(rejected)
     return document
 

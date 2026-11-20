@@ -68,10 +68,13 @@ class LocalEdgeInsert:
     @classmethod
     def decode(cls, value):
         data = json.loads(str(value))
-        face = tuple(int(index) for index in data["face"])
-        edge = tuple(sorted(int(index) for index in data["edge"]))
-        position = float(data["position"])
-        points = tuple(int(index) for index in data.get("points", ()))
+        try:
+            face = tuple(int(index) for index in data["face"])
+            edge = tuple(sorted(int(index) for index in data["edge"]))
+            position = float(data["position"])
+            points = tuple(int(index) for index in data.get("points", ()))
+        except (AttributeError, KeyError, TypeError) as error:
+            raise ValueError("Invalid local edge-insert record") from error
         if (
             len(face) != 4
             or len(edge) != 2
@@ -199,6 +202,28 @@ def _interpolation_factor(count, degree):
 
 def _solve(matrix, values):
     return DenseLU(matrix).solve_points(values)
+
+
+def _has_net_area(grid):
+    """Return whether a point net spans area, rather than a curve or point.
+
+    A regular patch returns at its first cell, so the check is negligible.
+    """
+    for row, next_row in zip(grid, grid[1:]):
+        for column in range(len(row) - 1):
+            first = tuple(next_row[column + 1][axis] - row[column][axis] for axis in range(3))
+            second = tuple(row[column + 1][axis] - next_row[column][axis] for axis in range(3))
+            cross = (
+                first[1] * second[2] - first[2] * second[1],
+                first[2] * second[0] - first[0] * second[2],
+                first[0] * second[1] - first[1] * second[0],
+            )
+            scale = math.sqrt(sum(value * value for value in first)) * math.sqrt(
+                sum(value * value for value in second)
+            )
+            if math.sqrt(sum(value * value for value in cross)) > scale * 1.0e-10:
+                return True
+    return False
 
 
 def _make_surface(grid):
@@ -454,6 +479,7 @@ def _shape_from_tmesh_surfaces(surfaces, mesh, closed, tolerance):
     """Create logical leaf faces as exact parameter trims of root surfaces."""
     from .elementmap import name_patch_face
 
+    _require_patch_area({leaf.root: surfaces[leaf.root] for leaf in mesh.faces.values()}.values())
     faces = []
     for face_id in sorted(mesh.faces):
         leaf = mesh.faces[face_id]
@@ -945,6 +971,17 @@ def _dissolved_patch_layouts(faces, dissolved_edges):
         }
         if occupied != expected:
             raise ConversionError("Dissolved edges would create a non-rectangular face")
+        # Faces adjacent in the layout must also share their cage edge; a
+        # fan around a valence-5 or open-boundary vertex fills the rectangle
+        # but lands two different cage vertices on one grid point.
+        vertex_points = {}
+        point_vertices = {}
+        for face_index in group:
+            for vertex, point in zip(faces[face_index], coordinates[face_index]):
+                if vertex_points.setdefault(vertex, point) != point:
+                    raise ConversionError("Dissolved faces do not map to one parameter grid")
+                if point_vertices.setdefault(point, vertex) != vertex:
+                    raise ConversionError("Dissolved faces do not map to one parameter grid")
         layouts.append((tuple(sorted(group)), coordinates))
     return layouts
 
@@ -1153,9 +1190,22 @@ def _make_dissolved_surfaces(grids, layouts):
     return surfaces
 
 
+def _require_patch_area(surfaces):
+    """Reject output patches collapsed to a curve or point.
+
+    OCCT sewing does not terminate on such faces, for example after every
+    control of a closed Form was straightened onto one line. Interpolated
+    poles of a collapsed patch are collapsed as well, so the pole net decides.
+    """
+    for surface in surfaces:
+        if not _has_net_area(surface.getPoles()):
+            raise ConversionError("A control-cage patch has collapsed to a curve or point")
+
+
 def _named_surface_faces(surfaces, face_ids=None):
     from .elementmap import name_patch_face
 
+    _require_patch_area(surfaces)
     if face_ids is None:
         face_ids = range(len(surfaces))
     return [
@@ -1296,30 +1346,39 @@ def apply_local_edge_inserts(
             split_edge = surface.vIso(parameter).toShape(u_min, u_max)
         split_pairs.append((split_edge, target_face))
 
-    split_result = Part.makeSplitShape(shape, split_pairs)
-    if len(split_result) < 2 or not split_result[1]:
-        raise ConversionError("OCCT did not produce a locally split shape")
-    if not shape.Solids and shape.ShapeType == "Face":
-        split_faces = [face for result_shape in split_result[1] for face in result_shape.Faces]
-        shell = Part.makeShell(split_faces)
+    if not shape.Solids:
+        # BRepFeat_SplitShape.Left() only floods one side of the split edges,
+        # which drops the other half of an open face or strip.  The general
+        # fuse keeps every piece of every split face.
+        fused, _pieces = shape.generalFuse([edge for edge, _face in split_pairs])
+        split_faces = fused.Faces
+        if not split_faces or abs(
+            sum(face.Area for face in split_faces) - shape.Area
+        ) > max(shape.Area * 1.0e-6, matching_tolerance * matching_tolerance):
+            raise ConversionError("OCCT did not preserve the locally split surface")
+        split_shape = Part.makeCompound(split_faces)
+        split_shape.sewShape(max(float(tolerance), 1.0e-7))
+        if len(split_shape.Shells) != 1:
+            raise ConversionError("Local edge insertion did not produce one shell")
+        shell = split_shape.Shells[0]
         if shell.isNull() or not shell.isValid():
             raise ConversionError("OCCT rejected the locally split surface")
         return shell.Faces[0] if len(shell.Faces) == 1 else shell
+
+    split_result = Part.makeSplitShape(shape, split_pairs)
+    if len(split_result) < 2 or not split_result[1]:
+        raise ConversionError("OCCT did not produce a locally split shape")
     split_shape = Part.makeCompound(split_result[1])
     split_shape.sewShape(max(float(tolerance), 1.0e-7))
     if len(split_shape.Shells) != 1:
         raise ConversionError("Local edge insertion did not produce one shell")
     shell = split_shape.Shells[0]
-    if shape.Solids:
-        if not shell.isClosed():
-            raise ConversionError("Local edge insertion opened the solid")
-        result = Part.makeSolid(shell)
-        if result.isNull() or not result.isValid():
-            raise ConversionError("OCCT rejected the locally split solid")
-        return result
-    if shell.isNull() or not shell.isValid():
-        raise ConversionError("OCCT rejected the locally split surface")
-    return shell.Faces[0] if len(shell.Faces) == 1 else shell
+    if not shell.isClosed():
+        raise ConversionError("Local edge insertion opened the solid")
+    result = Part.makeSolid(shell)
+    if result.isNull() or not result.isValid():
+        raise ConversionError("OCCT rejected the locally split solid")
+    return result
 
 
 def _cage_to_shape(

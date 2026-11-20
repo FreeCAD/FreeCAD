@@ -54,15 +54,22 @@ def _linked_support(reference, obj=None, shape=None):
     if isinstance(names, str):
         names = (names,)
     names = tuple(str(name) for name in names)
+    try:
+        # A support recompute can remove the referenced element (fewer faces
+        # or edges). Treat that like any other unusable reference, so Match
+        # reports a failed conversion instead of escaping Feature::execute.
+        elements = [shape.getElement(name) for name in names]
+    except (IndexError, ValueError, Part.OCCError):
+        return None, None, None
     if len(names) == 1 and names[0].startswith("Face"):
-        face = shape.getElement(names[0])
+        face = elements[0]
         return face.OuterWire, face, "Face"
     if not names and shape.ShapeType == "Wire":
         wire = shape.Wires[0]
     elif len(names) == 1 and names[0].startswith("Wire"):
-        wire = shape.getElement(names[0])
+        wire = elements[0]
     elif names and all(name.startswith("Edge") for name in names):
-        groups = Part.sortEdges([shape.getElement(name) for name in names])
+        groups = Part.sortEdges(elements)
         if len(groups) != 1:
             return None, None, None
         wire = Part.Wire(groups[0])
@@ -319,8 +326,37 @@ def _surface_tangent_plane(face, point):
     return normal, normal.dot(point)
 
 
+def _solve_symmetric(matrix, rhs):
+    """Solve a small symmetric positive definite system by Gaussian elimination."""
+    size = len(rhs)
+    rows = [list(matrix[index]) + [rhs[index]] for index in range(size)]
+    for column in range(size):
+        pivot = max(range(column, size), key=lambda row: abs(rows[row][column]))
+        if abs(rows[pivot][column]) <= 1.0e-14:
+            return None
+        rows[column], rows[pivot] = rows[pivot], rows[column]
+        for row in range(column + 1, size):
+            factor = rows[row][column] / rows[column][column]
+            for index in range(column, size + 1):
+                rows[row][index] -= factor * rows[column][index]
+    solution = [0.0] * size
+    for row in reversed(range(size)):
+        remainder = rows[row][size] - sum(
+            rows[row][index] * solution[index] for index in range(row + 1, size)
+        )
+        solution[row] = remainder / rows[row][row]
+    return solution
+
+
 def _project_to_planes(point, planes):
-    """Return the closest point satisfying one or two tangent-plane constraints."""
+    """Return the closest point that best satisfies the tangent-plane constraints.
+
+    The result is a projection: projecting it again returns the same point.
+    One plane, or two planes that meet in a line, are satisfied exactly. More
+    planes generally have no common point; the result then minimizes the sum
+    of the squared plane distances, and among those minimizers is the one
+    closest to *point*.
+    """
     unique = []
     for normal, offset in planes:
         if any(abs(normal.dot(existing[0])) > 1.0 - 1.0e-9 for existing in unique):
@@ -332,16 +368,52 @@ def _project_to_planes(point, planes):
         normal, offset = unique[0]
         return point - normal * (normal.dot(point) - offset)
 
-    first, second = unique[:2]
-    cosine = first[0].dot(second[0])
-    determinant = 1.0 - cosine * cosine
-    if determinant <= 1.0e-12:
-        return point - first[0] * (first[0].dot(point) - first[1])
-    first_error = first[0].dot(point) - first[1]
-    second_error = second[0].dot(point) - second[1]
-    first_weight = (first_error - cosine * second_error) / determinant
-    second_weight = (second_error - cosine * first_error) / determinant
-    return point - first[0] * first_weight - second[0] * second_weight
+    if len(unique) == 2:
+        first, second = unique
+        cosine = first[0].dot(second[0])
+        determinant = 1.0 - cosine * cosine
+        if determinant <= 1.0e-12:
+            return point - first[0] * (first[0].dot(point) - first[1])
+        first_error = first[0].dot(point) - first[1]
+        second_error = second[0].dot(point) - second[1]
+        first_weight = (first_error - cosine * second_error) / determinant
+        second_weight = (second_error - cosine * first_error) / determinant
+        return point - first[0] * first_weight - second[0] * second_weight
+
+    # Least squares in the space the normals span. Normals of a ruled or flat
+    # support are coplanar: the direction across them is then left free, so
+    # that it keeps the position of *point* instead of being solved from noise.
+    axis = max(
+        (
+            first[0].cross(second[0])
+            for position, first in enumerate(unique)
+            for second in unique[position + 1:]
+        ),
+        key=lambda vector: vector.Length,
+    )
+    axis.normalize()
+    basis = [App.Vector(unique[0][0])]
+    basis.append(axis.cross(basis[0]))
+    basis[1].normalize()
+    if any(abs(normal.dot(axis)) > 1.0e-6 for normal, _offset in unique):
+        basis.append(axis)
+    size = len(basis)
+    matrix = [[0.0] * size for _ in range(size)]
+    rhs = [0.0] * size
+    for normal, offset in unique:
+        components = [normal.dot(direction) for direction in basis]
+        error = normal.dot(point) - offset
+        for row in range(size):
+            rhs[row] += components[row] * error
+            for column in range(size):
+                matrix[row][column] += components[row] * components[column]
+    correction = _solve_symmetric(matrix, rhs)
+    if correction is None:
+        raise ConversionError("Could not combine the Match tangent planes")
+    result = App.Vector(point)
+    for weight, direction in zip(correction, basis):
+        result = result - direction * weight
+    return result
 
 
 def _boundary_tangent_planes(reference, selected_face, support, boundary, projected, obj=None, shape=None):

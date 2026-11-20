@@ -166,45 +166,8 @@ class FormFaceProxy(FormFeatureProxy):
         return face_control_cage(obj.Length.Value, obj.Width.Value, obj.XSegments, obj.YSegments)
 
     def execute(self, obj):
-        profile = obj.ProfileShape
-        profile_topology = list(obj.ProfileControlFaces)
-        if (
-            obj.CageMode == "Parametric"
-            or bool(getattr(obj, "MatchBoundary", ()))
-            or profile.isNull()
-            or list(obj.ControlFaces) != profile_topology
-            or bool(str(getattr(obj, "TMeshData", "") or ""))
-            or bool(getattr(obj, "LocalEdgeInserts", ()))
-            or bool(getattr(obj, "LocalControlPoints", ()))
-            or bool(getattr(obj, "DissolvedEdges", ()))
-            or bool(getattr(obj, "EdgeSharpness", ()))
-            or any(float(value) > 0.0 for value in getattr(obj, "VertexSharpness", ()))
-        ):
+        if not update_profile_face_shape(self, obj):
             super().execute(obj)
-            return
-        if _same_control_points(obj.ControlPoints, obj.ProfileControlPoints):
-            from .elementmap import map_form_shape
-
-            if bool(getattr(self, "_show_edit_shape", False)):
-                try:
-                    shape = _segmented_profile_shape(
-                        profile, obj.ControlPoints, obj.ControlFaces
-                    )
-                except ValueError:
-                    vertices, faces, support = _validated_profile_control_cage(profile)
-                    _write_profile_control_cage(obj, vertices, faces, support)
-                    profile = support
-                    shape = _segmented_profile_shape(
-                        profile, obj.ControlPoints, obj.ControlFaces
-                    )
-            else:
-                shape = profile.copy()
-            obj.Shape = map_form_shape(obj, shape, source_shapes=(profile,))
-            obj.MaximumDeviation = 0.0
-            obj.ConversionLevel = 0
-            obj.ConversionStatus = App.Qt.translate("Forms_Conversion", "Valid profile surface")
-            return
-        super().execute(obj)
 
     def show_edit_shape(self, obj, enabled):
         """Expose selectable control patches while the Form Face is edited."""
@@ -316,10 +279,14 @@ class ViewProviderFormFace(ViewProviderFormBox):
             return False
         self._show_edit_shape(view_object, True)
         try:
-            return super().setEdit(view_object, mode)
+            started = super().setEdit(view_object, mode)
         except Exception:
             self._show_edit_shape(view_object, False)
             raise
+        if not started:
+            # FreeCAD does not call unsetEdit() after a rejected edit.
+            self._show_edit_shape(view_object, False)
+        return started
 
     def unsetEdit(self, view_object, mode):
         try:
@@ -350,6 +317,15 @@ def _profile_face(profile):
         raise ValueError("Form Face requires a face or closed wire")
     if not face.Wires or any(not wire.isClosed() for wire in face.Wires):
         raise ValueError("The selected profile contains an open wire")
+    # A face selected on a placed object carries that placement as its own
+    # Location. Part::Feature replaces the Location of every assigned Shape
+    # with the Form's Placement, so keep the profile in the cage's coordinates
+    # by baking its Location into the geometry.
+    placement = face.Placement
+    if not placement.isIdentity():
+        face = face.copy()
+        face.Placement = App.Placement()
+        face = face.transformed(placement.toMatrix(), True)
     return face
 
 
@@ -576,6 +552,47 @@ def _segmented_profile_shape(profile, control_points, encoded_faces):
     return shell
 
 
+def update_profile_face_shape(proxy, obj):
+    """Give a Form Face made from a profile the exact profile as its shape.
+
+    This holds while the cage is still the initial profile cage. Returns False
+    when it is not, and the shape is then the subdivision surface of the cage.
+    *proxy* is the object's proxy, a standalone or a Part Design Form."""
+    profile = obj.ProfileShape
+    profile_topology = list(obj.ProfileControlFaces)
+    if (
+        obj.CageMode == "Parametric"
+        or bool(getattr(obj, "MatchBoundary", ()))
+        or profile.isNull()
+        or list(obj.ControlFaces) != profile_topology
+        or bool(str(getattr(obj, "TMeshData", "") or ""))
+        or bool(getattr(obj, "LocalEdgeInserts", ()))
+        or bool(getattr(obj, "LocalControlPoints", ()))
+        or bool(getattr(obj, "DissolvedEdges", ()))
+        or bool(getattr(obj, "EdgeSharpness", ()))
+        or any(float(value) > 0.0 for value in getattr(obj, "VertexSharpness", ()))
+        or not _same_control_points(obj.ControlPoints, obj.ProfileControlPoints)
+    ):
+        return False
+    from .elementmap import map_form_shape
+
+    if bool(getattr(proxy, "_show_edit_shape", False)):
+        try:
+            shape = _segmented_profile_shape(profile, obj.ControlPoints, obj.ControlFaces)
+        except ValueError:
+            vertices, faces, support = _validated_profile_control_cage(profile)
+            _write_profile_control_cage(obj, vertices, faces, support)
+            profile = support
+            shape = _segmented_profile_shape(profile, obj.ControlPoints, obj.ControlFaces)
+    else:
+        shape = profile.copy()
+    obj.Shape = map_form_shape(obj, shape, source_shapes=(profile,))
+    obj.MaximumDeviation = 0.0
+    obj.ConversionLevel = 0
+    obj.ConversionStatus = App.Qt.translate("Forms_Conversion", "Valid profile surface")
+    return True
+
+
 def _same_control_points(current, initial, tolerance=1.0e-9):
     return len(current) == len(initial) and all(
         App.Vector(first).sub(second).Length <= tolerance
@@ -657,6 +674,9 @@ def create_quadball(document=None, name="FormQuadball"):
 
 
 def create_face(document=None, name="FormFace", profile=None):
+    # Validate the profile before adding the object, so a rejected profile
+    # does not leave a default Form Face in the document.
+    profile_cage = _validated_profile_control_cage(profile) if profile is not None else None
     obj = _create(
         document,
         name,
@@ -664,8 +684,8 @@ def create_face(document=None, name="FormFace", profile=None):
         FormFaceProxy,
         ViewProviderFormFace,
     )
-    if profile is not None:
-        vertices, faces, support = _validated_profile_control_cage(profile)
+    if profile_cage is not None:
+        vertices, faces, support = profile_cage
         _write_profile_control_cage(obj, vertices, faces, support)
         obj.touch()
         obj.recompute()

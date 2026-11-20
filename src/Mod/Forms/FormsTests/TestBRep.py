@@ -9,6 +9,7 @@ import FreeCAD as App
 import Part
 
 from Forms import (
+    bridge_boundaries,
     create_additive_form,
     create_box,
     create_cylinder,
@@ -17,6 +18,7 @@ from Forms import (
     create_quadball,
     create_sphere,
     create_subtractive_form,
+    create_surface,
     create_torus,
     create_tube,
     delete_faces,
@@ -35,7 +37,12 @@ from Forms import (
     unweld_segment,
     weld_boundaries,
 )
-from Forms.brep import cage_to_solid, cage_to_surface
+from Forms.brep import (
+    LocalEdgeInsert,
+    apply_local_edge_inserts,
+    cage_to_solid,
+    cage_to_surface,
+)
 from Forms.box import FormFeatureProxy
 from Forms.cage import (
     ControlCage,
@@ -115,6 +122,141 @@ class BRepConversionTest(unittest.TestCase):
                 self.assertTrue(all(source_tag not in name for name in mapped_names))
                 self.assertEqual(form.Shape.Tag, form.ID)
                 self.assertEqual(source.Shape.Tag, source.ID)
+
+    def test_partdesign_form_without_base_follows_part_design(self):
+        document = App.newDocument("FormsTestPartDesignFormWithoutBase")
+        added = document.addObject("PartDesign::Body", "Added")
+        form = create_additive_form(added, None, "Box")
+        cut_body = document.addObject("PartDesign::Body", "Cut")
+        cut = create_subtractive_form(cut_body, None, "Box")
+        native_body = document.addObject("PartDesign::Body", "Native")
+        native = native_body.newObject("PartDesign::SubtractiveBox", "NativeCut")
+        document.recompute()
+
+        # An additive feature without a base is the Body's first solid.
+        self.assertNotIn("Invalid", form.State)
+        self.assertEqual(form.Shape.ShapeType, "Solid")
+        self.assertAlmostEqual(added.Shape.Volume, form.Shape.Volume, places=6)
+        # A subtractive one has nothing to cut: it fails like the native
+        # feature instead of adding its tool to the Body as material.
+        self.assertIn("Invalid", native.State)
+        self.assertIn("Invalid", cut.State)
+        self.assertTrue(cut.Shape.isNull())
+        self.assertTrue(cut_body.Shape.isNull())
+        self.assertFalse(cut.AddSubShape.isNull())
+        self.assertIn("without a base feature", cut.CombinationStatus)
+
+    def test_failed_subtractive_form_is_an_error_and_cuts_nothing(self):
+        def body_with_box(name):
+            document = App.newDocument(name)
+            body = document.addObject("PartDesign::Body", "Body")
+            box = body.newObject("PartDesign::AdditiveBox", "Box")
+            box.Length = box.Width = box.Height = 40
+            document.recompute()
+            return document, body, box
+
+        # A cut splitting the solid in two
+        document, body, box = body_with_box("FormsTestSubtractiveSplit")
+        split = create_subtractive_form(
+            body, box, "Box", placement=App.Placement(App.Vector(20, 20, 20), App.Rotation())
+        )
+        split.Length = 10
+        split.Width = split.Height = 100
+        document.recompute()
+        self.assertIn("Invalid", split.State)
+        self.assertIn("single-solid", split.CombinationStatus)
+        self.assertEqual(len(split.Shape.Solids), 1)
+        # The tool must not become material: nothing is removed nor added.
+        self.assertAlmostEqual(split.Shape.Volume, 64000.0, places=3)
+        self.assertFalse(split.AddSubShape.isNull())
+
+        # An open tool
+        document, body, box = body_with_box("FormsTestSubtractiveOpen")
+        opened = create_subtractive_form(
+            body, box, "Box", placement=App.Placement(App.Vector(20, 20, 40), App.Rotation())
+        )
+        document.recompute()
+        self.assertEqual(opened.CombinationStatus, "Valid cut subtractive form")
+        make_editable(opened)
+        delete_faces(opened, [0])
+        document.recompute()
+        self.assertIn("Invalid", opened.State)
+        self.assertIn("Open form", opened.CombinationStatus)
+        self.assertAlmostEqual(opened.Shape.Volume, 64000.0, places=3)
+
+        # An additive Form still shows its open tool beside the base.
+        document, body, box = body_with_box("FormsTestAdditiveOpen")
+        added = create_additive_form(
+            body, box, "Box", placement=App.Placement(App.Vector(20, 20, 40), App.Rotation())
+        )
+        document.recompute()
+        make_editable(added)
+        delete_faces(added, [0])
+        document.recompute()
+        self.assertNotIn("Invalid", added.State)
+        self.assertIn("Open form", added.CombinationStatus)
+
+    def test_partdesign_form_is_based_on_the_body_previous_solid(self):
+        document = App.newDocument("FormsTestPartDesignFormBase")
+        body = document.addObject("PartDesign::Body", "Body")
+        first = body.newObject("PartDesign::AdditiveBox", "First")
+        second = body.newObject("PartDesign::AdditiveBox", "Second")
+        second.Placement = App.Placement(App.Vector(5, 0, 0), App.Rotation())
+        other_body = document.addObject("PartDesign::Body", "Other")
+        foreign = other_body.newObject("PartDesign::AdditiveBox", "Foreign")
+        document.recompute()
+        names = [obj.Name for obj in document.Objects]
+
+        # None would drop the Body's features, a foreign feature is not in
+        # the Body, and First is not the solid the Body bases a new one on.
+        for base in (None, foreign, first):
+            with self.subTest(base=getattr(base, "Name", None)):
+                with self.assertRaisesRegex(ValueError, "Second"):
+                    create_additive_form(body, base, "Box")
+                self.assertEqual([obj.Name for obj in document.Objects], names)
+                self.assertEqual(body.Group, [first, second])
+                self.assertIs(body.Tip, second)
+                self.assertIs(second.BaseFeature, first)
+
+        # With the Tip moved back, the Form is inserted after it and the
+        # feature after it is based on the Form.
+        body.Tip = first
+        form = create_additive_form(body, first, "Box")
+        document.recompute()
+        self.assertIs(form.BaseFeature, first)
+        self.assertIs(second.BaseFeature, form)
+        self.assertIs(body.Tip, form)
+
+        # A Tip that is no solid names the insertion point: the Form is based
+        # on the solid before it.
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        body.Tip = sketch
+        cut = create_subtractive_form(body, sketch, "Box")
+        document.recompute()
+        self.assertIs(cut.BaseFeature, form)
+
+    def test_moving_a_profile_face_into_a_body_keeps_its_exact_profile(self):
+        from Forms import move_form_to_body
+
+        document = App.newDocument("FormsTestMoveProfileFace")
+        profile = Part.Face(Part.Wire([Part.makeCircle(10)]))
+        source = create_face(document, profile=profile)
+        source.Placement = App.Placement(App.Vector(30, 0, 0), App.Rotation())
+        body = document.addObject("PartDesign::Body", "Body")
+        body.Placement = App.Placement(App.Vector(0, 10, 0), App.Rotation(App.Vector(0, 0, 1), 90))
+        document.recompute()
+        global_center = source.Shape.BoundBox.Center
+        self.assertAlmostEqual(source.Shape.Area, profile.Area, places=7)
+
+        result = move_form_to_body(source, body)
+        document.recompute()
+
+        self.assertEqual(result.ConversionStatus, "Valid profile surface")
+        self.assertAlmostEqual(result.FormShape.Area, profile.Area, places=7)
+        center = body.Placement.multVec(result.FormShape.BoundBox.Center)
+        self.assertTrue(center.isEqual(global_center, 1.0e-6), (center, global_center))
+        for point in result.ControlPoints:
+            self.assertLess(result.FormShape.distToShape(Part.Vertex(point))[0], 1.0e-6)
 
     def test_default_cage_produces_valid_solid(self):
         vertices, faces = box_control_cage(20, 20, 20)
@@ -209,6 +351,61 @@ class BRepConversionTest(unittest.TestCase):
         document.recompute()
         self.assertIsNone(document.getObject(second_name))
         self.assertTrue(ControlCage.from_object(first).is_closed)
+
+    def test_unweld_keeps_the_second_form_in_the_source_part(self):
+        document = App.newDocument("FormsTestUnweldInPart")
+        try:
+            part = document.addObject("App::Part", "Part")
+            part.Placement.Base = App.Vector(100, 0, 0)
+            obj = create_cylinder(document)
+            part.addObject(obj)
+            document.recompute()
+            expected = obj.Shape.copy()
+            expected.Placement = obj.getGlobalPlacement()
+            cage = ControlCage.from_object(obj)
+            seam = None
+            for edge in cage_edges(cage.faces):
+                candidate = cage_edge_loop(cage.faces, edge)
+                try:
+                    cage.split_along_edges(candidate)
+                except ValueError:
+                    continue
+                seam = candidate
+                break
+            self.assertIsNotNone(seam)
+
+            document.openTransaction("Unweld Form")
+            first, second = unweld_segment(obj, seam)
+            document.recompute()
+            document.commitTransaction()
+            self.assertEqual(second.getParentGeoFeatureGroup(), part)
+            halves = []
+            for half in (first, second):
+                shape = half.Shape.copy()
+                shape.Placement = half.getGlobalPlacement()
+                halves.append(shape)
+            # Both halves stay where the source was, under the Part placement.
+            bounds = Part.makeCompound(halves).BoundBox
+            self.assertLess((bounds.Center - expected.BoundBox.Center).Length, 0.1)
+            self.assertAlmostEqual(
+                bounds.DiagonalLength, expected.BoundBox.DiagonalLength, delta=0.5
+            )
+
+            weld_boundaries(
+                first,
+                ControlCage.from_object(first).boundary_edges[0],
+                second,
+                ControlCage.from_object(second).boundary_edges[0],
+            )
+            document.recompute()
+            welded = first.Shape.copy()
+            welded.Placement = first.getGlobalPlacement()
+            self.assertAlmostEqual(welded.Volume, expected.Volume, delta=expected.Volume * 1.0e-3)
+            self.assertLess(
+                (welded.BoundBox.Center - expected.BoundBox.Center).Length, 1.0e-3
+            )
+        finally:
+            App.closeDocument(document.Name)
 
     def test_unweld_can_keep_both_surfaces_in_one_form(self):
         document = App.newDocument("FormsTestUnweldSingleObject")
@@ -338,6 +535,47 @@ class BRepConversionTest(unittest.TestCase):
         self.assertTrue(edited.is_closed)
         self.assertTrue(obj.Shape.isValid())
 
+    def test_insert_point_refuses_an_edge_its_face_split_does_not_reach(self):
+        document = App.newDocument("FormsTestInsertPointTJunction")
+        obj = create_box(document)
+        obj.XSegments = 1
+        obj.YSegments = 1
+        obj.ZSegments = 1
+        document.recompute()
+        original = ControlCage.from_object(obj)
+        face = original.faces[0]
+        shared = tuple(sorted((face[1], face[2])))
+        neighbor = next(
+            index
+            for index, candidate in enumerate(original.faces)
+            if index != 0 and shared[0] in candidate and shared[1] in candidate
+        )
+        # Subdividing the neighbor leaves a T-vertex at the middle of the
+        # shared side, which is where a split of face 0 ends.
+        subdivide_faces(obj, [neighbor])
+        document.recompute()
+        mesh = HierarchicalTMesh.decode(obj.TMeshData)
+        sides = mesh.faces[0].sides
+        side_index = next(index for index, side in enumerate(sides) if len(side) == 3)
+        _start, junction, end = sides[side_index]
+        half_edge = tuple(sorted((junction, end)))
+        opposite = sides[(side_index + 2) % 4]
+        opposite_edge = tuple(sorted((opposite[0], opposite[-1])))
+        encoded = obj.TMeshData
+        local_points = [App.Vector(point) for point in obj.LocalControlPoints]
+        volume = obj.Shape.Volume
+
+        with self.assertRaisesRegex(ValueError, "opposite sides of one control face"):
+            insert_point_face_target(mesh, half_edge, opposite_edge)
+        with self.assertRaisesRegex(ValueError, "opposite sides of one control face"):
+            insert_point_edges(obj, ((half_edge, 0.3), (opposite_edge, 0.3)))
+        document.recompute()
+
+        # The control shared with the subdivided neighbor did not move.
+        self.assertEqual(obj.TMeshData, encoded)
+        self.assertEqual(list(obj.LocalControlPoints), local_points)
+        self.assertAlmostEqual(obj.Shape.Volume, volume, places=6)
+
     def test_control_cage_rejects_non_finite_geometry_before_conversion(self):
         with self.assertRaisesRegex(ValueError, "finite 3D coordinates"):
             ControlCage([(0, 0, 0), (1, 0, 0), (0, float("nan"), 0)], [(0, 1, 2)])
@@ -442,6 +680,22 @@ class BRepConversionTest(unittest.TestCase):
         self.assertTrue(obj.Shape.isValid())
         self.assertGreater(obj.Shape.Volume, 0.0)
 
+    def test_make_editable_keeps_parameters_set_since_the_last_recompute(self):
+        document = App.newDocument("FormsTestEditableParameters")
+        obj = create_box(document)
+        document.recompute()
+        obj.Length = 40.0
+        obj.XSegments = 3
+
+        make_editable(obj)
+        document.recompute()
+
+        self.assertEqual(obj.CageMode, "Editable")
+        x_values = [point.x for point in obj.ControlPoints]
+        self.assertAlmostEqual(max(x_values) - min(x_values), 40.0, places=9)
+        self.assertEqual(len(obj.ControlFaces), 32)
+        self.assertAlmostEqual(obj.Shape.BoundBox.XLength, 40.0, delta=0.1)
+
     def test_generated_solid_survives_save_and_restore(self):
         handle, path = tempfile.mkstemp(suffix=".FCStd")
         os.close(handle)
@@ -527,6 +781,144 @@ class BRepConversionTest(unittest.TestCase):
                 expected = profile if profile.ShapeType == "Face" else Part.Face(profile)
                 self.assertAlmostEqual(obj.Shape.Area, expected.Area, places=7)
 
+    def test_form_surface_refuses_topology_its_filling_cannot_follow(self):
+        document = App.newDocument("FormsTestSurfaceTopology")
+        body = document.addObject("PartDesign::Body", "Body")
+        source = body.newObject("PartDesign::Feature", "Source")
+        source.Shape = Part.makeBox(10, 12, 14)
+        surface = create_surface(body, source, "Face6")
+        document.recompute()
+        make_editable(surface)
+        document.recompute()
+        cage = ControlCage.from_object(surface)
+        edge = tuple(cage.faces[0][:2])
+        boundary = cage.boundary_edges[0]
+        operations = {
+            "Crease": lambda: set_edge_crease(surface, [edge], 10.0),
+            "Insert Edge": lambda: insert_edge(surface, edge),
+            "Insert Edge Loop": lambda: insert_edge_loop(surface, edge),
+            "Subdivide": lambda: subdivide_faces(surface, [0]),
+            "Delete Faces": lambda: delete_faces(surface, [0]),
+            "Erase and Fill": lambda: erase_and_fill(surface, [0]),
+            "Fill Hole": lambda: fill_holes(surface, [boundary]),
+            "Bridge": lambda: bridge_boundaries(surface, [boundary]),
+            "Thicken": lambda: thicken_surface(surface, 1.0),
+        }
+        for name, operation in operations.items():
+            with self.subTest(operation=name):
+                before = (
+                    list(surface.ControlPoints),
+                    list(surface.ControlFaces),
+                    list(surface.EdgeSharpness),
+                    surface.TMeshData,
+                )
+                with self.assertRaisesRegex(ValueError, f"Form Surface does not support {name}"):
+                    operation()
+                after = (
+                    list(surface.ControlPoints),
+                    list(surface.ControlFaces),
+                    list(surface.EdgeSharpness),
+                    surface.TMeshData,
+                )
+                self.assertEqual(after, before)
+        document.recompute()
+        self.assertTrue(surface.ConversionStatus.startswith("Valid"))
+        self.assertEqual(len(surface.Shape.Solids), 1)
+
+    def test_rejected_form_face_profile_adds_no_object(self):
+        document = App.newDocument("FormsTestRejectedProfileFace")
+        for profile in (
+            Part.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0)),
+            Part.Wire([Part.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))]),
+        ):
+            with self.subTest(profile=profile.ShapeType):
+                with self.assertRaises(ValueError):
+                    create_face(document, profile=profile)
+                self.assertEqual(document.Objects, [])
+
+    def test_form_face_keeps_the_placement_of_a_located_profile(self):
+        # A face picked on a placed object carries that placement as its
+        # Location; the Form Face must stay where the profile and its cage are.
+        profile = Part.Face(Part.Wire([Part.makeCircle(5)]))
+        profile.Placement = App.Placement(
+            App.Vector(0, 0, 50), App.Rotation(App.Vector(1, 0, 0), 90)
+        )
+        document = App.newDocument("FormsTestLocatedProfileFace")
+        obj = create_face(document, profile=profile)
+        document.recompute()
+
+        self.assertTrue(obj.ConversionStatus.startswith("Valid"))
+        self.assertTrue(obj.Shape.BoundBox.isInside(profile.BoundBox.Center))
+        self.assertAlmostEqual(obj.Shape.BoundBox.ZMin, profile.BoundBox.ZMin, places=6)
+        self.assertAlmostEqual(obj.Shape.BoundBox.ZMax, profile.BoundBox.ZMax, places=6)
+        for point in obj.ControlPoints:
+            self.assertLess(profile.distToShape(Part.Vertex(point))[0], 1.0e-6)
+        self.assertAlmostEqual(obj.Shape.Area, profile.Area, places=6)
+
+        # Moving the Form still moves the generated profile surface.
+        obj.Placement = App.Placement(App.Vector(10, 0, 0), App.Rotation())
+        obj.touch()
+        document.recompute()
+        self.assertAlmostEqual(
+            obj.Shape.BoundBox.Center.x, profile.BoundBox.Center.x + 10, places=6
+        )
+        self.assertAlmostEqual(obj.Shape.BoundBox.ZMin, profile.BoundBox.ZMin, places=6)
+
+    def test_malformed_local_topology_data_fails_conversion_clearly(self):
+        document = App.newDocument("FormsTestMalformedTopologyData")
+        obj = create_box(document)
+        make_editable(obj)
+        document.recompute()
+        for name, value in (
+            ("TMeshData", '{"version": 3}'),
+            ("TMeshData", "[1, 2]"),
+            ("LocalEdgeInserts", ['{"face": [0, 1, 2, 3]}']),
+            ("LocalEdgeInserts", ["[1, 2]"]),
+        ):
+            with self.subTest(name=name, value=value):
+                setattr(obj, name, value)
+                obj.touch()
+                document.recompute()
+                self.assertNotIn("Invalid", obj.State)
+                self.assertTrue(obj.Shape.isNull())
+                self.assertTrue(obj.ConversionStatus.startswith("Failed: Invalid"))
+                setattr(obj, name, "" if name == "TMeshData" else [])
+                obj.touch()
+                document.recompute()
+                self.assertTrue(obj.ConversionStatus.startswith("Valid"))
+
+    def test_nan_sharpness_is_rejected_instead_of_read_as_smooth(self):
+        document = App.newDocument("FormsTestNaNSharpness")
+        obj = create_box(document)
+        make_editable(obj)
+        set_edge_crease(obj, [(0, 1)], 2.5)
+        document.recompute()
+        creased = list(obj.EdgeSharpness)
+
+        with self.assertRaisesRegex(ValueError, "nan"):
+            set_edge_crease(obj, [(0, 1)], float("nan"))
+        self.assertEqual(obj.EdgeSharpness, creased)
+
+        nan_corner = [float("nan")] + [0.0] * (len(obj.ControlPoints) - 1)
+        for name, value in (
+            ("VertexSharpness", nan_corner),
+            ("EdgeSharpness", creased + ["2 3 nan"]),
+        ):
+            with self.subTest(name=name):
+                previous = list(getattr(obj, name))
+                setattr(obj, name, value)
+                document.recompute()
+                self.assertTrue(obj.Shape.isNull())
+                self.assertEqual(
+                    obj.ConversionStatus,
+                    "Failed: Control-cage {} sharpness must be finite".format(
+                        "vertex" if name == "VertexSharpness" else "edge"
+                    ),
+                )
+                setattr(obj, name, previous)
+                document.recompute()
+                self.assertTrue(obj.ConversionStatus.startswith("Valid"))
+
     def test_profile_form_face_exposes_and_subdivides_control_patches(self):
         profile = Part.Face(
             Part.makePolygon(
@@ -607,6 +999,7 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(len(obj.Shape.Faces), 1)
         self.assertAlmostEqual(obj.Shape.Area, profile.Area, places=7)
 
+    @unittest.skipUnless(App.GuiUp, "Edit sessions require FreeCADGui")
     def test_profile_form_face_creation_session_exposes_control_patches(self):
         from Forms.edit import FormEditSession
 
@@ -757,6 +1150,33 @@ class BRepConversionTest(unittest.TestCase):
         self.assertGreater(len(pipe.ControlPoints), control_count)
         self.assertTrue(pipe.Shape.isValid(), pipe.ConversionStatus)
 
+    def test_pipe_segment_overrides_reject_non_finite_values(self):
+        from Forms.pipe import set_segment_diameter
+
+        document = App.newDocument("FormsTestPipeNonFiniteOverrides")
+        path = document.addObject("Part::Feature", "Path")
+        path.Shape = Part.makePolygon(
+            [App.Vector(0, 0, 0), App.Vector(30, 0, 0), App.Vector(30, 30, 0)]
+        )
+        pipe = create_pipe(document, path)
+        document.recompute()
+        key = pipe.PipeSegmentKeys[0]
+        set_segment_diameter(pipe, key, 5)
+        overrides = list(pipe.SegmentDiameters)
+        for value in (math.inf, math.nan):
+            with self.subTest(diameter=value):
+                with self.assertRaises(ValueError):
+                    set_segment_diameter(pipe, key, value)
+                self.assertEqual(list(pipe.SegmentDiameters), overrides)
+
+        # A stored infinite sample count is skipped like other invalid records,
+        # instead of escaping the recompute and leaving a stale shape.
+        pipe.SegmentSamples = ['{"segment": "%s", "samples": Infinity}' % key]
+        document.recompute()
+        self.assertIn("Up-to-date", pipe.State)
+        self.assertFalse(pipe.Shape.isNull(), pipe.ConversionStatus)
+        self.assertTrue(pipe.ConversionStatus.startswith("Valid"), pipe.ConversionStatus)
+
     def test_pipe_closes_periodically_around_a_closed_wire(self):
         document = App.newDocument("FormsTestClosedPipe")
         path = document.addObject("Part::Feature", "ClosedPath")
@@ -767,6 +1187,31 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(len(pipe.PipeSegmentKeys), 1)
         self.assertEqual(pipe.Shape.ShapeType, "Solid")
         self.assertTrue(pipe.Shape.isValid())
+
+    def test_closed_pipe_frames_spread_the_seam_twist_of_a_knot(self):
+        from Forms.pipe import _frames
+
+        count = 48
+        points = []
+        for index in range(count):
+            u = 2.0 * math.pi * index / count
+            points.append(
+                App.Vector(
+                    math.sin(u) + 2.0 * math.sin(2.0 * u),
+                    math.cos(u) - 2.0 * math.cos(2.0 * u),
+                    -math.sin(3.0 * u),
+                )
+            )
+        frames = _frames(points, closed=True)
+        # Adjacent sections, including across the seam, must stay nearly
+        # aligned; uncorrected transport left a ~128 degree seam twist.
+        for index in range(count):
+            normal = frames[index][0]
+            next_normal, next_binormal = frames[(index + 1) % count]
+            twist = math.degrees(
+                math.atan2(normal.dot(next_binormal), normal.dot(next_normal))
+            )
+            self.assertLess(abs(twist), 20.0, index)
 
     def test_pipe_splits_an_edge_at_an_interior_t_junction(self):
         document = App.newDocument("FormsTestInteriorTJunction")
@@ -962,6 +1407,23 @@ class BRepConversionTest(unittest.TestCase):
         self.assertLessEqual(deviation, 0.05)
         self.assertEqual(level, 2)
 
+    def test_legacy_insert_edge_keeps_both_sides_of_open_split(self):
+        # BRepFeat_SplitShape.Left() alone dropped one side of an open split.
+        for x_segments, edge in ((1, (0, 2)), (2, (0, 3))):
+            with self.subTest(x_segments=x_segments):
+                vertices, faces = face_control_cage(20, 10, x_segments, 1)
+                shape, _deviation, level = cage_to_surface(vertices, faces, 0.05, 3)
+                insert = LocalEdgeInsert(tuple(faces[0]), edge, 0.5)
+
+                split = apply_local_edge_inserts(
+                    shape, vertices, faces, level, [insert], 0.05
+                )
+
+                self.assertTrue(split.isValid())
+                self.assertEqual(len(split.Faces), len(shape.Faces) + 1)
+                self.assertAlmostEqual(split.Area, shape.Area, delta=shape.Area * 1.0e-6)
+                self.assertAlmostEqual(split.BoundBox.XLength, shape.BoundBox.XLength, places=6)
+
     def test_thicken_surface_produces_a_valid_editable_solid(self):
         document = App.newDocument("FormsTestThicken")
         obj = create_face(document)
@@ -1026,6 +1488,23 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(len(merged), 6)
         self.assertIn(tuple(merged), [mapper.indices(face) for face in obj.Shape.Faces])
 
+    def test_delete_faces_refuses_to_discard_dissolved_edges(self):
+        document = App.newDocument("FormsTestDeleteFacesKeepsDissolve")
+        obj = create_box(document)
+        document.recompute()
+        cage = ControlCage.from_object(obj)
+        edge = next(edge for edge, count in cage.edge_counts().items() if count == 2)
+        dissolve_edges(obj, [edge])
+        document.recompute()
+        dissolved = list(obj.DissolvedEdges)
+        self.assertTrue(dissolved)
+
+        with self.assertRaises(ValueError):
+            delete_faces(obj, [0])
+
+        self.assertEqual(list(obj.DissolvedEdges), dissolved)
+        self.assertEqual(len(obj.ControlFaces), len(cage.faces))
+
     def test_delete_whole_edge_segment_merges_a_face_strip(self):
         document = App.newDocument("FormsTestDissolveEdgeSegment")
         obj = create_face(document)
@@ -1047,6 +1526,44 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(len(mapper.logical_faces), 1)
         self.assertEqual(mapper.logical_face_groups, [(0, 1, 2)])
 
+    def test_delete_edge_removes_crease_of_a_seam_it_hides(self):
+        document = App.newDocument("FormsTestDissolveHiddenSeamCrease")
+        obj = create_box(document)
+        document.recompute()
+        volume = obj.Shape.Volume
+        counts = ControlCage.from_object(obj).edge_counts()
+        # Three of the four seams around a valence-4 vertex merge its 2x2
+        # block of faces, which also hides the fourth seam.
+        hidden, *dissolved = next(
+            seams
+            for seams in (
+                sorted(edge for edge in counts if vertex in edge)
+                for vertex in range(len(obj.ControlPoints))
+            )
+            if len(seams) == 4
+        )
+        set_edge_crease(obj, [hidden], 10.0)
+        document.recompute()
+        self.assertGreater(abs(obj.Shape.Volume - volume), 1.0)
+
+        document.openTransaction("Dissolve edges")
+        dissolve_edges(obj, dissolved)
+        document.recompute()
+        document.commitTransaction()
+
+        mapper = ControlElementMapper(obj)
+        self.assertNotIn(hidden, set(cage_edges(mapper.logical_faces)))
+        self.assertEqual(list(obj.EdgeSharpness), [])
+        self.assertEqual(obj.ConversionStatus, "Valid solid")
+        # The crease changed the volume by more than 30; refitting the merged
+        # face moves it by about 0.001.
+        self.assertAlmostEqual(obj.Shape.Volume, volume, delta=0.01)
+
+        document.undo()
+        document.recompute()
+        self.assertEqual(list(obj.DissolvedEdges), [])
+        self.assertEqual(list(obj.EdgeSharpness), [f"{hidden[0]} {hidden[1]} 10"])
+
     def test_delete_edge_rejects_surface_boundary(self):
         document = App.newDocument("FormsTestDissolveBoundaryEdge")
         obj = create_face(document)
@@ -1054,6 +1571,52 @@ class BRepConversionTest(unittest.TestCase):
         boundary = ControlCage.from_object(obj).boundary_edges[0]
         with self.assertRaisesRegex(ValueError, "internal"):
             dissolve_edges(obj, [boundary])
+
+    def test_dissolve_layout_rejects_fans_that_do_not_share_cage_edges(self):
+        from Forms.brep import ConversionError, validate_dissolved_edges
+
+        radial = [(0, 2), (0, 3), (0, 4)]
+        valence_five_fan = [(0, 1 + index, 6 + index, 1 + (index + 1) % 5) for index in range(5)]
+        open_boundary_fan = [(0, 1 + index, 6 + index, 2 + index) for index in range(4)]
+        for faces in (valence_five_fan, open_boundary_fan):
+            with self.assertRaisesRegex(ConversionError, "one parameter grid"):
+                validate_dissolved_edges(faces, radial)
+
+        grid = [
+            (column + 4 * row, column + 1 + 4 * row, column + 5 + 4 * row, column + 4 + 4 * row)
+            for row in range(3)
+            for column in range(3)
+        ]
+        validate_dissolved_edges(grid, [(1, 5), (4, 5), (5, 6), (5, 9)])
+
+    def test_tmesh_dissolve_rejects_a_ring_around_a_kept_leaf(self):
+        mesh = HierarchicalTMesh.from_quad_cage(
+            [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)], [(0, 1, 2, 3)]
+        )
+        mesh, _leaves = mesh.subdivide_grid([min(mesh.faces)], 2, 2)
+        cells = {}
+        for face_id, face in mesh.faces.items():
+            cells[
+                (
+                    round(min(point[0] for point in face.parameters) * 4),
+                    round(min(point[1] for point in face.parameters) * 4),
+                )
+            ] = face_id
+
+        def internal_edges(region):
+            counts = {}
+            for cell in region:
+                boundary = mesh.faces[cells[cell]].boundary
+                for position, first in enumerate(boundary):
+                    edge = tuple(sorted((first, boundary[(position + 1) % len(boundary)])))
+                    counts[edge] = counts.get(edge, 0) + 1
+            return [edge for edge, count in counts.items() if count == 2]
+
+        block = [(column, row) for column in range(3) for row in range(3)]
+        ring = [cell for cell in block if cell != (1, 1)]
+        with self.assertRaisesRegex(ValueError, "simply connected"):
+            mesh.dissolve_edges(internal_edges(ring))
+        self.assertEqual(len(mesh.dissolve_edges(internal_edges(block)).faces), 8)
 
     def test_delete_edge_keeps_a_closed_form_solid(self):
         document = App.newDocument("FormsTestDissolveSolidEdge")
@@ -1097,6 +1660,62 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(len(dissolved.faces), 1)
         self.assertEqual(len(obj.Shape.Faces), 1)
         self.assertTrue(obj.Shape.isValid(), obj.ConversionStatus)
+
+    def test_local_refinement_refuses_a_form_with_dissolved_edges(self):
+        document = App.newDocument("FormsTestDissolveThenRefine")
+        obj = create_box(document)
+        document.recompute()
+        cage = ControlCage.from_object(obj)
+        internal = [edge for edge, count in cage.edge_counts().items() if count == 2]
+        dissolve_edges(obj, [internal[0]])
+        document.recompute()
+        self.assertEqual(obj.ConversionStatus, "Valid solid")
+        dissolved = list(obj.DissolvedEdges)
+        first, second = internal[1], internal[2]
+        operations = {
+            "Subdivide": lambda: subdivide_faces(obj, [0]),
+            "Insert Edge": lambda: insert_edge(obj, first),
+            "Insert Point": lambda: insert_point_edges(obj, [(first, 0.5), (second, 0.5)]),
+        }
+        for name, operation in operations.items():
+            with self.subTest(operation=name):
+                with self.assertRaisesRegex(
+                    ValueError, f"{name} cannot be combined with edge dissolve"
+                ):
+                    operation()
+                self.assertEqual(obj.TMeshData, "")
+                self.assertEqual(list(obj.DissolvedEdges), dissolved)
+        document.recompute()
+        self.assertEqual(obj.ConversionStatus, "Valid solid")
+
+    def test_crease_rejects_a_dissolved_edge(self):
+        document = App.newDocument("FormsTestCreaseDissolvedEdge")
+        obj = create_box(document)
+        document.recompute()
+        cage = ControlCage.from_object(obj)
+        dissolved = next(edge for edge, count in cage.edge_counts().items() if count == 2)
+        dissolve_edges(obj, [dissolved])
+        document.recompute()
+        volume = obj.Shape.Volume
+
+        with self.assertRaisesRegex(ValueError, "valid control edges"):
+            set_edge_crease(obj, [dissolved], 10.0)
+        self.assertEqual(list(obj.EdgeSharpness), [])
+        document.recompute()
+        self.assertAlmostEqual(obj.Shape.Volume, volume, places=6)
+
+        # The edges that remain visible around the merged face can still be creased.
+        mapper = ControlElementMapper(obj)
+        merged = next(
+            face
+            for face, group in zip(mapper.logical_faces, mapper.logical_face_groups)
+            if len(group) == 2
+        )
+        visible = tuple(sorted(merged[:2]))
+        set_edge_crease(obj, [visible], 10.0)
+        self.assertEqual(list(obj.EdgeSharpness), [f"{visible[0]} {visible[1]} 10"])
+        document.recompute()
+        self.assertEqual(obj.ConversionStatus, "Valid solid")
 
     def test_delete_edge_keeps_pipe_valid(self):
         document = App.newDocument("FormsTestDissolvePipeEdge")
@@ -1217,6 +1836,145 @@ class BRepConversionTest(unittest.TestCase):
             )
             self.assertLess(distance, 1.0e-7)
 
+    def _tangent_match_on_cylinder(self, name):
+        """A 4x4 Form Face over a quarter cylinder, matched tangent to it."""
+        document = App.newDocument(name)
+        support = document.addObject("Part::Feature", "Support")
+        cylinder = Part.makeCylinder(20, 30, App.Vector(), App.Vector(0, 0, 1), 90)
+        support.Shape = next(
+            face for face in cylinder.Faces if isinstance(face.Surface, Part.Cylinder)
+        )
+        obj = create_face(document)
+        obj.XSegments = 4
+        obj.YSegments = 4
+        document.recompute()
+        points = list(obj.ControlPoints)
+        x_min = min(point.x for point in points)
+        x_size = max(point.x for point in points) - x_min
+        y_min = min(point.y for point in points)
+        y_size = max(point.y for point in points) - y_min
+        lifted = []
+        for point in points:
+            angle = math.radians(10 + 70 * (point.x - x_min) / x_size)
+            height = 3 + 24 * (point.y - y_min) / y_size
+            lifted.append(App.Vector(22 * math.cos(angle), 22 * math.sin(angle), height))
+        obj.CageMode = "Editable"
+        obj.ControlPoints = lifted
+        document.recompute()
+        match_boundary(
+            obj,
+            ControlCage.from_object(obj).boundary_edges,
+            (support, ["Face1"]),
+            "Tangent",
+            "SelectedFace",
+        )
+        document.recompute()
+        self.assertFalse(obj.Shape.isNull(), obj.ConversionStatus)
+        return document, obj, support, lifted
+
+    def assertSamePoints(self, actual, expected, tolerance=1.0e-9):
+        self.assertEqual(len(actual), len(expected))
+        worst = max(first.distanceToPoint(second) for first, second in zip(actual, expected))
+        self.assertLessEqual(worst, tolerance)
+
+    def test_tangent_match_does_not_depend_on_the_number_of_recomputes(self):
+        document, obj, support, _lifted = self._tangent_match_on_cylinder(
+            "FormsTestMatchRecompute"
+        )
+        matched = [App.Vector(point) for point in obj.ControlPoints]
+        area = obj.Shape.Area
+        for _ in range(3):
+            obj.touch()
+            document.recompute()
+            self.assertSamePoints(obj.ControlPoints, matched)
+        self.assertAlmostEqual(obj.Shape.Area, area, places=9)
+
+        # The cage is a function of the support, not of where the support was.
+        support.Placement = App.Placement(
+            App.Vector(5, -3, 8), App.Rotation(App.Vector(1, 0.3, 0), 50)
+        )
+        document.recompute()
+        self.assertFalse(obj.Shape.isNull(), obj.ConversionStatus)
+        support.Placement = App.Placement()
+        document.recompute()
+        self.assertSamePoints(obj.ControlPoints, matched)
+        self.assertAlmostEqual(obj.Shape.Area, area, places=9)
+
+    def test_tangent_match_keeps_the_edited_cage(self):
+        document, obj, _support, lifted = self._tangent_match_on_cylinder("FormsTestMatchEdits")
+        cage = ControlCage.from_object(obj)
+        boundary = set(obj.MatchBoundary)
+        ring = {
+            second if first in boundary else first
+            for first, second in cage.edge_counts()
+            if (first in boundary) != (second in boundary)
+        }
+        inner = set(range(len(cage.vertices))) - boundary - ring
+        self.assertTrue(ring)
+        self.assertTrue(inner)
+        matched = [App.Vector(point) for point in obj.ControlPoints]
+        for index in inner:
+            self.assertLess(matched[index].distanceToPoint(lifted[index]), 1.0e-9)
+        self.assertTrue(any(matched[index].distanceToPoint(lifted[index]) > 0.1 for index in ring))
+
+        # Releasing the tangency gives back the controls it had moved.
+        obj.MatchContinuity = "Connected"
+        document.recompute()
+        for index in ring | inner:
+            self.assertLess(obj.ControlPoints[index].distanceToPoint(lifted[index]), 1.0e-9)
+        obj.MatchContinuity = "Tangent"
+        document.recompute()
+        self.assertSamePoints(obj.ControlPoints, matched)
+
+        # An edit of a constrained control is kept as far as the constraint allows.
+        moved = min(ring)
+        edited = list(obj.ControlPoints)
+        edited[moved] = edited[moved] + App.Vector(0.4, -0.3, 1.5)
+        obj.ControlPoints = edited
+        document.recompute()
+        result = [App.Vector(point) for point in obj.ControlPoints]
+        self.assertGreater(result[moved].distanceToPoint(matched[moved]), 0.5)
+        for index in set(range(len(result))) - {moved}:
+            self.assertLess(result[index].distanceToPoint(matched[index]), 1.0e-9)
+        obj.touch()
+        document.recompute()
+        self.assertSamePoints(obj.ControlPoints, result)
+
+    def test_tangent_plane_projection_is_a_projection(self):
+        from Forms.match_support import _project_to_planes
+
+        def plane(normal, point):
+            normal = App.Vector(*normal)
+            normal.normalize()
+            return normal, normal.dot(App.Vector(*point))
+
+        start = App.Vector(3.0, -2.0, 5.0)
+        cases = {
+            "one": [plane((0, 0, 1), (0, 0, 1))],
+            "line": [plane((0, 0, 1), (0, 0, 1)), plane((1, 0, 1), (2, 0, 0))],
+            "point": [
+                plane((0, 0, 1), (0, 0, 1)),
+                plane((1, 0, 1), (2, 0, 0)),
+                plane((0, 1, 0.5), (0, 3, 0)),
+            ],
+            # Tangent planes of a cylinder along Z: no common point, Z stays free.
+            "ruled": [
+                plane((math.cos(angle), math.sin(angle), 0), (2 * math.cos(angle), 2 * math.sin(angle), 0))
+                for angle in (0.1, 0.5, 0.9, 1.3)
+            ],
+        }
+        for name, planes in cases.items():
+            with self.subTest(name):
+                projected = _project_to_planes(start, planes)
+                again = _project_to_planes(projected, planes)
+                self.assertLess(again.distanceToPoint(projected), 1.0e-12)
+                if name != "ruled":
+                    for normal, offset in planes:
+                        self.assertAlmostEqual(normal.dot(projected), offset, places=12)
+                else:
+                    self.assertAlmostEqual(projected.z, start.z, places=12)
+                    self.assertAlmostEqual(math.atan2(projected.y, projected.x), 0.7, places=9)
+
     def test_deleted_match_support_clears_stale_form_shape(self):
         document = App.newDocument("FormsTestDeletedMatchSupport")
         obj = create_box(document)
@@ -1237,6 +1995,79 @@ class BRepConversionTest(unittest.TestCase):
         document.recompute()
         self.assertTrue(obj.Shape.isNull())
         self.assertIn("support is no longer valid", obj.ConversionStatus)
+
+    def test_vanished_match_support_face_clears_stale_form_shape(self):
+        document = App.newDocument("FormsTestVanishedMatchFace")
+        try:
+            obj = create_face(document)
+            document.recompute()
+            support = document.addObject("Part::Feature", "TemporaryMatchSupport")
+            support.Shape = Part.makeBox(20, 20, 5)
+            document.recompute()
+            cage = ControlCage.from_object(obj)
+            match_boundary(obj, cage.boundary_edges, (support, ["Face6"]))
+            document.recompute()
+            self.assertFalse(obj.Shape.isNull())
+
+            # The support recomputes to a shape without the referenced Face6.
+            support.Shape = Part.makePlane(20, 20)
+            document.recompute()
+            self.assertNotIn("Invalid", obj.State)
+            self.assertTrue(obj.Shape.isNull())
+            self.assertIn("support is no longer valid", obj.ConversionStatus)
+            with self.assertRaisesRegex(ValueError, "Match support must be"):
+                match_boundary(obj, cage.boundary_edges, (support, ["Face6"]))
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_collapsed_cage_fails_conversion_instead_of_sewing(self):
+        document = App.newDocument("FormsTestCollapsedCage")
+        try:
+            for factory, subdivided in (
+                (create_box, False), (create_box, True), (create_face, False),
+            ):
+                with self.subTest(factory=factory.__name__, subdivided=subdivided):
+                    obj = factory(document)
+                    document.recompute()
+                    make_editable(obj)
+                    if subdivided:
+                        subdivide_faces(obj, [0])
+                    count = len(obj.ControlPoints) + len(obj.LocalControlPoints)
+                    # Straightening every control collapses each patch onto
+                    # one line; OCCT sewing never returned for such faces.
+                    straighten_control_points(obj, range(count))
+                    document.recompute()
+                    self.assertNotIn("Invalid", obj.State)
+                    self.assertTrue(obj.Shape.isNull())
+                    self.assertIn("collapsed to a curve or point", obj.ConversionStatus)
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_match_refuses_a_support_that_depends_on_the_form(self):
+        document = App.newDocument("FormsTestCyclicMatchSupport")
+        obj = create_box(document)
+        document.recompute()
+        delete_faces(obj, [0])
+        document.recompute()
+        offset = document.addObject("Part::Offset", "Offset")
+        offset.Source = obj
+        offset.Value = 1.0
+        document.recompute()
+        boundary = ControlCage.from_object(obj).boundary_edges
+        points = list(obj.ControlPoints)
+
+        for support in ((obj, ["Face1"]), (offset, ["Face1"])):
+            with self.subTest(support=support[0].Name):
+                with self.assertRaisesRegex(ValueError, "must not be the Form or depend on it"):
+                    match_boundary(obj, boundary, support)
+                self.assertIsNone(obj.MatchSupport)
+                self.assertEqual(list(obj.MatchBoundary), [])
+                self.assertEqual(list(obj.ControlPoints), points)
+
+        obj.touch()
+        document.recompute()
+        self.assertIn("Up-to-date", obj.State)
+        self.assertIn("Up-to-date", offset.State)
 
     def test_standalone_form_matches_whole_closed_wire(self):
         document = App.newDocument("FormsTestExternalWireMatch")
@@ -1768,6 +2599,46 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(obj.ConversionStatus, "Valid surface")
         self.assertTrue(obj.Shape.isValid())
 
+    def test_symmetric_edge_loop_splits_the_reflected_ring(self):
+        document = App.newDocument("FormsTestSymmetricEdgeLoop")
+        try:
+            for position, crossing in ((0.5, False), (0.25, False), (0.25, True)):
+                with self.subTest(position=position, crossing=crossing):
+                    obj = create_box(document)
+                    obj.Symmetric = True
+                    obj.SymmetryPlane = "YZ"
+                    document.recompute()
+                    cage = ControlCage.from_object(obj)
+                    points = cage.vertices
+                    # An X edge lies on one side of the YZ plane; its ring has
+                    # a separate mirror. A Y edge's ring crosses the plane.
+                    edge = next(
+                        candidate
+                        for candidate in sorted(cage.edge_counts())
+                        if (
+                            abs(points[candidate[0]][1] - points[candidate[1]][1]) > 1.0e-9
+                            if crossing
+                            else abs(points[candidate[0]][0] - points[candidate[1]][0]) > 1.0e-9
+                        )
+                    )
+                    _obj, inserted = insert_edge_loop(obj, edge, position)
+                    document.recompute()
+                    edited = ControlCage.from_object(obj)
+                    expected_loops = 1 if crossing else 2
+                    loop_faces = 8  # faces in one ring of the 2x2x2 box
+                    self.assertEqual(
+                        len(edited.faces), len(cage.faces) + expected_loops * loop_faces
+                    )
+                    # Every control has a reflected partner, so symmetric
+                    # operations keep working on the edited cage.
+                    vertex_map(enumerate(edited.vertices), 0)
+                    self.assertEqual(len(inserted), expected_loops * loop_faces)
+                    subdivide_faces(obj, [0])
+                    document.recompute()
+                    self.assertEqual(obj.ConversionStatus, "Valid solid")
+        finally:
+            App.closeDocument(document.Name)
+
     def test_symmetric_delete_logical_face_keeps_tmesh_hole_editable(self):
         document = App.newDocument("FormsTestSymmetricTMeshHole")
         obj = create_box(document)
@@ -1830,6 +2701,46 @@ class BRepConversionTest(unittest.TestCase):
         self.assertTrue(obj.Shape.isValid())
         mapper = ControlElementMapper(obj)
         self.assertTrue(all(mapper.indices(face) for face in obj.Shape.Faces))
+
+    def test_element_mapping_follows_the_object_placement(self):
+        # The Shape carries the Placement; the cage, and the anchors the editor
+        # draws under the object's transform, stay in the object's own frame.
+        document = App.newDocument("FormsTestMapperPlacement")
+        obj = create_box(document)
+        document.recompute()
+        make_editable(obj)
+        document.recompute()
+
+        def mapping():
+            mapper = ControlElementMapper(obj)
+            shape = obj.Shape
+            return mapper.tolerance, [
+                mapper.target(element)
+                for element in shape.Vertexes + shape.Edges + shape.Faces
+            ]
+
+        tolerance, expected = mapping()
+        self.assertTrue(all(indices for indices, _anchor in expected))
+        self.assertTrue(any(anchor is not None for _indices, anchor in expected))
+        for placement in (
+            App.Placement(App.Vector(100, 0, 0), App.Rotation()),
+            App.Placement(App.Vector(), App.Rotation(App.Vector(0, 0, 1), 30)),
+            App.Placement(App.Vector(7, -3, 40), App.Rotation(App.Vector(1, 2, 3), 77)),
+        ):
+            with self.subTest(placement=placement):
+                obj.Placement = placement
+                document.recompute()
+                moved_tolerance, moved = mapping()
+                self.assertAlmostEqual(moved_tolerance, tolerance, places=12)
+                self.assertEqual(
+                    [indices for indices, _anchor in moved],
+                    [indices for indices, _anchor in expected],
+                )
+                for (_indices, anchor), (_expected, reference) in zip(moved, expected):
+                    if reference is None:
+                        self.assertIsNone(anchor)
+                    else:
+                        self.assertLess(anchor.sub(reference).Length, 1.0e-9)
 
     def _attach_lcs_to_form_faces(self, obj):
         mapper = ControlElementMapper(obj)
@@ -2007,6 +2918,42 @@ class BRepConversionTest(unittest.TestCase):
         document.undo()
         document.recompute()
         self.assertEqual(len(ControlCage.from_object(obj).faces), original_face_count)
+
+    def test_control_edits_reject_an_object_that_is_not_a_form(self):
+        document = App.newDocument("FormsTestNotAForm")
+        box = document.addObject("Part::Box", "Box")
+        document.recompute()
+        for name, operation in (
+            ("Crease", lambda: set_edge_crease(box, [(0, 1)], 10.0)),
+            ("Straighten", lambda: straighten_control_points(box, [0, 1, 2])),
+            ("Straighten surface", lambda: straighten_control_points(box, [0, 1, 2], None, True)),
+            ("Flatten", lambda: flatten_control_points(box, [0, 1, 2])),
+        ):
+            with self.subTest(operation=name):
+                with self.assertRaisesRegex(TypeError, "not a Forms object"):
+                    operation()
+
+    def test_symmetric_edge_edits_reject_an_unknown_control_edge(self):
+        document = App.newDocument("FormsTestSymmetricUnknownEdge")
+        obj = create_box(document)
+        obj.Symmetric = True
+        obj.SymmetryPlane = "YZ"
+        document.recompute()
+        points = [App.Vector(point) for point in obj.ControlPoints]
+        unknown = (0, len(points) + 100)
+        for name, operation in (
+            ("Fill Hole", lambda: fill_holes(obj, [unknown])),
+            ("Crease", lambda: set_edge_crease(obj, [unknown], 10.0)),
+            ("Delete Edge", lambda: dissolve_edges(obj, [unknown])),
+        ):
+            with self.subTest(operation=name):
+                with self.assertRaisesRegex(ValueError, "unknown control edge"):
+                    operation()
+        self.assertEqual(list(obj.ControlPoints), points)
+        self.assertEqual(list(obj.EdgeSharpness), [])
+        self.assertEqual(list(obj.DissolvedEdges), [])
+        document.recompute()
+        self.assertEqual(obj.ConversionStatus, "Valid solid")
 
 
 def suite():

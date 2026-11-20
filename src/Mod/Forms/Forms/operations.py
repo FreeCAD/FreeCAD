@@ -28,7 +28,13 @@ import math
 import FreeCAD as App
 
 from .cage import ControlCage
-from .capabilities import require_base_topology, validate_local_creases
+from .controlcage import clear_match_data
+from .capabilities import (
+    reject_edge_dissolve,
+    reject_form_surface,
+    require_base_topology,
+    validate_local_creases,
+)
 from .limits import check_sampling
 from .numerics import DenseLU
 from .model import object_tmesh as _object_tmesh, form_preview_object as _form_preview_object
@@ -38,7 +44,6 @@ from .brep import (
     dissolved_control_faces,
     materialize_tmesh,
     seed_tmesh_vertices,
-    validate_dissolved_edges,
 )
 from .tmesh import HierarchicalTMesh
 from .symmetry import (
@@ -49,6 +54,7 @@ from .symmetry import (
     vertex_map,
 )
 from .topology import (
+    cage_edges,
     flatten_points,
     straighten_points,
 )
@@ -74,12 +80,18 @@ def _write_all_points(obj, points):
 
 def set_edge_crease(obj, edges, sharpness):
     """Set selected control edges to a semi-sharp subdivision value."""
+    if not getattr(obj, "FormType", "").startswith("Forms::"):
+        raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Crease")
     cage = ControlCage.from_object(obj)
     encoded = str(getattr(obj, "TMeshData", "") or "")
+    # Only edges of the editable topology can carry a crease. A seam hidden
+    # inside a dissolved logical face is not one of them, as in the T-mesh
+    # branch, where a dissolved seam leaves the atomic edges.
     valid = (
         set(HierarchicalTMesh.decode(encoded).atomic_edges())
         if encoded
-        else set(cage.edge_counts())
+        else set(_materialized_edit_cage(obj).edge_counts())
     )
     selected = {tuple(sorted((int(edge[0]), int(edge[1])))) for edge in edges}
     axis = object_axis(obj)
@@ -87,7 +99,11 @@ def set_edge_crease(obj, edges, sharpness):
         selected = mirror_edges(enumerate(_all_points(obj)), selected, axis)
     if not selected or not selected.issubset(valid):
         raise ValueError("Crease requires valid control edges")
-    value = max(0.0, min(float(sharpness), 10.0))
+    value = float(sharpness)
+    if math.isnan(value):
+        # Clamping would turn NaN into 0 and silently remove the crease.
+        raise ValueError("Invalid crease sharpness 'nan'")
+    value = max(0.0, min(value, 10.0))
     validate_local_creases(obj, selected, value)
     edge_values = dict(cage.edge_sharpness)
     for edge in selected:
@@ -107,6 +123,8 @@ def set_edge_crease(obj, edges, sharpness):
 
 def straighten_control_points(obj, indices, line=None, surface_points=False):
     """Straighten selected control or surface points to a chosen line."""
+    if not getattr(obj, "FormType", "").startswith("Forms::"):
+        raise TypeError("The object is not a Forms object")
     points = (
         _surface_straightened_controls(obj, indices, line)
         if surface_points
@@ -118,6 +136,8 @@ def straighten_control_points(obj, indices, line=None, surface_points=False):
 
 def flatten_control_points(obj, indices, plane=None):
     """Flatten selected base or hierarchical controls to a chosen plane."""
+    if not getattr(obj, "FormType", "").startswith("Forms::"):
+        raise TypeError("The object is not a Forms object")
     _write_all_points(obj, flatten_points(_all_points(obj), indices, plane))
     return obj
 
@@ -262,6 +282,8 @@ def insert_edge(obj, edge, position=0.5, side="left", mode="simple"):
     """Insert a local hierarchical edge with two editable endpoint controls."""
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Insert Edge")
+    reject_edge_dissolve(obj, "Insert Edge")
     position = float(position)
     if abs(position - 0.5) > 1.0e-9:
         raise ValueError("Editable local insertion currently supports the 50% position")
@@ -389,7 +411,16 @@ def insert_point_face_target(
         for side_index, side in enumerate(sides):
             if existing_vertex is not None and existing_vertex in side[1:-1]:
                 matches.append(side_index)
-            elif existing_vertex is None and edge[0] in side and edge[1] in side:
+            elif (
+                existing_vertex is None
+                and edge[0] in side
+                and edge[1] in side
+                # The point is the vertex that splits the side at half its
+                # knot interval. On a side with T-vertices that can be an
+                # existing control or lie on another edge of the side; the
+                # point would move it instead of splitting the selected edge.
+                and (len(side) == 2 or topology.side_midpoint_edge(side) == edge)
+            ):
                 matches.append(side_index)
         return matches
 
@@ -429,8 +460,8 @@ def insert_point_edges(obj, points):
     """
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
-    if str(obj.FormType) == "Forms::Surface":
-        raise ValueError("Part Design Form Surface does not support Insert Point")
+    reject_form_surface(obj, "Insert Point")
+    reject_edge_dissolve(obj, "Insert Point")
     records = [
         (tuple(sorted((int(edge[0]), int(edge[1])))), float(fraction))
         for edge, fraction in points
@@ -518,6 +549,8 @@ def subdivide_faces(obj, face_ids, u_divisions=2, v_divisions=2):
     """Subdivide selected logical leaves by dyadic U and V counts."""
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Subdivide")
+    reject_edge_dissolve(obj, "Subdivide")
     cage = ControlCage.from_object(obj)
     old_mesh = _object_tmesh(obj, cage)
     counts = (int(u_divisions), int(v_divisions))
@@ -552,6 +585,7 @@ def delete_faces(obj, face_indices):
     """
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Delete Faces")
     cage = ControlCage.from_object(obj)
     axis = object_axis(obj)
     encoded = str(getattr(obj, "TMeshData", "") or "")
@@ -567,6 +601,9 @@ def delete_faces(obj, face_indices):
         mesh = mesh.delete_faces(face_indices)
         _write_object_tmesh(obj, cage, mesh)
         return obj
+    # The base-cage rewrite below clears DissolvedEdges and legacy local
+    # inserts on the whole Form, so refuse like the sibling operations do.
+    require_base_topology(obj, "Delete faces")
     if axis is not None:
         face_indices = mirror_faces(
             enumerate(cage.vertices), enumerate(cage.faces), face_indices, axis
@@ -587,8 +624,7 @@ def dissolve_edges(obj, edges):
     """
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
-    if str(obj.FormType) == "Forms::Surface":
-        raise ValueError("Part Design Form Surface does not support edge dissolve")
+    reject_form_surface(obj, "edge dissolve")
     cage = ControlCage.from_object(obj)
     selected = {tuple(sorted((int(edge[0]), int(edge[1])))) for edge in edges}
     if not selected:
@@ -612,13 +648,18 @@ def dissolve_edges(obj, edges):
         except (TypeError, ValueError):
             raise ValueError("A dissolved edge record is invalid")
     dissolved.update(selected)
-    validate_dissolved_edges(cage.faces, dissolved)
+    logical_faces, _groups = dissolved_control_faces(cage.faces, dissolved)
+    # A merged face hides every seam inside it, not only the selected ones
+    # (a 2x2 block with three of its four seams dissolved hides the fourth).
+    # A crease left on a hidden seam would still shape the surface while no
+    # longer being an editable edge.
+    hidden = set(cage.edge_counts()).difference(cage_edges(logical_faces))
     obj.CageMode = "Editable"
     obj.DissolvedEdges = [f"{edge[0]} {edge[1]}" for edge in sorted(dissolved)]
     obj.EdgeSharpness = [
         encoded
         for encoded in obj.EdgeSharpness
-        if tuple(sorted(int(value) for value in str(encoded).split()[:2])) not in dissolved
+        if tuple(sorted(int(value) for value in str(encoded).split()[:2])) not in hidden
     ]
     obj.touch()
     return obj
@@ -629,6 +670,7 @@ def erase_and_fill(obj, face_indices):
     require_base_topology(obj, "Erase and fill")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Erase and Fill")
     cage = ControlCage.from_object(obj)
     axis = object_axis(obj)
     if axis is not None:
@@ -647,6 +689,7 @@ def fill_holes(obj, boundary_edges, mode="automatic"):
     require_base_topology(obj, "Fill holes")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Fill Hole")
     cage = ControlCage.from_object(obj)
     axis = object_axis(obj)
     if axis is not None:
@@ -662,6 +705,7 @@ def bridge_boundaries(obj, boundary_edges):
     """Bridge two boundary loops, incorporating existing local refinement."""
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Bridge")
     cage = ControlCage.from_object(obj)
     local = bool(getattr(obj, "TMeshData", "") or getattr(obj, "LocalEdgeInserts", ()))
     if local:
@@ -694,13 +738,7 @@ def bridge_boundaries(obj, boundary_edges):
 
 def _clear_match_constraint(obj):
     """Remove associative boundary data invalidated by a topology split/join."""
-    if "MatchSupport" in obj.PropertiesList:
-        obj.MatchSupport = None
-    for name in ("MatchBoundary", "MatchParameters", "MatchCornerVertices"):
-        if name in obj.PropertiesList:
-            setattr(obj, name, [])
-    if "MatchCornerEdges" in obj.PropertiesList:
-        obj.MatchCornerEdges = []
+    clear_match_data(obj)
 
 
 def unweld_segment(obj, segment_edges, separate_forms=True) -> tuple[App.DocumentObject, ...]:
@@ -738,6 +776,12 @@ def unweld_segment(obj, segment_edges, separate_forms=True) -> tuple[App.Documen
     second_obj = document.copyObject(obj, False)
     if second_obj is None:
         raise ConversionError("Could not create the second unwelded Form")
+    # copyObject leaves the copy at document level. Keep it in the source's
+    # group, so a parent App::Part placement still applies to both halves.
+    # A plain group takes precedence, as in App's copy/paste rules.
+    parent = obj.getParentGroup() or obj.getParentGeoFeatureGroup()
+    if parent is not None:
+        parent.addObject(second_obj)
     second_obj.Label = App.Qt.translate("Forms_Unweld", "%1 (Unwelded)").replace(
         "%1", obj.Label
     )
@@ -808,6 +852,7 @@ def thicken_surface(obj, distance, sharp=True):
     require_base_topology(obj, "Thicken surface")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
+    reject_form_surface(obj, "Thicken")
     if getattr(obj, "LocalEdgeInserts", ()) or str(getattr(obj, "TMeshData", "") or ""):
         raise ValueError("Thicken does not yet support Forms with local edge inserts")
     cage = ControlCage.from_object(obj).thickened(distance, sharp)
@@ -822,7 +867,23 @@ def insert_edge_loop(obj, edge, position=0.5, mode="simple"):
     require_base_topology(obj, "Insert edge loop")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
-    cage, inserted_edges = ControlCage.from_object(obj).insert_edge_ring(edge, position, mode)
+    reject_form_surface(obj, "Insert Edge Loop")
+    source = ControlCage.from_object(obj)
+    cage, inserted_edges = source.insert_edge_ring(edge, position, mode)
+    axis = object_axis(obj)
+    if axis is not None:
+        # Like the other topology edits, keep a symmetric Form symmetric:
+        # also split the reflected ring, unless the ring is its own mirror.
+        first, second = sorted((int(edge[0]), int(edge[1])))
+        mapping = vertex_map(enumerate(source.vertices), axis)
+        mirrored = (mapping[first], mapping[second])
+        if tuple(sorted(mirrored)) not in source.edge_ring((first, second)):
+            # insert_edge_ring measures the position from the lower vertex ID.
+            mirrored_position = (
+                position if mirrored[0] < mirrored[1] else 1.0 - float(position)
+            )
+            cage, mirrored_edges = cage.insert_edge_ring(mirrored, mirrored_position, mode)
+            inserted_edges = set(inserted_edges) | set(mirrored_edges)
     obj.CageMode = "Editable"
     cage.write(obj)
     obj.touch()

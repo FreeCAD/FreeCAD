@@ -267,6 +267,36 @@ def _frames(points, closed=False):
         binormal = _normalize(tangent.cross(normal))
         result.append((normal, binormal))
         previous_tangent = tangent
+    if closed and len(result) > 1:
+        # Transport the last frame back onto the first tangent. On a
+        # non-planar loop it returns rotated by the holonomy angle; spread
+        # that twist along the loop so the seam strip is not skewed.
+        tangent = tangents[0]
+        axis = previous_tangent.cross(tangent)
+        sine = axis.Length
+        cosine = max(-1.0, min(1.0, previous_tangent.dot(tangent)))
+        if sine > 1.0e-9:
+            axis = axis / sine
+            normal = (
+                normal * cosine
+                + axis.cross(normal) * sine
+                + axis * (axis.dot(normal) * (1.0 - cosine))
+            )
+        first_normal, first_binormal = result[0]
+        twist = math.atan2(normal.dot(first_binormal), normal.dot(first_normal))
+        count = len(result)
+        corrected = []
+        for index, (frame_normal, frame_binormal) in enumerate(result):
+            angle = -twist * index / count
+            cosine = math.cos(angle)
+            sine = math.sin(angle)
+            corrected.append(
+                (
+                    frame_normal * cosine + frame_binormal * sine,
+                    frame_binormal * cosine - frame_normal * sine,
+                )
+            )
+        result = corrected
     return result
 
 

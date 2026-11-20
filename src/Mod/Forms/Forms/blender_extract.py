@@ -28,6 +28,7 @@ no FreeCAD imports so Blender installations can run it unchanged.
 """
 
 import json
+import math
 import sys
 import traceback
 
@@ -39,7 +40,11 @@ FORMAT_VERSION = 1
 
 def _sharpness(crease):
     """Convert Blender's normalized crease to OpenSubdiv semi-sharpness."""
-    crease = max(0.0, float(crease))
+    crease = float(crease)
+    if not math.isfinite(crease):
+        # max(0.0, nan) is 0.0: reject the object instead of losing the crease.
+        raise ValueError("the mesh has a non-finite crease value")
+    crease = max(0.0, crease)
     if crease >= 1.0 - 1.0e-6:
         return 10.0
     return min(crease, 1.0) ** 2 * 10.0

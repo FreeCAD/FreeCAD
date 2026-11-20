@@ -88,6 +88,9 @@ def form_preview_object(obj, points):
         "MatchParameters",
         "MatchCornerVertices",
         "MatchCornerEdges",
+        # With these the preview solves Match from the same cage as the object.
+        "MatchFreeControlPoints",
+        "MatchSolvedControlPoints",
     ):
         setattr(preview, name, list(getattr(obj, name, ())))
     for name in (

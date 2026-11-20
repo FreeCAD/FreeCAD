@@ -100,6 +100,21 @@ def _create_object(data, collection):
     return obj
 
 
+def _scale_view_clipping(scale_length):
+    """Keep the factory 3D View clipping range in real-world units.
+
+    The factory clip distances are meant for 1 BU = 1 m. With 1 BU = 1 mm the
+    far plane would sit at 1 m and clip larger parts, so scale both planes,
+    which also keeps the factory depth precision (their ratio).
+    """
+    for screen in bpy.data.screens:
+        for area in screen.areas:
+            for space in area.spaces:
+                if space.type == "VIEW_3D":
+                    space.clip_start = space.clip_start / scale_length
+                    space.clip_end = space.clip_end / scale_length
+
+
 def create(input_path, output_path):
     with open(input_path, "r", encoding="utf-8") as stream:
         payload = json.load(stream)
@@ -110,7 +125,9 @@ def create(input_path, output_path):
     bpy.ops.object.delete(use_global=False)
     scene = bpy.context.scene
     scene.unit_settings.system = "METRIC"
-    scene.unit_settings.scale_length = 0.001
+    scale_length = 0.001  # FreeCAD millimetres are Blender units
+    scene.unit_settings.scale_length = scale_length
+    _scale_view_clipping(scale_length)
     collection = bpy.data.collections.new("FreeCAD Export")
     scene.collection.children.link(collection)
     for data in payload.get("objects", ()):

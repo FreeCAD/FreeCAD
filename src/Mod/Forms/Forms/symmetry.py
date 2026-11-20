@@ -132,6 +132,8 @@ def mirror_edges(vertices, edges, axis, center=0.0):
     """Expand control edges with their reflected partners."""
     mapping = vertex_map(vertices, axis, center)
     result = {tuple(sorted((int(edge[0]), int(edge[1])))) for edge in edges}
+    if any(vertex not in mapping for edge in result for vertex in edge):
+        raise ValueError("Symmetry references an unknown control edge")
     result.update(
         tuple(sorted((mapping[first], mapping[second]))) for first, second in tuple(result)
     )

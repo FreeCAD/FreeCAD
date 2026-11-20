@@ -279,6 +279,20 @@ def control_surface_points(obj):
     ]
 
 
+def local_form_shape(shape):
+    """Return a Form's generated *shape* in the frame of its control cage.
+
+    ``Shape`` and ``FormShape`` carry the object's Placement as their
+    location, while the control points are stored in the object's own frame.
+    Dropping that location is exact and leaves the property value untouched.
+    """
+    if shape.isNull():
+        return shape
+    local = Part.Shape(shape)
+    local.Placement = App.Placement()
+    return local
+
+
 class ControlElementMapper:
     """Efficiently map several generated BRep elements to one control cage."""
 
@@ -287,6 +301,11 @@ class ControlElementMapper:
         self.cage = ControlCage.from_object(obj)
         form_shape = getattr(obj, "FormShape", None)
         self.shape = form_shape if form_shape is not None and not form_shape.isNull() else obj.Shape
+        # The elements to map belong to the placed shape; the cage, its limit
+        # points and the returned anchors are in the object's own frame.
+        self.shape_to_local = (
+            App.Placement() if self.shape.isNull() else self.shape.Placement.inverse()
+        )
         encoded = str(getattr(obj, "TMeshData", "") or "")
         self.mesh = _object_tmesh(obj, self.cage) if encoded else None
         self.logical_faces = list(self.cage.faces)
@@ -340,10 +359,18 @@ class ControlElementMapper:
                     )
             except (TypeError, ValueError):
                 continue
-        diagonal = self.shape.BoundBox.DiagonalLength if not self.shape.isNull() else 0.0
+        diagonal = (
+            local_form_shape(self.shape).BoundBox.DiagonalLength
+            if not self.shape.isNull()
+            else 0.0
+        )
         self.tolerance = max(diagonal * 1.0e-4, 1.0e-6)
         self._refined_edge_controls = None
         self._refined_edge_parameters = None
+
+    def local_point(self, point):
+        """Bring a point of the placed shape into the control-cage frame."""
+        return self.shape_to_local.multVec(point)
 
     def _mapped_indices(self, vertices, require_all=True):
         candidate_controls = range(len(self.points))
@@ -357,8 +384,9 @@ class ControlElementMapper:
                 break
         mapped = []
         for vertex in vertices:
+            vertex_point = self.local_point(vertex.Point)
             distance, index = min(
-                (self.points[index].sub(vertex.Point).Length, index)
+                (self.points[index].sub(vertex_point).Length, index)
                 for index in candidate_controls
             )
             if distance > self.tolerance:
@@ -380,6 +408,7 @@ class ControlElementMapper:
         """Map a child patch edge back to its polygon-cage segment."""
         if self._refined_edge_controls is None:
             shape_vertices = list(self.shape.Vertexes)
+            shape_points = [self.local_point(vertex.Point) for vertex in shape_vertices]
             shape_edges = list(self.shape.Edges)
             adjacency = {index: [] for index in range(len(shape_vertices))}
             for edge_index, shape_edge in enumerate(shape_edges):
@@ -413,7 +442,7 @@ class ControlElementMapper:
                     if not candidates:
                         continue
                 distance, shape_index = min(
-                    (point.sub(shape_vertices[index].Point).Length, index)
+                    (point.sub(shape_points[index]).Length, index)
                     for index in candidates
                 )
                 if distance <= self.tolerance:
@@ -568,9 +597,9 @@ class ControlElementMapper:
                 None,
             )
             if mapped_face is not None:
-                return tuple(mapped_face), App.Vector(element.CenterOfMass)
+                return tuple(mapped_face), self.local_point(element.CenterOfMass)
             if any(element.isSame(face) for face in self.form_surface_faces):
-                return tuple(range(len(self.cage.vertices))), App.Vector(element.CenterOfMass)
+                return tuple(range(len(self.cage.vertices))), self.local_point(element.CenterOfMass)
         vertices = [element] if element.ShapeType == "Vertex" else element.Vertexes
         mapped = self._mapped_indices(vertices)
         if element.ShapeType == "Face" and mapped:
@@ -581,7 +610,7 @@ class ControlElementMapper:
                     if self.mesh is not None
                     else self.logical_faces[face_id]
                 )
-                return tuple(face), App.Vector(element.CenterOfMass)
+                return tuple(face), self.local_point(element.CenterOfMass)
         if mapped:
             return mapped, None
         if element.ShapeType == "Edge":
@@ -591,7 +620,7 @@ class ControlElementMapper:
         parent_face = self._split_parent_face(element)
         if parent_face is None:
             return (), None
-        return tuple(parent_face), App.Vector(element.CenterOfMass)
+        return tuple(parent_face), self.local_point(element.CenterOfMass)
 
     def indices(self, element):
         return self.target(element)[0]
@@ -609,5 +638,6 @@ __all__ = [
     "canonical_subelement_name",
     "control_indices_for_element",
     "control_surface_points",
+    "local_form_shape",
     "update_object_shape",
 ]

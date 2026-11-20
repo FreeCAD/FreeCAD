@@ -53,6 +53,10 @@ def set_segment_diameter(obj, key, diameter):
     """Set one path-segment override; zero removes the override."""
     overrides = decode_segment_overrides(obj.SegmentDiameters)
     diameter = float(diameter)
+    # Check first: an infinite value would be dropped on encoding and a NaN
+    # would read as zero, both silently removing the existing override.
+    if not math.isfinite(diameter):
+        raise ValueError("Pipe segment diameter must be finite")
     if diameter > 0.0:
         overrides[str(key)] = diameter
     else:
@@ -70,7 +74,8 @@ def decode_segment_sample_overrides(values):
             samples = int(record["samples"])
             if samples > 0:
                 result[key] = samples
-        except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+        except (KeyError, TypeError, ValueError, OverflowError, json.JSONDecodeError):
+            # OverflowError: an infinite count, like any other invalid record.
             continue
     return result
 

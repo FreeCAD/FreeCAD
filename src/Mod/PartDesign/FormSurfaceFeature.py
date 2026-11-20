@@ -154,16 +154,6 @@ def _selected_pipe_path(body):
     return path if parent is None or parent is body else None
 
 
-def _preceding_solid(body, path):
-    for feature in reversed(list(body.Group)):
-        if feature is path:
-            continue
-        shape = getattr(feature, "Shape", None)
-        if shape is not None and not shape.isNull() and shape.Solids:
-            return feature
-    return None
-
-
 def _initialize_size(obj, primitive, size):
     values = {
         "Box": {"Length": size, "Width": size, "Height": size},
@@ -230,7 +220,6 @@ class CommandFormPrimitive:
                     ),
                 )
                 return
-            source = _preceding_solid(body, path)
             face = None
         if self.Operation == "Subtractive" and source is None:
             QtWidgets.QMessageBox.warning(

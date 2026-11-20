@@ -604,10 +604,14 @@ def cylinder_control_cage(radius, height, side_segments=2, height_segments=2):
     )
     projected = []
     for x_value, y_value, z_value in vertices:
-        if math.isclose(max(abs(x_value), abs(y_value)), radius):
-            length = math.hypot(x_value, y_value)
-            x_value *= radius / length
-            y_value *= radius / length
+        # Map every concentric square ring of the grid onto a circle of the
+        # same half-width. Projecting only the rim would leave interior cap
+        # vertices outside it and fold the corner cells.
+        length = math.hypot(x_value, y_value)
+        if length > 0.0:
+            scale = max(abs(x_value), abs(y_value)) / length
+            x_value *= scale
+            y_value *= scale
         projected.append((x_value, y_value, z_value))
     return projected, faces
 

@@ -564,7 +564,8 @@ class CommandThicken:
             return False
         cage = mapper.cage
         return (
-            not cage.is_closed
+            str(session.obj.FormType) != "Forms::Surface"
+            and not cage.is_closed
             and not bool(getattr(session.obj, "LocalEdgeInserts", ()))
             and not bool(str(getattr(session.obj, "TMeshData", "") or ""))
         )

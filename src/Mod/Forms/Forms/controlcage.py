@@ -35,6 +35,22 @@ def _edge(start, end):
     return tuple(sorted((int(start), int(end))))
 
 
+def clear_match_data(obj):
+    """Remove associative boundary-match data that refers to cage indices."""
+    if "MatchSupport" in obj.PropertiesList:
+        obj.MatchSupport = None
+    for name in (
+        "MatchBoundary",
+        "MatchParameters",
+        "MatchCornerVertices",
+        "MatchCornerEdges",
+        "MatchFreeControlPoints",
+        "MatchSolvedControlPoints",
+    ):
+        if name in obj.PropertiesList and getattr(obj, name):
+            setattr(obj, name, [])
+
+
 class ControlCage:
     """Editable manifold polygon cage, independent of a primitive type."""
 
@@ -47,14 +63,19 @@ class ControlCage:
     ):
         self.vertices = [tuple(float(component) for component in point) for point in vertices]
         self.faces = [tuple(int(index) for index in face) for face in faces]
-        self.vertex_sharpness = [max(0.0, float(value)) for value in (vertex_sharpness or ())]
-        self.vertex_sharpness.extend([0.0] * (len(self.vertices) - len(self.vertex_sharpness)))
-        self.vertex_sharpness = self.vertex_sharpness[: len(self.vertices)]
-        self.edge_sharpness = {
-            _edge(*edge): max(0.0, float(value))
-            for edge, value in (edge_sharpness or {}).items()
-            if float(value) > 0.0
+        vertex_values = [float(value) for value in (vertex_sharpness or ())][: len(self.vertices)]
+        edge_values = {
+            _edge(*edge): float(value) for edge, value in (edge_sharpness or {}).items()
         }
+        # Check before clamping: max(0.0, nan) is 0.0 and nan > 0.0 is false,
+        # so a NaN would otherwise silently become a smooth vertex or edge.
+        if any(not math.isfinite(value) for value in vertex_values):
+            raise ValueError("Control-cage vertex sharpness must be finite")
+        if any(not math.isfinite(value) for value in edge_values.values()):
+            raise ValueError("Control-cage edge sharpness must be finite")
+        self.vertex_sharpness = [max(0.0, value) for value in vertex_values]
+        self.vertex_sharpness.extend([0.0] * (len(self.vertices) - len(self.vertex_sharpness)))
+        self.edge_sharpness = {edge: value for edge, value in edge_values.items() if value > 0.0}
         self.validate()
 
     @classmethod
@@ -78,8 +99,12 @@ class ControlCage:
 
     def write(self, obj):
         """Store this cage and all index-dependent data on *obj*."""
+        faces = [" ".join(str(index) for index in face) for face in self.faces]
+        topology_changed = list(getattr(obj, "ControlFaces", ())) != faces or len(
+            getattr(obj, "ControlPoints", ())
+        ) != len(self.vertices)
         obj.ControlPoints = [App.Vector(*point) for point in self.vertices]
-        obj.ControlFaces = [" ".join(str(index) for index in face) for face in self.faces]
+        obj.ControlFaces = faces
         obj.VertexSharpness = list(self.vertex_sharpness)
         valid_edges = set(cage_edges(self.faces))
         obj.EdgeSharpness = [
@@ -98,6 +123,11 @@ class ControlCage:
             obj.TMeshData = ""
         if "DissolvedEdges" in obj.PropertiesList:
             obj.DissolvedEdges = []
+        # Match data stores cage vertex indices and boundary parameters.  A
+        # topology change renumbers or reshapes the boundary, so keeping it
+        # would snap unrelated controls onto the support on next recompute.
+        if topology_changed:
+            clear_match_data(obj)
 
     def validate(self):
         if not self.vertices:

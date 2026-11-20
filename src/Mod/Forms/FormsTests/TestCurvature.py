@@ -207,6 +207,19 @@ class CurvatureTest(unittest.TestCase):
             finally:
                 App.closeDocument(restored.Name)
 
+    def test_solved_cage_does_not_depend_on_where_the_support_was(self):
+        fixture = self._cylinder(sphere=True)
+        obj, support = fixture[:2]
+        self._match(fixture)
+        solved = [App.Vector(point) for point in obj.ControlPoints]
+        support.Placement.Base.z = 1.0
+        self.doc.recompute()
+        self.assertFalse(obj.Shape.isNull(), obj.ConversionStatus)
+        self.assertGreater(max(a.distanceToPoint(b) for a, b in zip(obj.ControlPoints, solved)), 0.1)
+        support.Placement.Base.z = 0.0
+        self.doc.recompute()
+        self.assertLess(max(a.distanceToPoint(b) for a, b in zip(obj.ControlPoints, solved)), 1e-9)
+
     def test_legacy_tangent_mode_migration_and_invalid_tolerances(self):
         from Forms.feature import FormFeatureProxy
         obj = Forms.create_box(self.doc)

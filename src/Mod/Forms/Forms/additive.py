@@ -25,6 +25,8 @@
 
 from .feature import reset_cage
 
+import re
+
 import FreeCAD as App
 import Part
 
@@ -46,6 +48,7 @@ from .primitives import (
     ViewProviderFormQuadball,
     ViewProviderFormTorus,
     ViewProviderFormTube,
+    update_profile_face_shape,
 )
 from .pipe import FormPipeProxy, ViewProviderFormPipe, fused_pipe_shape, update_pipe_shape
 
@@ -61,6 +64,15 @@ PRIMITIVES = {
 }
 
 OPERATIONS = ("Additive", "Subtractive")
+
+# PartDesign::FeatureAddSub owns the Operation property of a Body feature and
+# derives the additive or subtractive type of the feature from its value.
+# These are the values of its additive and subtractive Python features; the
+# first one is the operation a Form computes.
+_NATIVE_OPERATIONS = {
+    "Additive": ("Union",),
+    "Subtractive": ("Subtraction", "Common"),
+}
 
 
 MATCH_CORNER_SHARPNESS = 10.0
@@ -106,7 +118,12 @@ def _partdesign_operation(obj):
     if "Operation" in obj.PropertiesList:
         operation = str(obj.Operation)
         if operation in OPERATIONS:
+            # A Form that is no Part Design add/sub feature, or a document
+            # saved when Forms replaced the native values by its own ones.
             return operation
+        for name, values in _NATIVE_OPERATIONS.items():
+            if operation in values:
+                return name
     if obj.isDerivedFrom("PartDesign::FeatureSubtractivePython"):
         return "Subtractive"
     return "Additive"
@@ -131,14 +148,35 @@ class PartDesignFormProxy(FormFeatureProxy):
         self.onChanged(obj, "CageMode")
 
     @staticmethod
+    def _ensure_native_operation(obj, operation):
+        """Keep the Operation of a Part Design add/sub feature, which Part
+        Design reads for patterns, dress-ups and previews, in line with the
+        Form's operation. Return whether it had to be changed."""
+        values = _NATIVE_OPERATIONS[operation]
+        if str(obj.Operation) in values:
+            return False
+        enumeration = obj.getEnumerationsOfProperty("Operation") or []
+        if not all(value in enumeration for value in values):
+            # Forms used to replace the native values by its own ones, which
+            # made a subtractive Form an additive feature for Part Design.
+            obj.Operation = list(values)
+        obj.Operation = values[0]
+        return True
+
+    @staticmethod
     def _ensure_partdesign_properties(obj, operation="Additive"):
+        """Return whether the native Operation of the feature was corrected."""
         group = "Part Design Form"
-        if "Operation" not in obj.PropertiesList:
-            obj.addProperty(
-                "App::PropertyEnumeration", "Operation", group, "Boolean operation"
-            )
-        obj.Operation = list(OPERATIONS)
-        obj.Operation = operation
+        migrated = False
+        if obj.isDerivedFrom("PartDesign::FeatureAddSub"):
+            migrated = PartDesignFormProxy._ensure_native_operation(obj, operation)
+        else:
+            if "Operation" not in obj.PropertiesList:
+                obj.addProperty(
+                    "App::PropertyEnumeration", "Operation", group, "Boolean operation"
+                )
+            obj.Operation = list(OPERATIONS)
+            obj.Operation = operation
         if "PrimitiveKind" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyString", "PrimitiveKind", group, "Primitive kind"
@@ -188,6 +226,7 @@ class PartDesignFormProxy(FormFeatureProxy):
             "CombinationStatus",
         ):
             obj.setEditorMode(name, 2)
+        return migrated
 
     def _topology(self, obj):
         proxy = _primitive_proxy(obj)
@@ -205,7 +244,9 @@ class PartDesignFormProxy(FormFeatureProxy):
             reset_cage(obj, vertices, faces)
         if str(obj.FormType) == "Forms::Pipe":
             update_pipe_shape(obj)
-        else:
+        elif not (
+            str(obj.FormType) == "Forms::Face" and update_profile_face_shape(self, obj)
+        ):
             update_object_shape(obj)
         form_shape = obj.Shape
         obj.FormShape = form_shape
@@ -220,6 +261,15 @@ class PartDesignFormProxy(FormFeatureProxy):
         else:
             base = Part.Shape()
         operation = _partdesign_operation(obj)
+        if base.isNull() and operation == "Subtractive":
+            # As for native Part Design subtractive features: there is nothing
+            # to cut, and the tool must not become the Body's material.
+            # FormShape and AddSubShape keep the tool for the preview.
+            obj.Shape = Part.Shape()
+            obj.CombinationStatus = App.Qt.translate(
+                "Forms_PartDesign", "Cannot subtract a Form without a base feature"
+            )
+            raise RuntimeError(obj.CombinationStatus)
         if base.isNull():
             obj.CombinationStatus = App.Qt.translate(
                 "Forms_PartDesign", "Form only; no preceding feature"
@@ -234,6 +284,7 @@ class PartDesignFormProxy(FormFeatureProxy):
                 "Forms_PartDesign", "Editing form preview"
             )
             return
+        result = None
         try:
             tool = (
                 fused_pipe_shape(form_shape)
@@ -244,31 +295,53 @@ class PartDesignFormProxy(FormFeatureProxy):
                 # Downstream Part Design patterns consume this native tool shape.
                 obj.AddSubShape = tool
             if tool.ShapeType != "Solid":
-                obj.Shape = Part.makeCompound([base, form_shape])
-                obj.CombinationStatus = App.Qt.translate(
+                shown = Part.makeCompound([base, form_shape])
+                status = App.Qt.translate(
                     "Forms_PartDesign", "Open form; match or thicken it before combining"
                 )
-                return
-            result = base.fuse(tool) if operation == "Additive" else base.cut(tool)
-            if result.isNull() or not result.isValid() or len(result.Solids) != 1:
-                obj.Shape = Part.makeCompound([base, tool])
-                obj.CombinationStatus = App.Qt.translate(
-                    "Forms_PartDesign", "Form does not produce a valid single-solid result"
-                )
-                return
-            obj.Shape = result
-            if operation == "Additive":
-                obj.CombinationStatus = App.Qt.translate(
-                    "Forms_PartDesign", "Valid fused additive form"
-                )
             else:
-                obj.CombinationStatus = App.Qt.translate(
-                    "Forms_PartDesign", "Valid cut subtractive form"
-                )
+                result = base.fuse(tool) if operation == "Additive" else base.cut(tool)
+                if result.isNull() or not result.isValid() or len(result.Solids) != 1:
+                    result = None
+                    shown = Part.makeCompound([base, tool])
+                    status = App.Qt.translate(
+                        "Forms_PartDesign", "Form does not produce a valid single-solid result"
+                    )
         except (Part.OCCError, RuntimeError, ValueError) as error:
-            obj.Shape = Part.makeCompound([base, form_shape])
+            result = None
+            shown = Part.makeCompound([base, form_shape])
             message = App.Qt.translate("Forms_PartDesign", "Not combined: %1")
-            obj.CombinationStatus = message.replace("%1", str(error))
+            status = message.replace("%1", str(error))
+        if result is None:
+            obj.CombinationStatus = status
+            if operation == "Subtractive":
+                # As for native Part Design subtractive features, a cut that
+                # fails is an error: the base and the tool shown together
+                # would make the tool material for the following features.
+                # Nothing is removed; AddSubShape keeps the tool for the
+                # preview.
+                obj.Shape = base
+                raise RuntimeError(status)
+            # The base and the tool shown together are the material the
+            # additive Form is meant to add, e.g. while its face is open.
+            obj.Shape = shown
+            return
+        obj.Shape = result
+        if operation == "Additive":
+            obj.CombinationStatus = App.Qt.translate(
+                "Forms_PartDesign", "Valid fused additive form"
+            )
+        else:
+            obj.CombinationStatus = App.Qt.translate(
+                "Forms_PartDesign", "Valid cut subtractive form"
+            )
+
+    def show_edit_shape(self, obj, enabled):
+        """Expose the selectable control patches of a profile Form Face while
+        it is edited, as the standalone Form Face does."""
+        self._show_edit_shape = bool(enabled)
+        obj.touch()
+        obj.Document.recompute()
 
     def onChanged(self, obj, prop):
         proxy = _primitive_proxy(obj) if "FormType" in obj.PropertiesList else None
@@ -278,6 +351,7 @@ class PartDesignFormProxy(FormFeatureProxy):
                 obj.setEditorMode(name, read_only)
 
     def onDocumentRestored(self, obj):
+        self._show_edit_shape = False
         self._ensure_conversion_properties(obj)
         self._ensure_symmetry_properties(obj)
         self._ensure_sharpness_properties(obj)
@@ -375,11 +449,17 @@ class ViewProviderPartDesignForm(ViewProviderFormBox):
         obj.EditingForm = True
         obj.Document.recompute()
         try:
-            return super().setEdit(view_object, mode)
+            started = super().setEdit(view_object, mode)
         except Exception:
             obj.EditingForm = False
             obj.Document.recompute()
             raise
+        if not started:
+            # A rejected edit is reported by returning False, and FreeCAD then
+            # never calls unsetEdit(): restore the combined Body result here.
+            obj.EditingForm = False
+            obj.Document.recompute()
+        return started
 
     def unsetEdit(self, view_object, mode):
         result = super().unsetEdit(view_object, mode)
@@ -407,14 +487,35 @@ def create_partdesign_form(
     operation="Additive",
     path_object=None,
 ):
-    """Create an additive or subtractive Forms primitive inside *body*."""
+    """Create an additive or subtractive Forms primitive inside *body*.
+
+    As for any Part Design feature, the Form is added after the Body's Tip and
+    based on the Body's last solid feature up to the Tip. *base_feature* states
+    that base: it must be that solid feature, or the Tip, after which the Form
+    is added. ``None`` is accepted only in a Body without such a feature."""
     if primitive not in PRIMITIVES:
         raise ValueError(f"Unsupported Part Design Form primitive: {primitive}")
     if operation not in OPERATIONS:
         raise ValueError(f"Unsupported Part Design Form operation: {operation}")
     name = name or f"{operation}Form{primitive}"
     feature_type = f"PartDesign::Feature{operation}Python"
+    tip = body.Tip
     obj = body.newObject(feature_type, name)
+    # The Body set the base and routed the next solid feature to the new one:
+    # another base would drop features from the Body result or make a cycle.
+    body_base = obj.BaseFeature
+    if base_feature is not body_base and base_feature is not tip:
+        document = obj.Document
+        body.removeObject(obj)
+        document.removeObject(obj.Name)
+        if body.Tip is not tip:
+            body.Tip = tip
+        expected = body_base.Label if body_base is not None else "None"
+        raise ValueError(
+            f"The base feature of a Form in {body.Label} must be {expected}, "
+            "the Body's previous solid feature"
+        )
+    base_feature = body_base
     label_template = App.Qt.translate("Forms_Create", "%1 Form %2")
     operation_label = (
         App.Qt.translate("Forms_Create", "Additive")
@@ -518,6 +619,13 @@ def move_form_to_body(source, body):
     ):
         if name in source.PropertiesList:
             copied[name] = getattr(source, name)
+    # Keep the copied properties parametric: e.g. a Length bound to a
+    # spreadsheet must still follow it in the Body feature.
+    expressions = []
+    for path, expression in source.ExpressionEngine:
+        name = re.split(r"[.\[]", str(path).lstrip("."))[0]
+        if name in copied:
+            expressions.append((name, path, expression))
     source_points = [App.Vector(point) for point in source.ControlPoints]
     local_points = [App.Vector(point) for point in getattr(source, "LocalControlPoints", ())]
     view_values = {}
@@ -537,6 +645,11 @@ def move_form_to_body(source, body):
     for name, value in copied.items():
         if name in result.PropertiesList:
             setattr(result, name, value)
+    # FreeCAD stores references to the object's own properties relative to
+    # it, so these now refer to the new feature, not to the removed source.
+    for name, path, expression in expressions:
+        if name in result.PropertiesList:
+            result.setExpression(path, expression)
 
     if source_mode == "Editable":
         # Editable cages already contain their final primitive geometry. Bake
@@ -548,6 +661,18 @@ def move_form_to_body(source, body):
     else:
         result.CageMode = "Parametric"
         result.FormPlacement = relative_placement
+    if "ProfileShape" in source.PropertiesList:
+        # The exact profile of a Form Face, in Body coordinates like the cage.
+        # Baked in the geometry: the feature placement replaces the location
+        # of the shape it is given.
+        profile = source.ProfileShape.copy()
+        if not profile.isNull():
+            profile.transformShape(relative_placement.toMatrix(), True)
+        result.ProfileShape = profile
+        result.ProfileControlPoints = [
+            relative_placement.multVec(point) for point in source.ProfileControlPoints
+        ]
+        result.ProfileControlFaces = list(source.ProfileControlFaces)
 
     if App.GuiUp:
         for name, value in view_values.items():

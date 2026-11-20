@@ -42,6 +42,43 @@ from .match_support import (
 )
 
 
+# A control further than this from what Match wrote has been edited since.
+EDIT_TOLERANCE = 1.0e-9
+
+
+def _free_control_points(obj):
+    """Return the controls Match starts from: the cage as it was edited.
+
+    Match moves controls, and ControlPoints stores the moved cage, because
+    that is the cage that defines the shape and that every editing tool reads
+    and writes. Match must not start from its own result, though: the result
+    would then depend on how often the Form was recomputed and on every
+    position its support went through. So the controls are also kept as they
+    were before Match moved them, together with what Match wrote. A control
+    that differs from what Match wrote was edited since, and its new position
+    replaces the one that was kept.
+    """
+    current = [App.Vector(point) for point in obj.ControlPoints]
+    free = list(getattr(obj, "MatchFreeControlPoints", ()))
+    solved = list(getattr(obj, "MatchSolvedControlPoints", ()))
+    if len(free) != len(current) or len(solved) != len(current):
+        return current
+    return [
+        App.Vector(kept) if point.distanceToPoint(written) <= EDIT_TOLERANCE else point
+        for point, kept, written in zip(current, free, solved)
+    ]
+
+
+def _store_control_points(obj, free, solved):
+    obj.ControlPoints = [App.Vector(point) for point in solved]
+    # Objects created before these properties existed get them when their
+    # document is restored; without them Match starts from the stored cage.
+    if hasattr(obj, "PropertiesList") and "MatchFreeControlPoints" not in obj.PropertiesList:
+        return
+    obj.MatchFreeControlPoints = [App.Vector(point) for point in free]
+    obj.MatchSolvedControlPoints = [App.Vector(point) for point in solved]
+
+
 def apply_match_constraints(obj):
     """Keep the stored cage boundary associated with its support face."""
     boundary = tuple(int(index) for index in getattr(obj, "MatchBoundary", ()))
@@ -56,7 +93,8 @@ def apply_match_constraints(obj):
     if any(index < 0 or index >= len(cage.vertices) for index in boundary):
         raise ValueError("The matched Form boundary is no longer valid")
 
-    vertices = [App.Vector(*point) for point in cage.vertices]
+    free = _free_control_points(obj)
+    vertices = [App.Vector(point) for point in free]
     boundary_points = [vertices[index] for index in boundary]
     parameters = list(getattr(obj, "MatchParameters", ()))
     expected = len(boundary) * 2 if support_kind == "Face" else len(boundary)
@@ -90,7 +128,8 @@ def apply_match_constraints(obj):
 
     if str(obj.MatchContinuity) == "Curvature":
         from .curvature import solve_curvature_match
-        solve_curvature_match(obj)
+        solved = solve_curvature_match(obj, [tuple(point) for point in free])
+        _store_control_points(obj, free, solved)
         return
     obj.MatchStatus = ""
 
@@ -113,7 +152,7 @@ def apply_match_constraints(obj):
             tuple(sorted((boundary[index], boundary[(index + 1) % len(boundary)])))
             for index in range(len(boundary))
         }
-        candidates = {}
+        neighbors = {}
         for edge in cage.edge_counts():
             if edge in boundary_edges:
                 continue
@@ -122,12 +161,29 @@ def apply_match_constraints(obj):
                 continue
             boundary_index = first if first in boundary_set else second
             interior_index = second if first in boundary_set else first
-            point = projected[boundary_index]
-            planes = tangent_planes.get(boundary_index) or [
-                _surface_tangent_plane(tangent_face, point)
-            ]
+            neighbors.setdefault(interior_index, []).append(boundary_index)
+        targets = {}
+        for interior_index, boundary_indices in neighbors.items():
+            # A control next to several boundary controls has to lie in the
+            # tangent planes of all of them at once. Projecting on each and
+            # averaging satisfies none, and is not a projection: a cage that
+            # was already constrained would move again.
+            planes = []
+            for boundary_index in boundary_indices:
+                planes.extend(
+                    tangent_planes.get(boundary_index)
+                    or [_surface_tangent_plane(tangent_face, projected[boundary_index])]
+                )
             target = _project_to_planes(vertices[interior_index], planes)
-            if target.sub(point).Length <= 1.0e-9:
+            point = next(
+                (
+                    projected[boundary_index]
+                    for boundary_index in boundary_indices
+                    if target.sub(projected[boundary_index]).Length <= 1.0e-9
+                ),
+                None,
+            )
+            if point is not None:
                 inward = boundary_center - point
                 handle = min(
                     vertices[interior_index].sub(point).Length,
@@ -148,8 +204,8 @@ def apply_match_constraints(obj):
                     )
                 if target.sub(point).Length <= 1.0e-9:
                     raise ConversionError("Could not determine a tangent Match direction")
-            candidates.setdefault(interior_index, []).append(target)
-        for index, points in candidates.items():
-            vertices[index] = sum(points, App.Vector()) / len(points)
+            targets[interior_index] = target
+        for index, target in targets.items():
+            vertices[index] = target
 
-    obj.ControlPoints = vertices
+    _store_control_points(obj, free, vertices)

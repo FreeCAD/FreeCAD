@@ -367,41 +367,62 @@ class HierarchicalTMesh:
         self.edge_intervals[_edge(first, middle)] = value * 0.5
         self.edge_intervals[_edge(middle, second)] = value * 0.5
 
-    def _side_midpoint(self, face_id, side_index, level):
-        """Return ``(vertex, created)`` at half the side's knot interval."""
-        face = self.faces[int(face_id)]
-        side = face.sides[int(side_index)]
+    def _side_midpoint_location(self, side):
+        """Locate half the knot interval of a face side.
+
+        Return ``(position, fraction)``: the midpoint lies on the atomic edge
+        from ``side[position]`` to ``side[position + 1]``, at ``fraction`` of
+        its knot interval, or it is the existing vertex ``side[position + 1]``
+        when ``fraction`` is ``None``.
+        """
         intervals = [
             self.edge_intervals[_edge(first, second)] for first, second in zip(side, side[1:])
         ]
         target = sum(intervals) * 0.5
         accumulated = 0.0
-        for position, (first, second, interval) in enumerate(zip(side, side[1:], intervals)):
+        for position, interval in enumerate(intervals):
             next_value = accumulated + interval
             if math.isclose(next_value, target, rel_tol=1.0e-10, abs_tol=1.0e-12):
-                return side[position + 1], False
+                return position, None
             if accumulated < target < next_value:
-                fraction = (target - accumulated) / interval
-                if not math.isclose(fraction, 0.5, rel_tol=0.0, abs_tol=1.0e-10):
-                    raise ValueError("The requested split is not dyadic on this T-edge")
-                vertex_id = self.next_vertex_id
-                self.next_vertex_id += 1
-                self.vertices[vertex_id] = tuple(
-                    self.vertices[first][axis] * (1.0 - fraction)
-                    + self.vertices[second][axis] * fraction
-                    for axis in range(3)
-                )
-                self.vertex_levels[vertex_id] = int(level)
-                neighbors = self._faces_for_atomic_edge(face.id, first, second)
-                self._split_interval(first, vertex_id, second)
-                self._insert_side_vertex(face.id, side_index, position, vertex_id)
-                for neighbor_id, neighbor_side, neighbor_position in neighbors:
-                    self._insert_side_vertex(
-                        neighbor_id, neighbor_side, neighbor_position, vertex_id
-                    )
-                return vertex_id, True
+                return position, (target - accumulated) / interval
             accumulated = next_value
         raise ValueError("Could not locate the midpoint of the T-edge")
+
+    def side_midpoint_edge(self, side):
+        """Return the atomic edge of a face side that :meth:`insert_edge`
+        splits, or ``None`` when an existing vertex is the side's midpoint."""
+        position, fraction = self._side_midpoint_location(side)
+        if fraction is None:
+            return None
+        return _edge(side[position], side[position + 1])
+
+    def _side_midpoint(self, face_id, side_index, level):
+        """Return ``(vertex, created)`` at half the side's knot interval."""
+        face = self.faces[int(face_id)]
+        side = face.sides[int(side_index)]
+        position, fraction = self._side_midpoint_location(side)
+        if fraction is None:
+            return side[position + 1], False
+        if not math.isclose(fraction, 0.5, rel_tol=0.0, abs_tol=1.0e-10):
+            raise ValueError("The requested split is not dyadic on this T-edge")
+        first, second = side[position], side[position + 1]
+        vertex_id = self.next_vertex_id
+        self.next_vertex_id += 1
+        self.vertices[vertex_id] = tuple(
+            self.vertices[first][axis] * (1.0 - fraction)
+            + self.vertices[second][axis] * fraction
+            for axis in range(3)
+        )
+        self.vertex_levels[vertex_id] = int(level)
+        neighbors = self._faces_for_atomic_edge(face.id, first, second)
+        self._split_interval(first, vertex_id, second)
+        self._insert_side_vertex(face.id, side_index, position, vertex_id)
+        for neighbor_id, neighbor_side, neighbor_position in neighbors:
+            self._insert_side_vertex(
+                neighbor_id, neighbor_side, neighbor_position, vertex_id
+            )
+        return vertex_id, True
 
     def insert_edge(self, face_id, edge, position=0.5):
         """Return a locally split mesh plus its new vertex and face IDs.
@@ -508,6 +529,8 @@ class HierarchicalTMesh:
                 if current in boundary:
                     raise ValueError("Dissolved T-mesh faces have a branched boundary")
                 boundary.append(current)
+            if len(boundary) != len(boundary_edges):
+                raise ValueError("Dissolved T-mesh faces must form one simply connected region")
 
             parameters = result.parameter_locations()
             root = next(iter(roots))
@@ -708,6 +731,15 @@ class HierarchicalTMesh:
 
     @classmethod
     def decode(cls, value):
+        try:
+            return cls._decode(value)
+        except (AttributeError, IndexError, KeyError, TypeError) as error:
+            # TMeshData comes from the document. Report a malformed record as
+            # the ValueError that conversion turns into a failed status.
+            raise ValueError("Invalid T-mesh data") from error
+
+    @classmethod
+    def _decode(cls, value):
         data = json.loads(str(value))
         version = int(data.get("version", -1))
         if version not in (1, 2, cls.VERSION):

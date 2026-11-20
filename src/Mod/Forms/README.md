@@ -38,7 +38,8 @@ appearance and the independent Form geometry uses Part Design's operation
 preview color, leaving the complete cage free to move, rotate, extrude, and
 refine. Finishing the edit fuses or cuts a closed intersecting Form. A disjoint
 or open Form remains visible beside the base and reports why it has not yet
-combined.
+combined. As with native Part Design features, an Additive Form may start a
+Body, while a Subtractive Form without a base feature fails to recompute.
 
 The **Match** edit tool associates one complete Form opening with an external
 face or closed wire. It updates the boundary association on every recompute and
@@ -239,16 +240,19 @@ Modifiers after subdivision, non-quad faces, loose vertices, branched boundaries
 and non-manifold edges are rejected with an explanatory message. A standard
 Blender installation is discovered automatically; a nonstandard executable may
 be selected through the `BlenderExecutable` string parameter under
-`BaseApp/Preferences/Mod/Forms`.
+`BaseApp/Preferences/Mod/Forms`. When set, it must name an existing file; it
+is reported as an error rather than replaced by an automatically found Blender.
 
 ## Blender export
 
 **File > Export** writes selected objects to `.blend` through the same Blender
 installation. Standalone Forms primitives and editable Forms are written as
 quad control cages with a Catmull-Clark Subdivision Surface modifier and their
-vertex and edge creases. A selected Part Design Body or ordinary shape is
-written as its final tessellated mesh, so its visible result is preserved but
-its FreeCAD feature history is not. Forms using local T-mesh refinement, local
+vertex and edge creases. A selected Part Design Body, Part Design Form feature,
+or ordinary shape is written as its final tessellated mesh (for a Part Design
+Form, the Body result at that feature), so its visible result is preserved but
+its FreeCAD feature history is not. An additive Part Design Form without a base
+feature is the Form itself, so it is written as a control cage. Forms using local T-mesh refinement, local
 edge insertion, or dissolved control edges are also exported as their final
 mesh because those topologies have no direct Blender subdivision-cage equivalent.
 

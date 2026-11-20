@@ -21,6 +21,9 @@
 #                                                                           *
 # **************************************************************************/
 
+import importlib
+import sys
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -82,6 +85,71 @@ class BlendImportTest(unittest.TestCase):
             if document is not None:
                 App.closeDocument(document.Name)
 
+    def test_malformed_blender_output_is_reported_without_leaking_a_document(self):
+        before = set(App.listDocuments())
+        for payload in (
+            [1, 2, 3],
+            {"format": "AstoCAD Forms control cage", "version": 1, "objects": 5},
+        ):
+            with self.subTest(payload=payload):
+                with patch("Forms.blend_import._run_blender", return_value=payload):
+                    with patch("Forms.blend_import.Path.is_file", return_value=True):
+                        with self.assertRaises(BlendImportError):
+                            import_file("malformed.blend", None)
+                        with patch("importBlend._show_error"):
+                            self.assertIsNone(importBlend.open("malformed.blend"))
+                self.assertEqual(set(App.listDocuments()), before)
+
+    def test_open_closes_its_document_on_unexpected_errors(self):
+        before = set(App.listDocuments())
+        with patch("importBlend.import_file", side_effect=RuntimeError("unexpected")):
+            with self.assertRaisesRegex(RuntimeError, "unexpected"):
+                importBlend.open("broken.blend")
+        self.assertEqual(set(App.listDocuments()), before)
+
+    def test_blender_source_file_is_not_parsed_as_an_option(self):
+        import os
+        import subprocess
+
+        from Forms.blender_bridge import run_blender_script
+
+        with patch("Forms.blender_bridge.subprocess.run") as run:
+            run.return_value = subprocess.CompletedProcess([], 0, "", "")
+            run_blender_script(
+                "script.py", ("output.json",), source_file="-scene.blend", executable="blender"
+            )
+        command = run.call_args.args[0]
+        source = command[command.index("--disable-autoexec") + 1]
+        self.assertEqual(source, os.path.abspath("-scene.blend"))
+        self.assertFalse(source.startswith("-"))
+        self.assertNotIn("shell", run.call_args.kwargs)
+
+    def test_missing_configured_blender_is_reported_instead_of_replaced(self):
+        import os
+        import tempfile
+
+        from Forms.blend_import import _run_blender
+        from Forms.blender_bridge import BlenderBridgeError, find_blender_executable
+
+        parameters = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Forms")
+        previous = parameters.GetString("BlenderExecutable", "")
+        missing = os.path.join(tempfile.gettempdir(), "astocad-no-such-dir", "blender.exe")
+        parameters.SetString("BlenderExecutable", missing)
+        try:
+            # Another Blender is available, but the user chose a specific one.
+            with patch("Forms.blender_bridge.shutil.which", return_value=sys.executable):
+                with self.assertRaisesRegex(BlenderBridgeError, "'BlenderExecutable'"):
+                    find_blender_executable()
+                with patch("Forms.blender_bridge.subprocess.run") as run:
+                    with self.assertRaisesRegex(BlendImportError, "blender.exe"):
+                        _run_blender("scene.blend")
+                run.assert_not_called()
+        finally:
+            if previous:
+                parameters.SetString("BlenderExecutable", previous)
+            else:
+                parameters.RemString("BlenderExecutable")
+
     def test_legacy_imported_type_is_migrated_on_restore(self):
         document = App.newDocument("FormsTestBlendLegacy")
         obj = create_form(document)
@@ -98,6 +166,24 @@ class BlendImportTest(unittest.TestCase):
         self.assertNotIn("SourceFile", obj.PropertiesList)
         self.assertNotIn("SourceObject", obj.PropertiesList)
         self.assertNotIn("BlenderVersion", obj.PropertiesList)
+
+    def test_nan_creases_are_rejected_instead_of_read_as_smooth(self):
+        document = App.newDocument("FormsTestBlendNaNCrease")
+        data = _box_data()
+        data["vertex_sharpness"][0] = float("nan")
+        with self.assertRaisesRegex(BlendImportError, "non-finite vertex creases"):
+            _create_feature(document, "example.blend", "4.0.1", data)
+        data = _box_data()
+        data["edge_sharpness"] = [[0, 1, float("nan")]]
+        with self.assertRaisesRegex(BlendImportError, "non-finite edge creases"):
+            _create_feature(document, "example.blend", "4.0.1", data)
+        self.assertEqual(document.Objects, [])
+
+        # The Blender-side reader rejects the object rather than reading 0.
+        with patch.dict(sys.modules, {"bpy": SimpleNamespace()}):
+            extract = importlib.import_module("Forms.blender_extract")
+        with self.assertRaisesRegex(ValueError, "non-finite crease"):
+            extract._sharpness(float("nan"))
 
     def test_validate_cage_rejects_triangles(self):
         data = _box_data()

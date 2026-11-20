@@ -215,7 +215,7 @@ class TestAdditiveForm(unittest.TestCase):
 
         self.assertIsNone(form.BaseFeature)
         self.assertEqual(form.TypeId, "PartDesign::FeatureAdditivePython")
-        self.assertEqual(form.Operation, "Additive")
+        self.assertEqual(form.Operation, "Union")
         self.assertIs(empty_body.Tip, form)
         self.assertFalse(form.Shape.isNull())
         self.assertEqual(form.Shape.ShapeType, "Solid")
@@ -853,12 +853,79 @@ class TestAdditiveForm(unittest.TestCase):
         self.document.recompute()
 
         self.assertEqual(form.TypeId, "PartDesign::FeatureSubtractivePython")
-        self.assertEqual(form.Operation, "Subtractive")
+        # The native property Part Design derives the feature type from
+        self.assertEqual(form.Operation, "Subtraction")
+        self.assertEqual(form.getEnumerationsOfProperty("Operation"), ["Subtraction", "Common"])
         self.assertEqual(form.CombinationStatus, "Valid cut subtractive form")
         self.assertEqual(form.AddSubShape.ShapeType, "Solid")
         self.assertEqual(len(form.Shape.Solids), 1)
         self.assertTrue(form.Shape.isValid())
         self.assertLess(form.Shape.Volume, self.source.Shape.Volume)
+
+    def _patternedSubtractiveForm(self):
+        form = Forms.create_subtractive_form(
+            self.body,
+            self.source,
+            "Box",
+            placement=App.Placement(App.Vector(5, 10, 10), App.Rotation()),
+        )
+        form.Length = 4
+        form.Width = 4
+        form.Height = 4
+        pattern = self.body.newObject("PartDesign::LinearPattern", "Pattern")
+        pattern.Originals = [form]
+        pattern.Direction = (self.document.X_Axis, [""])
+        pattern.Length = 8
+        pattern.Occurrences = 2
+        self.document.recompute()
+        return form, pattern
+
+    def testPatternOfSubtractiveFormRemovesEveryOccurrence(self):
+        form, pattern = self._patternedSubtractiveForm()
+
+        removed = self.source.Shape.Volume - form.Shape.Volume
+        self.assertGreater(removed, 1.0)
+        self.assertTrue(pattern.isValid())
+        self.assertTrue(pattern.Shape.isValid())
+        # As for a native subtractive feature, the second occurrence is removed too
+        self.assertAlmostEqual(
+            form.Shape.Volume - pattern.Shape.Volume, removed, delta=removed * 0.01
+        )
+
+    def testRestoreCorrectsTheOperationSavedWithFormsValues(self):
+        handle, path = tempfile.mkstemp(suffix=".FCStd")
+        os.close(handle)
+        try:
+            form, pattern = self._patternedSubtractiveForm()
+            form_name = form.Name
+            removed = self.source.Shape.Volume - form.Shape.Volume
+            # Forms used to replace the native values by its own ones, which made
+            # the subtractive Form an additive feature for Part Design.
+            form.Operation = ["Additive", "Subtractive"]
+            form.Operation = "Subtractive"
+            self.document.recompute()
+            self.document.saveAs(path)
+            App.closeDocument(self.document.Name)
+
+            self.document = App.openDocument(path)
+            restored = self.document.getObject(form_name)
+            self.assertEqual(restored.TypeId, "PartDesign::FeatureSubtractivePython")
+            self.assertEqual(restored.Operation, "Subtraction")
+            self.assertEqual(
+                restored.getEnumerationsOfProperty("Operation"), ["Subtraction", "Common"]
+            )
+            # Opening recomputes only the Form: recompute the features saved with
+            # its tool added once it is subtractive again.
+            restored.touch()
+            self.document.recompute()
+            pattern = self.document.getObject("Pattern")
+            self.assertEqual(restored.CombinationStatus, "Valid cut subtractive form")
+            self.assertAlmostEqual(
+                restored.Shape.Volume - pattern.Shape.Volume, removed, delta=removed * 0.01
+            )
+        finally:
+            if os.path.exists(path):
+                os.remove(path)
 
     def testMatchStitchesBoxOpeningToBaseFace(self):
         form = Forms.create_additive_form(
@@ -938,7 +1005,7 @@ class TestAdditiveForm(unittest.TestCase):
             self.document.recompute()
             restored = self.document.getObject("AdditiveFormBox")
             self.assertEqual(restored.TypeId, "PartDesign::FeatureAdditivePython")
-            self.assertEqual(restored.Operation, "Additive")
+            self.assertEqual(restored.Operation, "Union")
             self.assertFalse(restored.EditingForm)
             self.assertEqual(restored.PrimitiveKind, "Box")
             self.assertEqual(restored.CombinationStatus, "Valid fused additive form")

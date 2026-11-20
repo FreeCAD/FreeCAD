@@ -3,6 +3,8 @@
 import math
 import unittest
 
+import FreeCAD as App
+
 from Forms.brep import ConversionError
 from Forms.cage import ControlCage, canonical_subelement_name
 from Forms.feedback import MODELING_ERRORS, report_modeling_error
@@ -159,6 +161,7 @@ class GeometryEditingTest(unittest.TestCase):
         )
         self.assertEqual(cage_face_selection_range(faces, 0, 4), set(range(5)))
 
+    @unittest.skipUnless(App.GuiUp, "Edit sessions require FreeCADGui")
     def test_shift_range_reselection_is_deferred_outside_the_observer(self):
         from types import SimpleNamespace
 
@@ -197,6 +200,7 @@ class GeometryEditingTest(unittest.TestCase):
         self.assertEqual(restored[0][2], {frozenset(faces[index]) for index in range(5)})
         self.assertTrue(restored[0][3])
 
+    @unittest.skipUnless(App.GuiUp, "Edit sessions require FreeCADGui")
     def test_shift_range_scheduler_captures_all_arguments(self):
         from Forms.edit import FormEditSession
 
@@ -342,6 +346,26 @@ class PrimitiveTopologyTest(unittest.TestCase):
                 edge_counts[edge] = edge_counts.get(edge, 0) + 1
         self.assertTrue(vertices)
         self.assertTrue(all(count == 2 for count in edge_counts.values()))
+
+    def test_cylinder_cap_faces_stay_convex_inside_the_radius(self):
+        for side_segments in (4, 8, 25):
+            vertices, faces = cylinder_control_cage(1, 1, side_segments, 1)
+            self.assertLessEqual(
+                max(math.hypot(x_value, y_value) for x_value, y_value, _z in vertices),
+                1.0 + 1.0e-12,
+            )
+            for face in faces:
+                points = [vertices[index] for index in face]
+                if not all(abs(point[2] - 0.5) <= 1.0e-12 for point in points):
+                    continue
+                for position in range(4):
+                    first = points[position]
+                    second = points[(position + 1) % 4]
+                    third = points[(position + 2) % 4]
+                    turn = (second[0] - first[0]) * (third[1] - second[1]) - (
+                        second[1] - first[1]
+                    ) * (third[0] - second[0])
+                    self.assertGreater(turn, 0.0, (side_segments, face))
 
     def test_sphere_points_are_on_requested_radius(self):
         vertices, faces = sphere_control_cage(12, 2, 3)
