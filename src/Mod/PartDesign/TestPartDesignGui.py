@@ -381,6 +381,103 @@ class CreateBody(unittest.TestCase):
             App.closeDocument(doc.Name)
 
 
+class CreatePipeAndLoft(unittest.TestCase):
+    def setUp(self):
+        self.ReportView = Gui.getMainWindow().findChild(QtGui.QTextEdit, "Report view")
+        if self.ReportView is None:
+            self.skipTest("Report view is not available")
+        self.Doc = App.newDocument("CreatePipeAndLoft")
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        self.Body.addObject(self.Box)
+        self.Profile = self.makeSketch(
+            "Profile", "XY_Plane", 10, Part.Circle(App.Vector(), App.Vector(0, 0, 1), 2)
+        )
+        self.Spine = self.makeSketch(
+            "Spine", "XZ_Plane", 0, Part.LineSegment(App.Vector(0, 10, 0), App.Vector(0, 30, 0))
+        )
+        self.Section = self.makeSketch(
+            "Section", "XY_Plane", 20, Part.Circle(App.Vector(), App.Vector(0, 0, 1), 1)
+        )
+        self.OpenSection = self.makeSketch(
+            "OpenSection",
+            "XY_Plane",
+            20,
+            Part.LineSegment(App.Vector(-1, 0, 0), App.Vector(1, 0, 0)),
+        )
+        self.Doc.recompute()
+        Gui.ActiveDocument.ActiveView.setActiveObject("pdbody", self.Body)
+
+    def tearDown(self):
+        Gui.Control.closeDialog()
+        Gui.Selection.clearSelection()
+        App.closeDocument(self.Doc.Name)
+
+    def makeSketch(self, name, plane, offset, geometry):
+        sketch = self.Body.newObject("Sketcher::SketchObject", name)
+        sketch.AttachmentSupport = [(self.Body.Origin.getObject(plane), "")]
+        sketch.MapMode = "FlatFace"
+        sketch.AttachmentOffset = App.Placement(App.Vector(0, 0, offset), App.Rotation())
+        sketch.addGeometry(geometry)
+        return sketch
+
+    def runCommand(self, command, *selection):
+        Gui.Selection.clearSelection()
+        for obj in selection:
+            Gui.Selection.addSelection(obj)
+        self.ReportView.clear()
+        Gui.runCommand(command)
+        QApplication.processEvents()
+        return self.ReportView.toPlainText()
+
+    def testAdditivePipeWithoutSpineReportsNoError(self):
+        report = self.runCommand("PartDesign_AdditivePipe", self.Profile)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::AdditivePipe")
+        self.assertNotIn("No spine linked", report)
+
+    def testSubtractivePipeWithoutSpineReportsNoError(self):
+        report = self.runCommand("PartDesign_SubtractivePipe", self.Profile)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::SubtractivePipe")
+        self.assertNotIn("No spine linked", report)
+
+    def testAdditiveLoftWithoutSectionsReportsNoError(self):
+        report = self.runCommand("PartDesign_AdditiveLoft", self.Profile)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::AdditiveLoft")
+        self.assertNotIn("At least one section is needed", report)
+
+    def testSubtractiveLoftWithoutSectionsReportsNoError(self):
+        report = self.runCommand("PartDesign_SubtractiveLoft", self.Profile)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::SubtractiveLoft")
+        self.assertNotIn("At least one section is needed", report)
+
+    def testLoftWithoutSectionsUsesUpdatedBase(self):
+        self.Box.Length = 20
+        self.runCommand("PartDesign_AdditiveLoft", self.Profile)
+        loft = self.Body.Tip
+        loft.Sections = [self.Section]
+        loft.recompute()
+        self.assertTrue(loft.isValid())
+        self.assertAlmostEqual(loft.Shape.BoundBox.XMax, 20)
+
+    def testPipeWithSpineIsCreated(self):
+        report = self.runCommand("PartDesign_AdditivePipe", self.Profile, self.Spine)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::AdditivePipe")
+        self.assertTrue(self.Body.Tip.isValid())
+        self.assertNotIn(self.Body.Tip.Label + ":", report)
+
+    def testLoftWithSectionIsCreated(self):
+        report = self.runCommand("PartDesign_AdditiveLoft", self.Profile, self.Section)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::AdditiveLoft")
+        self.assertTrue(self.Body.Tip.isValid())
+        self.assertNotIn(self.Body.Tip.Label + ":", report)
+
+    def testLoftWithInvalidSectionReportsError(self):
+        report = self.runCommand("PartDesign_AdditiveLoft", self.Profile, self.OpenSection)
+        self.assertEqual(self.Body.Tip.TypeId, "PartDesign::AdditiveLoft")
+        self.assertFalse(self.Body.Tip.isValid())
+        self.assertIn(self.Body.Tip.Label + ":", report)
+
+
 # class PartDesignGuiTestCases(unittest.TestCase):
 #   def setUp(self):
 #       self.Doc = FreeCAD.newDocument("SketchGuiTest")
