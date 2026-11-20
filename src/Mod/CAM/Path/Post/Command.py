@@ -117,13 +117,8 @@ class CommandPathPost:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if not selection:
-            return False
-
-        self.candidate = PathUtils.findParentJob(selection[0])
-
-        return self.candidate is not None
+        self.candidate = None
+        return bool(PathUtils.GetJobs())
 
     def _write_file(self, filename, gcode, policy):
         #
@@ -204,6 +199,16 @@ class CommandPathPost:
         Handles the activation of post processing, initiating the process based
         on user selection and document context.
         """
+        if not self.candidate and (selection := FreeCADGui.Selection.getSelection()):
+            self.candidate = PathUtils.findParentJob(selection[0])
+
+        if not self.candidate and (jobs := PathUtils.GetJobs()):
+            self.candidate = PathUtils.UserInput.chooseJob(jobs)
+
+        if not self.candidate:
+            Path.Log.info(translate("CAM_Post", "Post process not executed. Job not defined"))
+            return
+
         Path.Log.debug(self.candidate.Name)
 
         self.operations = getattr(self, "operations", None)
