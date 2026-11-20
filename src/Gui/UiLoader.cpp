@@ -123,7 +123,8 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QString cmd;
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
-    str << "from PySide6.QtUiTools import loadUiType\n"
+    str << "from PySide6 import __version_info__\n"
+        << "from PySide6.QtUiTools import loadUiType\n"
         << "from PySide6 import QtCore, QtGui, QtWidgets\n"
         << "import xml.etree.ElementTree as xml\n"
         << "try:\n"
@@ -131,8 +132,14 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "except Exception:\n"
         << "    from io import StringIO\n"
         << "\n"
-        << "uiFile = \"" << file.c_str() << "\"\n"
-        << "form_class, base_class = loadUiType(uiFile)\n";
+        << "uiFile = \"" << file.c_str()
+        << "\"\n"
+        // PySide 6.12 defaults to only looking for pyside6-uic beside sys.executable,
+        // which won't work for portable installations.
+        << "if __version_info__ >= (6, 12):\n"
+        << "    form_class, base_class = loadUiType(uiFile, path_search=True)\n"
+        << "else:\n"
+        << "    form_class, base_class = loadUiType(uiFile)\n";
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {

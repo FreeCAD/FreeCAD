@@ -133,20 +133,21 @@ class TestNavigationStyle(unittest.TestCase):
         self.assertNotEqual(self.View.getNavigationType(), "App::Extension")
 
     def testOrientationLockBlocksProgrammaticOrientationChanges(self):
+        self.View.setAnimationEnabled(False)
         viewer = self.View.getViewer()
         navigation = viewer.getNavigationStyle()
         initial = self.View.getCameraOrientation()
-        target = (0.0, 0.70710678, 0.0, 0.70710678)
+        target = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 90) * initial
 
         navigation.setOrientationLocked(True)
         self.View.setViewDirection((1.0, 0.0, 0.0))
         self.assertTrue(self.View.getCameraOrientation().isSame(initial, 1e-6))
-        self.View.setCameraOrientation(target)
+        self.View.setCameraOrientation(target.Q)
         self.assertTrue(self.View.getCameraOrientation().isSame(initial, 1e-6))
 
         navigation.setOrientationLocked(False)
-        self.View.setCameraOrientation(target)
-        self.assertFalse(self.View.getCameraOrientation().isSame(initial, 1e-6))
+        self.View.setCameraOrientation(target.Q)
+        self.assertTrue(self.View.getCameraOrientation().isSame(target, 1e-6))
 
     def testOrientationLockAllowsTranslationOnlyViewPosition(self):
         navigation = self.View.getViewer().getNavigationStyle()
@@ -192,6 +193,10 @@ class TestNavigationStyle(unittest.TestCase):
     def testRotationDisableStopsActiveSpinAnimation(self):
         viewer = self.View.getViewer()
         navigation = viewer.getNavigationStyle()
+        self.View.setAnimationEnabled(True)
+
+        with self.assertRaises(TypeError):
+            viewer.isSpinning(True)
 
         self.View.startAnimating(0.0, 1.0, 0.0, 1.0)
         self.assertTrue(viewer.isSpinning())
