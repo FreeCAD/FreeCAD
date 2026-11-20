@@ -1200,7 +1200,9 @@ int geoIdOf(const Sketcher::SketchObject& sketch, long stableId)
 
 /// The edges of the closed loop through geoId, or nothing when geoId is on no loop.
 /// Edges dangling from the loop (a construction line leaving a corner, for instance)
-/// are pruned, so they neither prevent nor join the hatch boundary.
+/// are pruned, so they neither prevent nor join the hatch boundary. Where edges meet
+/// at a junction (a rectangle split in two cells), the boundary of the smallest region
+/// beside geoId is followed, so the loop is one cell and not all the connected edges.
 std::vector<int> closedLoop(const ViewProviderSketch& view, int geoId)
 {
     const auto* sketch = view.getSketchObject();
@@ -1227,11 +1229,43 @@ std::vector<int> closedLoop(const ViewProviderSketch& view, int geoId)
         int geoId;
         size_t start;
         size_t end;
+        std::vector<Base::Vector3d> points;  // Samples from start to end.
     };
     std::vector<Edge> edges;
+    // Construction edges (a diagonal through the corners) bound no hatch, unless the
+    // picked edge is construction itself.
+    const bool construction = Sketcher::GeometryFacade::getConstruction(geo);
     for (int id : view.getConnectedEdges(geoId, false)) {
-        const auto start = node(sketch->getPoint(id, Sketcher::PointPos::start));
-        edges.push_back({id, start, node(sketch->getPoint(id, Sketcher::PointPos::end))});
+        if (!construction && Sketcher::GeometryFacade::getConstruction(sketch->getGeometry(id))) {
+            continue;
+        }
+        const auto startPoint = sketch->getPoint(id, Sketcher::PointPos::start);
+        const auto endPoint = sketch->getPoint(id, Sketcher::PointPos::end);
+        const auto start = node(startPoint);
+        const auto end = node(endPoint);
+        if (start == end) {
+            if (id == geoId) {
+                return {geoId};  // An open curve that closes on itself.
+            }
+            continue;
+        }
+        Edge edge {id, start, end, {startPoint, endPoint}};
+        if (const auto* curve = dynamic_cast<const Part::GeomCurve*>(sketch->getGeometry(id))) {
+            constexpr int samples = 32;
+            const double u0 = curve->getFirstParameter();
+            const double u1 = curve->getLastParameter();
+            edge.points.clear();
+            for (int i = 0; i <= samples; ++i) {
+                edge.points.push_back(curve->value(u0 + (u1 - u0) * i / samples));
+            }
+            if ((edge.points.front() - startPoint).Length()
+                > (edge.points.front() - endPoint).Length()) {
+                std::reverse(edge.points.begin(), edge.points.end());
+            }
+            edge.points.front() = startPoint;
+            edge.points.back() = endPoint;
+        }
+        edges.push_back(std::move(edge));
     }
     for (bool pruned = true; pruned;) {
         std::vector<int> degree(nodes.size(), 0);
@@ -1245,14 +1279,93 @@ std::vector<int> closedLoop(const ViewProviderSketch& view, int geoId)
         });
         pruned = edges.size() != before;
     }
-    std::vector<int> loop;
-    for (const auto& edge : edges) {
-        loop.push_back(edge.geoId);
-    }
-    if (std::find(loop.begin(), loop.end(), geoId) == loop.end()) {
+    const auto clicked = std::find_if(edges.begin(), edges.end(), [geoId](const Edge& edge) {
+        return edge.geoId == geoId;
+    });
+    if (clicked == edges.end()) {
         return {};
     }
-    return loop;
+    const auto first = static_cast<size_t>(clicked - edges.begin());
+    // The direction along the edge away from its start (or end) node.
+    auto leaving = [](const Edge& edge, bool fromStart) {
+        const auto& p = edge.points;
+        return fromStart ? p[1] - p[0] : p[p.size() - 2] - p.back();
+    };
+    // Follows the region on the left (or right) of the clicked edge, taking the sharpest
+    // turn that way at every junction. Returns the edges and the signed area enclosed,
+    // or nothing when the walk does not close as a simple loop.
+    auto walk = [&](bool left) -> std::pair<std::vector<int>, double> {
+        size_t current = first;
+        bool forward = true;
+        std::vector<int> loop;
+        std::vector<bool> visited(nodes.size(), false);
+        double area = 0.0;
+        for (size_t step = 0; step <= edges.size(); ++step) {
+            const auto& edge = edges[current];
+            loop.push_back(edge.geoId);
+            const auto& p = edge.points;
+            for (size_t i = 0; i + 1 < p.size(); ++i) {
+                const double cross = p[i].x * p[i + 1].y - p[i + 1].x * p[i].y;
+                area += forward ? cross : -cross;
+            }
+            const size_t at = forward ? edge.end : edge.start;
+            if (visited[at]) {
+                return {};
+            }
+            visited[at] = true;
+            const auto in = -leaving(edge, !forward);
+            bool found = false;
+            double best = 0.0;
+            size_t next = current;
+            bool nextForward = true;
+            for (size_t i = 0; i < edges.size(); ++i) {
+                if (i == current) {
+                    continue;
+                }
+                for (bool fromStart : {true, false}) {
+                    if ((fromStart ? edges[i].start : edges[i].end) != at) {
+                        continue;
+                    }
+                    const auto out = leaving(edges[i], fromStart);
+                    double turn = std::atan2(in.x * out.y - in.y * out.x, in.x * out.x + in.y * out.y);
+                    if (!left) {
+                        turn = -turn;
+                    }
+                    if (!found || turn > best) {
+                        found = true;
+                        best = turn;
+                        next = i;
+                        nextForward = fromStart;
+                    }
+                }
+            }
+            if (!found) {
+                return {};
+            }
+            current = next;
+            forward = nextForward;
+            if (current == first) {
+                if (!forward) {
+                    return {};
+                }
+                return {loop, area / 2.0};
+            }
+        }
+        return {};
+    };
+    // A loop walked counter-clockwise has its region on the left; walked clockwise, the
+    // region on the left is everything outside it, which cannot be hatched.
+    const auto [leftLoop, leftArea] = walk(true);
+    const auto [rightLoop, rightArea] = walk(false);
+    const bool leftBounded = !leftLoop.empty() && leftArea > 0.0;
+    const bool rightBounded = !rightLoop.empty() && rightArea < 0.0;
+    if (leftBounded && (!rightBounded || leftArea <= -rightArea)) {
+        return leftLoop;
+    }
+    if (rightBounded) {
+        return rightLoop;
+    }
+    return {};
 }
 
 /// Remembered settings of the cosmetic tools (text, hatch and leader line).

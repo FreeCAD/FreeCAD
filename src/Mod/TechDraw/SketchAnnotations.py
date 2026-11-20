@@ -294,11 +294,11 @@ def synchronize(doc):
         }
         wanted = set()
         pending = False
-        pages = [o for o in doc.Objects if o.isDerivedFrom("TechDraw::DrawPage")]
         for view in list(doc.Objects):
             if not view.isDerivedFrom("TechDraw::DrawViewPart") or not hasattr(view, "Source"):
                 continue
-            page = next((page for page in pages if view in page.Views), None)
+            # Projection group items are in their group's Views, not in the page's.
+            page = view.findParentPage()
             if page is None:
                 continue
             if not view.isProjectionReady():
