@@ -240,7 +240,11 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     if obj == self.assembly:
                         continue  # Skip current assembly
 
-                    if obj in self.assembly.InListRecursive:
+                    # Plain groups are not insertable; traverse them so unrelated
+                    # siblings of the active assembly remain available.
+                    if obj in self.assembly.InListRecursive and not obj.isDerivedFrom(
+                        "App::DocumentObjectGroup"
+                    ):
                         continue  # Prevent dependency loop.
                         # For instance if asm1/asm2 with asm2 active, we don't want to have asm1 in the list
 
