@@ -1034,18 +1034,9 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
         newVals.erase(ctriter);
     }
 
+    // Geometry is left alone, the handles of the removed groups included: callers hold GeoIds
+    // and constraint indices across this call. See getGroupHandlesOfConstraints().
     this->Constraints.setValues(std::move(newVals));
-
-    // Ungrouping releases the members, but the group-owned handle is no longer geometry.
-    std::vector<int> removedHandles;
-    for (const auto& [handle, group] : removedGroups) {
-        if (handle >= 0 && handle <= getHighestCurveIndex() && !isGroupHandle(handle)) {
-            removedHandles.push_back(handle);
-        }
-    }
-    if (!removedHandles.empty()) {
-        delGeometriesExclusiveList(removedHandles, DeleteOption::NoSolve);
-    }
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
     if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
@@ -1053,6 +1044,37 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
     }
 
     return 0;
+}
+
+std::vector<int> SketchObject::getGroupHandlesOfConstraints(const std::vector<int>& ConstrIds) const
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    const std::set<int> ids(ConstrIds.begin(), ConstrIds.end());
+    std::set<int> handles;
+    for (int id : ids) {
+        if (id < 0 || id >= int(vals.size())) {
+            continue;
+        }
+        const auto* c = vals[id];
+        if (c->Type != Group && c->Type != Text) {
+            continue;
+        }
+        const int handle = c->getGeoId(0);
+        if (handle >= 0 && handle <= getHighestCurveIndex()) {
+            handles.insert(handle);
+        }
+    }
+
+    // A handle that another Group/Text constraint keeps using is not released.
+    for (size_t id = 0; id < vals.size() && !handles.empty(); ++id) {
+        const auto* c = vals[id];
+        if ((c->Type == Group || c->Type == Text) && !ids.contains(static_cast<int>(id))) {
+            handles.erase(c->getGeoId(0));
+        }
+    }
+
+    return std::vector<int>(handles.begin(), handles.end());
 }
 
 int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)

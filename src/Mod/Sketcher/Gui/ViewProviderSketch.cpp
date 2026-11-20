@@ -4889,6 +4889,14 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             }
         }
 
+        // Deleting a Group/Text constraint also deletes the handle it owns. The handles join the
+        // geometry to delete now, before anything changes, so that no index collected here goes
+        // stale.
+        const std::vector<int> ownedHandles = getSketchObject()->getGroupHandlesOfConstraints(
+            std::vector<int>(delConstraints.begin(), delConstraints.end())
+        );
+        delInternalGeometries.insert(ownedHandles.begin(), ownedHandles.end());
+
         // We stored the vertices, but is there really a coincident constraint? Check
         const std::vector<Sketcher::Constraint*>& vals = getSketchObject()->Constraints.getValues();
 

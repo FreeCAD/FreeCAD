@@ -51,6 +51,14 @@ class TestSketchGroups(unittest.TestCase):
     def assertVector(self, actual, expected):
         self.assertLess((actual - expected).Length, 1e-6)
 
+    def ungroup(self, ids):
+        # Deleting a constraint never deletes geometry: like the GUI, collect the handles of
+        # the groups first, delete the constraints, then the handles.
+        s = self.sketch
+        handles = [s.Constraints[i].First for i in ids]
+        s.delConstraints(ids)
+        s.delGeometries(handles)
+
     def testTransformAndRepeatedSolve(self):
         for reverse in (False, True):
             if reverse:
@@ -82,7 +90,7 @@ class TestSketchGroups(unittest.TestCase):
     def testUngroupOuterPreservesInner(self):
         self.nested()
         s = self.sketch
-        s.delConstraint(2)
+        self.ungroup([2])
         self.assertEqual(s.solve(), 0)
         self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 2)
         self.assertEqual(s.GeometryCount, 4)
@@ -132,7 +140,7 @@ class TestSketchGroups(unittest.TestCase):
         self.nested()
         s = self.sketch
         self.doc.openTransaction("Ungroup inner levels")
-        s.delConstraints([0, 1])
+        self.ungroup([0, 1])
         self.doc.commitTransaction()
         self.assertEqual(s.solve(), 0)
         s.setDatum(self.length - 2, 20.0)
@@ -182,6 +190,47 @@ class TestSketchGroups(unittest.TestCase):
             s.moveGeometry(root, 1, origin + delta, 0)
             self.assertEqual(s.solve(), 0)
             self.assertVector(s.Geometry[self.circle].Center, before + delta)
+
+    def testDeleteGroupWithOtherElements(self):
+        # Deleting a Group constraint deleted its handle and the constraints on it as well, so
+        # the indices a caller had collected for the rest of its selection pointed elsewhere.
+        # This replays what the 3D view sends for "Group + Horizontal + line B", in its order.
+        s = self.sketch
+        handle = self.line(0)
+        member = s.addGeometry(Part.LineSegment(App.Vector(0, 1, 0), App.Vector(10, 5, 0)))
+        lineB = s.addGeometry(Part.LineSegment(App.Vector(20, 0, 0), App.Vector(30, 3, 0)))
+        lineC = s.addGeometry(Part.LineSegment(App.Vector(40, 0, 0), App.Vector(50, 1, 0)))
+        s.addConstraint(Sketcher.Constraint("Distance", handle, 10.0))
+        horizontal = s.addConstraint(Sketcher.Constraint("Horizontal", lineC))
+        s.addConstraint(Sketcher.Constraint("Distance", lineC, 10.0))
+        group = s.addConstraint(self.group(handle, [member]))
+        self.assertEqual(s.solve(), 0)
+
+        s.delConstraint(group, True)
+        self.assertEqual(s.GeometryCount, 4)
+        self.assertEqual([c.Type for c in s.Constraints], ["Distance", "Horizontal", "Distance"])
+        s.delConstraint(horizontal, True)
+        s.delGeometries([handle, lineB], True)
+
+        self.assertEqual(s.GeometryCount, 2)
+        self.assertVector(s.Geometry[0].StartPoint, App.Vector(0, 1, 0))
+        self.assertVector(s.Geometry[1].StartPoint, App.Vector(40, 0, 0))
+        self.assertEqual([(c.Type, c.First) for c in s.Constraints], [("Distance", 1)])
+        self.assertEqual(s.solve(), 0)
+
+    def testDeleteEverythingWithGroup(self):
+        # Select all, Delete: the constraints go first, then every geometry by its GeoId.
+        s = self.sketch
+        handle = self.line(0)
+        circle = s.addGeometry(Part.Circle(App.Vector(3, 3, 0), App.Vector(0, 0, 1), 2))
+        s.addGeometry(Part.LineSegment(App.Vector(20, 0, 0), App.Vector(30, 5, 0)))
+        s.addGeometry(Part.LineSegment(App.Vector(40, 0, 0), App.Vector(50, 5, 0)))
+        s.addConstraint(self.group(handle, [circle]))
+        self.assertEqual(s.solve(), 0)
+
+        s.delConstraint(0, True)
+        s.delGeometries([0, 1, 2, 3], True)
+        self.assertEqual((s.GeometryCount, s.ConstraintCount), (0, 0))
 
     def flatGroup(self):
         # A group with more than two members: the handle and the first two members fit in
