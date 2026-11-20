@@ -84,9 +84,6 @@ Tessellation::Tessellation(QWidget* parent)
 #if !defined(HAVE_MEFISTO)
     ui->stackedWidget->setTabEnabled(Mefisto, false);
 #endif
-#if !defined(HAVE_NETGEN)
-    ui->stackedWidget->setTabEnabled(Netgen, false);
-#endif
 
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh, Part, PartGui");
     try {
