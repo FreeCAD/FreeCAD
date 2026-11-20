@@ -210,29 +210,15 @@ App::QuantityInputResult InputField::interpretInput(const QString& input, const 
     constraints.maximum = Maximum;
     const App::QuantityInputUnit implicitUnit {actUnit, displayUnitStr};
 
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
-    const auto parse = [&](const App::QuantityInputGrammar selectedGrammar) {
-        return App::interpretQuantityInput(
-            input.toUtf8().toStdString(),
-            selectedGrammar,
-            getPath(),
-            implicitUnit,
-            formatting,
-            phase,
-            constraints
-        );
-    };
-
-    auto result = parse(grammar);
-    // Keep quantity-only syntax on the quantity parser, but preserve the established arithmetic
-    // behavior of unbound fields when the quantity grammar reports a syntax failure.
-    if (grammar == App::QuantityInputGrammar::Quantity && result.status == App::InputStatus::Invalid
-        && result.diagnostic
-        && result.diagnostic->kind == App::InputDiagnosticKind::ExpressionSyntax) {
-        result = parse(App::QuantityInputGrammar::Expression);
-    }
-    return result;
+    return App::interpretQuantityInput(
+        input.toUtf8().toStdString(),
+        App::QuantityInputGrammar::QuantityFirst,
+        getPath(),
+        implicitUnit,
+        formatting,
+        phase,
+        constraints
+    );
 }
 
 void InputField::notifyValueChanged()
@@ -335,7 +321,7 @@ void InputField::newInput(const QString& text)
 
     // Commit the expression and value only after parsing, evaluation, unit validation, and range
     // handling have all succeeded.
-    if (result.expression) {
+    if (isBound()) {
         setExpression(result.expression);
     }
     actQuantity = res;
@@ -361,7 +347,7 @@ void InputField::commitInput()
         return;
     }
 
-    if (result.expression) {
+    if (isBound()) {
         setExpression(result.expression);
     }
     auto quantity = *result.quantity;

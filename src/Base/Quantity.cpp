@@ -693,6 +693,12 @@ std::string normalizeQuantityInput(std::string_view input, const Base::NumericLo
             throw Base::ParserError("Invalid localized number");
         }
 
+        // The canonical literal omits a positive sign.  Keep it as a separate
+        // token such that the grammar decides whether it is a unary or binary
+        // plus.
+        if (startsAt(input, position, "+") || startsAt(input, position, locale.positiveSign)) {
+            normalized.push_back('+');
+        }
         normalized += result.canonicalText;
         position += result.consumedBytes;
     }

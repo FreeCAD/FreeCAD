@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 // clang-format off
-#line 2 "Quantity.lex.c"
+#line 1 "Quantity.lex.c"
 
-#line 4 "Quantity.lex.c"
+#line 3 "Quantity.lex.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -666,12 +666,12 @@ char *yytext;
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
 
-#line 667 "Quantity.lex.c"
+#line 666 "Quantity.lex.c"
 /*** Flex Declarations and Options ***/
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 
-#line 672 "Quantity.lex.c"
+#line 671 "Quantity.lex.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -890,7 +890,7 @@ YY_DECL
 #line 51 "Quantity.l"
 
 
-#line 891 "Quantity.lex.c"
+#line 890 "Quantity.lex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1773,7 +1773,7 @@ YY_RULE_SETUP
 #line 255 "Quantity.l"
 ECHO;
 	YY_BREAK
-#line 1774 "Quantity.lex.c"
+#line 1773 "Quantity.lex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
