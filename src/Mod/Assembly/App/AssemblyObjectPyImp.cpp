@@ -66,6 +66,15 @@ PyObject* AssemblyObjectPy::solve(PyObject* args) const
     return Py_BuildValue("i", ret);
 }
 
+PyObject* AssemblyObjectPy::resetSolver(PyObject* args) const
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    this->getAssemblyObjectPtr()->resetSolver();
+    Py_Return;
+}
+
 PyObject* AssemblyObjectPy::generateSimulation(PyObject* args) const
 {
     PyObject* pyobj;
