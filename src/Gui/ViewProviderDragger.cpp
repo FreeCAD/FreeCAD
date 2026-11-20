@@ -196,8 +196,6 @@ bool ViewProviderDragger::forwardToLink()
 
 bool ViewProviderDragger::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-
     if (forwardToLink()) {
         return true;
     }
@@ -216,7 +214,10 @@ bool ViewProviderDragger::setEdit(int ModNum)
     transformDragger->addFinishCallback(dragFinishCallback, this);
     transformDragger->addMotionCallback(dragMotionCallback, this);
 
-    Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
+    // TransformNoDialog: the dragger alone, the caller's own task panel left open
+    if (ModNum != TransformNoDialog) {
+        Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
+    }
 
     updateDraggerPosition();
 
@@ -225,11 +226,12 @@ bool ViewProviderDragger::setEdit(int ModNum)
 
 void ViewProviderDragger::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-
     transformDragger.reset();
 
-    Gui::Control().closeDialog(getDocument()->getDocument());
+    // TransformNoDialog: no task panel of its own to close
+    if (ModNum != TransformNoDialog) {
+        Gui::Control().closeDialog(getDocument()->getDocument());
+    }
 }
 
 void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
