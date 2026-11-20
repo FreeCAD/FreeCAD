@@ -33,7 +33,7 @@ class BaseExport WindowsCrashReporter
 public:
     /**
      * Resolve the .dmp path and register the SEH filter. Call once **after**
-     * App::Application::init().
+     * App::Application::initConfiguration(), which sets up the user data directory.
      *
      * \param crashReportDirectory The location to place the crash report
      */

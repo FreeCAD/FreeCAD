@@ -27,7 +27,7 @@
 
 import FreeCAD
 
-translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 # FreeCAD.addImportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
 # FreeCAD.addExportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
@@ -39,7 +39,7 @@ FreeCAD.addImportType("STEP with colors (*.step *.STEP *.stp *.STP)", "Import")
 
 #: Translation note: "STEP" is a file type end should not be translated
 FreeCAD.addTranslatableExportType(
-    translate("FileFormat", "STEP with colors"), ["step", "stp"], "Import"
+    QT_TRANSLATE_NOOP("FileFormat", "STEP with colors"), ["step", "stp"], "Import"
 )
 
 FreeCAD.__unit_test__ += ["TestPartApp"]
