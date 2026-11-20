@@ -688,7 +688,8 @@ int ToolBarManager::toolBarIconSize(QWidget* widget) const
                 s = _menuBarIconSize;
             }
             else {
-                s *= 0.8;
+                // The custom title bar is higher than a menu bar
+                s *= getMainWindow()->isCustomTitleBar() ? 0.8 : 0.6;
             }
         }
     }
@@ -1108,6 +1109,9 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
                 getMainWindow()->removeToolBar(tb);
                 tb->setOrientation(Qt::Horizontal);
                 lastArea->insertWidget(tbIndex, tb);
+                // The toolbars of these areas follow their own lock, not the one of the
+                // toolbar areas of the main window the toolbar was dragged from.
+                tb->setMovable(!ToolBarManager::getInstance()->areTitleToolBarsLocked());
                 tb->setVisible(true);
                 lastArea = nullptr;
             }

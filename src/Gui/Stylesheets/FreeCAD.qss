@@ -2809,17 +2809,16 @@ QComboBox[validationState="error"]:focus {
 CustomTitleBarWindow
 ==================================================================================================*/
 
-#titleBarLogo {
-    border-image: url(:/icons/freecad.svg);
-    min-width: 24px;
-    max-width: 24px;
-    min-height: 24px;
-    max-height: 24px;
-    margin: 8px;  /* logo guidelines requres sufficient clear space */
+/* Application button that unfolds the menu bar: not as wide as a QPushButton */
+QPushButton#titleBarLogoBtn {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    min-width: 35px;
+}
 
-    /* the svg already has spacing on the sides of the logo */
-    margin-left: 4;
-    margin-right: 4;
+QPushButton#titleBarLogoBtn:hover {
+    background-color: @AccentHoverColor;
 }
 
 QMenuBar[foldable="true"] {
@@ -2829,6 +2828,9 @@ QMenuBar[foldable="true"] {
 WindowDecorationButton {
     background: transparent;
     border: none;
+    border-radius: 0px;
+    padding: 0px;
+    min-width: 45px;  /* not as wide as a QPushButton */
 }
 
 WindowDecorationButton:hover {

@@ -110,10 +110,12 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     setWhatsThis(aGroup->action()->whatsThis());
     setObjectName(QStringLiteral("WbTabBar"));
 
-    // Make sure it's not cropped when in menubar.
+    // Make sure it's not cropped when in the custom title bar.
     // Since toolbars have margins of 4, which I could not change in
     // ToolBarAreaWidget::insertWidget, because it somehow gets overwriten.
-    setMinimumHeight(35);
+    if (auto mainWindow = getMainWindow(); mainWindow && mainWindow->isCustomTitleBar()) {
+        setMinimumHeight(35);
+    }
 
     tabBar = new WbTabBar(this);
     moreButton = new QToolButton(this);

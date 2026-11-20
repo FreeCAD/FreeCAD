@@ -351,11 +351,18 @@ struct MainWindowP
     std::string hiddenDockWindows;
     fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
+    QPointer<QPushButton> logoButton;  // application button of the custom title bar
     QPointer<QToolButton> menuPinButton;  // pins the folded menu bar of the custom title bar
     bool _restoring = false;
     QTime _showNormal;
     void restoreWindowState(const QByteArray&);
 };
+
+/// The application button of the custom title bar shows the icon of the window
+static void setTitleBarLogo(QPushButton* button, const QIcon& windowIcon)
+{
+    button->setIcon(windowIcon.isNull() ? BitmapFactory().iconFromTheme("freecad") : windowIcon);
+}
 
 /// The tool tip of the pin button of the custom title bar says what a click does
 static void updateMenuPinToolTip(QToolButton* button)
@@ -390,8 +397,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     if (isCustomTitleBar()) {
         if (!property("backend").toString().startsWith("mac")) {
             auto* logoBtn = new QPushButton(this);
-            logoBtn->setObjectName("titleBarLogoBtn");
-            logoBtn->setIcon(Gui::BitmapFactory().iconFromTheme("freecad"));
+            logoBtn->setObjectName(QStringLiteral("titleBarLogoBtn"));
+            // Like a native title bar, it shows the window icon, which follows the branding
+            setTitleBarLogo(logoBtn, windowIcon());
+            d->logoButton = logoBtn;
             logoBtn->setIconSize(QSize(24, 24));
             logoBtn->setFixedSize(35, 35);
             logoBtn->setFlat(true);
@@ -1319,6 +1328,11 @@ bool MainWindow::event(QEvent* e)
             if (action) {
                 action->setIcon(QApplication::windowIcon());
             }
+        }
+    }
+    else if (e->type() == QEvent::WindowIconChange) {
+        if (d->logoButton) {
+            setTitleBarLogo(d->logoButton.data(), windowIcon());
         }
     }
     else if (e->type() == Spaceball::ButtonEvent::ButtonEventType) {
