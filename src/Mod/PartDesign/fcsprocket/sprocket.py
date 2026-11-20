@@ -20,6 +20,20 @@
 from math import cos, sin, tan, sqrt, radians, atan, asin, degrees
 
 
+def rollerDiameterLimits(P, N):
+    """
+    Return (min, max) roller diameter for which a sprocket with chain pitch P
+    and N teeth can be generated.
+
+    The tooth flank arc (radius F) must reach the tooth center line, which
+    requires |F| >= |P/2 - 1.4 * Dr|. With F = k * Dr - c this gives the
+    limits below. If min >= max no roller diameter is valid for this pitch.
+    """
+    k = 0.8 * cos(radians(18) - radians(56) / N) + 1.4 * cos(radians(17) - radians(64) / N) - 1.3025
+    c = 0.0015 * 25.4
+    return (P / 2 + c) / (1.4 + k), (P / 2 - c) / (1.4 - k)
+
+
 def CreateSprocket(w, P, N, Dr):
     """
     Create a sprocket
@@ -31,6 +45,18 @@ def CreateSprocket(w, P, N, Dr):
 
     Remaining variables can be found in Standard Handbook of Chains
     """
+    if N < 3:
+        raise ValueError("Number of teeth must be at least 3")
+    if P <= 0:
+        raise ValueError("Pitch must be greater than zero")
+    Dr_min, Dr_max = rollerDiameterLimits(P, N)
+    if Dr_min >= Dr_max:
+        raise ValueError("Pitch is too small to generate a sprocket")
+    if Dr < Dr_min:
+        raise ValueError("Roller diameter is too small for the given pitch and number of teeth")
+    if Dr > Dr_max:
+        raise ValueError("Roller diameter is too large for the given pitch and number of teeth")
+
     Ds = 1.005 * Dr + (0.003 * 25.4)
     R = Ds / 2
     M = 0.8 * Dr * cos(radians(35) + radians(60 / N))
@@ -80,9 +106,16 @@ def CreateSprocket(w, P, N, Dr):
     B = 2 * m * yf - 2 * W
     C = W**2 + yf**2 - F**2
     # x4a = (-B - sqrt(B**2 - 4 * A * C)) / (2*A)
-    x4b = (-B + sqrt(B**2 - 4 * A * C)) / (2 * A)
+    # At the roller diameter limits the discriminant is zero, but rounding can
+    # make it slightly negative.
+    x4b = (-B + sqrt(max(0.0, B**2 - 4 * A * C))) / (2 * A)
     x4 = -x4b
     y4 = m * x4
+
+    # The flank arc from p4 to p3 must fit within its radius F. Within the
+    # roller diameter limits this only fails for very small pitches.
+    if sqrt((x3 - x4) ** 2 + (y3 - y4) ** 2) > 2 * F:
+        raise ValueError("Pitch is too small to generate a sprocket")
 
     p0 = [x0, y0]
     p1 = [x1, y1]
