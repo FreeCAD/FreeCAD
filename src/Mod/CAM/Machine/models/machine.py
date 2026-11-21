@@ -20,6 +20,7 @@
 #                                                                              #
 ################################################################################
 
+import copy
 import json
 import Path
 import FreeCAD
@@ -254,6 +255,10 @@ class LinearAxis:
     parent: str | None = None
     joint_origin: list[float] = field(default_factory=lambda: [0, 0, 0])
 
+    # keys in the loaded axis this FreeCAD does not read, kept on the axis itself so an axis
+    # built new (the editor's machine Type) does not take another axis's keys
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
+
     def __post_init__(self):
         """Normalize direction vector and validate parameters after initialization"""
         if self.direction_vector is None or self.direction_vector.Length < 1e-6:
@@ -352,6 +357,10 @@ class RotaryAxis:
     solution_preference: str = "shortest"  # "shortest", "positive", "negative"
     allow_flip: bool = True
     wrap_strategy: WrapStrategy = WrapStrategy.UNWOUND
+
+    # keys in the loaded axis this FreeCAD does not read, kept on the axis itself so an axis
+    # built new (the editor's machine Type) does not take another axis's keys
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Normalize rotation vector and validate parameters after initialization"""
@@ -578,6 +587,10 @@ class Toolhead:
     # Capabilities (auto-generated based on type)
     capabilities: ToolheadCapabilities | None = None
 
+    # keys in the loaded toolhead this FreeCAD does not read, kept on the toolhead itself so
+    # they stay with it when toolheads are removed or reordered
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
+
     def __post_init__(self):
         """Set default values and capabilities"""
         if self.capabilities is None:
@@ -625,28 +638,7 @@ class Toolhead:
         """Check if this toolhead can control power."""
         return self.capabilities.has_power_control if self.capabilities else False
 
-    # Legacy compatibility properties
-    @property
-    def spindle_wait(self) -> float:
-        """Legacy compatibility property for toolhead_wait."""
-        return self.toolhead_wait
-
-    @spindle_wait.setter
-    def spindle_wait(self, value: float):
-        """Legacy compatibility setter for toolhead_wait."""
-        self.toolhead_wait = value
-
-    @property
-    def spindle_type(self) -> ToolheadType:
-        """Legacy compatibility property for toolhead_type."""
-        return self.toolhead_type
-
-    @spindle_type.setter
-    def spindle_type(self, value: ToolheadType):
-        """Legacy compatibility setter for toolhead_type."""
-        self.toolhead_type = value
-
-    def to_dict(self):
+    def to_dict(self, keep_unknown=True):
         """Serialize to dictionary for JSON persistence"""
         data = {
             "name": self.name,
@@ -674,13 +666,16 @@ class Toolhead:
         if self.id is not None:
             data["id"] = self.id
 
+        if keep_unknown:
+            _restore_keys(data, self.unknown_keys)
+
         return data
 
     @classmethod
     def from_dict(cls, data):
         """Deserialize from dictionary"""
         # Parse toolhead type
-        toolhead_type_str = data.get("toolhead_type", data.get("spindle_type", "rotary"))
+        toolhead_type_str = data.get("toolhead_type", "rotary")
         toolhead_type = ToolheadType(toolhead_type_str)
 
         # Parse laser focus range
@@ -691,7 +686,7 @@ class Toolhead:
 
         # Keyword arguments so that adding or reordering a dataclass field
         # cannot silently shift every loaded value onto the wrong field.
-        return cls(
+        toolhead = cls(
             name=data["name"],
             toolhead_type=toolhead_type,
             id=data.get("id"),
@@ -702,20 +697,51 @@ class Toolhead:
             coolant_flood=data.get("coolant_flood", False),
             coolant_mist=data.get("coolant_mist", False),
             coolant_delay=data.get("coolant_delay", 0.0),
-            toolhead_wait=data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
+            toolhead_wait=data.get("toolhead_wait", 0.0),
             laser_wavelength=data.get("laser_wavelength"),
             laser_focus_range=laser_focus_range,
             waterjet_pressure=data.get("waterjet_pressure"),
             plasma_amperage=data.get("plasma_amperage"),
         )
+        toolhead.unknown_keys = list(_unknown_keys(data, toolhead.to_dict()))
+        return toolhead
+
+
+def _unknown_keys(source, known, path=()):
+    """Yield (path, value) for each key in source that known, this FreeCAD's own
+    serialization of it, does not have."""
+    if isinstance(source, dict) and isinstance(known, dict):
+        for key, value in source.items():
+            if key in known:
+                yield from _unknown_keys(value, known[key], path + (key,))
+            else:
+                yield path + (key,), copy.deepcopy(value)
+
+
+def _restore_keys(data, unknown_keys):
+    """Put each kept (path, value) back into data."""
+    for path, value in unknown_keys:
+        _restore_key(data, path, value)
+
+
+def _restore_key(data, path, value):
+    """Put value back at path in data, unless what held it was removed."""
+    parent = data
+    for step in path[:-1]:
+        try:
+            parent = parent[step]
+        except (KeyError, TypeError):
+            return
+    if isinstance(parent, dict):
+        parent.setdefault(path[-1], copy.deepcopy(value))
 
 
 @dataclass
 class Machine:
-    """Represents a CNC machine configuration with axes, spindles, and output settings.
+    """Represents a CNC machine configuration with axes, toolheads, and output settings.
 
     This class encapsulates all machine parameters including linear and rotary axes,
-    spindles, post-processor settings, and G-code generation options. It provides
+    toolheads, post-processor settings, and G-code generation options. It provides
     methods for serialization to/from JSON and various factory methods for common
     machine configurations (3-axis, 4-axis, 5-axis).
     """
@@ -725,7 +751,7 @@ class Machine:
     with post-processor settings.
 
     This is the single source of truth for all machine-related configuration,
-    including physical capabilities (axes, spindles) and G-code generation
+    including physical capabilities (axes, toolheads) and G-code generation
     preferences (output options, formatting, processing).
     """
 
@@ -769,6 +795,10 @@ class Machine:
 
     # Dynamic state (for runtime)
     parameter_functions: dict[str, Callable] = field(default_factory=dict)
+
+    # keys in the loaded file this FreeCAD does not read, as (path, value); to_dict() writes
+    # them back so a save here keeps what another FreeCAD version wrote
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Initialize computed fields and handle backward compatibility"""
@@ -907,7 +937,7 @@ class Machine:
         )
         return self
 
-    def add_spindle(
+    def add_toolhead(
         self,
         name,
         id=None,
@@ -971,44 +1001,6 @@ class Machine:
     def get_axis_by_name(self, name):
         """Get a rotary axis by name"""
         return self.rotary_axes.get(name)
-
-    def get_spindle_by_index(self, index: int) -> Toolhead | None:
-        """Get toolhead by index (legacy compatibility method).
-
-        Args:
-            index: Index of the toolhead to retrieve
-
-        Returns:
-            Toolhead object if found, None otherwise
-        """
-        if 0 <= index < len(self.toolheads):
-            return self.toolheads[index]
-        return None
-
-    @property
-    def spindles(self) -> list[Toolhead]:
-        """Legacy compatibility property for toolheads."""
-        return self.toolheads
-
-    @spindles.setter
-    def spindles(self, value: list[Toolhead]):
-        """Legacy compatibility setter for toolheads."""
-        self.toolheads = value
-
-    def get_spindle_by_name(self, name):
-        """Get a toolhead by name (case-insensitive)"""
-        name_lower = name.lower()
-        for toolhead in self.toolheads:
-            if toolhead.name.lower() == name_lower:
-                return toolhead
-        raise ValueError(f"Toolhead with name '{name}' not found")
-
-    def get_spindle_by_id(self, id):
-        """Get a toolhead by ID"""
-        for toolhead in self.toolheads:
-            if toolhead.id == id:
-                return toolhead
-        raise ValueError(f"Toolhead with ID '{id}' not found")
 
     @classmethod
     def create_AC_table_config(cls, a_limits=(-120, 120), c_limits=(-360, 360)):
@@ -1118,7 +1110,7 @@ class Machine:
         config.description = "4-axis machine with B-axis rotary table (rotation around Y-axis)"
         return config
 
-    def to_dict(self):
+    def to_dict(self, keep_unknown=True):
         """Serialize configuration to dictionary for JSON persistence"""
         # Build flattened axes structure with enhanced fields
         axes = {}
@@ -1137,6 +1129,8 @@ class Machine:
                 "limits": {"min": axis_obj.min_limit, "max": axis_obj.max_limit},
                 "max_velocity": axis_obj.max_velocity,
             }
+            if keep_unknown:
+                _restore_keys(axes[axis_name], axis_obj.unknown_keys)
 
         # Add rotary axes
         for axis_name, axis_obj in self.rotary_axes.items():
@@ -1155,6 +1149,8 @@ class Machine:
                 "allow_flip": axis_obj.allow_flip,
                 "wrap_strategy": axis_obj.wrap_strategy.value,
             }
+            if keep_unknown:
+                _restore_keys(axes[axis_name], axis_obj.unknown_keys)
 
         data = {
             "freecad_version": self.freecad_version,
@@ -1174,7 +1170,7 @@ class Machine:
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
-                "toolheads": [toolhead.to_dict() for toolhead in self.toolheads],
+                "toolheads": [toolhead.to_dict(keep_unknown) for toolhead in self.toolheads],
             },
             "version": self.version,
         }
@@ -1240,6 +1236,9 @@ class Machine:
         }
         if self.processing.return_to:
             data["processing"]["return_to"] = list(self.processing.return_to)
+
+        if keep_unknown:
+            _restore_keys(data, self.unknown_keys)
 
         return data
 
@@ -1435,8 +1434,8 @@ class Machine:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Machine":
-        """Deserialize configuration from dictionary (supports both old and new formats)"""
-        machine_data = data.get("machine", data)  # Support both old and new formats
+        """Deserialize configuration from dictionary"""
+        machine_data = data.get("machine", {})
 
         # Extract basic configuration
         config = cls(
@@ -1455,58 +1454,7 @@ class Machine:
         for axis_name, axis_data in axes.items():
             axis_type = axis_data.get("type", "linear")
             limits = axis_data.get("limits", {})
-            joint = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
-
-            # Handle both old array format [[origin], [axis]] and new object format {"origin": [], "axis": []}
-            if isinstance(joint, dict) and "origin" in joint and "axis" in joint:
-                # New object format
-                joint_origin = joint.get("origin", [0, 0, 0])
-                axis_vector = joint.get("axis", [0, 0, 0])
-            elif isinstance(joint, list) and len(joint) >= 2:
-                # Old array format - need to detect which element is which
-                vec0 = (
-                    FreeCAD.Vector(joint[0][0], joint[0][1], joint[0][2])
-                    if len(joint[0]) >= 3
-                    else FreeCAD.Vector(0, 0, 0)
-                )
-                vec1 = (
-                    FreeCAD.Vector(joint[1][0], joint[1][1], joint[1][2])
-                    if len(joint[1]) >= 3
-                    else FreeCAD.Vector(0, 0, 0)
-                )
-
-                if axis_type == "linear":
-                    # For linear axes, check which vector has non-zero magnitude
-                    if vec0.Length > 1e-6:  # joint[0] is direction vector (old structure)
-                        axis_vector = [vec0.x, vec0.y, vec0.z]
-                        joint_origin = joint[1] if len(joint[1]) >= 3 else [0, 0, 0]
-                    elif vec1.Length > 1e-6:  # joint[1] is direction vector (new structure)
-                        axis_vector = [vec1.x, vec1.y, vec1.z]
-                        joint_origin = joint[0] if len(joint[0]) >= 3 else [0, 0, 0]
-                    else:
-                        # Both vectors are zero, use defaults
-                        axis_vector = [1, 0, 0]  # Default X-axis
-                        joint_origin = [0, 0, 0]
-                        Path.Log.warning(
-                            f"Invalid joint data for linear axis {axis_name}, using defaults"
-                        )
-                else:
-                    # For rotary axes, joint[1] is usually the rotation vector
-                    if vec1.Length > 1e-6:
-                        axis_vector = [vec1.x, vec1.y, vec1.z]
-                        joint_origin = joint[0] if len(joint[0]) >= 3 else [0, 0, 0]
-                    else:
-                        # Fallback - assume joint[0] is rotation vector
-                        axis_vector = [vec0.x, vec0.y, vec0.z]
-                        joint_origin = [0, 0, 0]
-                        Path.Log.warning(
-                            f"Invalid joint data for rotary axis {axis_name}, using defaults"
-                        )
-            else:
-                # Malformed joint data - use defaults
-                joint_origin = [0, 0, 0]
-                axis_vector = [1, 0, 0] if axis_type == "linear" else [0, 0, 1]
-                Path.Log.warning(f"Malformed joint data for axis {axis_name}, using defaults")
+            joint_origin, axis_vector = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
 
             if axis_type == "linear":
                 # Create linear axis with parsed joint data
@@ -1530,7 +1478,7 @@ class Machine:
                     parent=parent,
                     joint_origin=joint_origin,
                 )
-            elif axis_type in ["angular", "rotary"]:  # Support both old and new type names
+            elif axis_type == "rotary":
                 # Create rotary axis with parsed joint data
                 rotation_vec = FreeCAD.Vector(axis_vector[0], axis_vector[1], axis_vector[2])
 
@@ -1572,12 +1520,9 @@ class Machine:
                 "orientation_quaternion", [0, 0, 0, 1]
             )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
-            # A file from before rotation_strategy existed said only whether
-            # DWO was supported; that flag still selects the strategy.
-            strategy = kinematics_data.get("rotation_strategy")
-            if strategy is None:
-                strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
-            config.kinematics.rotation_strategy = RotationStrategy(strategy)
+            config.kinematics.rotation_strategy = RotationStrategy(
+                kinematics_data.get("rotation_strategy", "none")
+            )
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility
@@ -1590,14 +1535,13 @@ class Machine:
             config.secondary_rotary_axis = rotary_axis_names[1]
 
         # Parse toolheads if present
-        toolheads = machine_data.get("toolheads", machine_data.get("spindles", []))
+        toolheads = machine_data.get("toolheads", [])
         config.toolheads = [Toolhead.from_dict(s) for s in toolheads]
 
         # Parse post-processor settings if present
         post_data = data.get("postprocessor", {})
         if post_data:
             config.postprocessor_file_name = post_data.get("file_name", "")
-            config.postprocessor_args = post_data.get("args", "")
             config.postprocessor_properties = post_data.get("properties", {})
 
         # Load output options
@@ -1615,132 +1559,63 @@ class Machine:
 
             # Header options
             header_data = output_data.get("header", {})
-            # Handle backward compatibility - if header is a bool, use it for include_date
-            if isinstance(header_data, bool):
-                # Old structure: header was a boolean controlling all header output
-                config.output.output_header = header_data
-                config.output.header.include_date = header_data
-                config.output.header.include_description = header_data
-                config.output.header.include_document_name = header_data
-                config.output.header.include_machine_name = header_data
-                config.output.header.include_project_file = header_data
-                config.output.header.include_units = header_data
-                config.output.header.include_tool_list = header_data
-                config.output.header.include_fixture_list = header_data
-            else:
-                # New nested structure - output_header can be in header subsection or main output
-                config.output.output_header = header_data.get(
-                    "output_header", output_data.get("output_header", True)
-                )
-                config.output.header.include_date = header_data.get("include_date", True)
-                config.output.header.include_description = header_data.get(
-                    "include_description", True
-                )
-                config.output.header.include_document_name = header_data.get(
-                    "include_document_name", True
-                )
-                config.output.header.include_machine_name = header_data.get(
-                    "include_machine_name", True
-                )
-                config.output.header.include_project_file = header_data.get(
-                    "include_project_file", True
-                )
-                config.output.header.include_units = header_data.get("include_units", True)
-                config.output.header.include_tool_list = header_data.get("include_tool_list", True)
-                config.output.header.include_fixture_list = header_data.get(
-                    "include_fixture_list", True
-                )
+            config.output.output_header = header_data.get("output_header", True)
+            config.output.header.include_date = header_data.get("include_date", True)
+            config.output.header.include_description = header_data.get("include_description", True)
+            config.output.header.include_document_name = header_data.get(
+                "include_document_name", True
+            )
+            config.output.header.include_machine_name = header_data.get(
+                "include_machine_name", True
+            )
+            config.output.header.include_project_file = header_data.get(
+                "include_project_file", True
+            )
+            config.output.header.include_units = header_data.get("include_units", True)
+            config.output.header.include_tool_list = header_data.get("include_tool_list", True)
+            config.output.header.include_fixture_list = header_data.get(
+                "include_fixture_list", True
+            )
 
             # Comment options
             comments_data = output_data.get("comments", {})
-            # Handle backward compatibility - if comments is a bool, use it for enabled
-            if isinstance(comments_data, bool):
-                # Old structure: comments was a boolean controlling all comment output
-                config.output.comments.enabled = comments_data
-                config.output.comments.symbol = "("  # Default symbol
-                config.output.comments.include_operation_labels = False
-                config.output.comments.include_blank_lines = True
-                config.output.comments.output_bcnc_comments = False
-            else:
-                # New nested structure
-                config.output.comments.enabled = comments_data.get("enabled", True)
-                config.output.comments.symbol = comments_data.get("symbol", "(")
-                config.output.comments.include_operation_labels = comments_data.get(
-                    "include_operation_labels", False
-                )
-                config.output.comments.include_blank_lines = comments_data.get(
-                    "include_blank_lines", True
-                )
-                config.output.comments.output_bcnc_comments = comments_data.get(
-                    "output_bcnc_comments", False
-                )
+            config.output.comments.enabled = comments_data.get("enabled", True)
+            config.output.comments.symbol = comments_data.get("symbol", "(")
+            config.output.comments.include_operation_labels = comments_data.get(
+                "include_operation_labels", False
+            )
+            config.output.comments.include_blank_lines = comments_data.get(
+                "include_blank_lines", True
+            )
+            config.output.comments.output_bcnc_comments = comments_data.get(
+                "output_bcnc_comments", False
+            )
 
             # Formatting options
             formatting_data = output_data.get("formatting", {})
-            # Handle backward compatibility for old flat structure
-            if "line_numbers" in output_data and not formatting_data:
-                # Old structure: line_numbers was at top level
-                config.output.formatting.line_numbers = output_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = output_data.get(
-                    "line_number_start", 100
-                )
-                config.output.formatting.line_number_prefix = output_data.get(
-                    "line_number_prefix", "N"
-                )
-                config.output.formatting.line_increment = output_data.get("line_increment", 10)
-                config.output.formatting.command_space = output_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = output_data.get(
-                    "end_of_line_chars", "\n"
-                )
-            else:
-                # New nested structure
-                config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = formatting_data.get(
-                    "line_number_start", 100
-                )
-                config.output.formatting.line_number_prefix = formatting_data.get(
-                    "line_number_prefix", "N"
-                )
-                config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
-                config.output.formatting.command_space = formatting_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = formatting_data.get(
-                    "end_of_line_chars", "\n"
-                )
+            config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
+            config.output.formatting.line_number_start = formatting_data.get(
+                "line_number_start", 100
+            )
+            config.output.formatting.line_number_prefix = formatting_data.get(
+                "line_number_prefix", "N"
+            )
+            config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
+            config.output.formatting.command_space = formatting_data.get("command_space", " ")
+            config.output.formatting.end_of_line_chars = formatting_data.get(
+                "end_of_line_chars", "\n"
+            )
 
             # Precision options
             precision_data = output_data.get("precision", {})
-            # Handle backward compatibility for old flat structure
-            if "axis_precision" in output_data and not precision_data:
-                # Old structure: axis_precision was at top level
-                config.output.precision.axis = output_data.get("axis_precision", 3)
-                config.output.precision.feed = output_data.get("feed_precision", 3)
-                config.output.precision.spindle = output_data.get("spindle_precision", 0)
-            else:
-                # New nested structure
-                config.output.precision.axis = precision_data.get("axis", 3)
-                config.output.precision.feed = precision_data.get("feed", 3)
-                config.output.precision.spindle = precision_data.get("spindle", 0)
+            config.output.precision.axis = precision_data.get("axis", 3)
+            config.output.precision.feed = precision_data.get("feed", 3)
+            config.output.precision.spindle = precision_data.get("spindle", 0)
 
             # Duplicate options
             duplicates_data = output_data.get("duplicates", {})
-            # Handle backward compatibility for old flat structure
-            if "output_duplicate_parameters" in output_data and not duplicates_data:
-                # Old structure: output_duplicate_parameters was at top level
-                config.output.duplicates.commands = output_data.get(
-                    "output_duplicate_commands", True
-                )
-                config.output.duplicates.parameters = output_data.get(
-                    "output_duplicate_parameters", True
-                )
-            else:
-                # New nested structure
-                config.output.duplicates.commands = duplicates_data.get("commands", True)
-                config.output.duplicates.parameters = duplicates_data.get("parameters", True)
-
-            # Handle legacy output_comments field (for backward compatibility)
-            if "output_comments" in output_data and "comments" not in output_data:
-                # Old structure: output_comments was a boolean
-                config.output.comments.enabled = output_data.get("output_comments", True)
+            config.output.duplicates.commands = duplicates_data.get("commands", True)
+            config.output.duplicates.parameters = duplicates_data.get("parameters", True)
 
         # Load processing options
         processing_data = data.get("processing", {})
@@ -1765,6 +1640,11 @@ class Machine:
             )
             return_to = processing_data.get("return_to", None)
             config.processing.return_to = tuple(return_to) if return_to is not None else None
+
+        written = config.to_dict()["machine"]["axes"]
+        for name, axis in {**config.linear_axes, **config.rotary_axes}.items():
+            axis.unknown_keys = list(_unknown_keys(axes[name], written[name]))
+        config.unknown_keys = list(_unknown_keys(data, config.to_dict()))
 
         return config
 

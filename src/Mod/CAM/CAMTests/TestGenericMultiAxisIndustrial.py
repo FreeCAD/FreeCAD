@@ -270,7 +270,7 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
 
     def test_spindle_wait_dwell_is_in_milliseconds(self):
         self.post._machine.processing.tool_change_format = Constants.ToolChangeFormat.M6_T
-        self.post._machine.toolheads[0].spindle_wait = 2.0
+        self.post._machine.toolheads[0].toolhead_wait = 2.0
         lines = self.lines([])
         index = lines.index("M3 S1000")
         self.assertEqual("G4 P2000", lines[index + 1])

@@ -59,7 +59,6 @@ documents to open.
 
 import json
 import pathlib
-import re
 import sys
 from dataclasses import dataclass, field
 from enum import Enum
@@ -125,39 +124,6 @@ class _Report:
         self.add(Severity.INFO, code, message, source)
 
 
-# Paths the loader still reads under an older spelling.  A round trip through
-# to_dict() renames them, which would otherwise look like dropped data, so the
-# on-disk path is rewritten to its modern equivalent before the comparison.
-#
-# This table is the fragile part of the drift check and is maintained by hand.
-# It becomes unnecessary once from_dict() can report which keys it consumed;
-# until then, keep it in step with the compatibility branches in machine.py.
-_PATH_REWRITES = [
-    # machine.py: machine_data.get("toolheads", machine_data.get("spindles", []))
-    (re.compile(r"^machine\.spindles(\.|$)"), r"machine.toolheads\1"),
-    # Toolhead.from_dict(): spindle_type / spindle_wait fallbacks
-    (re.compile(r"^(machine\.toolheads)\.spindle_type$"), r"\1.toolhead_type"),
-    (re.compile(r"^(machine\.toolheads)\.spindle_wait$"), r"\1.toolhead_wait"),
-    # Axis joints are accepted as either {"origin": [], "axis": []} or
-    # [[origin], [vector]]; both carry the same data.
-    (re.compile(r"^(machine\.axes\.[^.]+\.joint)\..+$"), r"\1"),
-    # output_header is read from the header subsection or the output level.
-    (re.compile(r"^output\.output_header$"), "output.header.output_header"),
-]
-
-
-def _normalize_path(path: str) -> str:
-    """Rewrite an on-disk key path to the spelling the current model uses.
-
-    Rewrites are applied in sequence, since one can expose another: a
-    ``machine.spindles.spindle_wait`` path first becomes
-    ``machine.toolheads.spindle_wait`` and then ``machine.toolheads.toolhead_wait``.
-    """
-    for pattern, replacement in _PATH_REWRITES:
-        path = pattern.sub(replacement, path)
-    return path
-
-
 def _walk_keys(node: Any, prefix: str = "") -> Iterable[Tuple[str, Any]]:
     """Yield (dotted_path, value) for every mapping key beneath *node*.
 
@@ -185,12 +151,12 @@ def _check_dropped_data(raw: Dict[str, Any], machine: Machine, report: _Report, 
     output are fields the model has gained since the file was written.
     """
     try:
-        fresh = machine.to_dict()
+        fresh = machine.to_dict(keep_unknown=False)
     except Exception as exc:  # pragma: no cover - defensive
         report.warning("serialise-failed", f"could not re-serialise for comparison: {exc}", source)
         return
 
-    disk_keys = {_normalize_path(k) for k in _key_paths(raw)}
+    disk_keys = _key_paths(raw)
     model_keys = _key_paths(fresh)
 
     dropped = sorted(disk_keys - model_keys)

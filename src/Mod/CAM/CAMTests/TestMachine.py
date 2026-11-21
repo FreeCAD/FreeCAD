@@ -508,6 +508,78 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         self.assertEqual(loaded.output.precision.axis, 4)
         self.assertEqual(loaded.output.formatting.line_increment, 5)
 
+    def test_unknown_keys_survive_load_and_save(self):
+        """Keys this FreeCAD does not read come back out of a load and save, every time."""
+        machine = Machine.create_4axis_A_config()
+        machine.toolheads.append(Toolhead(name="Main"))
+        data = machine.to_dict()
+        data["newer_section"] = {"nested": [1, 2]}
+        data["machine"]["newer_key"] = "kept"
+        data["machine"]["axes"]["A"]["newer_axis_key"] = 3
+        data["machine"]["toolheads"][0]["newer_toolhead_key"] = True
+        data["output"]["comments"]["newer_comment_key"] = ";"
+
+        saved = Machine.from_dict(Machine.from_dict(data).to_dict()).to_dict()
+        self.assertEqual(saved["newer_section"], {"nested": [1, 2]})
+        self.assertEqual(saved["machine"]["newer_key"], "kept")
+        self.assertEqual(saved["machine"]["axes"]["A"]["newer_axis_key"], 3)
+        self.assertTrue(saved["machine"]["toolheads"][0]["newer_toolhead_key"])
+        self.assertEqual(saved["output"]["comments"]["newer_comment_key"], ";")
+
+        # an edit still wins over what the file had, and a deleted axis takes its keys with it
+        loaded = Machine.from_dict(data)
+        loaded.name = "Edited"
+        del loaded.rotary_axes["A"]
+        saved = loaded.to_dict()
+        self.assertEqual(saved["machine"]["name"], "Edited")
+        self.assertNotIn("A", saved["machine"]["axes"])
+        self.assertNotIn("unknown_keys", saved)
+        self.assertEqual(saved["machine"]["newer_key"], "kept")
+
+    def test_unknown_toolhead_keys_stay_with_their_toolhead(self):
+        """A removed or reordered toolhead does not hand its unknown keys to another."""
+        machine = Machine.create_3axis_config()
+        machine.toolheads = [Toolhead(name="T0"), Toolhead(name="T1")]
+        data = machine.to_dict()
+        data["machine"]["toolheads"][0]["newer_toolhead_key"] = "T0's"
+
+        loaded = Machine.from_dict(data)
+        loaded.toolheads.pop(0)
+        (remaining,) = loaded.to_dict()["machine"]["toolheads"]
+        self.assertEqual(remaining["name"], "T1")
+        self.assertNotIn("newer_toolhead_key", remaining)
+
+        loaded = Machine.from_dict(data)
+        loaded.toolheads.reverse()
+        first, second = loaded.to_dict()["machine"]["toolheads"]
+        self.assertNotIn("newer_toolhead_key", first)
+        self.assertEqual(second["name"], "T0")
+        self.assertEqual(second["newer_toolhead_key"], "T0's")
+
+    def test_unknown_axis_keys_stay_with_their_axis(self):
+        """An axis built new under an old name, as the editor's Type does, starts clean."""
+        data = Machine.create_AC_table_config().to_dict()
+        data["machine"]["axes"]["C"]["newer_axis_key"] = "old C's"
+        data["machine"]["axes"]["X"]["newer_axis_key"] = "X's"
+
+        loaded = Machine.from_dict(data)
+        loaded.rotary_axes["A"].min_limit = -90
+        self.assertEqual(loaded.to_dict()["machine"]["axes"]["C"]["newer_axis_key"], "old C's")
+
+        loaded._initialize_from_machine_type("xyzbc")
+        axes = loaded.to_dict()["machine"]["axes"]
+        self.assertIn("C", axes)
+        self.assertNotIn("newer_axis_key", axes["C"])
+        self.assertNotIn("newer_axis_key", axes["X"])
+
+    def test_cleared_optional_key_stays_cleared(self):
+        """A key this FreeCAD writes only when set is not brought back once cleared."""
+        machine = Machine.create_3axis_config()
+        machine.processing.return_to = (0, 0, 10)
+        loaded = Machine.from_dict(machine.to_dict())
+        loaded.processing.return_to = None
+        self.assertNotIn("return_to", loaded.to_dict()["processing"])
+
     def test_register_addon_machine_dir(self):
         """register_addon_machine_dir() adds path to _addon_machine_dirs without duplicates.
 
@@ -537,7 +609,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
 
         with tempfile.TemporaryDirectory() as tmpdir:
             p = pathlib.Path(tmpdir)
-            fcm = {"machine": {"name": "Addon Machine", "axes": {}, "spindles": []}}
+            fcm = {"machine": {"name": "Addon Machine", "axes": {}, "toolheads": []}}
             (p / "addon_machine.fcm").write_text(json.dumps(fcm))
             MachineFactory.register_addon_machine_dir(p)
             templates = MachineFactory.list_addon_templates()
@@ -580,7 +652,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
 
         with tempfile.TemporaryDirectory() as tmpdir:
             p = pathlib.Path(tmpdir)
-            fcm = {"machine": {"name": "Community Mill", "axes": {}, "spindles": []}}
+            fcm = {"machine": {"name": "Community Mill", "axes": {}, "toolheads": []}}
             (p / "community_mill.fcm").write_text(json.dumps(fcm))
             MachineFactory.register_addon_machine_dir(p)
             configs = MachineFactory.list_configurations()
