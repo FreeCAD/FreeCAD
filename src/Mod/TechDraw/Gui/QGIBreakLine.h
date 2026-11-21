@@ -30,7 +30,10 @@
 #include <QFont>
 #include <QPainterPath>
 #include <QPointF>
+#include <functional>
+#include <optional>
 
+#include <App/DocumentObserver.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
 
@@ -56,8 +59,15 @@ public:
 
     void setBounds(double left, double top, double right, double bottom);
     void setBounds(Base::Vector3d topLeft, Base::Vector3d bottomRight);
+    void setLineGeometry(const QPointF& first,
+                         const QPointF& second,
+                         const QPointF& tangent,
+                         const QRectF& bounds);
     void setDirection(Base::Vector3d dir);      // horizontal(1,0,0) vertical(0,1,0);
     void draw() override;
+    void setDeleteCallback(std::function<void()> callback);
+    void setBreakObject(App::DocumentObject* object) { m_breakObject = object; }
+    App::DocumentObject* getBreakObject() const { return m_breakObject.getObject(); }
 
     void setLinePen(QPen isoPen);
     void setBreakColor(QColor c);
@@ -65,10 +75,25 @@ public:
     void setBreakType(BreakType style) { m_breakType = style; }
     BreakType breakType() const { return m_breakType; }
 
+    /// The area of a view's scene item in which its break lines are drawn.
+    static QRectF clipBounds(const TechDraw::DrawViewPart* view);
+    /// The part inside bounds of the line through point along tangent.
+    static std::optional<std::pair<QPointF, QPointF>>
+        clipLine(const QPointF& point, const QPointF& tangent, const QRectF& bounds);
+    /// A break line from start to end in the given style. A non-zero outwardSign keeps the
+    /// waveform on that side of the line.
+    static QPainterPath styledLine(const QPointF& start,
+                                   const QPointF& end,
+                                   BreakType type,
+                                   double outwardSign = 0.0);
+
 protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     void drawLargeZigZag();
+    void drawGenericLines();
     QPainterPath makeHorizontalZigZag(Base::Vector3d start) const;
     QPainterPath makeVerticalZigZag(Base::Vector3d start) const;
     void drawSimpleLines();
@@ -78,7 +103,7 @@ private:
 
     QGraphicsPathItem* m_line0;
     QGraphicsPathItem* m_line1;
-    QGraphicsRectItem* m_background;
+    QGraphicsPathItem* m_background;
 
     Base::Vector3d     m_direction;
 
@@ -86,6 +111,13 @@ private:
     double             m_bottom;
     double             m_left;
     double             m_right;
+    QPointF m_firstPoint;
+    QPointF m_secondPoint;
+    QPointF m_tangent;
+    QRectF m_clipBounds;
+    bool m_genericGeometry{false};
+    std::function<void()> m_deleteCallback;
+    App::DocumentObjectT m_breakObject;
 
     BreakType m_breakType = BreakType::NONE;
 };

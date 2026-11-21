@@ -25,6 +25,7 @@
 #include <QPainterPath>
 #include <QKeyEvent>
 #include <QGraphicsTransform>
+#include <QTimer>
 #include <cstdio>
 #include <qmath.h>
 
@@ -1092,8 +1093,8 @@ void QGIViewPart::drawMatting()
 //! if this is a broken view, draw the break lines.
 void QGIViewPart::drawBreakLines()
 {
-    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(getViewObject());
-    if (!dbv) {
+    auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(getViewObject());
+    if (!dvp) {
         return;
     }
 
@@ -1102,29 +1103,79 @@ void QGIViewPart::drawBreakLines()
         return;
     }
 
-    DrawBrokenView::BreakType breakType = static_cast<DrawBrokenView::BreakType>(vp->BreakLineType.getValue());
-    auto breaks = dbv->Breaks.getValues();
-    for (auto& breakObj : breaks) {
+    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(dvp);
+    if (dbv) {
+        DrawBrokenView::BreakType breakType =
+            static_cast<DrawBrokenView::BreakType>(vp->BreakLineType.getValue());
+        auto breaks = dbv->Breaks.getValues();
+        for (auto& breakObj : breaks) {
+            if (breakObj->isDerivedFrom<TechDraw::DrawViewBreak>()) {
+                continue;
+            }
+            QGIBreakLine* breakLine = new QGIBreakLine();
+            addToGroupWithoutUpdate(breakLine);
+
+            Base::Vector3d direction = dbv->guiDirectionFromObj(*breakObj);
+            breakLine->setDirection(direction);
+            std::pair<Base::Vector3d, Base::Vector3d> bounds =
+                dbv->breakBoundsFromObj(*breakObj);
+            Base::Vector3d topLeft = Rez::guiX(DU::invertY(bounds.first));
+            Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
+            breakLine->setBounds(topLeft, bottomRight);
+            breakLine->setPos(0.0, 0.0);
+            breakLine->setLinePen(m_dashedLineGenerator->getLinePen(
+                vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
+            breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+            breakLine->setBreakType(breakType);
+            breakLine->setZValue(ZVALUE::SECTIONLINE);
+            Base::Color color = vp->BreakLineColor.getValue();
+            breakLine->setBreakColor(color.asValue<QColor>());
+            breakLine->setRotation(-dbv->Rotation.getValue());
+            breakLine->draw();
+        }
+    }
+
+    const QRectF clip = QGIBreakLine::clipBounds(dvp);
+    for (std::size_t index = 0; index < dvp->getBreakCount(); ++index) {
+        const auto points = dvp->getBreakLinePoints(index);
+        const Base::Vector3d tangent = dvp->getBreakLineDirection(index);
+        const QPointF first(Rez::guiX(points.first.x),
+                            Rez::guiX(-points.first.y));
+        const QPointF second(Rez::guiX(points.second.x),
+                             Rez::guiX(-points.second.y));
+        const QPointF guiTangent(tangent.x, -tangent.y);
+
         auto* breakLine = new QGIBreakLine();
         addToGroupWithoutUpdate(breakLine);
-
-        Base::Vector3d direction = dbv->guiDirectionFromObj(*breakObj);
-        breakLine->setDirection(direction);
-        // the bounds describe two corners of the removed area in the view
-        std::pair<Base::Vector3d, Base::Vector3d> bounds = dbv->breakBoundsFromObj(*breakObj);
-        // the bounds are in 3d form, so we need to invert & rez them
-        Base::Vector3d topLeft     = Rez::guiX(DU::invertY(bounds.first));
-        Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
-        breakLine->setBounds(topLeft, bottomRight);
+        breakLine->setBreakObject(dvp->getBreakObject(index));
+        breakLine->setLineGeometry(first, second, guiTangent, clip);
         breakLine->setPos(0.0, 0.0);
-        breakLine->setLinePen(
-            m_dashedLineGenerator->getLinePen(vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
+        breakLine->setLinePen(m_dashedLineGenerator->getLinePen(
+            vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
         breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-        breakLine->setBreakType(breakType);
+        breakLine->setBreakType(dvp->getBreakType(index));
         breakLine->setZValue(ZVALUE::SECTIONLINE);
-        Base::Color color = vp->BreakLineColor.getValue();
-        breakLine->setBreakColor(color.asValue<QColor>());
-        breakLine->setRotation(-dbv->Rotation.getValue());
+        breakLine->setBreakColor(vp->BreakLineColor.getValue().asValue<QColor>());
+        // Deferred: removing the break redraws this view, which deletes the break line item.
+        // Keep references by name, as the view or the break can be gone when it runs.
+        const App::DocumentObjectT viewRef(dvp);
+        const App::DocumentObjectT breakRef(dvp->getBreakObject(index));
+        breakLine->setDeleteCallback([viewRef, breakRef]() {
+            QTimer::singleShot(0, [viewRef, breakRef]() {
+                App::DocumentObject* viewBreak = breakRef.getObject();
+                if (!viewBreak) {
+                    return;
+                }
+                App::Document* document = viewBreak->getDocument();
+                document->openTransaction(QT_TRANSLATE_NOOP("Command", "Remove view break"));
+                document->removeObject(viewBreak->getNameInDocument());
+                document->commitTransaction();
+                if (auto* view = freecad_cast<TechDraw::DrawViewPart*>(viewRef.getObject())) {
+                    view->recomputeFeature();
+                    view->requestPaint();
+                }
+            });
+        });
         breakLine->draw();
     }
 }

@@ -72,6 +72,7 @@
 #include "QGSPage.h"
 #include "QGVPage.h"
 #include "Rez.h"
+#include "TaskBrokenView.h"
 #include "TaskActiveView.h"
 #include "TaskComplexSection.h"
 #include "TaskDetail.h"
@@ -95,6 +96,9 @@ void getSelectedShapes(Gui::Command* cmd,
 std::pair<App::DocumentObject*, std::string> faceFromSelection();
 std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir);
+bool createBrokenViewFromSelection(Gui::Command* cmd,
+                                   TechDraw::DrawPage* page,
+                                   const std::vector<App::DocumentObject*>& breakObjects);
 
 class Vertex;
 using namespace TechDrawGui;
@@ -623,7 +627,7 @@ CmdTechDrawBrokenView::CmdTechDrawBrokenView()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Broken View");
-    sToolTipText    = QT_TR_NOOP("Inserts a new broken view for the selected objects or base view and break definition objects");
+    sToolTipText    = QT_TR_NOOP("Interactively adds breaks to drawing views");
     sWhatsThis      = "TechDraw_BrokenView";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_BrokenView";
@@ -632,132 +636,66 @@ CmdTechDrawBrokenView::CmdTechDrawBrokenView()
 void CmdTechDrawBrokenView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    if (Gui::Control().activeDialog()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
+        return;
+    }
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
-    // get shape objects from a base view
-    std::vector<App::DocumentObject*> shapesFromBase;
-    std::vector<App::DocumentObject*> xShapesFromBase;
-    std::vector<App::DocumentObject*> baseViews =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    TechDraw::DrawViewPart* dvp{nullptr};
-    if (!baseViews.empty()) {
-        dvp = static_cast<TechDraw::DrawViewPart*>(*baseViews.begin());
-        shapesFromBase = dvp->Source.getValues();
-        xShapesFromBase = dvp->XSource.getValues();
-    }
-
-    auto doc = getDocument();
-    if (dvp) {
-        doc = dvp->getDocument();
-    }
-
-    // get the shape objects from the selection
-    std::vector<App::DocumentObject*> shapes;
-    std::vector<App::DocumentObject*> xShapes;
-    App::DocumentObject* faceObj = nullptr;
-    std::string faceName;
-    getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
-
-    // we need either a base view (dvp) or some shape objects in the selection
-    if (!dvp && (shapes.empty() && xShapes.empty())) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty Selection"),
-            QObject::tr("Select objects to break or a base view and break definition objects"));
-        return;
-    }
-
-    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
-    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
-
-
-    // pick the Break objects out of the selected pile
+    // Classic workflow: break definition objects (e.g. a sketch) are selected with the
+    // objects to break or a base view. Create the broken view from the selection, the
+    // breaks are positioned precisely by the break objects.
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
         nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
-
     std::vector<App::DocumentObject*> breakObjects;
     for (auto& selObj : selection) {
-        auto temp = selObj.getObject();
+        auto* temp = selObj.getObject();
         // a sketch outside a body is returned as an independent object in the selection
         if (selObj.getSubNames().empty()) {
             if (DrawBrokenView::isBreakObject(*temp)) {
-                breakObjects.push_back(selObj.getObject());
+                breakObjects.push_back(temp);
             }
             continue;
         }
-        // a sketch inside a body is returned as body + subelement, so we have to search through
-        // subnames to find it.  This may(?) apply to App::Part and Group also?
+        // a sketch inside a body is returned as body + subelement, so we have to search
+        // through subnames to find it.
         auto subname = selObj.getSubNames().front();
-        if (subname.back() == '.') {
+        if (!subname.empty() && subname.back() == '.') {
             subname = subname.substr(0, subname.length() - 1);
-            auto objects = doc->getObjects();
-            for (auto& obj : objects) {
-                std::string objname{obj->getNameInDocument()};
-                if (subname == objname  &&
-                    DrawBrokenView::isBreakObject(*obj)) {
+            for (auto* obj : temp->getDocument()->getObjects()) {
+                if (subname == obj->getNameInDocument() && DrawBrokenView::isBreakObject(*obj)) {
                     breakObjects.push_back(obj);
                 }
             }
         }
     }
-    if (breakObjects.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No break objects found in this selection"));
+    if (!breakObjects.empty() && createBrokenViewFromSelection(this, page, breakObjects)) {
         return;
     }
 
-    // remove Break objects from shape pile
-    shapes = DrawBrokenView::removeBreakObjects(breakObjects, shapes);
-    xShapes = DrawBrokenView::removeBreakObjects(breakObjects, xShapes);
-    if (shapes.empty() &&
-        xShapes.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No shapes, groups, or links in this selection"));
+    auto* mdi = qobject_cast<MDIViewPage*>(
+        Gui::getMainWindow()->activeWindow());
+    QGVPage* graphicsView = mdi && mdi->getPage() == page
+        ? mdi->getViewProviderPage()->getQGVPage()
+        : nullptr;
+    if (!graphicsView) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("No active drawing page"),
+            QObject::tr("Open the drawing page where breaks should be created."));
         return;
     }
-
-    Gui::WaitCursor wc;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create broken view"));
-    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-    std::string FeatName = getUniqueObjectName("BrokenView");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawBrokenView','%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
-    TechDraw::DrawBrokenView* dbv = dynamic_cast<TechDraw::DrawBrokenView*>(docObj);
-    if (!dbv) {
-        throw Base::TypeError("CmdTechDrawBrokenView DBV not found\n");
-    }
-    dbv->Source.setValues(shapes);
-    dbv->XSource.setValues(xShapes);
-    dbv->Breaks.setValues(breakObjects);
-
-    //set projection direction from selected Face
-    std::pair<Base::Vector3d, Base::Vector3d> dirs;
-    if (faceName.size()) {
-        dirs = DrawGuiUtil::getProjDirFromFace(faceObj, faceName);
-    }
-    else {
-        dirs = DrawGuiUtil::get3DDirAndRot();
-    }
-
-    Base::Vector3d projDir = checkDirectionVsBasis(dirs.first);
-    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.6f,%.6f,%.6f)",
-              FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.6f,%.6f,%.6f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-
-    commitCommand();
-
-    dbv->recomputeFeature();
+    Gui::Control().showDialog(new TaskDlgBrokenView(page, graphicsView));
 }
 
 bool CmdTechDrawBrokenView::isActive(void)
 {
-    return DrawGuiUtil::needPage(this);
+    return DrawGuiUtil::needPage(this) && !Gui::Control().activeDialog();
 }
 
 
@@ -2192,6 +2130,82 @@ void getSelectedShapes(Gui::Command* cmd,
             }
         }
     }
+}
+
+//! create a broken view of the selected objects (or of the sources of a selected base view)
+//! with the selected break definition objects (sketches, edges).
+//! Returns false if there is nothing to break in the selection.
+bool createBrokenViewFromSelection(Gui::Command* cmd,
+                                   TechDraw::DrawPage* page,
+                                   const std::vector<App::DocumentObject*>& breakObjects)
+{
+    // get the shape objects from the selection
+    std::vector<App::DocumentObject*> shapes;
+    std::vector<App::DocumentObject*> xShapes;
+    std::string faceName;
+    getSelectedShapes(cmd, shapes, xShapes, nullptr, faceName);
+
+    // a selected base view is not a shape to break, its sources are
+    auto isView = [](App::DocumentObject* obj) {
+        return obj->isDerivedFrom<TechDraw::DrawView>();
+    };
+    std::erase_if(shapes, isView);
+    std::erase_if(xShapes, isView);
+    std::vector<App::DocumentObject*> baseViews =
+        cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    if (!baseViews.empty()) {
+        auto* dvp = static_cast<TechDraw::DrawViewPart*>(baseViews.front());
+        auto shapesFromBase = dvp->Source.getValues();
+        auto xShapesFromBase = dvp->XSource.getValues();
+        shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
+        xShapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
+    }
+
+    // remove Break objects from shape pile
+    shapes = DrawBrokenView::removeBreakObjects(breakObjects, shapes);
+    xShapes = DrawBrokenView::removeBreakObjects(breakObjects, xShapes);
+    if (shapes.empty() && xShapes.empty()) {
+        return false;
+    }
+
+    Gui::WaitCursor wc;
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create broken view"));
+    App::Document* doc = page->getDocument();
+    std::string PageName = page->getNameInDocument();
+    std::string FeatName = cmd->getUniqueObjectName("BrokenView", page);
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.getDocument('%s').addObject('TechDraw::DrawBrokenView', '%s')",
+                            doc->getName(), FeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.getDocument('%s').%s.addView(App.getDocument('%s').%s)",
+                            doc->getName(), PageName.c_str(), doc->getName(), FeatName.c_str());
+
+    auto* dbv = dynamic_cast<TechDraw::DrawBrokenView*>(doc->getObject(FeatName.c_str()));
+    if (!dbv) {
+        cmd->abortCommand();
+        throw Base::TypeError("CmdTechDrawBrokenView DBV not found\n");
+    }
+    dbv->Source.setValues(shapes);
+    dbv->XSource.setValues(xShapes);
+    dbv->Breaks.setValues(breakObjects);
+
+    // set projection direction from a selected face, else from the 3D view
+    auto faceInfo = faceFromSelection();
+    std::pair<Base::Vector3d, Base::Vector3d> dirs = faceInfo.first
+        ? DrawGuiUtil::getProjDirFromFace(faceInfo.first, faceInfo.second)
+        : DrawGuiUtil::get3DDirAndRot();
+    Base::Vector3d projDir = checkDirectionVsBasis(dirs.first);
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.getDocument('%s').%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+                            doc->getName(), FeatName.c_str(), projDir.x, projDir.y, projDir.z);
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.getDocument('%s').%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+                            doc->getName(), FeatName.c_str(),
+                            dirs.second.x, dirs.second.y, dirs.second.z);
+    cmd->commitCommand();
+
+    dbv->recomputeFeature();
+    return true;
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> viewDirection()

@@ -62,21 +62,19 @@ class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
 // NOLINTEND
 
 public:
-    enum class BreakType : int {
-        NONE,
-        ZIGZAG,
-        SIMPLE
-    };
+    using BreakType = DrawViewPart::BreakType;
     static const char* BreakTypeEnums[];    // NOLINT
 
     DrawBrokenView();
     ~DrawBrokenView() override = default;
 
-    App::PropertyLinkList Breaks;   // NOLINT
     App::PropertyLength   Gap;      // NOLINT
 
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
+    //! breaks come from the legacy break objects, whose mapping is not combined
+    //! with view breaks
+    bool supportsViewBreaks() const override { return false; }
     PyObject *getPyObject() override;
     const char* getViewProviderName() const override
     {

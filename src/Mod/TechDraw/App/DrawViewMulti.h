@@ -67,6 +67,7 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     void onChanged(const App::Property* prop) override;
+    bool supportsViewBreaks() const override { return false; }
     //@}
 
     /// returns the type name of the ViewProvider

@@ -2,5 +2,6 @@
 
 add_executable(TechDraw_tests_run
         CosmeticExtension.cpp
+        DrawViewBreak.cpp
         LineFormat.cpp
 )
