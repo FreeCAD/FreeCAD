@@ -642,48 +642,38 @@ class TestExport2Integration(unittest.TestCase):
     def _get_full_machine_config():  # FIXME: find other example that creates this correctly
         """Helper to get the complete machine config used in multiple tests."""
         return {
-            "freecad_version": "1.2.0",
+            "freecad_version": "26.3.0",
             "machine": {
                 "axes": {
                     "A": {
                         "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
-                        "max": 180,
                         "max_velocity": 36000,
-                        "min": -180,
                         "prefer_positive": True,
                         "sequence": 0,
-                        "type": "angular",
+                        "type": "rotary",
                     },
                     "C": {
                         "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
-                        "max": 180,
                         "max_velocity": 36000,
-                        "min": -180,
                         "prefer_positive": True,
                         "sequence": 0,
-                        "type": "angular",
+                        "type": "rotary",
                     },
                     "X": {
-                        "joint": [[1.0, 0.0, 0.0], [0, 0, 0]],
-                        "max": 500.0,
+                        "joint": [[0, 0, 0], [1.0, 0.0, 0.0]],
                         "max_velocity": 10000,
-                        "min": 50.0,
                         "sequence": 0,
                         "type": "linear",
                     },
                     "Y": {
-                        "joint": [[0.0, 1.0, 0.0], [0, 0, 0]],
-                        "max": 1000,
+                        "joint": [[0, 0, 0], [0.0, 1.0, 0.0]],
                         "max_velocity": 10000,
-                        "min": 0,
                         "sequence": 0,
                         "type": "linear",
                     },
                     "Z": {
-                        "joint": [[0.0, 0.0, 1.0], [0, 0, 0]],
-                        "max": 1000,
+                        "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
                         "max_velocity": 10000,
-                        "min": 0,
                         "sequence": 0,
                         "type": "linear",
                     },
@@ -691,7 +681,7 @@ class TestExport2Integration(unittest.TestCase):
                 "description": "My linuxcnc mill",
                 "manufacturer": "Supermax",
                 "name": "MillStone",
-                "spindles": [
+                "toolheads": [
                     {
                         "id": "spindle1",
                         "max_power_kw": 3.0,
@@ -702,31 +692,25 @@ class TestExport2Integration(unittest.TestCase):
                         "coolant_flood": False,
                         "coolant_mist": False,
                         "coolant_delay": 0.0,
-                        "spindle_wait": 0.0,
+                        "toolhead_wait": 0.0,
                     }
                 ],
                 "units": "metric",
             },
             "output": {
-                "axis_precision": 3,
-                "blank_lines": True,
-                "command_space": " ",
-                "comment_symbol": ";",
-                "comments": False,
-                "end_of_line_chars": "\n",
-                "feed_precision": 3,
-                "header": False,
-                "line_increment": 10,
-                "line_number_start": 100,
-                "line_numbers": False,
-                "list_tools_in_preamble": False,
-                "machine_name": False,
-                "output_bcnc_comments": True,
-                "output_duplicate_parameters": True,
-                "output_units": "metric",
-                "path_labels": False,
-                "show_operation_labels": True,
-                "spindle_decimals": 0,
+                "units": "metric",
+                "header": {
+                    "output_header": False,
+                    "include_date": False,
+                    "include_description": False,
+                    "include_document_name": False,
+                    "include_machine_name": False,
+                    "include_project_file": False,
+                    "include_units": False,
+                    "include_tool_list": False,
+                    "include_fixture_list": False,
+                },
+                "comments": {"enabled": False},
             },
             "postprocessor": {
                 "file_name": "",
@@ -1113,7 +1097,7 @@ class TestExport2Integration(unittest.TestCase):
                     G0 X10 Y20
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["spindle_wait"] = 2.5
+        config["machine"]["toolheads"][0]["toolhead_wait"] = 2.5
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1156,7 +1140,7 @@ class TestExport2Integration(unittest.TestCase):
             G0 X10 Y20   (no G4 between)
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["spindle_wait"] = 0.0
+        config["machine"]["toolheads"][0]["toolhead_wait"] = 0.0
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1187,7 +1171,7 @@ class TestExport2Integration(unittest.TestCase):
                     G1 X10 F100
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["coolant_delay"] = 1.5
+        config["machine"]["toolheads"][0]["coolant_delay"] = 1.5
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
