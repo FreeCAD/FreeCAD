@@ -84,9 +84,7 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
             )
         ]
         self.profile_op.Path = Path.Path([])
-        self.profile_op.ClearanceHeight = type(
-            "obj", (object,), {"Value": 18.0}
-        )()
+        self.profile_op.ClearanceHeight = type("obj", (object,), {"Value": 18.0})()
         machine.postprocessor_properties["emit_graphical_view_setup"] = False
         self.post._machine = machine
         self.post.apply_configuration_bundle()
@@ -98,10 +96,7 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
     def export(self, commands=None):
         if commands is not None:
             self.profile_op.Path = Path.Path(
-                [
-                    Path.Command(c) if isinstance(c, str) else c
-                    for c in commands
-                ]
+                [Path.Command(c) if isinstance(c, str) else c for c in commands]
             )
         self.post.apply_configuration_bundle()
         return self.post.export2()[0][1]
@@ -148,10 +143,7 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
         )
 
     def test_common_property_schema_defaults(self):
-        common_props = {
-            p["name"]: p.get("default")
-            for p in self.post.get_common_property_schema()
-        }
+        common_props = {p["name"]: p.get("default") for p in self.post.get_common_property_schema()}
         self.assertTrue(common_props["supports_tool_radius_compensation"])
         self.assertEqual(common_props["preamble"], "G17\nG52")
         self.assertEqual(common_props["postamble"], "M5\nM9\nG17\nG40\nM30")
@@ -273,9 +265,7 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
 
     def test_arc_centers_absolute_in_inches(self):
         self.post._machine.output.units = OutputUnits.IMPERIAL
-        lines = self.op_lines(
-            ["G0 X25.4 Y0 Z25.4", "G2 X0 Y25.4 Z25.4 I-25.4 J0 F100"]
-        )
+        lines = self.op_lines(["G0 X25.4 Y0 Z25.4", "G2 X0 Y25.4 Z25.4 I-25.4 J0 F100"])
         self.assertEqual(
             "G2 X0.000 Y1.000 Z1.000 F236.220 I0.000 J0.000",
             lines[1],
@@ -330,9 +320,7 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
         """G73 chip break cycle converted to G83 with retract parameter J."""
         cmd = Path.Command("G73 X10 Y20 Z-25 R2 Q5 F150")
         lines = self.op_lines(["G0 Z10", "G99", cmd, "G80"])
-        self.assert_line(
-            "G83 Y2.000 Z-25.000 F9000.000 I0.000 J0.500 K5.000", lines
-        )
+        self.assert_line("G83 Y2.000 Z-25.000 F9000.000 I0.000 J0.500 K5.000", lines)
         self.assert_line("G79 X10.000 Y20.000 Z0.000", lines)
 
     def test_drill_cycle_g73_custom_chip_break_retract(self):
@@ -340,9 +328,7 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
         props["chip_break_retract"] = 1.25
         cmd = Path.Command("G73 X10 Y20 Z-25 R2 Q5 F150")
         lines = self.op_lines(["G0 Z10", "G99", cmd, "G80"])
-        self.assert_line(
-            "G83 Y2.000 Z-25.000 F9000.000 I0.000 J1.250 K5.000", lines
-        )
+        self.assert_line("G83 Y2.000 Z-25.000 F9000.000 I0.000 J1.250 K5.000", lines)
 
     def test_drill_cycle_g84_tapping(self):
         """G84 tapping cycle definition with ramp parameter I."""
@@ -450,24 +436,16 @@ class TestMahoMHPost(PathTestUtils.PathTestBase):
         props = self.post._machine.postprocessor_properties
         props["emit_graphical_view_setup"] = True
         lines = self.lines([])
-        self.assert_line(
-            "G98 X-5.000 Y-5.000 Z-0.500 I105.000 J105.000 K10.500", lines
-        )
-        self.assert_line(
-            "G99 X0.000 Y0.000 Z0.000 I100.000 J100.000 K10.000", lines
-        )
+        self.assert_line("G98 X-5.000 Y-5.000 Z-0.500 I105.000 J105.000 K10.500", lines)
+        self.assert_line("G99 X0.000 Y0.000 Z0.000 I100.000 J100.000 K10.000", lines)
 
     def test_graphical_view_setup_custom_window_size(self):
         props = self.post._machine.postprocessor_properties
         props["emit_graphical_view_setup"] = True
         props["graphical_view_window_size"] = 120.0
         lines = self.lines([])
-        self.assert_line(
-            "G98 X-10.000 Y-10.000 Z-1.000 I110.000 J110.000 K11.000", lines
-        )
-        self.assert_line(
-            "G99 X0.000 Y0.000 Z0.000 I100.000 J100.000 K10.000", lines
-        )
+        self.assert_line("G98 X-10.000 Y-10.000 Z-1.000 I110.000 J110.000 K11.000", lines)
+        self.assert_line("G99 X0.000 Y0.000 Z0.000 I100.000 J100.000 K10.000", lines)
 
     def test_graphical_view_setup_missing_stock(self):
         props = self.post._machine.postprocessor_properties

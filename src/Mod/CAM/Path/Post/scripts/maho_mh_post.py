@@ -79,74 +79,72 @@ DEFAULT_GRAPHICAL_VIEW_WINDOW_SIZE = 110
 END_OF_TRANSMISSION = "\x04"
 # Maho MH have an interesting amount of supported and non-supported
 # gCode commands, so let's specify what works here
-DEFAULT_SUPPORTED_COMMANDS = (
-    [
-        "G0",
-        "G00",
-        "G1",
-        "G01",
-        "G2",
-        "G02",
-        "G3",
-        "G03",
-        "G4",
-        "G04",
-        "G17",
-        "G18",
-        "G19",
-        "G40",
-        "G41",
-        "G42",
-        "G43",
-        "G52",
-        "G54",
-        "G55",
-        "G56",
-        "G57",
-        "G58",
-        "G59",
-        "G70",
-        "G71",
-        "G73",
-        "G79",
-        "G80",
-        "G81",
-        "G82",
-        "G83",
-        "G84",
-        "G85",
-        "G88",
-        "G89",
-        "G90",
-        "G91",
-        "G92",
-        "G93",
-        "G94",
-        "G95",
-        "G98",
-        "G99",
-        "M0",
-        "M00",
-        "M2",
-        "M02",
-        "M3",
-        "M03",
-        "M4",
-        "M04",
-        "M5",
-        "M05",
-        "M6",
-        "M06",
-        "M7",
-        "M07",
-        "M8",
-        "M08",
-        "M9",
-        "M09",
-        "M30",
-        "M66"
-    ]
-)
+DEFAULT_SUPPORTED_COMMANDS = [
+    "G0",
+    "G00",
+    "G1",
+    "G01",
+    "G2",
+    "G02",
+    "G3",
+    "G03",
+    "G4",
+    "G04",
+    "G17",
+    "G18",
+    "G19",
+    "G40",
+    "G41",
+    "G42",
+    "G43",
+    "G52",
+    "G54",
+    "G55",
+    "G56",
+    "G57",
+    "G58",
+    "G59",
+    "G70",
+    "G71",
+    "G73",
+    "G79",
+    "G80",
+    "G81",
+    "G82",
+    "G83",
+    "G84",
+    "G85",
+    "G88",
+    "G89",
+    "G90",
+    "G91",
+    "G92",
+    "G93",
+    "G94",
+    "G95",
+    "G98",
+    "G99",
+    "M0",
+    "M00",
+    "M2",
+    "M02",
+    "M3",
+    "M03",
+    "M4",
+    "M04",
+    "M5",
+    "M05",
+    "M6",
+    "M06",
+    "M7",
+    "M07",
+    "M8",
+    "M08",
+    "M9",
+    "M09",
+    "M30",
+    "M66",
+]
 
 
 class Maho_Mh(PostProcessor):
@@ -195,7 +193,7 @@ class Maho_Mh(PostProcessor):
                 "help": translate(
                     "CAM",
                     "If your machine has a tool changer, specify its size here. "
-                    "M6 will be used for tools in the tool changer and M66 for all above the size."
+                    "M6 will be used for tools in the tool changer and M66 for all above the size.",
                 ),
             },
             {
@@ -207,7 +205,7 @@ class Maho_Mh(PostProcessor):
                 "help": translate(
                     "CAM",
                     "If your controller supports it, this will allow you to do a graphical simulation "
-                    "on the machine itself before running the program."
+                    "on the machine itself before running the program.",
                 ),
             },
             {
@@ -220,7 +218,7 @@ class Maho_Mh(PostProcessor):
                 "help": translate(
                     "CAM",
                     "When emitting the graphical view setup commands, make the size of the view window "
-                    "this percentage of the stock size."
+                    "this percentage of the stock size.",
                 ),
             },
             {
@@ -244,7 +242,7 @@ class Maho_Mh(PostProcessor):
                 "help": translate(
                     "CAM",
                     "The program number on the first line after the %PM start. "
-                    "Must be between N1 and N9999999. If left empty, N90001 is the default."
+                    "Must be between N1 and N9999999. If left empty, N90001 is the default.",
                 ),
             },
             {
@@ -257,9 +255,9 @@ class Maho_Mh(PostProcessor):
                 "help": translate(
                     "CAM",
                     "When choosing 'Chip break' in drilling cycles, the drill will retract "
-                    "by this amount of millimeters per peck."
+                    "by this amount of millimeters per peck.",
                 ),
-            }
+            },
         ]
 
     def __init__(
@@ -372,7 +370,9 @@ class Maho_Mh(PostProcessor):
                     new_commands = []
                     for command in item.path.Commands:
                         if numbering:
-                            if command.Name.startswith("(") and not self.values.get("OUTPUT_COMMENTS", True):
+                            if command.Name.startswith("(") and not self.values.get(
+                                "OUTPUT_COMMENTS", True
+                            ):
                                 new_commands.append(command)
                                 continue
                             # Have to remake, because we change Parameters
@@ -393,6 +393,7 @@ class Maho_Mh(PostProcessor):
         if source is None:
             return None
         import Path.Base.Util as PathUtil
+
         for obj in (source, getattr(source, "source", None)):
             if obj is None:
                 continue
@@ -500,7 +501,11 @@ class Maho_Mh(PostProcessor):
                         # Should this be configurable?
                         if cmd.Name in ["G84"]:
                             s_val = orig_params.get("S")
-                            if s_val is None and hasattr(self, "machine_state") and getattr(self.machine_state, "S", None):
+                            if (
+                                s_val is None
+                                and hasattr(self, "machine_state")
+                                and getattr(self.machine_state, "S", None)
+                            ):
                                 s_val = self.machine_state.S
                             if s_val is None:
                                 s_val = self._safe_get(orig_params, "S", cmd)
@@ -525,9 +530,11 @@ class Maho_Mh(PostProcessor):
                         new_commands.append(Path.Command(cycle_def_cmd, cycle_def_params))
                         # Drill height start is always 0 as depth is given as absolute
                         # FIXME: Does Z = 0 work for G18 here? Probably needs to be swapped with Y
-                        cycle_run_params = {"X": self._safe_get(orig_params, "X", cmd),
-                                            "Y": self._safe_get(orig_params, "Y", cmd),
-                                            "Z": 0}
+                        cycle_run_params = {
+                            "X": self._safe_get(orig_params, "X", cmd),
+                            "Y": self._safe_get(orig_params, "Y", cmd),
+                            "Z": 0,
+                        }
                         new_commands.append(Path.Command("G79", cycle_run_params))
                         continue
 
@@ -546,11 +553,18 @@ class Maho_Mh(PostProcessor):
         prog_num = raw_num if raw_num.upper().startswith("N") else f"N{raw_num}"
         for section_name, sublist in postables:
             # Add program name and number
-            sublist.insert(0, self._make_postable("Post: program name",
-                           [self._as_is("%PM"), self._as_is(f"{prog_num}")]))
+            sublist.insert(
+                0,
+                self._make_postable(
+                    "Post: program name", [self._as_is("%PM"), self._as_is(f"{prog_num}")]
+                ),
+            )
             # Add graphical view setup if option is enabled
             for num, item in enumerate(sublist):
-                if self.values.get("EMIT_GRAPHICAL_VIEW_SETUP", True) and "Post: preamble" in item.label:
+                if (
+                    self.values.get("EMIT_GRAPHICAL_VIEW_SETUP", True)
+                    and "Post: preamble" in item.label
+                ):
                     try:
                         stock = getattr(self._job, "Stock", None)
                         if not stock or not getattr(stock, "Shape", None):
@@ -565,27 +579,44 @@ class Maho_Mh(PostProcessor):
                         z_size = box.ZMax - box.ZMin
                         if x_size <= 0 or y_size <= 0 or z_size <= 0:
                             break
-                        size_factor = self.values.get("GRAPHICAL_VIEW_WINDOW_SIZE", DEFAULT_GRAPHICAL_VIEW_WINDOW_SIZE) / 100
+                        size_factor = (
+                            self.values.get(
+                                "GRAPHICAL_VIEW_WINDOW_SIZE", DEFAULT_GRAPHICAL_VIEW_WINDOW_SIZE
+                            )
+                            / 100
+                        )
                         x_offset = (x_size * size_factor - x_size) / 2
                         y_offset = (y_size * size_factor - y_size) / 2
                         z_offset = (z_size * size_factor - z_size) / 2
                         # view window size
-                        g98 = Path.Command("G98", {'X': box.XMin - x_offset,
-                                                   'Y': box.YMin - y_offset,
-                                                   'Z': box.ZMin - z_offset,
-                                                   'I': box.XMax + x_offset,
-                                                   'J': box.YMax + y_offset,
-                                                   'K': box.ZMax + z_offset},
-                                                  {})
+                        g98 = Path.Command(
+                            "G98",
+                            {
+                                "X": box.XMin - x_offset,
+                                "Y": box.YMin - y_offset,
+                                "Z": box.ZMin - z_offset,
+                                "I": box.XMax + x_offset,
+                                "J": box.YMax + y_offset,
+                                "K": box.ZMax + z_offset,
+                            },
+                            {},
+                        )
                         # stock size
-                        g99 = Path.Command("G99", {'X': box.XMin,
-                                                   'Y': box.YMin,
-                                                   'Z': box.ZMin,
-                                                   'I': box.XMax,
-                                                   'J': box.YMax,
-                                                   'K': box.ZMax},
-                                                  {})
-                        sublist.insert(num + 1, self._make_postable("Post: graphical view setup", [g98, g99]))
+                        g99 = Path.Command(
+                            "G99",
+                            {
+                                "X": box.XMin,
+                                "Y": box.YMin,
+                                "Z": box.ZMin,
+                                "I": box.XMax,
+                                "J": box.YMax,
+                                "K": box.ZMax,
+                            },
+                            {},
+                        )
+                        sublist.insert(
+                            num + 1, self._make_postable("Post: graphical view setup", [g98, g99])
+                        )
                         break
                     except (AttributeError, Exception) as err:
                         Path.Log.warning(f"Could not emit graphical view setup: {err}")
@@ -633,12 +664,14 @@ class Maho_Mh(PostProcessor):
         super()._optimize_duplicates_doubles(postables)
 
     def _expand_trailing_lines(self, postables) -> None:
-        """ Finish the program with the EOT char """
+        """Finish the program with the EOT char"""
         super()._expand_trailing_lines(postables)
         for _, section in postables:
             program_end = [
-                self._as_comment("The next line is the EOT character, which is important for Philips 432 controllers. Do not remove."),
-                self._as_is(END_OF_TRANSMISSION)
+                self._as_comment(
+                    "The next line is the EOT character, which is important for Philips 432 controllers. Do not remove."
+                ),
+                self._as_is(END_OF_TRANSMISSION),
             ]
             section.append(self._make_postable("Post: program end", program_end))
 
@@ -655,7 +688,7 @@ class Maho_Mh(PostProcessor):
         return cmd_str
 
     def _convert_tool_change(self, command: Path.Command) -> str:
-        """ If the machine has a tool changer, all tools that are not in the tool changer
+        """If the machine has a tool changer, all tools that are not in the tool changer
         need to be swapped using the M66 command. The machines are smart enough to know that
         when a tool was swapped in with M66 and the next one comes with M6 from the tool changer,
         then the manual tool needs to be manually removed first.
