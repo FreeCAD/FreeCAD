@@ -351,7 +351,7 @@ struct MainWindowP
     std::string hiddenDockWindows;
     fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
-    QPointer<QPushButton> logoButton;  // application button of the custom title bar
+    QPointer<QPushButton> logoButton;     // application button of the custom title bar
     QPointer<QToolButton> menuPinButton;  // pins the folded menu bar of the custom title bar
     bool _restoring = false;
     QTime _showNormal;
