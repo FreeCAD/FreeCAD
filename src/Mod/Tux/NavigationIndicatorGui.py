@@ -33,6 +33,9 @@ p = App.ParamGet("User parameter:Tux/NavigationIndicator")
 pView = App.ParamGet("User parameter:BaseApp/Preferences/View")
 pMWin = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
 
+_STYLE_ACTIONS = ()
+_currentIconType = None
+
 
 def translate(context, text):
     "convenience function for Qt 5/6 translator"
@@ -40,7 +43,7 @@ def translate(context, text):
 
 
 class IndicatorButton(QtGui.QPushButton):
-    """Detect language change events."""
+    """Detect language, theme, and navigation style change events."""
 
     def __init__(self, parent=None):
         super(IndicatorButton, self).__init__()
@@ -51,11 +54,17 @@ class IndicatorButton(QtGui.QPushButton):
             retranslateUi()
             onTooltip()
             self.adjustSize()
+        elif event.type() in (QtCore.QEvent.StyleChange, QtCore.QEvent.PaletteChange):
+            if RePopulateIcons():
+                setCurrent()
         return super(IndicatorButton, self).changeEvent(event)
 
     def onChange(self, paramGrp, param):
         if param in ("NavigationStyle", "OrbitStyle", "SameStyleForAllViews"):
             setCurrent()
+        elif param in ("Theme", "StyleSheet"):
+            if RePopulateIcons():
+                setCurrent()
 
     def mousePressEvent(self, event):
         RePopulateIcons()
@@ -63,25 +72,39 @@ class IndicatorButton(QtGui.QPushButton):
         return super(IndicatorButton, self).mousePressEvent(event)
 
 
-def RePopulateIcons():
-    curStyleSheet = pMWin.GetString("StyleSheet")
-    if "dark" in curStyleSheet.lower():
-        StyleSheetType = "light"
-    else:
-        StyleSheetType = "dark"
+def _isDarkTheme():
+    """Return True when the active stylesheet, theme, or palette is dark."""
+    curStyleSheet = pMWin.GetString("StyleSheet").lower()
+    if "dark" in curStyleSheet:
+        return True
+    if "light" in curStyleSheet:
+        return False
 
-    a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
-    a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
-    a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
-    a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
-    a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
-    a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
-    a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
-    a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
-    a9.setIcon(QtGui.QIcon(":/icons/NavigationSiemensNX_" + StyleSheetType + ".svg"))
-    a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
-    a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
-    a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    curTheme = pMWin.GetString("Theme").lower()
+    if "dark" in curTheme:
+        return True
+    if "light" in curTheme:
+        return False
+
+    palette = statusBar.palette()
+    return palette.window().color().lightness() < palette.windowText().color().lightness()
+
+
+def RePopulateIcons():
+    """Update navigation style icons to match the active light or dark theme."""
+    global _currentIconType
+
+    if not _STYLE_ACTIONS:
+        return False
+
+    iconType = "light" if _isDarkTheme() else "dark"
+    if iconType == _currentIconType:
+        return False
+
+    _currentIconType = iconType
+    for action, iconName in _STYLE_ACTIONS:
+        action.setIcon(QtGui.QIcon(f":/icons/{iconName}_{iconType}.svg"))
+    return True
 
 
 def retranslateUi():
@@ -785,6 +808,21 @@ a12.setObjectName("Indicator_NavigationTouchpad")
 for action in gStyle.actions():
     action.setCheckable(True)
 
+_STYLE_ACTIONS = (
+    (a1, "NavigationBlender"),
+    (a2, "NavigationCAD"),
+    (a3, "NavigationGesture"),
+    (a4, "NavigationMayaGesture"),
+    (a5, "NavigationOpenCascade"),
+    (a6, "NavigationOpenInventor"),
+    (a7, "NavigationOpenSCAD"),
+    (a8, "NavigationRevit"),
+    (a9, "NavigationSiemensNX"),
+    (a10, "NavigationSolidWorks"),
+    (a11, "NavigationTinkerCAD"),
+    (a12, "NavigationTouchpad"),
+)
+
 RePopulateIcons()
 
 menu.addMenu(menuSettings)
@@ -804,6 +842,7 @@ menu.addAction(a11)
 menu.addAction(a12)
 
 pView.Attach(indicator)
+pMWin.Attach(indicator)
 
 
 def onCompact():
