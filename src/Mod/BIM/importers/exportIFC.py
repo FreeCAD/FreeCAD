@@ -381,6 +381,14 @@ def export(exportList, filename, colors=None, preferences=None):
     objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = [obj for obj in objectslist if obj not in specials]
     objectslist = Arch.pruneIncluded(objectslist, strict=True)
+    # Composite tools can expose independently classified components that
+    # would otherwise be pruned along with their generated geometry.
+    for obj in list(objectslist):
+        provider = getattr(getattr(obj, "Proxy", None), "getIfcExportObjects", None)
+        if callable(provider):
+            for component in provider(obj):
+                if component not in objectslist:
+                    objectslist.append(component)
     objectslist = [
         obj
         for obj in objectslist
@@ -1779,6 +1787,8 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
     ifctype = getIfcTypeFromObj(obj)
     if ifctype in ["IfcSlab", "IfcFooting"]:
         kwargs.update({"PredefinedType": "NOTDEFINED"})
+    elif ifctype == "IfcStair":
+        kwargs.update({"ShapeType": getattr(obj, "ShapeType", "NOTDEFINED")})
     elif ifctype == "IfcBuilding":
         kwargs.update({"CompositionType": "ELEMENT"})
     elif ifctype == "IfcBuildingStorey":
@@ -2264,6 +2274,11 @@ def getRepresentation(
 
             fcshape = None
             solidType = "Brep"
+            # Composite objects can provide their shape, in global coordinates.
+            provider = getattr(getattr(obj, "Proxy", None), "getIfcShape", None)
+            provided = not subtraction and callable(provider)
+            if provided:
+                fcshape = provider(obj)
             if subtraction:
                 if hasattr(obj, "Proxy"):
                     if hasattr(obj.Proxy, "getSubVolume"):
@@ -2297,12 +2312,14 @@ def getRepresentation(
                     serialized = False
                     if (
                         hasattr(geom, "serialise")
-                        and obj.isDerivedFrom("Part::Feature")
+                        and (obj.isDerivedFrom("Part::Feature") or provided)
                         and preferences["SERIALIZE"]
                     ):
-                        if obj.Shape.Faces:
-                            sh = obj.Shape.copy()
-                            sh.Placement = obj.getGlobalPlacement()
+                        serialshape = fcshape if provided else obj.Shape
+                        if serialshape.Faces:
+                            sh = serialshape.copy()
+                            if not provided:
+                                sh.Placement = obj.getGlobalPlacement()
                             sh.scale(preferences["SCALE_FACTOR"])  # to meters
                             # clean shape and moves placement away from the outer element level
                             # https://forum.freecad.org/viewtopic.php?p=675760#p675760

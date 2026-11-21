@@ -32,6 +32,11 @@
         <file>icons/Arch_Frame.svg</file>
         <file>icons/Arch_Frame_Tree.svg</file>
         <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_Handrail.svg</file>
+        <file>icons/Arch_Handrail_Tree.svg</file>
+        <file>icons/Arch_HandrailPickets.svg</file>
+        <file>icons/Arch_HandrailPosts.svg</file>
+        <file>icons/Arch_HandrailTopRail.svg</file>
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Material_Multi.svg</file>
@@ -70,6 +75,8 @@
         <file>icons/Arch_SplitMesh.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
+        <file>icons/Arch_Stringer.svg</file>
+        <file>icons/Arch_Stringer_Tree.svg</file>
         <file>icons/Arch_StructuralSystem.svg</file>
         <file>icons/Arch_StructuralSystem_Tree.svg</file>
         <file>icons/Arch_Structure.svg</file>
@@ -240,6 +247,12 @@
         <file>ui/ParametersWindowFixed.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowStash.svg</file>
+        <!-- Stair Designer task-panel forms -->
+        <file>ui/TaskStairDesignerHandrails.ui</file>
+        <file>ui/TaskStairDesigner.ui</file>
+        <file>ui/TaskStairDesignerStair.ui</file>
+        <file>ui/TaskStairDesignerSteps.ui</file>
+        <file>ui/TaskStairDesignerStringers.ui</file>
         <file>ui/dialogAddPSet.ui</file>
         <file>ui/dialogAddProperty.ui</file>
         <file>ui/dialogClasses.ui</file>
