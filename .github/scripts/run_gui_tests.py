@@ -115,6 +115,15 @@ def parse_registered_tests(output: str) -> list[str]:
     return tests
 
 
+def run_and_stream(cmd: list[str]) -> int:
+    """Keep GUI test output visible even if a test blocks and CI times out."""
+    try:
+        return subprocess.run(cmd, check=False).returncode
+    except FileNotFoundError:
+        print(f"Executable not found: {cmd[0]}", file=sys.stderr, flush=True)
+        return 127
+
+
 def main(argv: list[str]) -> int:
     """Entry point: run GUI test modules registered in the FreeCAD executable.
 
@@ -155,9 +164,8 @@ def main(argv: list[str]) -> int:
 
     last_rc = 0
     for mod in gui_tests:
-        print(f"\nRunning GUI tests for module: {mod}")
-        rc, out = run_and_capture([freecad_exec, "-t", mod])
-        print(out)
+        print(f"\nRunning GUI tests for module: {mod}", flush=True)
+        rc = run_and_stream([freecad_exec, "-t", mod])
         if rc != 0:
             print(f"Module {mod} exited with code {rc}", file=sys.stderr)
             last_rc = rc

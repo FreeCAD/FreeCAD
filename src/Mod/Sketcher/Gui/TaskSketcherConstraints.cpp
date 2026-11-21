@@ -1269,9 +1269,19 @@ void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
 
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
     const std::string idList = std::format("[{}]", Base::Tools::joinFormatted(ids, ", "));
+    // Deleting a Group/Text constraint also deletes the handle it owns: collect the handles
+    // before the constraints are gone.
+    const std::vector<int> ownedHandles = sketch->getGroupHandlesOfConstraints(
+        std::vector<int>(ids.begin(), ids.end())
+    );
     sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
     try {
         Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());
+        if (!ownedHandles.empty()) {
+            const std::string handleList
+                = std::format("[{}]", Base::Tools::joinFormatted(ownedHandles, ", "));
+            Gui::cmdAppObjectArgs(sketch, "delGeometries(%s)", handleList.c_str());
+        }
         sketchView->getDocument()->commitCommand();
     }
     catch (const Base::Exception&) {

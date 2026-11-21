@@ -22,6 +22,7 @@
 
 # Broken-out test modules
 from SketcherTests.TestSketcherSolver import TestSketcherSolver
+from SketcherTests.TestSketchGroups import TestSketchGroups
 from SketcherTests.TestSketchFillet import TestSketchFillet
 from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
@@ -34,3 +35,18 @@ from SketcherTests.TestSketcherEllipse import TestSketcherEllipse
 from SketcherTests.TestSketcherSolver import CreateCircleSketch
 from SketcherTests.TestSketcherSolver import CreateRectangleSketch
 from SketcherTests.TestSketcherSolver import CreateSlotPlateSet
+
+# Export test cases for unittest discovery and the legacy sketch helpers.
+__all__ = [
+    "TestSketcherSolver",
+    "TestSketchGroups",
+    "TestSketchFillet",
+    "TestSketchExpression",
+    "TestSketchValidateCoincidents",
+    "TestSketchCarbonCopyReverseMapping",
+    "TestSketchInternalFaces",
+    "TestSketcherEllipse",
+    "CreateCircleSketch",
+    "CreateRectangleSketch",
+    "CreateSlotPlateSet",
+]
