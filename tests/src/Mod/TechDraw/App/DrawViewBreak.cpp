@@ -39,11 +39,13 @@ protected:
 
     static TechDraw::DrawViewBreak* addBreak(TechDraw::DrawViewPart* view)
     {
-        return view->addBreak(Base::Vector3d(3.0, 0.0, 0.0),
-                              Base::Vector3d(7.0, 0.0, 0.0),
-                              Base::Vector3d(1.0, 0.0, 0.0),
-                              1.0,
-                              TechDraw::DrawViewPart::BreakType::ZIGZAG);
+        return view->addBreak(
+            Base::Vector3d(3.0, 0.0, 0.0),
+            Base::Vector3d(7.0, 0.0, 0.0),
+            Base::Vector3d(1.0, 0.0, 0.0),
+            1.0,
+            TechDraw::DrawViewPart::BreakType::ZIGZAG
+        );
     }
 
 private:
@@ -70,11 +72,14 @@ TEST_F(TestDrawViewBreak, viewsWithoutBreakSupportIgnoreBreaks)
 
     for (TechDraw::DrawViewPart* view :
          {static_cast<TechDraw::DrawViewPart*>(
-              document()->addObject<TechDraw::DrawViewSection>("Section")),
+              document()->addObject<TechDraw::DrawViewSection>("Section")
+          ),
           static_cast<TechDraw::DrawViewPart*>(
-              document()->addObject<TechDraw::DrawViewDetail>("Detail")),
+              document()->addObject<TechDraw::DrawViewDetail>("Detail")
+          ),
           static_cast<TechDraw::DrawViewPart*>(
-              document()->addObject<TechDraw::DrawBrokenView>("BrokenView"))}) {
+              document()->addObject<TechDraw::DrawBrokenView>("BrokenView")
+          )}) {
         EXPECT_FALSE(view->supportsViewBreaks()) << view->getNameInDocument();
         const auto objectCount = document()->countObjects();
         EXPECT_EQ(addBreak(view), nullptr) << view->getNameInDocument();
