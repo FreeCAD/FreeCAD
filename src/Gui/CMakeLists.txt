@@ -1115,6 +1115,8 @@ SET(Widget_CPP_SRCS
     PrefWidgets.cpp
     InputField.cpp
     NumericLocale.cpp
+    LayerWidget.cpp
+    LayerWidgetPy.cpp
     ProgressBar.cpp
     ProgressDialog.cpp
     QuantitySpinBox.cpp
@@ -1147,6 +1149,8 @@ SET(Widget_HPP_SRCS
     NotificationArea.h
     PrefWidgets.h
     InputField.h
+    LayerWidget.h
+    LayerWidgetPy.h
     ProgressBar.h
     ProgressDialog.h
     QuantitySpinBox.h

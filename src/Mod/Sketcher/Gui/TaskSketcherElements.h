@@ -29,6 +29,7 @@
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
+#include "LayerListDelegate.h"
 
 
 namespace App
@@ -56,7 +57,7 @@ enum class SubElementType
     none
 };
 
-class ElementView: public QListWidget
+class ElementView: public LayerListWidget
 {
     Q_OBJECT
 

@@ -525,10 +525,20 @@ public:
     bool isActive() const
     {
         if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
-            return sketch->Constraints[ConstraintNbr]->isActive;
+            return sketch->Constraints[ConstraintNbr]->isActive && usesLayerConstraints();
         }
 
         return false;
+    }
+
+    bool usesLayerConstraints() const
+    {
+        if (ConstraintNbr < 0 || ConstraintNbr >= sketch->Constraints.getSize()) {
+            return false;
+        }
+        const auto* constraint = sketch->Constraints[ConstraintNbr];
+        return constraint->Type == Sketcher::Group || constraint->Type == Sketcher::Text
+            || sketch->constraintUsesLayers(constraint);
     }
 
     void updateVirtualSpaceStatus()
@@ -677,7 +687,10 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     QAction* activate = menu.addAction(
         isActive ? tr("Deactivate") : tr("Activate"), this, &ConstraintView::updateActiveStatus);
-    activate->setEnabled(!items.isEmpty());
+    activate->setEnabled(!items.isEmpty() && std::ranges::all_of(items, [](const auto* item) {
+        const auto* constraint = dynamic_cast<const ConstraintItem*>(item);
+        return constraint && constraint->usesLayerConstraints();
+    }));
 
     menu.addSeparator();
     QAction* show = menu.addAction(tr("Show Constraints"), this, &ConstraintView::showConstraints);
