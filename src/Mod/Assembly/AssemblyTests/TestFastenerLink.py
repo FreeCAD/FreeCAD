@@ -223,9 +223,7 @@ class TestFastenerLink(unittest.TestCase):
         self.assertEqual(FastenerLinkObject.components(link), [link])
         self.assertEqual(FastenerLinkObject.attachment(link)[0], joint)
         self.assertOnHole(link, 50)
-        self.assertEqual(
-            [obj for obj in self.doc.Objects if obj.TypeId == "App::LinkElement"], []
-        )
+        self.assertEqual([obj for obj in self.doc.Objects if obj.TypeId == "App::LinkElement"], [])
         # The last fastener stays
         FastenerLinkObject.removeFastener(link, 0)
         self.assertEqual(FastenerLinkObject.components(link), [link])
