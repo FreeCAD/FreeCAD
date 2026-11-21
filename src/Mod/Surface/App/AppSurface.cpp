@@ -33,6 +33,7 @@
 #include "FeatureFilling.h"
 #include "FeatureGeomFillSurface.h"
 #include "FeatureSections.h"
+#include "FeatureIntersectionCurve.h"
 #include "FeatureSewing.h"
 
 #include "Measure.h"
@@ -84,6 +85,7 @@ PyMOD_INIT_FUNC(Surface)
     Surface::Extend            ::init();
     Surface::FeatureBlendCurve ::init();
     Surface::Sections          ::init();
+    Surface::IntersectionCurve ::init();
     // clang-format on
 
     // connect to unified measurement facility
