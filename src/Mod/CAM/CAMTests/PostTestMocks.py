@@ -124,11 +124,11 @@ class MockSetupSheet:
 
 
 class MockToolhead:
-    """Mock Toolhead/Spindle object."""
+    """Mock Toolhead object."""
 
     def __init__(self, index=0):
         self.index = index
-        self.spindle_wait = 0  # Default to 0 to avoid spindle wait expansion
+        self.toolhead_wait = 0  # Default to 0 to avoid spindle wait expansion
         self.coolant_delay = 0  # Default to 0 to avoid coolant delay expansion
 
 
@@ -151,12 +151,6 @@ class MockMachine:
         }
         # Make processing properties accessible as attributes
         self.processing = type("Processing", (), processing_config)()
-
-    def get_spindle_by_index(self, index):
-        """Get toolhead by index (legacy compatibility method)."""
-        if 0 <= index < len(self.toolheads):
-            return self.toolheads[index]
-        return None
 
 
 class MockJob:
