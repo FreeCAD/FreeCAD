@@ -24,6 +24,8 @@
 
 #tests that do not require Gui
 from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
+from TDTest.DrawPageAddViewTypeTest import DrawPageAddViewTypeTest  # noqa: F401
+from TDTest.DrawPageSketchTest import DrawPageSketchTest  # noqa: F401
 from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest  # noqa: F401
 from TDTest.DrawViewBalloonTest import DrawViewBalloonTest  # noqa: F401
 from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401

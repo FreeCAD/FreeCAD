@@ -24,6 +24,7 @@
 
 
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 
 #include "DrawPage.h"
@@ -50,30 +51,45 @@ std::string DrawPagePy::representation() const
 
 PyObject* DrawPagePy::addView(PyObject* args)
 {
-    PyObject *pcDocObj;
-    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcDocObj)) {
+    PyObject* objectPy;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &objectPy)) {
         return nullptr;
     }
 
-    DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
-    DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
-    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
-    int rc = page->addView(view);
+    // The binding checks the argument type, as it did when it only accepted DrawViewPy: an
+    // object the page cannot hold raises TypeError instead of the page quietly returning -1.
+    // DrawPage owns the rule.
+    auto* object = static_cast<App::DocumentObjectPy*>(objectPy)->getDocumentObjectPtr();
+    if (!object) {  // the wrapper of an object whose document was closed
+        PyErr_SetString(PyExc_ValueError, "Invalid document object");
+        return nullptr;
+    }
+    if (!DrawPage::canHold(object)) {
+        PyErr_SetString(PyExc_TypeError, "Expected a TechDraw view, a link to a view or a sketch");
+        return nullptr;
+    }
+    int rc = getDrawPagePtr()->addView(object);
 
     return PyLong_FromLong(rc);
 }
 
 PyObject* DrawPagePy::removeView(PyObject* args)
 {
-    PyObject *pcDocObj;
-    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcDocObj)) {
+    PyObject* objectPy;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &objectPy)) {
         return nullptr;
     }
 
-    DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
-    DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
-    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
-    int rc = page->removeView(view);
+    auto* object = static_cast<App::DocumentObjectPy*>(objectPy)->getDocumentObjectPtr();
+    if (!object) {  // the wrapper of an object whose document was closed
+        PyErr_SetString(PyExc_ValueError, "Invalid document object");
+        return nullptr;
+    }
+    if (!DrawPage::canRemove(object)) {
+        PyErr_SetString(PyExc_TypeError, "Expected a TechDraw view, a link or a sketch");
+        return nullptr;
+    }
+    int rc = getDrawPagePtr()->removeView(object);
 
     return PyLong_FromLong(rc);
 }

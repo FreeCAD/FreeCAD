@@ -30,6 +30,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -65,6 +66,7 @@ public:
     App::PropertyString Caption;
     App::PropertyVector CaptionLocation;
     App::PropertyEnumeration CaptionSnap;
+    App::PropertyLinkList Sketches;
 
     /** @name methods override Feature */
     //@{
@@ -128,6 +130,9 @@ public:
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
     virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
+
+    int addSketch(App::DocumentObject* sketch);
+    int removeSketch(App::DocumentObject* sketch);
 
     static bool isProjGroupItem(DrawViewPart* item);
 
