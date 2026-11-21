@@ -251,32 +251,13 @@ class CAMSanity:
 
         data["squawkData"].extend(self._deprecationSquawks())
 
-        if obj.LastPostProcessOutput == "":
+        if obj.LastPostProcessOutput and os.path.isfile(obj.LastPostProcessOutput):
+            data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
+            with open(obj.LastPostProcessOutput) as gcode_file:
+                data["linecount"] = str(sum(1 for _ in gcode_file))
+        else:
             data["filesize"] = str(0.0)
             data["linecount"] = str(0)
-            data["squawkData"].append(
-                self.squawk(
-                    "CAMSanity",
-                    translate("CAM_Sanity", "The Job has not been post-processed"),
-                )
-            )
-        else:
-            if os.path.isfile(obj.LastPostProcessOutput):
-                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
-                with open(obj.LastPostProcessOutput) as gcode_file:
-                    data["linecount"] = str(sum(1 for _ in gcode_file))
-            else:
-                data["filesize"] = str(0.0)
-                data["linecount"] = str(0)
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate(
-                            "CAM_Sanity",
-                            "The Job's last post-processed file is missing",
-                        ),
-                    )
-                )
 
         return data
 
