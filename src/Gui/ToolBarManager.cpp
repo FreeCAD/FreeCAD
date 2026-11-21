@@ -43,6 +43,8 @@
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
+
+#include <customtitlebarkit/CustomTitleBarWindow.h>
 #include "OverlayWidgets.h"
 #include "WidgetFactory.h"
 
@@ -446,7 +448,39 @@ void ToolBarManager::setupStatusBar()
 
 void ToolBarManager::setupMenuBar()
 {
-    if (auto mb = getMainWindow()->menuBar()) {
+    auto* mainWin = qobject_cast<CustomTitleBarWindow*>(getMainWindow());
+    if (mainWin && mainWin->mode() == CustomTitleBarWindow::Mode::Custom) {
+        // Left toolbar area in titlebar
+        menuBarLeftAreaWidget = new ToolBarAreaWidget(
+            mainWin->leftArea(),
+            ToolBarArea::LeftMenuToolBarArea,
+            hMenuBarLeft,
+            connParam,
+            &menuBarTimer
+        );
+        menuBarLeftAreaWidget->setObjectName(QStringLiteral("MenuBarLeftArea"));
+        menuBarLeftAreaWidget->installEventFilter(this);
+        auto* ll = new QHBoxLayout(mainWin->leftArea());
+        ll->setContentsMargins(0, 0, 0, 0);
+        ll->addWidget(menuBarLeftAreaWidget);
+        menuBarLeftAreaWidget->show();
+
+        // Right toolbar area in titlebar
+        menuBarRightAreaWidget = new ToolBarAreaWidget(
+            mainWin->rightArea(),
+            ToolBarArea::RightMenuToolBarArea,
+            hMenuBarRight,
+            connParam,
+            &menuBarTimer
+        );
+        menuBarRightAreaWidget->setObjectName(QStringLiteral("MenuBarRightArea"));
+        menuBarRightAreaWidget->installEventFilter(this);
+        auto* rl = new QHBoxLayout(mainWin->rightArea());
+        rl->setContentsMargins(0, 0, 0, 0);
+        rl->addWidget(menuBarRightAreaWidget);
+        menuBarRightAreaWidget->show();
+    }
+    else if (auto mb = getMainWindow()->menuBar()) {
         mb->installEventFilter(this);
         menuBarLeftAreaWidget = new ToolBarAreaWidget(
             mb,
@@ -469,6 +503,17 @@ void ToolBarManager::setupMenuBar()
         mb->setCornerWidget(menuBarRightAreaWidget, Qt::TopRightCorner);
         menuBarRightAreaWidget->show();
     }
+}
+
+bool ToolBarManager::hasMenuBarAreas() const
+{
+    if (getMainWindow()->isCustomTitleBar()) {
+        return true;  // the areas of the title bar
+    }
+    // The areas are corner widgets of the menu bar. A native menu bar is drawn by the
+    // system outside of the window (macOS, global menus on Linux) and shows none.
+    auto menuBar = getMainWindow()->menuBar();
+    return menuBar && !menuBar->isNativeMenuBar();
 }
 
 void ToolBarManager::setupConnection()
@@ -542,8 +587,10 @@ void ToolBarManager::setupMenuBarTimer()
 {
     menuBarTimer.setSingleShot(true);
     QObject::connect(&menuBarTimer, &QTimer::timeout, [] {
-        if (auto menuBar = getMainWindow()->menuBar()) {
-            menuBar->adjustSize();
+        if (!getMainWindow()->isCustomTitleBar()) {
+            if (auto menuBar = getMainWindow()->menuBar()) {
+                menuBar->adjustSize();
+            }
         }
     });
 }
@@ -641,7 +688,8 @@ int ToolBarManager::toolBarIconSize(QWidget* widget) const
                 s = _menuBarIconSize;
             }
             else {
-                s *= 0.6;
+                // The custom title bar is higher than a menu bar
+                s *= getMainWindow()->isCustomTitleBar() ? 0.8 : 0.6;
             }
         }
     }
@@ -808,6 +856,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     }
 
     setMovable(!areToolBarsLocked());
+    setTitleToolbarsMovable(!areTitleToolBarsLocked());
 }
 
 void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
@@ -881,6 +930,9 @@ void ToolBarManager::restoreState() const
     std::map<int, QToolBar*> sbToolBars;
     std::map<int, QToolBar*> mbRightToolBars;
     std::map<int, QToolBar*> mbLeftToolBars;
+    // Without these areas, their toolbars stay in the toolbar areas of the main window.
+    // Their place beside the menus is kept in the parameters, for when the areas are back.
+    const bool menuBarAreas = hasMenuBarAreas();
     QList<ToolBar*> toolbars = toolBars();
     for (const QString& it : toolbarNames) {
         QToolBar* toolbar = findToolBar(toolbars, it);
@@ -895,12 +947,12 @@ void ToolBarManager::restoreState() const
                 sbToolBars[idx] = toolbar;
                 continue;
             }
-            idx = hMenuBarLeft->GetInt(toolbarName, -1);
+            idx = menuBarAreas ? hMenuBarLeft->GetInt(toolbarName, -1) : -1;
             if (idx >= 0) {
                 mbLeftToolBars[idx] = toolbar;
                 continue;
             }
-            idx = hMenuBarRight->GetInt(toolbarName, -1);
+            idx = menuBarAreas ? hMenuBarRight->GetInt(toolbarName, -1) : -1;
             if (idx >= 0) {
                 mbRightToolBars[idx] = toolbar;
                 continue;
@@ -916,6 +968,8 @@ void ToolBarManager::restoreState() const
     statusBarAreaWidget->restoreState(sbToolBars);
     menuBarRightAreaWidget->restoreState(mbRightToolBars);
     menuBarLeftAreaWidget->restoreState(mbLeftToolBars);
+
+    setTitleToolbarsMovable(!areTitleToolBarsLocked());
 }
 
 bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
@@ -925,8 +979,23 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
         statusBar = nullptr;
     }
 
-    auto menuBar = getMainWindow()->menuBar();
-    if (!menuBar || !menuBar->isVisible()) {
+    QWidget* menuBar = getMainWindow()->isCustomTitleBar() ? getMainWindow()->menuWidget()
+                                                           : getMainWindow()->menuBar();
+    QRect titleBarDropRect;
+    if (auto* mainWin = qobject_cast<CustomTitleBarWindow*>(getMainWindow())) {
+        if (mainWin->mode() == CustomTitleBarWindow::Mode::Custom) {
+            if (auto* leftArea = mainWin->leftArea()) {
+                if (auto* titleBar = leftArea->parentWidget()) {
+                    titleBarDropRect = QRect(titleBar->mapToGlobal(QPoint(0, 0)), titleBar->size());
+                }
+            }
+        }
+    }
+
+    if (!hasMenuBarAreas()) {
+        menuBar = nullptr;  // nowhere to drop a toolbar beside the menus
+    }
+    if ((!menuBar || !menuBar->isVisible()) && titleBarDropRect.isEmpty()) {
         if (!statusBar) {
             return false;
         }
@@ -968,12 +1037,14 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
         }
     }
     if (!area) {
-        if (!menuBar) {
+        if (!menuBar && titleBarDropRect.isEmpty()) {
             return false;
         }
-        QRect rect(menuBar->mapToGlobal(QPoint(0, 0)), menuBar->size());
+        QRect rect = !titleBarDropRect.isEmpty()
+            ? titleBarDropRect
+            : QRect(menuBar->mapToGlobal(QPoint(0, 0)), menuBar->size());
         if (rect.contains(pos)) {
-            if (pos.x() - rect.left() < menuBar->width() / 2) {
+            if (pos.x() - rect.left() < rect.width() / 2) {
                 area = menuBarLeftAreaWidget;
             }
             else {
@@ -1038,6 +1109,9 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
                 getMainWindow()->removeToolBar(tb);
                 tb->setOrientation(Qt::Horizontal);
                 lastArea->insertWidget(tbIndex, tb);
+                // The toolbars of these areas follow their own lock, not the one of the
+                // toolbar areas of the main window the toolbar was dragged from.
+                tb->setMovable(!ToolBarManager::getInstance()->areTitleToolBarsLocked());
                 tb->setVisible(true);
                 lastArea = nullptr;
             }
@@ -1051,6 +1125,7 @@ bool ToolBarManager::addToolBarToArea(QObject* source, QMouseEvent* ev)
 
 bool ToolBarManager::showContextMenu(QObject* source)
 {
+    bool customTitleBar = getMainWindow()->isCustomTitleBar();
     QMenu menu;
     QLayout* layout = nullptr;
     ToolBarAreaWidget* area = nullptr;
@@ -1058,7 +1133,10 @@ bool ToolBarManager::showContextMenu(QObject* source)
         area = statusBarAreaWidget;
         layout = findLayoutOfObject(source, area);
     }
-    else if (getMainWindow()->menuBar() == source) {
+    else if (
+        (customTitleBar && getMainWindow()->menuWidget() == source)
+        || (!customTitleBar && getMainWindow()->menuBar() == source)
+    ) {
         area = findToolBarAreaWidget();
         if (!area) {
             return false;
@@ -1169,6 +1247,13 @@ bool ToolBarManager::eventFilter(QObject* source, QEvent* ev)
         case QEvent::MouseButtonRelease: {
             auto mev = static_cast<QMouseEvent*>(ev);
             if (mev->button() == Qt::RightButton) {
+                if (source == menuBarLeftAreaWidget || source == menuBarRightAreaWidget) {
+                    if (auto* menu = getMainWindow()->createPopupMenu()) {
+                        menu->setAttribute(Qt::WA_DeleteOnClose);
+                        menu->exec(QCursor::pos());
+                        return true;
+                    }
+                }
                 if (showContextMenu(source)) {
                     return true;
                 }
@@ -1204,6 +1289,22 @@ bool Gui::ToolBarManager::areToolBarsLocked() const
     return hGeneral->GetBool("LockToolBars", false);
 }
 
+bool Gui::ToolBarManager::hasTitleToolBarLock() const
+{
+    // Only with the custom title bar have the toolbars of the menu bar and status bar areas
+    // their own lock. Otherwise they follow the lock of all toolbars.
+    auto mainWindow = getMainWindow();
+    return mainWindow && mainWindow->isCustomTitleBar();
+}
+
+bool Gui::ToolBarManager::areTitleToolBarsLocked() const
+{
+    if (!hasTitleToolBarLock()) {
+        return areToolBarsLocked();
+    }
+    return hGeneral->GetBool("LockTitleToolBars", true);
+}
+
 void Gui::ToolBarManager::setToolBarsLocked(bool locked) const
 {
     hGeneral->SetBool("LockToolBars", locked);
@@ -1211,11 +1312,42 @@ void Gui::ToolBarManager::setToolBarsLocked(bool locked) const
     setMovable(!locked);
 }
 
+void Gui::ToolBarManager::setTitleToolBarsLocked(bool locked) const
+{
+    if (!hasTitleToolBarLock()) {
+        setToolBarsLocked(locked);
+        return;
+    }
+    hGeneral->SetBool("LockTitleToolBars", locked);
+
+    setTitleToolbarsMovable(!locked);
+}
+
 void Gui::ToolBarManager::setMovable(bool movable) const
 {
+    const bool titleToolBarLock = hasTitleToolBarLock();
     for (auto& tb : toolBars()) {
+        auto parent = tb->parentWidget();
+        if (titleToolBarLock
+            && (parent == statusBarAreaWidget || parent == menuBarLeftAreaWidget
+                || parent == menuBarRightAreaWidget)) {
+            continue;
+        }
         tb->setMovable(movable);
         tb->updateCustomGripVisibility();
+    }
+}
+
+void Gui::ToolBarManager::setTitleToolbarsMovable(bool movable) const
+{
+    for (auto& tb : toolBars()) {
+        auto parent = tb->parentWidget();
+
+        if (parent == statusBarAreaWidget || parent == menuBarLeftAreaWidget
+            || parent == menuBarRightAreaWidget) {
+            tb->setMovable(movable);
+            tb->updateCustomGripVisibility();
+        }
     }
 }
 

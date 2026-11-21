@@ -2804,3 +2804,74 @@ QComboBox[validationState="error"]:focus {
     border: 1px solid #ff3b30;
     border-image: none;
 }
+
+/*==================================================================================================
+CustomTitleBarWindow
+==================================================================================================*/
+
+/* Application button that unfolds the menu bar: not as wide as a QPushButton */
+QPushButton#titleBarLogoBtn {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    min-width: 35px;
+}
+
+QPushButton#titleBarLogoBtn:hover {
+    background-color: @AccentHoverColor;
+}
+
+QMenuBar[foldable="true"] {
+  background-color: transparent;
+}
+
+WindowDecorationButton {
+    background: transparent;
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    min-width: 45px;  /* not as wide as a QPushButton */
+}
+
+WindowDecorationButton:hover {
+    background-color: @AccentHoverColor;
+}
+
+WindowDecorationButton:pressed {
+    background-color: @AccentColor;
+}
+
+/* Pin button after the last menu of the foldable menu bar */
+QToolButton#titleBarPinBtn {
+    qproperty-icon: url(:/icons/titlebar-menu-pin-@StylesheetIconsColor.svg) off, url(:/icons/titlebar-menu-unpin-@StylesheetIconsColor.svg) on;
+    background-color: transparent;
+    border: none;
+    border-radius: 3px;
+    padding: 2px;
+    margin: 0px 2px;
+}
+
+QToolButton#titleBarPinBtn:hover {
+    background-color: @AccentHoverColor;
+}
+
+QToolButton#titleBarPinBtn:pressed {
+    background-color: @AccentColor;
+}
+
+/* Line between the pinned menus and the toolbars of the title bar */
+QFrame#titleBarMenuSeparator {
+    border: none;  /* the themes frame a QFrame without shape */
+    background-color: @GeneralBorderColor;
+}
+
+/* Generic backend: red close button (Windows-style convention) */
+CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:hover {
+    background-color: #e81123;
+    color: white;
+}
+
+CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:pressed {
+    background-color: #c50f1f;
+    color: white;
+}
