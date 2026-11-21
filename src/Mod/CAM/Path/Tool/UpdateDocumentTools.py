@@ -43,9 +43,12 @@ current library version" instead of "a different tool".
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+import FreeCAD
 import Path
 from .FeedsSpeeds.presets import get_presets
-from .toolbit.models.base import PropertyGroupShape
+from .toolbit.models.base import NoHolder, PropertyGroupShape
+
+translate = FreeCAD.Qt.translate
 
 
 def resolve_library_source(asset_manager, embedded_tool_id: str, depth: int = 0):
@@ -152,6 +155,39 @@ def diff_tool_geometry(embedded_obj, library_obj) -> List[GeometryChange]:
     return changes
 
 
+def diff_tool_setup(embedded_obj, library_obj, asset_manager=None) -> List[GeometryChange]:
+    """The holder and stickout where the library's differ from the embedded tool's, and the
+    holder's outline where the embedded tool has no copy of it or its file has changed since."""
+    changes = []
+    old, new = (getattr(o, "ToolHolder", None) or NoHolder for o in (embedded_obj, library_obj))
+    if old != new:
+        changes.append(GeometryChange(name="ToolHolder", old_value=old, new_value=new))
+    else:
+        changes += _holder_outline_change(embedded_obj, asset_manager)
+    old, new = (o.Proxy.get_stickout() for o in (embedded_obj, library_obj))
+    if abs(old.Value - new.Value) > 1e-6:
+        changes.append(GeometryChange(name="Stickout", old_value=old, new_value=new))
+    return changes
+
+
+def _holder_outline_change(embedded_obj, asset_manager=None) -> List[GeometryChange]:
+    """The tool holder's outline, where the embedded tool has no copy of it (a tool saved before
+    holders were copied) or its file has changed since the copy was made."""
+    proxy = getattr(embedded_obj, "Proxy", None)
+    current = proxy.holder_from_file(asset_manager) if hasattr(proxy, "holder_from_file") else None
+    if current is None:
+        return []
+    copy = proxy.get_holder_copy()
+    if copy is None:
+        note = translate("CAM_Job", "Tool holder outline: not in the Job")
+    elif copy.to_dict() != current.to_dict():
+        note = translate("CAM_Job", "Tool holder outline: changed")
+    else:
+        return []
+    # no new value: the dialog shows the note as it is
+    return [GeometryChange(name="ToolHolderOutline", old_value=note, new_value=None)]
+
+
 def _presets_differ(embedded_obj, library_obj) -> bool:
     return get_presets(embedded_obj) != get_presets(library_obj)
 
@@ -165,12 +201,13 @@ class ToolStaleInfo:
     presets_differ: bool
     geometry_changes: List[GeometryChange] = field(default_factory=list)
     units: Optional[str] = None
+    setup_changes: List[GeometryChange] = field(default_factory=list)
 
 
 def job_stale_tools(job, asset_manager) -> List[ToolStaleInfo]:
     """Dry-run only - never writes anything. For every ToolController's
     embedded tool with a resolvable library source, report whether it
-    differs at all (presets and/or geometry). Tools with no library
+    differs at all (presets, geometry and/or setup). Tools with no library
     match, or with no differences, are simply absent from the result.
     """
     details = []
@@ -198,7 +235,8 @@ def job_stale_tools(job, asset_manager) -> List[ToolStaleInfo]:
 
         presets_differ = _presets_differ(tool_obj, library_asset.obj)
         geometry_changes = diff_tool_geometry(tool_obj, library_asset.obj)
-        if not presets_differ and not geometry_changes:
+        setup_changes = diff_tool_setup(tool_obj, library_asset.obj, asset_manager)
+        if not presets_differ and not geometry_changes and not setup_changes:
             continue
 
         details.append(
@@ -210,6 +248,7 @@ def job_stale_tools(job, asset_manager) -> List[ToolStaleInfo]:
                 presets_differ=presets_differ,
                 geometry_changes=geometry_changes,
                 units=getattr(library_asset.obj, "Units", None),
+                setup_changes=setup_changes,
             )
         )
 
