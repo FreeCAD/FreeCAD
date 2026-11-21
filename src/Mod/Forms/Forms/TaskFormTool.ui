@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFormTool</class>
+ <widget class="QWidget" name="TaskFormTool">
+  <property name="windowTitle"><string>Form Tool</string></property>
+  <property name="visible"><bool>false</bool></property>
+  <layout class="QVBoxLayout" name="toolLayout">
+   <property name="leftMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

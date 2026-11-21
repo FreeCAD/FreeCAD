@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFormEdit</class>
+ <widget class="QWidget" name="TaskFormEdit">
+  <property name="windowTitle">
+   <string>Edit Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QWidget" name="boxPage">
+      <layout class="QGridLayout" name="boxGrid">
+       <item row="0" column="1">
+        <widget class="QLabel" name="boxDimensionHeader">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="boxSegmentHeader">
+         <property name="text">
+          <string>Segments</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="boxXLabel">
+         <property name="text">
+          <string notr="true">X</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="boxLength">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="boxXSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="boxYLabel">
+         <property name="text">
+          <string notr="true">Y</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="boxWidth">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="boxYSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="boxZLabel">
+         <property name="text">
+          <string notr="true">Z</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="boxHeight">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QSpinBox" name="boxZSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="cylinderPage">
+      <layout class="QGridLayout" name="cylinderGrid">
+       <item row="0" column="1">
+        <widget class="QLabel" name="cylinderDimensionHeader">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="cylinderSegmentHeader">
+         <property name="text">
+          <string>Segments</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="cylinderRadiusLabel">
+         <property name="text">
+          <string>Radius</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="cylinderRadius">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="cylinderSideSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="cylinderHeightLabel">
+         <property name="text">
+          <string>Height</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="cylinderHeight">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="cylinderHeightSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="spherePage">
+      <layout class="QFormLayout" name="sphereForm">
+       <item row="0" column="0">
+        <widget class="QLabel" name="sphereRadiusLabel">
+         <property name="text">
+          <string>Radius</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="sphereRadius">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="sphereSegmentsLabel">
+         <property name="text">
+          <string>Segments</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="sphereSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="facePage">
+      <layout class="QGridLayout" name="faceGrid">
+       <item row="0" column="1">
+        <widget class="QLabel" name="faceDimensionHeader">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="faceSegmentHeader">
+         <property name="text">
+          <string>Segments</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="faceXLabel">
+         <property name="text">
+          <string notr="true">X</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="faceLength">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="faceXSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="faceYLabel">
+         <property name="text">
+          <string notr="true">Y</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="faceWidth">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="faceYSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="surfacePage">
+      <layout class="QFormLayout" name="surfaceForm">
+       <item row="0" column="0">
+        <widget class="QLabel" name="surfaceUSegmentsLabel">
+         <property name="text">
+          <string>U segments</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="surfaceUSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="surfaceVSegmentsLabel">
+         <property name="text">
+          <string>V segments</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="surfaceVSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="torusPage">
+      <layout class="QGridLayout" name="torusGrid">
+       <item row="0" column="1">
+        <widget class="QLabel" name="torusDimensionHeader">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="torusSegmentHeader">
+         <property name="text">
+          <string>Segments</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="torusMajorLabel">
+         <property name="text">
+          <string>Major</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="torusMajorRadius">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="torusMajorSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="torusMinorLabel">
+         <property name="text">
+          <string>Minor</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="torusMinorRadius">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="torusMinorSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="tubePage">
+      <layout class="QFormLayout" name="tubeForm">
+       <item row="0" column="0">
+        <widget class="QLabel" name="tubeOuterRadiusLabel">
+         <property name="text">
+          <string>Outer radius</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="tubeOuterRadius">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="tubeInnerRadiusLabel">
+         <property name="text">
+          <string>Inner radius</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="tubeInnerRadius">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="tubeHeightLabel">
+         <property name="text">
+          <string>Height</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="tubeHeight">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>2</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="tubeSideSegmentsLabel">
+         <property name="text">
+          <string>Segments per quadrant</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="tubeSideSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="tubeHeightSegmentsLabel">
+         <property name="text">
+          <string>Height segments</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QSpinBox" name="tubeHeightSegments">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="symmetryLayout">
+     <item>
+      <widget class="QCheckBox" name="symmetric">
+       <property name="text">
+        <string>Symmetric</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="symmetrySpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="symmetryPlaneLabel">
+       <property name="text">
+        <string>Plane</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="symmetryPlane">
+       <item>
+        <property name="text">
+         <string notr="true">XY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">XZ</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">YZ</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="surfaceTangent">
+     <property name="text">
+      <string>Tangent to neighboring faces</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="commonForm">
+     <item row="0" column="0">
+      <widget class="QLabel" name="selectionFilterLabel">
+       <property name="text">
+        <string>Selection filter</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="selectionFilter">
+       <item>
+        <property name="text">
+         <string>Points</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Edges</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Faces</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="sharpnessLabel">
+       <property name="text">
+        <string>Sharpness</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <layout class="QHBoxLayout" name="sharpnessLayout">
+       <item>
+        <widget class="QSlider" name="sharpnessSlider">
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="sharpnessSpin">
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="suffix">
+          <string notr="true"> %</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="coordinateSpaceLabel">
+       <property name="text">
+        <string>Dragger orientation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="coordinateSpace">
+       <item>
+        <property name="text">
+         <string>Global</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>View</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Selection</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="2">
+      <widget class="QPushButton" name="setPivot">
+       <property name="toolTip">
+        <string>Choose a temporary center for scaling the current selection</string>
+       </property>
+       <property name="text">
+        <string>Set Pivot</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="selectionStatus"/>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
