@@ -523,6 +523,7 @@ def findParentJob(obj):
     """retrieves a parent job object for an operation or other Path object"""
     Path.Log.track()
 
+    jobSubNames = ("Operations", "Model", "Stock", "SetupSheet", "Tools", "Workplanes")
     jobModule = "Path.Main.Job"
     if getattr(obj, "Proxy", None) and obj.Proxy.__module__ == jobModule:
         return obj
@@ -534,12 +535,13 @@ def findParentJob(obj):
     #        <- Stock <- Body
     #        <- SetupSheet
     #        <- Tools <- ToolController
+    #        <- Workplanes <- Workplane
 
     for i in obj.InList:
         if (
             getattr(i, "Proxy", None)
             and i.Proxy.__module__ == jobModule
-            and obj in (i.Operations, i.Model, i.Stock, i.SetupSheet, i.Tools, i.Workplanes)
+            and any(obj == getattr(i, prop, None) for prop in jobSubNames)
         ):
             return i
 
