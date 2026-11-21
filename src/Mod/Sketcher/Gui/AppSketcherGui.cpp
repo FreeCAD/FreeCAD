@@ -37,6 +37,7 @@
 #include "SoZoomTranslation.h"
 #include "ViewProviderPython.h"
 #include "ViewProviderSketch.h"
+#include "SketchAnnotations.h"
 #include "ViewProviderSketchGeometryExtension.h"
 #include "ViewProviderSketchGeometryExtensionPy.h"
 #include "Workbench.h"
@@ -205,6 +206,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     // instantiating the commands
     CreateSketcherCommands();
     CreateSketcherCommandsCreateGeo();
+    SketcherGui::CreateSketcherAnnotationCommands();
     CreateSketcherCommandsConstraints();
     CreateSketcherCommandsAlterGeo();
     CreateSketcherCommandsConstraintAccel();
