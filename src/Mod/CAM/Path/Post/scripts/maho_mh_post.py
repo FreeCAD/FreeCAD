@@ -46,7 +46,7 @@ Specifics of this postprocessor:
 - drill cycles are translated into the Maho specific GCode sequences and a comment with the original GCode is added before
 """
 
-from typing import Any, Dict
+from typing import Any
 
 import FreeCAD
 import Path
@@ -66,7 +66,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 # Define some types that are used throughout this file.
-Values = Dict[str, Any]
+Values = dict[str, Any]
 
 POST_TYPE = "machine"
 
