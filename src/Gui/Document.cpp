@@ -1554,7 +1554,8 @@ static bool isOlderVersion(const App::Document* doc)
                 docMajor = std::stoi(versionStr.substr(0, dotPos));
                 docMinor = std::stoi(versionStr.substr(dotPos + 1));
                 hasVersion = true;
-            } catch (const std::exception&) {
+            }
+            catch (const std::exception&) {
                 hasVersion = false;
             }
         }
