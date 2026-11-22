@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2026 sliptonic
 # SPDX-FileNotice: Part of the FreeCAD project.
@@ -38,7 +37,7 @@ Features:
 - The ability to Strip F and Z Parameters for machines that do not support them
 """
 
-from typing import Any, Dict
+from typing import Any
 import copy
 
 from Path.Post.Processor import PostProcessor, SCOPE_JOB, SCOPE_RUN
@@ -59,7 +58,7 @@ else:
 Path.Log.debug("Generic_Sheet_Cutting_post.py module loaded")
 
 # Define some types that are used throughout this file.
-Values = Dict[str, Any]
+Values = dict[str, Any]
 
 POST_TYPE = "machine"
 
@@ -197,10 +196,14 @@ class GenericSheetCutting(PostProcessor):
     def __init__(
         self,
         job,
-        tooltip=translate("CAM", "Generic Sheet Cutting post processor"),
-        tooltipargs=[],
+        tooltip=None,
+        tooltipargs=None,
         units="Metric",
     ) -> None:
+        if tooltip is None:
+            tooltip = translate("CAM", "Generic Sheet Cutting post processor")
+        if tooltipargs is None:
+            tooltipargs = []
         super().__init__(
             job=job,
             tooltip=tooltip,
@@ -241,7 +244,6 @@ class GenericSheetCutting(PostProcessor):
 
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
-        #
         super().init_values(values)
         #
         # Set any values here that need to override the default values set
@@ -577,6 +579,8 @@ class GenericSheetCutting(PostProcessor):
                             # Create new command without Z parameter
                             new_params = dict(cmd.Parameters)
                             del new_params["Z"]
+                            if set(new_params).issubset({"F"}):  # skip empty and only F parameters
+                                continue
                             new_cmd = Path.Command(cmd.Name, new_params)
                         new_commands.append(new_cmd)
                     # Replace Path with modified command list

@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2026 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Path
 from CAMTests import PathTestUtils
@@ -72,7 +69,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         is able to call static methods within this same class.
         """
         # No cleanup needed for mock objects
-        pass
 
     # Setup and tear down methods called before and after each unit test
 
@@ -103,7 +99,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
-        pass
 
     def test00_property_schema(self):
         """
@@ -720,6 +715,10 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         """
         # Create path with various movement commands and feed rates
         commands = [
+            Path.Command("G0", {"Z": 10.0}),  # Vertical rapid without feed
+            Path.Command("G0", {"Z": 15.0, "F": 0}),  # Vertical rapid with zero feed
+            Path.Command("G0", {"Z": 20.0, "F": 3000}),  # Vertical rapid with feed
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0, "F": 3000}),  # Rapid with feed
             Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0, "F": 3000}),  # Rapid with feed
             Path.Command("G1", {"X": 10.0, "Y": 10.0, "Z": 0.0, "F": 1000}),  # Linear move
             Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "F": 800}),  # Arc move
@@ -738,9 +737,12 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         # Verify the modified path
         result_cmds = self.profile_op.Path.Commands
 
-        # Check that no movement commands have Z parameters
         for cmd in result_cmds:
             if cmd.Name in ["G0", "G1", "G2", "G3"]:
+                # Check that no empty parameters and parameters contains only F
+                self.assertFalse(set(cmd.Parameters).issubset({"F"}))
+
+                # Check that no movement commands have Z parameters
                 self.assertNotIn(
                     "Z",
                     cmd.Parameters,
