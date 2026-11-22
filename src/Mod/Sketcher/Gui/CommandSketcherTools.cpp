@@ -2551,7 +2551,7 @@ CmdSketcherScale::CmdSketcherScale()
     sWhatsThis = "Sketcher_Scale";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Scale";
-    sAccel = "Z, P, S";
+    sAccel = "Z, G";
     eType = ForEdit;
 }
 
