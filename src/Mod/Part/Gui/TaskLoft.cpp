@@ -123,10 +123,10 @@ void LoftWidget::findShapes()
         for (; xp.More() && wireCount <= 1; xp.Next(), wireCount++) {
             if (!BRep_Tool::IsClosed(TopoDS::Wire(xp.Current()))) {
                 allClosed = false;
-                break;
             }
         }
-        if (wireCount == 1 && allClosed) {
+//        if (wireCount == 1 && allClosed) {
+        if (wireCount == 1) {
             viable = true;
         }
         else if (!wireCount) {
@@ -140,12 +140,18 @@ void LoftWidget::findShapes()
         }
 
         if (viable) {
+            int tpe = 0;
+            if(wireCount) {
+                tpe = (allClosed) ? 2:1;
+            }    
+
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromUtf8(obj->getNameInDocument());
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
+            child->setData(1, Qt::UserRole, tpe);
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp) {
                 child->setIcon(0, vp->getIcon());
@@ -252,6 +258,50 @@ void LoftWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem*
             d->document.c_str(),
             (const char*)current->data(0, Qt::UserRole).toByteArray()
         );
+    }
+    printf("CurrentItemChanged\n");
+    setEnable();
+}
+
+int LoftWidget::selectType()
+{
+    int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
+
+    if(!count)
+        return 0;
+
+    for (int i = 0; i < count; i++) {
+        QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
+        int tpe = child->data(1, Qt::UserRole).toInt();
+	if(tpe)
+            return tpe;
+    }
+    return 0;
+}
+
+void LoftWidget::setEnable()
+{
+    int tpe = selectType();
+    int count = d->ui.selector->availableTreeWidget()->topLevelItemCount();
+
+    printf("count = %u, tpe=%u\n", count, tpe);
+    if(!tpe) {
+        for (int i = 0; i < count; i++) {
+            QTreeWidgetItem* child = d->ui.selector->availableTreeWidget()->topLevelItem(i);
+            child->setDisabled(false);
+        }
+    } else {
+        for (int i = 0; i < count; i++) {
+            QTreeWidgetItem* child = d->ui.selector->availableTreeWidget()->topLevelItem(i);
+            printf("child %lx, count=%u\n", (unsigned long) child, i);
+            int ctpe = child->data(1, Qt::UserRole).toInt();
+            printf("ctpe = %u\n", ctpe);
+            if(!ctpe || ctpe == tpe) {
+                child->setDisabled(false);
+            } else {
+                child->setDisabled(true);
+            }
+        }
     }
 }
 
