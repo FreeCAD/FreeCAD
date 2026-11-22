@@ -767,6 +767,8 @@ SOURCE_GROUP("Help" FILES ${Help_SRCS})
 
 # The i18n sources
 SET(Language_SRCS
+    Language/PseudoTranslator.cpp
+    Language/PseudoTranslator.h
     Language/Translator.cpp
     Language/Translator.h
 )
