@@ -115,4 +115,3 @@ True if DraftTestGui05 else False
 True if DraftTestGui06 else False
 True if DraftTestGui07 else False
 True if DraftTestGui08 else False
-
