@@ -414,6 +414,52 @@ namespace e57
          cylindricalRepresentation.set(
             "radius", FloatNode( imf_, image2DHeader.cylindricalRepresentation.radius ) );
       }
+
+      // E57_LEICA_Camera_Distortion
+      // See: http://www.libe57.org/E57_LEICA_Camera_Distortion.txt
+      if ( image2DHeader.pinholeCameraDistortionExt )
+      {
+         // make sure we declare the extension before using the fields with prefix
+         if ( !imf_.extensionsLookupPrefix( "dist" ) )
+         {
+            imf_.extensionsAdd( "dist", "http://www.libe57.org/E57_LEICA_Camera_Distortion.txt" );
+         }
+
+         StructureNode distortion( imf_ );
+         image.set( "dist:distortion", distortion );
+
+         const Extension::PinholeCameraDistortion *pcd =
+            image2DHeader.pinholeCameraDistortionExt.get();
+         if ( pcd->cameraNumber > 0 )
+         {
+            distortion.set( "dist:CameraNumber", IntegerNode( imf_, pcd->cameraNumber ) );
+         }
+
+         distortion.set( "dist:Type", StringNode( imf_, pcd->type ) );
+
+         distortion.set( "dist:CV_K1", FloatNode( imf_, pcd->CV_K1 ) );
+         distortion.set( "dist:CV_K2", FloatNode( imf_, pcd->CV_K2 ) );
+         distortion.set( "dist:CV_K3", FloatNode( imf_, pcd->CV_K3 ) );
+         distortion.set( "dist:CV_K4", FloatNode( imf_, pcd->CV_K4 ) );
+         distortion.set( "dist:CV_K5", FloatNode( imf_, pcd->CV_K5 ) );
+         distortion.set( "dist:CV_K6", FloatNode( imf_, pcd->CV_K6 ) );
+
+         distortion.set( "dist:CV_P1", FloatNode( imf_, pcd->CV_P1 ) );
+         distortion.set( "dist:CV_P2", FloatNode( imf_, pcd->CV_P2 ) );
+
+         distortion.set( "dist:CV_CX", FloatNode( imf_, pcd->CV_CX ) );
+         distortion.set( "dist:CV_CY", FloatNode( imf_, pcd->CV_CY ) );
+
+         distortion.set( "dist:CV_FX", FloatNode( imf_, pcd->CV_FX ) );
+         distortion.set( "dist:CV_FY", FloatNode( imf_, pcd->CV_FY ) );
+
+         distortion.set( "dist:CV_HEIGHT",
+                         IntegerNode( imf_, static_cast<int64_t>( pcd->CV_HEIGHT ) ) );
+
+         distortion.set( "dist:CV_WIDTH",
+                         IntegerNode( imf_, static_cast<int64_t>( pcd->CV_WIDTH ) ) );
+      }
+
       return pos;
    }
 
