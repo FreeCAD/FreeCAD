@@ -1876,7 +1876,7 @@ if FreeCAD.GuiUp:
 
             # Nodes
             self.edit_nodes_button = QtGui.QPushButton()
-            self.edit_nodes_button.setText(translate("Arch", "Switch to Editing Nodes"))
+            self.edit_nodes_button.setText(translate("Arch", "Edit Nodes"))
             layout.addRow(self.edit_nodes_button)
             self.edit_nodes_button.clicked.connect(self.edit_nodes)
 
