@@ -29,15 +29,10 @@ def modal_axis(
     def axis_modal_fn(previous_command, command):
         new_params = {}
 
-        parameter_modal = command.Annotations.get(
-            "PARAMETER_MODAL", False
-        )
+        parameter_modal = command.Annotations.get("PARAMETER_MODAL", False)
 
         # Normal non-modal commands remain barriers.
-        if (
-            command.Name in Constants.NOT_PARAMETER_MODAL
-            and not parameter_modal
-        ):
+        if command.Name in Constants.NOT_PARAMETER_MODAL and not parameter_modal:
             new_command = command
             next_previous_command = None
 
@@ -45,49 +40,32 @@ def modal_axis(
             # Commands explicitly marked PARAMETER_MODAL can suppress
             # their parameters without the normal non-modal restrictions.
             dont_axis_modal = (
-                []
-                if parameter_modal
-                else Constants.NOT_PARAMETER_MODAL.get(command.Name, [])
+                [] if parameter_modal else Constants.NOT_PARAMETER_MODAL.get(command.Name, [])
             )
 
             for parameter, value in command.Parameters.items():
 
                 # Coordinate axes are modal across motion commands.
-                is_coordinate = parameter in {
-                    "X", "Y", "Z", "A", "B", "C"
-                }
+                is_coordinate = parameter in {"X", "Y", "Z", "A", "B", "C"}
 
                 # R is modal only in explicitly marked canned cycles.
-                is_cycle_parameter = (
-                    parameter == "R" and parameter_modal
-                )
+                is_cycle_parameter = parameter == "R" and parameter_modal
 
                 # Other parameters retain the existing modal behaviour,
                 # except R, which is handled separately above.
                 is_modal_parameter = (
-                    (
-                        parameter in Constants.PARAMETER_MODAL
-                        and parameter != "R"
-                    )
+                    (parameter in Constants.PARAMETER_MODAL and parameter != "R")
                     or is_coordinate
                     or is_cycle_parameter
                 )
 
-                if (
-                    not is_modal_parameter
-                    or parameter in dont_axis_modal
-                ):
+                if not is_modal_parameter or parameter in dont_axis_modal:
                     new_params[parameter] = value
 
-                elif (
-                    previous_command is None
-                    or parameter not in previous_command.Parameters
-                ):
+                elif previous_command is None or parameter not in previous_command.Parameters:
                     new_params[parameter] = value
 
-                elif (
-                    previous_command.Parameters[parameter] != value
-                ):
+                elif previous_command.Parameters[parameter] != value:
                     new_params[parameter] = value
 
             new_command = Path.Command(
@@ -106,9 +84,7 @@ def modal_axis(
             # Preserve the previous values of modal parameters,
             # including parameters omitted from the output.
             if previous_command is not None:
-                next_previous_parameters = {
-                    **previous_command.Parameters
-                }
+                next_previous_parameters = {**previous_command.Parameters}
             else:
                 next_previous_parameters = {}
 

@@ -421,11 +421,7 @@ class GenericMultiAxisIndustrial(PostProcessor):
             and self.values.get("RIGID_TAPPING", True)
             and "S" in command.Parameters
         ):
-            params = {
-                k: v
-                for k, v in command.Parameters.items()
-                if k != "S"
-            }
+            params = {k: v for k, v in command.Parameters.items() if k != "S"}
             command = Path.Command(
                 command.Name,
                 params,
