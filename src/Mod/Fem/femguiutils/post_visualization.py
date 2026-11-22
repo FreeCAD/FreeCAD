@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
@@ -105,9 +107,10 @@ class _VisualizationGroupCommand:
 
     def GetResources(self):
         return {
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("FEM", "Data Visualizations"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("FEM_PostVisualization", "Data Visualizations"),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "FEM", "Different visualizations to show post processing data in"
+                "FEM_PostVisualization",
+                "Different visualizations to show post processing data in",
             ),
         }
 

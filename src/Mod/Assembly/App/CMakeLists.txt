@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(Assembly_LIBS
     Part
@@ -15,6 +16,7 @@ generate_from_py(BomGroup)
 generate_from_py(JointGroup)
 generate_from_py(ViewGroup)
 generate_from_py(SimulationGroup)
+generate_from_py(SnapshotGroup)
 
 
 SET(Python_SRCS
@@ -32,6 +34,8 @@ SET(Python_SRCS
     ViewGroupPyImp.cpp
     SimulationGroup.pyi
     SimulationGroupPyImp.cpp
+    SnapshotGroup.pyi
+    SnapshotGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -51,14 +55,8 @@ SET(Assembly_SRCS
     AssemblyUtils.h
     BomObject.cpp
     BomObject.h
-    BomGroup.cpp
-    BomGroup.h
-    JointGroup.cpp
-    JointGroup.h
-    ViewGroup.cpp
-    ViewGroup.h
-    SimulationGroup.cpp
-    SimulationGroup.h
+    Groups.cpp
+    Groups.h
     ${Module_SRCS}
     ${Python_SRCS}
 )
@@ -73,9 +71,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(Assembly ${Assembly_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Assembly)
-endif()
+target_compile_warn_error(Assembly)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(Assembly PRIVATE
@@ -83,7 +79,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(Assembly AssemblyApp /Mod/Assembly)
+SET_BIN_DIR(Assembly AssemblyApp)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)
 
 INSTALL(TARGETS Assembly DESTINATION ${CMAKE_INSTALL_LIBDIR})

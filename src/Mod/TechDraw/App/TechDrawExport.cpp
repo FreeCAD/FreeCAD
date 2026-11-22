@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -43,24 +45,17 @@
 # include <gp_Vec.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
 # include <TColStd_Array1OfReal.hxx>
+# include <TColgp_Array1OfPnt.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Shape.hxx>
-# if OCC_VERSION_HEX < 0x070600
-#  include <BRepAdaptor_HCurve.hxx>
-# endif
 
 #include <Base/Tools.h>
 
 #include "TechDrawExport.h"
 
-
-#if OCC_VERSION_HEX >= 0x070600
-using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 using namespace TechDraw;
 using namespace std;
@@ -140,7 +135,7 @@ TopoDS_Edge TechDrawOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree)
 {
     Standard_Real tol3D = 0.001;
     Standard_Integer maxSegment = 50;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(c);
     // approximate the curve using a tolerance
     Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
@@ -291,7 +286,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
                 printBSpline(spline, id, out);
             }
             else {
-                Standard_Failure::Raise("do it the generic way");
+                throw Standard_Failure("do it the generic way");
             }
 
             return;
@@ -302,7 +297,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         str << p1.X() << ", " << p1.Y();
         if (bezier->Degree() == 3) {
             if (poles != 4)
-                Standard_Failure::Raise("do it the generic way");
+                throw Standard_Failure("do it the generic way");
             gp_Pnt p2 = bezier->Pole(2);
             gp_Pnt p3 = bezier->Pole(3);
             gp_Pnt p4 = bezier->Pole(4);
@@ -313,7 +308,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         }
         else if (bezier->Degree() == 2) {
             if (poles != 3)
-                Standard_Failure::Raise("do it the generic way");
+                throw Standard_Failure("do it the generic way");
             gp_Pnt p2 = bezier->Pole(2);
             gp_Pnt p3 = bezier->Pole(3);
             str << " Q"
@@ -322,12 +317,12 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         }
         else if (bezier->Degree() == 1) {
             if (poles != 2)
-                Standard_Failure::Raise("do it the generic way");
+                throw Standard_Failure("do it the generic way");
             gp_Pnt p2 = bezier->Pole(2);
             str << " L" << p2.X() << ", " << p2.Y() << " ";
         }
         else {
-            Standard_Failure::Raise("do it the generic way");
+            throw Standard_Failure("do it the generic way");
         }
 
         str << "\" />";
@@ -350,7 +345,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
             Standard_Integer maxDegree = 3, maxSegment = 100;
-            Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+            Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
             if (approx.IsDone() && approx.HasResult()) {
@@ -377,7 +372,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             }
             if (bezier->Degree() == 3) {
                 if (poles != 4)
-                    Standard_Failure::Raise("do it the generic way");
+                    throw Standard_Failure("do it the generic way");
                 gp_Pnt p2 = bezier->Pole(2);
                 gp_Pnt p3 = bezier->Pole(3);
                 gp_Pnt p4 = bezier->Pole(4);
@@ -388,7 +383,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             }
             else if (bezier->Degree() == 2) {
                 if (poles != 3)
-                    Standard_Failure::Raise("do it the generic way");
+                    throw Standard_Failure("do it the generic way");
                 gp_Pnt p2 = bezier->Pole(2);
                 gp_Pnt p3 = bezier->Pole(3);
                 str << " Q"
@@ -397,12 +392,12 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             }
             else if (bezier->Degree() == 1) {
                 if (poles != 2)
-                    Standard_Failure::Raise("do it the generic way");
+                    throw Standard_Failure("do it the generic way");
                 gp_Pnt p2 = bezier->Pole(2);
                 str << " L" << p2.X() << ", " << p2.Y() << " ";
             }
             else {
-                Standard_Failure::Raise("do it the generic way");
+                throw Standard_Failure("do it the generic way");
             }
         }
 
@@ -663,7 +658,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Handle(Geom_BSplineCurve) spline;
         Standard_Real tol3D = 0.001;
         Standard_Integer maxDegree = 3, maxSegment = 50;
-        Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+        Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(c);
         // approximate the curve using a tolerance
         Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
         if (approx.IsDone() && approx.HasResult()) {

@@ -4320,8 +4320,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 3,
@@ -4950,8 +4950,8 @@ Evolumes
 
 ***********************************************************
 ** constraints contact surface sets
-** ConstraintContact
-*SURFACE, NAME=DEPConstraintContact
+** Contact
+*SURFACE, NAME=DEPContact
 1344,S4
 1655,S1
 1703,S3
@@ -5410,7 +5410,7 @@ Evolumes
 2594,S3
 2595,S2
 2596,S3
-*SURFACE, NAME=INDConstraintContact
+*SURFACE, NAME=INDContact
 1283,S2
 1286,S1
 1289,S1
@@ -5574,10 +5574,10 @@ Evolumes
 
 ***********************************************************
 ** Contact Constraints
-** ConstraintContact
-*CONTACT PAIR, INTERACTION=INTConstraintContact, TYPE=SURFACE TO SURFACE
-DEPConstraintContact,INDConstraintContact
-*SURFACE INTERACTION, NAME=INTConstraintContact
+** Contact
+*CONTACT PAIR, INTERACTION=INTContact, TYPE=SURFACE TO SURFACE
+DEPContact,INDContact
+*SURFACE INTERACTION, NAME=INTContact
 *SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR
 1000000
 
@@ -5589,18 +5589,18 @@ DEPConstraintContact,INDConstraintContact
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints pressure element face loads
-** ConstraintPressure
+** Pressure
 *DLOAD
-** ConstraintPressure: face load
+** Pressure: face load
 1733,P4,100.0
 1793,P1,100.0
 1981,P4,100.0
@@ -5619,7 +5619,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 

@@ -24,6 +24,7 @@
 
 
 #include <algorithm>
+#include <format>
 #include <string>
 #include <string_view>
 #include <boost/algorithm/string.hpp>
@@ -1269,7 +1270,7 @@ BaseExport Vector3f stringToVector(std::string str)
     view.remove_prefix(1);
     view.remove_suffix(1);
 
-    str = view;
+    str = std::string {view};
 
     boost::char_separator<char> sep(" ,");
     boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
@@ -1290,7 +1291,7 @@ BaseExport Vector3f stringToVector(std::string str)
 
 BaseExport std::string vectorToString(Vector3f vec)
 {
-    return fmt::format("({},{},{})", vec.x, vec.y, vec.z);
+    return std::format("({},{},{})", vec.x, vec.y, vec.z);
 }
 
 }  // namespace Base

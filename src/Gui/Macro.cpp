@@ -35,7 +35,6 @@
 #include "MainWindow.h"
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
-#include "PythonDebugger.h"
 
 
 using namespace Gui;
@@ -78,9 +77,6 @@ bool MacroFile::commit()
 
     // sort import lines and avoid duplicates
     QTextStream str(&file);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    str.setCodec("UTF-8");
-#endif
     QStringList importCommand;
     importCommand << QStringLiteral("import FreeCAD");
     QStringList body;
@@ -201,7 +197,6 @@ bool MacroOutputOption::isAppCommand(int type)
 // ----------------------------------------------------------------------------
 
 MacroManager::MacroManager()
-    : pyDebugger(new PythonDebugger())
 {
     // Attach to the Parametergroup regarding macros
     this->params = App::GetApplication().GetParameterGroupByPath(
@@ -213,7 +208,6 @@ MacroManager::MacroManager()
 
 MacroManager::~MacroManager()
 {
-    delete pyDebugger;
     this->params->Detach(this);
 }
 
@@ -239,17 +233,17 @@ void MacroManager::open(MacroType eType, const char* sName)
 #endif
 
     macroFile.open(sName);
-    Base::Console().log("CmdM: Open macro: %s\n", sName);
+    Base::Console().log("CmdM: Open macro: {}\n", sName);
 }
 
 void MacroManager::commit()
 {
     QString macroName = macroFile.fileName();
     if (macroFile.commit()) {
-        Base::Console().log("Commit macro: %s\n", (const char*)macroName.toUtf8());
+        Base::Console().log("Commit macro: {}\n", macroName.toStdString());
     }
     else {
-        Base::Console().error("Cannot open file to write macro: %s\n", (const char*)macroName.toUtf8());
+        Base::Console().error("Cannot open file to write macro: {}\n", macroName.toStdString());
         cancel();
     }
 }
@@ -257,7 +251,7 @@ void MacroManager::commit()
 void MacroManager::cancel()
 {
     QString macroName = macroFile.fileName();
-    Base::Console().log("Cancel macro: %s\n", (const char*)macroName.toUtf8());
+    Base::Console().log("Cancel macro: {}\n", macroName.toStdString());
     macroFile.cancel();
 }
 
@@ -393,8 +387,13 @@ void MacroManager::run(MacroType eType, const char* sName)
                                         .GetGroup("BaseApp")
                                         ->GetGroup("Preferences")
                                         ->GetGroup("OutputWindow");
-        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput", true) ? new OutputStdout : nullptr;
-        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors", true) ? new OutputStderr : nullptr;
+        PyObject* pyout {nullptr};
+        PyObject* pyerr {nullptr};
+        {
+            Base::PyGILStateLocker lock;
+            pyout = hGrp->GetBool("RedirectPythonOutput", true) ? new OutputStdout : nullptr;
+            pyerr = hGrp->GetBool("RedirectPythonErrors", true) ? new OutputStderr : nullptr;
+        }
         PythonRedirector std_out("stdout", pyout);
         PythonRedirector std_err("stderr", pyerr);
         // The given path name is expected to be Utf-8
@@ -409,9 +408,4 @@ void MacroManager::run(MacroType eType, const char* sName)
     catch (const Base::Exception& e) {
         qWarning("%s", e.what());
     }
-}
-
-PythonDebugger* MacroManager::debugger() const
-{
-    return pyDebugger;
 }

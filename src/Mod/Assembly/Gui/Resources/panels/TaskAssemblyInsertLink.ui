@@ -36,7 +36,7 @@
      <item>
       <widget class="QLabel" name="label1">
        <property name="text">
-        <string>Cannot find the part? </string>
+        <string>Cannot find the part?</string>
        </property>
       </widget>
      </item>

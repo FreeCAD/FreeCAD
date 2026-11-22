@@ -78,7 +78,7 @@ static QByteArray loadFCStdThumbnail(const App::ProjectFile& proj, const QString
         }
     }
     catch (...) {
-        Base::Console().log("Failed to load thumbnail for %s", filePath.toStdString());
+        Base::Console().log("Failed to load thumbnail for {}", filePath.toStdString());
     }
     return {};
 }
@@ -104,7 +104,6 @@ void FcstdInfoSource::run()
 {
     const std::string stdFilePath(_filePath.toStdString());
     App::ProjectFile proj(stdFilePath);
-    proj.loadDocument();
     auto fileStats = getProjectFileInfo(proj);
     auto thumbnail = loadFCStdThumbnail(proj, _filePath);
     Q_EMIT _signals.infoAvailable(_filePath, fileStats, thumbnail);

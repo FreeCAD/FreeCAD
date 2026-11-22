@@ -5,7 +5,7 @@
 #
 # Utility to search for source, header and Python files with a missing license text
 
-import codecs, os
+import os
 
 ext = [".cpp", ".cxx", ".cc", ".c", ".hpp", ".hxx", ".hh", ".h", ".inl", ".inc", ".py"]
 flt = [
@@ -79,7 +79,7 @@ def traverse(path, ext, flt):
 
 
 def parsefile(fn):
-    data = codecs.open(fn, "r", "utf-8")
+    data = open(fn, "r", encoding="utf-8")
     try:
         lines = data.readlines()
         data.close()

@@ -9,7 +9,11 @@ set (Robot_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Robot_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Robot_TR_QRC} ${QM_SRCS})
-qt_add_resources(RobotResource_SRCS Resources/Robot.qrc ${Robot_TR_QRC})
+qt_add_resources(RobotResource_SRCS
+    Resources/Robot.qrc
+    ${Robot_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 SOURCE_GROUP("Resources" FILES ${RobotResource_SRCS})
 
 set(RobotGui_UIC_SRCS
@@ -128,9 +132,7 @@ if (MSVC)
     target_compile_options(RobotGui PRIVATE /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(RobotGui)
-endif()
+target_compile_warn_error(RobotGui)
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
@@ -139,7 +141,7 @@ if (_flag_found)
 endif ()
 
 
-SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
+SET_BIN_DIR(RobotGui)
 SET_PYTHON_PREFIX_SUFFIX(RobotGui)
 
 fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})

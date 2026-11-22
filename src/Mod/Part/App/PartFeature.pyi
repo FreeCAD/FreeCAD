@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from App.GeoFeature import GeoFeature
 from App.DocumentObject import DocumentObject
@@ -24,7 +22,7 @@ class PartFeature(GeoFeature):
     @constmethod
     def getElementHistory(
         self,
-        name: str,
+        elementName: str,
         *,
         recursive: bool = True,
         sameType: bool = False,
@@ -34,7 +32,7 @@ class PartFeature(GeoFeature):
         List[Tuple[DocumentObject, str, List[str]]],
     ]:
         """
-        getElementHistory(name,recursive=True,sameType=False,showName=False) - returns the element mapped name history
+        getElementHistory(elementName,recursive=True,sameType=False,showName=False) - returns the element mapped name history
 
         name: mapped element name belonging to this shape
         recursive: if True, then track back the history through other objects till the origin
@@ -44,4 +42,3 @@ class PartFeature(GeoFeature):
         If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),
         otherwise return a list of tuple.
         """
-        ...

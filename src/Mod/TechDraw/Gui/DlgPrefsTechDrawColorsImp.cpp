@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 FreeCAD Developers                                 *
  *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
@@ -65,6 +67,7 @@ void DlgPrefsTechDrawColorsImp::saveSettings()
     ui->pcbMonochrome->onSave();
     ui->pcbLightTextColor->onSave();
     ui->pcbUnderline->onSave();
+    ui->pcb_Breakline->onSave();
 }
 
 void DlgPrefsTechDrawColorsImp::loadSettings()
@@ -91,6 +94,7 @@ void DlgPrefsTechDrawColorsImp::loadSettings()
     ui->pcbMonochrome->onRestore();
     ui->pcbLightTextColor->onRestore();
     ui->pcbUnderline->onRestore();
+    ui->pcb_Breakline->onRestore();
 }
 
 /**

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QMessageBox>
 #include <QPainter>
@@ -38,7 +35,6 @@
 #include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
-
 
 using namespace SketcherGui;
 
@@ -218,6 +214,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxLineGroup->onRestore();
+    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
     ui->checkBoxAddExtGeo->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
@@ -364,7 +361,7 @@ SketcherSettingsGrid::~SketcherSettingsGrid()
 
 bool SketcherSettingsGrid::event(QEvent* event)
 {
-    if (event->type() == QEvent::PaletteChange) {
+    if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
         const QBrush brush = palette().windowText();
@@ -455,6 +452,18 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
+    connect(
+        ui->fontBoxSketcherFontName,
+        &QFontComboBox::currentFontChanged,
+        this,
+        &SketcherSettingsDisplay::onFontNameChanged
+    );
+    connect(
+        ui->EditSketcherFontSize,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &SketcherSettingsDisplay::onFontSizeChanged
+    );
 }
 
 /**
@@ -467,6 +476,7 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 
 void SketcherSettingsDisplay::saveSettings()
 {
+    ui->fontBoxSketcherFontName->onSave();
     ui->EditSketcherFontSize->onSave();
     ui->ConstraintSymbolSize->onSave();
     ui->viewScalingFactor->onSave();
@@ -479,16 +489,20 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxUseSystemDecimals->onSave();
     ui->checkBoxShowDimensionalName->onSave();
     ui->prefDimensionalStringFormat->onSave();
+    ui->checkBoxShowDirectionalAutoConstraintHints->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
     ui->checkBoxTVForceOrtho->onSave();
     ui->checkBoxTVSectionView->onSave();
+    ui->axisTransparency->onSave();
+    ui->occludedAxisTransparency->onSave();
 }
 
 void SketcherSettingsDisplay::loadSettings()
 {
+    ui->fontBoxSketcherFontName->onRestore();
     ui->EditSketcherFontSize->onRestore();
     ui->ConstraintSymbolSize->onRestore();
     ui->viewScalingFactor->onRestore();
@@ -501,6 +515,7 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxUseSystemDecimals->onRestore();
     ui->checkBoxShowDimensionalName->onRestore();
     ui->prefDimensionalStringFormat->onRestore();
+    ui->checkBoxShowDirectionalAutoConstraintHints->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
@@ -508,6 +523,8 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVForceOrtho->onRestore();
     this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
     ui->checkBoxTVSectionView->onRestore();
+    ui->axisTransparency->onRestore();
+    ui->occludedAxisTransparency->onRestore();
 }
 
 /**
@@ -521,6 +538,16 @@ void SketcherSettingsDisplay::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void SketcherSettingsDisplay::showEvent(QShowEvent* e)
+{
+    QPalette previewPalette = QPalette();
+    previewPalette.setColor(QPalette::Window, getSketcherBackgroundColor());
+    previewPalette.setColor(QPalette::WindowText, getSketcherConstraintColor());
+    ui->LabelFontPreview->setPalette(previewPalette);
+
+    Gui::Dialog::PreferencePage::showEvent(e);
 }
 
 void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
@@ -548,7 +575,7 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     catch (Base::PyException& e) {
         Base::Console().developerError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
         e.reportException();
-        errMsg = QString::fromLatin1(e.what());
+        errMsg = QString::fromUtf8(e.what());
     }
     catch (...) {
         errMsg = tr("Unexpected C++ exception");
@@ -556,6 +583,84 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     if (errMsg.length() > 0) {
         QMessageBox::warning(this, tr("Sketcher"), errMsg);
     }
+}
+
+void SketcherSettingsDisplay::onFontNameChanged(const QFont& font)
+{
+    QFont testFont;
+    // To QFontMetrics::inFont() return false, QFont::setStyleStrategy() must be called
+    // before QFont::setFamily()
+    testFont.setStyleStrategy(QFont::NoFontMerging);
+    testFont.setFamily(font.family());
+
+    QFontMetrics metrics(testFont);
+    auto testChars = QString::fromUtf8(RequiredCharacters).toUcs4();
+
+    QString missingChars;
+    for (char32_t testChar : testChars) {
+        if (!metrics.inFontUcs4(testChar)) {
+            missingChars += QString::fromUtf8("  ");
+            missingChars += QString::fromUcs4(&testChar, 1);
+        }
+    }
+
+    if (missingChars.length() > 0) {
+        ui->LabelFontMessage->setText(tr("Glyphs not present:") + missingChars);
+        ui->LabelFontMessage->show();
+    }
+    else {
+        ui->LabelFontMessage->hide();
+    }
+
+    QFont previewFont(font);
+    previewFont.setPixelSize(ui->EditSketcherFontSize->value());
+    ui->LabelFontPreview->setFont(previewFont);
+}
+
+void SketcherSettingsDisplay::onFontSizeChanged(int size)
+{
+    QFont previewFont = ui->fontBoxSketcherFontName->currentFont();
+    previewFont.setPixelSize(size);
+    ui->LabelFontPreview->setFont(previewFont);
+}
+
+QColor SketcherSettingsDisplay::getSketcherBackgroundColor()
+{
+    auto parameters = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+
+    uint32_t backgroundColor;
+    if (parameters->GetBool("Gradient", false) || parameters->GetBool("RadialGradient", false)) {
+        if (parameters->GetBool("UseBackgroundColorMid")) {
+            backgroundColor = parameters->GetUnsigned("BackgroundColor4", 0xFFFFFFFF);
+        }
+        else {
+            // For 2 colors gradient take their average, i.e. the background in the center
+            backgroundColor = (((parameters->GetUnsigned("BackgroundColor2", 0xFFFFFFFF)) >> 8)
+                               + ((parameters->GetUnsigned("BackgroundColor3", 0xFFFFFFFF)) >> 8))
+                << 7;
+        }
+    }
+    else {
+        backgroundColor = parameters->GetUnsigned("BackgroundColor", 0xFFFFFFFF);
+    }
+
+    return QColor(
+        (backgroundColor >> 24) & 0xFF,
+        (backgroundColor >> 16) & 0xFF,
+        (backgroundColor >> 8) & 0xFF
+    );
+}
+
+QColor SketcherSettingsDisplay::getSketcherConstraintColor()
+{
+    auto parameters = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/View");
+    uint32_t constraintColor = parameters->GetUnsigned("ConstrainedDimColor", 0x000000FF);
+
+    return QColor(
+        (constraintColor >> 24) & 0xFF,
+        (constraintColor >> 16) & 0xFF,
+        (constraintColor >> 8) & 0xFF
+    );
 }
 
 
@@ -578,13 +683,22 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalPattern->setItemDelegate(lineStyleDelegate);
     ui->ExternalDefiningPattern->setIconSize(LineIconSize);
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
-    const QBrush brush = palette().windowText();
+    ui->InformationPattern->setIconSize(LineIconSize);
+    ui->InformationPattern->setItemDelegate(lineStyleDelegate);
+    ui->DimensionalConstraintLinePattern->setIconSize(LineIconSize);
+    ui->DimensionalConstraintLinePattern->setItemDelegate(lineStyleDelegate);
+    ui->AxisLinePattern->setIconSize(LineIconSize);
+    ui->AxisLinePattern->setItemDelegate(lineStyleDelegate);
+
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
         ui->ConstructionPattern->addItem(QString(), QVariant(style.pattern));
         ui->InternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
+        ui->InformationPattern->addItem(QString(), QVariant(style.pattern));
+        ui->DimensionalConstraintLinePattern->addItem(QString(), QVariant(style.pattern));
+        ui->AxisLinePattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -598,10 +712,17 @@ SketcherSettingsAppearance::~SketcherSettingsAppearance()
 
 bool SketcherSettingsAppearance::event(QEvent* event)
 {
-    if (event->type() == QEvent::PaletteChange) {
+    if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+
+        // Resolve color from qss source - see src/Gui/Application.cpp (2869)
+        QLabel dummyLabel;
+        dummyLabel.show();
+
+        QColor textColor = dummyLabel.palette().color(QPalette::Text);
+        QBrush brush = QBrush(textColor);
+
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->EdgePattern->setItemIcon(i, icon);
@@ -609,6 +730,9 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->InternalPattern->setItemIcon(i, icon);
             ui->ExternalPattern->setItemIcon(i, icon);
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
+            ui->InformationPattern->setItemIcon(i, icon);
+            ui->DimensionalConstraintLinePattern->setItemIcon(i, icon);
+            ui->AxisLinePattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -630,6 +754,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->FullyConstraintElementColor->onSave();
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
+    ui->InformationColor->onSave();
+    ui->GridLineColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -646,6 +772,9 @@ void SketcherSettingsAppearance::saveSettings()
     ui->InternalWidth->onSave();
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
+    ui->InformationWidth->onSave();
+    ui->DimensionalConstraintLineWidth->onSave();
+    ui->AxisLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -671,6 +800,20 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->ExternalDefiningPattern->itemData(ui->ExternalDefiningPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("ExternalDefiningPattern", pattern);
+
+    data = ui->InformationPattern->itemData(ui->InformationPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("InformationPattern", pattern);
+
+    data = ui->DimensionalConstraintLinePattern->itemData(
+        ui->DimensionalConstraintLinePattern->currentIndex()
+    );
+    pattern = data.toInt();
+    hGrp->SetInt("DimensionalConstraintLinePattern", pattern);
+
+    data = ui->AxisLinePattern->itemData(ui->AxisLinePattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("AxisLinePattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -688,6 +831,8 @@ void SketcherSettingsAppearance::loadSettings()
     ui->FullyConstraintElementColor->onRestore();
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
+    ui->InformationColor->onRestore();
+    ui->GridLineColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
@@ -704,6 +849,9 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
+    ui->InformationWidth->onRestore();
+    ui->DimensionalConstraintLineWidth->onRestore();
+    ui->AxisLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -745,6 +893,27 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->ExternalDefiningPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("InformationPattern", 0b1111110011111100);
+    index = ui->InformationPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->InformationPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("DimensionalConstraintLinePattern", 0b1111111111111111);
+    index = ui->DimensionalConstraintLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->DimensionalConstraintLinePattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("AxisLinePattern", 0b1111111111111111);
+    index = ui->AxisLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->AxisLinePattern->setCurrentIndex(index);
 }
 
 /**

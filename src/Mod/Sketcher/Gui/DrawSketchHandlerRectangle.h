@@ -1,29 +1,28 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2022 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
+
+#include <cmath>
 
 #include <QApplication>
 
@@ -37,13 +36,10 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerRectangle;
 
@@ -502,6 +498,15 @@ private:
             firstCurve = getHighestCurveIndex() + 1;
 
             createShape(false);
+            if (ShapeGeometry.empty()) {
+                THROWM(
+                    Base::ValueError,
+                    QT_TRANSLATE_NOOP(
+                        "Notifications",
+                        "Cannot create a rectangle with zero length or width"
+                    ) "\n"
+                );
+            }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
@@ -827,8 +832,7 @@ private:
 
     bool canGoToNextMode() override
     {
-        if (state() == SelectMode::SeekSecond
-            && (length < Precision::Confusion() || width < Precision::Confusion())) {
+        if (state() == SelectMode::SeekSecond && !updateRectangleMetrics()) {
             return false;
         }
 
@@ -903,11 +907,7 @@ private:
 
         Base::Vector2d vecL = corner2 - corner1;
         Base::Vector2d vecW = corner4 - corner1;
-        length = vecL.Length();
-        width = vecW.Length();
-        angle = vecL.Angle();
-        if (length < Precision::Confusion() || width < Precision::Confusion()
-            || fmod(fabs(angle123), std::numbers::pi) < Precision::Confusion()) {
+        if (!updateRectangleMetrics()) {
             return;
         }
 
@@ -938,6 +938,29 @@ private:
                 finishRectangleCreation(thicknessNotZero);
             }
         }
+    }
+
+    bool updateRectangleMetrics()
+    {
+        Base::Vector2d vecL = corner2 - corner1;
+        Base::Vector2d vecW = corner4 - corner1;
+
+        length = vecL.Length();
+        width = vecW.Length();
+        angle = vecL.Angle();
+
+        auto isFinite = [](const Base::Vector2d& point) {
+            return std::isfinite(point.x) && std::isfinite(point.y);
+        };
+        auto hasNonDegenerateAngle = [](double angle) {
+            return std::isfinite(angle)
+                && fmod(fabs(angle), std::numbers::pi) >= Precision::Confusion();
+        };
+
+        return isFinite(corner1) && isFinite(corner2) && isFinite(corner3) && isFinite(corner4)
+            && std::isfinite(length) && std::isfinite(width) && std::isfinite(angle)
+            && length >= Precision::Confusion() && width >= Precision::Confusion()
+            && hasNonDegenerateAngle(angle123) && hasNonDegenerateAngle(angle412);
     }
 
     void createFirstRectangleGeometries(Base::Vector2d vecL, Base::Vector2d vecW, double L1, double L2)
@@ -2114,7 +2137,7 @@ void DSHRectangleController::configureToolWidget()
         );
         syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -2835,6 +2858,10 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
                 && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
+                if (!handler->canGoToNextMode()) {
+                    return;
+                }
+
                 if (handler->roundCorners || handler->makeFrame
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints
                     || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
@@ -3090,8 +3117,8 @@ void DSHRectangleController::addConstraints()
             ConstraintLineByAngle(firstCurve, angle, obj);
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
-                // if 90? then perpendicular already created.
+            if (fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+                // At odd multiples of 90 degrees, a perpendicular constraint was already created.
                 Gui::cmdAppObjectArgs(
                     obj,
                     "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
@@ -3122,8 +3149,8 @@ void DSHRectangleController::addConstraints()
             );
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
-                // if 90? then perpendicular already created.
+            if (fabs(fmod(fabs(innerAngle), pi) - pi / 2) > Precision::Confusion()) {
+                // At odd multiples of 90 degrees, a perpendicular constraint was already created.
                 Gui::cmdAppObjectArgs(
                     obj,
                     "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",

@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
@@ -501,6 +498,8 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
         return None, None, None
     if not cutplane.Faces:
         return None, None, None
+    limit_depth = depth is not None and depth > 0
+
     import Part
 
     if not isinstance(shapes, list):
@@ -525,7 +524,7 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
     prm_range = p.ParameterRange  # (uMin, uMax, vMin, vMax)
     u = p.valueAt(prm_range[0], 0).sub(p.valueAt(prm_range[1], 0)).normalize()
     v = u.cross(ax)
-    if not bb.isCutPlane(ce, ax):
+    if not bb.isCutPlane(ce, ax) and not clip and not limit_depth:
         # FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane)+"\n")
         return None, None, None
     else:
@@ -559,21 +558,22 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
         cutface = Part.Face(cutface)
         cutnormal = DraftVecUtils.scaleTo(ax, wm)
         cutvolume = cutface.extrude(cutnormal)
-        cutnormal = cutnormal.negative()
-        invcutvolume = cutface.extrude(cutnormal)
-        if clip:
-            extrudedplane = p.extrude(cutnormal)
-            bordervolume = invcutvolume.cut(extrudedplane)
-            cutvolume = cutvolume.fuse(bordervolume)
-            cutvolume = cutvolume.removeSplitter()
-            invcutvolume = extrudedplane
-            cutface = p
+        invcutvolume = cutface.extrude(-cutnormal)
         if depth:
-            depthnormal = DraftVecUtils.scaleTo(cutnormal, depth)
+            depthnormal = DraftVecUtils.scaleTo(-cutnormal, depth)
             depthvolume = cutface.extrude(depthnormal)
             depthclipvolume = invcutvolume.cut(depthvolume)
             cutvolume = cutvolume.fuse(depthclipvolume)
+        if clip:
+            clipface = cutface.cut(p)
+            clipface.translate(-cutnormal)
+            clipvolume = clipface.extrude(2 * cutnormal)
+            cutvolume = cutvolume.fuse(clipvolume)
+            invcutvolume = invcutvolume.fuse(clipvolume)
+            cutface = p
+        if depth or clip:
             cutvolume = cutvolume.removeSplitter()
+            invcutvolume = invcutvolume.removeSplitter()
         return cutface, cutvolume, invcutvolume
 
 
@@ -716,7 +716,7 @@ def removeCurves(shape, dae=False, tolerance=5):
 
 
 def removeShape(objs, mark=True):
-    """removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    """removeShape(objs, mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
     be processed by this function will become red."""
     import DraftGeomUtils
@@ -727,32 +727,32 @@ def removeShape(objs, mark=True):
         if DraftGeomUtils.isCubic(obj.Shape):
             dims = DraftGeomUtils.getCubicDimensions(obj.Shape)
             if dims:
+                place, length, width, height = dims
                 name = obj.Name
                 tp = Draft.getType(obj)
-                print(tp)
                 if tp == "Structure":
-                    FreeCAD.ActiveDocument.removeObject(name)
-                    import ArchStructure
-
-                    str = ArchStructure.makeStructure(
-                        length=dims[1], width=dims[2], height=dims[3], name=name
-                    )
-                    str.Placement = dims[0]
-                elif tp == "Wall":
-                    FreeCAD.ActiveDocument.removeObject(name)
                     import Arch
 
-                    length = dims[1]
-                    width = dims[2]
-                    v1 = Vector(length / 2, 0, 0)
-                    v2 = v1.negative()
-                    v1 = dims[0].multVec(v1)
-                    v2 = dims[0].multVec(v2)
-                    line = Draft.makeLine(v1, v2)
-                    Arch.makeWall(line, width=width, height=dims[3], name=name)
-        else:
-            if mark:
-                obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+                    stru = Arch.makeStructure(length=length, width=width, height=height, name=name)
+                    if height <= length:
+                        # Beam
+                        place.move(place.Rotation.multVec(Vector(-length / 2, 0, height / 2)))
+                    stru.Placement = place
+                    Draft.format_object(stru, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+                elif tp == "Wall":
+                    import Arch
+
+                    place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
+                    line = Draft.make_line(Vector(0, 0, 0), Vector(length, 0, 0))
+                    line.Placement = place
+                    wall = Arch.makeWall(
+                        line, width=width, height=height, align="Center", name=name
+                    )
+                    Draft.format_object(wall, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+        elif FreeCAD.GuiUp and mark:
+            obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
 
 
 def mergeCells(objectslist):

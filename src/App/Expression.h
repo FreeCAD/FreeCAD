@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -68,6 +65,16 @@ AppExport bool isAnyEqual(const App::any& v1, const App::any& v2);
  * @throw Base::TypeError if the value cannot be converted to a Base::Quantity.
  */
 AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = nullptr);
+
+/**
+ * @brief Convert an App::any value to a std::string.
+ *
+ * @param[in] value The value to convert.
+ *
+ * @return The converted std::string.
+ * @throw Base::ExpressionError if the value has an unknown type.
+ */
+AppExport std::string anyToString(const App::any& value);
 
 // clang-format off
 /// Map of depending objects to a map of depending property name to the full referencing object identifier
@@ -433,8 +440,14 @@ public:
      * @param[in,out] deps The map to fill with dependent document objects to a
      * boolean indicating whether they are hidden (`href` references).
      * @param[in,out] labels Optional vector to fill with labels of dependent objects.
+     * @param[in,out] propDeps Optional mapping with property names. The boolean
+     * indicates whether this is a hidden reference.
      */
-    void getDepObjects(std::map<App::DocumentObject*,bool>& deps, std::vector<std::string> *labels=nullptr) const;
+    void getDepObjects(
+        std::map<App::DocumentObject*, bool>& deps,
+        std::vector<std::string>* labels = nullptr,
+        std::map<std::pair<std::string, DocumentObject*>, bool>* propDeps = nullptr
+    ) const;
 
     /**
      * @brief Import sub-names in the expression after importing external objects.

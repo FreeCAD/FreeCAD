@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <limits>
@@ -47,11 +44,13 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
+#include "SheetModel.h"
 
 
 using namespace SpreadsheetGui;
@@ -245,11 +244,10 @@ void SheetTableView::onBind()
 void SheetTableView::onConfSetup()
 {
     auto ranges = selectedRanges();
-    if (ranges.empty()) {
-        return;
+    if (ranges.size() == 1 && ranges.back().size() > 1) {
+        DlgSheetConf dlg {sheet, ranges.back()};
+        dlg.exec();
     }
-    DlgSheetConf dlg {sheet, ranges.back()};
-    dlg.exec();
 }
 
 void SheetTableView::cellProperties()
@@ -488,7 +486,7 @@ bool SheetTableView::event(QEvent* event)
                 break;
         }
         if (kevent->matches(QKeySequence::SelectAll)) {
-            QTableView::selectAll();
+            selectAll();
             return true;
         }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
@@ -717,7 +715,7 @@ void SheetTableView::pasteClipboard()
         QMessageBox::critical(
             Gui::getMainWindow(),
             QObject::tr("Copy & Paste Failed"),
-            QString::fromLatin1(e.what())
+            QString::fromUtf8(e.what())
         );
         return;
     }
@@ -994,6 +992,20 @@ void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
     );
 }
 
+void SheetTableView::selectAll()
+{
+    auto* sheetModel = qobject_cast<SheetModel*>(model());
+    if (!sheetModel) {
+        return;
+    }
+
+    auto* param = SheetParameter::instance();
+    if (sheetModel->rowCount() <= param->getMaximumRowCount()
+        && sheetModel->columnCount() <= param->getMaximumColumnCount()) {
+        QTableView::selectAll();
+    }
+}
+
 void SheetTableView::mergeCells()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_MergeCells");
@@ -1052,6 +1064,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
 
     auto ranges = selectedRanges();
     actionBind->setEnabled(!ranges.empty() && ranges.size() <= 2);
+    actionConf->setEnabled(ranges.size() == 1 && ranges.back().size() > 1);
 
     contextMenu.exec(QCursor::pos());
 }

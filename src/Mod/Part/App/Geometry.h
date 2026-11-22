@@ -67,6 +67,7 @@
 #include <Base/Placement.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <Base/BoundBox.h>
 #include <Mod/Part/PartGlobal.h>
 #include <BRepAdaptor_Surface.hxx>
 
@@ -92,6 +93,7 @@ public:
     static std::unique_ptr<Geometry> fromShape(const TopoDS_Shape& s, bool silent = false);
     virtual TopoDS_Shape toShape() const = 0;
     virtual const Handle(Geom_Geometry) & handle() const = 0;
+    virtual Base::BoundBox3d getBoundBox() const;
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
     void Save(Base::Writer& /*writer*/) const override;
@@ -1397,7 +1399,8 @@ PartExport GeomArcOfCircle* createFilletGeometry(
     double radius,
     int& pos1,
     int& pos2,
-    bool& reverse
+    bool& reverse,
+    Base::Vector3d& cornerPoint
 );
 PartExport std::unique_ptr<GeomSurface> makeFromSurface(
     const Handle(Geom_Surface) &,

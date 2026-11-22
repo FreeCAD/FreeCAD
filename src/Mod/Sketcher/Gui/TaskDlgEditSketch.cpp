@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2009 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Gui/Command.h>
@@ -55,6 +52,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
         "User parameter:BaseApp/Preferences/Mod/Sketcher"
     );
     setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
+    setAutoCloseOnResetEdit(true);
 
     Content.push_back(Messages);
     Content.push_back(ToolSettings);
@@ -118,28 +116,33 @@ void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
 void TaskDlgEditSketch::open()
 {}
 
+void TaskDlgEditSketch::closed()
+{}
+
 void TaskDlgEditSketch::clicked(int)
 {}
 
 bool TaskDlgEditSketch::reject()
 {
-    sketchView->editingCancelled = true;
-    deactivate();
-    sketchView->editingCancelled = false;
+    ViewProviderSketch* view = sketchView;
+    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
+    view->editingCancelled = true;
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
+    view->editingCancelled = false;
 
     return true;
 }
 
 bool TaskDlgEditSketch::accept()
 {
-    std::string document = getDocumentName();
-    deactivate();
+    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').recompute()", document.c_str());
 
     return true;
 }
 
-void TaskDlgEditSketch::deactivate()
+void TaskDlgEditSketch::saveDialogState() const
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher"
@@ -148,18 +151,16 @@ void TaskDlgEditSketch::deactivate()
     hGrp->SetBool("ExpandedSolverAdvancedWidget", SolverAdvanced->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget", Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget", Elements->isGroupVisible());
-
-    if (sketchView && sketchView->getSketchMode() != ViewProviderSketch::STATUS_NONE) {
-        sketchView->purgeHandler();
-    }
-
-    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
 }
 
 QDialogButtonBox::StandardButtons TaskDlgEditSketch::getStandardButtons() const
 {
     return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+}
+
+void TaskDlgEditSketch::autoClosedOnResetEdit()
+{
+    saveDialogState();
 }
 
 void TaskDlgEditSketch::autoClosedOnClosedView()

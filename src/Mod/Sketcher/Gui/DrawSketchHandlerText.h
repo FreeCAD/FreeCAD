@@ -1,25 +1,23 @@
-// SPDX - License - Identifier: LGPL - 2.1 - or -later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2025 Pierre-Louis Boyer                                  *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2025 Pierre-Louis Boyer
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #ifndef SKETCHERGUI_DrawSketchHandlerText_H
@@ -38,9 +36,9 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
-#include "Utils.h"
 #include "CommandConstraints.h"
+#include "FontProvider.h"
+#include "Utils.h"
 
 #include <vector>
 #include <algorithm>
@@ -563,7 +561,7 @@ void DSHTextController::adaptParameters(Base::Vector2d onSketchPos)
                     Base::Unit::Angle
                 );
             }
-            else if (vec.Length() > Precision::Confusion()) {
+            else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                 double ovpRange = Base::toRadians(fourthParam->getValue());
                 if (fabs(range - ovpRange) > Precision::Confusion()) {
                     setOnViewParameterValue(

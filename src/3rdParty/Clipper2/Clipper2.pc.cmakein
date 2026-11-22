@@ -1,0 +1,12 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: Clipper2@PCFILE_LIB_SUFFIX@
+Description: A Polygon Clipping and Offsetting library in C++
+Version: @PROJECT_VERSION@
+URL: https://github.com/AngusJohnson/Clipper2
+Requires:
+Libs: -L${libdir} -lClipper2@PCFILE_LIB_SUFFIX@
+Cflags: -I${includedir}

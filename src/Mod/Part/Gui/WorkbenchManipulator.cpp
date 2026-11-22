@@ -28,8 +28,21 @@
 
 using namespace PartGui;
 
-void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar)
-{}
+void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
+{
+    if (auto edit = menuBar->findItem("&Edit")) {
+        if (auto create = edit->findItem("Create")) {
+            auto add = new Gui::MenuItem();  // NOLINT
+            add->setCommand("Part_Datums");
+            if (auto item = create->findItem("Std_LinkActions")) {
+                create->insertItem(item, add);
+            }
+            else {
+                create->appendItem(add);
+            }
+        }
+    }
+}
 
 void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 {
@@ -45,9 +58,10 @@ void WorkbenchManipulator::addSelectionFilter(Gui::ToolBarItem* toolBar)
     if (auto view = toolBar->findItem("View")) {
         auto add = new Gui::ToolBarItem();  // NOLINT
         add->setCommand("Part_SelectFilter");
-        auto item = view->findItem("Std_TreeViewActions");
-        if (item) {
-            view->insertItem(item, add);
+        auto items = view->getItems();
+        auto drawStyleIdx = items.indexOf(view->findItem("Std_DrawStyle"));
+        if (drawStyleIdx >= 0 && drawStyleIdx + 1 < items.size()) {
+            view->insertItem(items.at(drawStyleIdx + 1), add);
         }
         else {
             view->appendItem(add);

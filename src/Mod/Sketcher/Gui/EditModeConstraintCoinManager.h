@@ -1,36 +1,35 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2021 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
-#include <functional>
+#include <cstdint>
+#include <set>
 #include <vector>
 
 #include <QColor>
 #include <QImage>
 #include <QRect>
 
+#include <Base/Vector3D.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoInfo.h>
 
@@ -41,6 +40,7 @@
 
 
 class SbVec3f;
+class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
 class SbVec3s;
@@ -95,6 +95,26 @@ private:
     };
 
 public:
+    struct ConstraintPreselectionResult
+    {
+        enum class HitKind : std::uint8_t
+        {
+            None,
+            Icon,
+            DatumPresentation,
+            DatumAnnotation
+        };
+
+        HitKind Kind = HitKind::None;
+        std::set<int> ConstrIndices;
+        Base::Vector3d PickedPoint;
+
+        [[nodiscard]] bool hasHit() const
+        {
+            return Kind != HitKind::None && !ConstrIndices.empty();
+        }
+    };
+
     explicit EditModeConstraintCoinManager(
         ViewProviderSketch& vp,
         DrawingParameters& drawingParams,
@@ -134,9 +154,16 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point);
+    ConstraintPreselectionResult detectPreselectionConstr(
+        const SoPickedPoint* Point,
+        const SbVec2s& cursorScreenPos
+    );
+    ConstraintPreselectionResult detectPreselectionConstr(
+        const SbVec2s& cursorScreenPos,
+        Base::Vector3d* pickedPoint = nullptr
+    );
 
-    SoSeparator* getConstraintIdSeparator(int i);
+    SoSeparator* getConstraintIdSeparator(int i) const;
 
     void createEditModeInventorNodes();
 
@@ -158,6 +185,23 @@ private:
 
     /// Returns the size that Coin should display the indicated image at
     SbVec3s getDisplayedSize(const SoImage*) const;
+    std::set<int> parseConstraintIds(const QString& constrIdsStr) const;
+    bool resolveIconScreenGeometry(
+        SoSeparator* sep,
+        SoImage* iconNode,
+        int iconIndex,
+        SbVec2f& iconScreenCenter,
+        SbVec3s& iconSize,
+        QString& constrIdsStr,
+        Base::Vector3d* pickedPoint = nullptr
+    ) const;
+    ConstraintPreselectionResult detectPreselectionIcon(
+        SoSeparator* sep,
+        SoImage* iconNode,
+        int iconIndex,
+        const SbVec2s& cursorScreenPos,
+        Base::Vector3d* pickedPoint = nullptr
+    ) const;
 
     /** @name Protected helpers for drawing constraint icons*/
     //@{

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -28,6 +25,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 #include <boost/dynamic_bitset.hpp>
 #include <Base/Uuid.h>
@@ -401,9 +399,27 @@ protected:
     long getPyValue(PyObject* item) const override;
 };
 
-/** Integer list properties
- *
- */
+/** A list of signed integer pairs, exposed to Python as a list of tuples. */
+class AppExport PropertyIntPairList: public PropertyListsT<std::pair<long, long>>
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    using IntPair = std::pair<long, long>;
+
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject* value) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
+    unsigned int getMemSize() const override;
+
+protected:
+    IntPair getPyValue(PyObject* item) const override;
+};
+
+/** Integer set property. */
 class AppExport PropertyIntegerSet: public Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -487,31 +503,41 @@ public:
 
     virtual int getSize() const;
 
-    /** Sets the property
+    /**
+     * Accessor methods to the whole map
      */
-    void setValue()
-    {}
+    const std::map<std::string, std::string>& getValue() const;
+    void setValue();
+    void setValue(const std::map<std::string, std::string>& map);
+    void setValue(std::map<std::string, std::string>&& map);
+
+    /**
+     * Accessor methods to particular items
+     */
+    std::string getValue(const std::string& key) const;
     void setValue(const std::string& key, const std::string& value);
+    bool deleteValue(const std::string& key);
+
+    /// Adds or updates entry for a non-null value, deletes entry for a null value
     void setValue(const char* key, const char* value);
-    void setValues(const std::map<std::string, std::string>&);
-    void setValues(std::map<std::string, std::string>&&);
 
-    /// index operator
-    const std::string& operator[](const std::string& key) const;
+    /**
+     * Accessor aliases
+     */
+    const std::map<std::string, std::string>& getValues() const { return getValue(); }
+    void setValues(const std::map<std::string, std::string>& map) { setValue(map); }
+    void setValues(std::map<std::string, std::string>&& map) { setValue(map); }
+    void set1Value(const std::string& key, const std::string& value) { setValue(key, value); }
 
-    void set1Value(const std::string& key, const std::string& value)
+    const boost::any getPathValue(const ObjectIdentifier& path) const override;
+    void setPathValue(const ObjectIdentifier& path, const boost::any& value) override;
+
+    ObjectIdentifier getItemPath(const std::string& key) const;
+
+    const char* getEditorName() const override
     {
-        _lValueList.operator[](key) = value;
+        return "Gui::PropertyEditor::PropertyMapItem";
     }
-
-    const std::map<std::string, std::string>& getValues() const
-    {
-        return _lValueList;
-    }
-    const char* getValue(const char* key) const;
-
-    // virtual const char* getEditorName(void) const { return
-    // "Gui::PropertyEditor::PropertyStringListItem"; }
 
     PyObject* getPyObject() override;
     void setPyObject(PyObject* py) override;

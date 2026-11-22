@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -27,6 +25,9 @@
 # include <JtAttribute_GeometricTransform.hxx>
 # include <JtAttribute_Material.hxx>
 # include <JtData_Model.hxx>
+# include <JtElement_ShapeLOD_PolygonSet.hxx>
+# include <Standard_Failure.hxx>
+# include <JtElement_ShapeLOD_PolylineSet.hxx>
 # include <JtElement_ShapeLOD_TriStripSet.hxx>
 # include <JtNode_Instance.hxx>
 # include <JtNode_Partition.hxx>
@@ -35,7 +36,9 @@
 # include <JtNode_Shape_Vertex.hxx>
 # include <TCollection_AsciiString.hxx>
 # include <TCollection_ExtendedString.hxx>
+# include <list>
 # include <Base/Builder3D.h>
+# include <Base/Matrix.h>
 
 namespace JtReaderNS
 {
@@ -47,6 +50,8 @@ public:
     void open(const std::string& filename);
     void clear();
     std::string getOutput() const;
+    int shapeCount() const;
+    std::string fileName() const;
 
 private:
     void traverseGraph(const Handle(JtNode_Base) & aNode);
@@ -59,6 +64,8 @@ private:
     void readInstance(const Handle(JtNode_Instance) & anInstance);
     void readAttributes(const JtData_Object::VectorOfObjects& attr);
     void getTriangleStripSet(const Handle(JtElement_ShapeLOD_TriStripSet) & aLOD);
+    void getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLOD);
+    void getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & aLOD);
 
 private:
     TCollection_ExtendedString jtDir;
@@ -66,6 +73,8 @@ private:
     std::stringstream result;
     Base::InventorBuilder builder;
     std::list<Base::Matrix4D> transformations;
+    std::string myFileName;
+    int myShapeCount {0};
 };
 
 };  // namespace JtReaderNS

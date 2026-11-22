@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,7 +27,7 @@
 #include <SMESH_Mesh.hxx>
 
 
-#include <Mod/Fem/App/FemMeshProperty.h>
+#include <Mod/Fem/App/PropertyFemMesh.h>
 
 #include "PropertyFemMeshItem.h"
 

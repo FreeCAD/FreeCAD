@@ -32,6 +32,7 @@
 
 ## \addtogroup draftguitools
 # @{
+import ast
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -112,7 +113,7 @@ class Ellipse(gui_base_original.Creator):
                 m = App.Matrix()
                 m.rotateZ(math.pi / 2)
                 rot1 = App.Rotation()
-                rot1.Q = eval(rot)
+                rot1.Q = ast.literal_eval(rot)
                 rot2 = App.Placement(m)
                 rot2 = rot2.Rotation
                 rot = str((rot1.multiply(rot2)).Q)

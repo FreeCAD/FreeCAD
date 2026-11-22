@@ -49,9 +49,9 @@ StdCmdMeasure::StdCmdMeasure()
 {
     sGroup = "Measure";
     sMenuText = QT_TR_NOOP("&Measure");
-    sToolTipText = QT_TR_NOOP("Measure a feature");
+    sToolTipText = QT_TR_NOOP("Measures a feature");
     sWhatsThis = "Std_Measure";
-    sStatusTip = QT_TR_NOOP("Measure a feature");
+    sStatusTip = QT_TR_NOOP("Measures a feature");
     sPixmap = "umf-measurement";
 }
 
@@ -113,10 +113,16 @@ void StdCmdMassProperties::activated(int iMsg)
 bool StdCmdMassProperties::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc) {
+    if (!doc || doc->countObjectsOfType<App::GeoFeature>() == 0) {
         return false;
     }
-    return Gui::Control().activeDialog() == nullptr;
+
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+    return false;
 }
 
 void CreateMassPropertiesCommands()

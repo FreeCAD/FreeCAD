@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -42,7 +44,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintForce, FemGui::ViewProviderFemC
 ViewProviderFemConstraintForce::ViewProviderFemConstraintForce()
 {
     sPixmap = "FEM_ConstraintForce";
-    loadSymbol((resourceSymbolDir + "ConstraintForce.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintForce.iv");
 }
 
 ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce() = default;

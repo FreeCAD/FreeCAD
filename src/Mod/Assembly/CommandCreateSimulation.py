@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /**************************************************************************
-#                                                                           *
-#    Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
-#                                                                           *
-#    This file is part of FreeCAD.                                          *
-#                                                                           *
-#    FreeCAD is free software: you can redistribute it and/or modify it     *
-#    under the terms of the GNU Lesser General Public License as            *
-#    published by the Free Software Foundation, either version 2.1 of the   *
-#    License, or (at your option) any later version.                        *
-#                                                                           *
-#    FreeCAD is distributed in the hope that it will be useful, but         *
-#    WITHOUT ANY WARRANTY; without even the implied warranty of             *
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-#    Lesser General Public License for more details.                        *
-#                                                                           *
-#    You should have received a copy of the GNU Lesser General Public       *
-#    License along with FreeCAD. If not, see                                *
-#    <https://www.gnu.org/licenses/>.                                       *
-#                                                                           *
-# **************************************************************************/
+# SPDX-FileCopyrightText: 2024 Ondsel
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import re
 import os
@@ -1047,12 +1045,27 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             )
             return
 
+        formats = {
+            "MP4 Video": ".mp4",
+            "Animated GIF": ".gif",
+            "AVI Video": ".avi",
+        }
+
+        try:
+            import av
+
+            # 05/26 libvpx has no Windows conda package
+            if "libvpx-vp9" in av.codecs_available:
+                formats["WebM Video"] = ".webm"
+        except ImportError:
+            pass  # Error out later
+
         # Prompt user for file location and type
         file_path, selected_filter = QFileDialog.getSaveFileName(
             self.form,
             translate("Assembly", "Save Animation"),
             "",
-            "MP4 Video (*.mp4);;Animated GIF (*.gif);;AVI Video (*.avi)",
+            ";;".join(f"{k} (*{v})" for k, v in formats.items()),
         )
 
         if not file_path:
@@ -1061,12 +1074,22 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         # Get parameters
         view = Gui.ActiveDocument.ActiveView
         width, height = view.getSize()
+
         # Ensure dimensions are even, as required by many video codecs
-        if width % 2 != 0:
-            width -= 1
-        if height % 2 != 0:
-            height -= 1
+        width -= width % 2
+        height -= height % 2
+
         fps = self.form.FramesPerSecondSpinBox.value()
+
+        # Fail early when PIL is not installed
+        try:
+            from PIL import Image
+        except ImportError:
+            errMsg = translate(
+                "Assembly", "Pillow (PIL) is not installed. It is required for video export."
+            )
+            QMessageBox.critical(self.form, "Error", errMsg)
+            return
 
         # Setup temporary directory and progress bar
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -1105,9 +1128,15 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
                 success = False
                 file_extension = Path(file_path).suffix.lower()
+                if not file_extension:
+                    file_extension = [
+                        filter for filter in formats.values() if filter in selected_filter
+                    ][0]
+                    file_path += file_extension
+
                 if file_extension == ".gif":
                     success = self.create_gif(file_path, frame_files, fps)
-                elif file_extension in [".mp4", ".avi"]:
+                elif file_extension in [".mp4", ".avi", ".webm"]:
                     success = self.create_video(file_path, frame_files, fps, (width, height))
 
                 if success:
@@ -1128,14 +1157,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def create_gif(self, output_path, frame_files, fps):
         """Creates an animated GIF from a list of image files using Pillow."""
-        try:
-            from PIL import Image
-        except ImportError:
-            errMsg = translate(
-                "Assembly", "Pillow (PIL) is not installed. It is required for GIF export."
-            )
-            QMessageBox.critical(self.form, "Error", errMsg)
-            return False
+        from PIL import Image
 
         pil_images = [Image.open(f) for f in frame_files]
         duration_ms = int(1000 / fps)
@@ -1149,13 +1171,15 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         )
         return True
 
-    def create_video(self, output_path, frame_files, fps, size):
-        """Creates a video file from a list of image files using OpenCV."""
+    def create_video(
+        self, output_path: str, frame_files: list[str], fps: int, size: tuple[int, int]
+    ):
+        """Creates a video file from a list of image files using PyAV."""
         try:
-            import cv2
+            import av
         except ImportError:
             errMsg = translate(
-                "Assembly", "OpenCV is not installed. It is required for video export."
+                "Assembly", "PyAv is not installed. It is required for video export."
             )
             QMessageBox.critical(self.form, "Error", errMsg)
             return False
@@ -1163,26 +1187,37 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         file_extension = Path(output_path).suffix.lower()
 
         # Select codec based on file type
-        if file_extension == ".mp4":
-            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # or 'avc1'
-        elif file_extension == ".avi":
-            fourcc = cv2.VideoWriter_fourcc(*"XVID")
-        else:
-            # Fallback for other types, may not be supported
-            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        with av.open(output_path, "w") as output:
+            stream = None
+            if file_extension == ".mp4":
+                try:
+                    stream = output.add_stream("libx264", fps)
+                except av.codec.codec.UnknownCodecError:
+                    stream = output.add_stream("mpeg4", fps)
+            elif file_extension == ".avi":
+                stream = output.add_stream("mpeg4", fps)
+            elif file_extension == ".webm":
+                stream = output.add_stream("libvpx-vp9", fps)
+            else:
+                errMsg = translate("Assembly", "Unknown video export format")
+                QMessageBox.critical(self.form, "Error", errMsg)
+                return False
 
-        video_writer = cv2.VideoWriter(output_path, fourcc, fps, size)
-        if not video_writer.isOpened():
-            errMsg = translate("Assembly", "Could not open video writer. Check codecs.")
-            QMessageBox.critical(self.form, "Error", errMsg)
-            return False
+            stream.width, stream.height = size
 
-        for filename in frame_files:
-            # OpenCV reads images in BGR format by default
-            frame = cv2.imread(str(filename))
-            video_writer.write(frame)
+            from PIL import Image
+            import numpy as np
 
-        video_writer.release()
+            for file in frame_files:
+                img = Image.open(file).convert("RGB")
+                frame = av.VideoFrame.from_ndarray(np.array(img), format="rgb24")
+                packet = stream.encode(frame)
+                output.mux(packet)
+
+            # Flush & write
+            packet = stream.encode(None)
+            output.mux(packet)
+
         return True
 
 

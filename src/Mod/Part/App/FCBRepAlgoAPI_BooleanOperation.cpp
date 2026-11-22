@@ -106,7 +106,7 @@ void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& progress
 {
     Part::SignalException sig;
     if (progressRange.UserBreak()) {
-        Standard_ConstructionError::Raise("User aborted");
+        throw Standard_ConstructionError("User aborted");
     }
     if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1 && myTools.Size() == 1
         && myTools.First().ShapeType() == TopAbs_COMPOUND) {
@@ -127,14 +127,10 @@ void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& progress
         myArguments = myOriginalArguments;
     }
     else {
-#if OCC_VERSION_HEX >= 0x070600
         BRepAlgoAPI_BooleanOperation::Build(progressRange);
-#else
-        BRepAlgoAPI_BooleanOperation::Build();
-#endif
     }
     if (progressRange.UserBreak()) {
-        Standard_ConstructionError::Raise("User aborted");
+        throw Standard_ConstructionError("User aborted");
     }
 }
 

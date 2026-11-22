@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -43,6 +40,7 @@ namespace App
 {
 class DocumentObject;
 class Document;
+class DocumentT;
 class GeoFeature;
 class SubObjectT;
 
@@ -394,7 +392,7 @@ public:
     static void updateElementReferences(DocumentObject* feature, bool reverse = false);
 
     /// Update all element references in the _ElementRefMap
-    static void updateAllElementReferences(bool reverse = false);
+    static void updateAllElementReferences(const std::vector<DocumentT>& newDocs, bool reverse = false);
 
     /// Obtain link properties that contain element references to a given object
     static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject*);
@@ -1622,6 +1620,8 @@ public:
                   bool all = false,
                   std::vector<std::string>* subs = nullptr,
                   bool newStyle = true) const override;
+    void getLinksProp(std::vector<std::pair<std::string, App::DocumentObject*>>& links,
+                      bool all = false) const;
 
     bool isLinkedToDocument(const App::Document& doc) const;
 
@@ -1633,13 +1633,16 @@ protected:
     {}
     virtual void onRemoveDep(App::DocumentObject*)
     {}
-    void updateDeps(std::map<DocumentObject*, bool>&& newDeps);
+    void updateDepsProp(std::map<std::pair<std::string, DocumentObject*>, bool>& newPropDeps);
+    void updateDeps(std::map<DocumentObject*, bool>&& newDeps,
+                    std::map<std::pair<std::string, DocumentObject*>, bool>* propDeps = nullptr);
     void clearDeps();
 
     void _onBreakLink(App::DocumentObject* obj);
 
 protected:
     std::map<App::DocumentObject*, bool> _Deps;
+    std::map<std::pair<std::string, App::DocumentObject*>, bool> _PropDeps;
     std::map<std::string, std::unique_ptr<PropertyXLink>> _XLinks;
     std::map<std::string, std::string> _DocMap;
     bool _LinkRestored;

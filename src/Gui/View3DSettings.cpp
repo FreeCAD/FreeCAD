@@ -32,6 +32,7 @@
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
+#include "Selection/SelectionColors.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
@@ -94,6 +95,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "AxisZColor");
     OnChange(*hGrp, "UseVBO");
     OnChange(*hGrp, "RenderCache");
+    OnChange(*hGrp, "MaxFrameRate");
     OnChange(*hGrp, "Orthographic");
     OnChange(*hGrp, "NavigationStyle");
     OnChange(*hGrp, "OrbitStyle");
@@ -260,26 +262,16 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
     }
     else if (strcmp(Reason, "HighlightColor") == 0) {
-        float transparency;
-        SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        auto highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
         SoSFColor col;
-        col.setValue(highlightColor);
+        col.setValue(SelectionColors::defaultHighlightColor());
         SoFCHighlightColorAction cAct(col);
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
     }
     else if (strcmp(Reason, "SelectionColor") == 0) {
-        float transparency;
-        SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        auto selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = rGrp.GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
         SoSFColor col;
-        col.setValue(selectionColor);
+        col.setValue(SelectionColors::defaultSelectionColor());
         SoFCSelectionColorAction cAct(col);
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
@@ -441,6 +433,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             for (auto _viewer : _viewers) {
                 _viewer->setRenderCache(rGrp.GetInt("RenderCache", 0));
             }
+        }
+    }
+    else if (strcmp(Reason, "MaxFrameRate") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setMaxFrameRate(static_cast<int>(rGrp.GetInt("MaxFrameRate", -1)));
         }
     }
     else if (strcmp(Reason, "Orthographic") == 0) {

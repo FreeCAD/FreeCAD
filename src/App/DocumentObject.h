@@ -1,31 +1,29 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Jürgen Riegel
+// SPDX-FileCopyrightText: 2011 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
 
+#include <App/DepEdge.h>
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyGeo.h>
@@ -40,6 +38,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Base
@@ -249,6 +248,9 @@ public:
     /// Get the name of the object in the document.
     const char* getNameInDocument() const;
 
+    /// Return the display label, falling back to the internal name if it is empty.
+    const char* getLabelOrName() const;
+
     /// Get the object ID that is unique within its owner document.
     long getID() const
     {
@@ -323,6 +325,18 @@ public:
     void enforceRecompute();
 
     /**
+     * @brief Enforce this document object to be recomputed.
+     *
+     * The given property is a property that is marked as a dependency by a
+     * property from a different document object that is touched.  As such, the
+     * given property needs to be touched as well.
+     *
+     * @param[in] propName The name of the property that needs to be marked as
+     * touched.
+     */
+    void enforceRecompute(const std::string& propName);
+
+    /**
      * @brief Check whether the document object must be recomputed.
      *
      * This means that the 'Enforce' flag is set or that \ref mustExecute()
@@ -338,6 +352,7 @@ public:
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0, false);
+        touchedProps.clear();
     }
 
     /// Check whether this document object is in an error state.
@@ -479,13 +494,50 @@ public:
         OutListNoXLinked = 4, ///< Do not include links from PropertyXLink properties.
     };
 
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @return the vector of dependency edges.
+     */
+    const std::vector<DepEdge>& getOutListProp();
+
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @param[in] options Options for computing the OutList.
+     *
+     * @return the vector of dependency edges.
+     *
+     * @see OutListOption for available options.
+     */
+    std::vector<DepEdge> getOutListProp(int options);
+
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @param[in] options Options for computing the OutList.
+     * @param[in,out] res The vector to fill with the objects this object depends on.
+     *
+     * @see OutListOption for available options.
+     */
+    void getOutListProp(int options, std::vector<DepEdge>& res);
+
     /// Get a list of objects this object links to.
     const std::vector<App::DocumentObject*>& getOutList() const;
 
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @return A vector of objects this object links to.
      *
@@ -496,7 +548,7 @@ public:
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @param[in,out] res The vector to fill with the objects this object depends on.
      *
@@ -549,6 +601,15 @@ public:
     const std::vector<App::DocumentObject*>& getInList() const;
 
     /**
+     * @brief Get a list of dependency edges that link to this object.
+     *
+     * Dependency edges register both the object and the property (if applicable).
+     *
+     * @returns The list of dependency edges.
+     */
+    const std::vector<DepEdge>& getInListProp() const;
+
+    /**
      * @brief Get a list of objects that link to this object, recursively.
      *
      * This function returns all objects that link to this object directly and
@@ -583,6 +644,31 @@ public:
      * @return A set containing all objects linking to this object.
      */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+
+    /** @brief Get a set of all dependency edges linking to this object.
+     *
+     * This function returns a set of all dependency edges that link to this
+     * object, including possible external parent objects.  Dependency edges
+     * record both the object and the property.
+     *
+     * @param[in,out] inSet A set containing all dependency edges linking to
+     * this object.
+     * @param[in] recursive Whether to obtain the InList recursively.
+     */
+    void getInListExProp(std::set<DepEdge>& inSet, bool recursive) const;
+
+    /**
+     * @brief Get a set of all dependency edges linking to this object.
+     *
+     * This function returns a set of all dependency edges that link to this
+     * object, including possible external parent objects.  Dependency edges
+     * record both the object and the property.
+     *
+     * @param[in] recursive Whether to obtain the InList recursively.
+     *
+     * @return A set containing all dependency edges linking to this object.
+     */
+    std::set<DepEdge> getInListExProp(bool recursive) const;
 
     /**
      * @brief Get the group this object belongs to.
@@ -664,6 +750,11 @@ public:
      */
     void _addBackLink(DocumentObject*);
 
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+
     /**
      * @brief Test an about to created link for circular references.
      *
@@ -692,6 +783,18 @@ public:
 
     /// @copydoc testIfLinkDAGCompatible(DocumentObject*) const
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
+
+    /// Check if the property is an input property
+    bool isInputProperty(const std::string& propName) const;
+
+    /// Check if the property is an input property
+    bool isInputProperty(const Property* prop) const;
+
+    /// Check if the property is an output property
+    bool isOutputProperty(const std::string& propName) const;
+
+    /// Check if the property is an output property
+    bool isOutputProperty(const Property* prop) const;
     ///@}
 
     /**
@@ -1054,6 +1157,20 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
+    /**
+     * @brief Move the dynamic property to a document object.
+     *
+     * @param[in] prop The property to move.
+     * @param[in] targetObj The object to which the property is moved.
+     *
+     * @return a pointer to the moved property if successful; `nullptr` if the
+     * target object is the same as the current one.
+     * @throw Base::NameError If the property already exists in the object.
+     * @throw Base::RuntimeError On various runtime errors, such as when the
+     *   property is locked or the target object is invalid.
+     */
+    virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetObj);
+
     App::Property* addDynamicProperty(
         std::string_view type,
         const char* name = nullptr,
@@ -1273,6 +1390,23 @@ public:
     /// Returns the Placement property to use if any.
     virtual App::PropertyPlacement* getPlacementProperty() const;
 
+    /** Check whether a property can be referenced in an expression.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return true if the property can be referenced in expressions.
+     */
+    static bool canPropBeReferenced(const App::Property* prop);
+
+    /** Get the object identifiers that reference the given property.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return a set of object identifiers that reference the given
+     * property.
+     */
+    static std::set<ObjectIdentifier> getPropertyUses(const App::Property* prop);
+
 protected:
     /// Recompute only this object.
     virtual App::DocumentObjectExecReturn* recompute();
@@ -1351,7 +1485,13 @@ protected:
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
 private:
+    void moveExpressionTargetingProp(Property* prop, Property* newProp,
+                                     DocumentObject* targetObj);
+    void arrangeMoveProperty(Property* toBeMovedProp,
+                             Property* newProp,
+                             DocumentObject* targetObj);
     void printInvalidLinks() const;
+    void setTouched(const char* propName);
 
 protected:  // attributes
 
@@ -1375,13 +1515,19 @@ private:
     long _Id {0};
 
 private:
+    std::unordered_set<std::string> touchedProps;
+
+private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
+    std::vector<DepEdge> _inListProp;
     mutable std::vector<App::DocumentObject*> _outList;
+    mutable std::vector<DepEdge> _outListProp;
     mutable std::unordered_map<const char*, App::DocumentObject*, CStringHasher, CStringHasher>
         _outListMap;
     mutable bool _outListCached = false;
+    mutable bool _outListCachedProp = false;
 };
 
 }  // namespace App

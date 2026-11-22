@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2017 Zheng Lei
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
- *                                                                          *
- *   This file is part of the FreeCAD CAx development system.               *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Library General Public            *
- *   License as published by the Free Software Foundation; either           *
- *   version 2 of the License, or (at your option) any later version.       *
- *                                                                          *
- *   This library  is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU Library General Public License for more details.                   *
- *                                                                          *
- *   You should have received a copy of the GNU Library General Public      *
- *   License along with this library; see the file COPYING.LIB. If not,     *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,          *
- *   Suite 330, Boston, MA  02111-1307, USA                                 *
- *                                                                          *
- ****************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <sstream>
 
@@ -176,7 +173,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject* args)
         for (const auto& info : infos) {
             ret.setItem(i++,
                         Py::TupleN(Py::String(info.name),
-                                   Py::String(info.type.getName()),
+                                   Base::toPyString(info.type.getName()),
                                    Py::String(info.doc)));
         }
         return Py::new_reference_to(ret);
@@ -189,7 +186,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject* args)
             return nullptr;
         }
         Py::TupleN ret(Py::String(infos[index].name),
-                       Py::String(infos[index].type.getName()),
+                       Base::toPyString(infos[index].type.getName()),
                        Py::String(infos[index].doc));
         return Py::new_reference_to(ret);
     }
@@ -198,7 +195,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject* args)
     if (PyArg_ParseTuple(args, "s", &name)) {
         for (const auto& info : infos) {
             if (strcmp(info.name, name) == 0) {
-                Py::TupleN ret(Py::String(info.type.getName()), Py::String(info.doc));
+                Py::TupleN ret(Base::toPyString(info.type.getName()), Py::String(info.doc));
                 return Py::new_reference_to(ret);
             }
         }

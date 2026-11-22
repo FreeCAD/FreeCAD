@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -149,26 +151,26 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint pressure
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="Pressure")
     con_pressure.References = [(geom_obj, "Face8")]
     con_pressure.Pressure = "10.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="FemConstraintDisplacement")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="Displacement")
     con_disp.References = [(geom_obj, "Face4"), (geom_obj, "Face5")]
     con_disp.xFree = False
     con_disp.xDisplacement = 0.0
     analysis.addObject(con_disp)
 
     # constraints transform
-    con_transform1 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform1")
+    con_transform1 = ObjectsFem.makeConstraintTransform(doc, name="Transform1")
     con_transform1.References = [(geom_obj, "Face4")]
     con_transform1.TransformType = "Cylindrical"
     analysis.addObject(con_transform1)
 
-    con_transform2 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform2")
+    con_transform2 = ObjectsFem.makeConstraintTransform(doc, name="Transform2")
     con_transform2.References = [(geom_obj, "Face5")]
     con_transform2.TransformType = "Cylindrical"
     analysis.addObject(con_transform2)

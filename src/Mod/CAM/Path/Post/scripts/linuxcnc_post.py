@@ -29,12 +29,14 @@
 
 from typing import Any, Dict
 
-from Path.Post.Processor import PostProcessor
-
-import Path
 import FreeCAD
 
 translate = FreeCAD.Qt.translate
+import Path
+from Path.Post.Processor import PostProcessor, SCOPE_JOB, SCOPE_MACHINE, _tool_axis_tilted
+from Path.Post.TiltedWorkPlane import PlaneCommand
+import Constants
+from Machine.models.machine import OutputUnits
 
 DEBUG = False
 if DEBUG:
@@ -59,7 +61,21 @@ class Linuxcnc(PostProcessor):
     - Exact Path (G61)
     - Exact Stop (G61.1)
     - Blend (G64)
+
+    Tilted work planes follow the syntax of LinuxCNC pull request #4374
+    (https://github.com/LinuxCNC/linuxcnc/pull/4374), which is where the
+    control's multi-axis work is being done and is a draft at the time of
+    writing: `G68.2 X Y Z I J K` in its default form, Euler angles about Z,
+    then the new X, then the newest Z, exactly Fanuc's; `G53.1` to point the
+    tool along the plane's normal, with `P` choosing between the two poses
+    and `Q` letting the table take part; `G69` to cancel. The control
+    refuses a change of coordinate system while a plane is active, so the
+    plane is cancelled before every fixture and tool change. LinuxCNC has no
+    dynamic work offset, so this post emits TWP only.
     """
+
+    ROTATION_STRATEGIES = ("twp",)
+    PLANE_COMMAND = PlaneCommand.G68_2
 
     @classmethod
     def get_common_property_schema(cls):
@@ -78,6 +94,25 @@ class Linuxcnc(PostProcessor):
                 prop["default"] = "M05\nG17 G54 G90 G80 G40\nM2"
             elif prop["name"] == "safetyblock":
                 prop["default"] = "G40 G49 G80"
+            elif prop["name"] == "pre_rotary_move":
+                prop["help"] = translate(
+                    "CAM",
+                    "G-code inserted before the rotary axes move, and before a tilted work "
+                    "plane is aligned to with G53.1. Put the moves that bring the tool clear "
+                    "of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to "
+                    "machine Z zero; on the kinematics of LinuxCNC pull request #4374, "
+                    "G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, "
+                    "nothing clears the part before the table turns, and the sanity check "
+                    "says so.",
+                )
+            elif prop["name"] == "twp_align":
+                prop["help"] = translate(
+                    "CAM",
+                    "The line that points the tool along a declared plane's normal. Empty is "
+                    "G53.1, which moves the rotaries alone and lets the tool tip swing: "
+                    "G53.1 P1 or P2 names which of the two poses, Q1 lets the table take "
+                    "part. G53.6 keeps the tool center point where it is instead.",
+                )
 
         return common_props
 
@@ -87,8 +122,8 @@ class Linuxcnc(PostProcessor):
         return [
             {
                 "name": "blend_mode",
+                "scope": SCOPE_JOB,
                 "type": "choice",
-                "runtime": True,
                 "label": translate("CAM", "Path Blending Mode"),
                 "default": "BLEND",
                 "choices": ["EXACT_PATH", "EXACT_STOP", "BLEND"],
@@ -100,8 +135,8 @@ class Linuxcnc(PostProcessor):
             },
             {
                 "name": "blend_tolerance",
+                "scope": SCOPE_JOB,
                 "type": "float",
-                "runtime": True,
                 "label": translate("CAM", "Blend Tolerance"),
                 "default": 0.0,
                 "min": 0.0,
@@ -111,6 +146,20 @@ class Linuxcnc(PostProcessor):
                     "CAM",
                     "Tolerance for BLEND mode (P value): 0 = no tolerance (G64), "
                     ">0 = tolerance (G64 P-), in current units",
+                ),
+            },
+            {
+                "name": "twp_kinematics_select",
+                "scope": SCOPE_MACHINE,
+                "type": "string",
+                "label": translate("CAM", "Tilted work plane: kinematics select"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "A line emitted after the preamble when the job has an operation on a "
+                    "tilted work plane. G53.1 needs a kinematics type whose frames describe "
+                    "the machine; on a switchable module that starts in identity kinematics "
+                    "this is where G12.1 P1 goes.",
                 ),
             },
         ]
@@ -139,41 +188,7 @@ class Linuxcnc(PostProcessor):
         # in the parent routine.
         #
         values["ENABLE_COOLANT"] = True
-        #
-        # The order of parameters.
-        #
-        # linuxcnc doesn't want K properties on XY plane; Arcs need work.
-        #
-        values["PARAMETER_ORDER"] = [
-            "X",
-            "Y",
-            "Z",
-            "A",
-            "B",
-            "C",
-            "I",
-            "J",
-            "F",
-            "S",
-            "T",
-            "Q",
-            "R",
-            "L",
-            "H",
-            "D",
-            "P",
-        ]
-
-        values["MACHINE_NAME"] = "LinuxCNC"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Load preamble from machine configuration if available
-        #
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            values["PREAMBLE"] = props.get("preamble", "")
-        else:
-            values["PREAMBLE"] = ""
 
         # Path blending mode configuration (LinuxCNC-specific)
         # Load from machine configuration if available, otherwise use defaults
@@ -187,52 +202,40 @@ class Linuxcnc(PostProcessor):
             values["BLEND_MODE"] = "BLEND"
             values["BLEND_TOLERANCE"] = 0.0
 
-        # Add blend command to PREAMBLE
-        blend_cmd = self._get_blend_command()
-        if values["PREAMBLE"]:
-            values["PREAMBLE"] += f"\n{blend_cmd}"
-        else:
-            values["PREAMBLE"] = blend_cmd
+    def _expand_prefix(self, postables):
+        """inject blend command, and the kinematics select when a plane needs it"""
+        blend = self._get_blend_command()
 
-    def export2(self):
-        """Override export2 to inject blend command before parent processing.
+        preamble = self.values["PREAMBLE"] or ""
+        # Separate the blend command from whatever the preamble ends with,
+        # otherwise "... G80 G90" + "G64 P0.0010" runs together as "G90G64".
+        if preamble and not preamble[-1].isspace():
+            preamble += " "
+        preamble += blend
 
-        apply_configuration_bundle() (called by parent export2) populates
-        self.values with the final overridden blend settings.  We apply
-        the bundle first, inject the blend G-code into the preamble, then
-        let the parent finish.
-        """
-        # Build and apply the full configuration bundle (unless dialog already did it)
-        if not getattr(self, "_bundle_applied", False):
-            self.apply_configuration_bundle()
+        select = (self.values.get("TWP_KINEMATICS_SELECT") or "").strip()
+        if select and self._job_has_tilted_operation():
+            preamble += "\n" + select
+        self.values["PREAMBLE"] = preamble
 
-        # Inject blend command into preamble using the now-final values
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            blend_cmd = self._get_blend_command()
-            props = self._machine.postprocessor_properties
-            current_preamble = props.get("preamble", "")
-            if current_preamble:
-                props["preamble"] = f"{current_preamble}\n{blend_cmd}"
-            else:
-                props["preamble"] = blend_cmd
+        super()._expand_prefix(postables)
 
-        # Parent export2 will call apply_configuration_bundle again (idempotent)
-        return super().export2()
+    def _job_has_tilted_operation(self):
+        import Path.Dressup.Utils as PathDressup
+
+        for op in self._job.Operations.Group:
+            placement = getattr(PathDressup.baseOp(op), "Placement", None)
+            if placement is not None and _tool_axis_tilted(placement):
+                return True
+        return False
 
     def _get_blend_command(self) -> str:
         """Generate the path blending G-code command based on current settings.
 
         Reads from postprocessor_properties if available, otherwise falls back to values dict.
         """
-        # Try to read from postprocessor_properties first (for export2)
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            mode = props.get("blend_mode", "BLEND")
-            tolerance = props.get("blend_tolerance", 0.0)
-        else:
-            # Fallback to values dict (for legacy export)
-            mode = self.values.get("BLEND_MODE", "BLEND")
-            tolerance = self.values.get("BLEND_TOLERANCE", 0.0)
+        mode = self.values["BLEND_MODE"]
+        tolerance = self.values["BLEND_TOLERANCE"]
 
         if mode == "EXACT_PATH":
             return "G61"
@@ -253,92 +256,90 @@ class Linuxcnc(PostProcessor):
         For G84/G74 tapping cycles, check for 'rigid' annotation and convert
         to G33.1 rigid tapping if present. Otherwise use standard conversion.
         """
-        from Path.Post.UtilsParse import format_command_line
 
         # Check if this is a tapping cycle with rigid annotation
-        if command.Name in ["G84", "G74"]:
+
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and command.Annotations.get("rigid", "False") == "True"
+        ):
+            # Rigid tapping - convert to G33.1, K is pitch
             annotations = command.Annotations
-            is_rigid = annotations.get("rigid", "False") == "True"
 
-            if is_rigid:
-                # Rigid tapping - convert to G33.1
-                params = command.Parameters.copy()
+            params = command.Parameters.copy()
 
-                # Extract pitch from F parameter
-                if "F" not in params:
-                    Path.Log.warning(f"Rigid tapping {command.Name} missing F (pitch) parameter")
-                    return super()._convert_drill_cycle(command)
+            if "F" not in params:
+                Path.Log.warning(f"Rigid tapping {command.Name} missing F (pitch) parameter")
+                return super()._convert_drill_cycle(command)
 
-                pitch = params["F"]
+            # Extract pitch from F parameter
+            pitch = params["F"]
 
-                # Get unit conversion function
-                def get_value(val):
-                    if self._machine and hasattr(self._machine, "output"):
-                        from Machine.models.machine import OutputUnits
+            # Get unit conversion function
+            def get_value(val):
+                if self.values["OUTPUT_UNITS"] == OutputUnits.IMPERIAL:
+                    return val / 25.4
+                return val
 
-                        if self._machine.output.units == OutputUnits.IMPERIAL:
-                            return val / 25.4
-                    return val
+            pitch = get_value(pitch)
 
-                pitch = get_value(pitch)
+            # Build output commands
+            output = []
+            block_delete = "/" if annotations.get("blockdelete") else ""
 
-                # Build output commands
-                output = []
-                block_delete = "/" if annotations.get("blockdelete") else ""
+            # Initial G33.1 command (in)
+            cmd_line = ["G33.1"]
+            cmd_line.append(f"K{pitch:.4f}")
 
-                # Initial G33.1 command (in)
-                cmd_line = ["G33.1"]
-                cmd_line.append(f"K{pitch:.4f}")
+            if "Z" in params:
+                z_val = get_value(params["Z"])
+                cmd_line.append(f"Z{z_val:.4f}")
 
-                if "Z" in params:
-                    z_val = get_value(params["Z"])
-                    cmd_line.append(f"Z{z_val:.4f}")
+            if "X" in params:
+                x_val = get_value(params["X"])
+                cmd_line.append(f"X{x_val:.4f}")
 
-                if "X" in params:
-                    x_val = get_value(params["X"])
-                    cmd_line.append(f"X{x_val:.4f}")
+            if "Y" in params:
+                y_val = get_value(params["Y"])
+                cmd_line.append(f"Y{y_val:.4f}")
 
-                if "Y" in params:
-                    y_val = get_value(params["Y"])
-                    cmd_line.append(f"Y{y_val:.4f}")
+            output.append(f"{block_delete}{' '.join(cmd_line)}")
 
-                output.append(f"{block_delete}{' '.join(cmd_line)}")
+            # Handle dwell if P parameter present
+            if "P" in params:
+                output.append(f"{block_delete}M5")
+                output.append(f"{block_delete}G04 P{params['P']:.2f}")
 
-                # Handle dwell if P parameter present
-                if "P" in params:
-                    output.append(f"{block_delete}M5")
-                    output.append(f"{block_delete}G04 P{params['P']:.2f}")
+            # Reverse out
+            if command.Name == "G84":
+                # Right-hand tap: reverse spindle (M4), retract, restore (M3)
+                output.append(f"{block_delete}M4")
 
-                # Reverse out
-                if command.Name == "G84":
-                    # Right-hand tap: reverse spindle (M4), retract, restore (M3)
-                    output.append(f"{block_delete}M4")
+                # Retract to R height
+                retract_line = ["G33.1", f"K{pitch:.4f}"]
+                if "R" in params:
+                    r_val = get_value(params["R"])
+                    retract_line.append(f"Z{r_val:.4f}")
+                output.append(f"{block_delete}{' '.join(retract_line)}")
 
-                    # Retract to R height
-                    retract_line = ["G33.1", f"K{pitch:.4f}"]
-                    if "R" in params:
-                        r_val = get_value(params["R"])
-                        retract_line.append(f"Z{r_val:.4f}")
-                    output.append(f"{block_delete}{' '.join(retract_line)}")
+                output.append(f"{block_delete}M3")
 
-                    output.append(f"{block_delete}M3")
+            elif command.Name == "G74":
+                # Left-hand tap: forward spindle (M3), retract, restore (M4)
+                output.append(f"{block_delete}M3")
 
-                elif command.Name == "G74":
-                    # Left-hand tap: forward spindle (M3), retract, restore (M4)
-                    output.append(f"{block_delete}M3")
+                # Retract to R height
+                retract_line = ["G33.1", f"K{pitch:.4f}"]
+                if "R" in params:
+                    r_val = get_value(params["R"])
+                    retract_line.append(f"Z{r_val:.4f}")
+                output.append(f"{block_delete}{' '.join(retract_line)}")
 
-                    # Retract to R height
-                    retract_line = ["G33.1", f"K{pitch:.4f}"]
-                    if "R" in params:
-                        r_val = get_value(params["R"])
-                        retract_line.append(f"Z{r_val:.4f}")
-                    output.append(f"{block_delete}{' '.join(retract_line)}")
+                output.append(f"{block_delete}M4")
 
-                    output.append(f"{block_delete}M4")
+            return "\n".join(output)
 
-                return "\n".join(output)
-
-        # Not rigid tapping or not a tapping cycle - use parent implementation
+        # Not rigid tapping use parent implementation
         return super()._convert_drill_cycle(command)
 
     def _convert_modal_command(self, command):
@@ -361,9 +362,9 @@ class Linuxcnc(PostProcessor):
         return super()._convert_modal_command(command)
 
     def get_sanity_checks(self, job):
-        """LinuxCNC specific sanity checks."""
+        """LinuxCNC specific sanity checks, plus the machine-level checks."""
         Path.Log.track("LinuxCNC.get_sanity_checks() called")
-        squawks = []
+        squawks = super().get_sanity_checks(job)
 
         # Check blend tolerance vs operation precision
         Path.Log.track("Checking blend tolerance")
@@ -445,50 +446,6 @@ class Linuxcnc(PostProcessor):
                                         f"Potentially unsupported command '{gcode}' in operation '{op.Label}' - verify LinuxCNC compatibility",
                                     )
                                 )
-
-        # Check feed rates vs machine capabilities (if available)
-        Path.Log.track("Checking feed rates vs machine capabilities")
-        max_rapid_feed = self.values.get("MAX_RAPID_FEED", None)
-        Path.Log.track(f"max_rapid_feed: {max_rapid_feed}")
-        if max_rapid_feed:
-            for i, op in enumerate(operations):
-                Path.Log.track(
-                    f"Checking feed rate for operation {i}: {getattr(op, 'Label', 'unnamed')}"
-                )
-                if hasattr(op, "HoriFeed"):
-                    Path.Log.track(f"Operation HoriFeed: {op.HoriFeed}")
-                    if op.HoriFeed > max_rapid_feed:
-                        Path.Log.track("Adding CAUTION for high feed rate")
-                        squawks.append(
-                            self._create_squawk(
-                                "CAUTION",
-                                f"Operation '{op.Label}' feed rate ({op.HoriFeed}) exceeds configured maximum ({max_rapid_feed})",
-                            )
-                        )
-                else:
-                    Path.Log.track("Operation has no HoriFeed attribute")
-
-        # Check spindle speed ranges
-        Path.Log.track("Checking spindle speed ranges")
-        max_spindle_speed = self.values.get("MAX_SPINDLE_SPEED", None)
-        Path.Log.track(f"max_spindle_speed: {max_spindle_speed}")
-        if max_spindle_speed:
-            for i, op in enumerate(operations):
-                Path.Log.track(
-                    f"Checking spindle speed for operation {i}: {getattr(op, 'Label', 'unnamed')}"
-                )
-                if hasattr(op, "SpindleSpeed"):
-                    Path.Log.track(f"Operation SpindleSpeed: {op.SpindleSpeed}")
-                    if op.SpindleSpeed > max_spindle_speed:
-                        Path.Log.track("Adding WARNING for high spindle speed")
-                        squawks.append(
-                            self._create_squawk(
-                                "WARNING",
-                                f"Operation '{op.Label}' spindle speed ({op.SpindleSpeed}) exceeds machine maximum ({max_spindle_speed})",
-                            )
-                        )
-                else:
-                    Path.Log.track("Operation has no SpindleSpeed attribute")
 
         # Check for G41/G42 usage with tool radius compensation
         Path.Log.track("Checking tool radius compensation usage")

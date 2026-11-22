@@ -244,7 +244,7 @@
          <item row="4" column="0">
           <widget class="QLabel" name="label_a">
            <property name="text">
-            <string notr="true">α = </string>
+            <string notr="true">α =</string>
            </property>
           </widget>
          </item>
@@ -264,7 +264,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string notr="true">S = </string>
+            <string notr="true">S =</string>
            </property>
           </widget>
          </item>

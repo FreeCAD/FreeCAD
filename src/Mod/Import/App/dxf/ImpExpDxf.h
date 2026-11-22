@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Yorik van Havre
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -78,6 +75,12 @@ public:
         double height,
         const std::string& text,
         double rotation
+    ) override;
+    void OnReadSolid(
+        const Base::Vector3d& first,
+        const Base::Vector3d& second,
+        const Base::Vector3d& third,
+        const Base::Vector3d& fourth
     ) override;
     void OnReadArc(
         const Base::Vector3d& start,
@@ -250,6 +253,7 @@ protected:
         const int Flags;
         std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>> GeometryBuilders;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Insert>> Inserts;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>> FeaturePythonBuilders;
     };
 
 private:
@@ -367,7 +371,7 @@ protected:
             App::Link* link = Reader.document->addObject<App::Link>(linkName.c_str());
             Reader.IncrementCreatedObjectCount();
             if (!link) {
-                Reader.ImportError("Failed to create App::Link for block '%s'", name.c_str());
+                Reader.ImportError("Failed to create App::Link for block '{}'", name);
                 return;
             }
 
@@ -380,6 +384,70 @@ protected:
             link->ScaleVector.setValue(scale);
 
             this->AddObject(link, "Link");
+
+            // Instantiate text annotation objects from this block and any blocks it
+            // references via nested INSERTs. These cannot be part of the App::Link geometry.
+            {
+                Base::Matrix4D insertMatrix;
+                insertMatrix.scale(scale.x, scale.y, scale.z);
+                insertMatrix.rotZ(rotation);
+                insertMatrix.move(point.x, point.y, point.z);
+
+                CDxfRead::CommonEntityAttributes savedAttributes = Reader.m_entityAttributes;
+                std::set<std::string> expandingBlocks;
+                std::function<
+                    void(const std::string&, const Base::Matrix4D&, const CDxfRead::CommonEntityAttributes&)>
+                    expandBlockText = [&](const std::string& blockName,
+                                          const Base::Matrix4D& transform,
+                                          const CDxfRead::CommonEntityAttributes& parentAttributes) {
+                        if (!expandingBlocks.insert(blockName).second) {
+                            return;  // Circular reference guard
+                        }
+                        auto it = Reader.Blocks.find(blockName);
+                        if (it != Reader.Blocks.end()) {
+                            const Block& blk = it->second;
+                            for (const auto& [attributes, builders] : blk.FeaturePythonBuilders) {
+                                Reader.m_entityAttributes = attributes;
+                                Reader.m_entityAttributes.ResolveByBlockAttributes(parentAttributes);
+                                for (const auto& builder : builders) {
+                                    App::FeaturePython* feature = builder(transform);
+                                    if (feature != nullptr) {
+                                        Reader.MoveToLayer(feature);
+                                        Reader._addOriginalLayerProperty(feature);
+                                        Reader.ApplyGuiStyles(feature);
+                                        Reader.IncrementCreatedObjectCount();
+                                    }
+                                }
+                            }
+                            for (const auto& [attributes, inserts] : blk.Inserts) {
+                                CDxfRead::CommonEntityAttributes nestedAttrs = attributes;
+                                nestedAttrs.ResolveByBlockAttributes(parentAttributes);
+                                for (const auto& nestedInsert : inserts) {
+                                    Base::Matrix4D nestedMatrix;
+                                    nestedMatrix.scale(
+                                        nestedInsert.Scale.x,
+                                        nestedInsert.Scale.y,
+                                        nestedInsert.Scale.z
+                                    );
+                                    nestedMatrix.rotZ(nestedInsert.Rotation);
+                                    nestedMatrix.move(
+                                        nestedInsert.Point.x,
+                                        nestedInsert.Point.y,
+                                        nestedInsert.Point.z
+                                    );
+                                    expandBlockText(
+                                        nestedInsert.Name,
+                                        transform * nestedMatrix,
+                                        nestedAttrs
+                                    );
+                                }
+                            }
+                        }
+                        expandingBlocks.erase(blockName);
+                    };
+                expandBlockText(name, insertMatrix, savedAttributes);
+                Reader.m_entityAttributes = savedAttributes;
+            }
         }
     };
     class ShapeSavingEntityCollector: public DrawingEntityCollector
@@ -442,11 +510,13 @@ protected:
         BlockDefinitionCollector(
             ImpExpDxfRead& reader,
             std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& buildersList,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList
+            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList,
+            std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>& featurePythonBuildersList
         )
             : EntityCollector(reader)
             , BuildersList(buildersList)
             , InsertsList(insertsList)
+            , FeaturePythonBuildersList(featurePythonBuildersList)
         {}
 
         // TODO: We will want AddAttributeDefinition as well.
@@ -467,16 +537,15 @@ protected:
             // are created from INSERT entities, not as part of a BLOCK *definition*. If this
             // warning ever appears, it indicates a logic error in the importer.
             Reader.ImportError(
-                "Internal logic error: Attempted to add a DocumentObject ('%s') to a block "
+                "Internal logic error: Attempted to add a DocumentObject ('{}') to a block "
                 "definition.\n",
                 nameBase
             );
         }
 
-        void AddObject(FeaturePythonBuilder /*shapeBuilder*/) override
+        void AddObject(FeaturePythonBuilder shapeBuilder) override
         {
-            // This path is for Draft/FeaturePython objects and is not used by the
-            // primitives or shapes modes.
+            FeaturePythonBuildersList[Reader.m_entityAttributes].push_back(shapeBuilder);
         }
 
         void AddInsert(
@@ -494,6 +563,7 @@ protected:
     private:
         std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& BuildersList;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& InsertsList;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>& FeaturePythonBuildersList;
     };
 
 private:

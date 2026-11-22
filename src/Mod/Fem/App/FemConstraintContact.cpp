@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -75,6 +77,20 @@ ConstraintContact::ConstraintContact()
         "ConstraintContact",
         App::PropertyType(App::Prop_None),
         "Enable thermal contact"
+    );
+    ADD_PROPERTY_TYPE(
+        ReversedMaster,
+        (false),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Use reversed normal direction for master references"
+    );
+    ADD_PROPERTY_TYPE(
+        ReversedSlave,
+        (false),
+        "ConstraintContact",
+        App::PropertyType(App::Prop_None),
+        "Use reversed normal direction for slave references"
     );
     ADD_PROPERTY_TYPE(
         ThermalContactConductance,

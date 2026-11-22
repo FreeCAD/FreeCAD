@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -85,7 +87,7 @@ short LandmarkDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *LandmarkDimension::execute()
 {
-    // Base::Console().message("LD::execute() - %s\n", getNameInDocument());
+    // Base::Console().message("LD::execute() - {}\n", getNameInDocument());
     if (!okToProceed()) {
         return App::DocumentObject::StdReturn;
     }
@@ -94,7 +96,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
     References2D.setValue(dvp);
 
     std::vector<DocumentObject*> features = References3D.getValues();
-    // Base::Console().message("LD::execute - features: %d\n", features.size());
+    // Base::Console().message("LD::execute - features: {}\n", features.size());
     //if distance, required size = 2
     //if angle, required size = 3;    //not implemented yet
     unsigned int requiredSize = 2;
@@ -125,9 +127,9 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
             index++;
         }
     }
-    // Base::Console().message("LD::execute - front: %s back: %s\n",
-    //                         DrawUtil::formatVector(points.front()).c_str(),
-    //                         DrawUtil::formatVector(points.back()).c_str());
+    // Base::Console().message("LD::execute - front: {} back: {}\n",
+    //                         DrawUtil::formatVector(points.front()),
+    //                         DrawUtil::formatVector(points.back()));
     setLinearPoints(points.front(), points.back());
 
     // App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();

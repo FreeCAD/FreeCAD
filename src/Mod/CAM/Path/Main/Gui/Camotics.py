@@ -31,9 +31,11 @@ import Path
 import PathScripts
 import PathScripts.PathUtils as PathUtils
 import Path.Post.Command as PathPost
+from Path.Tool.shape import ToolBitShape
 import camotics
 import io
 import json
+import os
 import queue
 import subprocess
 
@@ -82,7 +84,7 @@ class CAMoticsUI:
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("Path", "Save Project As"),
-            "",
+            os.path.dirname(FreeCAD.activeDocument().FileName),
             translate("Path", "CAMotics Project (*.camotics)"),
         )[0]
         if filename:
@@ -132,12 +134,16 @@ class CamoticsSimulation(QtCore.QObject):
     filenames = []
 
     SHAPEMAP = {
-        "ballend": "Ballnose",
         "endmill": "Cylindrical",
-        "taperedballnose": "Ballnose",
         "v-bit": "Conical",
         "chamfer": "Snubnose",
     }
+
+    def camoticsShape(self, tool):
+        shape_name = PathUtils.getToolShapeName(tool)
+        if ToolBitShape.is_ball_end(shape_name):
+            return "Ballnose"
+        return self.SHAPEMAP.get(shape_name, "Cylindrical")
 
     def worker(self, lock):
         while True:
@@ -194,7 +200,7 @@ class CamoticsSimulation(QtCore.QObject):
             self.SIM.set_tool(
                 t.ToolNumber,
                 metric=True,
-                shape=self.SHAPEMAP.get(PathUtils.getToolShapeName(t.Tool), "Cylindrical"),
+                shape=self.camoticsShape(t.Tool),
                 length=t.Tool.Length.Value,
                 diameter=t.Tool.Diameter.Value,
             )
@@ -286,9 +292,7 @@ class CamoticsSimulation(QtCore.QObject):
             if hasattr(t.Tool, "Camotics"):
                 toolitem["shape"] = t.Tool.Camotics
             else:
-                toolitem["shape"] = self.SHAPEMAP.get(
-                    PathUtils.getToolShapeName(t.Tool), "Cylindrical"
-                )
+                toolitem["shape"] = self.camoticsShape(t.Tool)
 
             toolitem["length"] = t.Tool.Length.Value
             toolitem["diameter"] = t.Tool.Diameter.Value

@@ -37,7 +37,7 @@
 #ifdef OPTIMIZE_CURVATURE
 # include <Eigen/Eigenvalues>
 #else
-# include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+# include <Wm4MeshCurvature.h>
 #endif
 
 #include "Approximation.h"

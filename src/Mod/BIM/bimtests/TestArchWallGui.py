@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 Furgo                                              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """GUI tests for the ArchWall module."""
 
@@ -288,21 +285,21 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.printTestMessage("Testing baseless wall creation on a rotated working plane...")
 
         # Arrange: Create a non-standard working plane (rotated and elevated)
-        wp = WorkingPlane.plane()
+        wp = WorkingPlane.get_working_plane()
         placement = FreeCAD.Placement(
             FreeCAD.Vector(0, 0, 1000), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
         )
 
         # Apply the placement to the working plane, ensuring translation is included
-        wp.setFromPlacement(placement, rebase=True)
+        wp.align_to_placement(placement)
 
         # Define points in the local coordinate system of the working plane
         p1_local = FreeCAD.Vector(0, 0, 0)
         p2_local = FreeCAD.Vector(2000, 0, 0)
 
         # Convert local points to the global coordinates the command will receive
-        p1_global = wp.getGlobalCoords(p1_local)
-        p2_global = wp.getGlobalCoords(p2_local)
+        p1_global = wp.get_global_coords(p1_local)
+        p2_global = wp.get_global_coords(p2_local)
 
         self.params.SetInt("WallBaseline", 0)
 
@@ -503,7 +500,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         )
         self.printTestMessage("Testing line-based wall with JOIN_SKETCHES=True...")
 
-        line1 = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
+        line1 = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
         wall1 = Arch.makeWall(line1)
         self.document.recompute()
         base1_initial_edges = len(wall1.Base.Shape.Edges)
@@ -536,7 +533,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         )
         self.printTestMessage("Testing line-based wall with JOIN_SKETCHES=False, AUTOJOIN=True...")
 
-        line1 = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
+        line1 = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
         wall1 = Arch.makeWall(line1)
         self.document.recompute()
         initial_object_count = len(self.document.Objects)
@@ -560,7 +557,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         )
         self.printTestMessage("Testing line-based wall fallback to AUTOJOIN...")
 
-        line1 = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
+        line1 = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
         wall1 = Arch.makeWall(line1, width=200)  # Incompatible width
         self.document.recompute()
 
@@ -650,7 +647,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.printTestMessage("Testing no join action when preferences are off...")
 
         # Test with a based wall
-        line1 = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
+        line1 = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0))
         wall1 = Arch.makeWall(line1)
         self.document.recompute()
         initial_object_count = len(self.document.Objects)

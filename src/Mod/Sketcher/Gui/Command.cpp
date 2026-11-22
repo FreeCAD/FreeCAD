@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QApplication>
 #include <QCheckBox>
@@ -249,6 +246,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         doCommand(Doc,
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.Label = 'Sketch'", FeatName.c_str());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,
                       "App.activeDocument().%s.MapMode = \"%s\"",
@@ -262,10 +260,9 @@ void CmdSketcherNewSketch::activated(int iMsg)
                                                            // on its support
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 
-        Part::Feature* part = static_cast<Part::Feature*>(
-            support.getValue());// if multi-part support, this will return 0
-        if (part) {
-            App::DocumentObjectGroup* grp = part->getGroup();
+        App::DocumentObject* supportObject = support.getValue();
+        if (supportObject) {
+            App::DocumentObjectGroup* grp = supportObject->getGroup();
             if (grp) {
                 doCommand(Doc,
                           "App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -299,6 +296,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
         }
+        doCommand(Doc, "App.activeDocument().%s.Label = 'Sketch'", FeatName.c_str());
 
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
@@ -367,7 +365,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Leave Sketch");
-    sToolTipText = QT_TR_NOOP("Finish editing the active sketch. You can also press Escape to exit.");
+    sToolTipText = QT_TR_NOOP("Finishes editing the active sketch. Press Escape to exit.");
     sWhatsThis = "Sketcher_LeaveSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_LeaveSketch";
@@ -407,7 +405,7 @@ CmdSketcherCancelSketch::CmdSketcherCancelSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Cancel Editing");
-    sToolTipText = QT_TR_NOOP("Leave 'edit' mode and revert any changes");
+    sToolTipText = QT_TR_NOOP("Leaves 'edit' mode and reverts any changes");
     sWhatsThis = "Sketcher_CancelSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CancelSketch";
@@ -452,7 +450,7 @@ public:
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
         sMenuText = QT_TR_NOOP("Leave");
-        sToolTipText = QT_TR_NOOP("Leave the sketch editing mode.");
+        sToolTipText = QT_TR_NOOP("Leaves the sketch editing mode");
         sWhatsThis = "Sketcher_LeaveGroup";
         sStatusTip = sToolTipText;
         eType = 0;
@@ -1161,7 +1159,7 @@ namespace {
                     "CmdSketcherMergeSketches",
                     "Skipping external geometry #%1\n")
                     .arg(displayId);
-                Base::Console().message(msg.toUtf8().constData());
+                Base::Console().message("{}", msg.toStdString());
             }
         };
 
@@ -1204,7 +1202,7 @@ namespace {
                         "CmdSketcherMergeSketches",
                         "External geometry '%1' is out of scope:\n")
                         .arg(oldRefName.c_str());
-                    Base::Console().message(msg.toUtf8().constData());
+                    Base::Console().message("{}", msg.toStdString());
                     printSkippedDisplayIds(srcGeoIds);
                 }
                 continue;
@@ -1363,7 +1361,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                 .arg(addedConstraints)
                 .arg(srcConstraints)
                 .arg(srcSketch->getNameInDocument());
-            Base::Console().message(msg.toUtf8().constData());
+            Base::Console().message("{}", msg.toStdString());
         }
         if (addedConstraints > 0) {
             for (int i = 0; i < addedConstraints; i++) {
@@ -1378,7 +1376,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                         "Skipping constraint #%1 of '%2': references unmerged geometry.\n")
                         .arg(i+1)
                         .arg(srcSketch->getNameInDocument());
-                    Base::Console().message(msg.toUtf8().constData());
+                    Base::Console().message("{}", msg.toStdString());
                     continue;
                 }
             }
@@ -1431,19 +1429,22 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
+        QLatin1String(  "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+                        "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %3)\n");
     Gui::Document* doc = getActiveGuiDocument();
 
-    bool revert = false;
-    if (doc) {
-        SketcherGui::ViewProviderSketch* vp =
-            dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp) {
-            revert = vp->getViewOrientationFactor() < 0 ? true : false;
-        }
+    if (!doc) {
+        return;
     }
-    cmdStr = cmdStr.arg(revert ? QLatin1String("True") : QLatin1String("False"));
-    doCommand(Doc, cmdStr.toLatin1());
+    SketcherGui::ViewProviderSketch* vp =
+        freecad_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if (!vp) {
+        return;
+    }
+    QLatin1String revert = vp->getViewOrientationFactor() < 0 ? QLatin1String("True") : QLatin1String("False");
+
+    cmdStr = cmdStr.arg(doc->getDocument()->getName(), vp->getSketchObject()->getNameInDocument(), revert);
+    doCommand(Doc, cmdStr.toUtf8());
 }
 
 bool CmdSketcherViewSection::isActive()

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2026 sliptonic
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
 #                                                                              #
@@ -109,6 +110,14 @@ class Postable:
         if name == "ToolController":
             return data.get("tool_controller", None)
 
+        # A path the post has already placed (WrapperPost._place_operations)
+        # is in world coordinates: report no Placement, so a legacy script's
+        # PathUtils.getPathWithPlacement() does not apply it a second time.
+        if name == "Placement" and data.get("placed"):
+            import FreeCAD
+
+            return FreeCAD.Placement()
+
         try:
             source = object.__getattribute__(self, "source")
         except AttributeError:
@@ -190,11 +199,12 @@ def _wrap_op(op: Any) -> Postable:
     Data keys populated:
         "tool_controller" (Postable) - Present when the operation has a ToolController.
     """
-    data = {}
+    data = {}  # WHATIF: = op.postable_annotations()
     raw_tc = PathUtil.toolControllerForOp(op)
     if raw_tc is not None:
         data["tool_controller"] = _wrap_tc(raw_tc)
 
+    # For a don't-interpret-text-blob: data={'str': blob}
     return Postable(
         item_type="operation",
         label=op.Label,
@@ -254,8 +264,8 @@ def build_postlist_by_fixture(processor: Any) -> list:
             tc_postable = wrapped_op.ToolController
             if tc_postable is not None:
                 if needsTcOp(currTc, tc_postable):
-                    sublist.append(tc_postable)
-                    Path.Log.debug(f"Appending TC: {tc_postable.label}")
+                    sublist.append(_wrap_tc(tc_postable.source))
+                    Path.Log.debug(f"Appending TC: {tc_postable.source.Name}")
                     currTc = tc_postable
             sublist.append(wrapped_op)
 
@@ -313,7 +323,7 @@ def build_postlist_by_tool(processor: Any) -> list:
         else:
             commitToPostlist()
 
-            sublist = [tc_postable]
+            sublist = [_wrap_tc(tc_postable.source)]
             curlist = [wrapped_op]
             currTc = tc_postable
 
@@ -360,7 +370,7 @@ def build_postlist_by_operation(processor: Any) -> list:
             tc_postable = wrapped_op.ToolController
             if tc_postable is not None:
                 if processor._job.SplitOutput or needsTcOp(currTc, tc_postable):
-                    sublist.append(tc_postable)
+                    sublist.append(_wrap_tc(tc_postable.source))
                     currTc = tc_postable
             sublist.append(wrapped_op)
 
@@ -401,92 +411,4 @@ def buildPostList(processor: Any) -> List[Tuple[str, List]]:
     else:
         final_postlist = [("allitems", [item for sublist in postlist for item in sublist[1]])]
 
-    # Apply early_tool_prep if configured on the machine
-    early_tool_prep = False
-    if (
-        hasattr(processor, "_machine")
-        and processor._machine
-        and hasattr(processor._machine, "processing")
-    ):
-        early_tool_prep = getattr(processor._machine.processing, "early_tool_prep", False)
-
-    if early_tool_prep:
-        return apply_early_tool_prep(final_postlist)
     return final_postlist
-
-
-def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, List]]:
-    """
-    Apply early tool preparation optimization to the postlist.
-
-    This function modifies tool change commands to enable early tool preparation:
-    - Always outputs tool changes as "Tn M6" (tool number followed by change command)
-    - Additionally emits standalone "Tn" prep commands immediately after the previous M6
-      to allow the machine to prepare the next tool while the current tool is working
-
-    Example output:
-        T4 M6      <- change to tool 4
-        T5         <- prep tool 5 early (while T4 is working)
-        <gcode>    <- operations with T4
-        T5 M6      <- change to tool 5 (already prepped)
-        T7         <- prep tool 7 early (while T5 is working)
-        <gcode>    <- operations with T5
-        T7 M6      <- change to tool 7 (already prepped)
-    """
-    # Collect all tool controllers across all groups to find the next tool
-    all_tool_controllers = []
-    for group_idx, (name, sublist) in enumerate(postlist):
-        for item_idx, item in enumerate(sublist):
-            if item.item_type == "tool_controller":
-                all_tool_controllers.append((group_idx, item_idx, item))
-
-    new_postlist = []
-    for group_idx, (name, sublist) in enumerate(postlist):
-        new_sublist = []
-        i = 0
-        while i < len(sublist):
-            item = sublist[i]
-            if item.item_type == "tool_controller":
-                m6_cmd = None
-                for cmd in item.path.Commands:
-                    if cmd.Name == "M6":
-                        m6_cmd = cmd
-                        break
-
-                if m6_cmd and len(m6_cmd.Parameters) > 0:
-
-                    tc_position = next(
-                        (
-                            idx
-                            for idx, (g_idx, i_idx, tc) in enumerate(all_tool_controllers)
-                            if g_idx == group_idx and i_idx == i
-                        ),
-                        None,
-                    )
-
-                    next_tc = (
-                        all_tool_controllers[tc_position + 1][2]
-                        if tc_position is not None and tc_position + 1 < len(all_tool_controllers)
-                        else None
-                    )
-
-                    new_sublist.append(item)
-
-                    if next_tc is not None:
-                        next_tool_number = next_tc.data["tool_number"]
-                        prep_cmd = Path.Command(f"T{next_tool_number}")
-                        new_sublist.append(
-                            Postable(
-                                item_type="command",
-                                label="Command",
-                                path=Path.Path([prep_cmd]),
-                                source=None,
-                            )
-                        )
-                else:
-                    new_sublist.append(item)
-            else:
-                new_sublist.append(item)
-            i += 1
-        new_postlist.append((name, new_sublist))
-    return new_postlist

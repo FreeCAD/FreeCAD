@@ -52,10 +52,11 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
         pass
 
     def setUp(self):
-        self.maxDiff = None
         self.post.reinitialize()
+        self.maxDiff = None
         self.post._machine = Machine.create_3axis_config()
         self.post._machine.name = "Test Marlin Machine"
+        self.post.apply_configuration_bundle()
         toolhead = Toolhead(
             name="Default Toolhead",
             toolhead_type=ToolheadType.ROTARY,
@@ -112,7 +113,9 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
         lines = gcode.splitlines()
         dwell_re = re.compile(r"\bG0?4\b")
         dwell_lines = [l for l in lines if dwell_re.search(l)]
-        self.assertTrue(len(dwell_lines) > 0, "Expected at least one G4 dwell line")
+        self.assertTrue(
+            len(dwell_lines) > 0, f"Expected at least one G4 dwell line in---\n{gcode}\n---"
+        )
         for line in dwell_lines:
             self.assertIn("S", line, f"Dwell line should use S: {line}")
             self.assertNotIn(" P", line, f"Dwell line should not use P: {line}")
@@ -120,7 +123,7 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
     def test_spindle_wait_uses_s(self):
         """Spindle wait (G4 after M3) should use S parameter for Marlin."""
         # Enable spindle wait on the toolhead
-        self.post._machine.toolheads[0].spindle_wait = 3.0
+        self.post._machine.toolheads[0].toolhead_wait = 3.0
 
         self.profile_op.Path = Path.Path(
             [

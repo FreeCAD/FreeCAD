@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
  *                                                                         *
@@ -80,7 +82,7 @@ bool TaskDlgCreateElementSet::accept()
     catch (const Base::Exception& e) {
         FemSetElementNodesObject->getDocument()
             ->abortTransaction();  // Opened in ViewProviderDocumentObject::startDefaultEditMode()
-        Base::Console().warning("TaskDlgCreateElementSet::accept(): %s\n", e.what());
+        Base::Console().warning("TaskDlgCreateElementSet::accept(): {}\n", e.what());
     }
 
     return false;

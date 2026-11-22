@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2022 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -36,14 +33,11 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerBSpline;
 
@@ -258,7 +252,7 @@ private:
                                          .arg(QString::fromLatin1(controlpoints.c_str()))
                                          .arg(QString::fromLatin1(periodic ? "True" : "False"))
                                          .arg(myDegree);
-                    Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
+                    Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toUtf8());
                     // Adjust internal knots here (raise multiplicity)
                     // How this contributes to the final B-spline
                     if (controlpoints == controlpointses.front()) {
@@ -426,7 +420,15 @@ private:
         using State = std::pair<ConstructionMethod, SelectMode>;
         using enum Gui::InputHint::UserInput;
 
-        const Gui::InputHint switchModeHint {tr("%1 switch mode"), {KeyM}};
+        const Gui::InputHint switchModeHint {
+            constructionMethod() == ConstructionMethod::ControlPoints
+                ? tr("%1 switch to knots")
+                : tr("%1 switch to control points"),
+            {KeyM}
+        };
+        const Gui::InputHint periodicHint {tr("%1 toggle periodic"), {KeyF}};
+        const Gui::InputHint undoHint {tr("%1 undo last point"), {KeyR}};
+        const Gui::InputHint degreeHint {tr("%1/%2 increase/decrease degree"), {KeyU, KeyJ}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -437,17 +439,18 @@ private:
                      {
                          {tr("%1 pick first control point"), {MouseLeft}},
                          switchModeHint,
-                         {tr("%1 + degree"), {KeyU}},
-                         {tr("%1 - degree"), {KeyJ}},
+                         periodicHint,
+                         degreeHint,
                      }},
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {tr("%1 pick next control point"), {MouseLeft}},
-                         {tr("%1 finish B-spline"), {MouseRight}},
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
                          switchModeHint,
-                         {tr("%1 + degree"), {KeyU}},
-                         {tr("%1 - degree"), {KeyJ}},
+                         periodicHint,
+                         undoHint,
+                         degreeHint,
                      }},
 
                 // Knots method
@@ -456,15 +459,16 @@ private:
                      {
                          {tr("%1 pick first knot"), {MouseLeft}},
                          switchModeHint,
-                         {tr("%1 toggle periodic"), {KeyR}},
+                         periodicHint,
                      }},
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {tr("%1 pick next knot"), {MouseLeft}},
-                         {tr("%1 finish B-spline"), {MouseRight}},
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
                          switchModeHint,
-                         {tr("%1 toggle periodic"), {KeyR}},
+                         periodicHint,
+                         undoHint,
                      }},
             });
     }
@@ -877,7 +881,7 @@ private:
                 // Since it happens very frequently that the interpolation fails
                 // it's sufficient to report this as log message to avoid to pollute
                 // the output window
-                Base::Console().log(std::string("drawBSplineToPosition"), "interpolation failed\n");
+                Base::Console().log("drawBSplineToPosition", "interpolation failed\n");
             }
         }
     }
@@ -919,25 +923,20 @@ void DSHBSplineController::secondKeyShortcut()
 template<>
 void DSHBSplineController::thirdKeyShortcut()
 {
-    auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
-    toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
+    handler->undoLastPoint();
 }
 
 template<>
 void DSHBSplineController::fourthKeyShortcut()
 {
-    handler->undoLastPoint();
+    auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
+    toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
 }
 
 template<>
 void DSHBSplineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        toolWidget->setNoticeVisible(true);
-        toolWidget->setNoticeText(
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Press F to undo last point.")
-        );
-
         QStringList names = {
             QApplication::translate("Sketcher_CreateBSpline", "From control points"),
             QApplication::translate("Sketcher_CreateBSpline", "From knots")
@@ -946,7 +945,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)")
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (F)")
         );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
@@ -954,7 +953,7 @@ void DSHBSplineController::configureToolWidget()
         );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->periodic);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -989,7 +988,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setParameterLabel(
             WParameter::First,
-            QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')")
+            QApplication::translate("ToolWidgetManager_p4", "Degree")
         );
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
@@ -1065,6 +1064,7 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }

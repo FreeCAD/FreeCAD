@@ -141,6 +141,18 @@ struct ActionDisabler
 };
 
 
+DialogOptions::Backend DialogOptions::fileDialogBackend()
+{
+    if (dontUseNativeFileDialog()) {
+        return Backend::NonNative;
+    }
+#ifdef FC_OS_WIN32
+    return Backend::ViaWin32;
+#else
+    return Backend::ViaQt;
+#endif
+}
+
 bool DialogOptions::dontUseNativeFileDialog()
 {
 #if defined(USE_QT_DIALOGS)
@@ -155,6 +167,14 @@ bool DialogOptions::dontUseNativeFileDialog()
                                      ->GetGroup("Preferences")
                                      ->GetGroup("Dialog");
     return group->GetBool("DontUseNativeDialog", notNativeDialog);
+}
+
+DialogOptions::Backend DialogOptions::colorDialogBackend()
+{
+    if (dontUseNativeColorDialog()) {
+        return Backend::NonNative;
+    }
+    return Backend::ViaQt;
 }
 
 bool DialogOptions::dontUseNativeColorDialog()
@@ -426,9 +446,10 @@ QStringList FileDialogInternal::nativeFileDialog(
         selectedFilterIndex = 0;
     }
     if (selectedFilterIndex < 0) {
-        Base::Console().error(
+        Base::Console().developerError(
+            "FileDialog",
             "Qt-backed nativeFileDialog returned a selected filter that wasn't in the original "
-            "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+            "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
             selectedQtFilter.toStdString()
         );
         selectedFilterIndex = 0;
@@ -472,7 +493,7 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
 
     // Check for any full-name filters first.
     for (const auto& pat : selectedFilter.patterns) {
-        if (!pat.startsWith("*.") && typedName == pat) {
+        if (!pat.startsWith("*.") && typedName.compare(pat, Qt::CaseInsensitive) == 0) {
             return;
         }
     }
@@ -492,7 +513,8 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
     }
     else /* size() > 1 */ {
         for (const auto& pat : selectedFilter.patterns) {
-            if (pat.startsWith("*.") && typedExt == QStringView(pat).mid(1)) {
+            if (pat.startsWith("*.")
+                && typedExt.compare(QStringView(pat).mid(1), Qt::CaseInsensitive) == 0) {
                 // Valid extension found for the selected filter.
                 return;
             }
@@ -595,9 +617,10 @@ QString FileDialog::getSaveFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console().error(
+            Base::Console().developerError(
+                "FileDialog",
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
-                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
             );
             actuallySelectedFilterIndex = 0;
@@ -726,9 +749,10 @@ QString FileDialog::getOpenFileName(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console().error(
+            Base::Console().developerError(
+                "FileDialog",
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
-                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
             );
             actuallySelectedFilterIndex = 0;
@@ -821,9 +845,10 @@ QStringList FileDialog::getOpenFileNames(
         actuallySelectedFilterIndex = qtFilterList.indexOf(dlg.selectedNameFilter());
         if (actuallySelectedFilterIndex < 0) {
             // Log an error since this happening means the code is incorrect
-            Base::Console().error(
+            Base::Console().developerError(
+                "FileDialog",
                 "Non-native FileDialog returned a selected filter that wasn't in the original "
-                "list, defaulting to index 0\nProblem cause filter: \"%s\"\n",
+                "list, defaulting to index 0\nProblem cause filter: \"{}\"\n",
                 dlg.selectedNameFilter().toStdString()
             );
             actuallySelectedFilterIndex = 0;
@@ -1152,14 +1177,15 @@ FileChooser::FileChooser(QWidget* parent)
     layout->setSpacing(2);
 
     lineEdit = new QLineEdit(this);
-    completer = new QCompleter(this);
-    completer->setMaxVisibleItems(12);
-    fs_model = new QFileSystemModel(completer);
-    fs_model->setRootPath(QStringLiteral(""));
-    completer->setModel(fs_model);
-    lineEdit->setCompleter(completer);
-
-
+    // Only install the completer if/when we actually need it, so we avoid Windows trying to access
+    // network drives if we don't need them for anything. See Issue #31565.
+    connect(
+        lineEdit,
+        &QLineEdit::textEdited,
+        this,
+        &FileChooser::installPathCompleter,
+        Qt::SingleShotConnection
+    );
     connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
     connect(lineEdit, &QLineEdit::editingFinished, this, &FileChooser::editingFinished);
 
@@ -1178,6 +1204,16 @@ FileChooser::FileChooser(QWidget* parent)
 }
 
 FileChooser::~FileChooser() = default;
+
+void FileChooser::installPathCompleter()
+{
+    auto completer = new QCompleter(this);
+    completer->setMaxVisibleItems(12);
+    auto fileSystemModel = new QFileSystemModel(completer);
+    fileSystemModel->setRootPath(QString());
+    completer->setModel(fileSystemModel);
+    lineEdit->setCompleter(completer);
+}
 
 void FileChooser::resizeEvent(QResizeEvent* e)
 {

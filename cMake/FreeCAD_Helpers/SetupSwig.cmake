@@ -21,6 +21,12 @@ if(BUILD_SKETCHER)
         return()
     endif()
 
+    if(NOT FREECAD_USE_EXTERNAL_COIN_PIVY)
+        message(STATUS "Skipping SWIG/Pivy runtime compatibility check for bundled Pivy")
+        message(STATUS "swig binary version building bundled pivy: ${SWIG_VERSION}")
+    endif()
+
+    if(FREECAD_USE_EXTERNAL_COIN_PIVY)
     # check swig/pivy runtime compatibility
     message(STATUS "checking SWIG/Pivy runtime compatibility...")
 
@@ -154,6 +160,7 @@ message(DEBUG "Pivy debug output: ${PIVY_DEBUG_OUTPUT}")
             message(WARNING "Could not determine Pivy runtime version")
         endif()
         message(WARNING "Proceeding without SWIG/Pivy compatibility check.")
+    endif()
     endif()
 endif()
 

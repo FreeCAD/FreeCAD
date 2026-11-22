@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,7 +29,7 @@
 #include <App/SuppressibleExtension.h>
 
 #include "FemMesh.h"
-#include "FemMeshProperty.h"
+#include "PropertyFemMesh.h"
 
 
 namespace Fem

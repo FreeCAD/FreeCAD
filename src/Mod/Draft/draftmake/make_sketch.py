@@ -35,10 +35,13 @@ import math
 
 import FreeCAD as App
 import DraftVecUtils
-import DraftGeomUtils
+from draftgeoutils import edges as geo_edges
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
 from draftutils import gui_utils
 from draftutils import utils
 from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 
 def make_sketch(
@@ -104,11 +107,11 @@ def make_sketch(
         else:
             shape = obj.Shape
 
-        if not DraftGeomUtils.is_planar(shape, tol):
+        if not geo_geometry.is_planar(shape, tol):
             App.Console.PrintError(translate("draft", "All shapes must be planar") + "\n")
             return None
 
-        if DraftGeomUtils.get_normal(shape, tol):
+        if geo_geometry.get_normal(shape, tol):
             shape_norm_yes.append(shape)
         else:
             shape_norm_no.append(shape)
@@ -118,11 +121,11 @@ def make_sketch(
     # test if all shapes are coplanar
     if len(shape_norm_yes) >= 1:
         for shape in shapes_list[1:]:
-            if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
+            if not geo_geometry.are_coplanar(shapes_list[0], shape, tol):
                 App.Console.PrintError(translate("draft", "All shapes must be coplanar") + "\n")
                 return None
         # define sketch normal
-        normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
+        normal = geo_geometry.get_normal(shapes_list[0], tol)
 
     else:
         # suppose all geometries are straight lines or points
@@ -134,10 +137,10 @@ def make_sketch(
                 # all points coincide
                 normal = App.Vector(0, 0, 1)
             else:
-                if not DraftGeomUtils.is_planar(poly, tol):
+                if not geo_geometry.is_planar(poly, tol):
                     App.Console.PrintError(translate("draft", "All shapes must be coplanar") + "\n")
                     return None
-                normal = DraftGeomUtils.get_shape_normal(poly)
+                normal = geo_geometry.get_shape_normal(poly)
         else:
             # only one point
             normal = App.Vector(0, 0, 1)
@@ -167,7 +170,7 @@ def make_sketch(
             pass
 
     def convertBezier(edge):
-        if DraftGeomUtils.geomType(edge) == "BezierCurve":
+        if geo_general.geomType(edge) == "BezierCurve":
             return edge.Curve.toBSpline(edge.FirstParameter, edge.LastParameter).toShape()
         else:
             return edge
@@ -209,7 +212,7 @@ def make_sketch(
             shape = obj if tp == "Shape" else obj.Shape
             for e in shape.Edges:
                 newedge = convertBezier(e)
-                nobj.addGeometry(DraftGeomUtils.orientEdge(newedge, normal, make_arc=True))
+                nobj.addGeometry(geo_edges.orientEdge(newedge, normal, make_arc=True))
                 addRadiusConstraint(newedge)
             ok = True
 
@@ -263,6 +266,14 @@ def make_sketch(
     return nobj
 
 
-makeSketch = make_sketch
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_sketch()",
+)
+def makeSketch(*args, **kwarg):
+    """DEPRECATED. Use 'make_sketch'."""
+    return make_sketch(*args, **kwarg)
+
 
 ## @}

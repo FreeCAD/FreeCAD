@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
@@ -20,7 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <fstream>
+
 #include <boost/algorithm/string.hpp>
+#include <format>
 
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -227,14 +232,10 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
 {
     int error = 0;
 
-    Base::Console().warning("copy: %s and %s\n", oldName.c_str(), newName.c_str());
+    Base::Console().warning("copy: {} and {}\n", oldName, newName);
     if (oldName.compare(newName) == 0 && error == 0) {
         error = 1;
-        Base::Console().warning(
-            "Cannot copy ResultMesh to ResultMesh: %s and %s\n",
-            oldName.c_str(),
-            newName.c_str()
-        );
+        Base::Console().warning("Cannot copy ResultMesh to ResultMesh: {} and {}\n", oldName, newName);
         QMessageBox::warning(
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
@@ -245,7 +246,7 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
     if ((oldName.find("Result") == std::string::npos || newName.find("Result") == std::string::npos)
         && error == 0) {
         error = 1;
-        Base::Console().warning("Mesh must be results: %s\n", oldName.c_str());
+        Base::Console().warning("Mesh must be results: {}\n", oldName);
         QMessageBox::warning(
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
@@ -394,23 +395,22 @@ void writeToFile(
     elType3D[15] = "C3D15";  // 15 node pentahedron
     elType3D[20] = "C3D20";  // 20 node hexahedron
                              // no pyramid elements
-    FILE* fptr = fopen(fileName.c_str(), "w");
-    if (fptr == NULL) {
+    std::ofstream out(fileName);
+    if (!out) {
         return;
     }
-    fprintf(fptr, "** written by Erase Elements inp file writer for CalculiX,Abaqus meshes\n");
-    fprintf(fptr, "** all mesh elements.\n");
+    out << "** written by Erase Elements inp file writer for CalculiX,Abaqus meshes\n";
+    out << "** all mesh elements.\n";
 
-    fprintf(fptr, "\n");
-    fprintf(fptr, "\n");
-    fprintf(fptr, "** Nodes\n");
-    fprintf(fptr, "*Node, NSET=Nall\n");
+    out << "\n";
+    out << "\n";
+    out << "** Nodes\n";
+    out << "*Node, NSET=Nall\n";
 
     for (int i = 1; i < rows + 1; i++) {
         if (nodeNumbers[i] > 0) {
-            fprintf(
-                fptr,
-                "%d, %e, %e, %e\n",
+            out << std::format(
+                "{}, {:e}, {:e}, {:e}\n",
                 nodeNumbers[i],
                 nodeCoords[i][0],
                 nodeCoords[i][1],
@@ -439,41 +439,38 @@ void writeToFile(
 
         if (numberNodes != elem->NbNodes()) {
             if (requiredType == 4) {
-                fprintf(fptr, "\n");
-                fprintf(fptr, "\n");
-                fprintf(fptr, "%s", "** Volume elements\n");
-                fprintf(fptr, "*Element, TYPE=%s, ELSET=Evolumes\n", elType3D[elem->NbNodes()].c_str());
+                out << "\n";
+                out << "\n";
+                out << "** Volume elements\n";
+                out << std::format("*Element, TYPE={}, ELSET=Evolumes\n", elType3D[elem->NbNodes()]);
             }
             else if (requiredType == 3) {
-                fprintf(fptr, "%s", "** Face elements\n");
-                fprintf(fptr, "*Element, TYPE=%s, ELSET=Efaces\n", elType2D[elem->NbNodes()].c_str());
+                out << "** Face elements\n";
+                out << std::format("*Element, TYPE={}, ELSET=Efaces\n", elType2D[elem->NbNodes()]);
             }
             numberNodes = elem->NbNodes();
         }
         SMDS_ElemIteratorPtr nIt = elem->nodesIterator();
-        fprintf(fptr, "%d", EID);
+        out << EID;
         while (nIt->more()) {
             nSrc = static_cast<const SMDS_MeshNode*>(nIt->next());
             NID = nSrc->GetID();
-            fprintf(fptr, ", %d", NID);
+            out << ", " << NID;
         }
-        fprintf(fptr, "\n");
+        out << "\n";
     }  // while print
     if (requiredType == 4) {
-        fprintf(fptr, "\n");
-        fprintf(fptr, "\n");
-        fprintf(fptr, "%s", "** Define element set Eall\n");
-        fprintf(fptr, "%s", "*ELSET, ELSET=Eall\n");
-        fprintf(fptr, "%s", "Evolumes\n");
+        out << "\n";
+        out << "\n";
+        out << "** Define element set Eall\n";
+        out << "*ELSET, ELSET=Eall\n";
+        out << "Evolumes\n";
     }
     else if (requiredType == 3) {
-        fprintf(fptr, "%s", "** Define element set Eall\n");
-        fprintf(fptr, "%s", "*ELSET, ELSET=Eall\n");
-        fprintf(fptr, "%s", "Efaces\n");
+        out << "** Define element set Eall\n";
+        out << "*ELSET, ELSET=Eall\n";
+        out << "Efaces\n";
     }
-
-    fclose(fptr);
-    return;
 }
 }  // namespace
 
@@ -798,7 +795,7 @@ void TaskCreateElementSet::DefineNodes(
     }
     if (keepElement > 0) {
         Base::Console().warning(
-            "Number of Elements Kept: %d, Number of Elements Erased: %d\n",
+            "Number of Elements Kept: {}, Number of Elements Erased: {}\n",
             keepElement,
             erase
         );

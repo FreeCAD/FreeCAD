@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -31,6 +28,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "GeometryCreationMode.h"
@@ -53,11 +51,44 @@ bool isAlterGeoActive(Gui::Document* doc)
     return false;
 }
 
-namespace SketcherGui
+namespace
 {
 
-extern GeometryCreationMode geometryCreationMode;
+void updateToggleConstructionCommands(GeometryCreationMode mode)
+{
+    Gui::Application::Instance->commandManager().updateCommands(
+        "ToggleConstruction",
+        static_cast<int>(mode)
+    );
+}
 
+GeometryCreationMode geometryCreationModeFromViewProvider(const Gui::ViewProviderDocumentObject& vp)
+{
+    auto sketchVp = dynamic_cast<const SketcherGui::ViewProviderSketch*>(&vp);
+    if (sketchVp) {
+        return sketchVp->getGeometryCreationMode();
+    }
+
+    return GeometryCreationMode::Normal;
+}
+
+void updateToggleConstructionCommands(const Gui::Document& doc)
+{
+    auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc.getInEdit());
+    updateToggleConstructionCommands(vp ? vp->getGeometryCreationMode() : GeometryCreationMode::Normal);
+}
+
+void resetToggleConstructionCommandsForDocument(const Gui::ViewProviderDocumentObject& vp)
+{
+    if (vp.getDocument() == Gui::Application::Instance->activeDocument()) {
+        updateToggleConstructionCommands(GeometryCreationMode::Normal);
+    }
+}
+
+}  // namespace
+
+namespace SketcherGui
+{
 /* Constrain commands =======================================================*/
 DEF_STD_CMD_AU(CmdSketcherToggleConstruction)
 
@@ -73,6 +104,24 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sPixmap = "Sketcher_ToggleConstruction";
     sAccel = "G, N";
     eType = ForEdit;
+
+    auto app = Gui::Application::Instance;
+
+    app->signalActiveDocument.connect([](const Gui::Document& doc) {
+        updateToggleConstructionCommands(doc);
+    });
+
+    app->signalNewDocument.connect([](const Gui::Document&, bool) {
+        updateToggleConstructionCommands(GeometryCreationMode::Normal);
+    });
+
+    app->signalInEdit.connect([](const Gui::ViewProviderDocumentObject& vp) {
+        updateToggleConstructionCommands(geometryCreationModeFromViewProvider(vp));
+    });
+
+    app->signalResetEdit.connect([](const Gui::ViewProviderDocumentObject& vp) {
+        resetToggleConstructionCommandsForDocument(vp);
+    });
 
     // list of toggle construction commands
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -122,7 +171,11 @@ void CmdSketcherToggleConstruction::updateAction(int mode)
 {
     auto act = getAction();
     if (act) {
-        switch (static_cast<GeometryCreationMode>(mode)) {
+
+        GeometryCreationMode creationMode = static_cast<GeometryCreationMode>(mode);
+
+        // Apply
+        switch (creationMode) {
             case GeometryCreationMode::Normal:
                 act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
                 break;
@@ -133,22 +186,32 @@ void CmdSketcherToggleConstruction::updateAction(int mode)
     }
 }
 
+GeometryCreationMode toggleCreationMode(GeometryCreationMode currentMode)
+{
+    if (currentMode == GeometryCreationMode::Normal) {
+        return GeometryCreationMode::Construction;
+    }
+    else {
+        return GeometryCreationMode::Normal;
+    }
+}
+
 void CmdSketcherToggleConstruction::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // Option A: nothing is selected change creation mode from/to construction
     if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 0) {
+        auto doc = getActiveGuiDocument();
+        if (doc) {
+            auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            if (vp) {
+                GeometryCreationMode newMode = toggleCreationMode(vp->getGeometryCreationMode());
+                vp->setGeometryCreationMode(newMode);
 
-        Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-
-        if (geometryCreationMode == GeometryCreationMode::Construction) {
-            geometryCreationMode = GeometryCreationMode::Normal;
+                Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+                rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(newMode));
+            }
         }
-        else {
-            geometryCreationMode = GeometryCreationMode::Construction;
-        }
-
-        rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(geometryCreationMode));
     }
     else  // there was a selection, so operate in toggle mode.
     {

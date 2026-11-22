@@ -35,6 +35,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using namespace std;
 
+namespace heeks
+{
+
 CAreaOrderer* CInnerCurves::area_orderer = NULL;
 
 CInnerCurves::CInnerCurves(shared_ptr<CInnerCurves> pOuter, shared_ptr<CCurve> curve)
@@ -172,3 +175,5 @@ CArea CAreaOrderer::ResultArea() const
 
     return a;
 }
+
+}  // namespace heeks

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2024 Shai Seger
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include "PreCompiled.h"
 
@@ -53,6 +50,8 @@ using namespace Gui;
 namespace CAMSimulator
 {
 
+TYPESYSTEM_SOURCE_ABSTRACT(CAMSimulator::ViewCAMSimulator, Gui::MDIViewWithCamera)
+
 static QPointer<ViewCAMSimulator> viewCAMSimulator;
 
 ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
@@ -72,9 +71,6 @@ ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument, QWidget* parent, Q
 
     mDlg->connectTo(*mGui, *mDummyViewer);
 
-    connect(mDlg, &DlgCAMSimulator::documentChanged, this, [this](Gui::Document* doc) {
-        setDocument(doc);
-    });
     connect(mDlg, &DlgCAMSimulator::simulationStarted, this, &ViewCAMSimulator::onSimulationStarted);
 
     // call apply settings only after mDummyViewer and mDlg have been initialized
@@ -237,7 +233,7 @@ void ViewCAMSimulator::onSimulationStarted()
 
     // window title and activate
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
+    App::Document* doc = getAppDocument();
     setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
 
     Gui::getMainWindow()->setActiveWindow(this);
@@ -286,7 +282,12 @@ void ViewCAMSimulator::applySettings()
 
 ViewCAMSimulator* ViewCAMSimulator::clone()
 {
-    auto viewCam = new ViewCAMSimulator(_pcDocument, nullptr);
+    return clone(nullptr);
+}
+
+ViewCAMSimulator* ViewCAMSimulator::clone(Gui::Document* doc)
+{
+    auto viewCam = new ViewCAMSimulator(doc ? doc : getGuiDocument(), nullptr);
 
     viewCam->cloneFrom(*this);
     viewCam->mDlg->cloneFrom(*mDlg);
@@ -300,11 +301,42 @@ ViewCAMSimulator* ViewCAMSimulator::clone()
     return viewCam;
 }
 
-ViewCAMSimulator& ViewCAMSimulator::instance()
+ViewCAMSimulator& ViewCAMSimulator::instance(Gui::Document* doc)
 {
+    // The first call comes from CAMSim::resetSimulation giving us the correct document. All
+    // subsequent calls don't provide a document and just use the one from resetSimulation.
+
     if (!viewCAMSimulator) {
-        viewCAMSimulator = new ViewCAMSimulator(nullptr, nullptr);
+        // No simulator exists so we create a new one. We need to make sure that we provide a valid
+        // document to the constructor. Otherwise the newly created MDIView will be considered
+        // "passive" and will not be able to receive messages from e.g. the view menu.
+
+        if (!doc) {
+            throw std::invalid_argument("trying to create a ViewCAMSimulator without a document");
+        }
+
+        viewCAMSimulator = new ViewCAMSimulator(doc, nullptr);
         getMainWindow()->addWindow(viewCAMSimulator);
+    }
+    else if (doc && doc != viewCAMSimulator->getGuiDocument()) {
+        // If a document is provided, we make sure that the returned instance belongs to that
+        // document. Looking at the constructor of MDIView, it seems the document of a view should
+        // not be changed after creating the view (even though there is a setDocument function in
+        // BaseView, the constructor of MDIView sets some variables, e.g. ActiveObjects that don't
+        // seem to be updated when calling setDocument in BaseView). If the document is different,
+        // we clone the simulator with the new document. Cloning the simulator is reasonably fast
+        // and should not be noticeable to the user.
+
+        // There was a previous attempt where the simulator was initialized without a document and
+        // therefore becoming a "passive" view. Messages where then also delivered to passive views
+        // but that caused some issues in the Assembly workbench. See issue #29901.
+
+        auto old = viewCAMSimulator.get();
+
+        viewCAMSimulator = old->clone(doc);
+        getMainWindow()->addWindow(viewCAMSimulator);
+
+        old->deleteSelf();
     }
 
     return *viewCAMSimulator;

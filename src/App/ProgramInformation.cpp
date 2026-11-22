@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2025 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2025 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <filesystem>
 #include <algorithm>
@@ -67,17 +65,18 @@ std::string ProgramInformation::prettyProductInfoWrapper()
     auto fi = QFileInfo(macosVersionFile);
     if (fi.exists() && fi.isReadable()) {
         auto plistFile = QFile(macosVersionFile);
-        plistFile.open(QIODevice::ReadOnly);
-        while (!plistFile.atEnd()) {
-            auto line = plistFile.readLine();
-            if (line.contains("ProductUserVisibleVersion")) {
-                auto nextLine = plistFile.readLine();
-                if (nextLine.contains("<string>")) {
-                    QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
-                    auto matches = re.match(QString::fromUtf8(nextLine));
-                    if (matches.hasMatch()) {
-                        productName = QStringLiteral("macOS ") + matches.captured(1);
-                        break;
+        if (plistFile.open(QIODevice::ReadOnly)) {
+            while (!plistFile.atEnd()) {
+                auto line = plistFile.readLine();
+                if (line.contains("ProductUserVisibleVersion")) {
+                    auto nextLine = plistFile.readLine();
+                    if (nextLine.contains("<string>")) {
+                        QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
+                        auto matches = re.match(QString::fromUtf8(nextLine));
+                        if (matches.hasMatch()) {
+                            productName = QStringLiteral("macOS ") + matches.captured(1);
+                            break;
+                        }
                     }
                 }
             }
@@ -249,15 +248,9 @@ void ProgramInformation::getBuildInformation(
     const auto buildDate = getValueOrEmpty(mConfig, "BuildRevisionDate");
     str << "Build date: " << buildDate << "\n";
 
-#if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug\n";
-#elif defined(NDEBUG)
-    str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
-    str << "Build type: Unknown\n";
-#endif
+    const auto buildType = getValueOrEmpty(mConfig, "BuildType");
+    str << "Build type: " << (buildType.empty() ? "Unknown" : buildType) << '\n';
+
     const auto buildRevisionBranch = getValueOrEmpty(mConfig, "BuildRevisionBranch");
     if (!buildRevisionBranch.empty()) {
         str << "Branch: " << buildRevisionBranch << '\n';
@@ -273,7 +266,16 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << fcCoin3dVersion << ", ";
+    str << "Coin " << fcCoin3dVersion;
+    if (*fcCoin3dSource) {
+        str << " (" << fcCoin3dSource << ")";
+    }
+    str << ", ";
+    str << "Pivy " << fcPivyVersion;
+    if (*fcPivySource) {
+        str << " (" << fcPivySource << ")";
+    }
+    str << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
     str << "Eigen3 " << fcEigen3Version << ", ";
@@ -283,6 +285,7 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     str << "SMESH " << SMESH_VERSION_STR << ", ";
 #endif
     str << "xerces-c " << fcXercescVersion << ", ";
+    str << "Clipper2 " << fcClipper2Version << ", ";
     getIfcInfo(str);
 #if defined(OCC_VERSION_STRING_EXT)
     str << "OCC " << OCC_VERSION_STRING_EXT << '\n';
@@ -307,7 +310,7 @@ void ProgramInformation::getIfcInfo(std::stringstream& str)
     catch (const Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().log("%s\n", e.what());
+        Base::Console().log("{}\n", e.what());
     }
 }
 

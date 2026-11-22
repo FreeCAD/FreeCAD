@@ -53,6 +53,9 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <IntRes2d_SequenceOfIntersectionPoint.hxx>
+#include <TColStd_SequenceOfReal.hxx>
+#include <TColgp_SequenceOfPnt.hxx>
 
 #include <BRepTools_History.hxx>
 #include <ShapeBuild_ReShape.hxx>
@@ -3162,14 +3165,9 @@ void WireJoiner::setTolerance(double tol, double atol)
     }
 }
 
-#if OCC_VERSION_HEX < 0x070600
-void WireJoiner::Build()
-{
-#else
 void WireJoiner::Build(const Message_ProgressRange& theRange)
 {
     (void)theRange;
-#endif
     if (IsDone()) {
         return;
     }

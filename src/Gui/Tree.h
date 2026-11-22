@@ -190,6 +190,8 @@ protected:
     bool event(QEvent* e) override;
     void keyPressEvent(QKeyEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
     void showEvent(QShowEvent* ev) override;
@@ -295,6 +297,9 @@ private:
 
     // this timer is used to prevent double click event on visibility icon
     QTimer visibilityIconDoubleClickTimer;
+
+    bool expandIndicatorPressed = false;
+    bool visibilityIconPressed = false;
 
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
@@ -491,7 +496,11 @@ public:
     Gui::ViewProviderDocumentObject* object() const;
     void testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2);
     void testStatus(bool resetStatus);
+    bool isVisibleInTree() const;
+    bool toggleElementVisibility();
     void displayStatusInfo();
+
+    QVariant data(int column, int role) const override;
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant& value) override;
     bool isChildOfItem(DocumentObjectItem*);
@@ -556,6 +565,7 @@ private:
         std::vector<bool>::const_iterator& from
     );
 
+    App::DocumentObject* getElementVisibilityParent() const;
     void setIconOverlays(int currentStatus, QPixmap& overlays) const;
     void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
     QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -22,6 +24,8 @@
 
 #pragma once
 
+#include <QString>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
@@ -45,6 +49,7 @@ public:
     App::PropertyLength Width;
     App::PropertyLength Height;
     App::PropertyEnumeration Orientation;
+    App::PropertyEnumeration Language;
 
     App::PropertyMap EditableTexts;
 
@@ -57,7 +62,7 @@ public:
     virtual DrawPage* getParentPage() const;
     virtual std::pair<int, int> getPageNumbers() const;
 
-    virtual QString getAutofillValue(const QString &id) const;
+    virtual std::string getAutofillValue(const std::string& id) const;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName(void) const override{

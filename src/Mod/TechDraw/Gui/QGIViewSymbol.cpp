@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
@@ -136,7 +138,7 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
 
     prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
-        Base::Console().error("Error - Could not load Symbol into SVG renderer for %s\n",
+        Base::Console().error("Error - Could not load Symbol into SVG renderer for {}\n",
                               getViewName());
     }
     m_svgItem->centerAt(0., 0.);

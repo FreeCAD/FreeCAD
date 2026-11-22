@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
@@ -1658,7 +1660,10 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1706,7 +1711,10 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1891,7 +1899,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
             execExtent(this, "DistanceY");
             break;
         default:
-            Base::Console().message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::ExtGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1959,7 +1967,7 @@ CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Horizontal Extent Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature.");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_HorizontalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_HorizontalExtentDimension";
@@ -2084,7 +2092,7 @@ CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Vertical Extent Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature.");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_VerticalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_VerticalExtentDimension";
@@ -2330,6 +2338,17 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
     //always have References2D, even if only for the parent DVP
     dim->setReferences2d(references2d);
     dim->setReferences3d(references3d);
+
+    if (auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim))) {
+        if (dimType == "Diameter") {
+            if (vp->StandardAndStyle.getValue() == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
+                vp->StandardAndStyle.setValue(ViewProviderDimension::STD_STYLE_ASME_REFERENCING);
+            }
+            if (vp->StandardAndStyle.getValue() == ViewProviderDimension::STD_STYLE_ASME_REFERENCING) {
+                vp->RenderingExtent.setValue(ViewProviderDimension::REND_EXTENT_REDUCED);
+            }
+        }
+    }
 
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.activeDocument().%s.addView(App.activeDocument().%s)",

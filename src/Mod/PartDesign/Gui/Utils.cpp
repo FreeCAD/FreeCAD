@@ -38,6 +38,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/PartDesignParameter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "Utils.h"
@@ -129,21 +130,15 @@ PartDesign::Body* getBody(
     PartDesign::Body* activeBody = nullptr;
     Gui::MDIView* activeView = Gui::Application::Instance->activeView();
 
-    if (activeView) {
-        auto doc = activeView->getAppDocument();
-        bool singleBodyDocument = doc->countObjectsOfType<PartDesign::Body>() == 1;
-        if (assertModern) {
-            activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, topParent, subname);
-
-            if (!activeBody && singleBodyDocument && autoActivate) {
-                auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-                App::DocumentObject* body = nullptr;
-                if (bodies.size() == 1) {
-                    body = bodies[0];
-                    activeBody = makeBodyActive(body, doc, topParent, subname);
-                }
+    if (activeView && assertModern) {
+        activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, topParent, subname);
+        if (!activeBody) {
+            auto doc = activeView->getAppDocument();
+            auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+            if (autoActivate && (bodies.size() == 1)) {
+                activeBody = makeBodyActive(bodies[0], doc, topParent, subname);
             }
-            if (!activeBody && messageIfNot) {
+            else if (messageIfNot) {
                 DlgActiveBody dia(
                     Gui::getMainWindow(),
                     doc,
@@ -215,11 +210,7 @@ void needActiveBodyError()
 
 PartDesign::Body* makeBody(App::Document* doc)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Mod/PartDesign"
-    );
-
-    bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+    bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
     // This is intended as a convenience when starting a new document.
     auto bodyName(doc->getUniqueObjectName("Body"));
@@ -234,7 +225,7 @@ PartDesign::Body* makeBody(App::Document* doc)
         "App.getDocument('%s').getObject('%s').AllowCompound = %s",
         doc->getName(),
         bodyName.c_str(),
-        allowCompound ? "True" : "False"
+        Gui::asString(allowCompound)
     );
 
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
@@ -74,7 +76,7 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     geom_obj = doc.Box
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(geom_obj, "Face2")]
     con_force.Force = "9000000.0 N"
     con_force.Direction = (geom_obj, ["Edge5"])

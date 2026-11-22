@@ -539,6 +539,50 @@ bounding box size of the 3D object that is currently displayed.</string>
           </property>
          </widget>
         </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="maxFrameRateLabel">
+          <property name="text">
+           <string>Maximum frame rate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefSpinBox" name="SpinBox_MaxFrameRate">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</string>
+          </property>
+          <property name="specialValueText">
+           <string>Automatic</string>
+          </property>
+          <property name="suffix">
+           <string> FPS</string>
+          </property>
+          <property name="minimum">
+           <number>-1</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="value">
+           <number>-1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxFrameRate</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

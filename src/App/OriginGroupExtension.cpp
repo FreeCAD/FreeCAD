@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Alexander Golubev
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <App/Document.h>
@@ -63,16 +60,14 @@ App::Origin* OriginGroupExtension::getOrigin() const
         err << "Can't find Origin for \"" << getExtendedObject()->getFullName() << "\"";
         throw Base::RuntimeError(err.str().c_str());
     }
-    else if (!originObj->isDerivedFrom<App::Origin>()) {
+    if (!originObj->isDerivedFrom<App::Origin>()) {
         std::stringstream err;
         err << "Bad object \"" << originObj->getFullName() << "\"("
             << originObj->getTypeId().getName() << ") linked to the Origin of \""
             << getExtendedObject()->getFullName() << "\"";
         throw Base::RuntimeError(err.str().c_str());
     }
-    else {
-        return static_cast<App::Origin*>(originObj);
-    }
+    return static_cast<App::Origin*>(originObj);
 }
 
 bool OriginGroupExtension::extensionGetSubObject(DocumentObject*& ret,
@@ -122,8 +117,8 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
         if (o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
             return o;
         }
-        else if (isOriginFeature
-                 && o->isDerivedFrom<App::LocalCoordinateSystem>()) {
+        if (isOriginFeature
+            && o->isDerivedFrom<App::LocalCoordinateSystem>()) {
             auto result = getGroupOfObject(o);
             if (result) {
                 return result;
@@ -136,12 +131,7 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
 
 short OriginGroupExtension::extensionMustExecute()
 {
-    if (Origin.isTouched()) {
-        return 1;
-    }
-    else {
-        return GeoFeatureGroupExtension::extensionMustExecute();
-    }
+    return Origin.isTouched() ? 1 : GeoFeatureGroupExtension::extensionMustExecute();
 }
 
 App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()

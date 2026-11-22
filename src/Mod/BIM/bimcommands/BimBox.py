@@ -1,32 +1,29 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """The BIM Box command"""
 
 import FreeCAD
 import FreeCADGui
+from draftutils import utils
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -53,6 +50,7 @@ class BIM_Box:
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.doc = FreeCAD.ActiveDocument
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         # here we will store our points
         self.points = []
         # we build a special cube tracker which is a list of 4 rectangle trackers
@@ -68,7 +66,23 @@ class BIM_Box:
                 callback=self.PointCallback,
                 movecallback=self.MoveCallback,
                 extradlg=self.taskbox(),
+                hints=self.get_hints(),
             )
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if not self.points:
+            label = translate("BIM", "%1 pick first point")
+        else:
+            label = translate("BIM", "%1 pick next point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def MoveCallback(self, point, snapinfo):
         import DraftGeomUtils
@@ -83,7 +97,7 @@ class BIM_Box:
                 ).UserString
             )
             self.Length.setFocus()
-            self.Length.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Length.text()))
+            self.Length.setSelection(0, utils.get_number_length(self.Length.text()))
         elif len(self.points) == 2:
             # now we already have our base line, we update the 1st rectangle
             p = point
@@ -101,7 +115,7 @@ class BIM_Box:
                 ).UserString
             )
             self.Width.setFocus()
-            self.Width.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Width.text()))
+            self.Width.setSelection(0, utils.get_number_length(self.Width.text()))
         elif len(self.points) == 3:
             h = DraftGeomUtils.distance_to_plane(point, self.cubetracker[0].p3(), self.normal)
             w = self.normal * h
@@ -112,7 +126,7 @@ class BIM_Box:
             self.cubetracker[3].p3((self.cubetracker[0].p3()).add(w))
             self.Height.setText(FreeCAD.Units.Quantity(h, FreeCAD.Units.Length).UserString)
             self.Height.setFocus()
-            self.Height.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Height.text()))
+            self.Height.setSelection(0, utils.get_number_length(self.Height.text()))
 
     def PointCallback(self, point, snapinfo):
         if not point:
@@ -128,6 +142,7 @@ class BIM_Box:
                 callback=self.PointCallback,
                 movecallback=self.MoveCallback,
                 extradlg=self.taskbox(),
+                hints=self.get_hints(),
             )
         elif len(self.points) == 1:
             # this is our second point
@@ -238,6 +253,7 @@ class BIM_Box:
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
 
     def _setupForHeightInput(self):
@@ -257,13 +273,13 @@ class BIM_Box:
             r.on()
         point = self.cubetracker[0].p3()
         axis = self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
-        self.wp._save()
         self.wp.align_to_point_and_axis(point, axis, upvec=self.normal, _hist_add=False)
         FreeCADGui.Snapper.getPoint(
             last=point,
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
 
     def _makeBox(self):
@@ -291,11 +307,21 @@ class BIM_Box:
         self.doc.recompute()
 
     def _finish(self):
-        self.wp._restore()
+        # If the height of the box is entered numerically, this function triggers the
+        # cancel function of FreeCADGui.Snapper.getPoint. That function in turn triggers
+        # self.PointCallback with point=None, which triggers this function again.
+        # To avoid processing twice we check FreeCAD.activeDraftCommand:
+        if FreeCAD.activeDraftCommand is None:
+            return
+
         FreeCAD.activeDraftCommand = None
-        FreeCADGui.Snapper.off()
+        self.wp._restore()
         for c in self.cubetracker:
             c.finalize()
+        FreeCADGui.Snapper.off()
+        # Trigger cancel function of FreeCADGui.Snapper.getPoint:
+        if hasattr(FreeCADGui, "draftToolBar"):
+            FreeCADGui.draftToolBar.escape()
 
 
 FreeCADGui.addCommand("BIM_Box", BIM_Box())

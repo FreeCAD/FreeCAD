@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -55,6 +57,8 @@ public:
     void draw() override;
     QGCustomRect* getFrame() {return m_frame;}
     QGCustomClip* getClipArea() {return m_cliparea;}
+
+    void setPositionInClip(QGIView* qgiv, qreal xPos, qreal yPos);
 
 protected:
     void drawClip();

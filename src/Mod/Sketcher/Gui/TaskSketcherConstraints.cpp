@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2009 Juergen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QContextMenuEvent>
 #include <QMenu>
@@ -35,11 +32,13 @@
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
 #include <cstring>
+#include <format>
 #include <limits>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -76,14 +75,19 @@ QT_TRANSLATE_NOOP("SketcherGui::ConstraintView", "Select Elements");
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
 #define CONTEXT_ITEM(ICONSTR, NAMESTR, CMDSTR, FUNC, ACTSONSELECTION)                              \
-    QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
-    QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
-    constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
-        Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));      \
-    if (ACTSONSELECTION)                                                                           \
-        constr_##FUNC->setEnabled(!items.isEmpty());                                               \
-    else                                                                                           \
-        constr_##FUNC->setEnabled(true);
+    if (auto* cmd_##FUNC = Gui::Application::Instance->commandManager().getCommandByName(CMDSTR);  \
+        cmd_##FUNC && cmd_##FUNC->allowedByMaturity()) {                                           \
+        QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                   \
+        QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));     \
+        constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(cmd_##FUNC->getAccel())));       \
+        if (ACTSONSELECTION) {                                                                     \
+            constr_##FUNC->setEnabled(!items.isEmpty());                                           \
+        }                                                                                          \
+        else {                                                                                     \
+            constr_##FUNC->setEnabled(true);                                                       \
+        }                                                                                          \
+    }
+
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
 #define CONTEXT_MEMBER_DEF(CMDSTR, FUNC)                                                           \
     void ConstraintView::FUNC()                                                                    \
@@ -443,76 +447,88 @@ public:
 
     Sketcher::ConstraintType constraintType() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
-        return sketch->Constraints[ConstraintNbr]->Type;
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->Type;
+        }
+
+        return Sketcher::ConstraintType::None;
     }
 
     bool isEnforceable() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
 
-        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
-
-        switch (constraint->Type) {
-            case Sketcher::None:
-            case Sketcher::NumConstraintTypes:
-                assert(false);
-                return false;
-            case Sketcher::Horizontal:
-            case Sketcher::Vertical:
-            case Sketcher::Coincident:
-            case Sketcher::Block:
-            case Sketcher::PointOnObject:
-            case Sketcher::Parallel:
-            case Sketcher::Perpendicular:
-            case Sketcher::Tangent:
-            case Sketcher::Equal:
-            case Sketcher::Symmetric:
-            case Sketcher::Group:
-            case Sketcher::Text:
-                return true;
-            case Sketcher::Distance:
-            case Sketcher::DistanceX:
-            case Sketcher::DistanceY:
-            case Sketcher::Radius:
-            case Sketcher::Diameter:
-            case Sketcher::Weight:
-            case Sketcher::Angle:
-            case Sketcher::SnellsLaw:
-                return (constraint->First >= 0 || constraint->Second >= 0
-                        || constraint->Third >= 0);
-            case Sketcher::InternalAlignment:
-                return true;
+            switch (constraint->Type) {
+                case Sketcher::None:
+                case Sketcher::NumConstraintTypes:
+                    assert(false);
+                    return false;
+                case Sketcher::Horizontal:
+                case Sketcher::Vertical:
+                case Sketcher::Coincident:
+                case Sketcher::Block:
+                case Sketcher::PointOnObject:
+                case Sketcher::Parallel:
+                case Sketcher::Perpendicular:
+                case Sketcher::Tangent:
+                case Sketcher::Equal:
+                case Sketcher::Symmetric:
+                case Sketcher::Group:
+                case Sketcher::Text:
+                    return true;
+                case Sketcher::Distance:
+                case Sketcher::DistanceX:
+                case Sketcher::DistanceY:
+                case Sketcher::Radius:
+                case Sketcher::Diameter:
+                case Sketcher::Weight:
+                case Sketcher::Angle:
+                case Sketcher::SnellsLaw:
+                    return (constraint->First >= 0 ||
+                            constraint->Second >= 0 ||
+                            constraint->Third >= 0);
+                case Sketcher::InternalAlignment:
+                    return true;
+            }
         }
         return false;
     }
 
     bool isDimensional() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return (sketch->Constraints[ConstraintNbr])->isDimensional();
+        }
 
-        return (sketch->Constraints[ConstraintNbr])->isDimensional();
+        return false;
     }
 
     bool isDriving() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isDriving;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isDriving;
+        return false;
     }
 
     bool isInVirtualSpace() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
+        return false;
     }
 
     bool isActive() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isActive;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isActive;
+        return false;
     }
 
     void updateVirtualSpaceStatus()
@@ -540,7 +556,7 @@ protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
         QString key = QStringLiteral("%1_%2x%3")
-                          .arg(QString::fromLatin1(name))
+                          .arg(QString::fromUtf8(name))
                           .arg(size.width())
                           .arg(size.height());
         QPixmap icon;
@@ -690,6 +706,9 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     remove->setShortcut(QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
 
+    menu.addAction(tr("Delete All"), this, &ConstraintView::deleteAllItems);
+    menu.addAction(tr("Delete by Filter"), this, &ConstraintView::deleteFilterItems);
+
     QAction* swap = menu.addAction(
         tr("Swap Constraint Names"), this, &ConstraintView::swapNamedOfSelectedItems);
     swap->setEnabled(items.size() == 2);
@@ -762,6 +781,23 @@ void ConstraintView::deleteSelectedItems()
         }
     }
     doc->commitTransaction();
+}
+
+void ConstraintView::deleteAllItems()
+{
+    Q_EMIT emitDeleteAllConstraints();
+}
+
+void ConstraintView::deleteFilterItems()
+{
+    QList<int> ids;
+    for (int index = 0; index < count(); index++) {
+        auto cit = static_cast<ConstraintItem*>(item(index));
+        if (!cit->isHidden()) {
+            ids.push_back(cit->ConstraintNbr);
+        }
+    }
+    Q_EMIT emitDeleteConstraints(ids);
 }
 
 void ConstraintView::swapNamedOfSelectedItems()
@@ -927,6 +963,14 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+
+    // External theme override for Sketcher Constraints task-panel icons
+    ui->filterButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("view-filter", ui->filterButton->icon()));
+    ui->showHideButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Std_ToggleVisibility", ui->showHideButton->icon()));
+    ui->settingsButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Sketcher_Settings", ui->settingsButton->icon()));
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
 
@@ -1012,6 +1056,14 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
         &ConstraintView::emitShowSelection3DVisibility,
         this,
         &TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility);
+    QObject::connect(ui->listWidgetConstraints,
+                     &ConstraintView::emitDeleteAllConstraints,
+                     this,
+                     &TaskSketcherConstraints::onDeleteAllConstraints);
+    QObject::connect(ui->listWidgetConstraints,
+                     &ConstraintView::emitDeleteConstraints,
+                     this,
+                     &TaskSketcherConstraints::onDeleteConstraints);
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
     QObject::connect(ui->filterBox,
                      &QCheckBox::checkStateChanged,
@@ -1134,7 +1186,7 @@ void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    Base::ConnectionBlocker block(changedSketchView);
+    fastsignals::shared_connection_block blocker(changedSketchView);
     sketchView->Autoconstraints.setValue(value);
 }
 
@@ -1194,6 +1246,37 @@ void TaskSketcherConstraints::onListWidgetConstraintsEmitHideSelection3DVisibili
 void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility()
 {
     changeFilteredVisibility(true, ActionTarget::Selected);
+}
+
+void TaskSketcherConstraints::onDeleteAllConstraints()
+{
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
+    try {
+        Gui::cmdAppObjectArgs(sketch, "deleteAllConstraints()");
+        sketchView->getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        sketchView->getDocument()->abortCommand();
+    }
+}
+
+void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
+{
+    if (ids.isEmpty()) {
+        return;
+    }
+
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    const std::string idList = std::format("[{}]", Base::Tools::joinFormatted(ids, ", "));
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
+    try {
+        Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());
+        sketchView->getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        sketchView->getDocument()->abortCommand();
+    }
 }
 
 void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget target)
@@ -1277,7 +1360,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         EditDatumDialog(tid, this->sketchView, it->ConstraintNbr).exec(false);
     }
     else if (it->constraintType() == Sketcher::Text) {
-        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr, this);
         editDialog->exec();
         delete editDialog;
     }
@@ -1303,21 +1386,9 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     const Sketcher::Constraint* v = vals[it->ConstraintNbr];
     const std::string currConstraintName = v->Name;
 
-    const std::string basename = it->data(Qt::EditRole).toString().toStdString();
+    const std::string newName = it->data(Qt::EditRole).toString().trimmed().toStdString();
 
-    std::string newName(
-        Sketcher::PropertyConstraintList::getConstraintName(basename, it->ConstraintNbr));
-
-    // we only start a rename if we are really sure the name has changed, which is:
-    // a) that the name generated by the constraints is different from the text in the widget item
-    // b) that the text in the widget item, basename, is not ""
-    // otherwise a checkbox change will trigger a rename on the first execution, bloating the
-    // constraint icons with the default constraint name "constraint1, constraint2"
-    if (newName != currConstraintName && !basename.empty()) {
-        if (!SketcherGui::checkConstraintName(sketch, newName)) {
-            newName = currConstraintName;
-        }
-
+    if (newName != currConstraintName && SketcherGui::checkConstraintName(sketch, newName)) {
         sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
@@ -1459,7 +1530,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
     else if (ui->filterBox->checkState() == Qt::Checked && specialFilterMode == SpecialFilterType::Associated) {
         int geoid = Sketcher::GeoEnum::GeoUndef;
         Sketcher::PointPos pointpos = Sketcher::PointPos::none;
-        QString expr = QString::fromLatin1(msg.pSubName);
+        QString expr = QString::fromUtf8(msg.pSubName);
         getSelectionGeoId(expr, geoid, pointpos);
 
         if (geoid != Sketcher::GeoEnum::GeoUndef

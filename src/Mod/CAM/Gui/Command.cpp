@@ -326,8 +326,7 @@ void CmdPathShape::activated(int iMsg)
         }
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console()
-                    .warning("Ignored shape %s %s\n", pcObj->getNameInDocument(), name.c_str());
+                Base::Console().warning("Ignored shape {} {}\n", pcObj->getNameInDocument(), name);
                 continue;
             }
 

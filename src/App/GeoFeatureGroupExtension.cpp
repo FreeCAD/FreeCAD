@@ -1,29 +1,27 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Jürgen Riegel
+// SPDX-FileCopyrightText: 2015 Alexander Golubev
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
 
 #include "GeoFeatureGroupExtension.h"
@@ -215,13 +213,13 @@ GeoFeatureGroupExtension::removeObjects(std::vector<App::DocumentObject*> object
 
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
 {
+    auto owner = getExtendedObject();
 
     // objects are only allowed in a single GeoFeatureGroup
     if (p == &Group && !Group.testStatus(Property::User3)) {
 
-        if ((!getExtendedObject()->isRestoring()
-             || getExtendedObject()->getDocument()->testStatus(Document::Importing))
-            && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if ((!owner->isRestoring() || owner->getDocument()->testStatus(Document::Importing))
+            && !owner->getDocument()->isPerformingTransaction()) {
 
             bool error = false;
             auto corrected = Group.getValues();
@@ -232,7 +230,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
                 // an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if (in == getExtendedObject()) {
+                    if (in == owner) {
                         continue;
                     }
                     auto parent = in->getExtensionByType<GeoFeatureGroupExtension>(true);
@@ -251,6 +249,16 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
                 throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
             }
         }
+
+        Base::ObjectStatusLocker<Property::Status, Property> connGuard(
+            Property::User3, &Group);
+        App::GroupExtension::extensionOnChanged(p);
+        return;
+    }
+
+    if (p == &owner->Visibility) {
+        // Skip visibility handling in parent class GroupExtension
+        return;
     }
 
     App::GroupExtension::extensionOnChanged(p);
@@ -494,6 +502,10 @@ bool GeoFeatureGroupExtension::isLinkValid(App::Property* prop)
     // no cross CS link for local links.
     auto result = getScopedObjectsFromLink(prop, LinkScope::Local);
     auto group = getGroupOfObject(obj);
+    if (!group && obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+        return true; // this prop comes from Std_Group, scopes also are meaningless
+    }
+
     for (auto link : result) {
         if (getGroupOfObject(link) != group) {
             return false;

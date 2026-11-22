@@ -29,7 +29,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Delaunay2.h>
+#include <Wm4Delaunay2.h>
 
 #include "Approximation.h"
 #include "MeshKernel.h"
@@ -256,7 +256,7 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
     try {
         if (!this->_indices.empty() && this->_points.size() != this->_indices.size()) {
             Base::Console()
-                .log("Triangulation: %d points <> %d indices\n", _points.size(), _indices.size());
+                .log("Triangulation: {} points <> {} indices\n", _points.size(), _indices.size());
             return false;
         }
         bool ok = Triangulate();
@@ -266,11 +266,11 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
         return ok;
     }
     catch (const Base::Exception& e) {
-        Base::Console().log("Triangulation: %s\n", e.what());
+        Base::Console().log("Triangulation: {}\n", e.what());
         return false;
     }
     catch (const std::exception& e) {
-        Base::Console().log("Triangulation: %s\n", e.what());
+        Base::Console().log("Triangulation: {}\n", e.what());
         return false;
     }
     catch (...) {

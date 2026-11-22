@@ -1,25 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Shai Seger <shaise at gmail>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """
 Command and task window handler for the OpenGL based CAM simulator
 """
@@ -27,18 +26,14 @@ Command and task window handler for the OpenGL based CAM simulator
 import math
 import os
 import FreeCAD
+import Part
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
+from Path.Post import Utils as PostUtils
 from PathScripts import PathUtils
 import CAMSimulator
 
 from FreeCAD import Vector, Placement, Rotation
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-Mesh = LazyLoader("Mesh", globals(), "Mesh")
-Part = LazyLoader("Part", globals(), "Part")
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -87,24 +82,13 @@ class CAMSimulation:
     """Handles and prepares CAM jobs for simulation"""
 
     def __init__(self):
-        self.debug = False
-        self.stdrot = FreeCAD.Rotation(Vector(0, 0, 1), 0)
-        self.iprogress = 0
-        self.numCommands = 0
-        self.simperiod = 20
         self.quality = 10
-        self.resetSimulation = False
         self.jobs = []
-        self.initdone = False
         self.taskForm = None
-        self.disableAnim = False
-        self.firstDrill = True
         self.millSim = None
         self.job = None
         self.activeOps = []
-        self.ioperation = 0
         self.stock = None
-        self.busy = False
         self.operations = []
         self.baseShape = None
 
@@ -160,10 +144,8 @@ class CAMSimulation:
         """Get the edge profile of a tool solid. Basically locating the
         side edge that OCC creates on any revolved object
         """
-        originalPlacement = tool.Placement
-        tool.Placement = Placement(Vector(0, 0, 0), Rotation(Vector(0, 0, 1), 0), Vector(0, 0, 0))
-        shape = tool.Shape
-        tool.Placement = originalPlacement
+        shape = tool.Shape.copy()
+        shape.Placement = Placement()
         sideEdgeList = []
         for _i, edge in enumerate(shape.Edges):
             if not edge.isClosed():
@@ -211,21 +193,23 @@ class CAMSimulation:
 
     def Activate(self):
         """Invoke the simulator task panel"""
-        self.initdone = False
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
         self.Connect(form.toolButtonPlay, self.SimPlay)
         form.sliderAccuracy.valueChanged.connect(self.onAccuracyBarChange)
         self.onAccuracyBarChange()
+
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        if prefs.GetBool("SimulatorFollowsVisibility"):
+            form.followsVisibility.setCheckState(QtCore.Qt.CheckState.Checked)
+        form.followsVisibility.clicked.connect(self.followsVisibilityChange)
+
         self._populateJobSelection(form)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
         self.onJobChange()
         form.listOperations.itemChanged.connect(self.onOperationItemChange)
         FreeCADGui.Control.showDialog(self.taskForm)
-        self.disableAnim = False
-        self.firstDrill = True
         self.millSim = CAMSimulator.PathSim()
-        self.initdone = True
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
         # self.SetupSimulation()
 
@@ -263,29 +247,32 @@ class CAMSimulation:
         """Prepare all selected job operations for simulation"""
         form = self.taskForm.form
         self.activeOps = []
-        self.numCommands = 0
-        self.ioperation = 0
         for i in range(form.listOperations.count()):
             if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
-                self.firstDrill = True
                 self.activeOps.append(self.operations[i])
-                self.numCommands += len(self.operations[i].Path.Commands)
 
         self.stock = self.job.Stock.Shape
-        self.busy = False
 
     def onJobChange(self):
         """When a new job is selected from the drop-down, update job operation list"""
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        followsVisibility = prefs.GetBool("SimulatorFollowsVisibility")
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
         self.job = j
         form.listOperations.clear()
         self.operations = []
+        allhidden = all(
+            not op.Visibility for op in j.Operations.OutList if PathUtil.opProperty(op, "Active")
+        )
         for op in j.Operations.OutList:
             if PathUtil.opProperty(op, "Active"):
                 listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
-                listItem.setCheckState(QtCore.Qt.CheckState.Checked)
+                if followsVisibility and not op.Visibility and not allhidden:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Unchecked)
+                else:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
         if len(j.Model.OutList) > 0:
@@ -303,6 +290,14 @@ class CAMSimulation:
         elif self.quality < 9:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
+
+    def followsVisibilityChange(self):
+        """Update job list in accordance with operations visibility"""
+        form = self.taskForm.form
+        state = form.followsVisibility.isChecked()
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        prefs.SetBool("SimulatorFollowsVisibility", state)
+        self.onJobChange()
 
     def onOperationItemChange(self, _item):
         """Check if at least one operation is selected to enable the Play button"""
@@ -323,8 +318,9 @@ class CAMSimulation:
             toolNumber = PathDressup.toolController(op).ToolNumber
             toolProfile = self.GetToolProfile(tool, 0.5)
             self.millSim.AddTool(toolProfile, toolNumber, tool.Diameter, 1)
-            opCommands = PathUtils.getPathWithPlacement(op).Commands
-            for cmd in opCommands:
+            path = PathUtils.getPathWithPlacement(op)
+            # the drill cycles' G98, G99 and G80 as the post writes them
+            for cmd in PostUtils.cannedCycleTerminator(path).Commands:
                 self.millSim.AddCommand(cmd)
         self.millSim.BeginSimulation(self.stock, self.quality)
         if self.baseShape is not None:
@@ -341,9 +337,9 @@ class CommandCAMSimulate:
         """Command info"""
         return {
             "Pixmap": "CAM_SimulatorGL",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_SimulatorGL", "CAM Simulator"),
             "Accel": "P, N",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Simulates G-code on stock"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_SimulatorGL", "Simulates G-code on stock"),
         }
 
     def IsActive(self):

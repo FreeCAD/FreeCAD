@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # basic test script for PropertyTopoShapeList
@@ -39,7 +38,6 @@ class TopoShapeListTest(unittest.TestCase):
         """Tests PropertyTopoShapeList"""
         print("running TopoShapeListTest")
         doc = App.openDocument(self.fileName)
-        doc.UndoMode = 1
         obj = doc.getObject(self.objName)
         boxes = obj.Shapes
 

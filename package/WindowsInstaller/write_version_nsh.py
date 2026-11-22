@@ -14,6 +14,7 @@ content=f'''\
 !define APP_VERSION_MINOR "{v[1]}"
 !define APP_VERSION_PATCH "{v[2]}"
 !define APP_VERSION_REVISION "{v[3].split()[0]}"
+!define APP_NAME "{FreeCAD.ConfigGet('ExeName')}"
 '''
 
 with open(filepath, "w", encoding="utf-8") as file:

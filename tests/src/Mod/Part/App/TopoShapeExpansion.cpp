@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <TColgp_Array2OfPnt.hxx>
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
+#include <App/Application.h>
+#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 #include "Mod/Part/App/TopoShapeMapper.h"
 #include <Mod/Part/App/TopoShapeOpCode.h>
@@ -9,8 +12,10 @@
 #include "PartTestHelpers.h"
 
 #include <boost/core/ignore_unused.hpp>
+#include <Standard_Version.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
@@ -19,8 +24,14 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
+#include <BRepPrimAPI_MakeCone.hxx>
+#include <BRepTools.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
+#include <Geom2d_Curve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -28,7 +39,10 @@
 #include <ShapeFix_Wireframe.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TColgp_Array1OfPnt.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -1431,6 +1445,29 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face3;:M;CMN;:H1:7,F"));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementBooleanCommonWithCompoundTool)
+{
+    // Arrange
+    TopoShape base {BRepPrimAPI_MakeCylinder(1.0, 2.0).Shape(), 1L};
+    auto toolMaker
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(1.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 1.2, 1.0);
+    TopoShape tool {toolMaker.Shape(), 2L};
+    TopoShape overlap {3L};
+    overlap.makeElementBoolean(Part::OpCodes::Common, {base, tool});
+    TopoShape remainder {4L};
+    remainder.makeElementBoolean(Part::OpCodes::Cut, {tool, base});
+    TopoShape compound {5L};
+    compound.makeElementCompound({overlap, remainder});
+
+    // Act
+    TopoShape result {6L};
+    result.makeElementBoolean(Part::OpCodes::Common, {base, compound});
+
+    // Assert
+    EXPECT_FALSE(result.isEmpty());
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), getVolume(overlap.getShape()));
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
 {
     // Arrange
@@ -1582,6 +1619,70 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
         }
     ));
 }
+
+// Regression test for issue #30856. A shape that BRepCheck_Analyzer rejects is not necessarily a
+// shape the boolean algorithms cannot handle: this solid comes from a document that recomputed
+// correctly for years, and BRepCheck reports (and has always reported) BRepCheck_UnorientableShape
+// for it. Refusing to run the operation on that basis broke existing documents, so the operation
+// has to stay available for input that merely fails the analyzer.
+TEST_F(TopoShapeExpansionTest, makeElementBooleanAcceptsShapeRejectedByAnalyzer)  // NOLINT
+{
+    // Arrange
+    TopoDS_Shape unorientableShape;
+    BRep_Builder builder;
+    std::string path = App::Application::getHomePath() + "/tests/brepfiles/unorientableSolid.brep";
+    ASSERT_TRUE(BRepTools::Read(unorientableShape, path.c_str(), builder));
+    TopoShape unorientable {unorientableShape, 1L};
+    ASSERT_FALSE(unorientable.isValid());
+
+    // The copy is moved clear of the original so the fused volume is the sum of the two.
+    auto translation {gp_Trsf()};
+    translation.SetTranslation(gp_Vec(gp_XYZ(1000.0, 0.0, 0.0)));
+    TopoShape moved {unorientableShape.Moved(TopLoc_Location(translation)), 2L};
+
+    // Act
+    TopoShape result;
+    ASSERT_NO_THROW(result.makeElementBoolean(Part::OpCodes::Fuse, {unorientable, moved}));  // NOLINT
+
+    // Assert
+    EXPECT_FALSE(result.isNull());
+    EXPECT_NEAR(getVolume(result.getShape()), 2 * 87432.002, 0.1);
+}
+
+#if OCC_VERSION_HEX < 0x070903
+// Before OCCT 7.9.3 the boolean algorithms loaded the parametric curve of a degenerate edge without
+// testing the handle. The cone's seam passes through the apex, which routes the edge into that code.
+TEST_F(TopoShapeExpansionTest, makeElementBooleanRejectsDegenerateEdgeWithoutParametricCurve)  // NOLINT
+{
+    // Arrange
+    TopoDS_Shape cone = BRepPrimAPI_MakeCone(1.0, 0.0, 1.0).Shape();
+    BRep_Builder builder;
+    int strippedEdgeCount {0};
+    for (TopExp_Explorer faces(cone, TopAbs_FACE); faces.More(); faces.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(faces.Current());
+        for (TopExp_Explorer edges(face, TopAbs_EDGE); edges.More(); edges.Next()) {
+            const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+            if (!BRep_Tool::Degenerated(edge)) {
+                continue;
+            }
+            builder.UpdateEdge(edge, Handle(Geom2d_Curve)(), face, BRep_Tool::Tolerance(edge));
+            Standard_Real first {};
+            Standard_Real last {};
+            ASSERT_TRUE(BRep_Tool::CurveOnSurface(edge, face, first, last).IsNull());
+            ++strippedEdgeCount;
+        }
+    }
+    ASSERT_EQ(strippedEdgeCount, 1);
+
+    TopoShape malformed {cone, 1L};
+    TopoShape box {BRepPrimAPI_MakeBox(gp_Pnt(-2.0, 0.0, -1.0), 4.0, 2.0, 3.0).Shape(), 2L};
+    std::vector<TopoShape> inputs {malformed, box};
+
+    // Act and Assert
+    TopoShape result;
+    EXPECT_THROW(result.makeElementBoolean(Part::OpCodes::Fuse, inputs), Base::CADKernelError);
+}
+#endif
 
 TEST_F(TopoShapeExpansionTest, makeElementDraft)
 {  // Draft as in Draft Angle or sloped sides for removing shapes from a mold.
@@ -1817,6 +1918,54 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
             "Vertex4;:G(Vertex4;K-1;:H2:4,V);LFT;:H1:1c,E", "Vertex4;:H1,V", "Vertex4;:H2,V",
         }
     ));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT
+{
+    // Regression test for PR #29982 / forum thread t=88234.  The fix for issue #5855 rejected any
+    // two consecutive loft profiles that share a center of gravity, which is too strict: two
+    // concentric, coplanar squares of different size share the center (2.5, 2.5, 0) but are clearly
+    // distinct shapes, so the loft between them must still be created.
+    //
+    // See also test makeElementLoftRejectsCoincidentProfiles, below, to confirm that 5855 is still
+    // fixed
+
+    // Arrange
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);  // 5x5, CoG (2.5,2.5,0)
+    auto scale {gp_Trsf()};
+    scale.SetScale(gp_Pnt(2.5, 2.5, 0.0), 2.0);  // 10x10 square, same CoG
+    auto biggerWire = BRepBuilderAPI_Transform(wire1, scale, true).Shape();
+    TopoShape smallerProfile {wire1, 1L};
+    TopoShape biggerProfile {biggerWire, 2L};
+    std::vector<TopoShape> shapes = {smallerProfile, biggerProfile};
+
+    // Act: the previous code raised Base::CADKernelError here because the centers of gravity match.
+    auto* loft = new TopoShape();
+    ASSERT_NO_THROW(loft->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled));  // NOLINT
+
+    // Assert: the result is the flat frame between the 5x5 and the 10x10 square.
+    EXPECT_FALSE(loft->isNull());
+    EXPECT_NEAR(getArea(loft->getShape()), 10.0 * 10.0 - 5.0 * 5.0, 1e-6);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftRejectsCoincidentProfiles)  // NOLINT
+{
+    // The fix for issue #5855 must still hold: lofting through coincident profiles (for example the
+    // same sketch used as more than one section) crashes OCCT, so makeElementLoft has to reject it.
+    //
+    // See also makeElementLoftAllowsDistinctProfilesWithSameCenter, above
+
+    // Arrange
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    TopoShape firstProfile {wire1, 1L};
+    TopoShape secondProfile {wire1, 2L};
+    std::vector<TopoShape> shapes = {firstProfile, secondProfile};
+
+    // Act / Assert
+    EXPECT_THROW(  // NOLINT
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled),
+        Base::CADKernelError
+    );
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementPipeShell)
@@ -2915,6 +3064,64 @@ TEST_F(TopoShapeExpansionTest, makeElementFilledFace)
             //                                     "Vertex4;:G;FFC;:H2:7,V",
         }
     ));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilledFaceFromLooseEdges)
+{
+    // Arrange: four independently-built edges whose endpoints are coincident but are *not* the same
+    // shared vertices. See issue #31080 and PR #31141.
+    auto [face, wire, edge1, edge2, edge3, edge4] = CreateRectFace(2.0, 3.0);
+    boost::ignore_unused(face, wire);
+    std::vector<TopoShape> edges {
+        TopoShape {edge1, 1L},
+        TopoShape {edge2, 2L},
+        TopoShape {edge3, 3L},
+        TopoShape {edge4, 4L},
+    };
+    TopoShape result;
+
+    // Act: default params force boundary detection from the loose edges
+    auto params = TopoShape::BRepFillingParams();
+    result.makeElementFilledFace(edges, params);
+
+    // Assert: the four disconnected edges were merged into a single closed four-sided boundary and
+    // filled. Under the old requireSharedVertex policy the edges could not be chained and no
+    // boundary face was produced. The filled surface bulges beyond the boundary, so its bounding
+    // box and area are not asserted exactly.
+    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.countSubShapes(TopAbs_FACE), 1);
+    EXPECT_EQ(result.countSubShapes(TopAbs_EDGE), 4);
+    EXPECT_GT(getArea(result.getShape()), 0.0);
+    // Topological naming survived the tolerance-based wire construction.
+    EXPECT_FALSE(elementMap(result).empty());
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilledFaceExplicitBoundaryRange)
+{
+    // Arrange: same disconnected edges as test above, but designate them explicitly as the boundary
+    // range. See issue #31080 and PR #31141.
+    auto [face, wire, edge1, edge2, edge3, edge4] = CreateRectFace(2.0, 3.0);
+    boost::ignore_unused(face, wire);
+    std::vector<TopoShape> edges {
+        TopoShape {edge1, 1L},
+        TopoShape {edge2, 2L},
+        TopoShape {edge3, 3L},
+        TopoShape {edge4, 4L},
+    };
+    TopoShape result;
+
+    // Act
+    auto params = TopoShape::BRepFillingParams();
+    params.boundary_begin = 0;
+    params.boundary_end = 4;
+    result.makeElementFilledFace(edges, params);
+
+    // Assert
+    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.countSubShapes(TopAbs_FACE), 1);
+    EXPECT_EQ(result.countSubShapes(TopAbs_EDGE), 4);
+    EXPECT_GT(getArea(result.getShape()), 0.0);
+    EXPECT_FALSE(elementMap(result).empty());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)

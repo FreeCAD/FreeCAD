@@ -26,7 +26,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="99"/>
       <source>Alt+S</source>
-      <translation>ALT + S</translation>
+      <translation>Alt+S</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
@@ -36,12 +36,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Help</source>
-      <translation>Nápověda</translation>
+      <translation>Ná&amp;pověda</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+A</source>
-      <translation>Alt + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="167"/>
@@ -125,12 +125,12 @@ Double click on an error in the tree view to see more information about it, incl
       <translation>Vložte název objektu, který při zavolání vrátí Testovací případ.
 Stiskněte "start" a takto vytvořený test se spustí.
 
-Dvakrát klikněte na chybu ve stromovém zobrazení pro informace o ní včetně místa chyby.</translation>
+Poklepejte na chybu ve stromovém zobrazení pro informace o ní včetně místa chyby.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="187"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>O FreeCAD UnitTest</translation>
+      <translation>O nástroji UnitTest pro FreeCAD</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="188"/>
@@ -144,7 +144,7 @@ FreeCAD UnitTest je součástí FreeCADu a podporuje zápis Jednotkových testů
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>Chyby zkopírovány do schránky</translation>
     </message>
   </context>
 </TS>

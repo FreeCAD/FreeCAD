@@ -27,6 +27,7 @@
 #include "SMESH_Hypothesis.hxx"
 
 #include <gp_Pnt.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <vector>
 #include <string>

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2009 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -43,6 +40,7 @@
 #include "SnapManager.h"
 
 class QWidget;
+class QTimer;
 
 namespace Sketcher
 {
@@ -97,6 +95,7 @@ class ViewProviderSketchDrawSketchHandlerAttorney
 {
 private:
     static inline void setConstraintSelectability(ViewProviderSketch& vp, bool enabled = true);
+    static inline void setOriginPointMarker(ViewProviderSketch& vp, bool hollow);
     static inline void setPositionText(
         ViewProviderSketch& vp,
         const Base::Vector2d& Pos,
@@ -108,6 +107,19 @@ private:
     static inline void drawEdit(
         ViewProviderSketch& vp,
         const std::list<std::vector<Base::Vector2d>>& list
+    );
+    static inline void drawParallelPerpendicularHint(
+        ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintLines,
+        int activeLineIndex
+    );
+    static inline void drawLineExtensionAutoConstraintHint(
+        ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintCurve
+    );
+    static inline bool isLineExtensionAutoConstraintHintVisible(
+        const ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintCurve
     );
     static inline void drawEditMarkers(
         ViewProviderSketch& vp,
@@ -171,6 +183,8 @@ public:
     virtual bool pressButton(Base::Vector2d pos) = 0;
     virtual bool releaseButton(Base::Vector2d pos) = 0;
 
+    /// Cancels the current tool action. Used by Esc, right click, and OVP cancel.
+    virtual void cancelCurrentAction();
     virtual void registerPressedKey(bool pressed, int key);
     virtual void pressRightButton(Base::Vector2d pos);
 
@@ -271,17 +285,36 @@ protected:
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve) const;
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
     void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve) const;
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
         unsigned int augmentationlevel = 0
     ) const;
 
+    virtual bool getStartPointOfCurrentSegment(Base::Vector2d& point) const;
+    void drawParallelPerpendicularHint(
+        const std::vector<Base::Vector2d>& HintLines,
+        int activeLineIndex = -1
+    ) const;
+    bool areDirectionalAutoConstraintHintsVisible() const;
+    void resetParallelPerpendicularHint();
+    void clearParallelPerpendicularHintDrawing() const;
+    bool updateParallelPerpendicularEndpointHint();
+    bool snapToParallelPerpendicularHint(Base::Vector2d& point);
+    void startHoverTimer();
+    void stopHoverTimer();
+    void onHoverTimeout();
+
     void clearEdit() const;
+    void clearLineExtensionAutoConstraintHintDrawing() const;
     void clearEditMarkers() const;
 
     void setAxisPickStyle(bool on);
     void moveCursorToSketchPoint(Base::Vector2d point);
     void ensureFocus();
+    bool isConstructionMode() const;
+    const char* constructionModeAsBooleanText();
     void preselectAtPoint(Base::Vector2d point);
 
     void drawPositionAtCursor(const Base::Vector2d& position);
@@ -299,6 +332,19 @@ protected:
 
     Sketcher::SketchObject* getSketchObject();
 
+    bool generateOneAutoConstraintFromSuggestion(
+        const AutoConstraint& autoConstraint,
+        int geoId,
+        Sketcher::PointPos pointPos,
+        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    );
+    bool filterRedundantAutoConstraints(
+        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    );
+    void addGeneratedAutoConstraints(
+        const std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    );
+
     void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
     void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
@@ -315,7 +361,29 @@ protected:
         Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
         bool isLine = false;
     };
-    PreselectionData getPreselectionData();
+
+    struct LineExtensionAutoConstraintHint
+    {
+        bool isValid = false;
+        Base::Vector2d start;
+        Base::Vector2d end;
+    };
+
+    struct TangentAutoConstraintHint
+    {
+        bool isValid = false;
+        bool isActive = false;
+        int geoId = Sketcher::GeoEnum::GeoUndef;
+        Sketcher::PointPos posId = Sketcher::PointPos::none;
+        Base::Vector2d start;
+        Base::Vector2d direction;
+        Base::Vector2d center;
+        double radius = 0.0;
+    };
+
+    PreselectionData getPreselectionData() const;
+
+    double getAutoConstraintSearchDistance() const;
 
     void seekPreselectionAutoConstraint(
         std::vector<AutoConstraint>& constraints,
@@ -324,11 +392,32 @@ protected:
         AutoConstraint::TargetType type
     );
 
+    bool seekLineExtensionAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        AutoConstraint::TargetType type
+    );
+
+    void resetLineExtensionAutoConstraintHint();
+    void renderLineExtensionAutoConstraintHint() const;
+
+    bool isLineExtensionAutoConstraintHintVisible(
+        const Base::Vector2d& start,
+        const Base::Vector2d& end
+    ) const;
+    bool getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const;
+
+    void resetTangentAutoConstraintHint();
+    bool updateTangentAutoConstraintHint();
+    void renderDirectionalAutoConstraintHints() const;
+    bool isDirectionCloseToTangentHint(const Base::Vector2d& direction) const;
+    bool snapToTangentHint(Base::Vector2d& point);
+
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
-    void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints, const Base::Vector2d& Dir);
+    bool seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints, const Base::Vector2d& Dir);
 
-    void seekTangentAutoConstraint(
+    bool seekTangentAutoConstraint(
         std::vector<AutoConstraint>& constraints,
         const Base::Vector2d& Pos,
         const Base::Vector2d& Dir
@@ -348,6 +437,15 @@ protected:
 
     QWidget* toolwidget;
     int currentTransactionID {0};
+
+private:
+    LineExtensionAutoConstraintHint lineExtensionAutoConstraintHint;
+    TangentAutoConstraintHint tangentAutoConstraintHint;
+    int parallelPerpendicularRefGeoId {Sketcher::GeoEnum::GeoUndef};
+    int parallelPerpendicularActiveHintLine {-1};
+    bool parallelPerpendicularRefFromEndpoint {false};
+    int lastHoveredGeoId {Sketcher::GeoEnum::GeoUndef};
+    QTimer* hoverTimer {nullptr};
 };
 
 

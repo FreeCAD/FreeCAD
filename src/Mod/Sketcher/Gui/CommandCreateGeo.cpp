@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <cstdlib>
 #include <memory>
@@ -45,7 +42,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "CircleEllipseConstructionMethod.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
@@ -95,10 +91,6 @@ using namespace SketcherGui;
         } \
     }
 
-namespace SketcherGui
-{
-GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
-}
 
 /* Sketch commands =======================================================*/
 
@@ -220,6 +212,37 @@ bool CmdSketcherCreateLine::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Polyline old tool ======================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreatePolylineLegacy)
+
+CmdSketcherCreatePolylineLegacy::CmdSketcherCreatePolylineLegacy()
+    : Command("Sketcher_CreatePolylineLegacy")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Polyline");
+    sToolTipText = QT_TR_NOOP(
+        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
+    );
+    sWhatsThis = "Sketcher_CreatePolylineLegacy";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolylineLegacy, "Sketcher_CreatePolylineLegacy")
+
+void CmdSketcherCreatePolylineLegacy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+}
+
+bool CmdSketcherCreatePolylineLegacy::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
 // Polyline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
@@ -230,9 +253,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Polyline");
-    sToolTipText = QT_TR_NOOP(
-        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
-    );
+    sToolTipText = QT_TR_NOOP("Creates a polyline in the sketch. M key cycles through segment modes.");
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
@@ -245,7 +266,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
 void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolyLine>());
 }
 
 bool CmdSketcherCreatePolyline::isActive()
@@ -1377,8 +1398,9 @@ CmdSketcherCreateText::CmdSketcherCreateText()
     sWhatsThis = "Sketcher_CreateText";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateText";
-    sAccel = "G, T";
+    sAccel = "";
     eType = ForEdit;
+    eMaturity = Base::Maturity::Experimental;
 }
 
 CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateText, "Sketcher_CreateText")
@@ -1563,7 +1585,7 @@ public:
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
         sMenuText = QT_TR_NOOP("Fillet/Chamfer");
-        sToolTipText = QT_TR_NOOP("Creates a fillet or chamfer between 2 lines");
+        sToolTipText = QT_TR_NOOP("Creates a fillet or chamfer between 2 curves");
         sWhatsThis = "Sketcher_CompCreateFillets";
         sStatusTip = sToolTipText;
         sAccel = "G, F, F";
@@ -1597,7 +1619,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Fillet");
-    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected lines or at coincident points");
+    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected curves or at coincident points");
     sWhatsThis = "Sketcher_CreateFillet";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateFillet";
@@ -1629,7 +1651,7 @@ CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Chamfer");
-    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected lines or at coincident points");
+    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected curves or at coincident points");
     sWhatsThis = "Sketcher_CreateChamfer";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateChamfer";
@@ -1962,6 +1984,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSplineByInterpolation());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePolylineLegacy());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());

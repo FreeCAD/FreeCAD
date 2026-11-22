@@ -9,11 +9,12 @@ if(TARGET Qt6::uic)
 endif()
 if(TARGET Qt6::rcc)
     get_target_property(PYSIDE6_RCC_EXECUTABLE Qt6::rcc LOCATION)
-    set(RCCOPTIONS "--generator=python" "--compress-algo=zlib" "--compress=1")
+    set(PYSIDE6_RCC_OPTIONS "--generator=python" "--compress-algo=zlib" "--compress=1")
 endif()
 
 set(PYSIDE_RCC_EXECUTABLE ${PYSIDE6_RCC_EXECUTABLE})
 set(PYSIDE_UIC_EXECUTABLE ${PYSIDE6_UIC_EXECUTABLE})
+set(PYSIDE_RCC_OPTIONS ${PYSIDE6_RCC_OPTIONS})
 set(PySideTools_VERSION 6)
 
 if(PYSIDE_RCC_EXECUTABLE AND PYSIDE_UIC_EXECUTABLE)

@@ -28,6 +28,8 @@
 
 #include <QTreeView>
 
+#include <App/DocumentObserver.h>
+
 #include "PropertyItem.h"
 #include "PropertyModel.h"
 
@@ -113,14 +115,13 @@ protected Q_SLOTS:
     void onItemExpanded(const QModelIndex& index);
     void onItemCollapsed(const QModelIndex& index);
     void onRowsMoved(const QModelIndex& parent, int start, int end, const QModelIndex& dst, int row);
-    void onRowsRemoved(const QModelIndex& parent, int start, int end);
 
 protected:
     bool eventFilter(QObject* object, QEvent* event) override;
     void closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint) override;
     void commitData(QWidget* editor) override;
     void editorDestroyed(QObject* editor) override;
-    void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
+    QModelIndex moveCursor(CursorAction action, Qt::KeyboardModifiers modifiers) override;
     void rowsInserted(const QModelIndex& parent, int start, int end) override;
     void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
     void drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const override;
@@ -129,11 +130,7 @@ protected:
         const QStyleOptionViewItem& options,
         const QModelIndex& index
     ) const override;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStyleOptionViewItem viewOptions() const override;
-#else
     void initViewItemOption(QStyleOptionViewItem* option) const override;
-#endif
     void contextMenuEvent(QContextMenuEvent* event) override;
     bool event(QEvent*) override;
     void keyPressEvent(QKeyEvent* event) override;
@@ -144,17 +141,31 @@ private:
     QMenu* setupExpansionSubmenu(QWidget* parent);
     void collapseAll();
     void setEditorMode(const QModelIndex& parent, int start, int end);
+    void openTransaction();
     void closeTransaction();
     void recomputeDocument(App::Document*);
     std::unordered_set<App::Property*> acquireSelectedProperties() const;
     void removeProperties(const std::unordered_set<App::Property*>& props);
+
+    void getPropUsesObj(
+        int level,
+        const App::DocumentObject* obj,
+        const std::set<App::ObjectIdentifier>& ids,
+        QString& content
+    ) const;
+    void getPropUsesDoc(
+        int level,
+        const App::Document* doc,
+        const std::set<App::ObjectIdentifier>& ids,
+        QString& content
+    ) const;
+    QString getPropUses(App::Property* prop) const;
+    void reportPropUses(App::Property* prop) const;
     bool removeSelectedDynamicProperties();
 
     // check if mouse_pos is around right or bottom side of a cell
     // and return the index of that cell if found
     QModelIndex indexResizable(QPoint mouse_pos);
-
-    App::Document* propertyDocument(App::PropertyContainer* cont) const;
 
 private:
     PropertyItemDelegate* delegate;
@@ -169,7 +180,6 @@ private:
     bool blockCollapse;
     bool binding;
     bool checkDocument;
-    bool closingEditor;
     bool dragInProgress;
 
     // max distance between mouse and a cell, small enough to trigger resize
@@ -178,6 +188,7 @@ private:
     int dragPreviousPos = 0;
 
     int transactionID = 0;
+    App::DocumentT transactionDocument;
 
     QColor groupColor;
     QBrush background;
@@ -185,10 +196,8 @@ private:
 
     QPointer<QWidget> activeEditor;
     QPersistentModelIndex editingIndex;
-    int removingRows = 0;
 
     friend class Gui::PropertyView;
-    friend class PropertyItemDelegate;
 };
 
 }  // namespace PropertyEditor

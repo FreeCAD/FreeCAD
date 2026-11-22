@@ -23,9 +23,9 @@ import FreeCAD
 import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
-import Path.Base.Generator.helix as helix
-import Path.Base.Generator.linking as linking
-import Path.Base.Generator.spiral as spiral
+from Path.Base.Generator import helix
+from Path.Base.Generator import linking
+from Path.Base.Generator import spiral
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
 import Path.Base.Language as PathLanguage
@@ -61,20 +61,18 @@ def _caclulatePathDirection(obj):
 
 def _caclulateCutMode(direction, side):
     """Calculates the cut mode from path direction and cut side"""
-    if direction == "CW" and side == "Inside":
+    if (direction == "CW" and side == "Inside") or (direction == "CCW" and side == "Outside"):
         return "Conventional"
-    elif direction == "CW" and side == "Outside":
+    elif (direction == "CW" and side == "Outside") or (direction == "CCW" and side == "Inside"):
         return "Climb"
-    elif direction == "CCW" and side == "Inside":
-        return "Climb"
-    elif direction == "CCW" and side == "Outside":
-        return "Conventional"
     else:
         raise ValueError(f"No mapping for '{direction}'/'{side}'")
 
 
 class ObjectHelix(PathCircularHoleBase.ObjectOp):
     """Proxy class for Helix operations."""
+
+    keepsHoleSteps = True
 
     @classmethod
     def helixOpPropertyEnumerations(self, dataType="data"):
@@ -94,8 +92,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 (translate("CAM_Helix", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
             "StartAt": [
-                (translate("PathProfile", "Inside"), "Inside"),
-                (translate("PathProfile", "Outside"), "Outside"),
+                (translate("CAM_Helix", "Inside"), "Inside"),
+                (translate("CAM_Helix", "Outside"), "Outside"),
             ],  # side of profile that cutter is on in relation to direction of profile
             "CutMode": [
                 (translate("CAM_Helix", "Climb"), "Climb"),
@@ -110,7 +108,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -169,7 +167,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Offset inner radius"
+                "Set how much stock to leave on the inner wall for the operation."
                 "\nDefault inner radius for Internal profile is Tool radius,"
                 " and can not be less than (-ToolRadius)"
                 "\nFor External profile - profile radius",
@@ -181,7 +179,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra offset from the profile",
+                "Set how much stock to leave on the outer wall for the operation.",
             ),
         )
         obj.addProperty(
@@ -297,6 +295,18 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "\nSet to zero to disable limitation by ramp angle",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "StartConeFromBottom",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Allows to process cone helix from bottom to top",
+            ),
+        )
+
+        for n in self.helixOpPropertyEnumerations():
+            setattr(obj, n[0], n[1])
 
         self.opSetEditorModes(obj)
 
@@ -304,22 +314,51 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if not obj.Document.Restoring:
             self.opCheckParameters(obj)
 
+        if prop == "HelixConeAngle":
+            self.opUpdateEditorModes(obj)
+
+        super().opOnChanged(obj, prop)
+
+    def initAfterBase(self, obj):
+        obj.HelixConeAngle = self.coneAngle(obj) or 0
+        obj.Side = Path.Op.Util.getOpSide(obj, default="Inside")
+
+    def coneAngle(self, obj, verbose=False):
+        subs = [base.Shape.getElement(n) for base, names in self.baseShapes(obj) for n in names]
+        if all(isinstance(sub, Part.Face) and isinstance(sub.Surface, Part.Cone) for sub in subs):
+            angles = [round(sub.Surface.SemiAngle, Path.Geom.Decimal) for sub in subs]
+            if len(set(angles)) == 1:
+                angle = angles[0] if subs[0].Surface.Axis.z > 0 else -angles[0]
+                return math.degrees(angle)
+            elif verbose:
+                Path.Log.warning(translate("CAM_Helix", "Faces Cone angle is not identical"))
+                return None
+        elif verbose:
+            Path.Log.warning(
+                translate(
+                    "CAM_Helix", "Automatic cone angle definition allowed only for cone faces"
+                )
+            )
+            return None
+        return 0
+
     def opSetEditorModes(self, obj):
         obj.setEditorMode("Direction", ("ReadOnly", "Hidden"))
         obj.setPropertyStatus("Direction", ("ReadOnly", "Output"))
 
-        obj.setEditorMode("RotationAngle", 2)  # hide
         obj.setEditorMode("FinishHelixCircle", 2)  # hide
         obj.setEditorMode("FinishSpiralCircle", 2)  # hide
         obj.setEditorMode("OverrideArcFeedRate", 2)  # hide
         obj.setEditorMode("OverrideProfileDiameter", 2)  # hide
         obj.setEditorMode("RetractFromWall", 2)  # hide
         obj.setEditorMode("SingleHelix", 2)  # hide
+        obj.setEditorMode("StartConeFromBottom", 2)  # hide
+
+    def opUpdateEditorModes(self, obj):
+        mode = 0 if obj.HelixConeAngle else 2
+        obj.setEditorMode("StartConeFromBottom", mode)
 
     def opSetDefaultValues(self, obj, job):
-        for n in self.helixOpPropertyEnumerations():
-            setattr(obj, n[0], n[1])
-
         obj.CutMode = "Conventional"
         obj.FinishHelixCircle = True
         obj.FinishSpiralCircle = True
@@ -338,7 +377,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 obj.OverrideProfileDiameter = 0
                 Path.Log.warning(
                     translate(
-                        "PathHelix",
+                        "CAM_Helix",
                         "OverrideProfileDiameter can not be less than tool diameter {}".format(
                             tooldiam
                         ),
@@ -363,7 +402,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Offset inner radius"
+                    "Set how much stock to leave on the inner wall for the operation."
                     "\nDefault inner radius is Tool radius"
                     " and can not be less than (-ToolRadius)"
                     "\nFor External profile - profile radius",
@@ -379,7 +418,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra offset from the profile",
+                    "Set how much stock to leave on the outer wall for the operation.",
                 ),
             )
         if hasattr(obj, "OffsetExtra"):
@@ -507,11 +546,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 ),
             )
             expressions = dict(obj.ExpressionEngine)
-            stepDownExpr = expressions.get("StepDown")
-            if stepDownExpr:
+            if stepDownExpr := expressions.get("StepDown"):
                 obj.setExpression("HelixMaxPitch", stepDownExpr)
             else:
-                obj.StepDown
+                obj.HelixMaxPitch = obj.StepDown
             obj.setExpression("StepDown", "StartDepth - FinalDepth")
         if not hasattr(obj, "HelixMaxRampAngle"):
             obj.addProperty(
@@ -542,25 +580,36 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 obj.Direction = ("CW", "CCW")
                 obj.Direction = new_dir
             obj.CutMode = _caclulateCutMode(obj.Direction, obj.StartAt)
+        if not hasattr(obj, "StartConeFromBottom"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "StartConeFromBottom",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Allows to process cone helix from bottom to top",
+                ),
+            )
 
         self.opSetEditorModes(obj)
+        self.opUpdateEditorModes(obj)
 
     # Automatic calculation angle of direction
     def getDirAngle(self, obj, holes, i):
         p1 = FreeCAD.Vector(holes[i]["x"], holes[i]["y"], 0)
-        p2 = FreeCAD.Vector()  # by default orient to (0,0)
+        p2 = Path.Geom.xy(self.startPoint(obj))
+
+        def neighborHole(step):
+            """the next hole along the list, past the other steps of this one"""
+            spots = (FreeCAD.Vector(h["x"], h["y"], 0) for h in holes[i::step])
+            return next((p for p in spots if not Path.Geom.pointsCoincide(p, p1)), None)
 
         if obj.StartAt == "Inside":
-            if i < len(holes) - 1:
-                # orient each hole (except last) to next hole
-                p2 = FreeCAD.Vector(holes[i + 1]["x"], holes[i + 1]["y"], 0)
-            elif len(holes) > 1:
-                # orient last hole to previous hole
-                p2 = FreeCAD.Vector(holes[i - 1]["x"], holes[i - 1]["y"], 0)
-        else:
-            if i:
-                # orient each hole (except first) to previous hole
-                p2 = FreeCAD.Vector(holes[i - 1]["x"], holes[i - 1]["y"], 0)
+            # orient each hole (except last) to next hole, the last one to previous hole
+            p2 = neighborHole(1) or neighborHole(-1) or p2
+        else:  # Outside
+            # orient each hole (except first) to previous hole
+            p2 = neighborHole(-1) or p2
         dirAngleRad = Path.Geom.getAngle(p2 - p1)
 
         if math.isnan(dirAngleRad):
@@ -579,6 +628,16 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         tooldiameter = obj.ToolController.Tool.Diameter.Value
         toolradius = tooldiameter / 2
 
+        if obj.StartDepth < obj.FinalDepth or isRoughly(obj.StartDepth.Value, obj.FinalDepth.Value):
+            obj.Path = Path.Path()
+            Path.Log.warning("StartDepth should be greater than FinalDepth")
+            return
+
+        if obj.StepDown < 0 or isRoughly(obj.StepDown.Value, 0):
+            obj.Path = Path.Path()
+            Path.Log.warning("StepDown should be greater than 0")
+            return
+
         if safeHeight > clearanceHeight:
             Path.Log.warning(
                 f"SafeHeight ({safeHeight}) is above ClearanceHeight ({clearanceHeight}). "
@@ -588,37 +647,66 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         singleHelix = obj.SingleHelix or obj.SpiralMill
 
-        # build list of solids for collision detection
-        solids = [base.Shape for base in self.job.Model.Group]
-        machinestate = PathMachineState.MachineState()
+        # Prepare linking parameters
+        # self.model: the model in the frame the path is made in, its work plane's
+        solids = [base.Shape for base in self.model]
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": safeHeight,
-            "global_clearance": clearanceHeight,
-            "solids": solids,
+            "heights_clearance": (safeHeight, clearanceHeight),
+            "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
-            "safety_margin": obj.LinkingSafetyMargin.Value,
+            "collision_clearance": obj.CollisionClearance.Value,
         }
-        if obj.LinkingMode == "Safest":
-            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
-        elif obj.LinkingMode == "Compromise":
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = clearanceHeight
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
             linkingArgs["tool_diameter"] = tooldiameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         obj.Direction = _caclulatePathDirection(obj)
+
+        if obj.OverrideProfileDiameter.Value:
+            # every hole is cut at one diameter, so the steps of a stepped hole are one hole again
+            holes = [
+                h
+                for i, h in enumerate(holes)
+                if not any(
+                    Path.Geom.pointsCoincide((h["x"], h["y"]), (g["x"], g["y"])) for g in holes[:i]
+                )
+            ]
+
+        # a step over a smaller one, or outside on a larger one, stops at its floor or Final Depth
+        for hole in holes:
+            hole["final"] = obj.FinalDepth.Value
+            at = (hole["x"], hole["y"])
+            steps = [
+                h["d"]
+                for h in holes
+                if h is not hole and Path.Geom.pointsCoincide((h["x"], h["y"]), at)
+            ]
+            if any(s < hole["d"] if obj.Side == "Inside" else s > hole["d"] for s in steps):
+                hole["final"] = max(hole["final"], hole["bottom"])
 
         args = {
             "edge": None,
             "outer_radius": None,
-            "pitch": obj.HelixMaxPitch.Value or safeHeight - obj.FinalDepth.Value,
+            "pitch": None,
             "step": obj.StepOver * tooldiameter / 100,
             "inner_radius": None,
             "retract_height": safeHeight,
             "direction": obj.Direction,
             "startAt": obj.StartAt,
             "finish_circle": obj.FinishHelixCircle,
-            "cone_angle_rad": None,
+            "cone_angle_rad": math.radians(obj.HelixConeAngle.Value),
             "dir_angle_rad": None,
             "ramp_angle_rad": math.radians(obj.HelixMaxRampAngle) or math.pi / 2,
         }
@@ -627,11 +715,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             # do not send tooldiameter to generator for vertical retract
             args["tool_diameter"] = tooldiameter
 
-        if obj.Side == "Inside":
-            args["cone_angle_rad"] = math.radians(obj.HelixConeAngle.Value)
-        else:
-            args["cone_angle_rad"] = -math.radians(obj.HelixConeAngle.Value)
-
+        machinestate = PathMachineState.MachineState()
         self.commandlist.append(Path.Command("(helix cut operation)"))
         for hole_index, hole in enumerate(holes):
             if obj.RotationAngle.Value == -1:
@@ -641,6 +725,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 dirAngleRad = math.radians(obj.RotationAngle.Value)
 
             args["dir_angle_rad"] = dirAngleRad
+            finalDepth = hole["final"]
+            args["pitch"] = obj.HelixMaxPitch.Value or safeHeight - finalDepth
 
             if obj.OverrideProfileDiameter.Value:
                 hole["d"] = obj.OverrideProfileDiameter.Value
@@ -684,12 +770,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     args["outer_radius"] = (
                         hole["d"] / 2 + toolradius + obj.RadialStockToLeaveOuter.Value
                     )
-                    if args["inner_radius"] > args["outer_radius"]:
-                        # exclude overlap inner and outer helices
-                        args["inner_radius"] = args["outer_radius"]
+                    # exclude overlap inner and outer helices
+                    args["inner_radius"] = min(args["inner_radius"], args["outer_radius"])
 
-            if (args["outer_radius"] < 0 and not Path.Geom.isRoughly(args["outer_radius"], 0)) or (
-                args["inner_radius"] < 0 and not Path.Geom.isRoughly(args["inner_radius"], 0)
+            if (args["outer_radius"] < 0 and not isRoughly(args["outer_radius"], 0)) or (
+                args["inner_radius"] < 0 and not isRoughly(args["inner_radius"], 0)
             ):
                 # skip hole which can not be processed
                 posX = hole["x"]
@@ -699,14 +784,14 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 posXString = posXQty.getUserPreferred("Length")[0]
                 posYString = posYQty.getUserPreferred("Length")[0]
                 posStr = f"X = {posXString}, Y = {posYString}"
-                Path.Log.warning(translate("PathHelix", "Skipped hole at position %s") % posStr)
+                Path.Log.warning(translate("CAM_Helix", "Skipped hole at position %s") % posStr)
                 continue
 
             # Split depth by step down
-            work_distance = obj.StartDepth.Value - obj.FinalDepth.Value
-            iters = math.ceil(round(work_distance / obj.StepDown.Value, 6))
+            work_distance = obj.StartDepth.Value - finalDepth
+            iters = Path.Geom.ceil(work_distance / obj.StepDown.Value)
             centerTop = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
-            centerBottom = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
+            centerBottom = FreeCAD.Vector(centerTop.x, centerTop.y, centerTop.z)
             retractDistance = safeHeight - obj.StartDepth.Value
             for iter_num in range(iters):
                 if iters > 1:
@@ -715,15 +800,15 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     )
                 else:
                     self.commandlist.append(Path.Command(f"(hole {hole_index + 1})"))
-                centerBottom.z -= obj.StepDown.Value
-                if centerBottom.z < obj.FinalDepth.Value or isRoughly(
-                    centerBottom.z, obj.FinalDepth.Value
-                ):
-                    centerBottom.z = obj.FinalDepth.Value
+                centerBottom.z = max(centerTop.z - obj.StepDown.Value, finalDepth)
+                if isRoughly(centerBottom.z, finalDepth):
+                    centerBottom.z = finalDepth
 
-                args["edge"] = Part.makeLine(centerTop, centerBottom)
+                if obj.StartConeFromBottom:
+                    args["edge"] = Part.makeLine(centerBottom, centerTop)
+                else:
+                    args["edge"] = Part.makeLine(centerTop, centerBottom)
                 retractHeight = centerTop.z + retractDistance
-                centerTop.z = centerBottom.z  # top point for next iteration
 
                 if isRoughly(args["inner_radius"], 0) or isRoughly(args["outer_radius"], 0):
                     # vertical drilling for zero radius
@@ -741,10 +826,14 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         linkingMoves = linking.get_linking_moves(**linkingArgs)
                         self.commandlist.extend(linkingMoves)
                         machinestate.addCommands(linkingMoves)
-                    zDrill = retractHeight
-                    while zDrill > centerBottom.z:
+                    else:
+                        cmd = Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
+                        self.commandlist.append(cmd)
+                    drillStep = obj.HelixMaxPitch.Value or obj.StepDown.Value
+                    drillSteps = Path.Geom.ceil((centerTop.z - centerBottom.z) / drillStep)
+                    for iDrill in range(1, drillSteps + 1):
                         # drilling in peck mode
-                        zDrill -= obj.StepDown.Value
+                        zDrill = centerTop.z - drillStep * iDrill
                         if zDrill < centerBottom.z or isRoughly(zDrill, centerBottom.z):
                             zDrill = centerBottom.z
                         self.commandlist.append(Path.Command("G0", {"Z": retractHeight}))
@@ -768,7 +857,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     self.commandlist.extend(helixCommands[1:])
                     machinestate.addCommands(self.commandlist[-2:])
 
-                if obj.SpiralMill:
+                if obj.SpiralMill and not (obj.HelixConeAngle and obj.StartConeFromBottom):
                     if obj.Side == "Inside":
                         spiralInnerRadius = toolradius + obj.RadialStockToLeaveInner.Value
                         spiralOuterRadius = (
@@ -785,7 +874,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     if spiralOuterRadius <= spiralInnerRadius:
                         Path.Log.warning(
                             translate(
-                                "PathHelix",
+                                "CAM_Helix",
                                 "Spiral outer radius {} is equal or less than inner {}".format(
                                     spiralOuterRadius, spiralInnerRadius
                                 ),
@@ -852,6 +941,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         self.commandlist.append(cmd)
                         machinestate.addCommand(cmd)
 
+                centerTop.z = centerBottom.z  # top point for next iteration
+
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
         horizFeed = obj.ToolController.HorizFeed.Value
@@ -909,11 +1000,24 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
 def SetupProperties():
     """Returns property names for which the "Setup Sheet" should provide defaults."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
+    setup.append("Direction")
+    setup.append("FinishHelixCircle")
+    setup.append("FinishSpiralCircle")
+    setup.append("HelixConeAngle")
+    setup.append("HelixMaxPitch")
+    setup.append("HelixMaxRampAngle")
+    setup.append("OverrideArcFeedRate")
+    setup.append("RadialStockToLeaveInner")
+    setup.append("RadialStockToLeaveOuter")
+    setup.append("RetractFromWall")
+    setup.append("RotationAngle")
+    setup.append("Side")
+    setup.append("SingleHelix")
+    setup.append("SpiralMill")
     setup.append("StartAt")
     setup.append("StepOver")
-    setup.append("RadialStockToLeaveInner")
     return setup
 
 

@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from typing import Final, Any
+from typing import Final
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
@@ -23,28 +21,24 @@ class Edge(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
-    def intersectWithEdge(self) -> Any:
+    def intersectWithEdge(self, edge: Edge, /) -> list[tuple[float, float, float]]:
         """intersectWithEdge(Edge) -> list
         Get a list of intersection points with another edge."""
-        ...
 
-    def isParallel(self) -> Any:
+    def isParallel(self, edge: Edge, /) -> bool:
         """isParallel(Edge) -> bool
         Checks if the two edges are parallel."""
-        ...
 
-    def isCollinear(self) -> Any:
+    def isCollinear(self, edge: Edge, /) -> bool:
         """isCollinear(Edge) -> bool
         Checks if the two edges are collinear."""
-        ...
 
-    def unbound(self) -> Any:
+    def unbound(self) -> None:
         """method unbound()
         Cut the connection to a MeshObject. The edge becomes
         free and is more or less a simple edge.
         After calling unbound() no topological operation will
         work!"""
-        ...
     Index: Final[int]
     """The index of this edge of the facet"""
 

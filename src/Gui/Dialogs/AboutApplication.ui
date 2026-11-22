@@ -33,7 +33,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../Icons/resource.qrc">:/icons/freecadsplash.png</pixmap>
+          <pixmap resource="../Icons/resource.qrc">:/icons/freecadsplash.svg</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

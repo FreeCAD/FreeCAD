@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <QAbstractItemModel>
@@ -34,6 +31,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "SheetModel.h"
 #include "App/Range.h"
@@ -47,9 +45,12 @@ namespace sp = std::placeholders;
 SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     : QAbstractTableModel(parent)
     , sheet(_sheet)
-    , rows(1000)
-    , cols(26)
+    , rows(0)
+    , cols(0)
 {
+    auto param = SheetParameter::instance();
+    rows = static_cast<int>(param->getMaximumRowCount());
+    cols = static_cast<int>(param->getMaximumColumnCount());
     containSheetDataInView();
 
     // NOLINTBEGIN
@@ -61,15 +62,10 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     );
     // NOLINTEND
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    aliasBgColor = QColor(
-        QString::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e"))
-    );
-    textFgColor = QColor(QString::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
-    positiveFgColor = QColor(QString::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
-    negativeFgColor = QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
+    aliasBgColor = QColor(QString::fromStdString(param->getAliasedCellBackgroundColor()));
+    textFgColor = QColor(QString::fromStdString(param->getTextColor()));
+    positiveFgColor = QColor(QString::fromStdString(param->getPositiveNumberColor()));
+    negativeFgColor = QColor(QString::fromStdString(param->getNegativeNumberColor()));
 }
 
 SheetModel::~SheetModel()
@@ -172,16 +168,12 @@ QString encodeColumn(int column)
     return res;
 }
 
-QVariant formatCellDisplay(QString value, const Cell* cell)
+QVariant formatCellDisplay(const QString& value, const Cell* cell)
 {
+    auto param = SheetParameter::instance();
     std::string alias;
-    static auto hGrpSpreadsheet = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    if (cell->getAlias(alias) && hGrpSpreadsheet->GetBool("showAliasName", false)) {
-        QString formatStr = QString::fromStdString(
-            hGrpSpreadsheet->GetASCII("DisplayAliasFormatString", "%V = %A")
-        );
+    if (cell->getAlias(alias) && param->getShowAliasName()) {
+        QString formatStr = QString::fromStdString(param->getDisplayAliasFormatString());
         if (formatStr.contains(QLatin1String("%V")) || formatStr.contains(QLatin1String("%A"))) {
             formatStr.replace(QLatin1String("%A"), QString::fromStdString(alias));
             formatStr.replace(QLatin1String("%V"), value);

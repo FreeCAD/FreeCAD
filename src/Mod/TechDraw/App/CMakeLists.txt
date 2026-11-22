@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(TechDrawLIBS
     Measure
     Part
@@ -70,6 +72,8 @@ SET(Draw_SRCS
     DrawSVGTemplate.h
     DrawTemplate.cpp
     DrawTemplate.h
+    TemplateTranslator.cpp
+    TemplateTranslator.h
     DrawViewCollection.cpp
     DrawViewCollection.h
     DrawViewDimension.cpp
@@ -292,9 +296,7 @@ if (MSVC)
     target_compile_options(TechDraw PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(TechDraw)
-endif()
+target_compile_warn_error(TechDraw)
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
@@ -317,7 +319,7 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Symbols
 )
 
-SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
+SET_BIN_DIR(TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)
 
 INSTALL(TARGETS TechDraw DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -264,11 +264,11 @@ bool TaskDlgFeatureParameters::accept()
                 errorText = tr(
                     "The feature could not be created with the given parameters.\n"
                     "The geometry may be invalid or the parameters may be incompatible.\n"
-                    "Please adjust the parameters and try again."
+                    "Adjust the parameters and try again."
                 );
             }
         }
-        Base::Console().error("%s\n", errorText.toUtf8().constData());
+        Base::Console().error("{}\n", errorText.toStdString());
         return false;
     }
     return true;

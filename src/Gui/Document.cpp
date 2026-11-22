@@ -90,6 +90,7 @@ struct DocumentP
     bool _isModified;
     bool _isTransacting;
     bool _isActive;
+    bool _restoredGuiDocument;
     bool _changeViewTouchDocument;
     bool _editWantsRestore;
     bool _editWantsRestorePrevious;
@@ -264,6 +265,14 @@ struct DocumentP
         _editObjs.insert(sobjs.begin(), sobjs.end());
     }
 
+    void resetFailedEditing()
+    {
+        _editViewProvider = nullptr;
+        _editViewProviderParent = nullptr;
+        _editObjs.clear();
+        _editingObject = nullptr;
+    }
+
     bool tryStartEditing(
         ViewProviderDocumentObject* vp,
         App::DocumentObject* obj,
@@ -283,15 +292,35 @@ struct DocumentP
 
     bool tryStartEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
     {
+        try {
+            return startEditing(svp, sobj, ModNum);
+        }
+        catch (const Base::Exception& e) {
+            resetFailedEditing();
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (const std::exception& e) {
+            resetFailedEditing();
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (...) {
+            resetFailedEditing();
+            FC_ERR("startEditing: Unknown C++ exception");
+            return false;
+        }
+    }
+
+    bool startEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
+    {
         _editingObject = sobj;
         _editMode = ModNum;
         _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
                                   // within the viewprovider)
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
-            _editViewProviderParent = nullptr;
-            _editObjs.clear();
-            _editingObject = nullptr;
+            resetFailedEditing();
             FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
             return false;
         }
@@ -436,6 +465,7 @@ Document::Document(App::Document* pcDocument, Application* app)
     d->_isModified = false;
     d->_isTransacting = false;
     d->_isActive = false;
+    d->_restoredGuiDocument = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
@@ -538,12 +568,8 @@ Document::Document(App::Document* pcDocument, Application* app)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document"
     );
-    if (hGrp->GetBool("UsingUndo", true)) {
-        d->_pcDocument->setUndoMode(1);
-        // set the maximum stack size
-        d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
-    }
 
+    d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
     d->_changeViewTouchDocument = hGrp->GetBool("ChangeViewProviderTouchDocument", true);
 }
 
@@ -608,7 +634,15 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
         return trySetEdit(p, ModNum, subname);
     }
     catch (const Base::Exception& e) {
-        FC_ERR("" << e.what());
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (const std::exception& e) {
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (...) {
+        FC_ERR("setEdit: Unknown C++ exception");
         return false;
     }
 }
@@ -1504,6 +1538,44 @@ bool Document::askIfSavingFailed(const QString& error)
     return false;
 }
 
+static bool isOlderVersion(const App::Document* doc)
+{
+    const char* docVersion = doc->getProgramVersion();
+    const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
+
+    int docMajor = 0;
+    int docMinor = 0;
+    bool hasVersion = false;
+    if (hasVersionString) {
+        std::string versionStr(docVersion);
+        size_t dotPos = versionStr.find('.');
+        if (dotPos != std::string::npos) {
+            try {
+                docMajor = std::stoi(versionStr.substr(0, dotPos));
+                docMinor = std::stoi(versionStr.substr(dotPos + 1));
+                hasVersion = true;
+            }
+            catch (const std::exception&) {
+                hasVersion = false;
+            }
+        }
+    }
+
+    auto config = App::Application::Config();
+    int currentMajor = 0;
+    int currentMinor = 0;
+    if (config.contains("BuildVersionMajor") && config.contains("BuildVersionMinor")) {
+        currentMajor = std::stoi(config["BuildVersionMajor"]);
+        currentMinor = std::stoi(config["BuildVersionMinor"]);
+    }
+    else {
+        return false;
+    }
+
+    return !hasVersion || (docMajor < currentMajor)
+        || (docMajor == currentMajor && docMinor < currentMinor);
+}
+
 bool Document::warnIfOlderVersion()
 {
     // Skip warning if no GUI (headless/scripted mode)
@@ -1518,32 +1590,14 @@ bool Document::warnIfOlderVersion()
         return true;
     }
 
-    // Get document version info
-    const char* docVersion = d->_pcDocument->getProgramVersion();
-    const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
+    if (isOlderVersion(d->_pcDocument)) {
+        const char* docVersion = d->_pcDocument->getProgramVersion();
+        const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
 
-    // Parse document version string like "1.0R39319 (Git)" or "0.21R33694 (Git)"
-    // hasVersion is true only if the string is present AND parses as major.minor.
-    // Unrecognised strings like "pre-0.14" still display in the dialog but cannot
-    // be compared numerically, so they are treated as older versions.
-    int docMajor = 0, docMinor = 0;
-    const bool hasVersion = hasVersionString
-        && std::sscanf(docVersion, "%d.%d", &docMajor, &docMinor) == 2;
+        auto config = App::Application::Config();
+        int currentMajor = std::stoi(config["BuildVersionMajor"]);
+        int currentMinor = std::stoi(config["BuildVersionMinor"]);
 
-    // Get current FreeCAD version
-    auto config = App::Application::Config();
-    int currentMajor = 0, currentMinor = 0;
-    if (config.count("BuildVersionMajor") && config.count("BuildVersionMinor")) {
-        currentMajor = std::stoi(config["BuildVersionMajor"]);
-        currentMinor = std::stoi(config["BuildVersionMinor"]);
-    }
-    else {
-        return true;
-    }
-
-    // Warn if the document was created with an older version or has no version info
-    if (!hasVersion || (docMajor < currentMajor)
-        || (docMajor == currentMajor && docMinor < currentMinor)) {
         QMessageBox msgBox(getMainWindow());
         msgBox.setWindowTitle(QObject::tr("File Created with Older FreeCAD Version"));
         msgBox.setIcon(QMessageBox::Warning);
@@ -1593,6 +1647,7 @@ bool Document::warnIfOlderVersion()
 }
 
 /// Save the document
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 bool Document::save()
 {
     if (d->_pcDocument->isSaved()) {
@@ -1649,6 +1704,11 @@ bool Document::save()
                 }
             }
 
+            if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
+                && !isOlderVersion(getDocument())) {
+                return true;
+            }
+
             if (!checkCanonicalPath(dmap)) {
                 return false;
             }
@@ -1675,7 +1735,7 @@ bool Document::save()
         }
         catch (const Base::FileException& e) {
             e.reportException();
-            return askIfSavingFailed(QString::fromUtf8(e.what()));
+            return askIfSavingFailed(QString::fromStdString(e.getTranslatedMessage()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(
@@ -1739,7 +1799,7 @@ bool Document::saveAs()
         }
         catch (const Base::FileException& e) {
             e.reportException();
-            return askIfSavingFailed(QString::fromUtf8(e.what()));
+            return askIfSavingFailed(QString::fromUtf8(e.getTranslatedMessage().c_str()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(
@@ -1797,6 +1857,12 @@ void Document::saveAll()
         if (!gdoc) {
             continue;
         }
+
+        // Simplified skip check based on PR review
+        if (!gdoc->isModified() && doc->isSaved() && !isOlderVersion(doc)) {
+            continue;
+        }
+
         if (!doc->isSaved()) {
             if (!gdoc->saveAs()) {
                 break;
@@ -1818,7 +1884,7 @@ void Document::saveAll()
                 getMainWindow(),
                 QObject::tr("Failed to save document")
                     + QStringLiteral(": %1").arg(QString::fromUtf8(doc->getName())),
-                QString::fromLatin1(e.what())
+                QString::fromUtf8(e.what())
             );
             break;
         }
@@ -1891,7 +1957,7 @@ void Document::Save(Base::Writer& writer) const
         );
         if (hGrp->GetBool("SaveThumbnail", true)) {
             int size = hGrp->GetInt("ThumbnailSize", 256);
-            size = Base::clamp<int>(size, 64, 512);
+            size = std::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
 
             View3DInventorViewer* view = nullptr;
@@ -1915,6 +1981,7 @@ void Document::Save(Base::Writer& writer) const
  */
 void Document::Restore(Base::XMLReader& reader)
 {
+    d->_restoredGuiDocument = false;
     reader.addFile("GuiDocument.xml", this);
 
     // hide all elements to avoid to update the 3d view when loading data files
@@ -1931,6 +1998,8 @@ void Document::Restore(Base::XMLReader& reader)
  */
 void Document::RestoreDocFile(Base::Reader& reader)
 {
+    d->_restoredGuiDocument = true;
+
     // We must create an XML parser to read from the input stream
     std::shared_ptr<Base::XMLReader> localreader
         = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
@@ -2008,7 +2077,7 @@ void Document::RestoreDocFile(Base::Reader& reader)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
     }
@@ -2051,6 +2120,15 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         ViewProvider* viewProvider = getViewProvider(act);
         if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
+
+    if (!d->_restoredGuiDocument) {
+        for (auto* mdiView : getMDIViews()) {
+            if (auto* view3D = freecad_cast<View3DInventor*>(mdiView)) {
+                view3D->viewAll();
+                break;
+            }
         }
     }
 
@@ -2681,7 +2759,7 @@ MDIView* Document::getActiveView() const
     MDIView* active = getMainWindow()->activeWindow();
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // check whether the active view is part of this document
     bool ok = false;
@@ -2786,7 +2864,7 @@ void Document::setActiveWindow(Gui::MDIView* view)
     }
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // this document is not active
     if (std::ranges::find(mdis, active) == mdis.end()) {
@@ -3044,7 +3122,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childRootNode == childGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "group of '%s' to itself\n",
+                                    "group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }
@@ -3057,7 +3135,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childFrontNode == frontGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "foreground group of '%s' to itself\n",
+                                    "foreground group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }
@@ -3070,7 +3148,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childBackNode == backGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "background group of '%s' to itself\n",
+                                    "background group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }

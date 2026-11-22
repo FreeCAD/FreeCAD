@@ -384,11 +384,6 @@ The smallest value is 0.</source>
       <translation>Ужыць стваральнік паліганальных сетак Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Дакладнасць:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Вельмі грубы</translation>
@@ -439,6 +434,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>Калі гэтая налада менш, паліганальная сетка становіцца больш тонкай.
 Значэнне ў дыяпазоне 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Дакладнасць</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

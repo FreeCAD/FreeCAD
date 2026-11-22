@@ -59,6 +59,38 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPipeParameters */
 
+namespace
+{
+bool isSubtractivePipe(ViewProviderPipe* view)
+{
+    auto* pipe = view->getObject<PartDesign::Pipe>();
+    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
+}
+
+std::string pipeTaskIconName(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? "PartDesign_SubtractivePipe" : "PartDesign_AdditivePipe";
+}
+
+QString pipeTaskTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeParameters::tr("Subtractive Pipe Parameters")
+                                   : TaskPipeParameters::tr("Additive Pipe Parameters");
+}
+
+QString pipeOrientationTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeOrientation::tr("Subtractive Pipe Section Orientation")
+                                   : TaskPipeOrientation::tr("Additive Pipe Section Orientation");
+}
+
+QString pipeScalingTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeScaling::tr("Subtractive Pipe Section Transformation")
+                                   : TaskPipeScaling::tr("Additive Pipe Section Transformation");
+}
+}  // namespace
+
 
 //**************************************************************************
 //**************************************************************************
@@ -66,13 +98,14 @@ using namespace Gui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe Parameters"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeTaskTitle(PipeView))
     , ui(new Ui_TaskPipeParameters)
     , stateHandler(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     // Enable multi-selection in edges list
     ui->listWidgetReferences->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -127,9 +160,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
         profileShow = profileVP->isShow();
         profileVP->setVisible(true);
-        ui->profileBaseEdit->setText(
-            make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues())
-        );
+        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
     }
     // the auxiliary spine
     if (pipe->AuxiliarySpine.getValue()) {
@@ -180,6 +211,14 @@ TaskPipeParameters::~TaskPipeParameters()
     }
 }
 
+void TaskPipeParameters::changeEvent(QEvent* e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(proxy);
+    }
+}
+
 void TaskPipeParameters::updateUI()
 {}
 
@@ -223,7 +262,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 stateHandler->getSelectionMode()
                 == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove
             ) {
-                QString sub = QString::fromLatin1(msg.pSubName);
+                QString sub = QString::fromUtf8(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
                 }
@@ -559,6 +598,7 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        TaskSketchBasedParameters::apply();
         setVisibilityOfSpineAndProfile();
 
         App::DocumentObject* spine = pipe->Spine.getValue();
@@ -595,7 +635,7 @@ bool TaskPipeParameters::accept()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Orientation"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeOrientationTitle(PipeView))
     , ui(new Ui_TaskPipeOrientation)
     , stateHandler(nullptr)
 {
@@ -756,7 +796,7 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                 stateHandler->getSelectionMode()
                 == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove
             ) {
-                QString sub = QString::fromLatin1(msg.pSubName);
+                QString sub = QString::fromUtf8(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
                 }
@@ -894,7 +934,7 @@ void TaskPipeOrientation::updateUI(int idx)
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Transformation"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeScalingTitle(PipeView))
     , ui(new Ui_TaskPipeScaling)
     , stateHandler(nullptr)
 {

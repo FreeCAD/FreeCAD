@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
@@ -158,7 +160,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [
         (geom_obj, "Face5"),
         (geom_obj, "Face6"),
@@ -168,14 +170,14 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_fixed)
 
     # constraint pressure
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "Pressure")
     con_pressure.References = [(geom_obj, "Face10")]
     con_pressure.Pressure = "100.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 
     # constraint contact
-    con_contact = ObjectsFem.makeConstraintContact(doc, "ConstraintContact")
+    con_contact = ObjectsFem.makeConstraintContact(doc, "Contact")
     con_contact.References = [
         (geom_obj, "Face7"),  # first seems slave face, TODO proof in writer code!
         (geom_obj, "Face3"),  # second seems master face, TODO proof in writer code!

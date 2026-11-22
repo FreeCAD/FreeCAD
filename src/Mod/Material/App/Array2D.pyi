@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod
+from Base.Quantity import Quantity
 from typing import Final, List, Any
 
 
@@ -37,21 +37,18 @@ class Array2D(BaseClass):
     """The number of columns in the array."""
 
     @constmethod
-    def getRow(self, value: Any, /) -> Any:
+    def getRow(self, value: int, /) -> List[Quantity]:
         """
         Get the row given the first column value
         """
-        ...
 
     @constmethod
-    def getValue(self, row: int, column: int, /) -> Any:
+    def getValue(self, row: int, column: int, /) -> Quantity:
         """
         Get the value at the given row and column
         """
-        ...
 
-    def setValue(self, row: int, column: int, value: Any, /):
+    def setValue(self, row: int, column: int, value: str, /) -> None:
         """
         Set the value at the given row and column
         """
-        ...

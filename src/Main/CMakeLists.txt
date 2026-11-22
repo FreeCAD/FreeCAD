@@ -31,9 +31,7 @@ if(BUILD_GUI)
         add_dependencies(FreeCADMain TestSources)
         add_dependencies(FreeCADMain TestGuiSources)
     endif()
-    if (FREECAD_WARN_ERROR)
-        target_compile_warn_error(FreeCADMain)
-    endif()
+    target_compile_warn_error(FreeCADMain)
 
     SET_BIN_DIR(FreeCADMain FreeCAD)
 
@@ -83,9 +81,7 @@ endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 target_link_libraries(FreeCADMainCmd
     ${FreeCADMainCmd_LIBS}
 )
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADMainCmd)
-endif()
+target_compile_warn_error(FreeCADMainCmd)
 
 SET_BIN_DIR(FreeCADMainCmd FreeCADCmd)
 
@@ -114,9 +110,7 @@ SET(FreeCADMainPy_SRCS
 add_library(FreeCADMainPy SHARED ${FreeCADMainPy_SRCS})
 
 target_link_libraries(FreeCADMainPy FreeCADApp)
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADMainPy)
-endif()
+target_compile_warn_error(FreeCADMainPy)
 
 SET_BIN_DIR(FreeCADMainPy FreeCAD)
 SET_PYTHON_PREFIX_SUFFIX(FreeCADMainPy)
@@ -142,9 +136,7 @@ if(BUILD_GUI)
     add_library(FreeCADGuiPy SHARED ${FreeCADGuiPy_SRCS})
 
     target_link_libraries(FreeCADGuiPy FreeCADGui)
-    if (FREECAD_WARN_ERROR)
-        target_compile_warn_error(FreeCADGuiPy)
-    endif()
+    target_compile_warn_error(FreeCADGuiPy)
 
     SET_BIN_DIR(FreeCADGuiPy FreeCADGui)
     SET_PYTHON_PREFIX_SUFFIX(FreeCADGuiPy)

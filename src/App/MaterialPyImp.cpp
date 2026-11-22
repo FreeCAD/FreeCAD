@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 // inclusion of the generated files (generated out of MaterialPy.xml)
@@ -179,6 +176,41 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
 std::string MaterialPy::representation() const
 {
     return {"<Material object>"};
+}
+
+namespace
+{
+bool equalMaterialValues(const Material& lhs, const Material& rhs)
+{
+    return lhs.shininess == rhs.shininess
+        && lhs.transparency == rhs.transparency
+        && lhs.ambientColor == rhs.ambientColor
+        && lhs.diffuseColor == rhs.diffuseColor
+        && lhs.specularColor == rhs.specularColor
+        && lhs.emissiveColor == rhs.emissiveColor
+        && lhs.image == rhs.image
+        && lhs.imagePath == rhs.imagePath;
+}
+}  // namespace
+
+PyObject* MaterialPy::richCompare(PyObject* v, PyObject* w, int op)
+{
+    if (PyObject_TypeCheck(v, &(MaterialPy::Type)) && PyObject_TypeCheck(w, &(MaterialPy::Type))) {
+        const Material* m1 = static_cast<MaterialPy*>(v)->getMaterialPtr();
+        const Material* m2 = static_cast<MaterialPy*>(w)->getMaterialPtr();
+
+        const bool equal = equalMaterialValues(*m1, *m2);
+        switch (op) {
+            case Py_NE:
+                return PyBool_FromLong(!equal);
+            case Py_EQ:
+                return PyBool_FromLong(equal);
+            default:
+                break;
+        }
+    }
+
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 PyObject* MaterialPy::set(PyObject* args)

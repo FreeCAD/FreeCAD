@@ -30,11 +30,11 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import DraftGeomUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
+from draftgeoutils import geometry as geo_geometry
 from draftobjects.wire import Wire
+from draftutils import gui_utils
+from draftutils import utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
@@ -85,7 +85,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
     elif isinstance(pointslist, Part.Wire):
         for edge in pointslist.Edges:
-            if not DraftGeomUtils.is_straight_line(edge):
+            if not geo_geometry.is_straight_line(edge):
                 App.Console.PrintError("All edges must be straight lines\n")
                 return None
         closed = pointslist.isClosed()
@@ -130,6 +130,14 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     return obj
 
 
-makeWire = make_wire
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_wire()",
+)
+def makeWire(*args, **kwarg):
+    """DEPRECATED. Use 'make_wire'."""
+    return make_wire(*args, **kwarg)
+
 
 ## @}

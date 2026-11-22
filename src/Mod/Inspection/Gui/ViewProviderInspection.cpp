@@ -1,31 +1,26 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
-#include <QApplication>
 #include <QMenu>
-#include <QMessageBox>
 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -48,11 +43,11 @@
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderAnnotation.h>
 #include <Gui/Widgets.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 #include <Mod/Points/App/Properties.h>
@@ -126,7 +121,7 @@ ViewProviderInspection::~ViewProviderInspection()
     catch (Base::Exception& e) {
         Base::Console().destructorError(
             "ViewProviderInspection",
-            "ViewProviderInspection::deleteColorBar() threw an exception: %s\n",
+            "ViewProviderInspection::deleteColorBar() threw an exception: {}\n",
             e.what()
         );
     }
@@ -489,68 +484,6 @@ void ViewProviderInspection::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcR
     setActiveMode();
 }
 
-namespace InspectionGui
-{
-// Proxy class that receives an asynchronous custom event
-class ViewProviderProxyObject: public QObject
-{
-public:
-    explicit ViewProviderProxyObject(QWidget* w)
-        : QObject(nullptr)
-        , widget(w)
-    {}
-    ~ViewProviderProxyObject() override = default;
-    void customEvent(QEvent*) override
-    {
-        if (!widget.isNull()) {
-            QList<Gui::Flag*> flags = widget->findChildren<Gui::Flag*>();
-            if (!flags.isEmpty()) {
-                int ret = QMessageBox::question(
-                    Gui::getMainWindow(),
-                    QObject::tr("Remove annotations"),
-                    QObject::tr("Do you want to remove all annotations?"),
-                    QMessageBox::Yes,
-                    QMessageBox::No
-                );
-                if (ret == QMessageBox::Yes) {
-                    for (auto it : flags) {
-                        it->deleteLater();
-                    }
-                }
-            }
-        }
-
-        this->deleteLater();
-    }
-
-    static void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint* point)
-    {
-        Gui::Flag* flag = new Gui::Flag;
-        QPalette p;
-        p.setColor(QPalette::Window, QColor(85, 0, 127));
-        p.setColor(QPalette::Text, QColor(220, 220, 220));
-        flag->setPalette(p);
-        flag->setText(text);
-        flag->setOrigin(point->getPoint());
-        Gui::GLFlagWindow* flags = nullptr;
-        std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
-            Gui::GLFlagWindow::getClassTypeId()
-        );
-        if (glItems.empty()) {
-            flags = new Gui::GLFlagWindow(view);
-            view->addGraphicsItem(flags);
-        }
-        else {
-            flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
-        }
-        flags->addFlag(flag, Gui::FlagLayout::BottomLeft);
-    }
-
-private:
-    QPointer<QWidget> widget;
-};
-}  // namespace InspectionGui
-
 void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
 {
     Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
@@ -575,12 +508,6 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                 addflag = fl->isChecked();
             }
             else if (cl == id) {
-                // post an event to a proxy object to make sure to avoid problems
-                // when opening a modal dialog
-                QApplication::postEvent(
-                    new ViewProviderProxyObject(view->getGLWidget()),
-                    new QEvent(QEvent::User)
-                );
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
@@ -604,13 +531,18 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
             if (vp && vp->isDerivedFrom<ViewProviderInspection>()) {
                 ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
-                QString info = that->inspectDistance(point);
-                Gui::getMainWindow()->setPaneText(1, info);
+                QString dist = that->inspectDistance(point);
+                Gui::getMainWindow()->setPaneText(1, dist);
                 if (addflag) {
-                    ViewProviderProxyObject::addFlag(view, info, point);
+                    Gui::AnnotationBuilder::Info info {
+                        dist.toStdString(),
+                        "Annotations",
+                        "Inspection info"
+                    };
+                    Gui::AnnotationBuilder::schedule(that, point, info);
                 }
                 else {
-                    Gui::ToolTip::showText(QCursor::pos(), info);
+                    Gui::ToolTip::showText(QCursor::pos(), dist);
                 }
             }
             else {
@@ -626,13 +558,18 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                     vp = view->getViewProviderByPathFromTail(point->getPath());
                     if (vp && vp->isDerivedFrom<ViewProviderInspection>()) {
                         ViewProviderInspection* self = static_cast<ViewProviderInspection*>(vp);
-                        QString info = self->inspectDistance(point);
-                        Gui::getMainWindow()->setPaneText(1, info);
+                        QString dist = self->inspectDistance(point);
+                        Gui::getMainWindow()->setPaneText(1, dist);
                         if (addflag) {
-                            ViewProviderProxyObject::addFlag(view, info, point);
+                            Gui::AnnotationBuilder::Info info {
+                                dist.toStdString(),
+                                "Annotations",
+                                "Inspection info"
+                            };
+                            Gui::AnnotationBuilder::schedule(self, point, info);
                         }
                         else {
-                            Gui::ToolTip::showText(QCursor::pos(), info);
+                            Gui::ToolTip::showText(QCursor::pos(), dist);
                         }
                         break;
                     }

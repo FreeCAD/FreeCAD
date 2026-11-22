@@ -104,8 +104,8 @@ void markCurrentVersionAsDoNotMigrate()
         std::ofstream markerFile(markerPath);
         if (!markerFile.is_open()) {
             Base::Console().error(
-                "Unable to open marker file %s\n",
-                Base::FileInfo::pathToString(markerPath).c_str()
+                "Unable to open marker file {}\n",
+                Base::FileInfo::pathToString(markerPath)
             );
             continue;
         }
@@ -271,11 +271,11 @@ void PathMigrationWorker::run()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Error migrating configuration data: %s\n", e.what());
+        Base::Console().error("Error migrating configuration data: {}\n", e.what());
         Q_EMIT(failed());
     }
     catch (const std::exception& e) {
-        Base::Console().error("Unrecognized error migrating configuration data: %s\n", e.what());
+        Base::Console().error("Unrecognized error migrating configuration data: {}\n", e.what());
         Q_EMIT(failed());
     }
     catch (...) {
@@ -308,7 +308,7 @@ void PathMigrationWorker::replaceOccurrencesInPreferences()
         newPrefFile << contents;
     }
     catch (const std::exception& e) {
-        Base::Console().error("Error reading preferences file: %s\n", e.what());
+        Base::Console().error("Error reading preferences file: {}\n", e.what());
     }
 }
 
@@ -335,6 +335,10 @@ std::filesystem::path PathMigrationWorker::locateNewPreferences() const
 std::string PathMigrationWorker::generateNewUserAppPathString(const std::string& oldPath) const
 {
     std::filesystem::path newPath = Base::FileInfo::stringToPath(oldPath);
+    if (newPath.filename().empty()) {
+        // Handle the case where the path was constructed from a std::string with a trailing /
+        newPath = newPath.parent_path();
+    }
     if (App::Application::directories()->isVersionedPath(newPath)) {
         newPath = newPath.parent_path();
     }
@@ -377,8 +381,8 @@ void PathMigrationWorker::writeMigrationLog(const std::vector<std::filesystem::p
     }
     catch (const std::exception& e) {
         Base::Console().warning(
-            "Migration: could not write log to '%s': %s\n",
-            Base::FileInfo::pathToString(logPath).c_str(),
+            "Migration: could not write log to '{}': {}\n",
+            Base::FileInfo::pathToString(logPath),
             e.what()
         );
     }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
@@ -133,11 +135,11 @@ void QGIViewClip::drawClip()
                 qgiv->isInnerView(true);
                 double x = Rez::guiX(qgiv->getViewObject()->X.getValue());
                 double y = Rez::guiX(qgiv->getViewObject()->Y.getValue());
-                qgiv->setPosition(clipOrigin.x() + x, clipOrigin.y() + y);
+                setPositionInClip(qgiv, clipOrigin.x() + x, clipOrigin.y() + y);
                 qgiv->show();
             }
         } else {
-            Base::Console().warning("Logic error? - drawClip() - qgiv for %s not found\n", name.c_str());   //gview for feature !exist
+            Base::Console().warning("Logic error? - drawClip() - qgiv for {} not found\n", name);   //gview for feature !exist
         }
     }
 
@@ -217,4 +219,9 @@ bool QGIViewClip::forwardEventToSelection(QGIView* qview, QEvent* event) const
     return qview->pseudoEventFilter(qview, event);
 }
 
-
+void QGIViewClip::setPositionInClip(QGIView* qgiv, qreal xPos, qreal yPos)
+{
+    double newX = xPos;
+    double newY = -yPos;
+    qgiv->setPos(newX, newY);
+}

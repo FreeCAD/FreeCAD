@@ -61,12 +61,14 @@ public:
     Py::Object redoActions(const Py::Tuple&);
     //@}
 
+    Py::Object message(const Py::Tuple&);
     Py::Object sendMessage(const Py::Tuple&);
     Py::Object supportMessage(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
     Py::Object setActiveObject(const Py::Tuple&);
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
+    Py::Object getTypeId(const Py::Tuple&);
 
     MDIView* getMDIViewPtr()
     {

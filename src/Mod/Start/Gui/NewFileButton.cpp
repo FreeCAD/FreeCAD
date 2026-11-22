@@ -34,8 +34,9 @@
 namespace StartGui
 {
 
-NewFileButton::NewFileButton(const NewButton& newButton)
-    : mainLayout(new QHBoxLayout(this))
+NewFileButton::NewFileButton(QWidget* parent, const QString& iconPath)
+    : QPushButton(parent)
+    , mainLayout(new QHBoxLayout(this))
     , textLayout(new QVBoxLayout())
     , headingLabel(new QLabel())
     , descriptionLabel(new QLabel())
@@ -52,7 +53,7 @@ NewFileButton::NewFileButton(const NewButton& newButton)
     iconSize = int(hGrp->GetInt("NewFileIconSize", defaultSize));
 
     auto iconLabel = new QLabel(this);
-    QIcon baseIcon(newButton.iconPath);
+    QIcon baseIcon(iconPath);
     iconLabel->setPixmap(baseIcon.pixmap(iconSize, iconSize));
 
     textLayout->addWidget(headingLabel);
@@ -60,12 +61,10 @@ NewFileButton::NewFileButton(const NewButton& newButton)
     textLayout->setSpacing(0);
     textLayout->setContentsMargins(0, 0, 0, 0);
 
-    headingLabel->setText(newButton.heading);
     QFont font = headingLabel->font();
     font.setWeight(QFont::Bold);
     headingLabel->setFont(font);
 
-    descriptionLabel->setText(newButton.description);
     descriptionLabel->setWordWrap(true);
     descriptionLabel->setFixedWidth(labelWidth);
     descriptionLabel->setAlignment(Qt::AlignTop);
@@ -80,6 +79,16 @@ NewFileButton::NewFileButton(const NewButton& newButton)
     mainLayout->setContentsMargins(margin, margin, 2 * margin, margin);
     setLayout(mainLayout);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+}
+
+void NewFileButton::setHeadingText(const QString& text)
+{
+    headingLabel->setText(text);
+}
+
+void NewFileButton::setDescriptionText(const QString& text)
+{
+    descriptionLabel->setText(text);
 }
 
 QSize NewFileButton::minimumSizeHint() const

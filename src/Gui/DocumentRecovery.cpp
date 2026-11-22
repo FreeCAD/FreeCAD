@@ -43,6 +43,7 @@
 #include <QTreeWidgetItem>
 #include <QXmlStreamReader>
 #include <QVector>
+#include <memory>
 #include <sstream>
 
 #include <FCConfig.h>
@@ -271,10 +272,10 @@ void DocumentRecovery::accept()
                 ++index;
             }
             catch (const std::exception& e) {
-                errorInfo = QString::fromLatin1(e.what());
+                errorInfo = QString::fromUtf8(e.what());
             }
             catch (const Base::Exception& e) {
-                errorInfo = QString::fromLatin1(e.what());
+                errorInfo = QString::fromUtf8(e.what());
             }
             catch (...) {
                 errorInfo = tr("Unknown problem occurred");
@@ -372,9 +373,6 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
     QFile file(info.xmlFile);
     if (file.open(QFile::WriteOnly)) {
         QTextStream str(&file);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        str.setCodec("UTF-8");
-#endif
         str << "<?xml version='1.0' encoding='utf-8'?>\n"
             << "<AutoRecovery SchemaVersion=\"1\">\n";
         switch (info.status) {
@@ -487,14 +485,14 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
 
 /// Rough check to see if the ZIP data is valid. No CRC calculation, just a fast iteration over the
 /// contents to see if it seems basically OK.
-bool zipDataIsValid(const QString& zipData)
+bool zipDataIsValid(const QString& fcstdFile)
 {
     try {
-        zipios::ZipFile zf(zipData.toStdString());
+        zipios::ZipFile zf(fcstdFile.toStdString());
         auto entries = zf.entries();
         int n = 0;
         for (auto it = entries.begin(); it != entries.end(); ++it) {
-            auto s = zf.getInputStream(*it);
+            std::unique_ptr<std::istream> s(zf.getInputStream(*it));
             if (!s || !(*s)) {
                 return false;
             }
@@ -530,7 +528,7 @@ bool xmlFilesAreValid(const QString& fcstdFile)
             return false;
         }
         {
-            auto s = zf.getInputStream(doc);
+            std::unique_ptr<std::istream> s(zf.getInputStream(doc));
             QByteArray bytes;
             bytes.resize(0);
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
@@ -545,7 +543,7 @@ bool xmlFilesAreValid(const QString& fcstdFile)
 
         // GuiDocument.xml is optional, but if it's present it must be well-formed
         if (auto gui = findEntry(zf, "GuiDocument.xml")) {
-            auto s = zf.getInputStream(gui);
+            std::unique_ptr<std::istream> s(zf.getInputStream(gui));
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
             QXmlStreamReader xr(QByteArray(tmp.data(), int(tmp.size())));
             while (!xr.atEnd()) {
@@ -569,15 +567,17 @@ bool DocumentRecoveryPrivate::isValidProject(const QFileInfo& fi) const
         return false;
     }
 
-    if (!zipDataIsValid(fi.fileName())) {
+    const QString projectFile = fi.absoluteFilePath();
+
+    if (!zipDataIsValid(projectFile)) {
         return false;
     }
 
-    if (!xmlFilesAreValid(fi.fileName())) {
+    if (!xmlFilesAreValid(projectFile)) {
         return false;
     }
 
-    App::ProjectFile project(fi.absoluteFilePath().toStdString());
+    App::ProjectFile project(projectFile.toStdString());
     return project.loadDocument();
 }
 
@@ -646,12 +646,9 @@ void DocumentRecovery::onDeleteSection()
 {
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete the selected transient directories?"));
-    msgBox.setInformativeText(
-        tr("When deleting the selected transient directory it is not possible to recover any files "
-           "afterwards.")
-    );
+    msgBox.setWindowTitle(tr("Delete"));
+    msgBox.setText(tr("Delete the selected recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -683,8 +680,8 @@ void DocumentRecovery::onButtonCleanupClicked()
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete all transient directories?"));
-    msgBox.setInformativeText(tr("When deleting all transient directories it is not possible to recover any files afterwards."));
+    msgBox.setText(tr("Delete all recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -701,7 +698,7 @@ void DocumentRecovery::onButtonCleanupClicked()
     handler.checkForPreviousCrashes(
         std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3)
     );
-    DlgCheckableMessageBox::showMessage(tr("Delete"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Cleanup"), tr("Recovery documents deleted."));
     reject();
 }
 
@@ -829,7 +826,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().log("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().log("Failed to lock file {}\n", fn.toStdString());
             }
         }
     }

@@ -5,6 +5,7 @@ add_executable(Part_tests_run
         AttachExtension.cpp
         BRepMesh.cpp
         FaceMakerBullseye.cpp
+        FaceMakerUnified.cpp
         FeatureChamfer.cpp
         FeatureCompound.cpp
         FeatureExtrusion.cpp
@@ -18,10 +19,15 @@ add_executable(Part_tests_run
         FeatureRevolution.cpp
         FuzzyBoolean.cpp
         Geometry.cpp
+        LinkArrayPolar.cpp
+        ModelRefine.cpp
         PartFeature.cpp
         PartFeatures.cpp
         PartTestHelpers.cpp
+        PreviewExtension.cpp
         PropertyTopoShape.cpp
+        SignalException.cpp
+        Tools.cpp
         TopoDS_Shape.cpp
         TopoShape.cpp
         TopoShapeCache.cpp
@@ -34,8 +40,10 @@ add_executable(Part_tests_run
 )
 
 set(PartTestData_Files
+        brepfiles/countersink_cone.brep
         brepfiles/cylinder1.brep
         brepfiles/helix1.brep
+        brepfiles/unorientableSolid.brep
 )
 
 ADD_CUSTOM_TARGET(PartTestData ALL

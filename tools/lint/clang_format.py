@@ -59,10 +59,13 @@ def main():
     args = parser.parse_args()
     init_environment(args)
 
-    cmd = (
-        f"clang-format --dry-run --ferror-limit=1 --verbose "
-        f"--style={args.clang_style} {args.files}"
-    )
+    cmd = [
+        "clang-format",
+        "--dry-run",
+        "--ferror-limit=1",
+        "--verbose",
+        f"--style={args.clang_style}",
+    ] + args.files
     stdout, stderr, _ = run_command(cmd)
     output = stdout + "\n" + stderr
 

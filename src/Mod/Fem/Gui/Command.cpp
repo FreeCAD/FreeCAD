@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Peter McB                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
@@ -172,8 +174,8 @@ CmdFemAddPart::CmdFemAddPart()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Add a part to the analysis");
-    sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
+    sMenuText       = QT_TR_NOOP("Add Part to Analysis");
+    sToolTipText    = QT_TR_NOOP("Adds a part to the analysis");
     sWhatsThis      = "FEM_FemAddPart";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-add-fem-mesh";
@@ -183,7 +185,7 @@ void CmdFemAddPart::activated(int)
 {
 #ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
+            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work…"));
     return;
 #endif
 
@@ -304,7 +306,7 @@ void CmdFemConstraintContact::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintContact");
+    std::string FeatName = getUniqueObjectName("Contact");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make contact constraint on a face"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")", FeatName.c_str());
@@ -382,7 +384,7 @@ void CmdFemConstraintDisplacement::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
+    std::string FeatName = getUniqueObjectName("Displacement");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make displacement boundary condition on face"));
     doCommand(
@@ -436,7 +438,7 @@ void CmdFemConstraintFixed::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintFixed");
+    std::string FeatName = getUniqueObjectName("Fixed");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make fixed boundary condition for geometry"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")", FeatName.c_str());
@@ -486,7 +488,7 @@ void CmdFemConstraintRigidBody::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintRigidBody");
+    std::string FeatName = getUniqueObjectName("RigidBody");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make rigid body constraint"));
     doCommand(
@@ -605,7 +607,7 @@ void CmdFemConstraintForce::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintForce");
+    std::string FeatName = getUniqueObjectName("Force");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make force load on geometry"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")", FeatName.c_str());
@@ -716,7 +718,7 @@ void CmdFemConstraintHeatflux::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
+    std::string FeatName = getUniqueObjectName("HeatFlux");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make heat flux load on face"));
     doCommand(
@@ -789,7 +791,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
+    std::string FeatName = getUniqueObjectName("InitialTemperature");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make initial temperature condition on body"));
     doCommand(
@@ -846,7 +848,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
+    std::string FeatName = getUniqueObjectName("PlaneRotation");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make plane multi-point constraint on face"));
     doCommand(
@@ -903,7 +905,7 @@ void CmdFemConstraintPressure::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintPressure");
+    std::string FeatName = getUniqueObjectName("Pressure");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make pressure load on face"));
     doCommand(
@@ -913,7 +915,7 @@ void CmdFemConstraintPressure::activated(int)
     );
     doCommand(
         Doc,
-        "App.activeDocument().%s.Pressure = 0.1",
+        "App.activeDocument().%s.Pressure = \"1 MPa\"",
         FeatName.c_str()
     );  // OvG: set default not equal to 0
     doCommand(
@@ -967,7 +969,7 @@ void CmdFemConstraintSpring::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintSpring");
+    std::string FeatName = getUniqueObjectName("Spring");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make Spring Constraint"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")", FeatName.c_str());
@@ -1079,7 +1081,7 @@ void CmdFemConstraintTemperature::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintTemperature");
+    std::string FeatName = getUniqueObjectName("Temperature");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make temperature boundary condition on face"));
     doCommand(
@@ -1136,7 +1138,7 @@ void CmdFemConstraintTransform::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintTransform");
+    std::string FeatName = getUniqueObjectName("Transform");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make local coordinate system on face"));
     doCommand(
@@ -1584,12 +1586,7 @@ void CmdFemCompEmConstraints::languageChange()
                 ConstraintElectromagnetic->getMenuText()
             )
         );
-        cmd0->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintElectromagnetic",
-                ConstraintElectromagnetic->getToolTipText()
-            )
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, ConstraintElectromagnetic));
         cmd0->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintElectromagnetic",
@@ -1607,12 +1604,7 @@ void CmdFemCompEmConstraints::languageChange()
                 ConstraintCurrentDensity->getMenuText()
             )
         );
-        cmd1->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintCurrentDensity",
-                ConstraintCurrentDensity->getToolTipText()
-            )
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, ConstraintCurrentDensity));
         cmd1->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintCurrentDensity",
@@ -1627,12 +1619,7 @@ void CmdFemCompEmConstraints::languageChange()
         cmd2->setText(
             QApplication::translate("FEM_ConstraintMagnetization", ConstraintMagnetization->getMenuText())
         );
-        cmd2->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintMagnetization",
-                ConstraintMagnetization->getToolTipText()
-            )
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, ConstraintMagnetization));
         cmd2->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintMagnetization",
@@ -1652,12 +1639,7 @@ void CmdFemCompEmConstraints::languageChange()
                 ConstraintElectricChargeDensity->getMenuText()
             )
         );
-        cmd3->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintElectricChargeDensity",
-                ConstraintElectricChargeDensity->getToolTipText()
-            )
-        );
+        cmd3->setToolTip(Gui::Action::createToolTip(cmd3, ConstraintElectricChargeDensity));
         cmd3->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintElectricChargeDensity",
@@ -1768,9 +1750,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd0->setText(
             QApplication::translate("FEM_EquationElectrostatic", EquationElectrostatic->getMenuText())
         );
-        cmd0->setToolTip(
-            QApplication::translate("FEM_EquationElectrostatic", EquationElectrostatic->getToolTipText())
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, EquationElectrostatic));
         cmd0->setStatusTip(
             QApplication::translate("FEM_EquationElectrostatic", EquationElectrostatic->getStatusTip())
         );
@@ -1782,9 +1762,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd1->setText(
             QApplication::translate("FEM_EquationElectricforce", EquationElectricforce->getMenuText())
         );
-        cmd1->setToolTip(
-            QApplication::translate("FEM_EquationElectricforce", EquationElectricforce->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, EquationElectricforce));
         cmd1->setStatusTip(
             QApplication::translate("FEM_EquationElectricforce", EquationElectricforce->getStatusTip())
         );
@@ -1796,12 +1774,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd2->setText(
             QApplication::translate("FEM_EquationMagnetodynamic", EquationMagnetodynamic->getMenuText())
         );
-        cmd2->setToolTip(
-            QApplication::translate(
-                "FEM_EquationMagnetodynamic",
-                EquationMagnetodynamic->getToolTipText()
-            )
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, EquationMagnetodynamic));
         cmd2->setStatusTip(
             QApplication::translate("FEM_EquationMagnetodynamic", EquationMagnetodynamic->getStatusTip())
         );
@@ -1816,12 +1789,7 @@ void CmdFemCompEmEquations::languageChange()
                 EquationMagnetodynamic2D->getMenuText()
             )
         );
-        cmd3->setToolTip(
-            QApplication::translate(
-                "FEM_EquationMagnetodynamic2D",
-                EquationMagnetodynamic2D->getToolTipText()
-            )
-        );
+        cmd3->setToolTip(Gui::Action::createToolTip(cmd3, EquationMagnetodynamic2D));
         cmd3->setStatusTip(
             QApplication::translate(
                 "FEM_EquationMagnetodynamic2D",
@@ -1836,9 +1804,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd4->setText(
             QApplication::translate("FEM_EquationStaticCurrent", EquationStaticCurrent->getMenuText())
         );
-        cmd4->setToolTip(
-            QApplication::translate("FEM_EquationStaticCurrent", EquationStaticCurrent->getToolTipText())
-        );
+        cmd4->setToolTip(Gui::Action::createToolTip(cmd4, EquationStaticCurrent));
         cmd4->setStatusTip(
             QApplication::translate("FEM_EquationStaticCurrent", EquationStaticCurrent->getStatusTip())
         );
@@ -1949,9 +1915,7 @@ void CmdFemCompMechEquations::languageChange()
         cmd1->setText(
             QApplication::translate("FEM_EquationElasticity", EquationElasticity->getMenuText())
         );
-        cmd1->setToolTip(
-            QApplication::translate("FEM_EquationElasticity", EquationElasticity->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, EquationElasticity));
         cmd1->setStatusTip(
             QApplication::translate("FEM_EquationElasticity", EquationElasticity->getStatusTip())
         );
@@ -1963,9 +1927,7 @@ void CmdFemCompMechEquations::languageChange()
         cmd0->setText(
             QApplication::translate("FEM_EquationDeformation", EquationDeformation->getMenuText())
         );
-        cmd0->setToolTip(
-            QApplication::translate("FEM_EquationDeformation", EquationDeformation->getToolTipText())
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, EquationDeformation));
         cmd0->setStatusTip(
             QApplication::translate("FEM_EquationDeformation", EquationDeformation->getStatusTip())
         );
@@ -2122,6 +2084,9 @@ void setupFilter(Gui::Command* cmd, std::string Name)
             selObject->getNameInDocument()
         );
     }
+
+    // show active filter
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.Visibility = True");
 
     cmd->updateActive();
     // open the dialog to edit the filter
@@ -2551,7 +2516,7 @@ CmdFemPostContoursFilter::CmdFemPostContoursFilter()
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Contours Filter");
-    sToolTipText = QT_TR_NOOP("Define/create a contours filter which displays iso contours");
+    sToolTipText = QT_TR_NOOP("Defines a contours filter that displays iso contours");
     sWhatsThis = "FEM_PostFilterContours";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterContours";
@@ -2938,7 +2903,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         Fem::FemResultObject* result =
          static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
         //static_cast failed here
-        Base::Console().message("Debug: FemResultObject pointer = %p", result );
+        Base::Console().message("Debug: FemResultObject pointer = {}", result );
 
     */
 

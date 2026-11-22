@@ -382,11 +382,6 @@ En küçük değer 0'dır.</translation>
       <translation>Netgen metal örücüyü kullanın</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>İnceliği:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Çok kaba</translation>
@@ -437,6 +432,11 @@ En küçük değer 0'dır.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Bu parametre daha küçükse, metal örgü daha ince hale gelir. 
 0.1-1 aralığında bir değer.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>İnceliği</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

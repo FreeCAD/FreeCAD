@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -169,37 +166,44 @@ public:
     static Base::Color decodeColor(const std::string& color, const Base::Color& defaultColor);
 
 private:
+    void _setAlignment(int _alignment);
+    void _setStyle(const std::set<std::string>& _style);
+    void _setForeground(const Base::Color& color);
+    void _setBackground(const Base::Color& color);
+    void _setDisplayUnit(const std::string& unit);
+    void _setComputedUnit(const Base::Unit& unit);
+
     void setParseException(const std::string& e);
 
     void setExpression(App::ExpressionPtr&& expr);
 
-    void setUsed(int mask, bool state = true);
+    void setUsed(unsigned int mask, bool state = true);
 
-    bool isUsed(int mask) const;
+    bool isUsed(unsigned int mask) const;
 
     void freeze();
 
     void unfreeze();
 
     /* Used */
-    static const int EXPRESSION_SET;
-    static const int ALIGNMENT_SET;
-    static const int STYLE_SET;
-    static const int BACKGROUND_COLOR_SET;
-    static const int FOREGROUND_COLOR_SET;
-    static const int DISPLAY_UNIT_SET;
-    static const int COMPUTED_UNIT_SET;
-    static const int ALIAS_SET;
-    static const int SPANS_SET;
-    static const int MARK_SET;
-    static const int EXCEPTION_SET;
-    static const int PARSE_EXCEPTION_SET;
-    static const int RESOLVE_EXCEPTION_SET;
+    static const unsigned int EXPRESSION_SET;
+    static const unsigned int ALIGNMENT_SET;
+    static const unsigned int STYLE_SET;
+    static const unsigned int BACKGROUND_COLOR_SET;
+    static const unsigned int FOREGROUND_COLOR_SET;
+    static const unsigned int DISPLAY_UNIT_SET;
+    static const unsigned int COMPUTED_UNIT_SET;
+    static const unsigned int ALIAS_SET;
+    static const unsigned int SPANS_SET;
+    static const unsigned int MARK_SET;
+    static const unsigned int EXCEPTION_SET;
+    static const unsigned int PARSE_EXCEPTION_SET;
+    static const unsigned int RESOLVE_EXCEPTION_SET;
 
     App::CellAddress address;
     PropertySheet* owner;
 
-    int used;
+    unsigned int used;
     mutable App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;

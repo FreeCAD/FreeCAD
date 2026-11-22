@@ -28,8 +28,14 @@
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <Standard_Failure.hxx>
 
+#include <algorithm>
+#include <set>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/PropertyGeo.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
@@ -52,16 +58,153 @@ Boolean::Boolean()
 {
     ADD_PROPERTY(Type, ((long)0));
     Type.setEnums(TypeEnums);
+    ADD_PROPERTY_TYPE(
+        UseLegacyBodyPlacement,
+        (App::GetApplication().isRestoring()),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Use legacy PartDesign Boolean body placement handling"
+    );
 
     App::GeoFeatureGroupExtension::initExtension(this);
+    // Boolean tools are references, not owned coordinate-system children.
+    Group.setScope(App::LinkScope::Global);
 }
 
 short Boolean::mustExecute() const
 {
-    if (Group.isTouched()) {
+    if (Group.isTouched() || UseLegacyBodyPlacement.isTouched()) {
         return 1;
     }
     return PartDesign::Feature::mustExecute();
+}
+
+void Boolean::onSettingDocument()
+{
+    connection.disconnect();
+    Feature::onSettingDocument();
+
+    if (auto* document = getDocument()) {
+        connection = document->signalChangedObject.connect(
+            [this](const App::DocumentObject& object, const App::Property& prop) {
+                slotChangedObject(object, prop);
+            }
+        );
+    }
+}
+
+void Boolean::slotChangedObject(const App::DocumentObject& object, const App::Property& prop)
+{
+    if (!prop.isDerivedFrom<App::PropertyPlacement>()) {
+        return;
+    }
+
+    auto* document = getDocument();
+    if (!document || document->testStatus(App::Document::Restoring)
+        || UseLegacyBodyPlacement.getValue() || &object == this
+        || &prop != object.getPropertyByName("Placement")) {
+        return;
+    }
+
+    const auto usesPlacement = [&object](const App::DocumentObject* source) {
+        std::set<const App::DocumentObject*> visited;
+        for (; source && visited.insert(source).second;
+             source = App::GeoFeatureGroupExtension::getGroupOfObject(source)) {
+            if (source == &object) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    if (usesPlacement(getFeatureBody()) || std::ranges::any_of(Group.getValues(), usesPlacement)) {
+        // Body and Part placement expressions may run after their contained features.
+        // Touching here lets the document's second recompute pass use the new placement.
+        enforceRecompute();
+    }
+}
+
+TopoShape Boolean::getBooleanTopoShape(const App::DocumentObject* object) const
+{
+    if (UseLegacyBodyPlacement.getValue()) {
+        return getTopoShape(object, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    }
+    return getTopoShapeInLocalCoordinates(object);
+}
+
+std::vector<App::DocumentObject*> Boolean::addObject(App::DocumentObject* object)
+{
+    return addObjects({object});
+}
+
+std::vector<App::DocumentObject*> Boolean::addObjects(std::vector<App::DocumentObject*> objects)
+{
+    auto tools = Group.getValues();
+    std::vector<App::DocumentObject*> added;
+
+    for (auto object : objects) {
+        if (!object || std::ranges::find(tools, object) != tools.end()) {
+            continue;
+        }
+
+        tools.push_back(object);
+        added.push_back(object);
+    }
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &Group);
+    Group.setValues(tools);
+    return added;
+}
+
+std::vector<App::DocumentObject*> Boolean::setObjects(std::vector<App::DocumentObject*> objects)
+{
+    std::vector<App::DocumentObject*> tools;
+    std::vector<App::DocumentObject*> added;
+
+    for (auto object : objects) {
+        if (!object || std::ranges::find(tools, object) != tools.end()) {
+            continue;
+        }
+
+        tools.push_back(object);
+        added.push_back(object);
+    }
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &Group);
+    Group.setValues(tools);
+    return added;
+}
+
+std::vector<App::DocumentObject*> Boolean::removeObject(App::DocumentObject* object)
+{
+    return removeObjects({object});
+}
+
+std::vector<App::DocumentObject*> Boolean::removeObjects(std::vector<App::DocumentObject*> objects)
+{
+    auto tools = Group.getValues();
+    std::vector<App::DocumentObject*> removed;
+
+    for (auto object : objects) {
+        auto it = std::ranges::find(tools, object);
+        if (it == tools.end()) {
+            continue;
+        }
+
+        removed.push_back(object);
+        tools.erase(it);
+    }
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &Group);
+    Group.setValues(tools);
+    return removed;
+}
+
+bool Boolean::hasObject(const App::DocumentObject* /*object*/, bool /*recursive*/) const
+{
+    // Boolean tools are references, not owned children. Returning false keeps
+    // GeoFeatureGroupExtension from using this object as their coordinate system.
+    return false;
 }
 
 App::DocumentObjectExecReturn* Boolean::execute()
@@ -86,7 +229,12 @@ App::DocumentObjectExecReturn* Boolean::execute()
     // Get the base shape to operate on
     Part::TopoShape baseTopShape;
     if (baseFeature) {
-        baseTopShape = baseFeature->Shape.getShape();
+        if (UseLegacyBodyPlacement.getValue()) {
+            baseTopShape = baseFeature->Shape.getShape();
+        }
+        else {
+            baseTopShape = getBooleanTopoShape(baseFeature);
+        }
     }
     else {
         auto feature = tools.back();
@@ -97,7 +245,12 @@ App::DocumentObjectExecReturn* Boolean::execute()
             ));
         }
 
-        baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        if (UseLegacyBodyPlacement.getValue()) {
+            baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        }
+        else {
+            baseTopShape = getBooleanTopoShape(feature);
+        }
         tools.pop_back();
     }
 
@@ -110,7 +263,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
     std::vector<TopoShape> shapes;
     shapes.push_back(baseTopShape);
     for (auto it = tools.begin(); it < tools.end(); ++it) {
-        auto shape = getTopoShape(*it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        auto shape = getBooleanTopoShape(*it);
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Tool shape is null")
@@ -145,7 +298,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
 
         try {
-            result.makeElementBoolean(op, shapes);
+            result.makeElementBoolean(op, shapes, nullptr, FuzzyTolerance.getValue());
         }
         catch (Standard_Failure& e) {
             FC_ERR("Boolean operation failed: " << e.GetMessageString());
@@ -172,7 +325,14 @@ App::DocumentObjectExecReturn* Boolean::execute()
 void Boolean::updatePreviewShape()
 {
     if (strcmp(Type.getValueAsString(), "Cut") == 0) {
-        TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+        TopoShape base;
+        if (UseLegacyBodyPlacement.getValue()) {
+            base = getBaseTopoShape(true);
+            base.move(getLocation().Inverted());
+        }
+        else {
+            base = getBooleanTopoShape(BaseFeature.getValue());
+        }
         TopoShape result = Shape.getShape();
 
         try {
@@ -199,9 +359,7 @@ void Boolean::updatePreviewShape()
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {
-            shapes.push_back(
-                getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
-            );
+            shapes.push_back(getBooleanTopoShape(obj));
         }
 
         TopoShape result;

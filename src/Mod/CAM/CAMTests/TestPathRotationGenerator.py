@@ -23,147 +23,677 @@
 
 import FreeCAD
 import Path
-import Path.Base.Generator.rotation as generator
+import Path.Base.Generator.rotation as orientation
 import CAMTests.PathTestUtils as PathTestUtils
 import numpy as np
+from Machine.models.machine import Machine, RotaryAxis, AxisRole
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestPathRotationGenerator(PathTestUtils.PathTestBase):
-    def test00(self):
-        """Test relAngle function"""
-        v = FreeCAD.Vector(0.5, 0.5, 0.5)
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.x), 45))
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.y), 45))
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.z), 45))
 
-        v = FreeCAD.Vector(-0.5, 0.5, 0.5)
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.x), 135))
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.y), -45))
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.z), 45))
+    def _create_table_table_machine(self):
+        """Create a standard C-A table-table machine for regression testing."""
+        machine = Machine(name="Test CA Machine")
 
-        v = FreeCAD.Vector(-0.5, -0.5, -0.5)
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.x), -135))
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.y), -135))
-        self.assertTrue(np.isclose(generator.relAngle(v, generator.refAxis.z), -135))
+        # Add C axis (rotates about Z)
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C",
+            rotation_vector=FreeCAD.Vector(0, 0, 1),
+            min_limit=-360,
+            max_limit=360,
+            role=AxisRole.TABLE_ROTARY,
+            parent="A",
+            sequence=0,
+        )
 
-    def test10(self):
-        """Test Basic Rotation Generator Return"""
-        v1 = FreeCAD.Vector(0.0, 0.0, 1.0)
-        args = {
-            "normalVector": v1,
-            "aMin": -360,
-            "aMax": 360,
-            "cMin": -360,
-            "cMax": 360,
-            "compound": True,
-        }
+        # Add A axis (rotates about X), the cradle carrying C
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=FreeCAD.Vector(1, 0, 0),
+            min_limit=-120,
+            max_limit=120,
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=1,
+        )
 
-        result = generator.generate(**args)
+        return machine
 
-        self.assertTrue(type(result) is list)
-        self.assertTrue(len(result) == 1)
-        self.assertTrue(type(result[0]) is Path.Command)
+    def _create_head_head_machine(self):
+        """Create a B-C head-head machine."""
+        machine = Machine(name="Test BC Machine")
 
-        command = result[0]
-        self.assertTrue(np.isclose(command.Parameters["A"], 0))
-        self.assertTrue(np.isclose(command.Parameters["C"], 0))
+        # Add B axis (rotates about Y)
+        machine.rotary_axes["B"] = RotaryAxis(
+            name="B",
+            rotation_vector=FreeCAD.Vector(0, 1, 0),
+            min_limit=-90,
+            max_limit=90,
+            role=AxisRole.HEAD_ROTARY,
+            parent="C",
+            sequence=0,
+        )
 
-        args["compound"] = False
-        result = generator.generate(**args)
-        self.assertTrue(len(result) == 2)
+        # Add C axis (rotates about Z), carrying B
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C",
+            rotation_vector=FreeCAD.Vector(0, 0, 1),
+            min_limit=-360,
+            max_limit=360,
+            role=AxisRole.HEAD_ROTARY,
+            parent=None,
+            sequence=1,
+        )
 
-        Path.Log.debug(result)
+        return machine
 
-    def test20(self):
-        """Test non-zero rotation"""
-        v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
-        args = {
-            "normalVector": v1,
-            "aMin": -360,
-            "aMax": 360,
-            "cMin": -360,
-            "cMax": 360,
-            "compound": True,
-        }
+    def _create_mixed_machine(self):
+        """Create a mixed table-head machine."""
+        machine = Machine(name="Test Mixed Machine")
 
-        result = generator.generate(**args)
+        # Add C axis (table rotary about Z)
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C",
+            rotation_vector=FreeCAD.Vector(0, 0, 1),
+            min_limit=-360,
+            max_limit=360,
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
+        )
 
-        command = result[0]
-        Path.Log.debug(command.Parameters)
-        self.assertTrue(np.isclose(command.Parameters["A"], 54.736))
-        self.assertTrue(np.isclose(command.Parameters["C"], 45))
+        # Add B axis (head rotary about Y)
+        machine.rotary_axes["B"] = RotaryAxis(
+            name="B",
+            rotation_vector=FreeCAD.Vector(0, 1, 0),
+            min_limit=-90,
+            max_limit=90,
+            role=AxisRole.HEAD_ROTARY,
+            parent=None,
+            sequence=1,
+        )
 
-        Path.Log.track(result)
+        return machine
 
-    def test30(self):
-        """Test A limits"""
-        v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
+    def _create_single_axis_machine(self):
+        """Create a 3+1 single rotary axis machine."""
+        machine = Machine(name="Test Single Axis Machine")
 
-        args = {"normalVector": v1, "cMin": -360, "cMax": 360, "compound": True}
+        # Add A axis only
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=FreeCAD.Vector(1, 0, 0),
+            min_limit=-360,
+            max_limit=360,
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
+        )
 
-        # Constrain a axis rotation negative
-        args["aMin"] = -90
-        args["aMax"] = 0
+        return machine
 
-        result = generator.generate(**args)
-        Path.Log.debug(result)
+    def test00_identity_orientation(self):
+        """
+        Test solving for identity orientation (Z-up) on table-table machine.
 
-        command = result[0]
-        self.assertTrue(np.isclose(command.Parameters["A"], -54.736))
-        self.assertTrue(np.isclose(command.Parameters["C"], -135))
+        Expected behavior:
+            Should return A=0, C=0 for Z-up orientation.
+        """
+        machine = self._create_table_table_machine()
+        desired_axis = FreeCAD.Vector(0, 0, 1)  # Z-up
 
-        # Constrain a axis rotation positive
-        args["aMin"] = 0
-        args["aMax"] = 90
+        result = orientation.solve_orientation(machine, desired_axis)
 
-        result = generator.generate(**args)
-        Path.Log.debug(result)
+        self.assertTrue(result.success, "Should successfully solve identity orientation")
+        self.assertAlmostEqual(result.angles.get("A", 0), 0, places=3)
+        self.assertAlmostEqual(result.angles.get("C", 0), 0, places=3)
+        self.assertLess(result.error_norm, 1e-6)
 
-        command = result[0]
-        self.assertTrue(np.isclose(command.Parameters["A"], 54.736))
-        self.assertTrue(np.isclose(command.Parameters["C"], 45))
+    def test10_forty_five_degree_tilt(self):
+        """
+        Test solving for 45-degree tilt on table-table machine.
 
-    def test40(self):
-        """Test C limits"""
-        v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
+        Expected behavior:
+            Should find valid A and C angles to achieve 45-degree orientation.
+        """
+        machine = self._create_table_table_machine()
+        # 45-degree tilt in XZ plane
+        desired_axis = FreeCAD.Vector(0.7071, 0, 0.7071).normalize()
 
-        args = {"normalVector": v1, "aMin": -360, "aMax": 360, "compound": True}
+        result = orientation.solve_orientation(machine, desired_axis)
 
-        # Constrain a axis rotation negative
-        args["cMin"] = -180
-        args["cMax"] = 0
+        self.assertTrue(result.success, "Should successfully solve 45-degree tilt")
+        self.assertIn("A", result.angles, "Should return A angle")
+        self.assertIn("C", result.angles, "Should return C angle")
+        self.assertLess(result.error_norm, 1e-6)
 
-        result = generator.generate(**args)
-        Path.Log.debug(result)
+    def test11_tie_does_not_follow_float_noise(self):
+        """
+        Two tool axes of one plane that differ in their last bit get one pose.
 
-        command = result[0]
-        self.assertTrue(np.isclose(command.Parameters["A"], -54.736))
-        self.assertTrue(np.isclose(command.Parameters["C"], -135))
+        Expected behavior:
+            C -90/A -30 and C +90/A +30 reach the same tilt at the same cost.
+            Float noise in the axis must not pick between them.
+        """
+        machine = self._create_table_table_machine()
+        a = FreeCAD.Vector(0.4999999999999999, 0.0, 0.8660254037844388)
+        b = FreeCAD.Vector(0.4999999999999998, 0.0, 0.8660254037844388)
 
-        # Constrain a axis rotation positive
-        args["cMin"] = 0
-        args["cMax"] = 180
+        ra = orientation.solve_orientation(machine, a)
+        rb = orientation.solve_orientation(machine, b)
 
-        result = generator.generate(**args)
-        Path.Log.debug(result)
+        self.assertTrue(ra.success and rb.success)
+        self.assertAlmostEqual(ra.angles["C"], rb.angles["C"], places=6)
+        self.assertAlmostEqual(ra.angles["A"], rb.angles["A"], places=6)
 
-        command = result[0]
-        self.assertTrue(np.isclose(command.Parameters["A"], 54.736))
-        self.assertTrue(np.isclose(command.Parameters["C"], 45))
+    def test12_tie_stays_at_the_current_pose(self):
+        """
+        Of the poses that tie, the one the axes are already at wins.
 
-    def test50(self):
-        """Test handling of no valid solution"""
-        v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
-        args = {
-            "normalVector": v1,
-            "aMin": 0,
-            "aMax": 10,
-            "cMin": 0,
-            "cMax": 10,
-            "compound": True,
-        }
+        Expected behavior:
+            From C 90/A 30 the same tilt keeps C 90/A 30, not C -90/A -30,
+            and from C 0 an unchanged axis stays at C 0, not C -360.
+        """
+        machine = self._create_table_table_machine()
+        tilt = FreeCAD.Vector(0.4999999999999998, 0.0, 0.8660254037844388)
 
-        self.assertRaises(ValueError, generator.generate, **args)
+        result = orientation.solve_orientation(machine, tilt, current_state={"C": 90.0, "A": 30.0})
+
+        self.assertTrue(result.success)
+        self.assertAlmostEqual(result.angles["C"], 90.0, places=6)
+        self.assertAlmostEqual(result.angles["A"], 30.0, places=6)
+
+        first = orientation.solve_orientation(machine, FreeCAD.Vector(0, -1, 1).normalize())
+        again = orientation.solve_orientation(
+            machine, FreeCAD.Vector(0, -1, 1).normalize(), current_state=first.angles
+        )
+
+        self.assertAlmostEqual(again.angles["C"], first.angles["C"], places=6)
+        self.assertAlmostEqual(again.angles["A"], first.angles["A"], places=6)
+
+    def test20_axis_limits_active(self):
+        """
+        Test solving with axis limits that constrain solution.
+
+        Expected behavior:
+            Should fail when desired orientation requires angles outside limits.
+        """
+        machine = self._create_table_table_machine()
+        # Constrain A axis to small range
+        machine.rotary_axes["A"].min_limit = -10
+        machine.rotary_axes["A"].max_limit = 10
+
+        # Request orientation that requires large A angle
+        desired_axis = FreeCAD.Vector(0, 0.7071, 0.7071).normalize()
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertFalse(result.success, "Should fail when limits prevent solution")
+        self.assertNotEqual(result.reason, "", "Should provide failure reason")
+
+    def test30_head_head_machine(self):
+        """
+        Test solving on head-head machine configuration.
+
+        Expected behavior:
+            Should correctly handle head rotary axes (direct tool rotation).
+        """
+        machine = self._create_head_head_machine()
+        desired_axis = FreeCAD.Vector(0.5, 0.5, 0.7071).normalize()
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, "Should successfully solve head-head configuration")
+        self.assertIn("B", result.angles, "Should return B angle")
+        self.assertIn("C", result.angles, "Should return C angle")
+        self.assertLess(result.error_norm, 1e-6)
+
+    def test31_axes_compose_as_mounted(self):
+        """
+        Each axis turns with the axis it is mounted on.
+
+        Expected behavior:
+            A table whose A carries its C is R_A · R_C; one whose C carries an A is R_C · R_A;
+            a head whose C carries its B is R_C · R_B. Two table axes mounted on neither are
+            taken as the tilt carrying the azimuth, and two tilts as the one listed last
+            carrying the other.
+        """
+        angles = {"A": 30.0, "B": 30.0, "C": 60.0}
+        a = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 30)
+        b = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 30)
+        c = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 60)
+
+        def matrix(machine):
+            chain = orientation.build_kinematic_chain(machine)
+            return orientation.compute_rotation_matrix(chain, angles)
+
+        c_on_a = self._create_table_table_machine()
+        self.assertTrue(matrix(c_on_a).isSame(a.multiply(c), 1e-9))
+        a_on_c = self._create_table_table_machine()
+        a_on_c.rotary_axes["A"].parent = "C"
+        a_on_c.rotary_axes["C"].parent = None
+        self.assertTrue(matrix(a_on_c).isSame(c.multiply(a), 1e-9))
+        self.assertTrue(matrix(self._create_head_head_machine()).isSame(c.multiply(b), 1e-9))
+        unmounted = self._create_table_table_machine()
+        unmounted.rotary_axes["C"].parent = None
+        self.assertTrue(matrix(unmounted).isSame(a.multiply(c), 1e-9))
+        tilts = Machine.create_AB_table_config()
+        tilts.rotary_axes["A"].parent = None
+        self.assertTrue(matrix(tilts).isSame(b.multiply(a), 1e-9), "B, listed last, carries A")
+
+    def test32_table_azimuth_carries_tilt(self):
+        """
+        A table whose C carries an A reaches only what A reaches.
+
+        Expected behavior:
+            With C turning about the tool's own axis above A, a plane A cannot tilt to Z is
+            out of reach, though a table whose A carries C reaches it; one A can tilt to Z is
+            solved, the angles turning its axis to Z as R_C · R_A does.
+        """
+        machine = self._create_table_table_machine()
+        machine.rotary_axes["A"].parent = "C"
+        machine.rotary_axes["C"].parent = None
+        aside = FreeCAD.Vector(0.5, 0.5, 0.7071).normalize()
+        self.assertTrue(
+            orientation.solve_orientation(self._create_table_table_machine(), aside).success
+        )
+        self.assertFalse(orientation.solve_orientation(machine, aside).success)
+
+        desired_axis = FreeCAD.Vector(0, 0.5, 0.866).normalize()
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, result.reason)
+        turned = (
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+            .multiply(FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), result.angles["A"]))
+            .multVec(desired_axis)
+        )
+        self.assertLess((turned - FreeCAD.Vector(0, 0, 1)).Length, 1e-6)
+
+    def test33_head_azimuth_carries_tilt(self):
+        """
+        A head whose C carries its B reaches a tilt B alone cannot.
+
+        Expected behavior:
+            A tool tilted toward Y is solved with C swinging B's tilt round, and R_C · R_B
+            points Z along it.
+        """
+        machine = self._create_head_head_machine()
+        desired_axis = FreeCAD.Vector(0, 0.7071, 0.7071).normalize()
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, result.reason)
+        tool = (
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+            .multiply(FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), result.angles["B"]))
+            .multVec(FreeCAD.Vector(0, 0, 1))
+        )
+        self.assertLess((tool - desired_axis).Length, 1e-6)
+
+    def test34_templates_compose_as_before(self):
+        """
+        The factory templates mount their axes as their math always assumed.
+
+        Expected behavior:
+            The A/C table, A carrying C, is R_A · R_C, the B/C head, C carrying B, R_C · R_B
+            and the A/B table, B carrying A, R_B · R_A; a B/C head pointing its tool along -Y
+            picks the one of its two equal poses with the lower C.
+        """
+        angles = {"A": 30.0, "B": 40.0, "C": 60.0}
+        a = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 30)
+        b = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 40)
+        c = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 60)
+        for machine, expected in (
+            (Machine.create_AC_table_config(), a.multiply(c)),
+            (Machine.create_BC_head_config(), c.multiply(b)),
+            (Machine.create_AB_table_config(), b.multiply(a)),
+        ):
+            chain = orientation.build_kinematic_chain(machine)
+            matrix = orientation.compute_rotation_matrix(chain, angles)
+            self.assertTrue(matrix.isSame(expected, 1e-9), machine.name)
+
+        result = orientation.solve_orientation(
+            Machine.create_BC_head_config(), FreeCAD.Vector(0, -1, 0)
+        )
+        self.assertTrue(result.success)
+        self.assertAlmostEqual(result.angles["B"], 90.0, places=6)
+        self.assertAlmostEqual(result.angles["C"], -90.0, places=6)
+
+    def test40_mixed_machine(self):
+        """
+        Test solving on mixed table-head machine.
+
+        Expected behavior:
+            Should correctly handle combination of table and head rotaries.
+        """
+        machine = self._create_mixed_machine()
+        desired_axis = FreeCAD.Vector(0.3, 0.4, 0.866).normalize()
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, "Should successfully solve mixed configuration")
+        self.assertIn("C", result.angles, "Should return C angle (table)")
+        self.assertIn("B", result.angles, "Should return B angle (head)")
+        self.assertLess(result.error_norm, 1e-6)
+
+    def test41_mixed_machine_head_tilts_the_tool(self):
+        """
+        On a table and a head, the table turns the part's axis to where the head points the tool.
+
+        Expected behavior:
+            The head's angle tilts the tool as a head-head machine's would: for a plane tilted
+            30 degrees toward +X, B is +30 by the right-hand rule about Y, and the table's
+            rotation of the axis equals the head's rotation of Z.
+        """
+        machine = self._create_mixed_machine()
+        desired_axis = FreeCAD.Vector(0.5, 0, 0.8660254037844386)
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success)
+        self.assertAlmostEqual(result.angles["B"], 30.0, places=6)
+        self.assertAlmostEqual(result.angles["C"], 0.0, places=6)
+
+        for axis in (
+            FreeCAD.Vector(0.3, 0.4, 0.866).normalize(),
+            FreeCAD.Vector(-0.28, 0.549, 0.788).normalize(),
+            FreeCAD.Vector(0, -1, 0),
+        ):
+            result = orientation.solve_orientation(machine, axis)
+            self.assertTrue(result.success)
+            table = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+            head = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), result.angles["B"])
+            achieved = head.multVec(FreeCAD.Vector(0, 0, 1))
+            self.assertLess((achieved - table.multVec(axis)).Length, 1e-6)
+
+    def test42_mixed_machine_head_limits_are_its_own(self):
+        """
+        A head whose limits are not the same both ways reaches what they allow.
+
+        Expected behavior:
+            A head tilting B -30 to +110 reaches a plane tilted 60 degrees toward +X with B
+            within those limits.
+        """
+        machine = self._create_mixed_machine()
+        machine.rotary_axes["B"].min_limit = -30
+        machine.rotary_axes["B"].max_limit = 110
+
+        result = orientation.solve_orientation(machine, FreeCAD.Vector(0.8660254037844386, 0, 0.5))
+        self.assertTrue(result.success)
+        self.assertGreaterEqual(result.angles["B"], -30)
+        self.assertLessEqual(result.angles["B"], 110)
+        table = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), result.angles["C"])
+        head = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), result.angles["B"])
+        achieved = head.multVec(FreeCAD.Vector(0, 0, 1))
+        self.assertLess(
+            (achieved - table.multVec(FreeCAD.Vector(0.8660254037844386, 0, 0.5))).Length, 1e-6
+        )
+
+    def test50_single_axis_solve(self):
+        """
+        Test solving with single rotary axis (3+1 indexing).
+
+        Expected behavior:
+            Should solve with only one rotary axis.
+        """
+        machine = self._create_single_axis_machine()
+        desired_axis = FreeCAD.Vector(0.866, 0, 0.5).normalize()
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, "Should successfully solve single axis")
+        self.assertIn("A", result.angles, "Should return A angle")
+        self.assertEqual(len(result.angles), 1, "Should only return one axis")
+        self.assertLess(result.error_norm, 1e-6)
+
+    def test60_restrict_axes(self):
+        """
+        Test solving with restricted axis subset.
+
+        Expected behavior:
+            Should only solve for specified axes, ignoring others.
+        """
+        machine = self._create_table_table_machine()
+        desired_axis = FreeCAD.Vector(0, 0, 1)  # Z-up
+
+        # Restrict to only C axis
+        result = orientation.solve_orientation(machine, desired_axis, restrict_axes=["C"])
+
+        self.assertTrue(result.success, "Should successfully solve with restricted axes")
+        self.assertIn("C", result.angles, "Should return C angle")
+        self.assertNotIn("A", result.angles, "Should not return A axis when restricted")
+
+    def test70_current_state_awareness(self):
+        """
+        Test that solver considers current state for minimal motion.
+
+        Expected behavior:
+            When multiple solutions exist, the solver should pick the one
+            closest to the current state. Solving from two different starting
+            states should yield different chosen solutions.
+        """
+        machine = self._create_table_table_machine()
+        desired_axis = FreeCAD.Vector(0.5, 0.5, 0.5).normalize()
+
+        # Solve from two different current states
+        current_state_1 = {"A": 0, "C": 0}
+        current_state_2 = {"A": -50, "C": -130}
+
+        result_1 = orientation.solve_orientation(machine, desired_axis, current_state_1)
+        result_2 = orientation.solve_orientation(machine, desired_axis, current_state_2)
+
+        self.assertTrue(result_1.success, "Should succeed from state 1")
+        self.assertTrue(result_2.success, "Should succeed from state 2")
+
+        # Each result's cost should reflect distance from its own starting state
+        # Verify deltas are populated
+        self.assertIn("A", result_1.deltas, "Should have A delta")
+        self.assertIn("C", result_1.deltas, "Should have C delta")
+
+        # The two solutions should differ (different starting states → different best)
+        angles_differ = (
+            abs(result_1.angles.get("A", 0) - result_2.angles.get("A", 0)) > 1
+            or abs(result_1.angles.get("C", 0) - result_2.angles.get("C", 0)) > 1
+        )
+        self.assertTrue(angles_differ, "Different starting states should yield different solutions")
+
+    def test80_solution_preference_shortest(self):
+        """
+        Test shortest solution preference.
+
+        Expected behavior:
+            Should select solution with minimal total angular travel.
+        """
+        machine = self._create_table_table_machine()
+        desired_axis = FreeCAD.Vector(0.7071, 0, 0.7071).normalize()
+
+        # Set both axes to prefer shortest
+        machine.rotary_axes["A"].solution_preference = "shortest"
+        machine.rotary_axes["C"].solution_preference = "shortest"
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, "Should successfully solve with shortest preference")
+        # Verify solution is within reasonable range
+        for axis_name, angle in result.angles.items():
+            axis = machine.rotary_axes[axis_name]
+            self.assertGreaterEqual(angle, axis.min_limit)
+            self.assertLessEqual(angle, axis.max_limit)
+
+    def test90_allow_flip_enabled(self):
+        """
+        Test flip solutions when allowed.
+
+        Expected behavior:
+            Should consider 180-degree equivalent solutions.
+        """
+        machine = self._create_table_table_machine()
+        desired_axis = FreeCAD.Vector(0.7071, 0, 0.7071).normalize()
+
+        # Enable flip on both axes
+        machine.rotary_axes["A"].allow_flip = True
+        machine.rotary_axes["C"].allow_flip = True
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertTrue(result.success, "Should successfully solve with flip allowed")
+        self.assertLess(result.error_norm, 1e-6)
+
+    def test100_no_rotary_axes(self):
+        """
+        Test behavior when machine has no rotary axes.
+
+        Expected behavior:
+            Should fail gracefully with appropriate error message.
+        """
+        machine = Machine(name="No Rotary Machine")
+        desired_axis = FreeCAD.Vector(0, 0, 1)
+
+        result = orientation.solve_orientation(machine, desired_axis)
+
+        self.assertFalse(result.success, "Should fail when no rotary axes available")
+        self.assertIn("No rotary axes", result.reason)
+
+    def test110_sequential_solves(self):
+        """
+        Test sequential solves to verify minimal-motion selection.
+
+        Expected behavior:
+            Series of solves should prefer minimal motion between solutions.
+        """
+        machine = self._create_table_table_machine()
+
+        # Sequence of desired orientations
+        orientations = [
+            FreeCAD.Vector(0, 0, 1),  # Start with Z-up
+            FreeCAD.Vector(0.7071, 0, 0.7071),  # Tilt in X
+            FreeCAD.Vector(0, 0.7071, 0.7071),  # Tilt in Y
+            FreeCAD.Vector(0, 0, 1),  # Back to Z-up
+        ]
+
+        current_state = {}
+        total_cost = 0
+
+        for i, desired_axis in enumerate(orientations):
+            result = orientation.solve_orientation(machine, desired_axis, current_state)
+
+            self.assertTrue(result.success, f"Sequential solve {i} should succeed")
+
+            # Accumulate total motion cost
+            total_cost += result.cost
+
+            # Update current state for next iteration
+            current_state = result.angles.copy()
+
+        # Verify total cost is reasonable (should be minimal path)
+        self.assertGreater(total_cost, 0, "Should have some motion cost")
+        self.assertLess(total_cost, 1000, "Total cost should be reasonable")
+
+    def _create_ac_table_table_machine(self):
+        """Create an A-C table-table machine where C is mounted on A.
+
+        Topology: A (parent=None, rot about X) → C (parent=A, rot about Z)
+        This matches the user's 'rotator' machine config with limits ±180.
+        """
+        machine = Machine(name="Test AC Machine")
+
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=FreeCAD.Vector(1, 0, 0),
+            min_limit=-180,
+            max_limit=180,
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
+            solution_preference="shortest",
+            allow_flip=True,
+        )
+
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C",
+            rotation_vector=FreeCAD.Vector(0, 0, 1),
+            min_limit=-180,
+            max_limit=180,
+            role=AxisRole.TABLE_ROTARY,
+            parent="A",
+            sequence=1,
+            solution_preference="shortest",
+            allow_flip=True,
+        )
+
+        return machine
+
+    def test120_geometry_rotation_y_workplane(self):
+        """
+        Test that compute_rotation_matrix produces a rotation consistent with
+        the solved angles for workplane Vector(0, 1, 0).
+
+        The geometry rotation R must satisfy R.multVec(workplane) ≈ Z,
+        i.e. it maps the workplane normal into the spindle axis.
+        """
+        machine = self._create_ac_table_table_machine()
+        desired = FreeCAD.Vector(0, 1, 0)
+
+        result = orientation.solve_orientation(machine, desired)
+        self.assertTrue(result.success, f"Should solve for Y workplane: {result.reason}")
+
+        chain = orientation.build_kinematic_chain(machine)
+        rot = orientation.compute_rotation_matrix(chain, result.angles)
+        # Table rotaries: R · desired = Z, so use direct rotation
+        achieved = rot.multVec(desired)
+
+        self.assertAlmostEqual(
+            achieved.x, 0.0, places=6, msg=f"X component should be 0, got {achieved.x}"
+        )
+        self.assertAlmostEqual(
+            achieved.y, 0.0, places=6, msg=f"Y component should be 0, got {achieved.y}"
+        )
+        self.assertAlmostEqual(
+            achieved.z, 1.0, places=6, msg=f"Z component should be 1, got {achieved.z}"
+        )
+
+    def test130_geometry_rotation_neg_x_workplane(self):
+        """
+        Test geometry rotation for workplane Vector(-1, 0, 0).
+
+        R.multVec((-1,0,0)) should ≈ (0,0,1).
+        """
+        machine = self._create_ac_table_table_machine()
+        desired = FreeCAD.Vector(-1, 0, 0)
+
+        result = orientation.solve_orientation(machine, desired)
+        self.assertTrue(result.success, f"Should solve for -X workplane: {result.reason}")
+
+        chain = orientation.build_kinematic_chain(machine)
+        rot = orientation.compute_rotation_matrix(chain, result.angles)
+        # Table rotaries: R · desired = Z, so use direct rotation
+        achieved = rot.multVec(desired)
+
+        self.assertAlmostEqual(achieved.x, 0.0, places=6)
+        self.assertAlmostEqual(achieved.y, 0.0, places=6)
+        self.assertAlmostEqual(achieved.z, 1.0, places=6)
+
+    def test140_geometry_rotation_diagonal_workplane(self):
+        """
+        Test geometry rotation for an arbitrary diagonal workplane.
+
+        R.multVec(desired) should ≈ (0,0,1).
+        """
+        machine = self._create_ac_table_table_machine()
+        desired = FreeCAD.Vector(0.5, 0.5, 0.5).normalize()
+
+        result = orientation.solve_orientation(machine, desired)
+        self.assertTrue(result.success, f"Should solve for diagonal workplane: {result.reason}")
+
+        chain = orientation.build_kinematic_chain(machine)
+        rot = orientation.compute_rotation_matrix(chain, result.angles)
+        # Table rotaries: R · desired = Z, so use direct rotation
+        achieved = rot.multVec(desired)
+
+        self.assertAlmostEqual(achieved.x, 0.0, places=5)
+        self.assertAlmostEqual(achieved.y, 0.0, places=5)
+        self.assertAlmostEqual(achieved.z, 1.0, places=5)

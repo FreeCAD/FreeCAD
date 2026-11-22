@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 Furgo                                              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import os
 import tempfile
@@ -36,7 +33,7 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         """Test: creating a new Site adds the view properties and sets defaults."""
         site = Arch.makeSite()
         self.assertIsNotNone(site, "makeSite() returned None")
-        FreeCAD.ActiveDocument.recompute()
+        self.document.recompute()
         # Wait briefly so the document loader can attach the ViewObject and let the view provider's
         # queued restore/migration callbacks (setProperties, migration, restoreConstraints) run on
         # the GUI event loop before we inspect properties.
@@ -71,14 +68,14 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         """Test: save document and reopen; view properties must be present and constrained."""
         self.printTestMessage("Save and reopen new Site...")
         site = Arch.makeSite()
-        FreeCAD.ActiveDocument.recompute()
+        self.document.recompute()
 
         # Save to a temporary file
         tf = tempfile.NamedTemporaryFile(delete=False, suffix=".FCStd")
         tf.close()
         path = tf.name
         try:
-            FreeCAD.ActiveDocument.saveAs(path)
+            self.document.saveCopy(path)
 
             # Open the saved document (this returns a new Document instance)
             reopened = FreeCAD.openDocument(path)

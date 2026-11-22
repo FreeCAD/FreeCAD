@@ -147,7 +147,7 @@ def generate(
     -----
     Ring count formula::
 
-        n_rings = int(math.ceil((x_max - x_min) / axial_stepover)) + 1
+        n_rings = math.ceil((x_max - x_min) / axial_stepover) + 1
 
     The +1 ensures both endpoints (x_min and x_max) get a ring; rings
     are evenly distributed between the two via interpolation by `t` in
@@ -179,7 +179,7 @@ def generate(
                 grid[i][j] = max_r
 
     # Ring count: include both endpoints.
-    n_rings = int(math.ceil((x_max - x_min) / axial_stepover)) + 1
+    n_rings = Path.Geom.ceil((x_max - x_min) / axial_stepover) + 1
     if n_rings < 2:
         n_rings = 2
 
@@ -187,7 +187,7 @@ def generate(
     direction = 1.0 if cut_mode == "Climb" else -1.0
     theta_span = theta_end - theta_start  # typically 2*pi
     # Number of angular sub-steps within a ring.
-    n_steps_per_ring = max(1, int(math.ceil(abs(theta_span) / angular_resolution)))
+    n_steps_per_ring = max(1, Path.Geom.ceil(abs(theta_span) / angular_resolution))
 
     commands = []
     feed_clamp = _FeedClamp()

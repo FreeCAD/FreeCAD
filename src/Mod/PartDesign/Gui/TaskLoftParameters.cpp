@@ -24,6 +24,7 @@
 
 
 #include <QAction>
+#include <QEvent>
 
 
 #include <App/Application.h>
@@ -46,13 +47,34 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
+namespace
+{
+bool isSubtractiveLoft(ViewProviderLoft* view)
+{
+    auto* loft = view->getObject<PartDesign::Loft>();
+    return loft->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
+}
+
+std::string loftTaskIconName(ViewProviderLoft* view)
+{
+    return isSubtractiveLoft(view) ? "PartDesign_SubtractiveLoft" : "PartDesign_AdditiveLoft";
+}
+
+QString loftTaskTitle(ViewProviderLoft* view)
+{
+    return isSubtractiveLoft(view) ? TaskLoftParameters::tr("Subtractive Loft Parameters")
+                                   : TaskLoftParameters::tr("Additive Loft Parameters");
+}
+}  // namespace
+
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft Parameters"))
+    : TaskSketchBasedParameters(LoftView, parent, loftTaskIconName(LoftView), loftTaskTitle(LoftView))
     , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     QMetaObject::connectSlotsByName(this);
 
     // clang-format off
@@ -320,8 +342,13 @@ void TaskLoftParameters::exitSelectionMode()
     this->blockSelection(true);
 }
 
-void TaskLoftParameters::changeEvent(QEvent* /*e*/)
-{}
+void TaskLoftParameters::changeEvent(QEvent* e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(proxy);
+    }
+}
 
 void TaskLoftParameters::onClosed(bool val)
 {

@@ -96,7 +96,7 @@
           <string>The smallest mesh size in the refinement, marked green in the mesh preview.</string>
          </property>
          <property name="text">
-          <string>Min:</string>
+          <string>Min</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -138,7 +138,7 @@
           <string>The largest mesh size in the refinement, marked red in the mesh preview.</string>
          </property>
          <property name="text">
-          <string>Max:</string>
+          <string>Max</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -194,7 +194,7 @@
    <item>
     <widget class="QToolButton" name="Preferences">
      <property name="text">
-      <string>...</string>
+      <string>…</string>
      </property>
     </widget>
    </item>

@@ -29,7 +29,6 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepGProp.hxx>
 #include <BRepLProp_CLProps.hxx>
-#include <BRepLProp_CurveTool.hxx>
 #include <GProp_GProps.hxx>
 #include <GProp_PrincipalProps.hxx>
 #include <Geom_Circle.hxx>
@@ -62,6 +61,7 @@
 #include <GCPnts_TangentialDeflection.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
+#include <TColStd_HArray1OfReal.hxx>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -161,7 +161,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         TopoShape* shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
         if (shape && !shape->getShape().IsNull() && shape->getShape().ShapeType() == TopAbs_EDGE) {
-            this->getTopoShapePtr()->setShape(shape->getShape());
+            this->getTopoShapePtr()->setShape((*shape));
             return 0;
         }
         else {
@@ -214,8 +214,8 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject* args) const
     BRepAdaptor_Curve adapt(e);
 
     // transform value of [0,Length] to [First,Last]
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
+    double first = adapt.FirstParameter();
+    double last = adapt.LastParameter();
     if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
         double length = GCPnts_AbscissaPoint::Length(adapt, t);
 

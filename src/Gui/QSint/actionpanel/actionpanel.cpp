@@ -55,7 +55,7 @@ void ActionPanel::removeWidget(QWidget *w)
     if (w) layout()->removeWidget(w);
 }
 
-void ActionPanel::addStretch(int /*s*/)
+void ActionPanel::addStretch()
 {
     if (!mySpacer) {
         mySpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -70,27 +70,6 @@ void ActionPanel::removeStretch()
         delete mySpacer;
         mySpacer = nullptr;
     }
-}
-
-ActionGroup *ActionPanel::createGroup()
-{
-    auto *group = new ActionGroup(this);
-    addWidget(group);
-    return group;
-}
-
-ActionGroup *ActionPanel::createGroup(const QString &title, bool expandable)
-{
-    auto *group = new ActionGroup(title, expandable, this);
-    addWidget(group);
-    return group;
-}
-
-ActionGroup *ActionPanel::createGroup(const QPixmap &icon, const QString &title, bool expandable)
-{
-    auto *group = new ActionGroup(icon, title, expandable, this);
-    addWidget(group);
-    return group;
 }
 
 } // namespace QSint

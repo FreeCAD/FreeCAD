@@ -23,6 +23,7 @@
 #define APP_MAINTHREADSIGNAL_H
 
 #include <Base/Interpreter.h>
+#include <FCGlobal.h>
 #include <fastsignals/signal.h>
 #include <functional>
 #include <memory>
@@ -42,7 +43,7 @@ namespace App
 // may observe while recompute can run on a worker thread. Raw
 // App::DocumentObject signals intentionally remain plain fastsignals with
 // same-thread semantics.
-class MainThreadSignalConfig
+class AppExport MainThreadSignalConfig
 {
 public:
     using IsMainThreadFn = bool (*)();  // true iff currently on GUI/main thread
@@ -77,16 +78,8 @@ public:
     }
 
 private:
-    static IsMainThreadFn& isMainThreadSlot()
-    {
-        static IsMainThreadFn fn = nullptr;
-        return fn;
-    }
-    static InvokeFn& invokeSlot()
-    {
-        static InvokeFn fn = nullptr;
-        return fn;
-    }
+    static IsMainThreadFn& isMainThreadSlot();
+    static InvokeFn& invokeSlot();
 };
 
 namespace detail

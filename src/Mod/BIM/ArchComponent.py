@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
@@ -64,6 +61,18 @@ else:
         return txt
 
     # \endcond
+
+
+def _make_projected_horizontal_area_face(projected_faces):
+    """Build one transient XY face from projected coplanar analysis faces."""
+
+    if not projected_faces:
+        return None
+
+    fused_face = projected_faces[0].copy(noElementMap=True)
+    for face in projected_faces[1:]:
+        fused_face = fused_face.fuse(face, noElementMap=True)
+    return fused_face.removeSplitter()
 
 
 def addToComponent(compobject, addobject, prop):
@@ -494,30 +503,33 @@ class Component(ArchIFC.IfcProduct):
             List of child objects set to move with their host.
         """
 
-        ilist = obj.Additions + obj.Subtractions
+        child_list = obj.Additions + obj.Subtractions
         for o in obj.InList:
             if hasattr(o, "Hosts"):
                 if obj in o.Hosts:
-                    ilist.append(o)
+                    child_list.append(o)
             elif hasattr(o, "Host"):
                 if obj == o.Host:
-                    ilist.append(o)
+                    child_list.append(o)
 
         # Stairs railings should be considered as children
         # (RailingLeft and RailingRight property)
         if hasattr(obj, "RailingLeft") and obj.RailingLeft:
-            ilist.append(obj.RailingLeft)
+            child_list.append(obj.RailingLeft)
         if hasattr(obj, "RailingRight") and obj.RailingRight:
-            ilist.append(obj.RailingRight)
+            child_list.append(obj.RailingRight)
 
-        ilist2 = []
-        for o in ilist:
+        child_set = set()
+        for o in child_list:
             if hasattr(o, "MoveWithHost"):
                 if o.MoveWithHost:
-                    ilist2.append(o)
+                    if getattr(o, "MoveBase", False) and self.ensureBase(o):
+                        child_set.add(o.Base)
+                    else:
+                        child_set.add(o)
             else:
-                ilist2.append(o)
-        return ilist2
+                child_set.add(o)
+        return list(child_set)
 
     def getParentHeight(self, obj):
         """Get a height value from hosts.
@@ -1326,6 +1338,10 @@ class Component(ArchIFC.IfcProduct):
         if self.LinkOverrideProperties:
             ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
 
+        # Add features in the SketchArch External Add-on, if present
+        if hasattr(self, "addSketchArchFeatures"):
+            self.addSketchArchFeatures(obj, linkObj)
+
         # Execute features in the SketchArch External Add-on, if present
         if hasattr(self, "executeSketchArchFeatures"):
             self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
@@ -1482,9 +1498,10 @@ class AreaCalculator:
     def _computeHorizontalAreaAndPerimeter(self, horizontalAreaFaces):
         """Compute the horizontal area and perimeter length.
 
-        Projects the given faces onto the XY plane, fuses them, and calculates:
-        - The total horizontal area.
-        - The perimeter length of the fused horizontal area.
+        Projects the given faces onto the XY plane, combines the projected
+        areas into one transient union shape, and calculates:
+        - the total horizontal area
+        - the perimeter length of the combined horizontal outline
 
         Parameters
         ----------
@@ -1522,12 +1539,20 @@ class AreaCalculator:
                         self.resetAreas()
                         return
                     wire = TechDraw.findShapeOutline(face, 1, direction)
-                    projectedFace = Part.makeFace([wire], "Part::FaceMakerSimple")
+                    projectedFace = Part.makeFace(
+                        [wire],
+                        "Part::FaceMakerSimple",
+                        noElementMap=True,
+                    )
                 else:
                     edges = TechDraw.project(face, direction)[0].Edges
                     wires = DraftGeomUtils.findWires(edges)
                     # Using "Part::FaceMakerCheese" as the face can have holes
-                    projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                    projectedFace = Part.makeFace(
+                        wires,
+                        "Part::FaceMakerCheese",
+                        noElementMap=True,
+                    )
                 # Part.show(projectedFace)
                 projectedFaces.append(projectedFace)
             except Part.OCCError:
@@ -1547,13 +1572,22 @@ class AreaCalculator:
         else:
             param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
 
+        fusedFace = None
         if projectedFaces:
-            fusedFace = projectedFaces.pop()
-            for face in projectedFaces:
-                fusedFace = fusedFace.fuse(face)
-            fusedFace = fusedFace.removeSplitter()
-            # Part.show(fusedFace)
+            try:
+                fusedFace = _make_projected_horizontal_area_face(projectedFaces)
+            except Part.OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        f"Error computing areas for {self.obj.Label}: unable to combine "
+                        "projected horizontal faces. Area values will be reset to 0.\n",
+                    )
+                )
+                self.resetAreas()
+                return
 
+        if fusedFace:
             if self.obj.HorizontalArea.Value != fusedFace.Area:
                 self.obj.HorizontalArea = fusedFace.Area
 
@@ -1925,7 +1959,7 @@ class ViewProviderComponent:
         ----------
         vobj: <Gui.ViewProviderDocumentObject>
             The component's view provider object.
-        menu: <PySide2.QtWidgets.QMenu>
+        menu: <PySide6.QtWidgets.QMenu>
             The context menu already assembled prior to this method being
             called.
         """
@@ -2099,15 +2133,16 @@ class SelectionTaskPanel:
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Select a base object", None))
 
     def getStandardButtons(self):
-        """Adds the cancel button."""
-        return QtGui.QDialogButtonBox.Cancel
+        """Adds the close button."""
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
-        """The method run when the user selects the cancel button."""
+        """The method run when the user selects the close button."""
 
         if hasattr(FreeCAD, "ArchObserver"):
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             del FreeCAD.ArchObserver
+        FreeCADGui.HintManager.hide()
         return True
 
 
@@ -2254,7 +2289,7 @@ class ComponentTaskPanel:
 
         Parameters
         ----------
-        wid: <PySide2.QtWidgets.QTreeWidgetItem>
+        wid: <PySide6.QtWidgets.QTreeWidgetItem>
             Qt object the user has selected in the tree widget.
         """
 
@@ -2405,7 +2440,7 @@ class ComponentTaskPanel:
 
         Parameters
         ----------
-        wid: <PySide2.QtWidgets.QTreeWidgetItem>
+        wid: <PySide6.QtWidgets.QTreeWidgetItem>
             Qt object the user has selected in the tree widget.
         """
 
@@ -2473,7 +2508,7 @@ class ComponentTaskPanel:
         ]
         self.psetdefs = {}
         psetspath = os.path.join(
-            FreeCAD.getResourceDir(), "Mod", "Arch", "Presets", "pset_definitions.csv"
+            FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
         )
         if os.path.exists(psetspath):
             with open(psetspath, "r") as csvfile:
@@ -2514,7 +2549,7 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems(
             [
                 QtGui.QApplication.translate("Arch", "Add property set", None),
-                QtGui.QApplication.translate("Arch", "New...", None),
+                QtGui.QApplication.translate("Arch", "New…", None),
             ]
             + self.psetkeys
         )
@@ -2871,7 +2906,7 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
             if widget:
                 tooltip = target_obj.getDocumentationOfProperty(prop_name)
                 if tooltip:
-                    widget.setToolTip(tooltip)
+                    widget.setToolTip(translate("App::Property", tooltip))
                 layout.addRow(label_text, widget)
                 self.property_widgets[prop_name] = {
                     "widget": widget,
@@ -2933,7 +2968,7 @@ if FreeCAD.GuiUp:
 
         Parameters
         ----------
-        parent: <PySide2.QtWidgets.QWidget>
+        parent: <PySide6.QtWidgets.QWidget>
             Unclear.
         dialog: <ArchComponent.ComponentTaskPanel>
             The dialog box this delegate was created in.
@@ -2959,16 +2994,16 @@ if FreeCAD.GuiUp:
 
             Parameters
             ----------
-            parent: <pyside2.qtwidgets.qwidget>
+            parent: <PySide6.qtwidgets.qwidget>
                 The table cell that is being edited.
             option:
                 Unused?
-            index: <PySide2.QtCore.QModelIndex>
+            index: <PySide6.QtCore.QModelIndex>
                 The index object of the table of the IFC editor.
 
             Returns
             -------
-            <pyside2.qtwidgets.qwidget>
+            <PySide6.qtwidgets.qwidget>
                 The editor widget this method has created.
             """
 
@@ -3003,9 +3038,9 @@ if FreeCAD.GuiUp:
 
             Parameters
             ----------
-            editor: <pyside2.qtwidgets.qwidget>
+            editor: <PySide6.qtwidgets.qwidget>
                 The editor widget.
-            index: <PySide2.QtCore.QModelIndex>
+            index: <PySide6.QtCore.QModelIndex>
                 The index object of the table, of the IFC editor
             """
 
@@ -3045,11 +3080,11 @@ if FreeCAD.GuiUp:
 
             Parameters
             ----------
-            editor: <pyside2.qtwidgets.qwidget>
+            editor: <PySide6.qtwidgets.qwidget>
                 The editor widget.
             model:
                 The table object of the IFC editor.
-            index: <PySide2.QtCore.QModelIndex>
+            index: <PySide6.QtCore.QModelIndex>
                 The index object of the table, of the IFC editor
             """
 

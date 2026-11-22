@@ -214,7 +214,7 @@ The smallest value is 0.</string>
             <item row="0" column="0">
              <widget class="QLabel" name="labelFineness">
               <property name="text">
-               <string>Fineness:</string>
+               <string>Fineness</string>
               </property>
              </widget>
             </item>

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
-#
-# Copyright (c) 2019 Daniel Furtlehner (furti)
-# Copyright (c) 2025 The FreeCAD Project
-#
+# SPDX-FileCopyrightText: 2019 Daniel Furtlehner
+# SPDX-FileCopyrightText: 2025 The FreeCAD Project
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # This file is a derivative work of the sql_parser.py file from the
 # FreeCAD-Reporting workbench (https://github.com/furti/FreeCAD-Reporting).
 # As per the terms of the original MIT license, this derivative work is also
@@ -2308,7 +2308,7 @@ class ReportStatement:
 
         if error == "INCOMPLETE":
             self._validation_status = "INCOMPLETE"
-            self._validation_message = translate("Arch", "Typing...")
+            self._validation_message = translate("Arch", "Typing…")
             self._validation_count = -1
         elif error:
             self._validation_status = "ERROR"

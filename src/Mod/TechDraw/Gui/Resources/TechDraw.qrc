@@ -19,6 +19,7 @@
         <file>icons/actions/TechDraw_DraftView.svg</file>
         <file>icons/actions/TechDraw_ExportPageDXF.svg</file>
         <file>icons/actions/TechDraw_ExportPageSVG.svg</file>
+        <file>icons/actions/TechDraw_ExportPagePDF.svg</file>
         <file>icons/actions/TechDraw_FaceCenterLine.svg</file>
         <file>icons/actions/TechDraw_FaceDecor.svg</file>
         <file>icons/actions/TechDraw_GeometricHatch.svg</file>

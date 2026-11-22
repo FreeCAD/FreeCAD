@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 /// Qt Include Files
@@ -60,7 +57,7 @@ using namespace SketcherGui;
 
 bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName)
 {
-    if (constraintName != Base::Tools::getIdentifier(constraintName)) {
+    if (!constraintName.empty() && constraintName != Base::Tools::getIdentifier(constraintName)) {
         Gui::NotifyUserError(
             sketch,
             QT_TRANSLATE_NOOP("Notifications", "Value Error"),
@@ -135,7 +132,7 @@ int EditDatumDialog::exec(bool atCursor)
             datum = Base::toDegrees<double>(datum);
             dlg.setWindowTitle(tr("Insert Angle"));
             init_val.setUnit(Base::Unit::Angle);
-            ui_ins_datum->label->setText(tr("Angle:"));
+            ui_ins_datum->label->setText(tr("Angle"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherAngle")
             );
@@ -143,7 +140,7 @@ int EditDatumDialog::exec(bool atCursor)
         else if (Constr->Type == Sketcher::Radius) {
             dlg.setWindowTitle(tr("Insert Radius"));
             init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum->label->setText(tr("Radius:"));
+            ui_ins_datum->label->setText(tr("Radius"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
@@ -152,7 +149,7 @@ int EditDatumDialog::exec(bool atCursor)
         else if (Constr->Type == Sketcher::Diameter) {
             dlg.setWindowTitle(tr("Insert Diameter"));
             init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum->label->setText(tr("Diameter:"));
+            ui_ins_datum->label->setText(tr("Diameter"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
@@ -160,7 +157,7 @@ int EditDatumDialog::exec(bool atCursor)
         }
         else if (Constr->Type == Sketcher::Weight) {
             dlg.setWindowTitle(tr("Insert Weight"));
-            ui_ins_datum->label->setText(tr("Weight:"));
+            ui_ins_datum->label->setText(tr("Weight"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherWeight")
             );
@@ -176,7 +173,7 @@ int EditDatumDialog::exec(bool atCursor)
         else {
             dlg.setWindowTitle(tr("Insert Length"));
             init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum->label->setText(tr("Length:"));
+            ui_ins_datum->label->setText(tr("Length"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
@@ -292,7 +289,7 @@ void EditDatumDialog::accepted()
 
                     Gui::cmdAppObjectArgs(
                         sketch,
-                        "setDatum(%i,App.Units.Quantity('%f %s'))",
+                        "setDatum(%i,App.Units.Quantity('%.8g %s'))",
                         ConstrNbr,
                         newDatum,
                         unitString
@@ -303,11 +300,8 @@ void EditDatumDialog::accepted()
             std::string constraintName = ui_ins_datum->name->text().trimmed().toStdString();
             std::string currConstraintName = sketch->Constraints[ConstrNbr]->Name;
 
-            if (constraintName != currConstraintName) {
-                if (!SketcherGui::checkConstraintName(sketch, constraintName)) {
-                    constraintName = currConstraintName;
-                }
-
+            if (constraintName != currConstraintName
+                && SketcherGui::checkConstraintName(sketch, constraintName)) {
                 Gui::cmdAppObjectArgs(
                     sketch,
                     "renameConstraint(%d, u'%s')",
@@ -508,7 +502,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
             ConstrNbr = sketch->getSingleScaleDefiningConstraint();
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception performing autoscale: %s\n", e.what());
+            Base::Console().error("Exception performing autoscale: {}\n", e.what());
         }
     }
 }

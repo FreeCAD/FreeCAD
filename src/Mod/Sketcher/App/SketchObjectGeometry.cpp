@@ -1,32 +1,30 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <cmath>
 
 #include <BRep_Tool.hxx>
 #include <Geom_TrimmedCurve.hxx>
+#include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
@@ -427,24 +425,30 @@ int SketchObject::toggleConstruction(int GeoId)
     return 0;
 }
 
+// clang-format on
 int SketchObject::setConstruction(int GeoId, bool on)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-   Part::PropertyGeometryList *prop;
+    Part::PropertyGeometryList* prop;
     int idx;
     if (GeoId >= 0) {
         prop = &Geometry;
-        if (GeoId < Geometry.getSize())
+        if (GeoId < Geometry.getSize()) {
             idx = GeoId;
-        else
+        }
+        else {
             return -1;
-    }else if (GeoId <= GeoEnum::RefExt && -GeoId-1 < ExternalGeo.getSize()) {
+        }
+    }
+    else if (GeoId <= GeoEnum::RefExt && -GeoId - 1 < ExternalGeo.getSize()) {
         prop = &ExternalGeo;
-        idx = -GeoId-1;
-    }else
+        idx = -GeoId - 1;
+    }
+    else {
         return -1;
+    }
 
     // While it may seem that there is not a need to trigger an update at this time, because the
     // solver has its own copy of the geometry, and updateColors of the viewprovider may be
@@ -452,17 +456,19 @@ int SketchObject::setConstruction(int GeoId, bool on)
     // the accumulative of actions it is judged that it is worth to trigger an update here.
 
     std::unique_ptr<Part::Geometry> geo(prop->getValues()[idx]->clone());
-    if(prop == &Geometry)
+    if (prop == &Geometry) {
         GeometryFacade::setConstruction(geo.get(), on);
+    }
     else {
         auto egf = ExternalGeometryFacade::getFacade(geo.get());
-        egf->setFlag(ExternalGeometryExtension::Defining, on);
+        egf->setFlag(ExternalGeometryExtension::Defining, !on);
     }
 
-    prop->set1Value(idx,std::move(geo));
+    prop->set1Value(idx, std::move(geo));
     solverNeedsUpdate = true;
     return 0;
 }
+// clang-format off
 
 template <>
 int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int GeoId)
@@ -1102,6 +1108,84 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         return -1;
 }
 
+namespace
+{
+bool isArcOfSameConic(const Part::Geometry* first, const Part::Geometry* second)
+{
+    if (first->getTypeId() != second->getTypeId() || !first->isDerivedFrom<Part::GeomArcOfConic>()) {
+        return false;
+    }
+
+    const double tolerance = Precision::Confusion();
+    const auto* firstArc = static_cast<const Part::GeomArcOfConic*>(first);
+    const auto* secondArc = static_cast<const Part::GeomArcOfConic*>(second);
+    if (!firstArc->getCenter().IsEqual(secondArc->getCenter(), tolerance)
+        || !firstArc->getXAxisDir().IsEqual(secondArc->getXAxisDir(), tolerance)) {
+        return false;
+    }
+
+    auto isClose = [tolerance](double firstValue, double secondValue) {
+        return std::abs(firstValue - secondValue) < tolerance;
+    };
+    auto haveSameRadii = [&isClose](const auto* firstConic, const auto* secondConic) {
+        return isClose(firstConic->getMajorRadius(), secondConic->getMajorRadius())
+            && isClose(firstConic->getMinorRadius(), secondConic->getMinorRadius());
+    };
+
+    if (first->is<Part::GeomArcOfEllipse>()) {
+        return haveSameRadii(
+            static_cast<const Part::GeomArcOfEllipse*>(first),
+            static_cast<const Part::GeomArcOfEllipse*>(second)
+        );
+    }
+    if (first->is<Part::GeomArcOfHyperbola>()) {
+        return haveSameRadii(
+            static_cast<const Part::GeomArcOfHyperbola*>(first),
+            static_cast<const Part::GeomArcOfHyperbola*>(second)
+        );
+    }
+    if (first->is<Part::GeomArcOfParabola>()) {
+        return isClose(
+            static_cast<const Part::GeomArcOfParabola*>(first)->getFocal(),
+            static_cast<const Part::GeomArcOfParabola*>(second)->getFocal()
+        );
+    }
+    return false;
+}
+}  // namespace
+
+int SketchObject::findInternalAlignmentSibling(int GeoId) const
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    if (!geo) {
+        return GeoEnum::GeoUndef;
+    }
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (const auto& constr : vals) {
+        if (constr->Type != Sketcher::Coincident || constr->FirstPos != PointPos::mid
+            || constr->SecondPos != PointPos::mid) {
+            continue;
+        }
+        int candidate = constr->First == GeoId ? constr->Second
+            : constr->Second == GeoId          ? constr->First
+                                               : GeoEnum::GeoUndef;
+        const Part::Geometry* cg = candidate >= 0 ? getGeometry(candidate) : nullptr;
+        if (!cg || !isArcOfSameConic(geo, cg)) {
+            continue;
+        }
+        // A conic that already owns axes/foci cannot take over another set.
+        bool ownsInternalGeometry = std::ranges::any_of(vals, [candidate](const auto* c) {
+            return c->Type == Sketcher::InternalAlignment && c->Second == candidate;
+        });
+        if (!ownsInternalGeometry) {
+            return candidate;
+        }
+    }
+    return GeoEnum::GeoUndef;
+}
+
 int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid)
 {
     int majorelementindex = -1;
@@ -1154,19 +1238,41 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
             focus2constraints++;
     }
 
+    // If a center-coincident sibling arc exists (created by a case-2 trim), transfer
+    // InternalAlignment to it instead of deleting the internal geometry.
+    if (delgeoid) {
+        int siblingGeoId = findInternalAlignmentSibling(GeoId);
+        if (siblingGeoId != GeoEnum::GeoUndef) {
+            std::vector<Constraint*> transferred;
+            for (const auto& constr : vals)
+                if (constr->Type == Sketcher::InternalAlignment && constr->Second == GeoId) {
+                    auto* c = constr->copy();
+                    c->Second = siblingGeoId;
+                    transferred.push_back(c);
+                }
+            addConstraints(transferred);
+            for (auto* c : transferred)
+                delete c;
+            delGeometry(GeoId, DeleteOption::UpdateGeometry);
+            return 1;
+        }
+    }
+
     std::vector<int> delgeometries;
 
-    // those with less than 2 constraints must be removed
-    if (focus2constraints < 2)
+    // those with less than 2 constraints must be removed;
+    // when deleting the parent geometry (delgeoid=true), force-remove all internal elements
+    // regardless of constraint count (e.g. Coincident constraints from exposeInternalGeometry)
+    if (focus2constraints < 2 || (delgeoid && focus2elementindex >= 0))
         delgeometries.push_back(focus2elementindex);
 
-    if (focus1constraints < 2)
+    if (focus1constraints < 2 || (delgeoid && focus1elementindex >= 0))
         delgeometries.push_back(focus1elementindex);
 
-    if (minorconstraints < 2)
+    if (minorconstraints < 2 || (delgeoid && minorelementindex >= 0))
         delgeometries.push_back(minorelementindex);
 
-    if (majorconstraints < 2)
+    if (majorconstraints < 2 || (delgeoid && majorelementindex >= 0))
         delgeometries.push_back(majorelementindex);
 
     if (delgeoid)

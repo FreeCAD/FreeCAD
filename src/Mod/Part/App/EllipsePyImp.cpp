@@ -24,6 +24,7 @@
 
 #include <GC_MakeEllipse.hxx>
 #include <Geom_Ellipse.hxx>
+#include <gp.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -119,7 +120,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
             &minor
         )) {
         Base::Vector3d c = static_cast<Base::VectorPy*>(pV)->value();
-        GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x, c.y, c.z), gp_Dir(0.0, 0.0, 1.0)), major, minor);
+        GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x, c.y, c.z), gp::DZ()), major, minor);
         if (!me.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;

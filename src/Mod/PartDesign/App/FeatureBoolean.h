@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <fastsignals/signal.h>
+
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
@@ -46,6 +48,11 @@ public:
 
     /// The type of the boolean operation
     App::PropertyEnumeration Type;
+    /**
+     * Compatibility property to preserve the historic transformed-body Boolean behavior
+     * in restored documents. New Boolean features use Body-local linked geometry.
+     */
+    App::PropertyBool UseLegacyBodyPlacement;
 
     /** @name methods override feature */
     //@{
@@ -53,6 +60,12 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     void updatePreviewShape() override;
     short mustExecute() const override;
+    std::vector<App::DocumentObject*> addObject(App::DocumentObject* object) override;
+    std::vector<App::DocumentObject*> addObjects(std::vector<App::DocumentObject*> objects) override;
+    std::vector<App::DocumentObject*> setObjects(std::vector<App::DocumentObject*> objects) override;
+    std::vector<App::DocumentObject*> removeObject(App::DocumentObject* object) override;
+    std::vector<App::DocumentObject*> removeObjects(std::vector<App::DocumentObject*> objects) override;
+    bool hasObject(const App::DocumentObject* object, bool recursive = false) const override;
     /// returns the type name of the view provider
     const char* getViewProviderName() const override
     {
@@ -70,6 +83,11 @@ protected:
 
 
 private:
+    void onSettingDocument() override;
+    void slotChangedObject(const App::DocumentObject& object, const App::Property& prop);
+    Part::TopoShape getBooleanTopoShape(const App::DocumentObject* object) const;
+
+    fastsignals::scoped_connection connection;
     static const char* TypeEnums[];
 };
 

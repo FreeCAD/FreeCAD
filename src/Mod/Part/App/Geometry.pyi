@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
 from App.Extension import Extension
 from Base.Vector import Vector
 from Base.Matrix import Matrix
-from typing import Final, List, Optional
+from Base.Placement import Placement
+from typing import Final, List, Union
 
 @export(
     Include="Mod/Part/App/Geometry.h",
@@ -25,49 +24,43 @@ class Geometry(Persistence):
     Tag: Final[str]
     """Gives the tag of the geometry as string."""
 
-    def mirror(self, geometry: "Geometry", /) -> None:
+    def mirror(self, point: Vector, axis: Vector = ..., /) -> None:
         """
-        Performs the symmetrical transformation of this geometric object
+        Performs the symmetrical transformation of this geometric object, either
+        about a point or about a plane defined by a point and an axis.
         """
-        ...
 
-    def rotate(self, angle: float, axis: Vector, /) -> None:
+    def rotate(self, placement: Placement, /) -> None:
         """
-        Rotates this geometric object at angle Ang (in radians) about axis
+        Rotates this geometric object by the given placement
         """
-        ...
 
-    def scale(self, center: Vector, factor: float, /) -> None:
+    def scale(self, center: Union[Vector, tuple], factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
-        ...
 
     def transform(self, transformation: Matrix, /) -> None:
         """
         Applies a transformation to this geometric object
         """
-        ...
 
-    def translate(self, vector: Vector, /) -> None:
+    def translate(self, vector: Union[Vector, tuple], /) -> None:
         """
         Translates this geometric object
         """
-        ...
 
     @constmethod
     def copy(self) -> "Geometry":
         """
         Create a copy of this geometry
         """
-        ...
 
     @constmethod
     def clone(self) -> "Geometry":
         """
         Create a clone of this geometry with the same Tag
         """
-        ...
 
     @constmethod
     def isSame(self, geom: "Geometry", tol: float, angulartol: float, /) -> bool:
@@ -76,57 +69,48 @@ class Geometry(Persistence):
 
         Compare this geometry to another one
         """
-        ...
 
     @constmethod
     def hasExtensionOfType(self, type_name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         """
-        ...
 
     @constmethod
     def hasExtensionOfName(self, name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         """
-        ...
 
     @constmethod
-    def getExtensionOfType(self, type_name: str, /) -> Optional[Extension]:
+    def getExtensionOfType(self, type_name: str, /) -> Extension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
-        ...
 
     @constmethod
-    def getExtensionOfName(self, name: str, /) -> Optional[Extension]:
+    def getExtensionOfName(self, name: str, /) -> Extension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """
-        ...
 
     def setExtension(self, extension: Extension, /) -> None:
         """
         Sets a geometry extension of the indicated type.
         """
-        ...
 
     def deleteExtensionOfType(self, type_name: str, /) -> None:
         """
         Deletes all extensions of the indicated type.
         """
-        ...
 
     def deleteExtensionOfName(self, name: str, /) -> None:
         """
         Deletes all extensions of the indicated name.
         """
-        ...
 
     @constmethod
     def getExtensions(self) -> List[Extension]:
         """
         Returns a list with information about the geometry extensions.
         """
-        ...

@@ -1,27 +1,25 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
+#include <algorithm>
 #include <boost/graph/topological_sort.hpp>
 #include <boost/unordered/unordered_map.hpp>
 #include <boost_graph_adjacency_list.hpp>
@@ -59,6 +57,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
             PropertyExpressionContainer::slotRelabelDocument);
         GetApplication().signalRenameDynamicProperty.connect(
             PropertyExpressionContainer::slotRenameDynamicProperty);
+        GetApplication().signalMoveDynamicProperty.connect(
+            PropertyExpressionContainer::slotMoveDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -85,6 +85,14 @@ void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property&
 {
     for (auto container : _ExprContainers) {
         container->onRenameDynamicProperty(prop, oldName);
+    }
+}
+
+void PropertyExpressionContainer::slotMoveDynamicProperty(const App::Property& prop,
+                                                          const App::DocumentObject& targetObj)
+{
+    for (auto container : _ExprContainers) {
+        container->onMoveDynamicProperty(prop, targetObj);
     }
 }
 
@@ -156,8 +164,11 @@ struct PropertyExpressionEngine::Private
             buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
         }
 
-        // Create graph
-        g = DiGraph(nodes.size());
+        // Create graph.
+        g.clear();
+        for (std::size_t i = 0; i < nodes.size(); ++i) {
+            add_vertex(g);
+        }
 
         // Add edges to graph
         for (const auto& edge : edges) {
@@ -255,7 +266,7 @@ Property* PropertyExpressionEngine::Copy() const
 
 void PropertyExpressionEngine::hasSetValue()
 {
-    App::DocumentObject* owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto* owner = freecad_cast<App::DocumentObject*>(getContainer());
     if (!owner || !owner->isAttachedToDocument() || owner->isRestoring()
         || testFlag(LinkDetached)) {
         PropertyExpressionContainer::hasSetValue();
@@ -263,13 +274,14 @@ void PropertyExpressionEngine::hasSetValue()
     }
 
     std::map<App::DocumentObject*, bool> deps;
+    std::map<std::pair<std::string, App::DocumentObject*>, bool> propDeps;
     std::vector<std::string> labels;
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
     for (auto& e : expressions) {
         auto expr = e.second.expression;
         if (expr) {
-            expr->getDepObjects(deps, &labels);
+            expr->getDepObjects(deps, &labels, &propDeps);
             if (!restoring) {
                 expr->visit(v);
             }
@@ -277,7 +289,7 @@ void PropertyExpressionEngine::hasSetValue()
     }
     registerLabelReferences(std::move(labels));
 
-    updateDeps(std::move(deps));
+    updateDeps(std::move(deps), &propDeps);
 
     if (pimpl) {
         pimpl->conns.clear();
@@ -819,15 +831,36 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
     DocumentObject* pathDocObj = usePath.getDocumentObject();
     assert(pathDocObj);
 
-    auto inList = pathDocObj->getInListEx(true);
-    for (auto& v : expr->getDepObjects()) {
-        auto docObj = v.first;
-        if (!v.second && inList.contains(docObj)) {
-            std::stringstream ss;
-            ss << "cyclic reference to " << docObj->getFullName();
-            return ss.str();
+    if (GetApplication().isFineGrainedRecomputeEnabled()) {
+        // Fully mimics the else part except for taking into account input properties.
+        auto inList = pathDocObj->getInListEx(true);
+
+        std::map<DocumentObject*, bool> depObjects;
+        std::map<std::pair<std::string, DocumentObject*>, bool> propDeps;
+        expr->getDepObjects(depObjects, nullptr, &propDeps);
+
+        for (const auto& [pair, hidden] : propDeps) {
+            auto* docObj = pair.second;
+            auto& propName = pair.first;
+            if (!hidden && inList.contains(docObj) && !docObj->isInputProperty(propName)) {
+                std::stringstream ss;
+                ss << "cyclic reference to " << docObj->getFullName() << "." << propName;
+                return ss.str();
+            }
         }
     }
+    else {
+        auto inList = pathDocObj->getInListEx(true);
+        for (auto& v : expr->getDepObjects()) {
+            auto docObj = v.first;
+            if (!v.second && inList.contains(docObj)) {
+                std::stringstream ss;
+                ss << "cyclic reference to " << docObj->getFullName();
+                return ss.str();
+            }
+        }
+    }
+
 
     // Check for internal document object dependencies
 
@@ -1151,6 +1184,18 @@ void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop
 {
     ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
     ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
+}
+
+void PropertyExpressionEngine::onMoveDynamicProperty(const App::Property& prop,
+                                                     const DocumentObject& targetObj)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop);
+    ObjectIdentifier newNameId = ObjectIdentifier(&targetObj, std::string(prop.getName()));
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };

@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2021 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Inventor/nodes/SoCamera.h>
@@ -85,6 +83,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // event, we only need this flag to see if any processing happened
     // at all.
     SbBool processed = false;
+    bool triedSelectionDrag = false;
 
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
@@ -116,6 +115,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -132,13 +132,9 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
                 // If we are in edit mode then simply ignore the RMB events
                 // to pass the event to the base class.
                 this->button2down = press;
-                if (press) {
-                    mouseDownConsumedEvent = *event;
-                    mouseDownConsumedEvent.setTime(ev->getTime());
-                }
 
                 // About to start rotating
-                if (press && (curmode == NavigationStyle::IDLE)) {
+                if (!viewer->isEditing() && press && (curmode == NavigationStyle::IDLE)) {
                     // Use this variable to spot move events
                     saveCursorPosition(ev);
                     this->centerTime = ev->getTime();
@@ -180,7 +176,11 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         const auto event = (const SoLocation2Event*)ev;
-        if (curmode == NavigationStyle::PANNING) {
+        if (curmode == NavigationStyle::SELECTION && this->button1down) {
+            triedSelectionDrag = true;
+            processed = handleSelectionDragMotion(event, newmode, this->ctrldown);
+        }
+        else if (curmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(
                 viewer->getSoRenderManager()->getCamera(),
@@ -228,7 +228,10 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
             newmode = NavigationStyle::IDLE;
             break;
         case BUTTON1DOWN:
-            newmode = NavigationStyle::SELECTION;
+        case CTRLDOWN | BUTTON1DOWN:
+            if (newmode != NavigationStyle::INTERACT) {
+                newmode = NavigationStyle::SELECTION;
+            }
             break;
         case BUTTON2DOWN:
             if (newmode != NavigationStyle::DRAGGING) {
@@ -269,7 +272,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed && !triedSelectionDrag) {
         processed = inherited::processSoEvent(ev);
     }
     return processed;

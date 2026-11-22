@@ -79,6 +79,7 @@ class PolarArray(gui_base.GuiCommandBase):
         # The calling class (this one) is saved in the object
         # of the interface, to be able to call a function from within it.
         self.ui.source_command = self
+        Gui.Snapper.setPointConstraintProvider(self.ui)
         task = Gui.Control.showDialog(self.ui)
         task.setDocumentName(Gui.ActiveDocument.Document.Name)
         task.setAutoCloseOnDeletedDocument(True)
@@ -130,6 +131,7 @@ class PolarArray(gui_base.GuiCommandBase):
             pass
         self.callback_move = None
         self.callback_click = None
+        Gui.Snapper.clearPointConstraintProvider(self.ui)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
         self.finish()

@@ -43,6 +43,7 @@
 #include <gce_MakeCirc.hxx>
 #include <gce_MakeDir.hxx>
 #include <gce_MakeLin.hxx>
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
@@ -58,7 +59,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 
 #include <App/Application.h>
@@ -83,6 +84,7 @@
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
 #include "Tools.h"
+#include "BaseGeometry.h"
 
 using namespace Part;
 namespace sp = std::placeholders;
@@ -484,7 +486,11 @@ App::DocumentObject* Feature::getSubObject(
         Standard_CString msg = e.GetMessageString();
 
         // Avoid name mangling
+#if OCC_VERSION_HEX >= 0x080000
+        str << e.ExceptionType() << " ";
+#else
         str << e.DynamicType()->get_type_name() << " ";
+#endif
 
         if (msg) {
             str << msg;
@@ -1081,7 +1087,7 @@ static TopoShape _getTopoShape(
                         || boost::iequals("z", element) || boost::iequals("z-axis", element)) {
                         static TopoDS_Shape _shape;
                         if (_shape.IsNull()) {
-                            BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+                            BRepBuilderAPI_MakeEdge builder(gp_Lin(gp::Origin(), gp::DZ()));
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
@@ -1100,7 +1106,7 @@ static TopoShape _getTopoShape(
                 if (shape.isNull()) {
                     static TopoDS_Shape _shape;
                     if (_shape.IsNull()) {
-                        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+                        BRepBuilderAPI_MakeFace builder(BaseGeometry::XY_PLANE);
                         _shape = builder.Shape();
                         _shape.Infinite(Standard_True);
                     }
@@ -1560,6 +1566,51 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
+/// Find the nearest match for an element that has "drifted" from its expected location. Still has
+/// a tolerance cap internally to prevent it from going totally off the rails: the element really
+/// might just be gone.
+static std::vector<std::string> searchDriftedElement(
+    const TopoShape& shape,
+    const TopoShape& element,
+    const double startTolerance
+)
+{
+    constexpr double relativeToleranceCap = 1e-3;
+    Bnd_Box bounds;
+    BRepBndLib::Add(element.getShape(), bounds);
+    const double absoluteToleranceCap = relativeToleranceCap * std::sqrt(bounds.SquareExtent());
+    if (absoluteToleranceCap < startTolerance) {
+        // For example, for a lone vertex we are going to just give up because there's no reasonable
+        // tolerance we can use.
+        return {};
+    }
+    double tolerance = startTolerance;
+    while (tolerance <= absoluteToleranceCap) {
+        std::vector<std::string> names;
+        shape.findSubShapesWithSharedVertex(element, &names, Data::SearchOptions(), tolerance);
+        if (names.size() == 1) {
+            return names;
+        }
+        if (names.size() > 1) {
+            // We overshot... as a tiebreaker, add in the actual geometry check
+            names.clear();
+            shape.findSubShapesWithSharedVertex(
+                element,
+                &names,
+                Data::SearchOption::CheckGeometry,
+                tolerance
+            );
+            if (names.size() == 1) {
+                return names;
+            }
+            return {};  // Womp womp. TODO: maybe try bisecting the tolerance??
+        }
+        constexpr double toleranceStep = 2.0;  // Double each time
+        tolerance *= toleranceStep;
+    }
+    return {};
+}
+
 const std::vector<std::string>& Feature::searchElementCache(
     const std::string& element,
     Data::SearchOptions options,
@@ -1585,8 +1636,13 @@ const std::vector<std::string>& Feature::searchElementCache(
                 break;
             }
         }
-        propShape->getShape()
-            .findSubShapesWithSharedVertex(it->second.shape, &it->second.names, options, tol, atol);
+        if (options.testFlag(Data::SearchOption::AdaptiveTolerance)) {
+            it->second.names = searchDriftedElement(propShape->getShape(), it->second.shape, tol);
+        }
+        else {
+            propShape->getShape()
+                .findSubShapesWithSharedVertex(it->second.shape, &it->second.names, options, tol, atol);
+        }
         if (!it->second.names.empty()) {
             it->second.searched = true;
         }
@@ -2200,7 +2256,7 @@ std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
         // Intersection point in local coords
         gp_Pnt iLoc = iPnt.Transformed(mat);
         // Get angle with local X axis
-        double x = Base::clamp(iLoc.X(), -radius, radius);
+        double x = std::clamp(iLoc.X(), -radius, radius);
         double angle = std::acos(x / radius);
         if (iLoc.Y() < 0.0) {
             angle = 2.0 * std::numbers::pi - angle;

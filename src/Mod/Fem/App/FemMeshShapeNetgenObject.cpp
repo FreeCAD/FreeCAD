@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -121,7 +123,7 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
     int numNode = info.NbNodes();
     int numVolu = info.NbVolumes();
 
-    Base::Console().log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
+    Base::Console().log("NetgenMesh: {} Nodes, {} Volumes, {} Faces\n", numNode, numVolu, numFaces);
 
     FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;

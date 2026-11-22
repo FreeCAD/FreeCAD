@@ -221,26 +221,15 @@ TopTools_ListOfShape Part::FaceMakerBuildFace::splitAtIntersections(const TopToo
     return result;
 }
 
-void Part::FaceMakerBuildFace::Build_Essence()
+std::vector<TopoDS_Face> Part::FaceMakerBuildFace::collectBoundedFaces(
+    const TopTools_ListOfShape& edges,
+    const gp_Pln& plane
+)
 {
-    TopTools_ListOfShape edges;
-    for (const TopoDS_Wire& w : myWires) {
-        for (TopExp_Explorer exp(w, TopAbs_EDGE); exp.More(); exp.Next()) {
-            edges.Append(exp.Current());
-        }
-    }
+    std::vector<TopoDS_Face> faces;
     if (edges.IsEmpty()) {
-        return;
+        return faces;
     }
-
-    gp_Pln plane;
-    if (!findPlane(edges, plane)) {
-        FC_LOG("FaceMakerBuildFace: cannot determine plane from edges");
-        return;
-    }
-
-    edges = splitSelfIntersecting(edges, plane);
-    edges = splitAtIntersections(edges);
 
     // Build base face larger than all geometry so BuilderFace can
     // distinguish bounded regions from the unbounded exterior.
@@ -270,7 +259,7 @@ void Part::FaceMakerBuildFace::Build_Essence()
     faceBuilder.Perform();
     if (faceBuilder.HasErrors()) {
         FC_WARN("FaceMakerBuildFace: BOPAlgo_BuilderFace failed");
-        return;
+        return faces;
     }
 
     const double outerThreshold = aMax * aMax;
@@ -285,6 +274,39 @@ void Part::FaceMakerBuildFace::Build_Essence()
         if (props.Mass() < Precision::Confusion()) {
             continue;
         }
-        myShapesToReturn.push_back(it.Value());
+        faces.push_back(TopoDS::Face(it.Value()));
+    }
+    return faces;
+}
+
+TopTools_ListOfShape Part::FaceMakerBuildFace::collectEdgesFromWires() const
+{
+    TopTools_ListOfShape edges;
+    for (const TopoDS_Wire& w : myWires) {
+        for (TopExp_Explorer exp(w, TopAbs_EDGE); exp.More(); exp.Next()) {
+            edges.Append(exp.Current());
+        }
+    }
+    return edges;
+}
+
+void Part::FaceMakerBuildFace::Build_Essence()
+{
+    TopTools_ListOfShape edges = collectEdgesFromWires();
+    if (edges.IsEmpty()) {
+        return;
+    }
+
+    gp_Pln plane;
+    if (!findPlane(edges, plane)) {
+        FC_LOG("FaceMakerBuildFace: cannot determine plane from edges");
+        return;
+    }
+
+    edges = splitSelfIntersecting(edges, plane);
+    edges = splitAtIntersections(edges);
+
+    for (const TopoDS_Face& f : collectBoundedFaces(edges, plane)) {
+        myShapesToReturn.push_back(f);
     }
 }

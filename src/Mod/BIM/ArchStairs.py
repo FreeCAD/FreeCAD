@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2013 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
@@ -910,12 +907,12 @@ class _Stairs(ArchComponent.Component):
                 railWireR, NU = _Stairs.returnOutlineWireFace(
                     obj.OutlineRightAll, self.OutlineRailArcRightAll, mode="notFaceAlso"
                 )
-            elif obj.OutlineLeft:
+            elif obj.OutlineRight:
                 railWireR, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineLeft, self.OutlineRailArcRight, mode="notFaceAlso"
+                    obj.OutlineRight, self.OutlineRailArcRight, mode="notFaceAlso"
                 )
             else:
-                print(" No obj.OutlineRightAll or obj.OutlineLeft")
+                print(" No obj.OutlineRightAll or obj.OutlineRight")
 
             if railWireR:
                 if (
@@ -930,7 +927,7 @@ class _Stairs(ArchComponent.Component):
                 # update the Base object shape
                 railingRightObject.Base.Shape = railWireR
             else:
-                print(" No railWireL created ")
+                print(" No railWireR created ")
 
         # compute step data
         if obj.NumberOfSteps > 1:
@@ -2466,10 +2463,16 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
         if not obj:
             return
 
+        self._setRailingsVisibility(obj, vobj.Visibility)
+
+    def _setRailingsVisibility(self, obj, visible):
         for railing_name in ("RailingLeft", "RailingRight"):
             railing = getattr(obj, railing_name, None)
             if railing and hasattr(railing, "ViewObject"):
-                railing.ViewObject.Visibility = vobj.Visibility
+                railing.ViewObject.Visibility = visible
+        for child in getattr(obj, "Additions", []):
+            if Draft.getType(child) == "Stairs":
+                self._setRailingsVisibility(child, visible)
 
     def claimChildren(self):
         "Define which objects will appear as children in the tree view"

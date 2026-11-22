@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
@@ -102,12 +99,16 @@ def setStatusIcons(show=True):
                     "BIM Status Widget",
                     "A context menu action used to show or hide this toolbar widget",
                 )
-                statuswidget.setWindowTitle(text)
-                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
-                    "ToolbarIconSize", 24
+                statuswidget.setIconSize(QtCore.QSize(16, 16))
+                # MainWindow owns placement/ordering/persistence/menu; we only register.
+                mw.addStatusBarItem(
+                    statuswidget,
+                    id="BIMStatusWidget",
+                    title=text,
+                    slot="Right",
+                    # Workbench band (550-699): just left of the Bottom Panel Toggle.
+                    order=570,
                 )
-                statuswidget.setIconSize(QtCore.QSize(s, s))
-                st.insertPermanentWidget(2, statuswidget)
 
                 # bim views widget toggle button
                 from bimcommands import BimViews
@@ -116,9 +117,7 @@ def setStatusIcons(show=True):
                 bimviewsbutton.setIcon(QtGui.QIcon(":/icons/BIM_Views.svg"))
 
                 bimviewsbutton.setText("")
-                bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
-                )
+                bimviewsbutton.setToolTip(translate("BIM", "Toggles the BIM Views Manager on/off"))
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
                     bimviewsbutton.setChecked(True)

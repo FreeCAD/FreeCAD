@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QContextMenuEvent>
 #include <QImage>
@@ -35,10 +32,9 @@
 #include <QTimer>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
+#include <format>
 #include <limits>
 #include <cstring>
-
-#include <fmt/format.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -55,6 +51,7 @@
 
 #include "TaskSketcherElements.h"
 #include "EditTextDialog.h"
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ui_TaskSketcherElements.h"
@@ -122,14 +119,18 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
 #define CONTEXT_ITEM(ICONSTR, NAMESTR, CMDSTR, FUNC, ACTSONSELECTION)                              \
-    QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
-    QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
-    constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
-        Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));      \
-    if (ACTSONSELECTION)                                                                           \
-        constr_##FUNC->setEnabled(!items.isEmpty());                                               \
-    else                                                                                           \
-        constr_##FUNC->setEnabled(true);
+    if (auto* cmd_##FUNC = Gui::Application::Instance->commandManager().getCommandByName(CMDSTR);  \
+        cmd_##FUNC && cmd_##FUNC->allowedByMaturity()) {                                           \
+        QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                   \
+        QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));     \
+        constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(cmd_##FUNC->getAccel())));       \
+        if (ACTSONSELECTION) {                                                                     \
+            constr_##FUNC->setEnabled(!items.isEmpty());                                           \
+        }                                                                                          \
+        else {                                                                                     \
+            constr_##FUNC->setEnabled(true);                                                       \
+        }                                                                                          \
+    }
 
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
 #define CONTEXT_MEMBER_DEF(CMDSTR, FUNC)                                                           \
@@ -185,6 +186,7 @@ public:
     {
         Normal,
         Construction,
+        ConstructionExternal,
         InternalAlignment,
         External
     };
@@ -232,12 +234,12 @@ public:
 
     bool canBeHidden() const
     {
-        return State != GeometryState::External;
+        return State != GeometryState::External && State != GeometryState::ConstructionExternal;
     }
 
     bool isVisible() const
     {
-        if (State != GeometryState::External) {
+        if (State != GeometryState::External && State != GeometryState::ConstructionExternal) {
             const auto geo = sketchView->getSketchObject()->getGeometry(ElementNbr);
             if (geo) {
                 auto layer = getSafeGeomLayerId(geo);
@@ -397,7 +399,7 @@ private:
             std::forward_as_tuple(Part::GeomArcOfCircle::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Arc_Edge")},
                     {Sketcher::PointPos::start, getMultIcon("Sketcher_Element_Arc_StartingPoint")},
                     {Sketcher::PointPos::end, getMultIcon("Sketcher_Element_Arc_EndPoint")},
@@ -408,7 +410,7 @@ private:
             std::forward_as_tuple(Part::GeomCircle::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Circle_Edge")},
                     {Sketcher::PointPos::mid, getMultIcon("Sketcher_Element_Circle_MidPoint")},
                 }));
@@ -418,7 +420,7 @@ private:
             std::forward_as_tuple(Part::GeomLineSegment::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Line_Edge")},
                     {Sketcher::PointPos::start, getMultIcon("Sketcher_Element_Line_StartingPoint")},
                     {Sketcher::PointPos::end, getMultIcon("Sketcher_Element_Line_EndPoint")},
@@ -429,7 +431,7 @@ private:
             std::forward_as_tuple(Part::GeomPoint::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::start,
                      getMultIcon("Sketcher_Element_Point_StartingPoint")},
                 }));
@@ -439,7 +441,7 @@ private:
             std::forward_as_tuple(Part::GeomEllipse::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Ellipse_Edge_2")},
                     {Sketcher::PointPos::mid, getMultIcon("Sketcher_Element_Ellipse_CentrePoint")},
                 }));
@@ -449,7 +451,7 @@ private:
             std::forward_as_tuple(Part::GeomArcOfEllipse::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Elliptical_Arc_Edge")},
                     {Sketcher::PointPos::start,
                      getMultIcon("Sketcher_Element_Elliptical_Arc_Start_Point")},
@@ -464,7 +466,7 @@ private:
             std::forward_as_tuple(Part::GeomArcOfHyperbola::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Hyperbolic_Arc_Edge")},
                     {Sketcher::PointPos::start,
                      getMultIcon("Sketcher_Element_Hyperbolic_Arc_Start_Point")},
@@ -479,7 +481,7 @@ private:
             std::forward_as_tuple(Part::GeomArcOfParabola::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_Parabolic_Arc_Edge")},
                     {Sketcher::PointPos::start,
                      getMultIcon("Sketcher_Element_Parabolic_Arc_Start_Point")},
@@ -494,7 +496,7 @@ private:
             std::forward_as_tuple(Part::GeomBSplineCurve::getClassTypeId()),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none, getMultIcon("Sketcher_Element_BSpline_Edge")},
                     {Sketcher::PointPos::start, getMultIcon("Sketcher_Element_BSpline_StartPoint")},
                     {Sketcher::PointPos::end, getMultIcon("Sketcher_Element_BSpline_EndPoint")},
@@ -505,7 +507,7 @@ private:
             std::forward_as_tuple(Base::Type::BadType),
             std::forward_as_tuple(
                 std::initializer_list<
-                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
+                    std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>> {
                     {Sketcher::PointPos::none,
                      getMultIcon("Sketcher_Element_SelectionTypeInvalid")},
                 }));
@@ -559,20 +561,23 @@ private:
             return std::get<1>(poskey->second);
         else if (icontype == ElementItem::GeometryState::External)
             return std::get<2>(poskey->second);
-        else// internal alignment
+        else if (icontype == ElementItem::GeometryState::ConstructionExternal)
             return std::get<3>(poskey->second);
+        else// internal alignment
+            return std::get<4>(poskey->second);
 
         // We should never arrive here, as badtype, PointPos::none must exist.
         throw Base::ValueError("Icon for Invalid is missing!!");
     }
 
-    std::tuple<QIcon, QIcon, QIcon, QIcon> getMultIcon(const char* name)
+    std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon> getMultIcon(const char* name)
     {
         int hue, sat, val, alp;
         QIcon Normal = Gui::BitmapFactory().iconFromTheme(name);
         QImage imgConstr(Normal.pixmap(std::as_const(Normal).availableSizes()[0]).toImage());
         QImage imgExt(imgConstr);
         QImage imgInt(imgConstr);
+        QImage imgConstrExt(imgConstr);
 
         // Create construction/external/internal icons by changing colors.
         for (int ix = 0; ix < imgConstr.width(); ix++) {
@@ -583,6 +588,7 @@ private:
                     if (sat > 127 && (hue > 330 || hue < 30)) {// change the color of red points.
                         clr.setHsv((hue + 240) % 360, sat, val, alp);
                         imgConstr.setPixelColor(ix, iy, clr);
+                        imgConstrExt.setPixelColor(ix, iy, clr);
                         clr.setHsv((hue + 300) % 360, sat, val, alp);
                         imgExt.setPixelColor(ix, iy, clr);
                         clr.setHsv((hue + 60) % 360,
@@ -596,6 +602,7 @@ private:
                         imgConstr.setPixel(ix, iy, clr.rgba());
                         clr.setHsv(300, (255 - sat), val, alp);
                         imgExt.setPixel(ix, iy, clr.rgba());
+                        imgConstrExt.setPixelColor(ix, iy, clr.rgba());
                         clr.setHsv(60, (int)(255 - sat) / 2, val, alp);
                         imgInt.setPixel(ix, iy, clr.rgba());
                     }
@@ -605,12 +612,13 @@ private:
         QIcon Construction = QIcon(QPixmap::fromImage(imgConstr));
         QIcon External = QIcon(QPixmap::fromImage(imgExt));
         QIcon Internal = QIcon(QPixmap::fromImage(imgInt));
+        QIcon ConstructionExternal = QIcon(QPixmap::fromImage(imgConstrExt));
 
-        return std::make_tuple(Normal, Construction, External, Internal);
+        return std::make_tuple(Normal, Construction, External, ConstructionExternal, Internal);
     }
 
 private:
-    std::map<Base::Type, std::map<Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>>
+    std::map<Base::Type, std::map<Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon, QIcon>>>
         icons;
     std::map<Sketcher::PointPos, QIcon> textIcons;
 };
@@ -729,16 +737,16 @@ void ElementView::changeLayer(ElementItem* item, int layer)
             Gui::Selection().rmvSelection(docName.c_str(), objName.c_str(), convertedName.c_str());
         };
 
-        deselect(fmt::format("Edge{}", geoid + 1));
+        deselect(std::format("Edge{}", geoid + 1));
 
         if (startingVertex >= 0) {
-            deselect(fmt::format("Vertex{}", startingVertex + 1));
+            deselect(std::format("Vertex{}", startingVertex + 1));
         }
         if (midVertex >= 0) {
-            deselect(fmt::format("Vertex{}", midVertex + 1));
+            deselect(std::format("Vertex{}", midVertex + 1));
         }
         if (endVertex >= 0) {
-            deselect(fmt::format("Vertex{}", endVertex + 1));
+            deselect(std::format("Vertex{}", endVertex + 1));
         }
     }
 }
@@ -1334,6 +1342,12 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+
+    // External theme override for Sketcher Elements task-panel icons
+    ui->filterButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("view-filter", ui->filterButton->icon()));
+    ui->settingsButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Sketcher_Settings", ui->settingsButton->icon()));
 #ifdef Q_OS_MAC
     QString cmdKey = QStringLiteral("\xe2\x8c\x98");// U+2318
 #else
@@ -1961,7 +1975,7 @@ void TaskSketcherElements::onListWidgetItemActivated(QListWidgetItem* item)
         if (constraint->Type == Sketcher::Text && constraint->hasElement(0)) {
             if (constraint->getGeoId(0) == geoId) {
                 // The item is a handle for a text constraint. Open the edit dialog.
-                auto* editDialog = new EditTextDialog(this->sketchView, i);
+                auto* editDialog = new EditTextDialog(this->sketchView, i, this);
                 editDialog->exec();
                 delete editDialog;
                 return;
@@ -2168,7 +2182,8 @@ void TaskSketcherElements::slotElementsChanged()
                 }
             }
 
-            GeometryState state = GeometryState::External;
+            bool isConstruction = !Sketcher::ExternalGeometryFacade::getFacade(*it)->testFlag(Sketcher::ExternalGeometryExtension::Defining);
+            GeometryState state = isConstruction? GeometryState::ConstructionExternal: GeometryState::External;
 
             auto* itemN = new ElementItem(
                 -j,

@@ -31,9 +31,9 @@
 ## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
+from draftgeoutils import faces as geo_faces
 from draftmake.make_wire import Wire
+from draftutils import gui_utils
 
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
@@ -51,7 +51,6 @@ def fuse(object1, object2):
         App.Console.PrintError("No active document. Aborting\n")
         return
     import Part
-    import DraftGeomUtils
 
     # testing if we have holes:
     holes = False
@@ -60,7 +59,7 @@ def fuse(object1, object2):
     for f in fshape.Faces:
         if len(f.Wires) > 1:
             holes = True
-    if DraftGeomUtils.isCoplanar(object1.Shape.fuse(object2.Shape).Faces) and not holes:
+    if geo_faces.is_coplanar(object1.Shape.fuse(object2.Shape).Faces) and not holes:
         obj = App.ActiveDocument.addObject("Part::FeaturePython", "Fusion")
         Wire(obj)
         if App.GuiUp:

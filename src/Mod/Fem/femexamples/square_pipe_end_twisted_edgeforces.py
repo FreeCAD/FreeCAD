@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -129,7 +131,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [
         (doc.SquareTube, "Edge4"),
         (doc.SquareTube, "Edge7"),
@@ -139,7 +141,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_fixed)
 
     # con_force1
-    con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
+    con_force1 = ObjectsFem.makeConstraintForce(doc, name="Force1")
     con_force1.References = [(geom_obj, "Edge9")]
     con_force1.Force = "100000.00 N"
     con_force1.Direction = (geom_obj, ["Edge9"])
@@ -147,7 +149,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force1)
 
     # con_force2
-    con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
+    con_force2 = ObjectsFem.makeConstraintForce(doc, name="Force2")
     con_force2.References = [(geom_obj, "Edge3")]
     con_force2.Force = "100000.00 N"
     con_force2.Direction = (geom_obj, ["Edge3"])
@@ -155,7 +157,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force2)
 
     # con_force3
-    con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
+    con_force3 = ObjectsFem.makeConstraintForce(doc, name="Force3")
     con_force3.References = [(geom_obj, "Edge11")]
     con_force3.Force = "100000.00 N"
     con_force3.Direction = (geom_obj, ["Edge11"])
@@ -163,7 +165,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force3)
 
     # con_force4
-    con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
+    con_force4 = ObjectsFem.makeConstraintForce(doc, name="Force4")
     con_force4.References = [(geom_obj, "Edge6")]
     con_force4.Force = "100000.00 N"
     con_force4.Direction = (geom_obj, ["Edge6"])

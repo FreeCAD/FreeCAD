@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -89,7 +91,7 @@ Base::Color Preferences::selectColor()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);//#00FF00 lime
+    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00ABFFFF);  //#00ABFF blue
 
     Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("SelectColor", defColor));
@@ -103,7 +105,7 @@ Base::Color Preferences::preselectColor()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);//#FFFF00 yellow
+    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0x0AC8FFFF);  //#0AC8FF cyan
 
     Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("PreSelectColor", defColor));
@@ -203,7 +205,7 @@ QString Preferences::defaultTemplate()
     QString templateFileName = QString::fromStdString(prefFileName);
     Base::FileInfo fi(prefFileName);
     if (!fi.isReadable()) {
-        Base::Console().warning("Template File: %s is not readable\n", prefFileName.c_str());
+        Base::Console().warning("Template File: {} is not readable\n", prefFileName);
         templateFileName = QString::fromStdString(defaultFileName);
     }
     return templateFileName;
@@ -219,8 +221,8 @@ QString Preferences::defaultTemplateDir()
     QString templateDir = QString::fromStdString(prefTemplateDir);
     Base::FileInfo fi(prefTemplateDir);
     if (!fi.isReadable()) {
-        Base::Console().warning("Template Directory: %s is not readable\n",
-                                prefTemplateDir.c_str());
+        Base::Console().warning("Template Directory: {} is not readable\n",
+                                prefTemplateDir);
         templateDir = QString::fromStdString(defaultDir);
     }
     return templateDir;
@@ -236,7 +238,7 @@ std::string Preferences::lineGroupFile()
     }
     Base::FileInfo fi(lgFileName);
     if (!fi.isReadable()) {
-        Base::Console().warning("Line Group File: %s is not readable\n", lgFileName.c_str());
+        Base::Console().warning("Line Group File: {} is not readable\n", lgFileName);
         lgFileName = defaultFileName;
     }
     return lgFileName;
@@ -278,8 +280,8 @@ QString Preferences::defaultSymbolDir()
     QString symbolDir = QString::fromStdString(prefSymbolDir);
     Base::FileInfo fi(prefSymbolDir);
     if (!fi.isReadable()) {
-        Base::Console().warning("Symbol Directory: %s is not readable\n",
-                                prefSymbolDir.c_str());
+        Base::Console().warning("Symbol Directory: {} is not readable\n",
+                                prefSymbolDir);
         symbolDir = QString::fromStdString(defaultDir);
     }
     return symbolDir;
@@ -295,7 +297,7 @@ std::string Preferences::svgFile()
     }
     Base::FileInfo fi(prefHatchFile);
     if (!fi.isReadable()) {
-        Base::Console().warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        Base::Console().warning("Svg Hatch File: {} is not readable\n", prefHatchFile);
         prefHatchFile = defaultFileName;
     }
     return prefHatchFile;
@@ -311,7 +313,7 @@ std::string Preferences::patFile()
     }
     Base::FileInfo fi(prefHatchFile);
     if (!fi.isReadable()) {
-        Base::Console().warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        Base::Console().warning("Pat Hatch File: {} is not readable\n", prefHatchFile);
         prefHatchFile = defaultFileName;
     }
 
@@ -328,7 +330,7 @@ std::string Preferences::bitmapFill()
     }
     Base::FileInfo fi(prefBitmapFile);
     if (!fi.isReadable()) {
-        Base::Console().warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+        Base::Console().warning("Bitmap Fill File: {} is not readable\n", prefBitmapFile);
         prefBitmapFile = defaultFileName;
     }
     return prefBitmapFile;
@@ -373,7 +375,7 @@ bool Preferences::monochrome()
 //! set monochrome display on/off
 void Preferences::monochrome(bool state)
 {
-    Base::Console().message("Pref::useLightText - set to %d\n", state);
+    Base::Console().message("Pref::useLightText - set to {}\n", state);
     getPreferenceGroup("Colors")->SetBool("Monochrome", state);
 }
 
@@ -465,7 +467,7 @@ int Preferences::lineStandard()
     // this message will appear many times if the parameter is invalid.
     int parameterValue = getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
     if (parameterValue < 0) {
-        Base::Console().warning(qPrintable(QApplication::translate(
+        Base::Console().warning("{}", qPrintable(QApplication::translate(
         "Preferences", "The LineStandard parameter is invalid. Using zero instead.", nullptr)));
         return 0;
     }
@@ -629,6 +631,25 @@ double Preferences::SnapLimitFactor()
 }
 
 
+//! true if dimensions should snap to position
+bool Preferences::SnapDimensions()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("SnapDimensions", true);
+}
+
+//! percentage of dimension text length to use in deciding to snap dimension text
+double Preferences::SnapDimensionsTextFactor()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("SnapDimensionsTextFactor", 0.4);
+}
+
+//! percentage of inter-dimension distance (cascade spacing from dimAttributes?) to use in deciding to snap dimension
+double Preferences::SnapDimensionsChainFactor()
+{
+    return getPreferenceGroup("Dimensions")->GetFloat("SnapDimensionsChainFactor", 0.2);
+}
+
+
 //! returns the key combination that simulates multiple selection. Traditionally Ctrl+pick, as that
 //! is how QGraphicsScene implements multiple selection.  This method is likely to only be used by
 //! developers.
@@ -725,4 +746,25 @@ bool Preferences::printCenterMarks()
 bool Preferences::fixColorAlphaOnLoad()
 {
     return getPreferenceGroup("General")->GetBool("FixColorAlphaOnLoad", true);
+}
+
+FaceFinderVersion Preferences::faceFinderVersion()
+{
+    int faceFinderVer = getPreferenceGroup("General")->GetInt("FaceFinderVersion", -1);
+    if (faceFinderVer < 0) {
+        return getPreferenceGroup("General")->GetBool("NewFaceFinder", true)
+               ? FaceFinderVersion::v26_3 : FaceFinderVersion::v0_17;
+    }
+    else if (faceFinderVer > static_cast<int>(FaceFinderVersion::v26_3)) {
+        // Return the newest supported Face Finder algorithm
+        return FaceFinderVersion::v26_3;
+    }
+
+    return static_cast<FaceFinderVersion>(faceFinderVer);
+}
+
+void Preferences::setFaceFinderVersion(FaceFinderVersion version)
+{
+    getPreferenceGroup("General")->SetInt("FaceFinderVersion", static_cast<int>(version));
+    getPreferenceGroup("General")->RemoveAttribute(ParameterGrp::ParamType::FCBool, "NewFaceFinder");
 }

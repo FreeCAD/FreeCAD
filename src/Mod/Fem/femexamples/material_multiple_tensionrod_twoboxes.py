@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
@@ -150,12 +152,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj_upp)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face5")]
     analysis.addObject(con_fixed)
 
     # constraint pressure
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "Pressure")
     con_pressure.References = [(geom_obj, "Face11")]
     con_pressure.Pressure = "1000.0 MPa"
     con_pressure.Reversed = False

@@ -2101,7 +2101,7 @@ namespace Py
             validate();
         }
 
-        String( std::string_view utf8 )
+        String( const std::string &utf8 )
         : SeqBase<Char>( PyUnicode_FromStringAndSize( utf8.data(), Py_ssize_t(utf8.size()) ), true )
         {
             validate();
@@ -2130,7 +2130,7 @@ namespace Py
            generic ones are documented.
 
         */
-        String( std::string_view s, const char *encoding, const char *errors=NULL )
+        String( const std::string &s, const char *encoding, const char *errors=NULL )
         : SeqBase<Char>( PyUnicode_Decode( s.data(), Py_ssize_t(s.size()), encoding, errors ), true )
         {
             validate();

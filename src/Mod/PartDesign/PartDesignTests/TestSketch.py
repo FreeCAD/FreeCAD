@@ -31,7 +31,6 @@ import FreeCAD
 class TestSketch(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("PartDesignTestSketch")
-        self.doc.UndoMode = True
 
     def testIssue17553(self):
         self.doc.openTransaction("Create box")

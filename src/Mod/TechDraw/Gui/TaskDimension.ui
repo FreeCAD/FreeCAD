@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>729</height>
+    <height>783</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -327,35 +327,80 @@ by negative value of 'Overtolerance'.</string>
    <item>
     <widget class="QGroupBox" name="gbLines">
      <property name="title">
-      <string>Lines</string>
+      <string>Override Angles</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="rbOverride">
+        <item row="3" column="1">
+         <widget class="QPushButton" name="pbExtUseSelection">
           <property name="toolTip">
-           <string>Use override angles if checked. Use default angles if unchecked.</string>
+           <string>Sets the extension line angle to match the selected edge or vertices</string>
           </property>
           <property name="text">
-           <string>Override angles</string>
+           <string>Use Selection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="dsbDimAngle">
+          <property name="toolTip">
+           <string>Angle of dimension line with drawing X axis (degrees)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string>°</string>
+          </property>
+          <property name="minimum">
+           <double>-360.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pbDimUseSelection">
+          <property name="toolTip">
+           <string>Sets the dimension line angle to match the selected edge or vertices</string>
+          </property>
+          <property name="text">
+           <string>Use Selection</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
+         <widget class="QPushButton" name="pbDimUseDefault">
+          <property name="toolTip">
+           <string>Resets the dimension line angle to the default orthographic value</string>
+          </property>
+          <property name="text">
+           <string>Use Default</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Dimension line angle</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dsbDimAngle">
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="dsbExtAngle">
           <property name="toolTip">
-           <string>Angle of dimension line with drawing X axis (degrees)</string>
+           <string>Angle of extension lines with drawing X axis (degrees)</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string>°</string>
           </property>
           <property name="minimum">
            <double>-360.000000000000000</double>
@@ -366,65 +411,19 @@ by negative value of 'Overtolerance'.</string>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QPushButton" name="pbDimUseDefault">
-          <property name="toolTip">
-           <string>Set dimension line angle to default (orthographic view)</string>
-          </property>
-          <property name="text">
-           <string>Use Default</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pbDimUseSelection">
-          <property name="toolTip">
-           <string>Set dimension line angle to match selected edge or vertices</string>
-          </property>
-          <property name="text">
-           <string>Use Selection</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Extension line angle</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QDoubleSpinBox" name="dsbExtAngle">
-          <property name="toolTip">
-           <string>Angle of extension lines with drawing X axis (degrees)</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
-           <double>-360.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>360.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
+        <item row="3" column="0">
          <widget class="QPushButton" name="pbExtUseDefault">
           <property name="toolTip">
-           <string>Set extension line angle to default (orthographic)</string>
+           <string>Resets the extension line angle to the default orthographic value</string>
           </property>
           <property name="text">
            <string>Use Default</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QPushButton" name="pbExtUseSelection">
-          <property name="toolTip">
-           <string>Set extension line angle to match selected edge or vertices</string>
-          </property>
-          <property name="text">
-           <string>Use Selection</string>
           </property>
          </widget>
         </item>

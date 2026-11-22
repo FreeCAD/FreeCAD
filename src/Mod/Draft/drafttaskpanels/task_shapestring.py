@@ -235,11 +235,11 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         """Create object in the current document."""
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
-        cmd = "Draft.make_shapestring("
-        cmd += "String=" + self.quote_string(self.text) + ", "
-        cmd += "FontFile=" + self.quote_string(self.font_file) + ", "
-        cmd += "Size=" + str(self.height) + ", "
-        cmd += "Tracking=0.0"
+        cmd = "Draft.make_shape_string("
+        cmd += "string=" + self.quote_string(self.text) + ", "
+        cmd += "fontfile=" + self.quote_string(self.font_file) + ", "
+        cmd += "size=" + str(self.height) + ", "
+        cmd += "tracking=0.0"
         cmd += ")"
         self.sourceCmd.commit(
             translate("draft", "Create ShapeString"),

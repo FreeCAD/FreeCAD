@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Samuel Abels
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 Widgets for editing specific types of DocumentObject properties.
@@ -30,6 +28,7 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtGui, QtCore
 from typing import Optional
+from ...toolbit.util import at_tool_precision
 
 
 class BasePropertyEditorWidget(QtGui.QWidget):
@@ -120,18 +119,21 @@ class QuantityPropertyEditorWidget(BasePropertyEditorWidget):
 
     def updateWidget(self):
         value: FreeCAD.Units.Quantity = self._obj.getPropertyByName(self._prop_name)
-        # Block signals temporarily to prevent feedback loops
+        # Block signals temporarily to prevent feedback loops. A value
+        # at_tool_precision rejects would otherwise leave them blocked for good.
         self._editor_widget.blockSignals(True)
-        self._editor_widget.setProperty("value", value)
-        self._editor_widget.blockSignals(False)
+        try:
+            self._editor_widget.setProperty("value", at_tool_precision(value))
+        finally:
+            self._editor_widget.blockSignals(False)
         self._editor_widget.setEnabled(not self._is_read_only)
 
     def updateProperty(self):
         current_value = self._obj.getPropertyByName(self._prop_name)
-        new_value_str: str = self._editor_widget.property("value").UserString
-        new_value = FreeCAD.Units.Quantity(new_value_str)
-        if new_value_str != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+        # Via UserString this would round to the decimals on display.
+        new_value = self._editor_widget.property("value")
+        if new_value != current_value:
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
 
@@ -160,7 +162,7 @@ class BoolPropertyEditorWidget(BasePropertyEditorWidget):
         current_value: bool = self._obj.getPropertyByName(self._prop_name)
         new_value: bool = bool(index)
         if new_value != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
     def updateProperty(self):
@@ -191,7 +193,7 @@ class IntPropertyEditorWidget(BasePropertyEditorWidget):
         current_value: int = self._obj.getPropertyByName(self._prop_name)
         new_value: int = self._editor_widget.value()
         if new_value != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
 
@@ -231,7 +233,7 @@ class EnumPropertyEditorWidget(BasePropertyEditorWidget):
         current_value: str = self._obj.getPropertyByName(self._prop_name)
         new_value: str = self._editor_widget.itemText(index)
         if new_value != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
     def updateProperty(self):

@@ -470,6 +470,33 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(compound_cleaned.ElementMapSize, 52)
 
+    def testTopoShapeCopyWithoutElementMap(self):
+        # Arrange
+        self.doc.addObject("Part::Compound", "Compound")
+        self.doc.Compound.Links = [
+            App.activeDocument().Box1,
+            App.activeDocument().Box2,
+        ]
+        self.doc.recompute()
+        compound = self.doc.Compound.Shape
+        # Act
+        compound_plain = compound.copy(noElementMap=True)
+        # Assert elementMap
+        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound.ElementMapSize, 52)
+            self.assertEqual(compound_plain.ElementMapSize, 0)
+
+    def testTopoShapeMakeFaceWithoutElementMap(self):
+        # Act
+        face = Part.makeFace(
+            self.doc.Box1.Shape.Faces[0],
+            "Part::FaceMakerCheese",
+            noElementMap=True,
+        )
+        # Assert elementMap
+        if face.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(face.ElementMapSize, 0)
+
     def testTopoShapeReplaceShape(self):
         # Arrange
         self.doc.addObject("Part::Compound", "Compound")
@@ -532,6 +559,14 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(fused.ElementMapSize, 58)
 
+    def testTopoShapeFuseWithoutElementMap(self):
+        # Act
+        fused = self.doc.Box1.Shape.fuse(self.doc.Box2.Shape, noElementMap=True)
+        self.doc.recompute()
+        # Assert elementMap
+        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fused.ElementMapSize, 0)
+
     def testTopoShapeMultiFuse(self):
         # Act
         fused = self.doc.Box1.Shape.multiFuse([self.doc.Box2.Shape])
@@ -539,6 +574,14 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Assert elementMap
         if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(fused.ElementMapSize, 58)
+
+    def testTopoShapeMultiFuseWithoutElementMap(self):
+        # Act
+        fused = self.doc.Box1.Shape.multiFuse([self.doc.Box2.Shape], noElementMap=True)
+        self.doc.recompute()
+        # Assert elementMap
+        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fused.ElementMapSize, 0)
 
     def testTopoShapeCommon(self):
         # Act
@@ -934,3 +977,84 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertKeysInMap(cut1.ElementReverseMap, refkeys)
         self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))
+
+    def testCreateCompound(self):
+        box = Part.makeBox(1, 1, 1)
+        comp = Part.Compound()
+        self.assertTrue(comp.isNull())
+        comp.add(box.Vertex1)
+        self.assertFalse(comp.isNull())
+
+    def testCreateShell(self):
+        box = Part.makeBox(1, 1, 1)
+        shell = Part.Shell()
+        self.assertTrue(shell.isNull())
+        shell.add(box.Face1)
+        self.assertFalse(shell.isNull())
+
+    def testCreateCompSolid(self):
+        box = Part.makeBox(1, 1, 1)
+        solid = Part.CompSolid()
+        self.assertTrue(solid.isNull())
+        solid.add(box)
+        self.assertFalse(solid.isNull())
+
+    def testTopoShapeVertex(self):
+        b = Part.makeBox(10, 10, 10)
+        v1 = b.Vertexes[0]
+        v2 = Part.Vertex(v1)
+        self.assertEqual(v1, v2)
+        self.assertIn(v1, b.Vertexes)
+        self.assertIn(v2, b.Vertexes)
+        v3 = Part.Vertex(tuple(v2))
+        self.assertNotEqual(v3, v1)
+        self.assertNotIn(v3, b.Vertexes)
+
+    def testTopoShapeVertexHashFollowsEquality(self):
+        b = Part.makeBox(10, 10, 10)
+        v1 = b.Vertexes[0]
+        v2 = Part.Vertex(v1)
+        self.assertEqual(hash(v1), hash(v2))
+        self.assertEqual(len({v1, v2}), 1)
+        self.assertEqual(len(set(b.Vertexes)), 8)
+        self.assertIn(v2, {v1: "found"})
+
+    def testTopoShapeVertexEqualityIgnoresOrientation(self):
+        b = Part.makeBox(10, 10, 10)
+        v1 = b.Vertexes[0]
+        v2 = Part.Vertex(v1)
+        v2.reverse()
+        self.assertNotEqual(v1.Orientation, v2.Orientation)
+        self.assertTrue(v1.isSame(v2))
+        self.assertEqual(v1, v2)
+        self.assertEqual(hash(v1), hash(v2))
+
+    def testTopoShapeVertexComparesOnlyWithVertices(self):
+        v = Part.Vertex(1, 2, 3)
+        self.assertNotEqual(v, (1, 2, 3))
+        self.assertNotEqual(v, Part.Vertex())
+        with self.assertRaises(TypeError):
+            v < Part.Vertex(0, 0, 0)
+
+    def testTopoShapeVertexIsNotTreatedAsShapeSequence(self):
+        b = Part.makeBox(10, 10, 10)
+        v = b.Vertexes[2]
+        self.assertEqual(b.findSubShape(v), ("Vertex", 3))
+        self.assertEqual(b.findSubShape([v]), [("Vertex", 3)])
+        self.assertEqual(b.findSubShape(Part.Vertex(v)), ("Vertex", 3))
+        self.assertEqual(b.findSubShape(Part.Vertex(1, 1, 1)), (None, 0))
+
+    def testTopoShapeVertexSequence(self):
+        v = Part.Vertex(1, 2, 3)
+        self.assertEqual(len(v), 3)
+        self.assertEqual(tuple(v), (1, 2, 3))
+        self.assertEqual(v[-1], 3)
+        self.assertEqual(App.Vector(v), App.Vector(1, 2, 3))
+        with self.assertRaises(IndexError):
+            _ = v[3]
+        with self.assertRaises(RuntimeError):
+            tuple(Part.Vertex())
+
+    def testTopoShapeVertexRepr(self):
+        self.assertEqual(repr(Part.Vertex(1, 2, 3)), "<Part.Vertex (1, 2, 3)>")
+        self.assertEqual(repr(Part.Vertex()), "<Part.Vertex()>")

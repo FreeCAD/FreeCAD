@@ -1,29 +1,28 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
+from freecad.deprecation import deprecated, _unwrap_deprecated_frame
+import inspect
 import os
-import traceback
 
 
 class Level:
@@ -62,8 +61,19 @@ def thisModule():
 
 def _caller():
     """internal function to determine the calling module."""
-    filename, line, func, text = traceback.extract_stack(limit=3)[0]
-    return os.path.splitext(os.path.basename(filename))[0], line, func
+    frame = inspect.currentframe()
+    try:
+        candidate = frame.f_back.f_back if frame and frame.f_back else None
+    finally:
+        del frame
+    caller = _unwrap_deprecated_frame(candidate)
+    if caller is None:
+        raise RuntimeError("Unable to determine the calling frame")
+    return (
+        os.path.splitext(os.path.basename(caller.f_code.co_filename))[0],
+        caller.f_lineno,
+        caller.f_code.co_name,
+    )
 
 
 _defaultLogLevel = Level.NOTICE
@@ -227,6 +237,7 @@ def untrackAllModules():
 # deprecated methods:
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.setLevel")
 def setLevel(level, module=None):
     """(level, module = None)
 
@@ -248,6 +259,7 @@ def setLevel(level, module=None):
         getModuleLogger(module).setLevel(level)
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.getLevel")
 def getLevel(module=None):
     """(module = None) - return the global (None) or module specific log level.
 
@@ -259,6 +271,7 @@ def getLevel(module=None):
         return getModuleLogger(module).getLevel()
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.enableTracking")
 def trackModule(module=None):
     """(module = None) - start tracking given module, current module if not set.
 
@@ -271,6 +284,7 @@ def trackModule(module=None):
     getModuleLogger(module).enableTracking()
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.disableTracking")
 def untrackModule(module=None):
     """(module = None) - stop tracking given module, current module if not set.
 
@@ -287,6 +301,7 @@ def untrackModule(module=None):
         logger.disableTracking()
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.debug(format, *args)")
 def debug(msg):
     """(msg)
 
@@ -296,6 +311,7 @@ def debug(msg):
     return getModuleLogger(module)._log(Level.DEBUG, "({}) - {}", line, msg)
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.info(format, *args)")
 def info(msg):
     """(msg)
 
@@ -304,6 +320,7 @@ def info(msg):
     return getModuleLogger(_caller()[0]).info("{}", msg)
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.notice(format, *args)")
 def notice(msg):
     """(msg)
 
@@ -312,6 +329,7 @@ def notice(msg):
     return getModuleLogger(_caller()[0]).notice("{}", msg)
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.warning(format, *args)")
 def warning(msg):
     """(msg)
 
@@ -320,6 +338,7 @@ def warning(msg):
     return getModuleLogger(_caller()[0]).warning("{}", msg)
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.error(format, *args)")
 def error(msg):
     """(msg)
 
@@ -328,6 +347,7 @@ def error(msg):
     return getModuleLogger(_caller()[0]).error("{}", msg)
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="logger.track(format, *args)")
 def track(*args):
     """(*args)
 

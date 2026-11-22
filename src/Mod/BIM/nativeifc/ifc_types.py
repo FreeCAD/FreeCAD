@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2023 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Diffing tool for NativeIFC project objects"""
 
@@ -86,7 +83,7 @@ def is_typable(obj):
     ifcfile = ifc_tools.get_ifcfile(obj)
     if not element or not ifcfile:
         return False
-    type_class = element.is_a() + "Type"
+    type_class = element.is_a().removesuffix("StandardCase") + "Type"
     schema = ifcfile.wrapped_data.schema_name()
     schema = ifc_tools.ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema)
     try:
@@ -162,7 +159,7 @@ def edit_type(obj):
     typerel = getattr(element, "IsTypedBy", None)
     if obj.Type:
         # verify the type is compatible -ex IFcWall in IfcWallType
-        if obj.Type.Class != element.is_a() + "Type":
+        if obj.Type.Class != element.is_a().removesuffix("StandardCase") + "Type":
             t = translate("BIM", "Error: Incompatible type")
             FreeCAD.Console.PrintError(obj.Label + ": " + t + ": " + obj.Type.Class + "\n")
             obj.Type = None

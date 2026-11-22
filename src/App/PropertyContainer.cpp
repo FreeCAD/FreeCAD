@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <map>
 #include <vector>
@@ -300,13 +297,13 @@ void PropertyContainer::Save (Base::Writer &writer) const
             it.second->Save(writer);
         }
         catch (const Base::Exception &e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const std::exception &e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().error("%s\n", e);
+            Base::Console().error("{}\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {
@@ -383,7 +380,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             }
 
             if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
-                Base::Console().error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+                Base::Console().error("Property {} of type {} was subject to a partial restore.\n",PropName,TypeName);
                 reader.clearPartialRestoreProperty();
             }
         }
@@ -393,16 +390,16 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         catch (const Base::RestoreError &) {
             reader.setPartialRestore(true);
             reader.clearPartialRestoreProperty();
-            Base::Console().error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+            Base::Console().error("Property {} of type {} was subject to a partial restore.\n",PropName,TypeName);
         }
         catch (const Base::Exception &e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const std::exception &e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
         catch (const char* e) {
-            Base::Console().error("%s\n", e);
+            Base::Console().error("{}\n", e);
         }
 #ifndef FC_DEBUG
         catch (...) {

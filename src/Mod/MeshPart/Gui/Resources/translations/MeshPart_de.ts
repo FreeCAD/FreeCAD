@@ -381,11 +381,6 @@ Der kleinste Wert ist 0.</translation>
       <translation>Netgen Netzgenerator verwenden</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Feinheit:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Sehr grob</translation>
@@ -436,6 +431,11 @@ Der kleinste Wert ist 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Wenn dieser Parameter kleiner ist, wird das Netz feiner.
 Ein Wert im Bereich von 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Feinheit</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

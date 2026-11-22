@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2013 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # Unit tests for the Arch wall module
 
@@ -39,7 +36,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Checking Arch Roof..."
         self.printTestMessage(operation)
 
-        r = Draft.makeRectangle(length=2, height=-1)
+        r = Draft.make_rectangle(length=2, height=-1)
         r.recompute()  # required before calling Arch.makeRoof
         ro = Arch.makeRoof(r)
         self.assertTrue(ro, "Arch Roof failed")
@@ -69,7 +66,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
                 runsLst = runsMod[iX % 3] + [0, 0, 0]
                 overhangsLst = overhangsMod[iX // 3] + [0, 0, 0]
                 pla.Base = App.Vector(iX * delta, iY * delta, 0)
-                wire = Draft.makeWire(pts, closed=True)
+                wire = Draft.make_wire(pts, closed=True)
                 wire.MakeFace = False
                 wire.Placement = pla
                 wire.recompute()  # required before calling Arch.makeRoof
@@ -92,7 +89,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
             App.Vector(0, 2000, 0),
         ]
 
-        wire = Draft.makeWire(pts, closed=True)
+        wire = Draft.make_wire(pts, closed=True)
         wire.MakeFace = False
         wire.recompute()  # required before calling Arch.makeRoof
         roof = Arch.makeRoof(wire, angles=[90, 90, 90, 90])
@@ -107,7 +104,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Arch Roof testRoofApex"
         self.printTestMessage(operation)
 
-        rec = Draft.makeRectangle(length=4000, height=3000, face=False)
+        rec = Draft.make_rectangle(length=4000, height=3000, face=False)
         rec.recompute()  # required before calling Arch.makeRoof
         roof = Arch.makeRoof(
             rec,
@@ -134,7 +131,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
             App.Vector(4000, 2000, 0),
             App.Vector(-2000, 2000, 0),
         ]
-        wire = Draft.makeWire(pts, closed=True)
+        wire = Draft.make_wire(pts, closed=True)
         wire.MakeFace = False
         wire.recompute()  # required before calling Arch.makeRoof
         roof = Arch.makeRoof(

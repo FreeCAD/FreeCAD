@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
@@ -66,6 +68,7 @@ class DeformationWriter:
         s["Optimize Bandwidth"] = True
         s["Stabilize"] = equation.Stabilize
         s["Variable"] = equation.Variable
+        s["Variable DOFs"] = self.write.getCoordSystemDimension()
         return s
 
     def handleDeformationEquation(self, bodies, equation):
@@ -92,18 +95,20 @@ class DeformationWriter:
                 for name in obj.References[0][1]:
                     self.write.boundary(name, "Displacement 1", 0.0)
                     self.write.boundary(name, "Displacement 2", 0.0)
-                    self.write.boundary(name, "Displacement 3", 0.0)
+                    if self.write.getCoordSystemDimension() == 3:
+                        self.write.boundary(name, "Displacement 3", 0.0)
                 self.write.handled(obj)
         for obj in self.write.getMember("Fem::ConstraintForce"):
             if obj.References:
                 for name in obj.References[0][1]:
                     force = float(obj.Force.getValueAs("N"))
                     self.write.boundary(name, "Force 1", obj.DirectionVector.x * force)
-                    self.write.boundary(name, "Force 2", obj.DirectionVector.y * force)
-                    self.write.boundary(name, "Force 3", obj.DirectionVector.z * force)
                     self.write.boundary(name, "Force 1 Normalize by Area", True)
+                    self.write.boundary(name, "Force 2", obj.DirectionVector.y * force)
                     self.write.boundary(name, "Force 2 Normalize by Area", True)
-                    self.write.boundary(name, "Force 3 Normalize by Area", True)
+                    if self.write.getCoordSystemDimension() == 3:
+                        self.write.boundary(name, "Force 3", obj.DirectionVector.z * force)
+                        self.write.boundary(name, "Force 3 Normalize by Area", True)
                 self.write.handled(obj)
         for obj in self.write.getMember("Fem::ConstraintDisplacement"):
             if obj.References:
@@ -221,8 +226,6 @@ class DeformationWriter:
 
     def _getYoungsModulus(self, m):
         youngsModulus = self.write.convert(m["YoungsModulus"], "M/(L*T^2)")
-        if self.write.getMeshDimension() == 2:
-            youngsModulus *= 1e3
         return youngsModulus
 
 

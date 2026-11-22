@@ -34,6 +34,7 @@
     %token ACOS ASIN ATAN ATAN2 COS EXP ABS MOD LOG LOG10 POW SIN SINH TAN TANH SQRT;
     %left MINUSSIGN '+'
     %left '*' '/'
+    %left POS     /* unary plus */
     %left NEG     /* negation--unary minus */
     %right '^'    /* exponentiation */
     %left ONE NUM
@@ -55,6 +56,7 @@
             |   num MINUSSIGN num               { $$ = Quantity($1.getValue() - $3.getValue());     }
             |   num '*' num                     { $$ = Quantity($1.getValue() * $3.getValue());     }
             |   num '/' num                     { $$ = Quantity($1.getValue() / $3.getValue());     }
+            |   '+' num  %prec POS              { $$ = Quantity($2.getValue());                     }
             |   MINUSSIGN num  %prec NEG        { $$ = Quantity(-$2.getValue());                    }
             |   num '^' num                     { $$ = Quantity(pow($1.getValue(), $3.getValue())); }
             |   '(' num ')'                     { $$ = $2; }

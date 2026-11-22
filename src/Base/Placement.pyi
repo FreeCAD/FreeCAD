@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from Metadata import export, constmethod, class_declarations
+from Metadata import export, constmethod, class_declarations, typing_only
 from PyObjectBase import PyObjectBase
 from Matrix import Matrix as MatrixPy
 from Rotation import Rotation as RotationPy
@@ -59,13 +57,20 @@ class Placement(PyObjectBase):
     angle : float
     """
 
-    Base: Vector = None
-    """Vector to the Base Position of the Placement."""
+    @property
+    def Base(self) -> Vector:
+        """Vector to the Base Position of the Placement."""
 
-    Rotation: Vector = None
-    """Orientation of the placement expressed as rotation."""
+    @Base.setter
+    def Base(self, value: Vector | Sequence[float]) -> None: ...
+    @property
+    def Rotation(self) -> RotationPy:
+        """Orientation of the placement expressed as rotation."""
 
-    Matrix: MatrixPy = None
+    @Rotation.setter
+    def Rotation(self, value: RotationPy | tuple[float, float, float, float]) -> None: ...
+
+    Matrix: MatrixPy = ...
     """Set/get matrix representation of the placement."""
 
     # fmt: off
@@ -83,12 +88,23 @@ class Placement(PyObjectBase):
     def __init__(self, base: Vector, axis: Vector, angle: float) -> None: ...
     # fmt: on
 
+    @typing_only
+    @overload
+    def __mul__(self, vector: Vector, /) -> Vector: ...
+    @typing_only
+    @overload
+    def __mul__(self, rotation: RotationPy, /) -> "Placement": ...
+    @typing_only
+    @overload
+    def __mul__(self, matrix: MatrixPy, /) -> MatrixPy: ...
+    @typing_only
+    @overload
+    def __mul__(self, placement: "Placement", /) -> "Placement": ...
     @constmethod
     def copy(self) -> "Placement":
         """
         Returns a copy of this placement.
         """
-        ...
 
     def move(self, vector: Vector, /) -> None:
         """
@@ -97,7 +113,6 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the placement.
         """
-        ...
 
     def translate(self, vector: Vector, /) -> None:
         """
@@ -106,7 +121,6 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the placement.
         """
-        ...
 
     @overload
     def rotate(
@@ -140,7 +154,6 @@ class Placement(PyObjectBase):
         placement : Base.Placement
             Placement by which to multiply this placement.
         """
-        ...
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:
@@ -150,21 +163,18 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector to be transformed.
         """
-        ...
 
     @constmethod
-    def toMatrix(self) -> MatrixPy:
+    def toMatrix(self) -> Matrix:
         """
         Compute the matrix representation of the placement.
         """
-        ...
 
     @constmethod
     def inverse(self) -> "Placement":
         """
         Compute the inverse placement.
         """
-        ...
 
     @constmethod
     def pow(self, t: float, shorten: bool = True, /) -> "Placement":
@@ -178,7 +188,6 @@ class Placement(PyObjectBase):
             If True, ensures rotation quaternion is net positive to make
             the path shorter.
         """
-        ...
 
     @constmethod
     def sclerp(self, placement2: "Placement", t: float, shorten: bool = True, /) -> "Placement":
@@ -197,7 +206,6 @@ class Placement(PyObjectBase):
             If True, the signs are harmonized before interpolation and the interpolation
             takes the shorter path.
         """
-        ...
 
     @constmethod
     def slerp(self, placement2: "Placement", t: float, /) -> "Placement":
@@ -212,7 +220,6 @@ class Placement(PyObjectBase):
         t : float
             Parameter of the path. t=0 returns this placement, t=1 returns `placement2`.
         """
-        ...
 
     @constmethod
     def isIdentity(self, tol: float = 0.0, /) -> bool:
@@ -223,7 +230,6 @@ class Placement(PyObjectBase):
             Tolerance used to check for identity.
             If tol is negative or zero, no tolerance is used.
         """
-        ...
 
     @constmethod
     def isSame(self, other: "Placement", tol: float = 0.0, /) -> bool:
@@ -231,4 +237,3 @@ class Placement(PyObjectBase):
         Checks whether this and the given placement are the same.
         The default tolerance is set to 0.0
         """
-        ...

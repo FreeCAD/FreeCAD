@@ -1,26 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Friedli
+// SPDX-FileCopyrightText: 2023 Wandererfan
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Friedli <david@friedli-be.ch>                *
- *   Copyright (c) 2023 Wandererfan <wandererfan@gmail.com>                *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -155,7 +153,7 @@ Py::Tuple MeasureManager::getSelectionPy(const App::MeasureSelection& selection)
 
 
 std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelection selection,
-                                                               std::string mode)
+                                                               std::string modeIdentifier)
 {
     Base::PyGILStateLocker lock;
 
@@ -170,7 +168,7 @@ std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelec
     // Loop through measure types and check if they work with given selection
     for (App::MeasureType* mType : getMeasureTypes()) {
 
-        if (mode != "" && mType->label != mode) {
+        if (!modeIdentifier.empty() && mType->identifier != modeIdentifier) {
             continue;
         }
 

@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export
-from typing import overload, Tuple
+from typing import Any, overload, Tuple
 from Part.Geom2d import Conic2d
 
 @export(
@@ -72,11 +70,9 @@ class Circle2d(Conic2d):
         Part.Geom2d.Circle2d(Point1,Point2,Point3)
             Creates a circle defined by three non-linear points
         """
-        ...
 
     @staticmethod
-    def getCircleCenter() -> Tuple[float, float]:
+    def getCircleCenter(p1: Any, p2: Any, p3: Any, /) -> Any:
         """
         Get the circle center defined by three points
         """
-        ...

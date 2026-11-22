@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from typing import Any, Final
+from typing import Final
 
 from Base.Metadata import export
+from Base.Vector import Vector
 
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
@@ -20,29 +19,25 @@ class ViewProviderFemMesh(ViewProviderGeometryObject):
     License: LGPL-2.1-or-later
     """
 
-    def applyDisplacement(self) -> Any:
+    def applyDisplacement(self, factor: float, /) -> None:
         """"""
-        ...
 
-    def resetNodeColor(self) -> Any:
+    def resetNodeColor(self) -> None:
         """Reset color set by method setNodeColorByScalars."""
-        ...
 
-    def resetNodeDisplacement(self) -> Any:
+    def resetNodeDisplacement(self) -> None:
         """Reset displacements set by method setNodeDisplacementByVectors."""
-        ...
 
-    def resetHighlightedNodes(self) -> Any:
+    def resetHighlightedNodes(self) -> None:
         """Reset highlighted nodes."""
-        ...
 
-    def setNodeColorByScalars(self) -> Any:
+    def setNodeColorByScalars(self, node_ids: list[int], values: list[float], /) -> None:
         """Sets mesh node colors using element list and value list."""
-        ...
 
-    def setNodeDisplacementByVectors(self) -> Any:
+    def setNodeDisplacementByVectors(
+        self, node_ids: list[int], vectors: list[Vector | tuple[float, float, float]], /
+    ) -> None:
         """"""
-        ...
     NodeColor: dict
     """Postprocessing color of the nodes. The faces between the nodes get interpolated."""
 

@@ -296,7 +296,7 @@ class ViewProviderDraft(object):
                         else:
                             path = "None"
                 if path and vobj.RootNode:
-                    switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+                    switch = vobj.SwitchNode
                     if switch is not None and switch.getChildren().getLength() > 0:
                         flat_lines_node = switch.getChild(0)
                         # Get the Shaded sub-node of the Flat Lines node. The name in
@@ -588,6 +588,10 @@ class ViewProviderDraftAlt(ViewProviderDraft):
 
     def claimChildren(self):
         return []
+
+    def updateData(self, obj, prop):
+        if prop == "AutoUpdate":
+            obj.ViewObject.signalChangeIcon()
 
 
 # Alias for compatibility with v0.18 and earlier

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2013 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #if defined(__MINGW32__)
 # define WNT  // avoid conflict with GUID
@@ -63,8 +60,6 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) hDoc, bool explicitPlacement)
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
     if (keepExplicitPlacement) {
-        // rootLabel = aShapeTool->NewShape();
-        // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
         Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
     }
     else {
@@ -104,12 +99,10 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
                     break;
                 }
             }
-
             if (accept) {
                 keepObjects.push_back(it);
             }
         }
-
         entries.swap(keepObjects);
     }
 
@@ -262,14 +255,6 @@ int ExportOCAF::saveShape(
 
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
-
-    /*
-        if (keepExplicitPlacement) {
-            aShapeTool->AddComponent(aShapeTool->BaseLabel(), shapeLabel, aLoc);
-            XCAFDoc_Location::Set(shapeLabel,MyLoc);
-        }
-    */
-
     // Add color information
     Quantity_ColorRGBA col;
 
@@ -294,7 +279,6 @@ int ExportOCAF::saveShape(
                 // If faceLabel is null we check if for the current face a label already
                 // exists. If yes then faceLabel is equal to shapeLabel.
                 TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
-                // TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
                 if (!faceLabel.IsNull()) {
                     aShapeTool->SetShape(faceLabel, xp.Current());
                 }

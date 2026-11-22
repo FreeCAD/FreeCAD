@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/***************************************************************************
- *   Copyright (c) 2015 Kirill Gavrilov <kirill.gavrilov@opencascade.com>  *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2015 Kirill Gavrilov
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Inventor/nodes/SoCamera.h>
@@ -85,6 +83,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
     // event, we only need this flag to see if any processing happened
     // at all.
     SbBool processed = false;
+    bool triedSelectionDrag = false;
 
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
@@ -117,6 +116,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -203,7 +203,12 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
+        // Ctrl+LMB drag zooms in this style, so only plain LMB should start box selection.
+        if (this->currentmode == NavigationStyle::SELECTION && this->button1down && !this->ctrldown) {
+            triedSelectionDrag = true;
+            processed = handleSelectionDragMotion(event, newmode);
+        }
+        else if (this->currentmode == NavigationStyle::ZOOMING) {
             // OCCT uses horizontal mouse position, not vertical
             // this->zoomByCursor(posn, prevnormalized);
             float value = (posn[0] - prevnormalized[0]) * 10.0f;
@@ -253,7 +258,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
             break;
         case CTRLDOWN | BUTTON1DOWN:
         case BUTTON1DOWN:
-            if (newmode != NavigationStyle::ZOOMING) {
+            if (newmode != NavigationStyle::ZOOMING && newmode != NavigationStyle::INTERACT) {
                 newmode = NavigationStyle::SELECTION;
             }
             break;
@@ -277,6 +282,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Process when selection button is pressed together with other buttons that could trigger
     // different actions.
     if (this->button1down && (this->button2down || this->button3down || this->ctrldown)) {
+        clearSelectionStartPosition();
         processed = true;
     }
 
@@ -300,7 +306,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed && !triedSelectionDrag) {
         processed = inherited::processSoEvent(ev);
     }
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2023 Peter McB                                          *
 # *   added the function, mesh_2_femmesh, to convert the MESH               *

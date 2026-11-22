@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2024 Shai Seger
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include "MillPathSegment.h"
 
@@ -38,11 +35,6 @@ constexpr auto pi = std::numbers::pi_v<float>;
 #define PX 0
 #define PY 1
 #define PZ 2
-
-// Maximum ratio of radius to chord length for treating arc as curved
-// Ratios above this indicate the arc is essentially a straight line
-// and should be treated as linear to avoid numerical precision issues
-constexpr float ARC_LINEARIZATION_THRESHOLD = 100000.0f;
 
 namespace CAMSimulator
 {
@@ -85,7 +77,7 @@ MillPathSegment::MillPathSegment(const EndMill& _endmill, const MillMotion& from
         }
         else {
             mStepAngRad = asinf(mResolution / mRadius);
-            mStepAngRad = std::min(std::fmax(mStepAngRad, MAX_SEG_DEG), MIN_SEG_DEG);
+            mStepAngRad = std::max(std::fmin(mStepAngRad, MAX_SEG_DEG), MIN_SEG_DEG);
         }
 
         MotionPosToVec(mCenter, from);
@@ -111,7 +103,6 @@ MillPathSegment::MillPathSegment(const EndMill& _endmill, const MillMotion& from
                 mDiff[PZ] / numSimSteps,
                 &mShape
             );
-            numSimSteps++;
         }
 
         isMultyPart = true;
@@ -152,7 +143,7 @@ void MillPathSegment::AppendPathPoints(std::vector<MillPathPosition>& pointsBuff
         float ang = mStartAngRad;
         float z = mStartPos[PZ];
         float zStep = mDiff[PZ] / numSimSteps;
-        for (int i = 1; i < numSimSteps; i++) {
+        for (int i = 1; i <= numSimSteps; i++) {
             ang -= mStepAngRad;
             z += zStep;
             mpPos.X = mCenter[PX] - sinf(ang) * mRadius;
@@ -187,12 +178,15 @@ void MillPathSegment::render(int step)
         mat4x4_rotate_Z(mat, mat, mStartAngRad - (step - 1) * mStepAngRad);
         mat4x4_rotate_Z(rmat, rmat, mStartAngRad - (step - 1) * mStepAngRad);
 
-        if (mSmallRad || step == numSimSteps) {
-            mat4x4_translate_in_place(mat, 0, mRadius, 0);
-            endmill->toolShape.Render(mat, rmat);
-        }
-        else {
+        if (!mSmallRad) {
             mShape.Render(mat, rmat);
+        }
+        // a tight arc stamps the whole tool at each step's end; a wide one only at its last
+        if (mSmallRad || step == numSimSteps) {
+            mat4x4_rotate_Z(mat, mat, -mStepAngRad);
+            mat4x4_rotate_Z(rmat, rmat, -mStepAngRad);
+            mat4x4_translate_in_place(mat, 0, mRadius, mDiff[PZ] / numSimSteps);
+            endmill->toolShape.Render(mat, rmat);
         }
     }
     else {
@@ -231,7 +225,12 @@ void MillPathSegment::GetHeadPosition(vec3 headPos)
 {
     if (mMotionType == MTCurved) {
         float angRad = mStartAngRad - mStepNumber * mStepAngRad;
-        vec3_set(mHeadPos, -mRadius * sinf(angRad), mRadius * cosf(angRad), 0);
+        vec3_set(
+            mHeadPos,
+            -mRadius * sinf(angRad),
+            mRadius * cosf(angRad),
+            mDiff[PZ] * mStepNumber / numSimSteps
+        );
         vec3_add(mHeadPos, mHeadPos, mCenter);
     }
     else {

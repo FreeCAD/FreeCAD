@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.Rotation import Rotation as RotationPy
 from Base.Vector import Vector
@@ -33,32 +31,28 @@ class GeometrySurface(Geometry):
     """Returns a rotation object to describe the orientation for surface that supports it"""
 
     @constmethod
-    def toShape(self) -> Any:
+    def toShape(self, u1: float = ..., u2: float = ..., v1: float = ..., v2: float = ..., /) -> Any:
         """
-        Return the shape for the geometry.
+        Return the shape for the geometry, optionally within the given parametric bounds.
         """
-        ...
 
     @constmethod
-    def toShell(self, Bounds: object, Segment: object) -> Any:
+    def toShell(self, Bounds: tuple = ..., Segment: bool = ...) -> Any:
         """
         Make a shell of the surface.
         """
-        ...
 
     @constmethod
-    def getD0(self, param: float, /) -> Vector:
+    def getD0(self, u: float, v: float, /) -> Vector:
         """
-        Returns the point of given parameter
+        Returns the point at the given parameters (u, v)
         """
-        ...
 
     @constmethod
-    def getDN(self, n: int, /) -> Any:
+    def getDN(self, u: float, v: float, nu: int, nv: int, /) -> Any:
         """
-        Returns the n-th derivative
+        Returns the derivative of order (nu, nv) at the given parameters (u, v)
         """
-        ...
 
     @constmethod
     def value(self, u: float, v: float, /) -> Vector:
@@ -66,7 +60,6 @@ class GeometrySurface(Geometry):
         value(u,v) -> Point
         Computes the point of parameter (u,v) on this surface
         """
-        ...
 
     @constmethod
     def tangent(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
@@ -74,7 +67,6 @@ class GeometrySurface(Geometry):
         tangent(u,v) -> (Vector,Vector)
         Computes the tangent of parameter (u,v) on this geometry
         """
-        ...
 
     @constmethod
     def normal(self, u: float, v: float, /) -> Vector:
@@ -82,7 +74,6 @@ class GeometrySurface(Geometry):
         normal(u,v) -> Vector
         Computes the normal of parameter (u,v) on this geometry
         """
-        ...
 
     @overload
     def projectPoint(
@@ -115,7 +106,6 @@ class GeometrySurface(Geometry):
         projectPoint(Vector,"Parameters") -> list of tuples of floats
         projectPoint(Vector,"Point") -> list of points
         """
-        ...
 
     @constmethod
     def isUmbillic(self, u: float, v: float, /) -> bool:
@@ -124,7 +114,6 @@ class GeometrySurface(Geometry):
         Check if the geometry on parameter is an umbillic point,
         i.e. maximum and minimum curvature are equal.
         """
-        ...
 
     @constmethod
     def curvature(self, u: float, v: float, type: str, /) -> float:
@@ -133,7 +122,6 @@ class GeometrySurface(Geometry):
         The value of type must be one of this: Max, Min, Mean or Gauss
         Computes the curvature of parameter (u,v) on this geometry
         """
-        ...
 
     @constmethod
     def curvatureDirections(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
@@ -144,14 +132,12 @@ class GeometrySurface(Geometry):
         The first vector corresponds to the maximum curvature,
         the second vector corresponds to the minimum curvature.
         """
-        ...
 
     @constmethod
     def bounds(self) -> Tuple[float, float, float, float]:
         """
         Returns the parametric bounds (U1, U2, V1, V2) of this trimmed surface.
         """
-        ...
 
     @constmethod
     def isPlanar(self, tolerance: float = 0.0, /) -> bool:
@@ -159,93 +145,83 @@ class GeometrySurface(Geometry):
         isPlanar([float]) -> Bool
         Checks if the surface is planar within a certain tolerance.
         """
-        ...
 
     @constmethod
-    def uIso(self, u: Tuple, /) -> Union[GeometryCurve, Line]:
+    def uIso(self, u: float, /) -> Union[GeometryCurve, Line]:
         """
         Builds the U isoparametric curve
         """
-        ...
 
     @constmethod
-    def vIso(self, v: Tuple, /) -> Union[GeometryCurve, Line]:
+    def vIso(self, v: float, /) -> Union[GeometryCurve, Line]:
         """
         Builds the V isoparametric curve
         """
-        ...
 
     @constmethod
     def isUPeriodic(self) -> bool:
         """
         Returns true if this patch is periodic in the given parametric direction.
         """
-        ...
 
     @constmethod
     def isVPeriodic(self) -> bool:
         """
         Returns true if this patch is periodic in the given parametric direction.
         """
-        ...
 
     @constmethod
     def isUClosed(self) -> bool:
         """
         Checks if this surface is closed in the u parametric direction.
         """
-        ...
 
     @constmethod
     def isVClosed(self) -> bool:
         """
         Checks if this surface is closed in the v parametric direction.
         """
-        ...
 
     @constmethod
     def UPeriod(self) -> float:
         """
         Returns the period of this patch in the u parametric direction.
         """
-        ...
 
     @constmethod
     def VPeriod(self) -> float:
         """
         Returns the period of this patch in the v parametric direction.
         """
-        ...
 
     @constmethod
-    def parameter(self) -> float:
+    def parameter(self, point: Vector, precision: float = ..., /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
         """
-        ...
 
     @overload
     def toBSpline(
         self,
-        tolerance: float = 1e-7,
-        continuity_u: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
-        continuity_v: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
-        max_degree_u: int = 25,
-        max_degree_v: int = 25,
-        max_segments: int = 1000,
-        precision_code: int = 0,
+        Tol3d: float = 1e-7,
+        UContinuity: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
+        VContinuity: Literal["C0", "G0", "G1", "C1", "G2", "C3", "CN"] = "C1",
+        MaxDegreeU: int = 25,
+        MaxDegreeV: int = 25,
+        MaxSegments: int = 1000,
+        PrecisCode: int = 0,
     ) -> Any: ...
     @constmethod
     def toBSpline(
         self,
-        tolerance: float = 1e-7,
-        continuity_u: str = "C1",
-        continuity_v: str = "C1",
-        max_degree_u: int = 25,
-        max_degree_v: int = 25,
-        max_segments: int = 1000,
-        precision_code: int = 0,
+        Tol3d: float = 1e-7,
+        UContinuity: str = "C1",
+        VContinuity: str = "C1",
+        MaxDegreeU: int = 25,
+        MaxDegreeV: int = 25,
+        MaxSegments: int = 1000,
+        PrecisCode: int = 0,
     ) -> Any:
         """
         Returns a B-Spline representation of this surface.
@@ -259,21 +235,18 @@ class GeometrySurface(Geometry):
         * precision code (default=0)
         Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
         """
-        ...
 
     @constmethod
-    def intersect(self) -> Any:
+    def intersect(self, other: object, precision: float = ..., /) -> Any:
         """
         Returns all intersection points/curves between the surface and the curve/surface.
         """
-        ...
 
     @constmethod
-    def intersectSS(self, SecondSurface: Any, precision_code: int = 0, /) -> Any:
+    def intersectSS(self, second_surface: Any, precision: float = ..., /) -> Any:
         """
         Returns all intersection curves of this surface and the given surface.
         The required arguments are:
-        * Second surface
-        * precision code (optional, default=0)
+        * second_surface
+        * precision (optional, default=0)
         """
-        ...

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 if(BUILD_ADDONMGR)
   if( NOT EXISTS "${CMAKE_SOURCE_DIR}/src/Mod/AddonManager/CMakeLists.txt" )
     message(FATAL_ERROR "The Addon Manager has been moved into a git submodule. Please run
@@ -13,10 +16,6 @@ endif(BUILD_BIM)
 if(BUILD_ASSEMBLY)
   add_subdirectory(Assembly)
 endif(BUILD_ASSEMBLY)
-
-if(BUILD_CLOUD)
-    add_subdirectory(Cloud)
-endif(BUILD_CLOUD)
 
 if(BUILD_DRAFT)
   add_subdirectory(Draft)
@@ -89,10 +88,6 @@ if(BUILD_ROBOT)
       MESSAGE("Due to the missing Eigen3 library the Robot module won't be built")
     endif(EIGEN3_FOUND)
 endif(BUILD_ROBOT)
-
-if(BUILD_SANDBOX)
-    add_subdirectory(Sandbox)
-endif(BUILD_SANDBOX)
 
 if(BUILD_SHOW)
     add_subdirectory(Show)

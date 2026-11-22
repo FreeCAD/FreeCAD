@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -26,7 +28,6 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
-import codecs
 import os
 from os.path import join
 
@@ -115,7 +116,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
         meshtools.use_correct_fluidinout_ele_def(
             ccxwriter.FluidInletoutlet_ele, ccxwriter.femmesh_file, ccxwriter.fluid_inout_nodes_file
         )
-        inpfile = codecs.open(ccxwriter.file_name, "a", encoding="utf-8")
+        inpfile = open(ccxwriter.file_name, "a", encoding="utf-8")
 
     return inpfile
 

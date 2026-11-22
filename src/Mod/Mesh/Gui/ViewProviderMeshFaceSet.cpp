@@ -140,6 +140,9 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
         else {
             highlightSelection();
         }
+        if (Coloring.getValue()) {
+            Coloring.touch();
+        }
     }
 }
 

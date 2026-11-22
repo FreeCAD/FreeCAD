@@ -1,28 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Jürgen Riegel
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
-
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <boost/tokenizer.hpp>
 
@@ -391,9 +387,7 @@ PyObject* SheetPy::setStyle(PyObject* args)
 
     if (strcmp(options, "replace") == 0) {
         Range rangeIter(cell);
-        do {
-            getSheetPtr()->setStyle(*rangeIter, style);
-        } while (rangeIter.next());
+        getSheetPtr()->setStyle(rangeIter, style);
     }
     else if (strcmp(options, "add") == 0) {
         Range rangeIter(cell);
@@ -522,9 +516,7 @@ PyObject* SheetPy::setDisplayUnit(PyObject* args)
     try {
         Range rangeIter(cell);
 
-        do {
-            getSheetPtr()->setDisplayUnit(*rangeIter, value);
-        } while (rangeIter.next());
+        getSheetPtr()->setDisplayUnit(rangeIter, value);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -693,9 +685,7 @@ PyObject* SheetPy::setAlignment(PyObject* args)
     if (strcmp(options, "replace") == 0) {
         Range rangeIter(cell);
 
-        do {
-            getSheetPtr()->setAlignment(*rangeIter, alignment);
-        } while (rangeIter.next());
+        getSheetPtr()->setAlignment(rangeIter, alignment);
     }
     else if (strcmp(options, "keep") == 0) {
         Range rangeIter(cell);
@@ -823,9 +813,7 @@ PyObject* SheetPy::setForeground(PyObject* args)
         decodeColor(value, c);
 
         Range rangeIter(range);
-        do {
-            getSheetPtr()->setForeground(*rangeIter, c);
-        } while (rangeIter.next());
+        getSheetPtr()->setForeground(rangeIter, c);
         Py_Return;
     }
     catch (const Base::TypeError& e) {
@@ -912,9 +900,7 @@ PyObject* SheetPy::setBackground(PyObject* args)
         decodeColor(value, c);
         Range rangeIter(strAddress);
 
-        do {
-            getSheetPtr()->setBackground(*rangeIter, c);
-        } while (rangeIter.next());
+        getSheetPtr()->setBackground(rangeIter, c);
         Py_Return;
     }
     catch (const Base::TypeError& e) {

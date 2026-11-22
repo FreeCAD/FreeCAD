@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -95,8 +92,8 @@ public:
         PartialTrigger = 10,
         /// Whether to prevent to touch the owner for a recompute on property change.
         NoRecompute = 11,
-        /// Whether a floating point number should be saved as single precision.
-        Single = 12,
+        /// Whether a property is an input property.
+        Input = 12,
         /// For PropertyLists, whether the order of the elements is
         /// relevant for the container using it.
         Ordered = 13,
@@ -133,17 +130,19 @@ public:
         PropHidden = 26,
         /// Corresponds to Prop_Output.
         PropOutput = 27,
+        /// Corresponds to Prop_Input.
+        PropInput = 28,
         /// Mark the end of enum PropertyType bits.
-        PropStaticEnd = 28,
+        PropStaticEnd = 29,
 
         /// User defined status bit.
-        User1 = 28,
+        User1 = 29,
         /// User defined status bit.
-        User2 = 29,
+        User2 = 30,
         /// User defined status bit.
-        User3 = 30,
+        User3 = 31,
         /// User defined status bit.
-        User4 = 31
+        User4 = 32
     };
 
     /// Construct a property.
@@ -323,6 +322,21 @@ public:
      */
     virtual void getPaths(std::vector<App::ObjectIdentifier>& paths) const;
 
+    /**
+     * @brief Get completion paths for an explicitly entered property member.
+     *
+     * The default implementation returns getPaths(). Overrides may add paths for
+     * indexed members without enumerating all elements of a collection.
+     *
+     * @param[out] paths Valid paths, including the property component.
+     * @param[in] subPath Member path relative to this property, such as ".Edge5",
+     * excluding the final separator and the member currently being completed.
+     */
+    virtual void getPathsForCompletion(
+        std::vector<App::ObjectIdentifier>& paths,
+        const std::string& subPath
+    ) const;
+
     /** @brief Callback for after document restore.
      *
      * This function is called at the beginning of Document::afterRestore().
@@ -446,24 +460,25 @@ public:
     /**
      * @brief Set the precision of floating point properties.
      *
-     * This sets the precision of properties using floating point
-     * numbers to single precision. The default is double precision.
+     * Deprecated.  All floating proint properties are double precision.
      *
-     * @param[in] single True to set single precision, false for double precision.
+     * @param[in] single Unused.
      */
-    void setSinglePrecision(bool single)
+    void setSinglePrecision(bool /*single*/)
     {
-        setStatus(App::Property::Single, single);
     }
 
     /**
      * @brief Gets precision of floating point properties.
      *
-     * @return True if single precision is set, false for double precision.
+     * This function is deprecated.  All floating point properties are
+     * double precision.
+     *
+     * @return False always.
      */
     inline bool isSinglePrecision() const
     {
-        return testStatus(App::Property::Single);
+        return false;
     }
     /// @}
 

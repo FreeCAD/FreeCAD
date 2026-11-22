@@ -278,19 +278,34 @@ bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
     return std::ranges::any_of(Exts, [this](const char* ext) { return hasExtension(ext); });
 }
 
+namespace
+{
+/// Get the status of a path **without throwing**. A missing path is reported as `not_found`. Any
+/// other error means the entry exists but cannot be inspected, e.g. an AF_UNIX socket on Windows.
+fs::file_status statusNoThrow(const fs::path& path) noexcept
+{
+    std::error_code ec;
+    fs::file_status status = fs::status(path, ec);
+    if (status.type() == fs::file_type::none) {
+        return fs::file_status(fs::file_type::unknown);
+    }
+    return status;
+}
+}  // namespace
+
 bool FileInfo::exists() const
 {
     fs::path path(stringToPath(FileName));
-    return fs::exists(path);
+    return fs::exists(statusNoThrow(path));
 }
 
 bool FileInfo::isReadable() const
 {
     fs::path path = stringToPath(FileName);
-    if (!fs::exists(path)) {
+    fs::file_status stat = statusNoThrow(path);
+    if (!fs::exists(stat) || stat.permissions() == fs::perms::unknown) {
         return false;
     }
-    fs::file_status stat = fs::status(path);
     fs::perms perms = stat.permissions();
     return (perms & fs::perms::owner_read) == fs::perms::owner_read;
 }
@@ -320,10 +335,11 @@ bool directoryIsWritable(const fs::path& dir)
 bool FileInfo::isWritable() const
 {
     fs::path path = stringToPath(FileName);
-    if (!fs::exists(path)) {
+    fs::file_status stat = statusNoThrow(path);
+    if (!fs::exists(stat) || stat.permissions() == fs::perms::unknown) {
         return false;
     }
-    if (fs::is_directory(path)) {
+    if (fs::is_directory(stat)) {
         return directoryIsWritable(path);
     }
 #ifdef FC_OS_WIN32
@@ -365,7 +381,6 @@ bool FileInfo::isWritable() const
                   << " while checking for write access." << '\n';
     }
 #endif
-    fs::file_status stat = fs::status(path);
     fs::perms perms = stat.permissions();
     return (perms & fs::perms::owner_write) == fs::perms::owner_write;
 }
@@ -386,20 +401,23 @@ bool FileInfo::setPermissions(Permissions perms)
     }
 
     fs::path file_path = stringToPath(FileName);
-    if (!fs::exists(file_path)) {
+    if (!fs::exists(statusNoThrow(file_path))) {
         return false;
     }
 
-    fs::permissions(file_path, mode);
-    fs::file_status stat = fs::status(file_path);
-    return stat.permissions() == mode;
+    std::error_code ec;
+    fs::permissions(file_path, mode, ec);
+    if (ec) {
+        return false;
+    }
+    return statusNoThrow(file_path).permissions() == mode;
 }
 
 bool FileInfo::isFile() const
 {
-    fs::path path = stringToPath(FileName);
-    if (fs::exists(path)) {
-        return fs::is_regular_file(path);
+    fs::file_status stat = statusNoThrow(stringToPath(FileName));
+    if (fs::exists(stat)) {
+        return fs::is_regular_file(stat);
     }
 
     // TODO: Check for valid file name
@@ -408,19 +426,16 @@ bool FileInfo::isFile() const
 
 bool FileInfo::isDir() const
 {
-    fs::path path = stringToPath(FileName);
-    if (fs::exists(path)) {
-        return fs::is_directory(path);
-    }
-
-    return false;
+    fs::file_status stat = statusNoThrow(stringToPath(FileName));
+    return fs::is_directory(stat);
 }
 
 bool FileInfo::isSymlink() const
 {
     fs::path path = stringToPath(FileName);
-    if (fs::exists(path)) {
-        return fs::is_symlink(path);
+    if (fs::exists(statusNoThrow(path))) {
+        std::error_code ec;
+        return fs::is_symlink(fs::symlink_status(path, ec));
     }
 
     return false;
@@ -428,13 +443,13 @@ bool FileInfo::isSymlink() const
 
 unsigned int FileInfo::size() const
 {
-    unsigned int bytes {};
-    fs::path path = stringToPath(FileName);
-    if (fs::exists(path)) {
-        bytes = fs::file_size(path);
+    std::error_code ec;
+    auto bytes = fs::file_size(stringToPath(FileName), ec);
+    if (ec) {
+        return 0;
     }
 
-    return bytes;
+    return static_cast<unsigned int>(bytes);
 }
 
 template<typename TP>
@@ -449,9 +464,10 @@ TimeInfo FileInfo::lastModified() const
 {
     TimeInfo ti = TimeInfo::null();
 
-    if (exists()) {
-        fs::path path = stringToPath(FileName);
-        ti.setTime_t(to_time_t(fs::last_write_time(path)));
+    std::error_code ec;
+    auto time = fs::last_write_time(stringToPath(FileName), ec);
+    if (!ec) {
+        ti.setTime_t(to_time_t(time));
     }
 
     return ti;
@@ -568,11 +584,49 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
     return list;
 }
 
+std::optional<std::string> FileInfo::safeArchiveEntryPath(const std::string& entryName)
+{
+    if (entryName.find(':') != std::string::npos) {
+        return std::nullopt;
+    }
+
+    // A backslash is only a separator to fs::path on Windows, but setFile() converts it into a
+    // forward slash on every platform, so the separators must be unified before decomposition.
+    std::string normalized = entryName;
+    std::ranges::replace(normalized, '\\', '/');
+
+    // Leading separators are stripped rather than rejected: the FEM code this was written to
+    // address starts *every* path with a slash. They have to go before fs::path sees the
+    // name.
+    normalized.erase(0, normalized.find_first_not_of('/'));
+
+    fs::path result;
+    for (const fs::path& component : fs::path(normalized).relative_path()) {
+        if (component == "..") {
+            return std::nullopt;
+        }
+        if (component.empty() || component == ".") {
+            continue;
+        }
+        result /= component;
+    }
+
+    if (result.empty()) {
+        return std::nullopt;
+    }
+
+    return result.generic_string();
+}
+
 std::optional<std::string> FileInfo::getSymlinkTarget()
 {
     fs::path path = stringToPath(FileName);
     if (isSymlink()) {
-        return pathToString(fs::read_symlink(path));
+        std::error_code ec;
+        fs::path target = fs::read_symlink(path, ec);
+        if (!ec) {
+            return pathToString(target);
+        }
     }
     return std::nullopt;
 }

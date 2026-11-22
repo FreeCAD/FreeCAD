@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -101,7 +103,6 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_profileObject(nullptr),
     m_dirName("Aligned"),
     m_sectionName(m_section->getNameInDocument()),
-    m_savePageName(m_section->findParentPage()->getNameInDocument()),
     m_createMode(false),
     m_applyDeferred(0),
     m_angle(0.0),
@@ -111,6 +112,10 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
 {
     m_doc = m_section->getDocument();
     m_page = m_section->findParentPage();
+    if (!m_page) {
+        throw Base::RuntimeError("TaskComplexSection - Parent page not found");
+    }
+    m_savePageName = m_page->getNameInDocument();
 
     m_baseView = dynamic_cast<TechDraw::DrawViewPart*>(m_section->BaseView.getValue());
     if (m_baseView) {
@@ -561,14 +566,20 @@ void TaskComplexSection::createComplexSection()
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
+        std::string sectionCaption = Base::Tools::escapeEncodeString("SECTION <REF> - <REF>");
+
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Caption = '%s'",
+                           m_sectionName.c_str(),
+                           sectionCaption.c_str());
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_page->getNameInDocument(), m_sectionName.c_str());
 
@@ -648,16 +659,17 @@ void TaskComplexSection::updateComplexSection()
     int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+              m_sectionName.c_str(), sectionLabel.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
@@ -697,14 +709,14 @@ void TaskComplexSection::updateComplexSection()
     Gui::Command::commitCommand(tid);
 }
 
-std::string TaskComplexSection::makeSectionLabel(const QString& symbol)
+std::string TaskComplexSection::makeSectionLabel()
 {
     const std::string objectName{QT_TR_NOOP("ComplexSection")};
     std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
     std::string uniqueLabel = "Section" + uniqueSuffix;
-    std::string temp = symbol.toStdString();
-    return ( uniqueLabel + " " + temp + " - " + temp );
+    return ( uniqueLabel );
 }
+
 
 void TaskComplexSection::failNoObject()
 {

@@ -1,26 +1,26 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
+
+#include <algorithm>
+#include <set>
 
 #include <QDir>
 #include <QFileInfo>
@@ -41,6 +41,7 @@
 #include "ObjectIdentifier.h"
 #include "ElementNamingUtils.h"
 #include "GeoFeature.h"
+#include "ComplexGeoData.h"
 
 
 FC_LOG_LEVEL_INIT("PropertyLinks", true, true)
@@ -298,11 +299,23 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
     }
 }
 
-void PropertyLinkBase::updateAllElementReferences(bool reverse)
+void PropertyLinkBase::updateAllElementReferences(const std::vector<App::DocumentT>& newDocs, bool reverse)
 {
+    std::set<App::Document*> newDocSet;
+    for (const auto& doc : newDocs) {
+        if (auto* d = doc.getDocument()) {
+            newDocSet.insert(d);
+        }
+    }
+
     for (auto reference : _ElementRefMap) {
+        const bool targetIsNew = newDocSet.contains(reference.first->getDocument());
         for (auto prop : reference.second) {
             if (prop->getContainer()) {
+                const auto docObj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+                if (!docObj || (!targetIsNew && !newDocSet.contains(docObj->getDocument()))) {
+                    continue;
+                }
                 try {
                     prop->updateElementReference(reference.first, reverse, true);
                 }
@@ -415,6 +428,21 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject* obj,
     subname = newSub + sub;
 }
 
+/// As a last-ditch effort at recovering otherwise-broken geometry, find the nearest geometric
+/// match. Note that there's still a tolerance window in this search so it will reject geometry that
+/// is too far away to possibly be the right match, but that's still a bit heuristic. At some point
+/// it's better to fail than to convince ourselves everything is "fine".
+static std::vector<std::string> rescueDriftedElement(const GeoFeature& geo, const char* element)
+{
+    auto names = geo.searchElementCache(element, Data::SearchOption::AdaptiveTolerance);
+    if (names.empty()) {
+        return {};
+    }
+    FC_WARN("recovered drifted element reference " << element << " -> " << names.front() << " in "
+                                                    << geo.getFullName());
+    return names;
+}
+
 bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                                                App::DocumentObject* obj,
                                                std::string& sub,
@@ -474,10 +502,13 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-            auto names = geo->searchElementCache(oldElement);
+            auto names = geo->searchElementCache(oldElement, Data::SearchOption::CheckGeometry);
             if (names.empty()) {
                 // try floating point tolerance
                 names = geo->searchElementCache(oldElement, Data::SearchOptions());
+            }
+            if (names.empty() && missing) {
+                names = rescueDriftedElement(*geo, oldElement);
             }
             if (names.size()) {
                 missing = false;
@@ -593,7 +624,7 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer* owner,
         }
         return res;
     }
-    else if (newObj == obj) {
+    if (newObj == obj) {
         // This means the new object is already sub-object of this parent
         // (consider a case of swapping the tool and base object of the Cut
         // feature). We'll swap the old and new object.
@@ -632,10 +663,10 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer* owner,
             }
             break;
         }
-        else if (sobj == newObj) {
+        if (sobj == newObj) {
             return tryReplaceLink(owner, obj, parent, newObj, oldObj, subname);
         }
-        else if (prev == parent) {
+        if (prev == parent) {
             break;
         }
         prev = sobj;
@@ -723,6 +754,7 @@ void PropertyLink::resetLink()
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if (_pcLink) {
                 _pcLink->_removeBackLink(parent);
+                _pcLink->_removeBackLinkProp(getName(), parent);
             }
         }
     }
@@ -746,9 +778,11 @@ void PropertyLink::setValue(App::DocumentObject* lValue)
         if (!parent->testStatus(ObjectStatus::Destroy)) {
             if (_pcLink) {
                 _pcLink->_removeBackLink(parent);
+                _pcLink->_removeBackLinkProp(getName(), parent);
             }
             if (lValue) {
                 lValue->_addBackLink(parent);
+                lValue->_addBackLinkProp(getName(), parent);
             }
         }
     }
@@ -772,9 +806,7 @@ PyObject* PropertyLink::getPyObject()
     if (_pcLink) {
         return _pcLink->getPyObject();
     }
-    else {
-        Py_Return;
-    }
+    Py_Return;
 }
 
 void PropertyLink::setPyObject(PyObject* value)
@@ -812,14 +844,14 @@ void PropertyLink::Restore(Base::XMLReader& reader)
         DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
         if (!object) {
             if (reader.isVerbose()) {
-                Base::Console().warning("Lost link to '%s' while loading, maybe "
+                Base::Console().warning("Lost link to '{}' while loading, maybe "
                                         "an object was not loaded correctly\n",
-                                        name.c_str());
+                                        name);
             }
         }
         else if (parent == object) {
             if (reader.isVerbose()) {
-                Base::Console().warning("Object '%s' links to itself, nullify it\n", name.c_str());
+                Base::Console().warning("Object '{}' links to itself, nullify it\n", name);
             }
             object = nullptr;
         }
@@ -928,6 +960,7 @@ PropertyLinkList::~PropertyLinkList()
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
         }
@@ -945,6 +978,7 @@ void PropertyLinkList::setSize(int newSize)
 
         if (_pcScope != LinkScope::Hidden) {
             obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+            obj->_removeBackLinkProp(getName(), static_cast<DocumentObject*>(getContainer()));
         }
     }
     _lValueList.resize(newSize);
@@ -982,9 +1016,11 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
             if (obj) {
                 obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+                obj->_removeBackLinkProp(getName(), static_cast<DocumentObject*>(getContainer()));
             }
             if (value) {
                 value->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+                value->_addBackLinkProp(getName(), static_cast<DocumentObject*>(getContainer()));
             }
         }
     }
@@ -1019,11 +1055,13 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
             for (auto* obj : value) {
                 if (obj) {
                     obj->_addBackLink(parent);
+                    obj->_addBackLinkProp(getName(), parent);
                 }
             }
         }
@@ -1324,6 +1362,7 @@ PropertyLinkSub::~PropertyLinkSub()
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
             if (_pcLinkSub) {
                 _pcLinkSub->_removeBackLink(parent);
+                _pcLinkSub->_removeBackLinkProp(getName(), parent);
             }
         }
     }
@@ -1363,9 +1402,11 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
         if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
             if (_pcLinkSub) {
                 _pcLinkSub->_removeBackLink(parent);
+                _pcLinkSub->_removeBackLinkProp(getName(), parent);
             }
             if (lValue) {
                 lValue->_addBackLink(parent);
+                lValue->_addBackLinkProp(getName(), parent);
             }
         }
     }
@@ -1454,8 +1495,8 @@ PyObject* PropertyLinkSub::getPyObject()
 {
     Py::Tuple tup(2);
     Py::List list(static_cast<int>(_cSubList.size()));
-    if (_pcLinkSub) {
-        tup[0] = Py::asObject(_pcLinkSub->getPyObject());
+    if (_pcLinkSub || !_cSubList.empty()) {
+        tup[0] = _pcLinkSub ? Py::asObject(_pcLinkSub->getPyObject()) : Py::None();
         int i = 0;
         for (auto& sub : getSubValues(testFlag(LinkNewElement))) {
             list[i++] = Py::String(sub);
@@ -1463,9 +1504,7 @@ PyObject* PropertyLinkSub::getPyObject()
         tup[1] = list;
         return Py::new_reference_to(tup);
     }
-    else {
-        return Py::new_reference_to(Py::None());
-    }
+    return Py::new_reference_to(Py::None());
 }
 
 void PropertyLinkSub::setPyObject(PyObject* value)
@@ -1482,16 +1521,20 @@ void PropertyLinkSub::setPyObject(PyObject* value)
         else if (seq.size() != 2) {
             throw Base::ValueError("Expect input sequence of size 2");
         }
-        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
-            DocumentObjectPy* pcObj = static_cast<DocumentObjectPy*>(seq[0].ptr());
-            static const char* errMsg =
-                "type of second element in tuple must be str or sequence of str";
+        else if (
+            (seq[0].ptr() == Py_None) || PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))
+        ) {
+            auto* object = (seq[0].ptr() == Py_None)
+                ? nullptr
+                : static_cast<DocumentObjectPy*>(seq[0].ptr())->getDocumentObjectPtr();
+            static const char* errMsg
+                = "type of second element in tuple must be str or sequence of str";
             PropertyString propString;
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
                 propString.setPyObject(seq[1].ptr());
                 vals.emplace_back(propString.getValue());
-                setValue(pcObj->getDocumentObjectPtr(), std::move(vals));
+                setValue(object, std::move(vals));
             }
             else if (seq[1].isSequence()) {
                 Py::Sequence list(seq[1]);
@@ -1504,15 +1547,15 @@ void PropertyLinkSub::setPyObject(PyObject* value)
                     propString.setPyObject((*it).ptr());
                     vals[i] = propString.getValue();
                 }
-                setValue(pcObj->getDocumentObjectPtr(), std::move(vals));
+                setValue(object, std::move(vals));
             }
             else {
                 throw Base::TypeError(errMsg);
             }
         }
         else {
-            std::string error =
-                std::string("type of first element in tuple must be 'DocumentObject', not ");
+            std::string error
+                = "type of first element in tuple must be 'DocumentObject' or 'NoneType', not ";
             error += seq[0].ptr()->ob_type->tp_name;
             throw Base::TypeError(error);
         }
@@ -1957,7 +2000,9 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
 
     reader.readEndElement("LinkSub");
 
-    if (pcObject) {
+    // A deliberately null link can carry a local reference, such as an object axis.
+    // Discard subnames only when a named linked object could not be restored.
+    if (pcObject || name.empty()) {
         setValue(pcObject, std::move(values), std::move(shadows));
         _mapped = std::move(mapped);
     }
@@ -2207,6 +2252,7 @@ PropertyLinkSubList::~PropertyLinkSubList()
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
         }
@@ -2255,10 +2301,12 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
             if (lValue) {
                 lValue->_addBackLink(parent);
+                lValue->_addBackLinkProp(getName(), parent);
             }
         }
     }
@@ -2303,6 +2351,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
 
@@ -2311,6 +2360,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             for (auto* obj : lValue) {
                 if (obj) {
                     obj->_addBackLink(parent);
+                    obj->_addBackLinkProp(getName(), parent);
                 }
             }
         }
@@ -2363,6 +2413,7 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
 
@@ -2371,6 +2422,7 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
             for (auto* obj : lValue) {
                 if (obj) {
                     obj->_addBackLink(parent);
+                    obj->_addBackLinkProp(getName(), parent);
                 }
             }
         }
@@ -2405,6 +2457,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
             for (auto* obj : _lValueList) {
                 if (obj) {
                     obj->_removeBackLink(parent);
+                    obj->_removeBackLinkProp(getName(), parent);
                 }
             }
 
@@ -2412,6 +2465,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
             // document object to ensure that the backlink is only added once
             if (lValue) {
                 lValue->_addBackLink(parent);
+                lValue->_addBackLinkProp(getName(), parent);
             }
         }
     }
@@ -2453,6 +2507,7 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
                 for (auto* value : _lValueList) {
                     if (value && value == obj) {
                         value->_removeBackLink(parent);
+                        value->_removeBackLinkProp(getName(), parent);
                     }
                 }
             }
@@ -2461,6 +2516,7 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
             // document object to ensure that the backlink is only added once
             if (obj) {
                 obj->_addBackLink(parent);
+                obj->_addBackLinkProp(getName(), parent);
             }
         }
     }
@@ -2906,9 +2962,9 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             }
         }
         else if (reader.isVerbose()) {
-            Base::Console().warning("Lost link to '%s' while loading, maybe "
+            Base::Console().warning("Lost link to '{}' while loading, maybe "
                                     "an object was not loaded correctly\n",
-                                    name.c_str());
+                                    name);
         }
     }
     setFlag(LinkRestoreLabel, restoreLabel);
@@ -2930,7 +2986,7 @@ bool PropertyLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName)
         setValue(prop.getValue());
         return true;
     }
-    else if (type.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+    if (type.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
         PropertyLinkList prop;
         prop.setContainer(getContainer());
         prop.Restore(reader);
@@ -2939,7 +2995,7 @@ bool PropertyLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName)
         setValues(prop.getValues(), subnames);
         return true;
     }
-    else if (type.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+    if (type.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
         PropertyLinkSub prop;
         prop.setContainer(getContainer());
         prop.Restore(reader);
@@ -3361,9 +3417,7 @@ public:
         if (relative) {
             return std::string(docDir.relativeFilePath(path).toUtf8().constData());
         }
-        else {
-            return std::string(path.toUtf8().constData());
-        }
+        return std::string(path.toUtf8().constData());
     }
 
     static DocInfoPtr
@@ -3423,9 +3477,7 @@ public:
         if (path.startsWith(QLatin1String("https://"))) {
             return path;
         }
-        else {
-            return QFileInfo(path).absoluteFilePath();
-        }
+        return QFileInfo(path).absoluteFilePath();
     }
 
     QString getFullPath() const
@@ -3434,9 +3486,7 @@ public:
         if (path.startsWith(QLatin1String("https://"))) {
             return path;
         }
-        else {
-            return QFileInfo(myPos->first).absoluteFilePath();
-        }
+        return QFileInfo(myPos->first).absoluteFilePath();
     }
 
     const char* filePath() const
@@ -3871,6 +3921,7 @@ void PropertyXLink::restoreLink(App::DocumentObject* lValue)
 
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         lValue->_addBackLink(owner);
+        lValue->_addBackLinkProp(getName(), owner);
     }
 
     _pcLink = lValue;
@@ -3932,9 +3983,11 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         if (_pcLink) {
             _pcLink->_removeBackLink(owner);
+            _pcLink->_removeBackLinkProp(getName(), owner);
         }
         if (lValue) {
             lValue->_addBackLink(owner);
+            lValue->_addBackLinkProp(getName(), owner);
         }
     }
 
@@ -3990,6 +4043,7 @@ void PropertyXLink::setValue(std::string&& filename,
 
     if (_pcLink && !owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         _pcLink->_removeBackLink(owner);
+        _pcLink->_removeBackLinkProp(getName(), owner);
     }
 
     _pcLink = nullptr;
@@ -4155,7 +4209,7 @@ void PropertyXLink::Save(Base::Writer& writer) const
         writer.Stream() << writer.ind() << "<XLink name=\"" << _pcLink->getExportName();
     }
     else {
-        const char* path = filePath.c_str();
+        const char* path = getDocumentPath();
         std::string _path;
         if (exporting) {
             // Here means we are exporting the owner but not exporting the
@@ -4612,7 +4666,7 @@ void PropertyXLink::setPyObject(PyObject* value)
             setValue(nullptr);
             return;
         }
-        else if (!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type)) {
+        if (!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type)) {
             throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
         }
         PropertyString propString;
@@ -5564,11 +5618,9 @@ bool PropertyXLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName
         setValues(linkProp.getValues());
         return true;
     }
-    else if (
-        typeName == PropertyLinkSubListGlobal::getClassTypeId().getName()
+    if (typeName == PropertyLinkSubListGlobal::getClassTypeId().getName()
         || typeName == PropertyLinkSubList::getClassTypeId().getName()
-        || typeName == PropertyLinkSubListChild::getClassTypeId().getName()
-    ) {
+        || typeName == PropertyLinkSubListChild::getClassTypeId().getName()) {
         PropertyLinkSubList linkProp;
         linkProp.setContainer(getContainer());
         linkProp.Restore(reader);
@@ -5736,6 +5788,7 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject* obj, bool clear)
         }
         else if (!it->second) {
             obj->_removeBackLink(owner);
+            obj->_removeBackLinkProp(getName(), owner);
         }
         _Deps.erase(it);
         onRemoveDep(obj);
@@ -5919,8 +5972,67 @@ bool PropertyXLinkContainer::isLinkedToDocument(const App::Document& doc) const
     return false;
 }
 
-void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*, bool>&& newDeps)
+// Mimics updateDeps() but for fine-grained property dependencies.  It does not
+// handle the XLink logic that is left to updateDeps().
+void PropertyXLinkContainer::updateDepsProp(
+    std::map<std::pair<std::string, DocumentObject*>, bool>& propDeps)
 {
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
+    if (!owner || !owner->isAttachedToDocument()) {
+        return;
+    }
+
+    // delete all entries in propDeps of owner:
+    std::erase_if(propDeps, [owner](auto const& kv) {
+        return kv.first.second == owner;
+    });
+
+    for (auto& [pair, hidden] : propDeps) {
+        std::string const& propName = pair.first;
+        DocumentObject* obj = pair.second;
+        if (obj && obj->isAttachedToDocument()) {
+            auto it = _PropDeps.find(pair);
+            if (it != _PropDeps.end()) {
+                if (hidden != it->second) {
+                    if (hidden) {
+                        obj->_removeBackLinkProp(getName(), owner, propName.c_str());
+                    }
+                    else {
+                        obj->_addBackLinkProp(getName(), owner, propName.c_str());
+                    }
+                }
+                _PropDeps.erase(it);
+                continue;
+            }
+            if (!hidden) {
+                obj->_addBackLinkProp(getName(), owner, propName.c_str());
+            }
+        }
+    }
+
+    for (auto& [pair, hidden] : _PropDeps) {
+        std::string const& propName = pair.first;
+        DocumentObject* obj = pair.second;
+        if (!obj || !obj->isAttachedToDocument()) {
+            continue;
+        }
+        if (!hidden) {
+            obj->_removeBackLinkProp(getName(), owner, propName.c_str());
+        }
+    }
+
+    _PropDeps = std::move(propDeps);
+}
+
+void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*, bool>&& newDeps,
+                                        std::map<std::pair<std::string, DocumentObject*>, bool>* propDeps)
+{
+    // We want dependencies in terms of the to- and fromProperty if true.
+    // Otherwise we only want the dependencies in terms of HEAD.
+    bool fineGrainedProps = propDeps != nullptr;
+    if (fineGrainedProps) {
+        updateDepsProp(*propDeps);
+    }
     auto owner = freecad_cast<App::DocumentObject*>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         return;
@@ -5935,9 +6047,15 @@ void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*, bool>&& newDep
                 if (v.second != it->second) {
                     if (v.second) {
                         obj->_removeBackLink(owner);
+                        if (!fineGrainedProps) {
+                            obj->_removeBackLinkProp(getName(), owner);
+                        }
                     }
                     else {
                         obj->_addBackLink(owner);
+                        if (!fineGrainedProps) {
+                            obj->_addBackLinkProp(getName(), owner);
+                        }
                     }
                 }
                 _Deps.erase(it);
@@ -5953,6 +6071,9 @@ void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*, bool>&& newDep
             }
             else if (!v.second) {
                 obj->_addBackLink(owner);
+                if (!fineGrainedProps) {
+                    obj->_addBackLinkProp(getName(), owner);
+                }
             }
 
             onAddDep(obj);
@@ -5966,6 +6087,9 @@ void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*, bool>&& newDep
         if (obj->getDocument() == owner->getDocument()) {
             if (!v.second) {
                 obj->_removeBackLink(owner);
+                if (!fineGrainedProps) {
+                    obj->_removeBackLinkProp(getName(), owner);
+                }
             }
         }
         else {
@@ -6000,6 +6124,7 @@ void PropertyXLinkContainer::clearDeps()
             if (!v.second && obj && obj->isAttachedToDocument()
                 && obj->getDocument() == owner->getDocument()) {
                 obj->_removeBackLink(owner);
+                obj->_removeBackLinkProp(getName(), owner);
             }
         }
     }
@@ -6017,6 +6142,16 @@ void PropertyXLinkContainer::getLinks(std::vector<App::DocumentObject*>& objs,
     for (auto& v : _Deps) {
         if (all || !v.second) {
             objs.push_back(v.first);
+        }
+    }
+}
+
+void PropertyXLinkContainer::getLinksProp(std::vector<std::pair<std::string, App::DocumentObject*>>& links,
+                                          bool all) const
+{
+    for (auto& [pair, hidden] : _PropDeps) {
+        if (all || !hidden) {
+            links.push_back(pair);
         }
     }
 }

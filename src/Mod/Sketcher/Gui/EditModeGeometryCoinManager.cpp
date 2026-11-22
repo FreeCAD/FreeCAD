@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2021 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
@@ -119,8 +116,8 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
     gcconv.convert(geolistfacade);
 
     // set cross coordinates
-    editModeScenegraphNodes.RootCrossSet->numVertices.set1Value(0, 2);
-    editModeScenegraphNodes.RootCrossSet->numVertices.set1Value(1, 2);
+    editModeScenegraphNodes.RootCrossHSet->numVertices.set1Value(0, 2);
+    editModeScenegraphNodes.RootCrossVSet->numVertices.set1Value(0, 2);
 
     analysisResults.combRepresentationScale = gcconv.getCombRepresentationScale();
     analysisResults.boundingBoxMagnitudeOrder = exp(
@@ -149,7 +146,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(
     auto isExternalDefiningGeomPoint = [&geolistfacade](int GeoId) {
         auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         if (geom) {
-            auto egf = ExternalGeometryFacade::getFacade(geom->clone());
+            std::unique_ptr<Part::Geometry> geomCopy(geom->clone());
+            // The ExternalGeometryFacade is not the owner of the geometry
+            auto egf = ExternalGeometryFacade::getFacade(geomCopy.get());
             auto ref = egf->getRef();
             return egf->testFlag(ExternalGeometryExtension::Defining);
         }
@@ -203,7 +202,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(
 
     // Update Colors
 
-    SbColor* crosscolor = editModeScenegraphNodes.RootCrossMaterials->diffuseColor.startEditing();
+    SbColor* crosscolorH = editModeScenegraphNodes.RootCrossHMaterials->diffuseColor.startEditing();
+    SbColor* crosscolorV = editModeScenegraphNodes.RootCrossVMaterials->diffuseColor.startEditing();
     auto viewOrientationFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
     // Origin point
@@ -216,6 +216,10 @@ void EditModeGeometryCoinManager::updateGeometryColor(
             = drawingParameters.FullyConstraintElementColor;
     }
     editModeScenegraphNodes.OriginPointCoordinate->point.set1Value(
+        0,
+        SbVec3f(0, 0, viewOrientationFactor * drawingParameters.zRootPoint)
+    );
+    editModeScenegraphNodes.OriginPointCoordinateOccluded->point.set1Value(
         0,
         SbVec3f(0, 0, viewOrientationFactor * drawingParameters.zRootPoint)
     );
@@ -491,7 +495,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                 }
                 else if (isExternal) {
                     auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
-                    auto egf = ExternalGeometryFacade::getFacade(geom->clone());
+                    std::unique_ptr<Part::Geometry> geomCopy(geom->clone());
+                    // The ExternalGeometryFacade is not the owner of the geometry
+                    auto egf = ExternalGeometryFacade::getFacade(geomCopy.get());
                     auto ref = egf->getRef();
                     if (egf->testFlag(ExternalGeometryExtension::Missing)) {
                         color[i] = drawingParameters.InvalidSketchColor;
@@ -568,23 +574,23 @@ void EditModeGeometryCoinManager::updateGeometryColor(
         // colors of the cross
         if (l == 0) {  // only in layer 0
             if (ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, Sketcher::GeoEnum::HAxis)) {
-                crosscolor[0] = drawingParameters.SelectColor;
+                crosscolorH[0] = drawingParameters.SelectColor;
             }
             else if (preselectcross == 1) {  // cross only in layer 0
-                crosscolor[0] = drawingParameters.PreselectColor;
+                crosscolorH[0] = drawingParameters.PreselectColor;
             }
             else {
-                crosscolor[0] = drawingParameters.CrossColorH;
+                crosscolorH[0] = drawingParameters.CrossColorH;
             }
 
             if (ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, Sketcher::GeoEnum::VAxis)) {
-                crosscolor[1] = drawingParameters.SelectColor;
+                crosscolorV[0] = drawingParameters.SelectColor;
             }
             else if (preselectcross == 2) {
-                crosscolor[1] = drawingParameters.PreselectColor;
+                crosscolorV[0] = drawingParameters.PreselectColor;
             }
             else {
-                crosscolor[1] = drawingParameters.CrossColorV;
+                crosscolorV[0] = drawingParameters.CrossColorV;
             }
         }
 
@@ -592,7 +598,19 @@ void EditModeGeometryCoinManager::updateGeometryColor(
         editModeScenegraphNodes.PointsCoordinate[l]->point.finishEditing();
     }
 
-    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.finishEditing();
+    editModeScenegraphNodes.RootCrossHMaterials->diffuseColor.finishEditing();
+    editModeScenegraphNodes.RootCrossVMaterials->diffuseColor.finishEditing();
+
+    // set color in the hidden pass
+    editModeScenegraphNodes.RootCrossMaterialsOccludedH->diffuseColor.setValue(
+        editModeScenegraphNodes.RootCrossHMaterials->diffuseColor[0]
+    );
+    editModeScenegraphNodes.RootCrossMaterialsOccludedV->diffuseColor.setValue(
+        editModeScenegraphNodes.RootCrossVMaterials->diffuseColor[0]
+    );
+    editModeScenegraphNodes.OriginPointMaterialOccluded->diffuseColor.setValue(
+        editModeScenegraphNodes.OriginPointMaterial->diffuseColor[0]
+    );
 }
 
 void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
@@ -660,6 +678,10 @@ void EditModeGeometryCoinManager::createEditModePointInventorNodes()
         sep->addChild(MtlBind);
 
         auto coords = new SoCoordinate3;
+        // A freshly constructed SoCoordinate3 carries a default (0,0,0) vertex,
+        // so point.getNum() is 1 even though the CoinMapping tables are still empty.
+        // Start explicitly empty to not index a mapping that has not been populated yet.
+        coords->point.setNum(0);
         editModeScenegraphNodes.PointsCoordinate.push_back(coords);
         editModeScenegraphNodes.PointsCoordinate[i]->setName(concat("PointsCoordinate", i).c_str());
         sep->addChild(editModeScenegraphNodes.PointsCoordinate[i]);
@@ -743,6 +765,7 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             sep->addChild(MtlBind);
 
             auto coords = new SoCoordinate3;
+            coords->point.setNum(0);
             coords->setName(concat("CurvesCoordinate", i * 10 + t).c_str());
             editModeScenegraphNodes.CurvesCoordinate[i].push_back(coords);
             sep->addChild(editModeScenegraphNodes.CurvesCoordinate[i][t]);
@@ -764,6 +787,7 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             }
 
             auto solineset = new SoLineSet;
+            solineset->numVertices.setNum(0);
             solineset->setName(concat("CurvesLineSet", i * 10 + t).c_str());
             editModeScenegraphNodes.CurveSet[i].push_back(solineset);
             sep->addChild(editModeScenegraphNodes.CurveSet[i][t]);

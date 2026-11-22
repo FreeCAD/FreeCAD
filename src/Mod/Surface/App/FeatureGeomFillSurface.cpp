@@ -1,27 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Nathan Miller
+// SPDX-FileCopyrightText: 2014 Balázs Bámer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
- *                           Balázs Bámer                                  *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <BRepBuilderAPI_Copy.hxx>
@@ -69,7 +66,7 @@ void ShapeValidator::initValidator()
 void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
-        Standard_Failure::Raise("Shape is not an edge.\n");
+        throw Standard_Failure("Shape is not an edge.\n");
     }
 
     TopoDS_Edge etmp = TopoDS::Edge(shape);                             // Curve TopoDS_Edge
@@ -120,7 +117,7 @@ void ShapeValidator::checkAndAdd(
         }
     }
     catch (Standard_Failure&) {  // any OCC exception means an inappropriate shape in the selection
-        Standard_Failure::Raise("Wrong shape type.\n");
+        throw Standard_Failure("Wrong shape type.\n");
     }
 }
 
@@ -135,6 +132,7 @@ GeomFillSurface::GeomFillSurface()
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (nullptr, "Dummy"));
     ADD_PROPERTY(ReversedList, (false));
+    ReversedList.setSize(0);
     FillType.setEnums(FillTypeEnums);
     BoundaryList.setScope(App::LinkScope::Global);
 }
@@ -151,13 +149,14 @@ short GeomFillSurface::mustExecute() const
 
 void GeomFillSurface::onChanged(const App::Property* prop)
 {
-    if (isRestoring()) {
-        if (prop == &BoundaryList) {
-            // auto-adjusting size of this list
-            if (BoundaryList.getSize() != ReversedList.getSize()) {
-                ReversedList.setSize(BoundaryList.getSize());
-            }
+    if (isRestoring() && prop == &BoundaryList) {
+        // auto-adjusting size of this list
+        if (BoundaryList.getSize() != ReversedList.getSize()) {
+            ReversedList.setSize(BoundaryList.getSize());
         }
+    }
+    if (prop == &ReversedList && ReversedList.getSize() > BoundaryList.getSize()) {
+        ReversedList.setSize(BoundaryList.getSize());
     }
     Part::Spline::onChanged(prop);
 }
@@ -200,7 +199,7 @@ GeomFill_FillingStyle GeomFillSurface::getFillingStyle()
         case GeomFill_CurvedStyle:
             return static_cast<GeomFill_FillingStyle>(FillType.getValue());
         default:
-            Standard_Failure::Raise("Filling style must be 0 (Stretch), 1 (Coons), or 2 (Curved).\n");
+            throw Standard_Failure("Filling style must be 0 (Stretch), 1 (Coons), or 2 (Curved).\n");
             return GeomFill_StretchStyle;  // this is to shut up the compiler
     }
 }
@@ -212,7 +211,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
 
     std::vector<App::PropertyLinkSubList::SubSet> boundary = BoundaryList.getSubListValues();
     if (boundary.size() > 4) {  // if too many not even try
-        Standard_Failure::Raise("Only 2-4 curves are allowed\n");
+        throw Standard_Failure("Only 2-4 curves are allowed\n");
     }
 
     ShapeValidator validator;
@@ -224,12 +223,12 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
             }
         }
         else {
-            Standard_Failure::Raise("Curve not from Part::Feature\n");
+            throw Standard_Failure("Curve not from Part::Feature\n");
         }
     }
 
     if (validator.numEdges() < 2 || validator.numEdges() > 4) {
-        Standard_Failure::Raise("Only 2-4 curves are allowed\n");
+        throw Standard_Failure("Only 2-4 curves are allowed\n");
     }
 
     // Reorder the curves and fix the wire if required
@@ -244,7 +243,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
     aWire = aShFW->Wire();  // Healed Wire
 
     if (aWire.IsNull()) {
-        Standard_Failure::Raise("Wire unable to be constructed\n");
+        throw Standard_Failure("Wire unable to be constructed\n");
     }
 
     return validator.isBezier();
@@ -261,10 +260,10 @@ void GeomFillSurface::createFace(const Handle(Geom_BoundedSurface) & aSurface)
     TopoDS_Face aFace = aFaceBuilder.Face();
 
     if (!aFaceBuilder.IsDone()) {
-        Standard_Failure::Raise("Face unable to be constructed\n");
+        throw Standard_Failure("Face unable to be constructed\n");
     }
     if (aFace.IsNull()) {
-        Standard_Failure::Raise("Resulting Face is null\n");
+        throw Standard_Failure("Resulting Face is null\n");
     }
     this->Shape.setValue(aFace);
 }
@@ -292,7 +291,7 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
             curves.push_back(bezier);
         }
         else {
-            Standard_Failure::Raise("Curve not a Bezier Curve");
+            throw Standard_Failure("Curve not a Bezier Curve");
         }
     }
 
@@ -360,7 +359,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                 Handle(Geom_BSplineCurve)
                     spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                 if (spline.IsNull()) {
-                    Standard_Failure::Raise(
+                    throw Standard_Failure(
                         "A curve was not a B-spline and could not be converted into one."
                     );
                 }

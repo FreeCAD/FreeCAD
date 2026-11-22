@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -27,8 +29,11 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewDraft.h"
+#include "DrawViewSymbolPy.h"
 
 
 using namespace TechDraw;
@@ -98,7 +103,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
                  << ", fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here
                  << ", direction=FreeCAD.Vector(" << Direction.getValue().x << ", " << Direction.getValue().y << ", " << Direction.getValue().z << ")"
-                 << ", linestyle=\"" << LineStyle.getValue() << "\""
+                 << ", linestyle=\"" << Base::Tools::escapeEncodeString(LineStyle.getStrValue()) << "\""
                  << ", color=\"" << col.asHexString() << "\""
                  << ", linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
@@ -139,6 +144,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDraftPython, TechDraw::DrawViewDraft)
 template<> const char* TechDraw::DrawViewDraftPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderDraft";
+}
+template<>
+PyObject* TechDraw::DrawViewDraftPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewSymbolPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

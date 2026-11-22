@@ -38,6 +38,14 @@ class EditableDatumLabel;
 namespace Gui
 {
 
+enum class InteractiveScaleState
+{
+    Inactive,
+    PickingFirst,
+    PickingSecond,
+    Pending
+};
+
 class View3DInventorViewer;
 class ViewProvider;
 class InteractiveScale: public QObject
@@ -57,23 +65,33 @@ public:
         return active;
     }
     double getScaleFactor() const;
+    double getAngleDegrees() const;
+    SbVec3f getMidPoint() const;
+    // Point is expected to be in image plane coordinates
     double getDistance(const SbVec3f&) const;
     void setPlacement(const Base::Placement& plc);
+    InteractiveScaleState getState() const;
 
 private:
     static void soEventFilter(void* ud, SoEventCallback* ecb);
     static void getMousePosition(void* ud, SoEventCallback* ecb);
     void findPointOnImagePlane(SoEventCallback* ecb);
     void collectPoint(const SbVec3f&);
+    // Point is expected to be in image plane coordinates
     void setDistance(const SbVec3f&);
+    // Point is expected to be in image plane coordinates
+    SbVec3f snapAtAngle(const SbVec3f&) const;
 
-    /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
-    SbVec3f getCoordsOnImagePlane(const SbVec3f& point);
+    /// Convert a world-space point into the image plane coordinate system
+    SbVec3f getCoordsOnImagePlane(const SbVec3f& point) const;
 
 Q_SIGNALS:
     void scaleRequired();
     void scaleCanceled();
     void enableApplyBtn();
+    void showToolHints();
+    void toggleRotation();
+    void toggleCentering();
 
 private:
     bool active;
@@ -81,8 +99,8 @@ private:
     EditableDatumLabel* measureLabel;
     QPointer<Gui::View3DInventorViewer> viewer;
     ViewProvider* viewProv;
+    // 2D coordinates on the image plane, in its coordinate system
     std::vector<SbVec3f> points;
-    SbVec3f midPoint;
 };
 
 class Ui_TaskImage;
@@ -108,8 +126,13 @@ private:
     void scaleImage(double);
     void startScale();
     void acceptScale();
+    void applyOrientation();
     void rejectScale();
     void enableApplyBtn();
+    void showToolHints() const;
+    void toggleRotation();
+    void toggleCentering();
+
 
     void restore(const Base::Placement&);
     void restoreAngles(const Base::Rotation&);

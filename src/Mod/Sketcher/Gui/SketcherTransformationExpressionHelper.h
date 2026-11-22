@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2025 The FreeCAD Project Association AISBL
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -30,7 +27,6 @@
 
 #include <App/Expression.h>
 #include <App/PropertyExpressionEngine.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "Utils.h"
 
@@ -98,19 +94,17 @@ private:
         int numberOfCopies
     ) const;
 
-    /// try to apply an expression to a constraint if it matches copied geometry
+    /// try to apply an expression to a constraint if it matches the original constraint's copies
     bool tryApplyExpressionToConstraint(
         const Sketcher::Constraint* cstr,
         size_t constraintIndex,
-        int originalIndex,
+        const Sketcher::Constraint* origCstr,
+        const std::vector<int>& listOfGeoIds,
         const CopyCalculationParams& params,
         int secondNumberOfCopies,
         const std::shared_ptr<App::Expression>& expression,
         const std::string& sketchObj
     ) const;
-
-    /// check if a constraint references the specified geometry ID
-    bool constraintReferencesGeometry(const Sketcher::Constraint* cstr, int geoId) const;
 
     // original constraint index to expression and geoId mapping
     std::map<int, ConstraintExpressionInfo> originalExpressions;

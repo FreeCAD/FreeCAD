@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
@@ -88,9 +90,8 @@ void DlgSettingsFemGeneralImp::saveSettings()
     // set default solver icon
     Gui::CommandManager& cmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd = cmdMgr.getCommandByName("FEM_CompSolvers");
-    if (cmd) {
-        auto action = static_cast<Gui::ActionGroup*>(cmd->getAction());
-
+    auto action = cmd ? qobject_cast<Gui::ActionGroup*>(cmd->getAction()) : nullptr;
+    if (action) {
         ParameterGrp::handle hGrp = ui->cmb_def_solver->getWindowParameter();
         int index = hGrp->GetInt(ui->cmb_def_solver->entryName(), 0);
         action->setCheckedAction(index > 0 ? index - 1 : 0);

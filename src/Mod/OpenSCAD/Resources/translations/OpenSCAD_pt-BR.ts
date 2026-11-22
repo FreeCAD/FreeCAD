@@ -406,7 +406,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="567"/>
       <source>Hull</source>
-      <translation>Casco</translation>
+      <translation>Carcaça</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="570"/>

@@ -40,6 +40,7 @@ import Path.Base.Generator.rotary_spiral as rotary_spiral
 import Path.Base.Generator.rotary_wrap as rotary_wrap
 import Path.Main.Stock as PathStock
 import PathScripts.PathUtils as PathUtils
+from Path.Tool.shape import ToolBitShape
 
 # OCL is loaded lazily in opExecute so the module can be imported in
 # environments without OCL (for non-execute access like loading saved
@@ -168,7 +169,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 "RadialStockToLeave",
                 "Rotary",
                 QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Radial finish allowance left on the surface."
+                    "App::Property", "Set how much stock to leave on the walls for the operation."
                 ),
             ),
             (
@@ -534,11 +535,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             tool_type = str(self.tool.ShapeType).lower()
         elif hasattr(self.tool, "ShapeName"):
             tool_type = str(self.tool.ShapeName).lower()
-        if tool_type and tool_type not in (
-            "ballend",
-            "bullnose",
-            "taperedballnose",
-        ):
+        if tool_type and not (tool_type == "bullnose" or ToolBitShape.is_ball_end(tool_type)):
             Path.Log.warning(
                 "Rotary Surface: tool shape '{}' is not ideal for "
                 "rotary surfacing; consider a ball-end or bull-nose tool.".format(tool_type)
@@ -615,11 +612,11 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         # x grid: dense enough to interpolate well across the spiral.
         x_step = min(step_over * 0.25, (x_max - x_min) / 8.0)
         x_step = max(x_step, 1e-3)
-        n_x = max(2, int(math.ceil((x_max - x_min) / x_step)) + 1)
+        n_x = max(2, Path.Geom.ceil((x_max - x_min) / x_step) + 1)
         xs = [x_min + (x_max - x_min) * i / (n_x - 1) for i in range(n_x)]
 
         # theta grid: full revolution at AngularResolution.
-        n_t = max(8, int(math.ceil(2.0 * math.pi / ang_res_rad)) + 1)
+        n_t = max(8, Path.Geom.ceil(2.0 * math.pi / ang_res_rad) + 1)
         thetas = [2.0 * math.pi * j / (n_t - 1) for j in range(n_t)]
 
         axis_vec = (rot_vec.x, rot_vec.y, rot_vec.z)
@@ -651,7 +648,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         min_surface_r = min(valid_radii) if valid_radii else 0.0
         gap = max(0.0, stock_radius - (min_surface_r + stock_to_leave))
         if step_down > 0.0 and gap > 0.0:
-            n_layers = int(math.ceil(gap / step_down))
+            n_layers = Path.Geom.ceil(gap / step_down)
         else:
             n_layers = 1
 

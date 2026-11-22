@@ -50,16 +50,68 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 FeatureAddSub::FeatureAddSub()
 {
     ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+    ADD_PROPERTY_TYPE(Operation, (false), "Part Design", App::Prop_None, "Boolean operation to compute");
+    Operation.setEnums({"Union", "Subtraction", "Common"});
 }
 
-void FeatureAddSub::onChanged(const App::Property* property)
-{
-    Feature::onChanged(property);
-}
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
 {
     return addSubType;
+}
+
+FeatureAddSub::BooleanOperation FeatureAddSub::getBooleanOperation()
+{
+    return booleanOperation;
+}
+
+void FeatureAddSub::defineAdditive()
+{
+    addSubType = FeatureAddSub::Type::Additive;
+    Operation.setStatus(App::Property::Status::Hidden, true);
+    Operation.setEnums({"Union"});
+    Operation.setValue("Union");
+}
+
+void FeatureAddSub::defineSubtractive()
+{
+    addSubType = FeatureAddSub::Type::Subtractive;
+    Operation.setStatus(App::Property::Status::Hidden, false);
+    Operation.setEnums({"Subtraction", "Common"});
+    Operation.setValue("Subtraction");
+}
+
+const char* FeatureAddSub::getBooleanMaker() const
+{
+    switch (booleanOperation) {
+        case BooleanOperation::Subtraction:
+            return Part::OpCodes::Cut;
+        case BooleanOperation::Common:
+            return Part::OpCodes::Common;
+        default:
+            return Part::OpCodes::Fuse;
+    }
+}
+
+void FeatureAddSub::onChanged(const App::Property* property)
+{
+    if (property == &Operation) {
+        const char* strOp = Operation.getValueAsString();
+        if (strcmp(strOp, "Subtraction") == 0) {
+            booleanOperation = BooleanOperation::Subtraction;
+            addSubType = Type::Subtractive;
+        }
+        else if (strcmp(strOp, "Common") == 0) {
+            booleanOperation = BooleanOperation::Common;
+            addSubType = Type::Subtractive;
+        }
+        else {
+            booleanOperation = BooleanOperation::Union;
+            addSubType = Type::Additive;
+        }
+    }
+
+    Feature::onChanged(property);
 }
 
 short FeatureAddSub::mustExecute() const
@@ -72,30 +124,31 @@ short FeatureAddSub::mustExecute() const
 
 void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if (addSubType == Additive) {
+    if (addSubType == Type::Additive) {
         addShape = AddSubShape.getShape();
     }
-    else if (addSubType == Subtractive) {
+    else {
         subShape = AddSubShape.getShape();
     }
 }
+
 void FeatureAddSub::updatePreviewShape()
 {
     const auto notifyWarning = [](const QString& message) {
         Base::Console().translatedUserWarning(
             "Preview",
-            tr("Failure while computing removed volume preview: %1").arg(message).toUtf8()
+            "{}",
+            tr("Failure while computing removed volume preview: %1").arg(message).toStdString()
         );
     };
 
     // for subtractive shapes we want to also showcase removed volume, not only the tool
-    if (addSubType == Subtractive) {
+    if (getBooleanMaker() != Part::OpCodes::Fuse) {
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         const TopoShape& tool = AddSubShape.getShape();
 
         if (!tool.isEmpty()) {
             try {
-                // Compute removed volume preview (for display)
                 TopoShape common;
                 common.makeElementBoolean(
                     Part::OpCodes::Common,
@@ -104,21 +157,17 @@ void FeatureAddSub::updatePreviewShape()
                     Precision::Confusion()
                 );
 
-                // does CUT change volume?
-                GProp_GProps propsBefore, propsAfter;
-                BRepGProp::VolumeProperties(base.getShape(), propsBefore);
+                // Use the boolean intersection, not the tool: compound tools may overlap.
+                GProp_GProps propsCommon;
+                BRepGProp::VolumeProperties(common.getShape(), propsCommon);
 
-                TopoShape cut;
-                cut.makeElementBoolean(
-                    Part::OpCodes::Cut,
-                    {base, tool},
-                    "PreviewCheck",
-                    Precision::Confusion()
-                );
-
-                BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
-
-                const double removed = propsBefore.Mass() - propsAfter.Mass();
+                // Subtraction removes the intersection; Common keeps it instead.
+                double removed = propsCommon.Mass();
+                if (getBooleanOperation() == BooleanOperation::Common) {
+                    GProp_GProps propsBase;
+                    BRepGProp::VolumeProperties(base.getShape(), propsBase);
+                    removed = propsBase.Mass() - removed;
+                }
 
                 if (removed <= Precision::Confusion()) {
                     notifyWarning(
@@ -133,7 +182,7 @@ void FeatureAddSub::updatePreviewShape()
                 notifyWarning(QString::fromUtf8(e.GetMessageString()));
             }
             catch (Base::Exception& e) {
-                notifyWarning(QString::fromStdString(e.getMessage()));
+                notifyWarning(QString::fromStdString(e.what()));
             }
             PreviewShape.setValue(base);
             return;
@@ -177,7 +226,7 @@ PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPyth
 
 FeatureAdditivePython::FeatureAdditivePython()
 {
-    addSubType = Additive;
+    defineAdditive();
 }
 
 FeatureAdditivePython::~FeatureAdditivePython() = default;
@@ -187,7 +236,7 @@ PROPERTY_SOURCE(PartDesign::FeatureSubtractivePython, PartDesign::FeatureAddSubP
 
 FeatureSubtractivePython::FeatureSubtractivePython()
 {
-    addSubType = Subtractive;
+    defineSubtractive();
 }
 
 FeatureSubtractivePython::~FeatureSubtractivePython() = default;

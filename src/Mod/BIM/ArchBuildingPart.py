@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
@@ -317,6 +314,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
+            obj.setPropertyStatus("MaterialsTable", "Hidden")
 
     def onDocumentRestored(self, obj):
 
@@ -1150,16 +1148,16 @@ class ViewProviderBuildingPart:
 
         if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
-        if (not hasattr(vobj, "DoubleClickActivates")) or vobj.DoubleClickActivates:
-            menuTxt = translate("Arch", "Active")
-            actionActivate = QtGui.QAction(menuTxt, menu)
-            actionActivate.setCheckable(True)
-            if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-                actionActivate.setChecked(True)
-            else:
-                actionActivate.setChecked(False)
-            actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
-            menu.addAction(actionActivate)
+
+        menuTxt = translate("Arch", "Active")
+        actionActivate = QtGui.QAction(menuTxt, menu)
+        actionActivate.setCheckable(True)
+        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
+            actionActivate.setChecked(True)
+        else:
+            actionActivate.setChecked(False)
+        actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
+        menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(
             QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
@@ -1173,7 +1171,7 @@ class ViewProviderBuildingPart:
 
         actionWriteCamera = QtGui.QAction(
             QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-            translate("Arch", "Write Camera Position"),
+            translate("Arch", "Save Camera View"),
             menu,
         )
         QtCore.QObject.connect(actionWriteCamera, QtCore.SIGNAL("triggered()"), self.writeCamera)
@@ -1192,53 +1190,36 @@ class ViewProviderBuildingPart:
         menu.addAction(actionCloneUp)
 
     def activate(self, action=None):
-        from draftutils.gui_utils import toggle_working_plane
+        from bimcommands.BimViews import _toggle_active_container
 
-        vobj = self.Object.ViewObject
-
-        if (not hasattr(vobj, "DoubleClickActivates")) or vobj.DoubleClickActivates:
-            if toggle_working_plane(self.Object, action, restore=True):
-                print("Setting active working plane to: ", self.Object.Label)
-            else:
-                print("Deactivating working plane from: ", self.Object.Label)
-
+        if self.Object.ViewObject.DoubleClickActivates:
+            _toggle_active_container(self.Object, action)
         FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self, restore=False):
-        vobj = self.Object.ViewObject
-
         import WorkingPlane
 
         wp = WorkingPlane.get_working_plane(update=False)
-        autoclip = False
-        if hasattr(vobj, "AutoCutView"):
-            autoclip = vobj.AutoCutView
+        obj = self.Object
+
+        if getattr(obj.ViewObject, "AutoCutView", False):
+            obj.ViewObject.CutView = not restore
+        for found in obj.Document.findObjects(Type="App::GeometryPython"):
+            if found == obj:
+                continue
+            if getattr(found.ViewObject, "AutoCutView", False):
+                found.ViewObject.CutView = False
+
         if restore:
-            if wp.label.rstrip("*") == self.Object.Label:
-                prev_data = wp._previous()
-                if prev_data:
-                    prev_label = prev_data.get("label", "").rstrip("*")
-                    prev_obj = None
-                    for obj in FreeCAD.ActiveDocument.Objects:
-                        if hasattr(obj, "Label") and obj.Label == prev_label:
-                            prev_obj = obj
-                            break
-
-                    if prev_obj:
-                        # check in which context we need to set the active object
-                        context = "Arch"
-                        obj_type = Draft.getType(prev_obj)
-                        if obj_type == "IfcBuildingStorey":
-                            context = "NativeIFC"
-                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, prev_obj)
-                        print(f"Set active object to: {prev_obj.Label} (context: {context})")
-
-            if autoclip:
-                vobj.CutView = False
+            wp.set_to_top()
+            FreeCAD.Console.PrintMessage(
+                translate("Arch", "Active working plane set to Top") + "\n"
+            )
         else:
             wp.align_to_selection()
-            if autoclip:
-                vobj.CutView = True
+            FreeCAD.Console.PrintMessage(
+                translate("Arch", f"Active working plane set to {self.Object.Label}") + "\n"
+            )
 
     def writeCamera(self):
 

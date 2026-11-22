@@ -92,11 +92,13 @@ class Clone(gui_base_original.Modifier):
         """Proceed with the command if objects were selected."""
         objs = Gui.Selection.getSelection()
         if not objs:
+            self.moveAfterCloning = False
             self.finish()
             return
         objs_shape = [obj for obj in objs if hasattr(obj, "Shape")]
         if not objs_shape:
             _wrn(translate("draft", "Cannot clone objects without a shape, aborting"))
+            self.moveAfterCloning = False
             self.finish()
             return
         elif len(objs_shape) < len(objs):

@@ -37,6 +37,8 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+
+# from draftgeoutils import fillets as geo_fillets
 from draftobjects import layer
 from draftutils import params
 from draftutils import utils
@@ -44,7 +46,6 @@ from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
 ## \addtogroup draftfunctions
@@ -324,7 +325,7 @@ def _svg_dimension(
     if not nolines:
         svg += 'fill="none" stroke="'
         svg += stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'stroke-width="' + str(linewidth) + 'px" '
         svg += 'style="stroke-width:' + str(linewidth)
         svg += ';stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square" '
         svg += 'freecad:basepoint1="' + str(p1.x) + " " + str(p1.y) + '" '
@@ -706,7 +707,7 @@ def get_svg(
                         )
                         svg += '<path d="' + d1 + '" '
                         svg += 'fill="none" stroke="' + stroke + '" '
-                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'stroke-width="' + str(linewidth) + 'px" '
                         svg += 'style="stroke-width:' + str(linewidth)
                         svg += (
                             ";stroke-miterlimit:4;stroke-dasharray:"
@@ -715,7 +716,7 @@ def get_svg(
                         )
                         svg += '<path d="' + d2 + '" '
                         svg += 'fill="none" stroke="' + stroke + '" '
-                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'stroke-width="' + str(linewidth) + 'px" '
                         svg += 'style="stroke-width:' + str(linewidth)
                         svg += (
                             ";stroke-miterlimit:4;stroke-dasharray:"
@@ -802,7 +803,7 @@ def get_svg(
                 svg_path = "<path "
                 svg_path += 'fill="none" '
                 svg_path += 'stroke="{}" '.format(stroke)
-                svg_path += 'stroke-width="{}" '.format(linewidth)
+                svg_path += 'stroke-width="{}px" '.format(linewidth)
                 svg_path += 'stroke-linecap="square" '
                 svg_path += 'd="{}"'.format(path_dir_str)
                 svg_path += "/>"
@@ -959,7 +960,7 @@ def get_svg(
         basewire = obj.Base.Shape.Wires[0].copy()
         # Not applying rounding because the results are not correct
         # if hasattr(obj, "Rounding") and obj.Rounding:
-        #     basewire = DraftGeomUtils.filletWire(
+        #     basewire = geo_fillets.filletWire(
         #         basewire, obj.Rounding * obj.Diameter.Value
         #     )
         wires = []
@@ -1003,51 +1004,51 @@ def get_svg(
                         fill_opacity=fill_opacity,
                         wires=[obj.Proxy.face.OuterWire],
                     )
-            c = utils.get_rgb(vobj.TextColor)
-            n = vobj.FontName
-            a = 0
-            if rotation != 0:
-                a = math.radians(rotation)
 
-            t1 = vobj.Proxy.text1.string.getValues()
-            t2 = vobj.Proxy.text2.string.getValues()
-            scale = vobj.FirstLine.Value / vobj.FontSize.Value
-            f1 = fontsize * scale
+            text1 = vobj.Proxy.text1.string.getValues()  # List with the 1st string.
+            text2 = vobj.Proxy.text2.string.getValues()  # List with the other strings.
+            if text1:
+                tstroke = utils.get_rgb(vobj.TextColor)
+                fontname = vobj.FontName
+                justification = vobj.TextAlign
+                scalefirst = vobj.FirstLine.Value / vobj.FontSize.Value
+                tangle = 0
+                offset_vec = App.Vector(0, linespacing * scalefirst, 0)
+                if rotation != 0:
+                    # Counteract the rotation of the BIMView to keep
+                    # the texts horizontal relative to the page.
+                    tangle = math.radians(-rotation)
+                    offset_vec = App.Rotation(App.Vector(0, 0, 1), -rotation).multVec(offset_vec)
 
-            if round(plane.axis.getAngle(App.Vector(0, 0, 1)), 2) not in [0, 3.14]:
-                # if not in XY view, place the label at center
-                p2 = obj.Shape.CenterOfMass
-            else:
-                _v = vobj.Proxy.coords.translation.getValue().getValue()
-                p2 = obj.Placement.multVec(App.Vector(_v))
+                # Point for 2nd text line:
+                if round(plane.axis.getAngle(App.Vector(0, 0, 1)), 2) not in [0, 3.14]:
+                    # If not in XY view use the center:
+                    tbase2 = obj.Shape.CenterOfMass
+                else:
+                    vec = vobj.Proxy.coords.translation.getValue().getValue()
+                    tbase2 = obj.Placement.multVec(App.Vector(vec))
+                tbase2 = get_proj(tbase2, plane)
 
-            _h = vobj.Proxy.header.translation.getValue().getValue()
-            lspc = App.Vector(_h)
-            p1 = p2 + lspc
-            j = vobj.TextAlign
-            t3 = svgtext.get_text(
-                plane, techdraw, c, f1, n, a, get_proj(p1, plane), t1, linespacing, j, flip=True
-            )
-            svg += t3
-            if t2:
-                ofs = App.Vector(0, -lspc.Length, 0)
-                if a:
-                    Z = App.Vector(0, 0, 1)
-                    ofs = App.Rotation(Z, -rotation).multVec(ofs)
-                t4 = svgtext.get_text(
-                    plane,
-                    techdraw,
-                    c,
-                    fontsize,
-                    n,
-                    a,
-                    get_proj(p1, plane).add(ofs),
-                    t2,
-                    linespacing,
-                    j,
-                    flip=True,
-                )
-                svg += t4
+                # Point for 1st text line:
+                tbase1 = tbase2 + offset_vec
+
+                texts = [text1, text2]
+                sizes = [fontsize * scalefirst, fontsize]
+                tbases = [tbase1, tbase2]
+                for text, size, tbase in zip(texts, sizes, tbases):
+                    svg += svgtext.get_text(
+                        plane,
+                        techdraw,
+                        tstroke,
+                        size,
+                        fontname,
+                        tangle,
+                        tbase,
+                        text,
+                        linespacing,
+                        justification,
+                        flip=True,
+                    )
 
     elif hasattr(obj, "Shape"):
         # In the past we tested for a Part Feature
@@ -1173,15 +1174,20 @@ def get_svg(
         ):
             # Draft_Wire, Draft_BezCurve and Draft_BSpline.
             shp = obj.Shape
+            end_idx = 0 if obj.Closed else -1
             if utils.get_type(obj) == "BSpline":
-                v1 = shp.tangentAt(shp.FirstParameter)
-                v2 = -shp.tangentAt(shp.LastParameter)
+                edge = shp.Edges[0]  # shp.ShapeType may be "Edge"/"Wire"/"Face", we need an edge.
+                v1 = edge.tangentAt(edge.FirstParameter)
+                if obj.Closed:
+                    v2 = -v1
+                else:
+                    v2 = -edge.tangentAt(edge.LastParameter)
             else:
                 rot = obj.Placement.Rotation
                 v1 = rot.multVec(obj.Points[1].sub(obj.Points[0]))
-                v2 = rot.multVec(obj.Points[-2].sub(obj.Points[-1]))
-            p1 = get_proj(obj.Shape.Vertexes[0].Point, plane)
-            p2 = get_proj(obj.Shape.Vertexes[0].Point + v1, plane)
+                v2 = rot.multVec(obj.Points[end_idx - 1].sub(obj.Points[end_idx]))
+            p1 = get_proj(shp.Vertexes[0].Point, plane)
+            p2 = get_proj(shp.Vertexes[0].Point + v1, plane)
             svg += get_arrow(
                 obj,
                 vobj.ArrowTypeStart,
@@ -1191,8 +1197,8 @@ def get_svg(
                 linewidth,
                 -DraftVecUtils.angle(p2 - p1),
             )
-            p1 = get_proj(obj.Shape.Vertexes[-1].Point, plane)
-            p2 = get_proj(obj.Shape.Vertexes[-1].Point + v2, plane)
+            p1 = get_proj(shp.Vertexes[end_idx].Point, plane)
+            p2 = get_proj(shp.Vertexes[end_idx].Point + v2, plane)
             svg += get_arrow(
                 obj,
                 vobj.ArrowTypeEnd,

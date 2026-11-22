@@ -228,10 +228,11 @@ void ThemeSelectorWidget::themeChanged(Theme newTheme)
         "User parameter:BaseApp/Preferences/Themes"
     );
     const unsigned long nonExistentColor = -1434171135;
+    const unsigned long defaultAccentColor1 = 11272191;
     const unsigned long defaultAccentColor = 1434171135;
     unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", nonExistentColor);
     if (longAccentColor1 == nonExistentColor) {
-        hGrp->SetUnsigned("ThemeAccentColor1", defaultAccentColor);
+        hGrp->SetUnsigned("ThemeAccentColor1", defaultAccentColor1);
         hGrp->SetUnsigned("ThemeAccentColor2", defaultAccentColor);
         hGrp->SetUnsigned("ThemeAccentColor3", defaultAccentColor);
     }

@@ -1,9 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShapeWire import TopoShapeWire
 
 @export(
     PythonName="Part.ShapeFix.WireVertex",
@@ -19,23 +18,20 @@ class ShapeFix_WireVertex(PyObjectBase):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    def init(self, wire: TopoShapeWire, precision: float, /) -> None:
         """
         Loads the wire, ininializes internal analyzer with the given precision
         """
-        ...
 
     def wire(self) -> object:
         """
         Returns resulting wire
         """
-        ...
 
     def fixSame(self) -> int:
         """
         Returns the count of fixed vertices, 0 if none
         """
-        ...
 
     def fix(self) -> int:
         """
@@ -43,4 +39,3 @@ class ShapeFix_WireVertex(PyObjectBase):
         common value has been set, with or without changing parameters
         Returns the count of fixed vertices, 0 if none
         """
-        ...

@@ -301,7 +301,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     }
 
     connect(dw->toggleViewAction(), &QAction::triggered, [this, dw]() {
-        Base::ConnectionBlocker block(d->_connParam);
+        fastsignals::shared_connection_block blocker(d->_connParam);
         QByteArray dockName = dw->toggleViewAction()->data().toByteArray();
         d->_hPref->SetBool(dockName.constData(), dw->isVisible());
     });
@@ -338,7 +338,7 @@ QDockWidget* DockWindowManager::getDockContainer(const char* name) const
 {
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end();
          ++it) {
-        if ((*it)->objectName() == QLatin1String(name)) {
+        if ((*it)->objectName() == QString::fromUtf8(name)) {
             return (*it);
         }
     }

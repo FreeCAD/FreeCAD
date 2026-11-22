@@ -31,7 +31,6 @@
 #include <Gui/BitmapFactory.h>
 
 #include <Gui/Application.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "TaskHelixParameters.h"
 #include "ViewProviderHelix.h"
@@ -60,7 +59,7 @@ QIcon ViewProviderHelix::getIcon() const
 {
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Helix>();
-    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Type::Additive) {
         str += QStringLiteral("Additive");
     }
     else {

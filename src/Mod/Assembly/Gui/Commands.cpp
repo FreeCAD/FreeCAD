@@ -1,25 +1,23 @@
-// SPDX - License - Identifier: LGPL - 2.1 - or -later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2025 Pierre-Louis Boyer                                  *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2025 Pierre-Louis Boyer
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <vector>
 
@@ -99,7 +97,7 @@ CmdAssemblyLinkSelectLinked::CmdAssemblyLinkSelectLinked()
     : Command("Assembly_LinkSelectLinked")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Go to linked Assembly");
+    sMenuText = QT_TR_NOOP("Go to Linked Assembly");
     sToolTipText = QT_TR_NOOP("Selects the linked assembly and switches to its original document");
     sWhatsThis = "Assembly_LinkSelectLinked";
     sStatusTip = sToolTipText;
@@ -163,7 +161,7 @@ CmdAssemblySelectConflictingConstraints::CmdAssemblySelectConflictingConstraints
     : Command("Assembly_SelectConflictingConstraints")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select conflicting constraints");
+    sMenuText = QT_TR_NOOP("Select Conflicting Constraints");
     sToolTipText = QT_TR_NOOP("Selects conflicting joints in the active assembly");
     sWhatsThis = "Assembly_SelectConflictingConstraints";
     sStatusTip = sToolTipText;
@@ -198,7 +196,7 @@ CmdAssemblySelectRedundantConstraints::CmdAssemblySelectRedundantConstraints()
     : Command("Assembly_SelectRedundantConstraints")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select redundant constraints");
+    sMenuText = QT_TR_NOOP("Select Redundant Constraints");
     sToolTipText = QT_TR_NOOP("Selects redundant joints in the active assembly");
     sWhatsThis = "Assembly_SelectRedundantConstraints";
     sStatusTip = sToolTipText;
@@ -231,7 +229,7 @@ CmdAssemblySelectMalformedConstraints::CmdAssemblySelectMalformedConstraints()
     : Command("Assembly_SelectMalformedConstraints")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select malformed constraints");
+    sMenuText = QT_TR_NOOP("Select Malformed Constraints");
     sToolTipText = QT_TR_NOOP("Selects malformed joints in the active assembly");
     sWhatsThis = "Assembly_SelectMalformedConstraints";
     sStatusTip = sToolTipText;
@@ -265,7 +263,7 @@ CmdAssemblySelectComponentsWithDoFs::CmdAssemblySelectComponentsWithDoFs()
     : Command("Assembly_SelectComponentsWithDoFs")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select components with DoFs");
+    sMenuText = QT_TR_NOOP("Select Components With DoFs");
     sToolTipText = QT_TR_NOOP("Selects unconstrained components in the active assembly");
     sWhatsThis = "Assembly_SelectComponentsWithDoFs";
     sStatusTip = sToolTipText;
@@ -308,7 +306,7 @@ CmdAssemblySelectJointsOfComponent::CmdAssemblySelectJointsOfComponent()
     : Command("Assembly_SelectJointsOfComponent")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select component joints");
+    sMenuText = QT_TR_NOOP("Select Component Joints");
     sToolTipText = QT_TR_NOOP("Selects all joints referencing the selected component");
     sWhatsThis = "Assembly_SelectJointsOfComponent";
     sStatusTip = sToolTipText;

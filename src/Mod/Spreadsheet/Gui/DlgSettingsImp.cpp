@@ -1,29 +1,27 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Gui/Application.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "DlgSettingsImp.h"
 #include "ui_DlgSettings.h"
@@ -38,6 +36,14 @@ DlgSettingsImp::DlgSettingsImp(QWidget* parent)
     , ui(new Ui_DlgSettings)
 {
     ui->setupUi(this);
+    for (int row : {256, 512, 1024, 2048, 4096, 8192, 16384}) {
+        ui->comboBoxRows->addItem(QString::number(row), QVariant(row));
+    }
+
+    const int maxColumn1 = 26;
+    const int maxColumn2 = 26 + 26 * 26;
+    ui->comboBoxColumns->addItem(QStringLiteral("A-Z"), QVariant(maxColumn1));
+    ui->comboBoxColumns->addItem(QStringLiteral("A-Z, AA-ZZ"), QVariant(maxColumn2));
 }
 
 /**
@@ -47,20 +53,26 @@ DlgSettingsImp::~DlgSettingsImp() = default;
 
 void DlgSettingsImp::saveSettings()
 {
-
     /** use whatever the user has entered here
      *  we'll check for validity during import/export
      */
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
+    auto param = Spreadsheet::SheetParameter::instance();
     QString delimiter = ui->delimiterComboBox->currentText();
-    hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
+    param->setImportExportDelimiter(delimiter.toStdString());
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
     ui->formatString->onSave();
     ui->dZLSpinBox->onSave();
     ui->checkBoxShowAlias->onSave();
+
+    QVariant cols = ui->comboBoxColumns->itemData(ui->comboBoxColumns->currentIndex());
+    if (cols.isValid()) {
+        param->setMaximumColumnCount(cols.toInt());
+    }
+    QVariant rows = ui->comboBoxRows->itemData(ui->comboBoxRows->currentIndex());
+    if (rows.isValid()) {
+        param->setMaximumRowCount(rows.toInt());
+    }
 }
 
 void DlgSettingsImp::loadSettings()
@@ -69,10 +81,8 @@ void DlgSettingsImp::loadSettings()
      *  we'll recognize a few tokens: comma, semicolon, tab, and \t
      */
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    QString delimiter = QString::fromStdString(hGrp->GetASCII("ImportExportDelimiter", "tab"));
+    auto param = Spreadsheet::SheetParameter::instance();
+    QString delimiter = QString::fromStdString(param->getImportExportDelimiter());
     int idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
     if (idx != -1) {
         ui->delimiterComboBox->setCurrentIndex(idx);
@@ -100,6 +110,15 @@ void DlgSettingsImp::loadSettings()
     ui->formatString->onRestore();
     ui->dZLSpinBox->onRestore();
     ui->checkBoxShowAlias->onRestore();
+
+    int indexC = ui->comboBoxColumns->findData(QVariant(int(param->getMaximumColumnCount())));
+    if (indexC >= 0) {
+        ui->comboBoxColumns->setCurrentIndex(indexC);
+    }
+    int indexR = ui->comboBoxRows->findData(QVariant(int(param->getMaximumRowCount())));
+    if (indexR >= 0) {
+        ui->comboBoxRows->setCurrentIndex(indexR);
+    }
 }
 
 /**

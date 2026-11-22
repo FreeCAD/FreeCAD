@@ -15,37 +15,99 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,1">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Coordinate system</string>
-       </property>
-       <property name="buddy">
-        <cstring>positionModeComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="positionModeComboBox">
-       <item>
+    <widget class="QWidget" name="coordinateSystemWidget" native="true">
+     <layout class="QGridLayout" name="coordinateSystemLayout" columnstretch="0,1">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Local coordinate system</string>
+         <string>Coordinate system</string>
         </property>
-       </item>
-       <item>
+        <property name="buddy">
+         <cstring>positionModeComboBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="positionModeComboBox">
+        <item>
+         <property name="text">
+          <string>Local coordinate system</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Global coordinate system</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="customCSReferenceLabel">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>Global coordinate system</string>
+         <string>Reference</string>
         </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
+        <property name="buddy">
+         <cstring>customCSLineEdit</cstring>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QWidget" name="customCSPickerWidget" native="true">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <layout class="QVBoxLayout" name="customCSPickerLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="customCSLineEdit">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pickCoordinateSystemReferenceButton">
+           <property name="text">
+            <string>Pick Reference</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="topMargin">
       <number>0</number>
@@ -59,7 +121,7 @@
      </item>
     </layout>
    </item>
-   <item row="7" column="0">
+   <item row="8" column="0">
     <spacer name="vSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -88,7 +150,7 @@
      </property>
     </spacer>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QGroupBox" name="positionGroupBox">
      <property name="title">
       <string>Translation</string>
@@ -187,7 +249,7 @@
      </layout>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Utilities</string>
@@ -514,12 +576,22 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="referenceLabel">
+        <property name="text">
+         <string>Reference</string>
+        </property>
+        <property name="buddy">
+         <cstring>referenceLineEdit</cstring>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
        <widget class="QWidget" name="referencePickerWidget" native="true">
-        <layout class="QGridLayout" name="referencePickerLayout" columnstretch="0,1">
-         <property name="sizeConstraint">
-          <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-         </property>
+        <layout class="QVBoxLayout" name="referencePickerLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -532,33 +604,17 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="referenceLabel">
-           <property name="minimumSize">
-            <size>
-             <width>68</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Reference</string>
-           </property>
-           <property name="buddy">
-            <cstring>referenceLineEdit</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QPushButton" name="pickTransformOriginButton">
-           <property name="text">
-            <string>Pick Reference</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
+         <item>
           <widget class="QLineEdit" name="referenceLineEdit">
            <property name="readOnly">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pickTransformOriginButton">
+           <property name="text">
+            <string>Pick Reference</string>
            </property>
           </widget>
          </item>
@@ -607,7 +663,7 @@
      </layout>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QGroupBox" name="rotationGroupBox">
      <property name="title">
       <string>Rotation</string>
@@ -723,6 +779,8 @@
   <tabstop>translationIncrementSpinBox</tabstop>
   <tabstop>rotationIncrementSpinBox</tabstop>
   <tabstop>positionModeComboBox</tabstop>
+  <tabstop>customCSLineEdit</tabstop>
+  <tabstop>pickCoordinateSystemReferenceButton</tabstop>
   <tabstop>alignRotationCheckBox</tabstop>
   <tabstop>xPositionSpinBox</tabstop>
   <tabstop>yPositionSpinBox</tabstop>

@@ -33,6 +33,8 @@ class BaseExport SystemHandler
 public:
     static void installNewHandler();
     static void installSegfaultHandler();
+    /// Install the optional thread-local Windows structured-exception translator.
+    static void installExceptionTranslator();
 };
 
 }  // namespace Base
