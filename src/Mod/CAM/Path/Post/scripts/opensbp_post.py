@@ -525,9 +525,9 @@ class OpenSBPPost(PostProcessor):
             )  # .rstrip('0').rstrip('.') # FIXME: example trailing zero
             output.append(f"TR,{formatted}")
 
-            # FIXME: the default behavior is no delay unless spindle_wait is specified, default delay?
-            spindle = self._machine.get_spindle_by_index(0)
-            if not (spindle and spindle.spindle_wait > 0):
+            # FIXME: the default behavior is no delay unless toolhead_wait is specified, default delay?
+            toolheads = self._machine.toolheads
+            if not (toolheads and toolheads[0].toolhead_wait > 0):
                 output.append("PAUSE 2")  # Wait for spindle to reach speed
         else:
             # Manual spindle control - prompt user
