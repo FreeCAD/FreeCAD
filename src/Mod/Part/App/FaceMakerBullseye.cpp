@@ -197,6 +197,8 @@ FaceMakerBullseye::FaceDriller::FaceDriller(const gp_Pln& plane, TopoDS_Wire out
     this->myTopoFace = TopoShape(this->myFace);
 }
 
+FaceMakerBullseye::FaceDriller::~FaceDriller() = default;
+
 FaceMakerBullseye::FaceDriller::HitTest FaceMakerBullseye::FaceDriller::hitTest(
     const TopoShape& shape
 ) const

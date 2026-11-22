@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # Modified 2016-01-03 JAndersM
 
@@ -42,6 +39,7 @@ import FreeCAD
 import ArchComponent
 import ArchCommands
 import ArchProfile
+import ArchSketchObject
 import Draft
 import DraftVecUtils
 
@@ -61,12 +59,92 @@ class StructureMode(enum.Enum):
     BEAM = "Beam"
 
 
+class ShapeKind(enum.Enum):
+    """Kind of shape used for the Structure's geometry, determined by the
+    selected profile in the interactive Structure command's task panel.
+
+    PLAIN: a plain box, with no profile selected.
+    PROFILE: a metal or timber structural profile, from profiles.csv.
+    PRECAST: a precast concrete element, from the ArchPrecast module.
+    """
+
+    PLAIN = "Plain"
+    PROFILE = "Profile"
+    PRECAST = "Precast"
+
+
+def placement_rotation(mode, wp, start=None, end=None, horizontal=False):
+    """Return the world rotation for a structure placement.
+
+    Columns use the Working Plane rotation. Beams use placeAlongEdge.
+    """
+    if mode == StructureMode.BEAM:
+        import Arch
+
+        return Arch.placeAlongEdge(start, end, horizontal=horizontal).Rotation
+    else:
+        return wp.get_placement().Rotation
+
+
+def _cross_section_axes(mode, horizontal):
+    """Return (width_axis, height_axis) for insertion_point_offset, given the
+    object's mode and whether its extrusion runs along local X (*horizontal*).
+
+    A horizontal beam extrudes along local X, so its cross-section lies in the
+    local YZ plane. A profile beam extrudes along local Z, so its cross-section
+    lies in the local XY plane, but placeAlongEdge orients that X and Y opposite
+    to a horizontal beam's Y and Z. Both axes are reversed so that each
+    candidate lands on the same side for both kinds of beam. Columns use the
+    default XY plane.
+    """
+    if mode == StructureMode.BEAM and horizontal:
+        return Vector(0, 1, 0), Vector(0, 0, 1)
+    if mode == StructureMode.BEAM:
+        return Vector(-1, 0, 0), Vector(0, -1, 0)
+    return Vector(1, 0, 0), Vector(0, 1, 0)
+
+
+def _precast_beam_shape_origin(width, height, length):
+    """A precast beam's shape is built from the corner of its cross-section,
+    not the center: the local origin sits at the bottom-left of the
+    width/height rectangle, at the start of the beam's length."""
+    return Vector(0, -width / 2, -height / 2)
+
+
+def _precast_column_shape_origin(width, height, length):
+    """A precast column's shape is built from the corner of its footprint,
+    not the center: the local origin sits at the bottom-left of the
+    length/width rectangle, at the base (bottom) of the column."""
+    return Vector(-length / 2, -width / 2, 0)
+
+
+# Maps (StructureMode, ShapeKind) to (horizontal, shape_origin_fn):
+#   horizontal: whether the shape extrudes along local X (beam-style) rather
+#     than local Z (profile/column-style). Only meaningful for beams.
+#   shape_origin_fn(width, height, length): optional function returning the
+#     shape's geometric origin in local coordinates, for shapes whose geometry
+#     is not built from the cross-section center. None for centered shapes.
+_PLACEMENT_CONFIG = {
+    (StructureMode.BEAM, ShapeKind.PLAIN): (True, None),
+    (StructureMode.BEAM, ShapeKind.PROFILE): (False, None),
+    (StructureMode.BEAM, ShapeKind.PRECAST): (True, _precast_beam_shape_origin),
+    (StructureMode.COLUMN, ShapeKind.PLAIN): (False, None),
+    (StructureMode.COLUMN, ShapeKind.PROFILE): (False, None),
+    (StructureMode.COLUMN, ShapeKind.PRECAST): (False, _precast_column_shape_origin),
+}
+
+
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     import ArchPrecast
     import draftguitools.gui_trackers as DraftTrackers
+    from draftguitools.gui_insertion_point import (
+        InsertionPointCycler,
+        insertion_point_offset,
+        placement_hints,
+    )
     from draftutils.translate import translate
 else:
     # \cond
@@ -234,6 +312,7 @@ class _CommandStructure:
         self.doc = FreeCAD.ActiveDocument
         self._loadDimensions()
         self.Profile = None
+        self.shape_kind = ShapeKind.PLAIN
         self.bpoint = None
         self.precastvalues = None
         sel = FreeCADGui.Selection.getSelection()
@@ -269,6 +348,8 @@ class _CommandStructure:
         self.tracker.length(self.Length)
         self.tracker.setRotation(self.wp.get_placement().Rotation)
         self.tracker.on()
+        self.cycler = InsertionPointCycler(on_cycle=self._refresh_preview)
+        self.last_point = None
         self.precast = ArchPrecast._PrecastTaskPanel()
         self.dents = ArchPrecast._DentsTaskPanel()
         self.precast.Dents = self.dents
@@ -284,23 +365,73 @@ class _CommandStructure:
             hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+        self.cycler.install()
+        QtCore.QTimer.singleShot(0, self.update_hints)
+
+    def _refresh_preview(self):
+        """Called by the cycler whenever the insertion point index changes."""
+        if self.last_point is not None:
+            self.update(self.last_point, None)
 
     def get_hints(self):
         "returns status bar input hints for the current tool state"
-        from draftguitools import gui_tool_utils
-
-        if self.mode == StructureMode.BEAM and (self.bpoint is None):
+        no_anchor_yet = self.mode == StructureMode.BEAM and self.bpoint is None
+        if no_anchor_yet:
             label = translate("Arch", "%1 pick first point")
         elif self.mode == StructureMode.BEAM:
             label = translate("Arch", "%1 pick next point")
         else:
             label = translate("Arch", "%1 pick base point")
-        return (
-            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
-            + gui_tool_utils._get_hint_xyz_constrain()
-            + gui_tool_utils._get_hint_mod_constrain()
-            + gui_tool_utils._get_hint_mod_snap()
+        action_hint = FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)
+        return placement_hints(action_hint, cycler_active=not no_anchor_yet)
+
+    def update_hints(self):
+        "refreshes the status bar input hints for the current tool state"
+        FreeCADGui.HintManager.show(*self.get_hints())
+
+    def hide_hints(self):
+        "hides the status bar input hints, once the command is no longer active"
+        QtCore.QTimer.singleShot(0, FreeCADGui.HintManager.hide)
+
+    def _resolve_placement(self, point, include_shape_origin):
+        """Resolve the rotation and insertion point offset for the current
+        mode/shape_kind at *point*, using self.cycler.index.
+
+        Returns (rotation, offset, horizontal). *offset* is a world-space
+        vector: subtracting it from a point aligns the chosen insertion point
+        candidate with that point. Pass include_shape_origin=True to reference
+        the offset to the shape's own geometric origin (a corner, for some
+        precast shapes) - needed to set the actual object's placement. Pass
+        False to reference it to the cross-section's true center instead -
+        needed to position the tracker preview, which is centered on its own
+        local origin and knows nothing about the shape's internal origin.
+        """
+        horizontal, shape_origin_fn = _PLACEMENT_CONFIG[(self.mode, self.shape_kind)]
+        shape_origin = None
+        if include_shape_origin and shape_origin_fn:
+            shape_origin = shape_origin_fn(self.Width, self.Height, self.Length)
+
+        if self.mode == StructureMode.BEAM:
+            rotation = placement_rotation(self.mode, self.wp, self.bpoint, point, horizontal)
+            cross_width, cross_height = self.Width, self.Height
+            width_axis, height_axis = _cross_section_axes(self.mode, horizontal)
+        else:
+            rotation = placement_rotation(self.mode, self.wp)
+            # A column's footprint is Length x Width; Height is always the
+            # extrusion axis and plays no part in the cross-section.
+            cross_width, cross_height = self.Length, self.Width
+            width_axis, height_axis = None, None  # defaults to local X, Y
+
+        offset = insertion_point_offset(
+            cross_width,
+            cross_height,
+            self.cycler.index,
+            rotation,
+            width_axis=width_axis,
+            height_axis=height_axis,
+            shape_origin=shape_origin,
         )
+        return rotation, offset, horizontal
 
     def getPoint(self, point=None, obj=None):
         "this function is called by the snapper when it has a 3D point"
@@ -311,6 +442,8 @@ class _CommandStructure:
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
+            self.cycler.remove()
+            self.hide_hints()
             return
         if self.mode == StructureMode.BEAM and (self.bpoint is None):
             self.bpoint = point
@@ -319,6 +452,7 @@ class _CommandStructure:
             self.precast = ArchPrecast._PrecastTaskPanel()
             self.dents = ArchPrecast._DentsTaskPanel()
             self.precast.Dents = self.dents
+            self.update_hints()
             FreeCADGui.Snapper.getPoint(
                 last=point,
                 callback=self.getPoint,
@@ -333,58 +467,50 @@ class _CommandStructure:
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()
-        horiz = True  # determines the type of rotation to apply to the final object
         self.doc.openTransaction(translate("Arch", "Create Structure"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("WorkingPlane")
         if self.mode == StructureMode.BEAM:
             self.Length = point.sub(self.bpoint).Length
             params.set_param_arch("BeamLength", self.Length)
-        if self.Profile is not None:
+
+        if self.shape_kind != ShapeKind.PLAIN:
             try:  # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
             except Exception:
                 pass
-            if ("Precast" in self.Profile) and self.precastvalues:
-                # precast concrete
-                self.precastvalues["PrecastType"] = self.Profile.split("_")[1]
-                self.precastvalues["Length"] = self.Length
-                self.precastvalues["Width"] = self.Width
-                self.precastvalues["Height"] = self.Height
-                argstring = ""
-                # fix for precast placement, since their (0,0) point is the lower left corner
-                if self.mode == StructureMode.BEAM:
-                    delta = FreeCAD.Vector(0, 0 - self.Width / 2, 0)
+
+        # Resolved from shape_kind, not precastvalues: some precast task box widgets
+        # (e.g. Base) are hidden for certain precast types and never fire, so
+        # precastvalues can stay empty regardless of shape_kind.
+        rotation, offset, horizontal = self._resolve_placement(point, include_shape_origin=True)
+        point = point - offset
+        if self.bpoint:
+            self.bpoint = self.bpoint - offset
+
+        if self.shape_kind == ShapeKind.PRECAST and self.precastvalues:
+            # precast concrete
+            self.precastvalues["PrecastType"] = self.Profile.split("_")[1]
+            self.precastvalues["Length"] = self.Length
+            self.precastvalues["Width"] = self.Width
+            self.precastvalues["Height"] = self.Height
+            argstring = ""
+            for pair in self.precastvalues.items():
+                argstring += pair[0].lower() + "="
+                if isinstance(pair[1], str):
+                    argstring += '"' + pair[1] + '",'
                 else:
-                    delta = FreeCAD.Vector(-self.Length / 2, -self.Width / 2, 0)
-                delta = self.wp.get_global_coords(delta, as_vector=True)
-                point = point.add(delta)
-                if self.bpoint:
-                    self.bpoint = self.bpoint.add(delta)
-                # build the string definition
-                for pair in self.precastvalues.items():
-                    argstring += pair[0].lower() + "="
-                    if isinstance(pair[1], str):
-                        argstring += '"' + pair[1] + '",'
-                    else:
-                        argstring += str(pair[1]) + ","
-                FreeCADGui.addModule("ArchPrecast")
-                FreeCADGui.doCommand("s = ArchPrecast.makePrecast(" + argstring + ")")
+                    argstring += str(pair[1]) + ","
+            FreeCADGui.addModule("ArchPrecast")
+            FreeCADGui.doCommand("s = ArchPrecast.makePrecast(" + argstring + ")")
+        elif self.shape_kind != ShapeKind.PLAIN:
+            # metal profile
+            FreeCADGui.doCommand("p = Arch.makeProfile(" + str(self.Profile) + ")")
+            if self.mode == StructureMode.BEAM:
+                FreeCADGui.doCommand("s = Arch.makeStructure(p,length=" + str(self.Length) + ")")
             else:
-                # metal profile
-                FreeCADGui.doCommand("p = Arch.makeProfile(" + str(self.Profile) + ")")
-                if self.mode == StructureMode.BEAM:
-                    # horizontal
-                    FreeCADGui.doCommand(
-                        "s = Arch.makeStructure(p,length=" + str(self.Length) + ")"
-                    )
-                    horiz = False
-                else:
-                    # vertical
-                    FreeCADGui.doCommand(
-                        "s = Arch.makeStructure(p,height=" + str(self.Height) + ")"
-                    )
-                FreeCADGui.doCommand("s.Profile = " + repr(self.Profile[2]))
+                FreeCADGui.doCommand("s = Arch.makeStructure(p,height=" + str(self.Height) + ")")
+            FreeCADGui.doCommand("s.Profile = " + repr(self.Profile[2]))
         else:
             FreeCADGui.doCommand(
                 "s = Arch.makeStructure(length="
@@ -396,7 +522,6 @@ class _CommandStructure:
                 + ")"
             )
 
-        # calculate rotation
         if self.mode == StructureMode.BEAM and self.bpoint:
             FreeCADGui.doCommand(
                 "s.Placement = Arch.placeAlongEdge("
@@ -404,7 +529,7 @@ class _CommandStructure:
                 + ","
                 + DraftVecUtils.toString(point)
                 + ","
-                + str(horiz)
+                + str(horizontal)
                 + ")"
             )
         else:
@@ -420,6 +545,8 @@ class _CommandStructure:
         self.doc.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
+        self.cycler.remove()
+        self.hide_hints()
         if FreeCADGui.draftToolBar.continueMode:
             self.Activated()
 
@@ -455,6 +582,8 @@ class _CommandStructure:
         grid.addWidget(labelmode, 0, 0, 1, 2)
         grid.addWidget(self.modeb, 1, 0, 1, 1)
         grid.addWidget(self.modec, 1, 1, 1, 1)
+        self.modeb.toggled.connect(lambda checked: self.update_hints())
+        self.modec.toggled.connect(lambda checked: self.update_hints())
 
         # categories box
         labelc = QtGui.QLabel(translate("Arch", "Category"))
@@ -532,31 +661,65 @@ class _CommandStructure:
         return w
 
     def update(self, point, info):
-        "this function is called by the Snapper when the mouse is moved"
+        """Updates the preview tracker to match the calculated beam/column placement."""
+        if not FreeCADGui.Control.activeDialog():
+            return
+        self.last_point = point
 
-        if FreeCADGui.Control.activeDialog():
-            try:  # try to update latest precast values - fails if dialog has been destroyed already
-                self.precastvalues = self.precast.getValues()
-            except Exception:
-                pass
-            if self.Height >= self.Length:
-                delta = Vector(0, 0, self.Height / 2)
+        # Refreshed here only for getPoint's later use; _resolve_placement doesn't read it.
+        try:
+            self.precastvalues = self.precast.getValues()
+        except Exception:
+            pass  # The dialog may already be destroyed.
+
+        if self.mode == StructureMode.COLUMN:
+            rotation, offset, _ = self._resolve_placement(point, include_shape_origin=False)
+            # Columns are extruded upward from a base at the picked point, but the
+            # tracker box is centered on its own local origin, so its position needs
+            # an extra half-height shift along the column's local Z axis.
+            vertical_offset = rotation.multVec(Vector(0, 0, self.Height / 2))
+            self.tracker.pos(point - offset + vertical_offset)
+            self.tracker.on()
+        else:
+            if not self.bpoint:
+                self.tracker.off()
+                return
+
+            span_vector = point - self.bpoint
+            span_length = span_vector.Length
+            if span_length < 1e-6:
+                self.tracker.off()
+                return
+
+            rotation, offset, horizontal = self._resolve_placement(
+                point, include_shape_origin=False
+            )
+
+            start_shifted = self.bpoint - offset
+            end_shifted = point - offset
+            tracker_centroid = start_shifted.add(end_shifted).multiply(0.5)
+
+            self.tracker.setRotation(rotation)
+            self.tracker.pos(tracker_centroid)
+
+            if horizontal:
+                self.tracker.length(span_length)
+                self.tracker.width(self.Width)
+                self.tracker.height(self.Height)
             else:
-                delta = Vector(self.Length / 2, 0, 0)
-            delta = self.wp.get_global_coords(delta, as_vector=True)
-            if self.mode == StructureMode.COLUMN:
-                self.tracker.pos(point.add(delta))
-                self.tracker.on()
-            else:
-                if self.bpoint:
-                    delta = Vector(0, 0, -self.Height / 2)
-                    delta = self.wp.get_global_coords(delta, as_vector=True)
-                    self.tracker.update([self.bpoint.add(delta), point.add(delta)])
-                    self.tracker.on()
-                    l = (point.sub(self.bpoint)).Length
-                    self.vLength.setText(FreeCAD.Units.Quantity(l, FreeCAD.Units.Length).UserString)
-                else:
-                    self.tracker.off()
+                self.tracker.length(self.Width)
+                self.tracker.width(self.Height)
+                self.tracker.height(span_length)
+
+            self.tracker.on()
+
+            # Block signals during UI update to prevent vLength from overriding
+            # the tracker proportions via setLength().
+            self.vLength.blockSignals(True)
+            self.vLength.setText(
+                FreeCAD.Units.Quantity(span_length, FreeCAD.Units.Length).UserString
+            )
+            self.vLength.blockSignals(False)
 
     def _paramPrefix(self):
         return "Beam" if self.mode == StructureMode.BEAM else "Column"
@@ -604,34 +767,41 @@ class _CommandStructure:
     def setPreset(self, i):
 
         self.Profile = None
+        self.shape_kind = ShapeKind.PLAIN
         elt = self.pSelect[i]
         if elt:
             if elt in self.precast.PrecastTypes:
                 self.precast.setPreset(elt)
                 self.Profile = "Precast_" + elt
+                self.shape_kind = ShapeKind.PRECAST
                 if elt in ["Pillar", "Beam"]:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
                 params.set_param_arch("StructurePreset", self.Profile)
             else:
-                # elt[4] is the cross-section depth, elt[5] is the cross-section width.
-                # For beams the cross-section depth is Height; for columns it is Length.
-                depth = float(elt[4])
-                width = float(elt[5])
+                # elt[4] is the profile's width (along its local X), elt[5] its
+                # height (along its local Y). A beam's profile height is its
+                # Height. A column's profile width and height are its Length
+                # and Width.
+                profile_width = float(elt[4])
+                profile_height = float(elt[5])
                 if self.mode == StructureMode.BEAM:
                     self.vHeight.setText(
-                        FreeCAD.Units.Quantity(depth, FreeCAD.Units.Length).UserString
+                        FreeCAD.Units.Quantity(profile_height, FreeCAD.Units.Length).UserString
                     )
-                    self.setHeight(depth)
+                    self.setHeight(profile_height)
+                    width = profile_width
                 else:
                     self.vLength.setText(
-                        FreeCAD.Units.Quantity(depth, FreeCAD.Units.Length).UserString
+                        FreeCAD.Units.Quantity(profile_width, FreeCAD.Units.Length).UserString
                     )
-                    self.setLength(depth)
+                    self.setLength(profile_width)
+                    width = profile_height
                 self.vWidth.setText(FreeCAD.Units.Quantity(width, FreeCAD.Units.Length).UserString)
                 self.setWidth(width)
                 self.Profile = elt
+                self.shape_kind = ShapeKind.PROFILE
                 params.set_param_arch("StructurePreset", ";".join([str(i) for i in self.Profile]))
 
     def switchLH(self, beam_toggled):
@@ -796,7 +966,7 @@ class _Structure(ArchComponent.Component):
                 "Structure",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height or extrusion depth of this element. Keep 0 for automatic",
+                    "The height or extrusion depth of this element.\nKeep 0 to automatically match the height of the enclosing Level or Building.",
                 ),
                 locked=True,
             )
@@ -948,6 +1118,26 @@ class _Structure(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchEdges", 0)
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+
+        if (
+            obj.Document.getProgramVersion().split()[0] < "1.1"
+            and obj.Base is not None
+            and obj.Base.isDerivedFrom("Sketcher::SketchObject")
+            and obj.Normal.Length == 0  # Automatic normal.
+            and obj.Length
+            == 0  # We should be dealing with columns, their obj.Length is normally 0.
+            # Can't compare distance of nodes with obj.Height as nodes may have beeen moved.
+            and len(obj.Nodes) == 2
+            and (obj.Nodes[1] - obj.Nodes[0]).Length > 1e-5
+        ):
+            obj.Normal = (obj.Nodes[1] - obj.Nodes[0]).normalize()
+            from draftutils.messages import _log
+
+            _log(
+                "v26.3, "
+                + obj.Name
+                + ", updated 'Normal' property based on 'Nodes' to prevent flipping"
+            )
 
         # set a flag to indicate onDocumentRestored() is run
 
@@ -1136,35 +1326,20 @@ class _Structure(ArchComponent.Component):
                                 baseShapeWires = structureBaseShapeWires.get("slabWires")
                                 faceMaker = structureBaseShapeWires.get("faceMaker")
                         elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                            skGeom = obj.Base.GeometryFacadeList
-                            skGeomEdges = []
                             skPlacement = (
                                 obj.Base.Placement
                             )  # Get Sketch's placement to restore later
-                            # Get ArchSketch edges to construct ArchStructure
-                            # No need to test obj.ArchSketchData ...
-                            for ig, geom in enumerate(skGeom):
-                                # Construction mode edges should be ignored if
-                                # ArchSketchEdges, otherwise, ArchSketchEdges data
-                                # needs to take out those in Construction before
-                                # using as parameters.
-                                if (not obj.ArchSketchEdges and not geom.Construction) or str(
-                                    ig
-                                ) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
-                                    # as Base at the moment
-                                    if isinstance(
-                                        geom.Geometry,
-                                        (
-                                            Part.LineSegment,
-                                            Part.Circle,
-                                            Part.ArcOfCircle,
-                                            Part.Ellipse,
-                                            Part.BSplineCurve,
-                                        ),
-                                    ):
-                                        skGeomEdgesI = geom.Geometry.toShape()
-                                        skGeomEdges.append(skGeomEdgesI)
+                            skGeomEdges = ArchSketchObject.getSketchDefiningEdges(
+                                obj.Base,
+                                obj.ArchSketchEdges,
+                                (
+                                    Part.LineSegment,
+                                    Part.Circle,
+                                    Part.ArcOfCircle,
+                                    Part.Ellipse,
+                                    Part.BSplineCurve,
+                                ),
+                            )
                             clusterTransformed = []
                             for cluster in Part.getSortedClusters(skGeomEdges):
                                 edgesTransformed = []

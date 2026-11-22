@@ -121,7 +121,8 @@ private:
 
 private:
     float x, y, z;
-    std::vector<App::DocumentObject*> searchList;
+    // by name, as the objects may be deleted before the search is validated
+    std::vector<App::DocumentObjectT> searchList;
     bool openedAutomatically;
 };
 

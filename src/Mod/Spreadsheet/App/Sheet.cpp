@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <boost/tokenizer.hpp>
 #include <boost/regex.hpp>
@@ -127,7 +124,7 @@ Sheet::~Sheet()
     catch (...) {
         // Don't let an exception propagate out of a destructor (calls terminate())
         Base::Console().error(
-            "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
+            "clearAll() resulted in an exception when deleting the spreadsheet : {}\n",
             getNameInDocument()
         );
     }
@@ -505,6 +502,16 @@ PyObject* Sheet::getPyObject()
 Property* Sheet::getProperty(CellAddress key) const
 {
     return props.getDynamicPropertyByName(key.toString(CellAddress::Cell::ShowRowColumn).c_str());
+}
+
+std::string Sheet::getCanonicalPropertyName(const char* name) const
+{
+    App::CellAddress address = getCellAddress(name, true);
+    if (!address.isValid()) {
+        return {};
+    }
+
+    return address.toString(CellAddress::Cell::ShowRowColumn);
 }
 
 /**
@@ -1178,7 +1185,7 @@ DocumentObjectExecReturn* Sheet::execute()
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
                 Base::Console().error(
-                    "Cyclic dependency detected in spreadsheet : %s\n",
+                    "Cyclic dependency detected in spreadsheet : {}\n",
                     getNameInDocument()
                 );
                 std::ostringstream ss;
@@ -1658,6 +1665,14 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
         cells.setAlias(address, alias);
     }
     else {
+        switch (classifyReservedAliasName(alias)) {
+            case ReservedAliasToken::Unit:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved unit token");
+            case ReservedAliasToken::Constant:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved constant token");
+            case ReservedAliasToken::None:
+                break;
+        }
         throw Base::ValueError("Invalid alias");
     }
 }
@@ -1677,6 +1692,17 @@ std::string Sheet::getAddressFromAlias(const std::string& alias) const
         return cell->getAddress().toString();
     }
     return {};
+}
+
+Sheet::ReservedAliasToken Sheet::classifyReservedAliasName(const std::string& candidate)
+{
+    if (ExpressionParser::isTokenAUnit(candidate)) {
+        return ReservedAliasToken::Unit;
+    }
+    if (ExpressionParser::isTokenAConstant(candidate)) {
+        return ReservedAliasToken::Constant;
+    }
+    return ReservedAliasToken::None;
 }
 
 /**

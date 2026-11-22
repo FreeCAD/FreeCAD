@@ -1538,6 +1538,44 @@ bool Document::askIfSavingFailed(const QString& error)
     return false;
 }
 
+static bool isOlderVersion(const App::Document* doc)
+{
+    const char* docVersion = doc->getProgramVersion();
+    const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
+
+    int docMajor = 0;
+    int docMinor = 0;
+    bool hasVersion = false;
+    if (hasVersionString) {
+        std::string versionStr(docVersion);
+        size_t dotPos = versionStr.find('.');
+        if (dotPos != std::string::npos) {
+            try {
+                docMajor = std::stoi(versionStr.substr(0, dotPos));
+                docMinor = std::stoi(versionStr.substr(dotPos + 1));
+                hasVersion = true;
+            }
+            catch (const std::exception&) {
+                hasVersion = false;
+            }
+        }
+    }
+
+    auto config = App::Application::Config();
+    int currentMajor = 0;
+    int currentMinor = 0;
+    if (config.contains("BuildVersionMajor") && config.contains("BuildVersionMinor")) {
+        currentMajor = std::stoi(config["BuildVersionMajor"]);
+        currentMinor = std::stoi(config["BuildVersionMinor"]);
+    }
+    else {
+        return false;
+    }
+
+    return !hasVersion || (docMajor < currentMajor)
+        || (docMajor == currentMajor && docMinor < currentMinor);
+}
+
 bool Document::warnIfOlderVersion()
 {
     // Skip warning if no GUI (headless/scripted mode)
@@ -1552,32 +1590,14 @@ bool Document::warnIfOlderVersion()
         return true;
     }
 
-    // Get document version info
-    const char* docVersion = d->_pcDocument->getProgramVersion();
-    const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
+    if (isOlderVersion(d->_pcDocument)) {
+        const char* docVersion = d->_pcDocument->getProgramVersion();
+        const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
 
-    // Parse document version string like "1.0R39319 (Git)" or "0.21R33694 (Git)"
-    // hasVersion is true only if the string is present AND parses as major.minor.
-    // Unrecognised strings like "pre-0.14" still display in the dialog but cannot
-    // be compared numerically, so they are treated as older versions.
-    int docMajor = 0, docMinor = 0;
-    const bool hasVersion = hasVersionString
-        && std::sscanf(docVersion, "%d.%d", &docMajor, &docMinor) == 2;
+        auto config = App::Application::Config();
+        int currentMajor = std::stoi(config["BuildVersionMajor"]);
+        int currentMinor = std::stoi(config["BuildVersionMinor"]);
 
-    // Get current FreeCAD version
-    auto config = App::Application::Config();
-    int currentMajor = 0, currentMinor = 0;
-    if (config.count("BuildVersionMajor") && config.count("BuildVersionMinor")) {
-        currentMajor = std::stoi(config["BuildVersionMajor"]);
-        currentMinor = std::stoi(config["BuildVersionMinor"]);
-    }
-    else {
-        return true;
-    }
-
-    // Warn if the document was created with an older version or has no version info
-    if (!hasVersion || (docMajor < currentMajor)
-        || (docMajor == currentMajor && docMinor < currentMinor)) {
         QMessageBox msgBox(getMainWindow());
         msgBox.setWindowTitle(QObject::tr("File Created with Older FreeCAD Version"));
         msgBox.setIcon(QMessageBox::Warning);
@@ -1627,6 +1647,7 @@ bool Document::warnIfOlderVersion()
 }
 
 /// Save the document
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 bool Document::save()
 {
     if (d->_pcDocument->isSaved()) {
@@ -1681,6 +1702,11 @@ bool Document::save()
                     dmap.clear();
                     dmap[getDocument()] = getDocument()->mustExecute();
                 }
+            }
+
+            if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
+                && !isOlderVersion(getDocument())) {
+                return true;
             }
 
             if (!checkCanonicalPath(dmap)) {
@@ -1831,6 +1857,12 @@ void Document::saveAll()
         if (!gdoc) {
             continue;
         }
+
+        // Simplified skip check based on PR review
+        if (!gdoc->isModified() && doc->isSaved() && !isOlderVersion(doc)) {
+            continue;
+        }
+
         if (!doc->isSaved()) {
             if (!gdoc->saveAs()) {
                 break;
@@ -1852,7 +1884,7 @@ void Document::saveAll()
                 getMainWindow(),
                 QObject::tr("Failed to save document")
                     + QStringLiteral(": %1").arg(QString::fromUtf8(doc->getName())),
-                QString::fromLatin1(e.what())
+                QString::fromUtf8(e.what())
             );
             break;
         }
@@ -1925,7 +1957,7 @@ void Document::Save(Base::Writer& writer) const
         );
         if (hGrp->GetBool("SaveThumbnail", true)) {
             int size = hGrp->GetInt("ThumbnailSize", 256);
-            size = Base::clamp<int>(size, 64, 512);
+            size = std::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
 
             View3DInventorViewer* view = nullptr;
@@ -2045,7 +2077,7 @@ void Document::RestoreDocFile(Base::Reader& reader)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
     }
@@ -3090,7 +3122,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childRootNode == childGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "group of '%s' to itself\n",
+                                    "group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }
@@ -3103,7 +3135,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childFrontNode == frontGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "foreground group of '%s' to itself\n",
+                                    "foreground group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }
@@ -3116,7 +3148,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childBackNode == backGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "background group of '%s' to itself\n",
+                                    "background group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }

@@ -1,30 +1,27 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License (LGPL)   *
- *   as published by the Free Software Foundation; either version 2 of     *
- *   the License, or (at your option) any later version.                   *
- *   for detail see the LICENCE text file.                                 *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
+#include <algorithm>
 #include <array>
 
 #include <Base/Console.h>
@@ -41,6 +38,10 @@
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
 #include "RecoverySnapshot.h"
+
+#include <Base/CrashReporter/Manager.h>
+
+#include <Base/CrashReporter/CrashReportPy.h>
 
 
 // using Base::GetConsole;
@@ -1095,5 +1096,52 @@ PyObject* ApplicationPy::sCheckAbort(PyObject* /*self*/, PyObject* args)
         Py_Return;
     }
     PY_CATCH
+}
+
+PyObject* ApplicationPy::sGetLastCrashReport(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        const auto& reports = CrashReporter::Manager::reports();
+        const auto newest = std::ranges::max_element(
+            reports, {}, &CrashReporter::ParsedCrashReport::timestamp);
+        if (newest == reports.end()) {
+            Py_Return;
+        }
+        return new CrashReportPy(new ParsedCrashReport(*newest));
+    }
+    PY_CATCH
+}
+
+PyObject* ApplicationPy::sGetCrashReports(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        Py::List list;
+        for (const auto& report : CrashReporter::Manager::reports()) {
+            list.append(Py::asObject(new CrashReportPy(new ParsedCrashReport(report))));
+        }
+        return Py::new_reference_to(list);
+    }
+    PY_CATCH
+}
+
+PyObject* ApplicationPy::sClearCrashReports(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        CrashReporter::Manager::clear();
+    }
+    PY_CATCH
+    Py_Return;
 }
 // NOLINTEND(cppcoreguidelines-pro-type-*)

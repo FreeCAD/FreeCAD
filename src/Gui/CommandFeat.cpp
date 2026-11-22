@@ -339,7 +339,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         "sub = subs[-1] if subs else None\n"
         "name = names[-1][-1] if names[-1] else None"
     );
-    Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+    Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
 
     // show the python console if it's not already visible, and set the keyboard focus to it
     QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");

@@ -40,6 +40,7 @@ import Path.Base.Generator.rotary_spiral as rotary_spiral
 import Path.Base.Generator.rotary_wrap as rotary_wrap
 import Path.Main.Stock as PathStock
 import PathScripts.PathUtils as PathUtils
+from Path.Tool.shape import ToolBitShape
 
 # OCL is loaded lazily in opExecute so the module can be imported in
 # environments without OCL (for non-execute access like loading saved
@@ -534,11 +535,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             tool_type = str(self.tool.ShapeType).lower()
         elif hasattr(self.tool, "ShapeName"):
             tool_type = str(self.tool.ShapeName).lower()
-        if tool_type and tool_type not in (
-            "ballend",
-            "bullnose",
-            "taperedballnose",
-        ):
+        if tool_type and not (tool_type == "bullnose" or ToolBitShape.is_ball_end(tool_type)):
             Path.Log.warning(
                 "Rotary Surface: tool shape '{}' is not ideal for "
                 "rotary surfacing; consider a ball-end or bull-nose tool.".format(tool_type)

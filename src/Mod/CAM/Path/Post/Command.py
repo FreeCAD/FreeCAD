@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2015 Dan Falck
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Post Process command that will make use of the Output File and Post
 Processor entries in PathJob"""
@@ -56,6 +54,10 @@ def _resolve_post_processor_name(job):
         valid_name = Path.Preferences.defaultPostProcessor()
     elif FreeCAD.GuiUp:
         valid_name = DlgSelectPostProcessor().exec_()  # Ensure DlgSelectPostProcessor is defined
+        if valid_name is None:
+            # The user dismissed the selection dialog. That is not an error,
+            # it just means there is nothing to post process.
+            return None
     else:
         valid_name = None
 
@@ -349,9 +351,11 @@ class CommandPathPostSelected(CommandPathPost):
     def GetResources(self):
         return {
             "Pixmap": "CAM_PostSelected",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process Selected"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PostSelected", "Post Process Selected"),
             "Accel": "P, O",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected operations"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_PostSelected", "Post Processes the selected operations"
+            ),
         }
 
     def IsActive(self):

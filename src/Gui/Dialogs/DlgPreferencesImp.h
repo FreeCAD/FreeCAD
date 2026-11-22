@@ -154,8 +154,6 @@ private:
 
     // Utility methods
     static QString findGroupBoxForWidget(QWidget* widget);
-    static bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
-    static bool isExactMatch(const QString& searchText, const QString& targetText);
 
 private:
     DlgPreferencesImp* m_parentDialog;

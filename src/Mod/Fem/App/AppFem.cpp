@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
@@ -47,7 +49,7 @@
 #include "FemConstraintTransform.h"
 #include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemMeshProperty.h"
+#include "PropertyFemMesh.h"
 #include "FemMeshPy.h"
 #include "FemMeshShapeNetgenObject.h"
 #include "FemMeshShapeObject.h"

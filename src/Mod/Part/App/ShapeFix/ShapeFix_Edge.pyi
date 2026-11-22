@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
+from typing import overload
+from Base.Placement import Placement
+from Part.GeometrySurface import GeometrySurface
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeFace import TopoShapeFace
 
 @export(
     PythonName="Part.ShapeFix.Edge",
@@ -28,7 +31,13 @@ class ShapeFix_Edge(PyObjectBase):
     Licence: LGPL
     """
 
-    def fixRemovePCurve(self) -> bool:
+    @overload
+    def fixRemovePCurve(self, edge: TopoShapeEdge, face: TopoShapeFace, /) -> bool: ...
+    @overload
+    def fixRemovePCurve(
+        self, edge: TopoShapeEdge, surface: GeometrySurface, placement: Placement, /
+    ) -> bool: ...
+    def fixRemovePCurve(self, *args) -> bool:
         """
         Removes the pcurve(s) of the edge if it does not match the
         vertices
@@ -39,18 +48,30 @@ class ShapeFix_Edge(PyObjectBase):
         False, (status OK) if matches or (status FAIL) if no pcurve,
         nothing done.
         """
-        ...
 
-    def fixRemoveCurve3d(self) -> bool:
+    def fixRemoveCurve3d(self, edge: TopoShapeEdge, /) -> bool:
         """
         Removes 3d curve of the edge if it does not match the vertices
         Returns: True,  if does not match, removed (status DONE)
         False, (status OK) if matches or (status FAIL) if no 3d curve,
         nothing done.
         """
-        ...
 
-    def fixAddPCurve(self) -> bool:
+    @overload
+    def fixAddPCurve(
+        self, edge: TopoShapeEdge, face: TopoShapeFace, seam: bool, prec: float = 0.0, /
+    ) -> bool: ...
+    @overload
+    def fixAddPCurve(
+        self,
+        edge: TopoShapeEdge,
+        surface: GeometrySurface,
+        placement: Placement,
+        seam: bool,
+        prec: float = 0.0,
+        /,
+    ) -> bool: ...
+    def fixAddPCurve(self, *args) -> bool:
         """
         Adds pcurve(s) of the edge if missing (by projecting 3d curve)
         Parameter isSeam indicates if the edge is a seam.
@@ -70,9 +91,8 @@ class ShapeFix_Edge(PyObjectBase):
         sphere encountered during projection (see class
         ShapeConstruct_ProjectCurveOnSurface for more info).
         """
-        ...
 
-    def fixAddCurve3d(self) -> bool:
+    def fixAddCurve3d(self, edge: TopoShapeEdge, /) -> bool:
         """
         Tries to build 3d curve of the edge if missing
         Use    : It is to be called after FixRemoveCurve3d (if removed) or in any
@@ -83,9 +103,8 @@ class ShapeFix_Edge(PyObjectBase):
         FAIL1: BRepLib::BuildCurve3d() has failed
         DONE1: 3d curve was added.
         """
-        ...
 
-    def fixVertexTolerance(self) -> bool:
+    def fixVertexTolerance(self, edge: TopoShapeEdge, face: TopoShapeFace = ..., /) -> bool:
         """
         Increases the tolerances of the edge vertices to comprise
         the ends of 3d curve and pcurve on the given face
@@ -96,9 +115,14 @@ class ShapeFix_Edge(PyObjectBase):
         DONE1: the tolerance of first vertex has been increased
         DONE2: the tolerance of last  vertex has been increased.
         """
-        ...
 
-    def fixReversed2d(self) -> bool:
+    @overload
+    def fixReversed2d(self, edge: TopoShapeEdge, face: TopoShapeFace, /) -> bool: ...
+    @overload
+    def fixReversed2d(
+        self, edge: TopoShapeEdge, surface: GeometrySurface, placement: Placement, /
+    ) -> bool: ...
+    def fixReversed2d(self, *args) -> bool:
         """
         Fixes edge if pcurve is directed opposite to 3d curve
         Check is done by call to the function
@@ -112,9 +136,14 @@ class ShapeFix_Edge(PyObjectBase):
         FAIL2 - no 3d curve
         DONE1 - pcurve was reversed.
         """
-        ...
 
-    def fixSameParameter(self) -> bool:
+    @overload
+    def fixSameParameter(self, edge: TopoShapeEdge, tolerance: float = 0.0, /) -> bool: ...
+    @overload
+    def fixSameParameter(
+        self, edge: TopoShapeEdge, face: TopoShapeFace, tolerance: float = 0.0, /
+    ) -> bool: ...
+    def fixSameParameter(self, *args) -> bool:
         """
         Tries to make edge SameParameter and sets corresponding
         tolerance and SameParameter flag.
@@ -149,4 +178,3 @@ class ShapeFix_Edge(PyObjectBase):
         DONE5 - if the edge resulting from BRepLib has been chosen, i.e. variant b. above
         (only for edges with not set SameParameter).
         """
-        ...

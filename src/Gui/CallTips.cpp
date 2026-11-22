@@ -235,13 +235,13 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         QStringList items = context.split(QLatin1Char('.'));
         QString modname = items.front();
         items.pop_front();
-        if (!dict.hasKey(std::string(modname.toLatin1()))) {
+        if (!dict.hasKey(modname.toStdString())) {
             return tips;  // unknown object
         }
         // Don't use hasattr & getattr because if a property is bound to a method this will be
         // executed twice.
         PyObject* code = Py_CompileString(
-            static_cast<const char*>(context.toLatin1()),
+            static_cast<const char*>(context.toUtf8()),
             "<CallTipsList>",
             Py_eval_input
         );
@@ -292,7 +292,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             // Make sure it's not a type object
             PyObject* typetype = Base::getTypeAsObject(&PyType_Type);
             if (PyObject_IsInstance(obj.ptr(), typetype) != 1) {
-                // For wrapped objects with PySide2 use the object, not its type
+                // For wrapped objects with PySide use the object, not its type
                 // as otherwise attributes added at runtime won't be listed (e.g. MainWindowPy)
                 QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
 
@@ -419,12 +419,12 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
             Py::Object attr = getAttrWorkaround(obj, attrname);
             if (!attr.ptr()) {
-                Base::Console().log("Python attribute '%s' returns null!\n", name.c_str());
+                Base::Console().log("Python attribute '{}' returns null!\n", name);
                 continue;
             }
 
             CallTip tip;
-            QString str = QString::fromLatin1(name.c_str());
+            QString str = QString::fromUtf8(name.c_str());
             tip.name = str;
 
             if (attr.isCallable()) {
@@ -499,7 +499,7 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
 
     for (const auto& It : Map) {
         CallTip tip;
-        QString str = QString::fromLatin1(It.first.c_str());
+        QString str = QString::fromUtf8(It.first.c_str());
         tip.name = str;
         tip.type = CallTip::Property;
         QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It.second));

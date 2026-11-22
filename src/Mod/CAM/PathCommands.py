@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Part
@@ -267,21 +265,18 @@ class _CopyOperation:
         selection = FreeCADGui.Selection.getSelection()
         for sel in selection:
             job = PathUtils.findParentJob(sel)
-            prevOp = PathDressup.baseOp(sel)
-            prevOpCopy = FreeCAD.ActiveDocument.copyObject(prevOp, False)
-            while prevOp != sel:
-                # recursive processing Dressup
-                op = sel
-                while op.Base != prevOp:
-                    # get higher level operation
-                    op = op.Base
-                opCopy = FreeCAD.ActiveDocument.copyObject(op, False)
-                opCopy.Base = prevOpCopy
-                prevOpCopy = opCopy
-                prevOp = op
+            # collect the dressup chain from the top object down to the base operation
+            baseOp = PathDressup.baseOp(sel)
+            chain = [sel]
+            while chain[-1] != baseOp:
+                chain.append(chain[-1].Base)
+
+            # copy the whole chain at once so Base links and expressions
+            # (e.g. RampEntry DressupStartDepth) point at the copies, not the originals
+            copies = FreeCAD.ActiveDocument.copyObject(chain, False)
 
             # add to Job top object
-            PathUtils.addToJob(prevOpCopy, job.Name)
+            PathUtils.addToJob(copies[0], job.Name)
 
 
 if FreeCAD.GuiUp:

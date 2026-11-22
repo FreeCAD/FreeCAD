@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2024 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Misc Arch util commands"""
 
@@ -115,24 +112,30 @@ class Arch_CurtainWall:
                 last=self.points[0], callback=self.getPoint, hints=self.get_hints()
             )
         elif len(self.points) == 2:
+            from draftutils import todo
+
             self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
-            FreeCADGui.Control.closeDialog()
-            self.doc.openTransaction(translate("Arch", "Create Curtain Wall"))
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand(
-                "base = Draft.makeLine(FreeCAD."
-                + str(self.points[0])
-                + ",FreeCAD."
-                + str(self.points[1])
-                + ")"
-            )
-            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            self.doc.commitTransaction()
-            self.doc.recompute()
+            todo.ToDo.delay(self.createCurtainWall, None)
+
+    def createCurtainWall(self):
+        """Creates the curtain wall from the picked points"""
+
+        self.doc.openTransaction(translate("Arch", "Create Curtain Wall"))
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand(
+            "base = Draft.make_line(FreeCAD."
+            + str(self.points[0])
+            + ",FreeCAD."
+            + str(self.points[1])
+            + ")"
+        )
+        FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
 
 FreeCADGui.addCommand("Arch_CurtainWall", Arch_CurtainWall())

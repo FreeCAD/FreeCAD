@@ -30,7 +30,6 @@
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <GeomAbs_SurfaceType.hxx>
-#include <Standard_Version.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shell.hxx>
@@ -69,6 +68,7 @@ public:
     virtual bool isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const = 0;
     virtual GeomAbs_SurfaceType getType() const = 0;
     virtual TopoDS_Face buildFace(const FaceVectorType& faces) const = 0;
+    virtual std::vector<FaceVectorType> splitEqual(const FaceVectorType& faces) const;
 
     static GeomAbs_SurfaceType getFaceType(const TopoDS_Face& faceIn);
 
@@ -121,6 +121,7 @@ public:
     bool isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const override;
     GeomAbs_SurfaceType getType() const override;
     TopoDS_Face buildFace(const FaceVectorType& faces) const override;
+    std::vector<FaceVectorType> splitEqual(const FaceVectorType& faces) const override;
     friend FaceTypedBSpline& getBSplineObject();
 };
 FaceTypedBSpline& getBSplineObject();
@@ -165,24 +166,6 @@ private:
 
     TopTools_IndexedDataMapOfShapeListOfShape faceToEdgeMap;
     TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
-};
-
-class FaceEqualitySplitter
-{
-public:
-    FaceEqualitySplitter() = default;
-    void split(const FaceVectorType& faces, FaceTypedBase* object);
-    std::size_t getGroupCount() const
-    {
-        return equalityVector.size();
-    }
-    const FaceVectorType& getGroup(const std::size_t& index) const
-    {
-        return equalityVector[index];
-    }
-
-private:
-    std::vector<FaceVectorType> equalityVector;
 };
 
 class FaceUniter
@@ -241,11 +224,7 @@ class PartExport BRepBuilderAPI_RefineModel: public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
-#if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
-#else
-    void Build() override;
-#endif
     const TopTools_ListOfShape& Modified(const TopoDS_Shape& S) override;
     Standard_Boolean IsDeleted(const TopoDS_Shape& S) override;
 

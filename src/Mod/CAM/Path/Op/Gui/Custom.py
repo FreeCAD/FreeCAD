@@ -41,6 +41,8 @@ translate = FreeCAD.Qt.translate
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Custom operation."""
 
+    needsFullSpace = True  # use the full height of the task panel
+
     def getForm(self):
         """getForm() ... returns UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpCustomEdit.ui")
@@ -62,7 +64,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             "\n\nSurround expressing characters with {{expression}}"
             "\nExample:"
             "\nG0 Z{{VarSet.HeightZ.Value+5}}"
-            "\nG0 X{{Profile.PathCommands[3].x}} Y{{Profile.Path.Commands[3].y}}"
+            "\nG0 X{{Profile.Path.Commands[3].x}} Y{{Profile.Path.Commands[3].y}}"
             "\n\nUse ! at the start of the line to individually disable post processing "
             "on a given line when 'Post Process Output' is enabled"
             "\nExample:"
@@ -72,6 +74,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.txtGCodeBox.layout().removeWidget(form.txtGCode)
         form.txtGCode.deleteLater()
         form.txtGCodeBox.layout().addWidget(self.editor)
+        for widget in (form, form.txtGCodeBox):
+            policy = widget.sizePolicy()
+            policy.setVerticalPolicy(QtGui.QSizePolicy.Expanding)
+            widget.setSizePolicy(policy)
 
         return form
 

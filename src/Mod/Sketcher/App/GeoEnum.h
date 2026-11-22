@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2021 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -103,7 +100,7 @@ enum class PointPos : int
  * GeoElementId intends to substitute this pair whenever appropriate. For example in containers and
  * ordered containers.
  *
- * It has overloaded equality operator and specialised std::less so that it can safely be used in
+ * It has overloaded equality and less-than operators so that it can safely be used in
  * containers, including ordered containers.
  *
  */
@@ -121,6 +118,10 @@ public:
     /** @brief inequality operator
      */
     bool operator!=(const GeoElementId& obj) const;
+
+    /** @brief strict weak ordering for use as a key in ordered containers
+     */
+    bool operator<(const GeoElementId& obj) const;
 
     /** @brief Underlying GeoId (see GeoEnum for definition)
      */
@@ -172,6 +173,12 @@ inline int GeoElementId::posIdAsInt() const
     return static_cast<int>(Pos);
 }
 
+inline bool GeoElementId::operator<(const GeoElementId& obj) const
+{
+    return (GeoId != obj.GeoId) ? (GeoId < obj.GeoId)
+                                : (static_cast<int>(Pos) < static_cast<int>(obj.Pos));
+}
+
 #ifndef FC_OS_WIN32
 constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
 constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
@@ -179,16 +186,3 @@ constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, 
 #endif
 
 }  // namespace Sketcher
-
-namespace std
-{
-template<>
-struct less<Sketcher::GeoElementId>
-{
-    bool operator()(const Sketcher::GeoElementId& lhs, const Sketcher::GeoElementId& rhs) const
-    {
-        return (lhs.GeoId != rhs.GeoId) ? (lhs.GeoId < rhs.GeoId)
-                                        : (static_cast<int>(lhs.Pos) < static_cast<int>(rhs.Pos));
-    }
-};
-}  // namespace std

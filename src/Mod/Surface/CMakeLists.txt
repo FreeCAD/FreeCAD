@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 disable_occt8_deprecation_warnings()
 
@@ -15,6 +16,7 @@ set(Surface_Scripts
 set(Surface_TestScripts
     SurfaceTests/__init__.py
     SurfaceTests/TestBlendCurve.py
+    SurfaceTests/TestGeomFillSurface.py
 )
 
 if(BUILD_GUI)

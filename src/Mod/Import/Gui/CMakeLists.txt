@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(ImportGui_LIBS
     FreeCADGui
@@ -47,7 +48,7 @@ endif()
 
 target_compile_warn_error(ImportGui)
 
-SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
+SET_BIN_DIR(ImportGui)
 SET_PYTHON_PREFIX_SUFFIX(ImportGui)
 
 INSTALL(TARGETS ImportGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

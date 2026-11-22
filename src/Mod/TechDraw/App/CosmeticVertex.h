@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -42,7 +44,7 @@ public:
     CosmeticVertex();
     CosmeticVertex(const CosmeticVertex* cv);
     CosmeticVertex(const Base::Vector3d& loc);
-    ~CosmeticVertex() override = default;
+    ~CosmeticVertex() override;
 
     Base::Vector3d point() const  { return permaPoint; };
     void point(Base::Vector3d newPoint) { permaPoint = newPoint; }

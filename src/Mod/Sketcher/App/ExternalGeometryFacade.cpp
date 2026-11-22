@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2020 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2020 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <boost/uuid/uuid_io.hpp>
 
@@ -95,9 +92,9 @@ void ExternalGeometryFacade::initExtensions()
 
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
-        // Base::Console().warning("Sketcher External Geometry without Geometry Extension: %s
+        // Base::Console().warning("Sketcher External Geometry without Geometry Extension: {}
         // \n",
-        //                         boost::uuids::to_string(Geo->getTag()).c_str());
+        //                         boost::uuids::to_string(Geo->getTag()));
     }
 
     if (!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
@@ -107,8 +104,8 @@ void ExternalGeometryFacade::initExtensions()
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
         // Base::Console().warning(
-        //     "Sketcher External Geometry without ExternalGeometryExtension: %s \n",
-        //     boost::uuids::to_string(Geo->getTag()).c_str());
+        //     "Sketcher External Geometry without ExternalGeometryExtension: {} \n",
+        //     boost::uuids::to_string(Geo->getTag()));
     }
 
     SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from Vector import Vector
@@ -122,14 +120,12 @@ class BoundBox(PyObjectBase):
         """
         Invalidate the bounding box.
         """
-        ...
 
     @constmethod
     def isValid(self) -> bool:
         """
         Checks if the bounding box is valid.
         """
-        ...
 
     @overload
     def add(self, minMax: Vector, /) -> None: ...
@@ -152,7 +148,6 @@ class BoundBox(PyObjectBase):
         z : float
             Value to enlarge at z-direction.
         """
-        ...
 
     @constmethod
     def getPoint(self, index: int, /) -> Vector:
@@ -162,7 +157,6 @@ class BoundBox(PyObjectBase):
 
         index : int
         """
-        ...
 
     @constmethod
     def getEdge(self, index: int, /) -> Tuple[Vector, ...]:
@@ -172,10 +166,9 @@ class BoundBox(PyObjectBase):
 
         index : int
         """
-        ...
 
     @overload
-    def closestPoint(self, point: Vector, /) -> Vector: ...
+    def closestPoint(self, point: Union[Vector, Tuple[float, float, float]], /) -> Vector: ...
     @overload
     def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
     @constmethod
@@ -192,7 +185,6 @@ class BoundBox(PyObjectBase):
         z : float
             Z-coordinate of the given point.
         """
-        ...
 
     @overload
     def intersect(self, boundBox2: "BoundBox", /) -> bool: ...
@@ -212,7 +204,6 @@ class BoundBox(PyObjectBase):
         base : Base.Vector, tuple
         dir : Base.Vector, tuple
         """
-        ...
 
     def intersected(self, boundBox2: "BoundBox", /) -> "BoundBox":
         """
@@ -220,7 +211,6 @@ class BoundBox(PyObjectBase):
 
         boundBox2 : Base.BoundBox
         """
-        ...
 
     def united(self, boundBox2: "BoundBox", /) -> "BoundBox":
         """
@@ -228,7 +218,6 @@ class BoundBox(PyObjectBase):
 
         boundBox2 : Base.BoundBox
         """
-        ...
 
     def enlarge(self, variation: float, /) -> None:
         """
@@ -237,7 +226,6 @@ class BoundBox(PyObjectBase):
 
         variation : float
         """
-        ...
 
     def getIntersectionPoint(self, base: Vector, dir: Vector, epsilon: float = 0.0001, /) -> Vector:
         """
@@ -251,7 +239,6 @@ class BoundBox(PyObjectBase):
         epsilon : float
             Bounding box size tolerance.
         """
-        ...
 
     @overload
     def move(self, displacement: Vector, /) -> None: ...
@@ -272,7 +259,6 @@ class BoundBox(PyObjectBase):
         z : float
             Displacement at z-direction.
         """
-        ...
 
     @overload
     def scale(self, factor: Vector, /) -> None: ...
@@ -293,7 +279,6 @@ class BoundBox(PyObjectBase):
         z : float
             Scale at z-direction.
         """
-        ...
 
     def transformed(self, matrix: Matrix, /) -> "BoundBox":
         """
@@ -303,7 +288,6 @@ class BoundBox(PyObjectBase):
         matrix : Base.Matrix
             Transformation matrix.
         """
-        ...
 
     def isCutPlane(self, base: Vector, normal: Vector, /) -> bool:
         """
@@ -313,10 +297,9 @@ class BoundBox(PyObjectBase):
         base : Base.Vector
         normal : Base.Vector
         """
-        ...
 
     @overload
-    def isInside(self, object: Vector, /) -> bool: ...
+    def isInside(self, object: Union[Vector, Tuple[float, float, float]], /) -> bool: ...
     @overload
     def isInside(self, object: "BoundBox", /) -> bool: ...
     @overload
@@ -334,4 +317,3 @@ class BoundBox(PyObjectBase):
         z : float
             Z-coordinate of the point to check.
         """
-        ...

@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
+from StringID import StringID
 from typing import Any, Final, overload, Dict
 
 
@@ -20,14 +20,14 @@ class StringHasher(BaseClass):
     """
 
     @overload
-    def getID(self, txt: str, base64: bool = False, /) -> Any:
+    def getID(self, txt: str, base64: bool = False, /) -> StringID | None:
         ...
 
     @overload
-    def getID(self, id: int, base64: bool = False, /) -> Any:
+    def getID(self, id: int, index: int = 0, /) -> StringID | None:
         ...
 
-    def getID(self, arg: Any, base64: bool = False, /) -> Any:
+    def getID(self, arg: Any, base64: bool = False, /) -> StringID | None:
         """
         If the input is text, return a StringID object that is unique within this hasher. This
         StringID object is reference counted. The hasher may only save hash ID's that are used.
@@ -37,14 +37,12 @@ class StringHasher(BaseClass):
 
         base64: indicate if the input 'txt' is base64 encoded binary data
         """
-        ...
 
     @constmethod
     def isSame(self, other: "StringHasher", /) -> bool:
         """
         Check if two hasher are the same
         """
-        ...
 
     Count: Final[int] = 0
     """Return count of used hashes"""

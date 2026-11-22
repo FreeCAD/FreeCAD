@@ -69,6 +69,9 @@ SoSeparator* createOverlayRoot(int width, int height)
     root->ref();
 
     auto* camera = new SoOrthographicCamera;
+    // Map overlay units 1:1 to viewport pixels. The default ADJUST_CAMERA mapping
+    // zooms out when the viewport is taller than wide, which offsets the overlay.
+    camera->viewportMapping.setValue(SoCamera::LEAVE_ALONE);
     camera->aspectRatio.setValue(static_cast<float>(width) / static_cast<float>(height));
     camera->height.setValue(static_cast<float>(height));
     root->addChild(camera);

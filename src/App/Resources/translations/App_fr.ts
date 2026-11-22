@@ -4,22 +4,22 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="609"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>Nouveau</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="587"/>
+      <location filename="../../Expression.cpp" line="601"/>
       <source>Null</source>
       <translation>Null</translation>
     </message>
@@ -27,7 +27,7 @@
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="163"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>Origine</translation>
     </message>
@@ -40,8 +40,8 @@
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation>Il est recommandé à l'utilisateur de cliquer avec le bouton droit de la souris sur la racine du document et de sélectionner "Marquer pour recalculer".
-L'utilisateur doit ensuite cliquer sur le bouton "Rafraîchir" dans la barre d'outils principale.</translation>
+      <translation>Il est recommandé à l'utilisateur de cliquer avec le bouton droit de la souris sur la racine du document et de sélectionner "Marquer pour actualiser".
+L'utilisateur doit ensuite cliquer sur le bouton « Actualiser » dans la barre d'outils principale.</translation>
     </message>
   </context>
   <context>
@@ -85,7 +85,7 @@ L'utilisateur doit ensuite cliquer sur le bouton "Rafraîchir" dans la barre d'o
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Enregistre le dernier choix de l'utilisateur concernant l'application de la configuration « CopyOnChange » à tous les liens qui renvoient vers le

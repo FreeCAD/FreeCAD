@@ -39,7 +39,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDefeaturingParameters */
 
 TaskDefeaturingParameters::TaskDefeaturingParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, false, true, parent)
+    : TaskDressUpParameters(DressUpView, false, true, false, true, parent)
     , ui(new Ui_TaskDefeaturingParameters)
 {
     proxy = new QWidget(this);
@@ -116,7 +116,7 @@ void TaskDefeaturingParameters::apply()
 {
     if (ui->listWidgetReferences->count() == 0) {
         std::string text = tr("Empty defeaturing created").toStdString();
-        Base::Console().warning("%s\n", text.c_str());
+        Base::Console().warning("{}\n", text);
     }
 }
 

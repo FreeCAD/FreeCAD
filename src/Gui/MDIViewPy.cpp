@@ -232,7 +232,7 @@ Py::Object MDIViewPy::supportMessage(const Py::Tuple& args)
     try {
         bool ok = false;
         if (_view) {
-            _view->onHasMsg(psMsgStr);
+            ok = _view->onHasMsg(psMsgStr);
         }
         return Py::Boolean(ok);
     }

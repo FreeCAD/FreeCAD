@@ -52,10 +52,11 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
         pass
 
     def setUp(self):
-        self.maxDiff = None
         self.post.reinitialize()
+        self.maxDiff = None
         self.post._machine = Machine.create_3axis_config()
         self.post._machine.name = "Test Marlin Machine"
+        self.post.apply_configuration_bundle()
         toolhead = Toolhead(
             name="Default Toolhead",
             toolhead_type=ToolheadType.ROTARY,
@@ -122,7 +123,7 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
     def test_spindle_wait_uses_s(self):
         """Spindle wait (G4 after M3) should use S parameter for Marlin."""
         # Enable spindle wait on the toolhead
-        self.post._machine.toolheads[0].spindle_wait = 3.0
+        self.post._machine.toolheads[0].toolhead_wait = 3.0
 
         self.profile_op.Path = Path.Path(
             [

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include "Utils.h"
@@ -28,7 +25,6 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/WorkbenchManager.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 using namespace SketcherGui;
@@ -176,19 +172,19 @@ inline const QStringList nonEditModeToolbarNames()
 
 void Workbench::activated()
 {
-    /* When the workbench is activated, it may happen that we are in edit mode or not.
-     * If we are not in edit mode, the function enterEditMode (called by the ViewProvider) takes
-     * care to save the state of toolbars outside of edit mode. We cannot do it here, as we are
-     * coming from another WB.
+    /* The workbench may be activated with or without a sketch in edit mode, for
+     * example when switching documents or returning from another workbench.
      *
-     * If we moved to another WB from edit mode, the new WB was activated before deactivating this.
-     * Therefore we had no chance to tidy up the save state. We assume a loss of any CHANGE to
-     * toolbar configuration since last entering edit mode in this case (for any change in
-     * configuration to be stored, the edit mode must be left while the selected Workbench is the
-     * sketcher WB).
+     * ToolBarManager::setup() saves the outgoing workbench's available toolbar
+     * visibility, then sets up this workbench using its default availability and
+     * saved user preferences. Sketcher edit toolbars are unavailable by default,
+     * so they must be made available again here if a sketch is still being edited.
+     * The normal toolbars are hidden without changing their saved visibility.
      *
-     * However, now that we are back (from another WB), we need to make the toolbars available.
-     * These correspond to the last saved state.
+     * Do not save visibility here, as setup has already replaced the previous toolbar
+     * context. enterEditMode() and leaveEditMode() save the appropriate available
+     * toolbars when changing edit mode without switching workbenches. If no sketch
+     * is being edited, setup has already restored the normal toolbars.
      */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
@@ -226,21 +222,10 @@ void Workbench::enterEditMode()
 
 void Workbench::leaveEditMode()
 {
-    /* Ensure the state left by the edit mode toolbars is saved (in case of changing to edit mode)
-     * without changing workbench.
-     *
-     * However, do not save state if the current workbench is not the Sketcher WB, because otherwise
-     * we would be saving the state of the currently activated workbench, and the toolbars would
-     * disappear (as the toolbars of that other WB are only visible).
-     */
-    auto* workbench = Gui::WorkbenchManager::instance()->active();
-
-    if (workbench->name() == "SketcherWorkbench") {
-        Gui::ToolBarManager::getInstance()->setState(
-            editModeToolbarNames(),
-            Gui::ToolBarManager::State::SaveState
-        );
-    }
+    Gui::ToolBarManager::getInstance()->setState(
+        editModeToolbarNames(),
+        Gui::ToolBarManager::State::SaveState
+    );
 
     Gui::ToolBarManager::getInstance()->setState(
         editModeToolbarNames(),

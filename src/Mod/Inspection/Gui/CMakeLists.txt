@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(InspectionGui_LIBS
     Inspection
@@ -75,7 +76,7 @@ fc_target_copy_resource_flat(InspectionGui
     ${InspectionGui_Scripts}
 )
 
-SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
+SET_BIN_DIR(InspectionGui)
 SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
 
 fc_copy_sources(InspectionGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Inspection" ${InspectionGuiIcon_SVG})

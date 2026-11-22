@@ -1,27 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileCopyrightText: 2019 Zheng Lei
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>              *
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
- *                                                                          *
- *   This file is part of the FreeCAD CAx development system.               *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Library General Public            *
- *   License as published by the Free Software Foundation; either           *
- *   version 2 of the License, or (at your option) any later version.       *
- *                                                                          *
- *   This library  is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU Library General Public License for more details.                   *
- *                                                                          *
- *   You should have received a copy of the GNU Library General Public      *
- *   License along with this library; see the file COPYING.LIB. If not,     *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,          *
- *   Suite 330, Boston, MA  02111-1307, USA                                 *
- *                                                                          *
- ****************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -30,6 +27,11 @@
 #include <Base/Matrix.h>
 #include <Base/Quantity.h>
 #include <Base/Vector3D.h>
+
+namespace Base
+{
+struct NumericLocaleContext;
+}
 
 namespace App
 {
@@ -237,6 +239,24 @@ public:
     Expression* getRight() const
     {
         return right;
+    }
+
+    void setLeft(Expression* expression)
+    {
+        if (left == expression) {
+            return;
+        }
+        delete left;
+        left = expression;
+    }
+
+    void setRight(Expression* expression)
+    {
+        if (right == expression) {
+            return;
+        }
+        delete right;
+        right = expression;
     }
 
 protected:
@@ -632,6 +652,12 @@ protected:
 namespace ExpressionParser
 {
 AppExport ExpressionPtr parse(const App::DocumentObject* owner, const char* buffer);
+/// Parse user-entered expression text using the supplied numeric-locale context.
+AppExport ExpressionPtr parseUserInput(
+    const App::DocumentObject* owner,
+    const char* buffer,
+    const Base::NumericLocaleContext& locale
+);
 AppExport std::unique_ptr<UnitExpression> parseUnit(const App::DocumentObject* owner, const char* buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject* owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string& str);

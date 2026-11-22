@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from TopoShape import TopoShape
 
@@ -26,4 +24,3 @@ class TopoShapeCompSolid(TopoShape):
         Add a solid to the compound.
         add(solid)
         """
-        ...

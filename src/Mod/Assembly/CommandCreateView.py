@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /**************************************************************************
-#                                                                           *
-#    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
-#                                                                           *
-#    This file is part of FreeCAD.                                          *
-#                                                                           *
-#    FreeCAD is free software: you can redistribute it and/or modify it     *
-#    under the terms of the GNU Lesser General Public License as            *
-#    published by the Free Software Foundation, either version 2.1 of the   *
-#    License, or (at your option) any later version.                        *
-#                                                                           *
-#    FreeCAD is distributed in the hope that it will be useful, but         *
-#    WITHOUT ANY WARRANTY; without even the implied warranty of             *
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-#    Lesser General Public License for more details.                        *
-#                                                                           *
-#    You should have received a copy of the GNU Lesser General Public       *
-#    License along with FreeCAD. If not, see                                *
-#    <https://www.gnu.org/licenses/>.                                       *
-#                                                                           *
-# **************************************************************************/
+# SPDX-FileCopyrightText: 2023 Ondsel
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import math
 import re
@@ -208,9 +206,10 @@ class ExplodedView:
                 # changes from previous steps.
                 current_placement = calculated_placements.get(obj.Name, obj.Placement)
 
-                # The part's shape is already placed, so its BBox.Center is the
-                # correct global starting position for the explosion line.
-                start_pos = obj.Shape.BoundBox.Center
+                # Apply previous moves to the original bounding box center.
+                start_pos = (current_placement * obj.Placement.inverse()).multVec(
+                    obj.Shape.BoundBox.Center
+                )
 
                 if move.MoveType == "Radial":
                     obj_com, obj_size = UtilsAssembly.getComAndSize(obj)
@@ -321,9 +320,10 @@ class ViewProviderExplodedView:
         return self.app_obj.Group
 
     def doubleClicked(self, vobj):
-        task = Gui.Control.activeTaskDialog()
-        if task:
-            task.reject()
+        # Issue #32494: re-opening while a task is live re-applies explosion moves
+        # and openCommand may commit the create/edit transaction into the assembly.
+        if Gui.Control.activeDialog():
+            return True
 
         assembly = vobj.Object.Proxy.getAssembly(vobj.Object)
 

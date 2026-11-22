@@ -72,7 +72,9 @@ class ObjectOp(PathOp.ObjectOp):
         # Prepare linking arguments for wire-to-wire collision-aware transitions
         solids = []
         if getattr(self, "job", None) and hasattr(self.job, "Model"):
-            solids = [base.Shape for base in self.job.Model.Group if hasattr(base, "Shape")]
+            # self.model: the model in the frame the path is made in, its work plane's
+            model = getattr(self, "model", None) or self.job.Model.Group
+            solids = [base.Shape for base in model if hasattr(base, "Shape")]
         linking_kwargs = {
             "start_position": None,
             "target_position": None,
@@ -107,7 +109,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # sorting wires
         if len(wires) > 1 and getattr(obj, "SortingMode", None) == "Automatic":
-            endPoint = obj.EndPoint if obj.UseEndPoint else None
+            endPoint = self.toFrame(obj.EndPoint) if obj.UseEndPoint else None
             if len(zValues) % 2 == 0 and biDir:  # sorting pairs points
                 pairs = []
                 for indexWire, wire in enumerate(wires):
@@ -123,7 +125,7 @@ class ObjectOp(PathOp.ObjectOp):
                     )
 
                 sortedPairs = tsp_solver.solvePairs(
-                    pairs, routeStartPoint=obj.StartPoint, routeEndPoint=endPoint
+                    pairs, routeStartPoint=self.startPoint(obj), routeEndPoint=endPoint
                 )
                 orderedWires = []
                 for pair in sortedPairs:
@@ -149,7 +151,7 @@ class ObjectOp(PathOp.ObjectOp):
                 sortedTunnels = tsp_solver.solveTunnels(
                     tunnels,
                     allowFlipping=biDir,
-                    routeStartPoint=obj.StartPoint,
+                    routeStartPoint=self.startPoint(obj),
                     routeEndPoint=endPoint,
                 )
                 orderedWires = []
@@ -231,15 +233,22 @@ class ObjectOp(PathOp.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... set depths for engraving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
+            # Heights are measured along the tool axis, from the work plane:
+            # every shape is read in the operation's frame.
             if job and job.Stock:
-                obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
-                obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMax
+                stockTop = self.shapeToFrame(job.Stock.Shape).BoundBox.ZMax
+                obj.OpStartDepth = stockTop
+                obj.OpFinalDepth = stockTop
 
             if obj.Base:
                 obj.OpFinalDepth = max(
-                    sh.BoundBox.ZMax for base, sub in obj.Base for sh in base.getSubObject(sub)
+                    self.shapeToFrame(sh).BoundBox.ZMax
+                    for base, sub in obj.Base
+                    for sh in base.getSubObject(sub)
                 )
             elif obj.BaseShapes:
-                obj.OpFinalDepth = max(base.Shape.BoundBox.ZMax for base in obj.BaseShapes)
+                obj.OpFinalDepth = max(
+                    self.shapeToFrame(base.Shape).BoundBox.ZMax for base in obj.BaseShapes
+                )
 
             obj.OpStartDepth = max(obj.OpStartDepth, obj.OpFinalDepth)

@@ -17,12 +17,17 @@ SET(Test_SRCS
     Recompute.py
     GuiRecompute.py
     TestApp.py
+    TestLinkSuppression.py
+    TestIntPairList.py
     TestGui.py
+    TestGroupVisibilityRestoreGui.py
+    TestPySideUic.py
     UnicodeTests.py
     UnitTests.py
     Workbench.py
     unittestgui.py
     testmakeWireString.py
+    TestCrashReporter.py
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py

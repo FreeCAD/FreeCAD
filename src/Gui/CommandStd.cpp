@@ -96,7 +96,7 @@ void StdCmdWorkbench::activated(int i)
         doCommand(Gui, "Gui.activateWorkbench(\"%s\")", switch_to.c_str());
     }
     catch (const Base::PyException& e) {
-        QString msg(QLatin1String(e.what()));
+        QString msg(QString::fromUtf8(e.what()));
         // ignore '<type 'exceptions.*Error'>' prefixes
         QRegularExpression rx;
         rx.setPattern(QLatin1String(R"(^\s*<type 'exceptions.\w*'>:\s*)"));

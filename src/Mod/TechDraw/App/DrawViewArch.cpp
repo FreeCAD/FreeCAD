@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 York van Havre <yorik@uncreated.net>               *
  *                                                                         *
@@ -99,7 +101,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute()
         //if (sourceObj is not ArchSection) return
         App::Property* proxy = sourceObj->getPropertyByName("Proxy");
         if (!proxy) {
-            Base::Console().error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
+            Base::Console().error("DVA::execute - {} is not an ArchSection\n", sourceObj->Label.getValue());
             //this is definitely not an ArchSection
             return DrawView::execute();
         }

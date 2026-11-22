@@ -2051,7 +2051,9 @@ class ObjectFlute(PathOp.ObjectOp):
 
         solids = []
         if getattr(self, "job", None) and hasattr(self.job, "Model"):
-            solids = [b.Shape for b in self.job.Model.Group if hasattr(b, "Shape")]
+            # self.model: the model in the frame the path is made in, its work plane's
+            model = getattr(self, "model", None) or self.job.Model.Group
+            solids = [b.Shape for b in model if hasattr(b, "Shape")]
 
         linking_kwargs = {
             "start_position": None,

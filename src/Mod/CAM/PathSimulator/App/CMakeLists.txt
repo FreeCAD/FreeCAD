@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(PathSimulator_LIBS
     Path
@@ -39,7 +40,7 @@ target_include_directories(
 target_link_libraries(PathSimulator ${PathSimulator_LIBS})
 target_compile_warn_error(PathSimulator)
 
-SET_BIN_DIR(PathSimulator PathSimulator /Mod/CAM)
+SET_BIN_DIR(PathSimulator)
 SET_PYTHON_PREFIX_SUFFIX(PathSimulator)
 
 install(TARGETS PathSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.ShapeFix_Root import ShapeFix_Root
+from Part.GeometrySurface import GeometrySurface
 from Part.TopoShapeFace import TopoShapeFace
 from Part.TopoShapeShell import TopoShapeShell
-from typing import Union
+from Part.TopoShapeWire import TopoShapeWire
+from typing import Union, overload
 
 @export(
     PythonName="Part.ShapeFix.Face",
@@ -62,31 +62,31 @@ class ShapeFix_Face(ShapeFix_Root):
     FixPeriodicDegeneratedMode: bool = ...
     """Mode for applying periodic degeneration"""
 
-    def init(self) -> None:
+    @overload
+    def init(self, face: TopoShapeFace, /) -> None: ...
+    @overload
+    def init(self, surface: GeometrySurface, prec: float, fwd: bool = True, /) -> None: ...
+    def init(self, *args) -> None:
         """
         Initializes by face
         """
-        ...
 
     def fixWireTool(self):
         """
         Returns tool for fixing wires
         """
-        ...
 
     def clearModes(self) -> None:
         """
         Sets all modes to default
         """
-        ...
 
-    def add(self) -> None:
+    def add(self, wire: TopoShapeWire, /) -> None:
         """
         Add a wire to current face using BRep_Builder.
         Wire is added without taking into account orientation of face
         (as if face were FORWARD)
         """
-        ...
 
     def fixOrientation(self) -> bool:
         """
@@ -98,7 +98,6 @@ class ShapeFix_Face(ShapeFix_Root):
         any case (supposing that natural bound will be added).
         Returns True if wires were reversed
         """
-        ...
 
     def fixAddNaturalBound(self) -> bool:
         """
@@ -109,7 +108,6 @@ class ShapeFix_Face(ShapeFix_Root):
         (sphere or torus) and none of wires is left-oriented
         Returns True if natural boundary was added
         """
-        ...
 
     def fixMissingSeam(self) -> bool:
         """
@@ -119,36 +117,31 @@ class ShapeFix_Face(ShapeFix_Root):
         missing seam edge
         Returns True if missing seam was added
         """
-        ...
 
-    def fixSmallAreaWire(self) -> bool:
+    def fixSmallAreaWire(self, remove_small: bool, /) -> bool:
         """
         Detects wires with small area (that is less than
         100*Precision.PConfusion(). Removes these wires if they are internal.
         Returns True if at least one small wire removed, False nothing is done.
         """
-        ...
 
-    def fixLoopWire(self) -> None:
+    def fixLoopWire(self) -> tuple[bool, list]:
         """
         Detects if wire has a loop and fixes this situation by splitting on the few parts.
         """
-        ...
 
-    def fixIntersectingWires(self) -> None:
+    def fixIntersectingWires(self) -> bool:
         """
         Detects and fixes the special case when face has more than one wire
         and this wires have intersection point
         """
-        ...
 
-    def fixWiresTwoCoincidentEdges(self) -> None:
+    def fixWiresTwoCoincidentEdges(self) -> bool:
         """
         If wire contains two coincidence edges it must be removed
         """
-        ...
 
-    def fixPeriodicDegenerated(self) -> None:
+    def fixPeriodicDegenerated(self) -> bool:
         """
         Fixes topology for a specific case when face is composed
         by a single wire belting a periodic surface. In that case
@@ -156,23 +149,19 @@ class ShapeFix_Face(ShapeFix_Root):
         of the surface. Initial wire gets consistent orientation.
         Must be used in couple and before FixMissingSeam routine
         """
-        ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """
-        ...
 
     def face(self) -> TopoShapeFace:
         """
         Returns a face which corresponds to the current state
         """
-        ...
 
     def result(self) -> Union[TopoShapeFace, TopoShapeShell]:
         """
         Returns resulting shape (Face or Shell if split)
         To be used instead of face() if FixMissingSeam involved
         """
-        ...

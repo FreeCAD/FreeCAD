@@ -24,7 +24,7 @@
 
 
 #include "LinearPatternExtension.h"
-#include <limits>
+#include <algorithm>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <gp_Dir.hxx>
@@ -39,13 +39,11 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/DocumentObject.h>
 #include "PartFeature.h"
+#include "PatternConstants.h"
 
 using namespace Part;
 
 EXTENSION_PROPERTY_SOURCE(Part::LinearPatternExtension, App::DocumentObjectExtension)
-
-const App::PropertyIntegerConstraint::Constraints LinearPatternExtension::intOccurrences
-    = {1, std::numeric_limits<int>::max(), 1};
 
 const char* LinearPatternExtension::ModeEnums[] = {"Extent", "Spacing", nullptr};
 
@@ -120,7 +118,7 @@ LinearPatternExtension::LinearPatternExtension()
         App::Prop_None,
         "The total number of instances in the first direction, including the original feature."
     );
-    Occurrences.setConstraints(&intOccurrences);
+    Occurrences.setConstraints(PatternConstants::occurrenceConstraints());
     Mode.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::First);
 
@@ -188,9 +186,57 @@ LinearPatternExtension::LinearPatternExtension()
         App::Prop_None,
         "The total number of instances in the second direction, including the original feature."
     );
-    Occurrences2.setConstraints(&intOccurrences);
+    Occurrences2.setConstraints(PatternConstants::occurrenceConstraints());
     Mode2.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::Second);
+
+    EXTENSION_ADD_PROPERTY_TYPE(
+        SuppressedPositions,
+        (std::vector<App::PropertyIntPairList::IntPair> {}),
+        "Pattern",
+        App::Prop_None,
+        "Suppressed instances as zero-based (direction 1, direction 2) indices. "
+        "Positions outside the current pattern are retained."
+    );
+}
+
+LinearPatternExtension::PatternPosition LinearPatternExtension::getInstancePosition(long index) const
+{
+    const long stride = std::max(1L, Occurrences2.getValue());
+    return {index / stride, index % stride};
+}
+
+bool LinearPatternExtension::isInstanceSuppressed(long index) const
+{
+    if (index < 0) {
+        return false;
+    }
+    const auto& positions = SuppressedPositions.getValues();
+    return std::ranges::find(positions, getInstancePosition(index).asPair()) != positions.end();
+}
+
+void LinearPatternExtension::setInstanceSuppressed(long index, bool suppressed)
+{
+    if (index >= 0) {
+        setPositionSuppressed(getInstancePosition(index), suppressed);
+    }
+}
+
+void LinearPatternExtension::setPositionSuppressed(const PatternPosition& position, bool suppressed)
+{
+    auto positions = SuppressedPositions.getValues();
+    const auto value = position.asPair();
+    const auto it = std::ranges::find(positions, value);
+    if ((it != positions.end()) == suppressed) {
+        return;
+    }
+    if (suppressed) {
+        positions.push_back(value);
+    }
+    else {
+        std::erase(positions, value);
+    }
+    SuppressedPositions.setValues(positions);
 }
 
 short LinearPatternExtension::extensionMustExecute()
@@ -199,7 +245,8 @@ short LinearPatternExtension::extensionMustExecute()
         || Offset.isTouched() || Spacings.isTouched() || SpacingPattern.isTouched()
         || Occurrences.isTouched() || Direction2.isTouched() || Reversed2.isTouched()
         || Mode2.isTouched() || Length2.isTouched() || Offset2.isTouched() || Spacings2.isTouched()
-        || SpacingPattern2.isTouched() || Occurrences2.isTouched()) {
+        || SpacingPattern2.isTouched() || Occurrences2.isTouched()
+        || SuppressedPositions.isTouched()) {
         return 1;
     }
     return 0;

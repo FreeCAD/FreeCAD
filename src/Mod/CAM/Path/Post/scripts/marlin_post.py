@@ -101,10 +101,18 @@ class Marlin(PostProcessor):
         values["MACHINE_NAME"] = "Marlin"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
 
+    def _merge_machine_config(self):
+        """Override .values initial setup, and .postprocessor_properties"""
+
+        # Override ._machine so far (bundle has copied to .postprocessor_properties)
+
+        # .values & custom initial setup
+        super()._merge_machine_config()
+
         # Marlin does not support tool changes
-        values["OUTPUT_TOOL_CHANGE"] = False
+        self.values["OUTPUT_TOOL_CHANGE"] = False
         # Marlin does not support tool length offsets
-        values["USE_TLO"] = False
+        self.values["USE_TLO"] = False
 
     def _convert_dwell(self, command: Path.Command) -> str:
         """Convert G4 dwell commands, replacing P (seconds) with S (seconds).

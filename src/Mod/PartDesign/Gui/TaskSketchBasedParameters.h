@@ -29,7 +29,7 @@
 #include <Gui/Selection/Selection.h>
 #include "ViewProvider.h"
 
-#include "TaskFeatureParameters.h"
+#include "TaskFeatureAddSubParameters.h"
 #include "EnumFlags.h"
 
 class QLineEdit;
@@ -46,8 +46,7 @@ namespace PartDesignGui
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters: public PartDesignGui::TaskFeatureParameters,
-                                 public Gui::SelectionObserver
+class TaskSketchBasedParameters: public TaskFeatureAddSubParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
 

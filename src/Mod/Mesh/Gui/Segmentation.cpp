@@ -70,6 +70,9 @@ Segmentation::~Segmentation()
 
 void Segmentation::accept()
 {
+    if (myMesh.expired()) {  // deleted while the dialog was open
+        return;
+    }
     const Mesh::MeshObject* mesh = myMesh->Mesh.getValuePtr();
     // make a copy because we might smooth the mesh before
     MeshCore::MeshKernel kernel = mesh->getKernel();

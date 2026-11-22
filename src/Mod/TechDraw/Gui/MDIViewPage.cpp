@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -46,6 +48,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -82,6 +85,7 @@
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
 #include "PreferencesGui.h"
+#include "DrawGuiUtil.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -104,6 +108,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     m_toggleGridAction = new QAction(tr("Show &Grid"), this);
     connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
+
+    m_toggleScreenModeAction = new QAction(tr("Screen &Mode"), this);
+    connect(m_toggleScreenModeAction, &QAction::triggered, this, &MDIViewPage::toggleScreenMode);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
@@ -627,6 +634,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
 void MDIViewPage::addPageGroup(QMenu& menu)
 {
     menu.addAction(m_toggleGridAction);
+    menu.addAction(m_toggleScreenModeAction);
     menu.addAction(m_toggleFrameAction);
     menu.addAction(m_toggleKeepUpdatedAction);
     menu.addSeparator();
@@ -638,6 +646,9 @@ void MDIViewPage::addPageGroup(QMenu& menu)
 
     m_toggleGridAction->setCheckable(true);
     m_toggleGridAction->setChecked(m_vpPage->ShowGrid.getValue());
+
+    m_toggleScreenModeAction->setCheckable(true);
+    m_toggleScreenModeAction->setChecked(PreferencesGui::screenMode());
 
     m_toggleFrameAction->setCheckable(true);
     m_toggleFrameAction->setChecked(m_vpPage->getFrameState());
@@ -710,15 +721,24 @@ void MDIViewPage::toggleGrid()
     m_vpPage->ShowGrid.setValue(!m_vpPage->ShowGrid.getValue());
 }
 
+void MDIViewPage::toggleScreenMode() {
+    PreferencesGui::setScreenMode(!PreferencesGui::screenMode());
+}
+
 void MDIViewPage::toggleKeepUpdated()
 {
     bool state = m_vpPage->getDrawPage()->KeepUpdated.getValue();
     m_vpPage->getDrawPage()->KeepUpdated.setValue(!state);
 }
 
+//! Zooms to full page view. This is not the full scene extent.  Objects outside the
+//! template will not be included.
 void MDIViewPage::viewAll()
 {
-    m_vpPage->getQGVPage()->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
+    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
+    auto paperRect = QRectF(0, -pageAttr.pageHeight(), pageAttr.pageWidth(), pageAttr.pageHeight());
+    m_vpPage->getQGVPage()->fitInView(Rez::guiRect(paperRect), Qt::KeepAspectRatio);
+    m_scene->updateScreenScale();
 }
 
 QString MDIViewPage::defaultFileName()

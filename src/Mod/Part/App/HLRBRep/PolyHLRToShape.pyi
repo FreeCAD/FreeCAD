@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.HLRBRep_PolyAlgo import HLRBRep_PolyAlgo
@@ -48,19 +46,16 @@ class PolyHLRToShape(PyObjectBase):
         """
         update(algo: HLRBRep_PolyAlgo)
         """
-        ...
 
     def show(self) -> None:
         """
         show()
         """
-        ...
 
     def hide(self) -> None:
         """
         hide()
         """
-        ...
 
     def vCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -69,7 +64,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for visible sharp edges for either shape Shape or
         for all added shapes (Shape=None).
         """
-        ...
 
     def Rg1LineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -78,7 +72,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for visible smooth edges for either shape Shape or
         for all added shapes (Shape=None).
         """
-        ...
 
     def RgNLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -87,7 +80,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for visible sewn edges for either shape Shape or for
         all added shapes (Shape=None).
         """
-        ...
 
     def outLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -96,7 +88,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for visible outline edges for either shape Shape or
         for all added shapes (Shape=None).
         """
-        ...
 
     def hCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -105,7 +96,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for hidden sharp edges for either shape Shape or for
         all added shapes (Shape=None).
         """
-        ...
 
     def Rg1LineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -114,7 +104,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for hidden smooth edges for either shape Shape or
         for all added shapes (Shape=None).
         """
-        ...
 
     def RgNLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -123,7 +112,6 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for hidden sewn edges for either shape Shape or for
         all added shapes (Shape=None).
         """
-        ...
 
     def outLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
@@ -132,4 +120,3 @@ class PolyHLRToShape(PyObjectBase):
         Sets the extraction filter for hidden outline edges for either shape Shape or
         for all added shapes (Shape=None).
         """
-        ...

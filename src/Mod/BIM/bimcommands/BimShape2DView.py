@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """The BIM ShapeView command"""
 
@@ -40,6 +37,10 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d["Pixmap"] = "Arch_BuildingPart_Tree"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section View")
         d["Accel"] = "V, V"
+        d["ToolTip"] = QT_TRANSLATE_NOOP(
+            "BIM_Shape2DView",
+            "Creates a 2D projection of the selected objects on the XY-plane.\nThe initial projection direction is the opposite of the current active view direction.",
+        )
         return d
 
     def proceed(self):
@@ -73,7 +74,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         commitlist = []
         FreeCADGui.addModule("Draft")
         if len(objs) == 1 and faces:
-            _cmd = "Draft.make_shape2dview"
+            _cmd = "Draft.make_shape_2d_view"
             _cmd += "("
             _cmd += "FreeCAD.ActiveDocument." + objs[0].Name + ", "
             _cmd += DraftVecUtils.toString(vec) + ", "
@@ -86,7 +87,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         else:
             n = 0
             for o in objs:
-                _cmd = "Draft.make_shape2dview"
+                _cmd = "Draft.make_shape_2d_view"
                 _cmd += "("
                 _cmd += "FreeCAD.ActiveDocument." + o.Name + ", "
                 _cmd += DraftVecUtils.toString(vec)
@@ -110,8 +111,12 @@ class BIM_Shape2DCut(BIM_Shape2DView):
     def GetResources(self):
         d = super().GetResources()
         d["Pixmap"] = "Arch_View_Cut"
-        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section Cut")
+        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DCut", "Section Cut")
         d["Accel"] = "V, C"
+        d["ToolTip"] = QT_TRANSLATE_NOOP(
+            "BIM_Shape2DCut",
+            "Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.",
+        )
         return d
 
     def proceed(self):

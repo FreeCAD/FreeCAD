@@ -156,8 +156,17 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             BRepAdaptor_Surface adapt(face);
             if (adapt.GetType() == GeomAbs_Plane) {
                 gp_Pln plane = adapt.Plane();
-                Standard_Real faceTol = BRep_Tool::Tolerance(face);
-                Standard_Real tol = faceTol + fuzzyTol;
+                // The cut decides whether to make a new face on the slice plane or
+                // reuse an existing face using edge tolerance, not face tolerance, so
+                // we need to loop over the face's edges to find the correct tolerance.
+                Standard_Real maxEdgeTol = 0.0;
+                for (TopExp_Explorer ex(face, TopAbs_EDGE); ex.More(); ex.Next()) {
+                    const TopoDS_Edge& edge = TopoDS::Edge(ex.Current());
+                    if (!BRep_Tool::Degenerated(edge)) {
+                        maxEdgeTol = std::max(maxEdgeTol, BRep_Tool::Tolerance(edge));
+                    }
+                }
+                Standard_Real tol = maxEdgeTol + fuzzyTol;
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
                     && plane.Distance(slicePlane.Location()) < tol) {
                     // sort and repair the wires

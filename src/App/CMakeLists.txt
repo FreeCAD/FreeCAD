@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 add_library(FreeCADApp SHARED)
 
@@ -81,7 +82,6 @@ target_include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
-    fmt::fmt
 )
 
 if(BUILD_TRACY_FRAME_PROFILER)
@@ -181,6 +181,7 @@ SET(Document_CPP_SRCS
     DocumentSettings.cpp
     DocumentSettingsPyImp.cpp
     Expression.cpp
+    QuantityInput.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp
@@ -231,6 +232,7 @@ SET(Document_HPP_SRCS
     DocumentSettings.h
     Expression.h
     ExpressionParser.h
+    QuantityInput.h
     ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
@@ -305,6 +307,7 @@ SET(FreeCADApp_CPP_SRCS
     ${Document_CPP_SRCS}
     ${Properties_CPP_SRCS}
     Application.cpp
+    MainThreadSignal.cpp
     ApplicationDirectories.cpp
     ApplicationDirectoriesPyImp.cpp
     ApplicationPy.cpp
@@ -404,7 +407,7 @@ target_compile_warn_error(FreeCADApp)
 
 add_dependencies(FreeCADApp fc_version)
 
-SET_BIN_DIR(FreeCADApp FreeCADApp)
+SET_BIN_DIR(FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp

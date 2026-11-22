@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 
@@ -38,8 +36,7 @@ class ShapeFix_Root(PyObjectBase):
     """Maximal allowed tolerance"""
 
     @constmethod
-    def limitTolerance(self) -> float:
+    def limitTolerance(self, tolerance: float, /) -> float:
         """
         Returns tolerance limited by [MinTolerance,MaxTolerance]
         """
-        ...

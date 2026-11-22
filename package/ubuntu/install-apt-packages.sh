@@ -1,21 +1,31 @@
 #!/bin/bash
 set -euox pipefail
 
-# Update package lists quietly
-sudo apt-get update -qq
-sudo apt-get install -y --no-install-recommends wget gpg ca-certificates
+# Wraps `apt update` so that it is retried upon failure.
+apt_update_retryable() {
+  local delay
+  local log=/tmp/apt-update.log
 
-# Add the KDE Neon repository for up-to-date and matching Qt6 and PySide packages
-# Ubuntu 24.04 does not have PySide6 packages available
-KEY=$(wget --retry-connrefused --waitretry=3 --tries=5 -qO- https://archive.neon.kde.org/public.key)
-if [ -z "$KEY" ]; then
-  echo "Failed to download KDE Neon GPG key" >&2
-  exit 1
-fi
-echo "$KEY" | sudo gpg --yes --dearmor -o /usr/share/keyrings/neon-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/neon-keyring.gpg] http://archive.neon.kde.org/user noble main" | sudo tee /etc/apt/sources.list.d/neon-qt.list
+  # The last delay should be zero so there's no wait after the last attempt
+  for delay in 60 120 180 0; do
 
-sudo apt-get update -qq
+    if sudo apt-get update -q --error-on=any 2>&1 | tee "$log"; then
+      return 0
+    fi
+
+    # If a signing key is rejected, no further attempt will succeed.
+    if grep -qE 'NO_PUBKEY|EXPKEYSIG|BADSIG|EXPSIG|REVKEYSIG' "$log"; then
+      echo "apt rejected a repository signing key; not retrying" >&2
+      return 1
+    fi
+
+    sleep "$delay"
+  done
+
+  return 1
+}
+
+apt_update_retryable
 
 packages=(
   build-essential
@@ -38,7 +48,7 @@ packages=(
   libexpat1-dev
   libgtest-dev
   libgmock-dev
-  libfmt-dev
+  libharfbuzz-dev
   libkdtree++-dev
   libmedc-dev
   libocct-data-exchange-dev
@@ -50,6 +60,7 @@ packages=(
   libpyside6-dev
   libqt6opengl6-dev
   libqt6svg6-dev
+  libshiboken6-dev
   libspnav-dev
   libvtk9-dev
   libx11-dev

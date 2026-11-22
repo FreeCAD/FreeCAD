@@ -9,7 +9,6 @@ into custom number fields so the board can be sorted by priority.
 Metrics:
   Merge Meeting Priority  - how urgently a PR needs to be discussed at a
                             maintainer meeting (stalled, complex, no reviews).
-                            Returns 0 for PRs blocked waiting on the author.
   Mergeability Score      - how close a PR is to being merged asynchronously
                             without meeting discussion.
 
@@ -35,10 +34,11 @@ import csv
 import logging
 import math
 import os
+import random
 import sys
 import time
 from datetime import datetime, timezone
-from typing import Any, Generator, NamedTuple
+from typing import Any, NamedTuple
 
 import requests
 
@@ -46,8 +46,17 @@ import requests
 # Configuration
 # ---------------------------------------------------------------------------
 
-GH_TOKEN = os.environ["GH_TOKEN"]
-REPO_OWNER = os.environ["REPO_OWNER"]
+
+def _require_env(name: str) -> str:
+    """Return an environment variable or exit with a readable message."""
+    value = os.environ.get(name)
+    if not value:
+        raise SystemExit(f"error: required environment variable {name} is not set")
+    return value
+
+
+GH_TOKEN = _require_env("GH_TOKEN")
+REPO_OWNER = _require_env("REPO_OWNER")
 
 GRAPHQL_URL = "https://api.github.com/graphql"
 
@@ -55,7 +64,7 @@ MEETING_FIELD = "Merge Meeting Priority"
 MERGEABILITY_FIELD = "Mergeability Score"
 
 # authorAssociation values on reviews/comments that indicate write access.
-# Read inline from GraphQL — no admin token required.
+# Read inline from GraphQL, so no admin token is required.
 WRITE_ACCESS_ASSOCIATIONS = {"OWNER", "MEMBER", "COLLABORATOR"}
 
 SIZE_NEUTRAL_LINES = 1000
@@ -72,7 +81,7 @@ log = logging.getLogger(__name__)
 
 
 # ===========================================================================
-# SCORING LOGIC — adjust these functions freely without touching plumbing code
+# SCORING LOGIC: adjust these functions freely without touching plumbing code
 # ===========================================================================
 
 
@@ -91,9 +100,12 @@ def compute_meeting_priority(
 
     *** THIS FUNCTION IS INTENTIONALLY ISOLATED FOR EASY ADJUSTMENT ***
 
-    Higher = more urgent to raise at a maintainer meeting. Returns 0 when the
-    PR is blocked waiting on the author (change requested or conflicting), since
-    there is nothing for the meeting to discuss yet.
+    Higher = more urgent to raise at a maintainer meeting.
+
+    is_blocked short-circuits the score to 0. Callers currently always pass False:
+    a PR that is conflicting or has requested changes is still a valid meeting
+    topic, so it must not be pushed to the bottom of the board. The hook is kept
+    for a future blocked condition that genuinely has nothing to discuss.
 
     Returns:
         (score, factors) where factors maps each signal name to its numerical contribution.
@@ -170,18 +182,57 @@ def compute_mergeability_score(
 # API PLUMBING
 # ===========================================================================
 
-_RETRYABLE_STATUSES = {503, 504}
-_MAX_RETRIES = 4
-_RETRY_BACKOFF_BASE = 2.0  # seconds; delay = base * 2^attempt
+_RETRYABLE_STATUSES = {500, 502, 503, 504}
+_RATE_LIMIT_STATUSES = {403, 429}
+_MAX_RETRIES = 5
+_RETRY_BACKOFF_BASE = 2.0  # seconds; delay = base * 2^attempt plus jitter
+_REQUEST_TIMEOUT = 60  # seconds
+_MAX_RATE_LIMIT_WAIT = 300.0  # seconds; never idle a runner longer than this
+
+
+class TransientGraphQLError(RuntimeError):
+    """Raised when a GraphQL request keeps failing with transient server errors.
+
+    Kept distinct from the plain RuntimeError raised for GraphQL 'errors' payloads,
+    which signal a real problem (bad token, bad query) that must not be retried.
+    """
+
+
+def _rate_limit_wait(response: requests.Response) -> float | None:
+    """Return the seconds GitHub asks us to wait, or None when this is not a rate limit.
+
+    Handles both the Retry-After header used for secondary rate limits and the
+    X-RateLimit-Reset header used when the primary hourly budget is exhausted.
+    """
+    retry_after = response.headers.get("Retry-After")
+    if retry_after:
+        try:
+            return min(max(float(retry_after), 0.0), _MAX_RATE_LIMIT_WAIT)
+        except ValueError:
+            return None
+
+    if response.headers.get("X-RateLimit-Remaining") == "0":
+        reset = response.headers.get("X-RateLimit-Reset")
+        if reset:
+            try:
+                return min(max(float(reset) - time.time(), 0.0), _MAX_RATE_LIMIT_WAIT)
+            except ValueError:
+                return None
+
+    return None
 
 
 def graphql(query: str, variables: dict[str, Any] | None = None) -> dict:
     """Execute a GraphQL query or mutation and return the parsed data dict.
 
     Retries up to _MAX_RETRIES times on transient failures:
-      - HTTP 503 / 504 (gateway errors)
-      - HTTP 200 with an empty body (occasional GitHub infra hiccup)
-    Uses exponential backoff between attempts.
+      - connection resets, DNS failures and read timeouts
+      - HTTP 500 / 502 / 503 / 504 (gateway errors)
+      - HTTP 200 with an empty or non-JSON body (occasional GitHub infra hiccup)
+      - primary and secondary rate limits, honouring the wait GitHub asks for
+    Uses exponential backoff with jitter between attempts. Authentication and
+    authorisation failures raise immediately, with the response body included so
+    the cause is visible in the workflow log.
     """
     payload: dict[str, Any] = {"query": query}
     if variables:
@@ -190,16 +241,33 @@ def graphql(query: str, variables: dict[str, Any] | None = None) -> dict:
     last_error: Exception | None = None
     for attempt in range(_MAX_RETRIES + 1):
         if attempt:
-            delay = _RETRY_BACKOFF_BASE * (2 ** (attempt - 1))
+            delay = _RETRY_BACKOFF_BASE * (2 ** (attempt - 1)) + random.uniform(0.0, 1.0)
             log.warning(
-                "Retrying GraphQL request (attempt %d/%d) after %.0fs...",
+                "Retrying GraphQL request (attempt %d/%d) after %.1fs: %s",
                 attempt,
                 _MAX_RETRIES,
                 delay,
+                last_error,
             )
             time.sleep(delay)
 
-        response = requests.post(GRAPHQL_URL, json=payload, headers=HEADERS, timeout=30)
+        try:
+            response = requests.post(
+                GRAPHQL_URL, json=payload, headers=HEADERS, timeout=_REQUEST_TIMEOUT
+            )
+        except requests.RequestException as exc:
+            last_error = exc
+            continue
+
+        if response.status_code in _RATE_LIMIT_STATUSES:
+            wait = _rate_limit_wait(response)
+            if wait is not None:
+                log.warning("Rate limited by GitHub, waiting %.0fs before retrying", wait)
+                time.sleep(wait)
+                last_error = RuntimeError(
+                    f"GraphQL request rate limited (HTTP {response.status_code})"
+                )
+                continue
 
         if response.status_code in _RETRYABLE_STATUSES or not response.text:
             last_error = RuntimeError(
@@ -208,29 +276,58 @@ def graphql(query: str, variables: dict[str, Any] | None = None) -> dict:
             )
             continue
 
+        if response.status_code >= 400:
+            # 401 bad credentials, 403 without a rate limit header, 404 and friends.
+            # None of these get better by waiting, so fail loudly and show the body.
+            raise RuntimeError(
+                f"GraphQL request failed with HTTP {response.status_code}:\n{response.text[:500]}"
+            )
+
         try:
             body = response.json()
-        except Exception:
-            # Non-JSON body on a 200 is also an ingress-level glitch — retry.
+        except ValueError:
+            # Non-JSON body on a 200 is also an ingress-level glitch, so retry.
             last_error = RuntimeError(
-                f"GraphQL request returned HTTP {response.status_code} with non-JSON body:\n{response.text[:200]}"
+                f"GraphQL request returned HTTP {response.status_code} with non-JSON body:\n"
+                f"{response.text[:200]}"
             )
             continue
 
-        response.raise_for_status()
         if "errors" in body:
-            raise RuntimeError(f"GraphQL errors: {body['errors']}")
+            errors = body["errors"]
+            if any(error.get("type") == "RATE_LIMITED" for error in errors):
+                last_error = RuntimeError(f"GraphQL errors: {errors}")
+                continue
+            raise RuntimeError(f"GraphQL errors: {errors}")
+
         return body["data"]
 
-    raise RuntimeError(f"GraphQL request failed after {_MAX_RETRIES} retries") from last_error
+    raise TransientGraphQLError(
+        f"GraphQL request failed after {_MAX_RETRIES} retries"
+    ) from last_error
 
 
 # ---------------------------------------------------------------------------
 # Project data: metadata + all PR items in minimum API calls
 # ---------------------------------------------------------------------------
 
+# Number of project items fetched per request. GitHub resolves ProjectV2 item
+# pages server-side and answers HTTP 504 when the selection is too expensive, so
+# this stays well below the API maximum of 100.
+_ITEMS_PAGE_SIZE = 50
+_MIN_ITEMS_PAGE_SIZE = 5
+
 # Shared selection for every project item: the PR payload plus the score fields
 # already stored on the board, so unchanged items can be skipped on write.
+#
+# reviews/comments use 'last' because find_last_write_activity() needs the most
+# recent maintainer activity. 'first' returns the oldest page and silently misses
+# recent reviews on long-running PRs. The comment window is wider than the review
+# window because comment volume is much higher than review volume.
+#
+# fieldValues stays at 30 so it still covers every field on the board. A smaller
+# page can push the two number fields out of the result, which defeats the
+# skip-unchanged-scores optimisation in _scores_unchanged().
 _PR_ITEM_FRAGMENT = """
 fragment PrItem on ProjectV2Item {
   id
@@ -240,8 +337,8 @@ fragment PrItem on ProjectV2Item {
       id number title createdAt state isDraft
       authorAssociation additions deletions mergeable
       labels(first: 20) { nodes { name } }
-      reviews(first: 100) { nodes { authorAssociation submittedAt } }
-      comments(first: 100) { nodes { authorAssociation createdAt } }
+      reviews(last: 20) { nodes { authorAssociation submittedAt } }
+      comments(last: 30) { nodes { authorAssociation createdAt } }
     }
   }
   fieldValues(first: 30) {
@@ -257,7 +354,7 @@ fragment PrItem on ProjectV2Item {
 
 # First request: fetches project metadata and first items page together.
 _INITIAL_QUERY = """
-query($org: String!, $number: Int!) {
+query($org: String!, $number: Int!, $first: Int!) {
   organization(login: $org) {
     projectV2(number: $number) {
       id
@@ -266,7 +363,7 @@ query($org: String!, $number: Int!) {
           ... on ProjectV2Field { id name dataType }
         }
       }
-      items(first: 100) {
+      items(first: $first) {
         pageInfo { hasNextPage endCursor }
         nodes { ...PrItem }
       }
@@ -277,10 +374,10 @@ query($org: String!, $number: Int!) {
 
 # Subsequent requests: items only, keyed by project node ID.
 _ITEMS_PAGE_QUERY = """
-query($projectId: ID!, $cursor: String!) {
+query($projectId: ID!, $cursor: String!, $first: Int!) {
   node(id: $projectId) {
     ... on ProjectV2 {
-      items(first: 100, after: $cursor) {
+      items(first: $first, after: $cursor) {
         pageInfo { hasNextPage endCursor }
         nodes { ...PrItem }
       }
@@ -291,11 +388,12 @@ query($projectId: ID!, $cursor: String!) {
 
 
 class ProjectItem(NamedTuple):
-    """A project board row holding an open or recently closed pull request."""
+    """A project board row holding a pull request that needs scoring or clearing."""
 
     item_id: str
     pr: dict
     stored_scores: dict[str, float]
+    clear_only: bool
 
 
 def _stored_scores(item: dict) -> dict[str, float]:
@@ -311,11 +409,10 @@ def _stored_scores(item: dict) -> dict[str, float]:
 def _filter_pr_item(item: dict, skip_labels: set[str], open_only: bool) -> ProjectItem | None:
     """Return the ProjectItem if it passes all filters, else None.
 
-    Always skips non-PR items and drafts. When open_only is True (dry-run),
-    also skips non-open PRs and PRs carrying a skip label.
-    In normal mode (open_only=False) non-open PRs are kept so their scores
-    can be zeroed out, clearing stale values from the project board; those
-    already sitting at zero are dropped here so no write is attempted.
+    Always skips non-PR items and drafts. A PR is excluded from scoring when it is
+    no longer open or carries a skip label. Excluded PRs are dropped outright in
+    report mode (open_only), and in write mode they are kept only while a non-zero
+    score is still on the board, so the stale value can be cleared exactly once.
     """
     content = item.get("content") or {}
     if content.get("__typename") != "PullRequest":
@@ -324,16 +421,37 @@ def _filter_pr_item(item: dict, skip_labels: set[str], open_only: bool) -> Proje
         return None
 
     stored = _stored_scores(item)
+    pr_labels = {node["name"] for node in content.get("labels", {}).get("nodes", [])}
+    excluded = content.get("state") != "OPEN" or bool(pr_labels & skip_labels)
 
-    if content.get("state") != "OPEN":
-        if open_only or not any(stored.get(field) for field in (MEETING_FIELD, MERGEABILITY_FIELD)):
+    if excluded:
+        if open_only:
             return None
-    elif open_only:
-        pr_labels = {node["name"] for node in content.get("labels", {}).get("nodes", [])}
-        if pr_labels & skip_labels:
+        if not any(stored.get(field) for field in (MEETING_FIELD, MERGEABILITY_FIELD)):
             return None
 
-    return ProjectItem(item_id=item["id"], pr=content, stored_scores=stored)
+    return ProjectItem(item_id=item["id"], pr=content, stored_scores=stored, clear_only=excluded)
+
+
+def _fetch_items_page(project_id: str, cursor: str, page_size: int) -> tuple[dict, int]:
+    """Fetch one page of project items, halving the page size on repeated timeouts.
+
+    Returns (page, page_size). The reduced size is handed back to the caller so the
+    remaining pages use it too, instead of paying the full timeout cost every time.
+    """
+    size = page_size
+    while True:
+        try:
+            data = graphql(
+                _ITEMS_PAGE_QUERY,
+                {"projectId": project_id, "cursor": cursor, "first": size},
+            )
+            return data["node"]["items"], size
+        except TransientGraphQLError:
+            if size <= _MIN_ITEMS_PAGE_SIZE:
+                raise
+            size = max(size // 2, _MIN_ITEMS_PAGE_SIZE)
+            log.warning("Reducing items page size to %d after repeated timeouts", size)
 
 
 def fetch_project_data(
@@ -342,12 +460,15 @@ def fetch_project_data(
     """Return (project_id, field_ids, pr_items) fetched in the minimum number of calls.
 
     The first call fetches project metadata (id + field ids) and the first items page
-    together. Additional calls fetch only the remaining pages if the project has more
-    than 100 items. Field IDs are None for fields not found in the project.
-    When open_only is False, closed/merged PRs are included only when they still carry
-    a non-zero score to clear; the rest are dropped so no pointless writes are issued.
+    together. Additional calls fetch only the remaining pages. Field IDs are None for
+    fields not found in the project. When open_only is False, closed, merged and
+    skip-labelled PRs are included only when they still carry a non-zero score to
+    clear; the rest are dropped so no pointless writes are issued.
     """
-    data = graphql(_INITIAL_QUERY, {"org": REPO_OWNER, "number": project_number})
+    data = graphql(
+        _INITIAL_QUERY,
+        {"org": REPO_OWNER, "number": project_number, "first": _ITEMS_PAGE_SIZE},
+    )
     project = data["organization"]["projectV2"]
     if project is None:
         raise RuntimeError(
@@ -361,6 +482,11 @@ def fetch_project_data(
     for field in project["fields"]["nodes"]:
         name = field.get("name")
         if name in field_ids:
+            if field.get("dataType") != "NUMBER":
+                raise RuntimeError(
+                    f"Project field '{name}' has data type {field.get('dataType')}, "
+                    f"expected NUMBER. Recreate it as a Number field in the project UI."
+                )
             field_ids[name] = field["id"]
 
     pr_items: list[ProjectItem] = []
@@ -374,10 +500,10 @@ def fetch_project_data(
     page = project["items"]
     _collect_page(page)
 
+    page_size = _ITEMS_PAGE_SIZE
     while page["pageInfo"]["hasNextPage"]:
         cursor = page["pageInfo"]["endCursor"]
-        data = graphql(_ITEMS_PAGE_QUERY, {"projectId": project_id, "cursor": cursor})
-        page = data["node"]["items"]
+        page, page_size = _fetch_items_page(project_id, cursor, page_size)
         _collect_page(page)
 
     return project_id, field_ids, pr_items
@@ -399,8 +525,10 @@ def _has_write_access(association: str | None) -> bool:
 def find_last_write_activity(pr_data: dict) -> datetime:
     """Return the datetime of the most recent review or comment by a write-access user.
 
-    Determined via authorAssociation (OWNER, MEMBER, COLLABORATOR) — no extra API
-    calls needed. Falls back to PR creation date when no write-access activity exists.
+    Determined via authorAssociation (OWNER, MEMBER, COLLABORATOR), so no extra API
+    calls are needed. Only the most recent reviews and comments are fetched, so a
+    maintainer comment buried under a very long author-only thread is not seen; in
+    that case the PR creation date is used, which errs towards flagging the PR.
     """
     candidates: list[datetime] = []
 
@@ -502,11 +630,20 @@ def update_scores(
 
 
 def _scores_unchanged(result: dict) -> bool:
-    """True when the board already holds both freshly computed scores for this item."""
+    """True when the board already holds both freshly computed scores for this item.
+
+    Compared with a tolerance below the two-decimal rounding of the scores, so a
+    float round-trip through the API never triggers a pointless write.
+    """
     stored = result["stored_scores"]
-    return stored.get(MEETING_FIELD) == result["meeting_score"] and (
-        stored.get(MERGEABILITY_FIELD) == result["mergeability_score"]
-    )
+    for field, value in (
+        (MEETING_FIELD, result["meeting_score"]),
+        (MERGEABILITY_FIELD, result["mergeability_score"]),
+    ):
+        current = stored.get(field)
+        if current is None or not math.isclose(current, value, abs_tol=0.005):
+            return False
+    return True
 
 
 def _print_factors(label: str, score: float, factors: dict[str, float]) -> None:
@@ -516,6 +653,18 @@ def _print_factors(label: str, score: float, factors: dict[str, float]) -> None:
             print(f"    {name:<25} {value:>+8.2f}")
 
 
+def _factor_columns(results: list[dict], key: str) -> list[str]:
+    """Return every factor name seen under key, in first-seen order.
+
+    Cleared PRs carry an empty factor set, so the column list has to be the union
+    over all rows rather than whichever row happens to sort first.
+    """
+    columns: dict[str, None] = {}
+    for result in results:
+        columns.update(dict.fromkeys(result[key]))
+    return list(columns)
+
+
 def _write_csv(path: str, results: list[dict], show_all: bool) -> None:
     """Write results to a CSV file. Includes factor columns when show_all is True."""
     if not results:
@@ -523,11 +672,15 @@ def _write_csv(path: str, results: list[dict], show_all: bool) -> None:
         return
 
     base_columns = ["pr_number", "pr_title", "meeting_score", "mergeability_score"]
+    meeting_keys: list[str] = []
+    mergeability_keys: list[str] = []
     factor_columns: list[str] = []
 
     if show_all:
-        factor_columns = [f"meeting_{key}" for key in results[0]["meeting_factors"]] + [
-            f"mergeability_{key}" for key in results[0]["mergeability_factors"]
+        meeting_keys = _factor_columns(results, "meeting_factors")
+        mergeability_keys = _factor_columns(results, "mergeability_factors")
+        factor_columns = [f"meeting_{key}" for key in meeting_keys] + [
+            f"mergeability_{key}" for key in mergeability_keys
         ]
 
     with open(path, "w", newline="", encoding="utf-8") as csv_file:
@@ -541,9 +694,9 @@ def _write_csv(path: str, results: list[dict], show_all: bool) -> None:
                 "mergeability_score": result["mergeability_score"],
             }
             if show_all:
-                for key in results[0]["meeting_factors"]:
+                for key in meeting_keys:
                     row[f"meeting_{key}"] = result["meeting_factors"].get(key, 0.0)
-                for key in results[0]["mergeability_factors"]:
+                for key in mergeability_keys:
                     row[f"mergeability_{key}"] = result["mergeability_factors"].get(key, 0.0)
             writer.writerow(row)
 
@@ -588,18 +741,21 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    # --all prints factors instead of writing, so it is a report mode like --dry-run.
+    report_only = args.dry_run or args.show_all
+
     skip_labels = {"Status: Stale", "✋ On hold"} | set(args.skip_labels)
     now = datetime.now(tz=timezone.utc)
 
     log.info("Fetching project data for project #%d...", args.project)
     project_id, field_ids, pr_items = fetch_project_data(
-        args.project, skip_labels, open_only=args.dry_run
+        args.project, skip_labels, open_only=report_only
     )
 
     meeting_field_id = field_ids[MEETING_FIELD]
     mergeability_field_id = field_ids[MERGEABILITY_FIELD]
 
-    if not args.dry_run:
+    if not report_only:
         missing = [name for name, fid in field_ids.items() if fid is None]
         if missing:
             raise RuntimeError(
@@ -609,15 +765,14 @@ def main() -> int:
     else:
         for name, fid in field_ids.items():
             if fid is None:
-                log.warning("Field '%s' not found — scores will be printed but not written.", name)
+                log.warning("Field '%s' not found, scores will be printed but not written.", name)
 
     results = []
 
-    for item_id, pr_data, stored_scores in pr_items:
-        is_open = pr_data.get("state") == "OPEN"
-
-        if not is_open:
-            # PR was merged/closed after being scored; zero out stale scores.
+    for item_id, pr_data, stored_scores, clear_only in pr_items:
+        if clear_only:
+            # PR was merged, closed or skip-labelled after being scored; clear the
+            # stale values so it does not keep sitting at the top of the board.
             results.append(
                 {
                     "item_id": item_id,
@@ -684,7 +839,7 @@ def main() -> int:
     if args.output:
         _write_csv(args.output, results, show_all=args.show_all)
 
-    if args.dry_run or args.show_all:
+    if report_only:
         if args.show_all:
             for result in results:
                 print(f"PR #{result['pr_number']}  {result['pr_title']!r}")

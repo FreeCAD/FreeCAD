@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2013 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # Unit tests for the Arch wall module
 
@@ -38,9 +35,28 @@ class TestArchWall(TestArchBase.TestArchBase):
         operation = "Checking Arch Wall..."
         self.printTestMessage(operation)
 
-        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(-2, 0, 0))
+        l = Draft.make_line(App.Vector(0, 0, 0), App.Vector(-2, 0, 0))
         w = Arch.makeWall(l)
         self.assertTrue(w, "Arch Wall failed")
+
+    def test_wall_from_external_defining_sketch_geometry(self):
+        operation = "Checking Arch Wall from external defining sketch geometry..."
+        self.printTestMessage(operation)
+
+        source = self.document.addObject("Sketcher::SketchObject", "SourceSketch")
+        source.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1000, 0, 0)))
+        target = self.document.addObject("Sketcher::SketchObject", "TargetSketch")
+        self.document.recompute()
+
+        target.addExternal(source.Name, "Edge1", True)
+        wall = Arch.makeWall(target, width=100, height=500)
+        self.document.recompute()
+
+        self.assertGreater(
+            wall.Shape.Volume,
+            0,
+            "Arch Wall should use external defining sketch geometry",
+        )
 
     def testWallMultiMatAlign(self):
         operation = "Checking Arch Wall with MultiMaterial and 3 alignments..."
@@ -58,7 +74,7 @@ class TestArchWall(TestArchBase.TestArchBase):
             App.Vector(2000, 1000, 0),
         ]
         # wall based on wire:
-        wire = Draft.makeWire(pts)
+        wire = Draft.make_wire(pts)
         wallWire = Arch.makeWall(wire)
         wallWire.Material = matMulti
         # wall based on sketch:
@@ -188,8 +204,8 @@ class TestArchWall(TestArchBase.TestArchBase):
         operation = "Testing joinWalls function"
         self.printTestMessage(operation)
 
-        base_line1 = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(5000, 0, 0))
-        base_line2 = Draft.makeLine(App.Vector(5000, 0, 0), App.Vector(5000, 3000, 0))
+        base_line1 = Draft.make_line(App.Vector(0, 0, 0), App.Vector(5000, 0, 0))
+        base_line2 = Draft.make_line(App.Vector(5000, 0, 0), App.Vector(5000, 3000, 0))
         wall1 = Arch.makeWall(base_line1, width=200, height=3000)
         wall2 = Arch.makeWall(base_line2, width=200, height=3000)
         joined_wall = Arch.joinWalls([wall1, wall2])
@@ -203,7 +219,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.printTestMessage("Testing removal of a wall's base component...")
 
         # 1. Arrange: Create a wall with a base
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
         # Ensure the base object's shape is computed, making the wall debasable.
         line.recompute()
         wall = Arch.makeWall(line)
@@ -224,7 +240,7 @@ class TestArchWall(TestArchBase.TestArchBase):
     def test_is_debasable_with_valid_line_base(self):
         """Tests that a wall based on a single Draft.Line is debasable."""
         self.printTestMessage("Checking is_debasable with Draft.Line...")
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
         line.recompute()
         wall = Arch.makeWall(line)
         self.document.recompute()
@@ -242,7 +258,7 @@ class TestArchWall(TestArchBase.TestArchBase):
     def test_is_debasable_with_multi_edge_base(self):
         """Tests that a wall based on a multi-segment wire is not debasable."""
         self.printTestMessage("Checking is_debasable with multi-segment Wire...")
-        wire = Draft.makeWire(
+        wire = Draft.make_wire(
             [App.Vector(0, 0, 0), App.Vector(1000, 0, 0), App.Vector(1000, 1000, 0)]
         )
         wall = Arch.makeWall(wire)
@@ -274,7 +290,7 @@ class TestArchWall(TestArchBase.TestArchBase):
 
         # 1. Arrange: Create a rotated and translated line, and a wall from it.
         pl = App.Placement(App.Vector(1000, 500, 200), App.Rotation(App.Vector(0, 0, 1), 45))
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
         line.Placement = pl
         line.recompute()  # Use object-level recompute
 
@@ -520,7 +536,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         expected_vol = L * W * H
 
         # Create both wall variants: one with a base line, one baseless
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(L, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(L, 0, 0))
         self.document.recompute()
         based_wall = Arch.makeWall(line, width=W, height=H)
         baseless_wall = Arch.makeWall(None, length=L, width=W, height=H)
@@ -562,7 +578,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         # Create a base line offset by 5 meters for a clear distinction between local (0,0,0) and
         # global coordinates.
         # Line start/end: (5000,0,0) / (7000,0,0). Midpoint/new placement: (6000,0,0).
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
         line.Placement.Base = App.Vector(5000, 0, 0)
         self.document.recompute()
 
@@ -593,7 +609,7 @@ class TestArchWall(TestArchBase.TestArchBase):
 
         # Child D: a hosted Arch.Window. This is not an Addition but is found via InList by
         # getMovableChildren.
-        win_base = Draft.makeRectangle(length=500, height=800)
+        win_base = Draft.make_rectangle(length=500, height=800)
         win_base.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)  # Orient vertically
         win_base.Placement.Base = App.Vector(6500, 100, 1000)  # Position in wall center
         self.document.recompute()
@@ -678,4 +694,43 @@ class TestArchWall(TestArchBase.TestArchBase):
         self.assertAlmostEqual(bb.YMin, offset, delta=1e-6, msg="Right: YMin should be offset")
         self.assertAlmostEqual(
             bb.YMax, width + offset, delta=1e-6, msg="Right: YMax should be width+offset"
+        )
+
+    def test_line_based_wall_with_length_expression(self):
+        """Test that a line based wall correctly handles an expression for its Length property.
+
+        Regression test for https://github.com/FreeCAD/FreeCAD/issues/32584.
+        """
+        self.printTestMessage("Checking line based wall with length expression")
+
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
+        wall = Arch.makeWall(line)
+        self.document.recompute()
+
+        # 1st test: Change the length of the line.
+        new_line_length = 2000
+        line.Length = new_line_length
+        self.document.recompute()
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            new_line_length,
+            delta=1e-6,
+            msg="New length of line did not correctly update wall",
+        )
+
+        # 2nd test: Change the length of the wall by applying an expression.
+        new_wall_length = 3000
+        wall.setExpression("Length", "3 m")
+        self.document.recompute()
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            new_wall_length,
+            delta=1e-6,
+            msg="Length expression of wall did not correctly update wall",
+        )
+        self.assertAlmostEqual(
+            line.Length.Value,
+            new_wall_length,
+            delta=1e-6,
+            msg="Length expression of wall did not correctly update line",
         )

@@ -14,22 +14,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="deprecationWarning">
-     <property name="styleSheet">
-      <string notr="true">QLabel { background-color: #ffcc00; color: #000000; padding: 8px; border: 2px solid #ff9900; border-radius: 4px; font-weight: bold; }</string>
-     </property>
-     <property name="text">
-      <string>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to 'Tapping' instead. Existing Tapping operations will continue to work but you cannot create new ones.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0" colspan="3">
     <layout class="QGridLayout" name="gridLayout">
      <item row="4" column="4">

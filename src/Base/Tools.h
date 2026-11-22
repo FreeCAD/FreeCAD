@@ -27,19 +27,16 @@
 
 #include <FCGlobal.h>
 #include <algorithm>
+#include <format>
 #include <functional>
 #include <cmath>
 #include <numbers>
 #include <ostream>
 #include <string>
-#include <vector>
-#include <fastsignals/signal.h>
-
-class QString;
-
 #include <string_view>
 #include <vector>
-#include <fastsignals/signal.h>
+
+class QString;
 
 namespace Base
 {
@@ -106,13 +103,6 @@ inline manipulator<int> blanks(int n)
 }
 
 // ----------------------------------------------------------------------------
-
-template<class T>
-    requires std::is_arithmetic_v<T>
-inline T clamp(T num, T lower, T upper)
-{
-    return std::clamp<T>(num, lower, upper);
-}
 
 /// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
 /// As this function might be used in hot paths, it uses branchless implementation
@@ -352,18 +342,6 @@ private:
     bool oldValue;
 };
 
-// ----------------------------------------------------------------------------
-
-class ConnectionBlocker
-{
-    fastsignals::shared_connection_block blocker;
-
-public:
-    ConnectionBlocker(fastsignals::advanced_connection& c)
-        : blocker(c)
-    {}
-    ~ConnectionBlocker() = default;
-};
 // NOLINTEND
 
 // ----------------------------------------------------------------------------
@@ -432,15 +410,30 @@ BaseExport constexpr bool isNullOrEmpty(const char* str)
 BaseExport std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
 /**
+ * @brief joinFormatted
+ * Join the elements of any range with the infix separator \a sep, formatting
+ * each element with std::format.  Unlike joinList() no separator follows the
+ * last element.  Replaces fmt::join until std::format formats a range on
+ * every supported compiler, which libstdc++ does from version 15 on.
+ */
+template<typename Range>
+std::string joinFormatted(const Range& range, std::string_view sep)
+{
+    std::string result;
+    for (const auto& element : range) {
+        if (!result.empty()) {
+            result += sep;
+        }
+        result += std::format("{}", element);
+    }
+    return result;
+}
+
+/**
  * @brief currentDateTimeString
  * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
  */
 BaseExport std::string currentDateTimeString();
-
-BaseExport bool isCLocaleName(std::string_view localeName);
-BaseExport void setOperatingSystemNumericLocale(std::string_view localeName);
-BaseExport std::string getOperatingSystemNumericLocale();
-BaseExport void setIcuDefaultLocale(std::string_view icuLocaleId);
 
 BaseExport std::vector<std::string> splitSubName(const std::string& subname);
 

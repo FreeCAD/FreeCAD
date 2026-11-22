@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2017 Qingfeng Xia  <qingfeng.xia at oxford uni>         *
@@ -158,7 +160,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
 {
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
     const vtkIdType nCells = dataset->GetNumberOfCells();
-    Base::Console().log("%d nodes/points and %d cells/elements found!\n", nPoints, nCells);
+    Base::Console().log("{} nodes/points and {} cells/elements found!\n", nPoints, nCells);
     Base::Console().log("Build SMESH mesh out of the vtk mesh data.\n", nPoints, nCells);
 
     // Now fill the SMESH datastructure
@@ -338,7 +340,7 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
         cell_array = cell_data->GetAbstractArray(arrayname.c_str());
     }
     else {
-        Base::Console().error("Array %s does not exist, cannot create groups\n", arrayname);
+        Base::Console().error("Array {} does not exist, cannot create groups\n", arrayname);
         return;
     }
 
@@ -464,7 +466,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh, const cha
     if (f.hasExtension("vtu")) {
         dataset = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -472,7 +474,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh, const cha
     else if (f.hasExtension("pvtu")) {
         dataset = readVTKFile<vtkXMLPUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -480,7 +482,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh, const cha
     else if (f.hasExtension("vtk")) {
         dataset = readVTKFile<vtkDataSetReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -496,7 +498,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh, const cha
         importVTKCellGroup(dataset, mesh, group_array);
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     return mesh;
 }
 
@@ -657,9 +659,9 @@ void FemVTKTools::exportVTKMesh(
     grid->SetPoints(points);
     // nodes debugging
     const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
-    Base::Console().log("    Size of nodes in SMESH grid: %i.\n", info.NbNodes());
+    Base::Console().log("    Size of nodes in SMESH grid: {}.\n", info.NbNodes());
     const vtkIdType nNodes = grid->GetNumberOfPoints();
-    Base::Console().log("    Size of nodes in VTK grid: %i.\n", nNodes);
+    Base::Console().log("    Size of nodes in VTK grid: {}.\n", nNodes);
     Base::Console().log("  End: VTK mesh builder nodes.\n");
 
     vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
@@ -728,7 +730,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool h
         Base::Console().error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemVTKTools::writeVTKMeshWithGroups(
@@ -846,7 +848,7 @@ void FemVTKTools::writeVTKMeshWithGroups(
         Base::Console().error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 
@@ -949,7 +951,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     }
 
     pcDoc->recompute();
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     Base::Console().log("End: read FemResult with FemMesh from VTK file ======================\n");
 
     return result;
@@ -984,7 +986,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     FemVTKTools::exportVTKMesh(&fmesh, grid);
 
     Base::Console().log(
-        "    %f: vtk mesh builder finished\n",
+        "    {:f}: vtk mesh builder finished\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 
@@ -1002,7 +1004,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     }
 
     Base::Console().log(
-        "    %f: writing result object to vtk finished\n",
+        "    {:f}: writing result object to vtk finished\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
     Base::Console().log("End: write FemResult to VTK unstructuredGrid dataset =======\n");
@@ -1132,24 +1134,21 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 // PropertyVectorList will not show up in PropertyEditor
                 vector_list->setValues(vec);
                 Base::Console().log(
-                    "    A PropertyVectorList has been filled with values: %s\n",
-                    it.first.c_str()
+                    "    A PropertyVectorList has been filled with values: {}\n",
+                    it.first
                 );
             }
             else {
                 Base::Console().error(
                     "static_cast<App::PropertyVectorList*>((result->"
-                    "getPropertyByName(\"%s\")) failed.\n",
-                    it.first.c_str()
+                    "getPropertyByName(\"{}\")) failed.\n",
+                    it.first
                 );
                 continue;
             }
         }
         else {
-            Base::Console().message(
-                "    PropertyVectorList NOT found in vkt file data: %s\n",
-                it.first.c_str()
-            );
+            Base::Console().message("    PropertyVectorList NOT found in vkt file data: {}\n", it.first);
         }
     }
 
@@ -1163,8 +1162,8 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
             if (!field) {
                 Base::Console().error(
                     "static_cast<App::PropertyFloatList*>((result->"
-                    "getPropertyByName(\"%s\")) failed.\n",
-                    scalar.first.c_str()
+                    "getPropertyByName(\"{}\")) failed.\n",
+                    scalar.first
                 );
                 continue;
             }
@@ -1182,15 +1181,12 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 }
             }
             field->setValues(values);
-            Base::Console().log(
-                "    A PropertyFloatList has been filled with vales: %s\n",
-                scalar.first.c_str()
-            );
+            Base::Console().log("    A PropertyFloatList has been filled with vales: {}\n", scalar.first);
         }
         else {
             Base::Console().message(
-                "    PropertyFloatList NOT found in vkt file data %s\n",
-                scalar.first.c_str()
+                "    PropertyFloatList NOT found in vkt file data {}\n",
+                scalar.first
             );
         }
     }
@@ -1236,7 +1232,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it.first.c_str()));
         }
         else {
-            Base::Console().error("    PropertyVectorList not found: %s\n", it.first.c_str());
+            Base::Console().error("    PropertyVectorList not found: {}\n", it.first);
         }
 
         if (field && field->getSize() > 0) {
@@ -1271,15 +1267,15 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             }
             grid->GetPointData()->AddArray(data);
             Base::Console().log(
-                "    The PropertyVectorList %s was exported to VTK vector list: %s\n",
-                it.first.c_str(),
-                it.second.c_str()
+                "    The PropertyVectorList {} was exported to VTK vector list: {}\n",
+                it.first,
+                it.second
             );
         }
         else if (field) {
             Base::Console().log(
-                "    PropertyVectorList NOT exported to vtk: %s size is: %i\n",
-                it.first.c_str(),
+                "    PropertyVectorList NOT exported to vtk: {} size is: {}\n",
+                it.first,
                 field->getSize()
             );
         }
@@ -1292,7 +1288,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(scalar.first.c_str()));
         }
         else {
-            Base::Console().error("PropertyFloatList %s not found \n", scalar.first.c_str());
+            Base::Console().error("PropertyFloatList {} not found \n", scalar.first);
         }
 
         if (field && field->getSize() > 0) {
@@ -1341,15 +1337,15 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
 
             grid->GetPointData()->AddArray(data);
             Base::Console().log(
-                "    The PropertyFloatList %s was exported to VTK scalar list: %s\n",
-                scalar.first.c_str(),
-                scalar.second.c_str()
+                "    The PropertyFloatList {} was exported to VTK scalar list: {}\n",
+                scalar.first,
+                scalar.second
             );
         }
         else if (field) {
             Base::Console().log(
-                "    PropertyFloatList NOT exported to vtk: %s size is: %i\n",
-                scalar.first.c_str(),
+                "    PropertyFloatList NOT exported to vtk: {} size is: {}\n",
+                scalar.first,
                 field->getSize()
             );
         }
@@ -1956,7 +1952,7 @@ void readResults(
                 }
             }
             catch (const std::out_of_range&) {
-                Base::Console().warning("Invalid node: %d\n", node);
+                Base::Console().warning("Invalid node: {}\n", node);
             }
             ++countNodes;
         }

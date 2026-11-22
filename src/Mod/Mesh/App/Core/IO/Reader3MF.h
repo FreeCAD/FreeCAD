@@ -69,6 +69,7 @@ public:
      * Passes a file name to the constructor
      */
     explicit Reader3MF(const std::string& filename);
+    ~Reader3MF();
     /*!
      * \brief Load the mesh from the input stream or file
      * \return true on success and false otherwise

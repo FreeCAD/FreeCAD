@@ -23,6 +23,7 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
+from Machine.models.machine import MachineFactory
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PathScripts import PathUtils
 from Path.Base.Util import toolControllerForOp
@@ -32,15 +33,49 @@ translate = FreeCAD.Qt.translate
 
 
 class GCodeEditorDialog(QtGui.QDialog):
-    tool = None
+    """To show Inspect window with specific parameters call
+    Path.Main.Gui.Inspect.GCodeEditorDialog(obj, parent=None, readOnly=True, raw=None, toolVisibility=None).exec()
+    obj: object Path::FeaturePython
+    parent: parent widget (use parent=FreeCADGui.getMainWindow() to darken main FreeCAD window)
+    readOnly: not allows to change text
+    raw: default state of Raw checkbox (convert to prefered units)
+    toolVisibility: default state of Tool visibility checkebox (show tool shape)
+    """
 
-    def __init__(self, PathObj, parent=None, readOnly=True, toolVisibility=None):
+    def __init__(self, PathObj, parent=None, readOnly=True, raw=None, toolVisibility=None):
+        self.pathObj = PathObj
+        # The placed path, in job coordinates: what the tool position in the
+        # 3D view and the formatted listing use. The stored path is kept
+        # separately for Raw, which shows the commands exactly as the
+        # operation wrote them - for an operation on a work plane, that is in
+        # the plane's own frame, before Placement moves it onto the part.
         self.commands = PathUtils.getPathWithPlacement(PathObj).Commands
-        self.tool = getattr(toolControllerForOp(PathObj), "Tool", None)
+        self.rawCommands = list(PathObj.Path.Commands) if PathObj.Path else []
+        self.tc = toolControllerForOp(PathObj)
+        self.tool = getattr(self.tc, "Tool", None)
         self.toolInitVisibility = getattr(self.tool, "Visibility", False)  # keep tool visibility
 
-        QtGui.QDialog.__init__(self, parent or FreeCADGui.getMainWindow())
-        self.setWindowTitle(translate("CAM", "CAM Inspect"))
+        self.units = (
+            "imperial"
+            if FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2] == "in"
+            else "metric"
+        )
+        self.decAxis = 2
+        self.decFeed = 0
+        if self.units == "imperial":
+            self.decAxis = 3
+            self.decFeed = 1
+        if (
+            job := PathUtils.findParentJob(PathObj)
+        ) and job.Machine in MachineFactory.list_configurations():
+            machine = MachineFactory.get_machine(job.Machine)
+            self.units = machine.to_dict()["output"]["units"]
+            precision = machine.to_dict()["output"]["precision"]
+            self.decAxis = precision["axis"]
+            self.decFeed = precision["feed"]
+
+        QtGui.QDialog.__init__(self, parent)
+        self.setWindowTitle(translate("CAM_Inspect", "CAM Inspect - %s" % PathObj.Label))
         layout = QtGui.QVBoxLayout(self)
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
@@ -53,7 +88,13 @@ class GCodeEditorDialog(QtGui.QDialog):
             Q.alpha() / 255.0,
         )
 
+        # The highlight is drawn exactly as the operation is: the stored
+        # commands, in the operation's own frame, under the operation's
+        # Placement. Drawing placed commands at identity instead would put
+        # every arc on a turned-over plane on the wrong side, since a G2/G3
+        # with I/J cannot carry a rotation out of the XY plane.
         self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "selection")
+        self.selectionobj.Placement = FreeCAD.Placement(PathObj.Placement)
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
@@ -63,25 +104,35 @@ class GCodeEditorDialog(QtGui.QDialog):
                 QtGui.Qt.TextInteractionFlag.TextSelectableByMouse
                 | QtGui.Qt.TextInteractionFlag.TextSelectableByKeyboard
             )  #  make a QPlainTextEdit read-only while keeping the text cursor visible
+        family = self.editor.font().family()
+        size = self.editor.font().pointSize()
+        self.editor.setStyleSheet(f"QToolTip {{ font-family: {family}; font-size: {size}; }}")
         layout.addWidget(self.editor)
 
-        # Note
-        lab = QtGui.QLabel()
-        lab.setText(
-            translate(
-                "CAM_Inspect",
-                "<b>Note</b>: This dialog shows path commands in FreeCAD base units (mm/s)."
-                "<br>Values will be converted to the desired unit during post processing.",
-            )
-        )
-        lab.setWordWrap(True)
-        layout.addWidget(lab)
+        self.lab = QtGui.QLabel()  # Note
+        self.lab.setWordWrap(True)
+        layout.addWidget(self.lab)
 
-        bottomFrame = QtGui.QFrame()
+        bottomFrame = QtGui.QFrame()  # buttons and checkboxes at the bottom
         bottomFrame.setLayout(QtGui.QHBoxLayout())
         layout.addWidget(bottomFrame)
 
+        self.chkRaw = QtGui.QCheckBox(translate("CAM_Inspect", "Raw"))
+        if raw is not None:
+            self.chkRaw.setChecked(raw)
+        self.chkRaw.setToolTip(
+            translate(
+                "CAM_Inspect",
+                "Raw shows the commands exactly as the operation stored them: no rounding, "
+                "no unit conversion, and no Placement applied. An operation on a work plane "
+                "stores its path in the plane's own frame.",
+            )
+        )
+        bottomFrame.layout().addWidget(self.chkRaw)
+
         self.chkTool = QtGui.QCheckBox("Show tool")
+        self.chkTool.setSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Preferred)
+        self.chkTool.setMinimumSize(200, 0)
         if self.tool is not None:
             self.chkTool.setText(translate("CAM_Inspect", "Show tool: %s") % self.tool.Label)
             self.chkTool.setToolTip(
@@ -96,18 +147,23 @@ class GCodeEditorDialog(QtGui.QDialog):
                 self.chkTool.setChecked(self.tool.Visibility)
             bottomFrame.layout().addWidget(self.chkTool)
 
+        bottomFrame.layout().setStretchFactor(self.chkTool, 1)
+
         self.buttons = QtGui.QDialogButtonBox(
             QtGui.QDialogButtonBox.Close,
             QtCore.Qt.Horizontal,
             self,
         )  # add Close button
-        self.buttons.rejected.connect(self.reject)
         bottomFrame.layout().addWidget(self.buttons)
 
+        self.buttons.rejected.connect(self.reject)
         self.editor.cursorPositionChanged.connect(self.highlightpath)
         self.editor.cursorPositionChanged.connect(self.toolPlacement)
         self.finished.connect(self.cleanup)
+        self.chkRaw.checkStateChanged.connect(self.updateText)
         self.chkTool.checkStateChanged.connect(self.toolVisibility)
+
+        self.show()  # needed here to get correct widget size and elide label of chkTool
 
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         Xpos = int(prefs.GetString("inspecteditorX", "0"))
@@ -116,6 +172,27 @@ class GCodeEditorDialog(QtGui.QDialog):
         width = int(prefs.GetString("inspecteditorW", "600"))
         self.move(Xpos, Ypos)
         self.resize(width, height)
+
+        self.updateText()
+
+    def resizeEvent(self, event):
+        """Change widgets width with a dialog window"""
+        super().resizeEvent(event)
+        if self.tool is None:
+            return
+
+        text = translate("CAM_Inspect", "Show tool: %s") % self.tool.Label
+        opt = QtGui.QStyleOptionButton()
+        self.chkTool.initStyleOption(opt)
+        indent = (
+            self.chkTool.style()
+            .subElementRect(QtGui.QStyle.SE_CheckBoxContents, opt, self.chkTool)
+            .x()
+        )
+        width = self.chkTool.width() - indent
+        fm = self.chkTool.fontMetrics()
+        elided_text = fm.elidedText(text, QtCore.Qt.ElideMiddle, width)
+        self.chkTool.setText(elided_text)
 
     def cleanup(self):
         """Prepare for exit from Inspect"""
@@ -128,6 +205,9 @@ class GCodeEditorDialog(QtGui.QDialog):
         if self.tool:
             self.tool.Visibility = self.toolInitVisibility  # restore tool visibility
 
+    def getWithUnits(self, value):
+        return FreeCAD.Units.Quantity(value, FreeCAD.Units.Length).getUserPreferred()[0]
+
     def highlightpath(self):
         """Set highlighted path"""
         cursor = self.editor.textCursor()
@@ -138,20 +218,70 @@ class GCodeEditorDialog(QtGui.QDialog):
         cursor.setPosition(ep)
         endrow = cursor.blockNumber()
 
-        # Derive the starting position for the first selected command
-        x, y, z = self.getPosition(self.commands[max(0, startrow - 1) :: -1])
+        # Derive the starting position for the first selected command. The
+        # rows of the listing and of the stored path correspond one to one;
+        # the highlight takes the stored commands, in the operation's frame.
+        x, y, z = self.getPosition(self.rawCommands[max(0, startrow - 1) :: -1])
+        selCommands = self.commands[startrow : endrow + 1]
         firstrapid = Path.Command("G0", {"X": x, "Y": y, "Z": z})
-        selectionCommands = [firstrapid] + self.commands[startrow : endrow + 1]
+        selectionCommands = [firstrapid] + self.rawCommands[startrow : endrow + 1]
         self.selectionobj.Path = Path.Path()
         if len(selectionCommands) > 1:
             self.selectionobj.Path = Path.Path(selectionCommands)
         self.selectionobj.ViewObject.StartIndex = 1  # hide first rapid move
 
+        if not self.chkRaw.isChecked() and len(selCommands) <= 50 and sp != ep:
+            # Set raw gcode as tooltip
+            toolTipStr = ""
+            numLen = len(str(startrow + 1)) + 3
+            for i, cmd in enumerate(selCommands, startrow + 1):
+                toolTipStr += f"{i:<{numLen}}{cmd.toGCode()}\n"
+        else:
+            # Set path object data as tooltip
+            toolTipStr = f"Operation: {self.pathObj.Label}\n"
+            if self.pathObj.Label != self.pathObj.Name:
+                toolTipStr = f"Operation: {self.pathObj.Label} ({self.pathObj.Name})\n"
+            toolTipStr += f"\nNumber commands: {self.pathObj.Path.Size}\n"
+            toolTipStr += f"Path length: {self.getWithUnits(self.pathObj.Path.Length)}\n"
+            toolTipStr += f"Cycle time: {getattr(self.pathObj, 'CycleTime', 'N/A')}\n"
+            if self.tc:
+                toolTipStr += f"\nTool number: {self.tc.ToolNumber}\n"
+                tcStr = self.tc.Label
+                if self.tc.Label != self.tc.Name:
+                    tcStr = f"{self.tc.Label} ({self.tc.Name})"
+                toolTipStr += f"Tool controller: {tcStr}\n"
+                toolStr = self.tool.Label
+                if self.tool.Label != self.tool.Name:
+                    toolStr = f"{self.tool.Label} ({self.tool.Name})"
+                toolTipStr += f"Tool: {toolStr}\n"
+                diaStr = "N/A"
+                if d := getattr(self.tool, "Diameter", None):
+                    diaStr = self.getWithUnits(d)
+                toolTipStr += f"Tool diameter: {diaStr}\n"
+            else:
+                toolTipStr += "\nTool controller: N/A\n"
+            if sp != ep:
+                toolTipStr += f"\nSelected {len(selCommands)} lines: "
+                toolTipStr += f"{startrow + 1} - {endrow + 1}\n"
+                lenSelected = self.selectionobj.Path.Length - Path.Path([firstrapid]).Length
+                toolTipStr += f"Path length selected: {self.getWithUnits(lenSelected)}\n"
+
+        self.editor.setToolTip(toolTipStr.strip())
+
     def toolPlacement(self):
-        """Set tool placement"""
+        """Set tool placement: at the selected line's position, along the
+        operation's tool axis.
+
+        The position comes from the placed path, so it is where the tool
+        really is on the part. The orientation is the operation's Placement
+        rotation: an operation on a tilted work plane cuts with the tool along
+        that plane's +Z, and a tool drawn vertical would stand off the face at
+        the plane's angle."""
         if self.tool is not None and self.tool.Visibility:
             line_number = self.editor.textCursor().blockNumber()
-            self.tool.Placement.Base = self.getPosition(self.commands[line_number::-1])
+            # getPosition() returns an (x, y, z) tuple
+            position = FreeCAD.Vector(*self.getPosition(self.commands[line_number::-1]))
+            self.tool.Placement = FreeCAD.Placement(position, self.pathObj.Placement.Rotation)
 
     def toolVisibility(self):
         """Update tool visibility"""
@@ -174,14 +304,61 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         return x, y, z
 
+    def updateText(self):
+        """Update plain text and tool tip"""
+        scrolBarValue = self.editor.verticalScrollBar().value()
+        unitLength = "mm"
+        unitTime = "s"
+        unitsStr = ""
+        if not self.chkRaw.isChecked():
+            unitsStr = f"{self.units}, "
+            unitTime = "min"
+            if self.units == "imperial":
+                unitLength = "in"
 
-def show(obj):
-    "show(obj): shows the G-code data of the given Path object in a dialog"
+        self.lab.setText(
+            translate(
+                "CAM_Inspect",
+                "<b>Caution</b>: This windows shows commands generated by operation."
+                "<br>The final G-code will be created by post processor."
+                "<br><b>Current units</b>: %slength - <b>%s</b>, feed - <b>%s/%s</b>.",
+            )
+            % (unitsStr, unitLength, unitLength, unitTime)
+        )
+        if self.chkRaw.isChecked():
+            placement = self.pathObj.Placement
+            if not placement.isIdentity(1e-9):
+                origin = placement.Base
+                self.lab.setText(
+                    self.lab.text()
+                    + translate(
+                        "CAM_Inspect",
+                        "<br><b>Raw</b>: as stored, in the operation's own frame; "
+                        "the frame's origin (%.3f, %.3f, %.3f) and rotation are not applied.",
+                    )
+                    % (origin.x, origin.y, origin.z)
+                )
+            self.editor.setPlainText(Path.Path(self.rawCommands).toGCode())
+            self.editor.verticalScrollBar().setValue(scrolBarValue)
+            return
 
-    if getattr(obj, "Path", None):
-        dia = GCodeEditorDialog(obj)
-        dia.editor.setPlainText(obj.Path.toGCode())
-        dia.exec_()
+        text = ""
+        for cmd in self.commands:
+            text += cmd.Name
+            for key, value in cmd.Parameters.items():
+                if self.units == "imperial" and key in list("FXYZIJK"):
+                    value /= 25.4
+                if key in ("F", "S"):
+                    text += f" {key}{round(value * 60, self.decFeed):.{self.decFeed}f}"
+                else:
+                    valueR = round(value, self.decAxis)
+                    if valueR == 0:
+                        valueR = 0.0  # exclude -0.0
+                    text += f" {key}{valueR:.{self.decAxis}f}"
+            text += "\n"
+
+        self.editor.setPlainText(text)
+        self.editor.verticalScrollBar().setValue(scrolBarValue)
 
 
 class CommandPathInspect:
@@ -219,7 +396,7 @@ class CommandPathInspect:
         # if everything is ok, execute
         FreeCADGui.addModule("Path.Main.Gui.Inspect")
         FreeCADGui.doCommand(f"obj = FreeCAD.ActiveDocument.getObject('{selection[0].Name}')")
-        FreeCADGui.doCommand("Path.Main.Gui.Inspect.show(obj)")
+        FreeCADGui.doCommand("Path.Main.Gui.Inspect.GCodeEditorDialog(obj).exec()")
 
 
 if FreeCAD.GuiUp:

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c
     "from sysconfig import get_path; print(get_path('purelib'))"
@@ -20,6 +21,7 @@ endif()
 configure_file(__init__.py.template ${NAMESPACE_INIT})
 
 set(EXT_FILES
+    content_provider.py
     deprecation.py
     freecad_doc.py
     module_io.py

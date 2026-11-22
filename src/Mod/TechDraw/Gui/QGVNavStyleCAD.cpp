@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -60,7 +62,7 @@ void QGVNavStyleCAD::handleKeyReleaseEvent(QKeyEvent *event)
 
 void QGVNavStyleCAD::handleMousePressEvent(QMouseEvent *event)
 {
-//    Base::Console().message("QGVNSCAD::handleMousePressEvent() - button: %d\n", event->button());
+//    Base::Console().message("QGVNSCAD::handleMousePressEvent() - button: {}\n", event->button());
     if (event->button() == Qt::MiddleButton) {
         startClick(Qt::MiddleButton);   //for MMB center view
     }
@@ -129,7 +131,7 @@ void QGVNavStyleCAD::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleCAD::handleMouseReleaseEvent(QMouseEvent *event)
 {
-//    Base::Console().message("QGVNSCAD::handleMouseReleaseEvent() - button: %d\n", event->button());
+//    Base::Console().message("QGVNSCAD::handleMouseReleaseEvent() - button: {}\n", event->button());
     if (getViewer()->isBalloonPlacing()) {
         placeBalloon(event->pos());
     }

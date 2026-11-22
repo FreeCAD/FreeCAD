@@ -150,3 +150,42 @@ class TestFeedsSpeedsToolBitPresets(PathTestWithAssets):
         # Engineering-only storage: raw_feed/raw_speed are not persisted.
         self.assertNotIn("raw_feed", restored[1])
         self.assertNotIn("raw_speed", restored[1])
+
+    def _reload(self, tool) -> ToolBit:
+        """Serialize a tool and read it back, the way the editor's save and
+        the next open of the tool do."""
+        data = FCTBSerializer.serialize(tool)
+        shape = ToolBitShapeEndmill("endmill")
+        deps = {AssetUri.build("toolbitshape", "endmill"): shape}
+        return FCTBSerializer.deserialize(data, id="rt_id", dependencies=deps)
+
+    def test_deleting_one_of_two_presets_persists(self):
+        set_presets(
+            self.tool.obj,
+            [
+                make_preset(name="Keep", surface_speed=400.0, chipload=0.05),
+                make_preset(name="Drop", surface_speed=120.0, chipload=0.03),
+            ],
+        )
+        loaded = self._reload(self.tool)
+
+        remaining = get_presets(loaded.obj)
+        del remaining[1]
+        set_presets(loaded.obj, remaining)
+
+        restored = get_presets(self._reload(loaded).obj)
+        self.assertEqual([p["name"] for p in restored], ["Keep"])
+
+    def test_deleting_the_last_preset_persists(self):
+        # The tool arrives with presets, so "presets" is among the keys
+        # _extra_attrs snapshots. Deleting the only preset must not let
+        # that snapshot write the preset back out.
+        set_presets(self.tool.obj, [make_preset(name="Only", surface_speed=400.0, chipload=0.05)])
+        loaded = self._reload(self.tool)
+        self.assertEqual(len(get_presets(loaded.obj)), 1)
+
+        set_presets(loaded.obj, [])
+
+        parsed = json.loads(FCTBSerializer.serialize(loaded).decode("utf-8"))
+        self.assertNotIn("presets", parsed)
+        self.assertEqual(get_presets(self._reload(loaded).obj), [])

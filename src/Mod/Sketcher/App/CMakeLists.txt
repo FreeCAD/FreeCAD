@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 include_directories(
     SYSTEM
     ${nlohmann_json_INCLUDE_DIRS}
@@ -183,7 +185,7 @@ if (EIGEN3_NO_DEPRECATED_COPY)
 endif ()
 
 
-SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
+SET_BIN_DIR(Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(Sketcher)
 
 INSTALL(TARGETS Sketcher DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -29,6 +29,7 @@
 #include <QApplication>
 
 #include <App/Application.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
@@ -657,6 +658,15 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList& prop)
         App::DocumentObject* obj = selitem.getObject();
         const std::vector<std::string>& subnames = selitem.getSubNames();
 
+        // LCS datums have placements relative to their coordinate system.
+        if (auto* datum = freecad_cast<App::DatumElement*>(obj)) {
+            if (auto* lcs = datum->getLCS(); lcs && !lcs->isOrigin() && lcs->hasObject(datum)) {
+                objs.push_back(lcs);
+                subs.push_back(std::string(datum->getNameInDocument()) + ".");
+                continue;
+            }
+        }
+
         // whole object is selected
         if (subnames.empty()) {
             objs.push_back(obj);
@@ -730,6 +740,9 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
     std::set<App::DocumentObject*> objs;
 
     for (auto& sel : _SelList) {
+        if (pcDoc && pcDoc != sel.pDoc) {
+            continue;
+        }
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
             auto ret = objs.insert(pObject);
             if (ret.second) {
@@ -966,9 +979,9 @@ int SelectionSingleton::setPreselect(
             }
             msg.append(QStringLiteral(" %1.%2.%3 ")
                            .arg(
-                               QString::fromLatin1(pDocName),
-                               QString::fromLatin1(pObjectName),
-                               QString::fromLatin1(pSubName)
+                               QString::fromUtf8(pDocName),
+                               QString::fromUtf8(pObjectName),
+                               QString::fromUtf8(pSubName)
                            ));
 
             if (getMainWindow()) {
@@ -1313,9 +1326,7 @@ bool SelectionSingleton::addSelection(
     temp.y = y;
     temp.z = z;
 
-
     // check for a Selection Gate
-
     const auto& selectionAllowance = isSelectionAllowed(temp);
     if (!selectionAllowance.allowed) {
         if (getMainWindow()) {

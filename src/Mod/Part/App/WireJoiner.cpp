@@ -3165,14 +3165,9 @@ void WireJoiner::setTolerance(double tol, double atol)
     }
 }
 
-#if OCC_VERSION_HEX < 0x070600
-void WireJoiner::Build()
-{
-#else
 void WireJoiner::Build(const Message_ProgressRange& theRange)
 {
     (void)theRange;
-#endif
     if (IsDone()) {
         return;
     }

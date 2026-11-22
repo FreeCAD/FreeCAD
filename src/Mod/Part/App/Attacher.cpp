@@ -40,6 +40,7 @@
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomAPI_IntSS.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Elips.hxx>
@@ -70,6 +71,7 @@
 #include "Attacher.h"
 #include "AttachExtension.h"
 #include "Tools.h"
+#include "BaseGeometry.h"
 
 #include <Geometry.h>
 
@@ -485,7 +487,7 @@ Base::Placement AttachEngine::placementFactory(
         XAxis = YAxis.Crossed(gp_Vec(ZAxis));
         if (XAxis.Magnitude() < Precision::Confusion()) {
             // ZAxis is along true ZAxis
-            XAxis = (gp_Vec(1, 0, 0) * ZAxis.Z()).Normalized();
+            XAxis = (BaseGeometry::X_POS_VEC * ZAxis.Z()).Normalized();
         }
         ax3 = gp_Ax3(Origin, ZAxis, XAxis);
     }
@@ -1868,7 +1870,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     dd = gp_Vec(0., 0., 0.);
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: can't "
-                        "calculate second derivative of curve. OCC error: %s\n",
+                        "calculate second derivative of curve. OCC error: {}\n",
                         e.GetMessageString()
                     );
                 }
@@ -2871,7 +2873,7 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 if (distancer.NbSolution() > 1) {
                     Base::Console().warning(
                         "AttachEngineLine::calculateAttachedPlacement: "
-                        "proximity calculation gave %i solutions, ambiguous.\n",
+                        "proximity calculation gave {} solutions, ambiguous.\n",
                         int(distancer.NbSolution())
                     );
                 }
@@ -3111,7 +3113,12 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                 throwWrongMode(mmode);
         }
 
-        plm = this->placementFactory(gp_Vec(0.0, 0.0, 1.0), gp_Vec(1.0, 0.0, 0.0), BasePoint, gp_Pnt());
+        plm = this->placementFactory(
+            BaseGeometry::Z_POS_VEC,
+            BaseGeometry::X_POS_VEC,
+            BasePoint,
+            gp::Origin()
+        );
     }
     else {  // reuse 3d mode
         AttachEngine3D attacher3D;
@@ -3188,7 +3195,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
 
             if (points.size() > 1) {
                 Base::Console().warning(
-                    "AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %d "
+                    "AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave {} "
                     "solutions, ambiguous.\n",
                     int(points.size())
                 );
@@ -3213,7 +3220,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
     }
     if (distancer.NbSolution() > 1) {
         Base::Console().warning(
-            "AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %i "
+            "AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave {} "
             "solutions, ambiguous.\n",
             int(distancer.NbSolution())
         );

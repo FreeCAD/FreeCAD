@@ -28,14 +28,13 @@
 
 class QGraphicsScene;
 class QGraphicsView;
+class QProcess;
 class QSvgRenderer;
 class QGraphicsSvgItem;
 class GraphicsViewZoom;
 
 namespace Gui
 {
-
-class GraphvizWorker;
 
 class GuiExport GraphvizView: public MDIView
 {
@@ -45,8 +44,6 @@ class GuiExport GraphvizView: public MDIView
 public:
     explicit GraphvizView(App::Document& _doc, QWidget* parent = nullptr);
     ~GraphvizView() override;
-
-    QByteArray exportGraph(const QString& filter);
 
     /// Message handler
     bool onMsg(const char* pMsg) override;
@@ -63,24 +60,38 @@ public:
     void printPreview() override;
     //@}
 
-private Q_SLOTS:
-    void svgFileRead(const QByteArray& data);
-    void error();
-    void done();
-
 private:
-    void updateSvgItem(const App::Document& doc);
+    enum class PathType : uint8_t;
+    QString getDirPath();
+    enum class ProcessType : uint8_t;
+    void convert(ProcessType type, const QString& exportType = "", const QString& exportPath = "");
+    void convertDotStart();
+    void convertDotStarted();
+    void convertDotError();
+    void convertUnflattenStart();
+    void convertUnflattenStarted();
+    void convertUnflattenError();
+    void convertUnflattenFinished();
+    void convertDotWrite();
+    void convertDotFinished();
+    void updateSvgItem();
     void disconnectSignals();
 
     const App::Document& doc;
-    std::string graphCode;
     QGraphicsScene* scene;
     QGraphicsView* view;
     GraphicsViewZoom* zoomer;
     QGraphicsSvgItem* svgItem;
     QSvgRenderer* renderer;
-    GraphvizWorker* thread;
-    int nPending;
+    QProcess* dotProc;
+    QProcess* unflattenProc;
+    QByteArray graphCode;
+    QString path;
+    PathType pathType = (PathType)0;
+    ProcessType running = (ProcessType)0;
+    uint8_t pendingMask = 0;
+    QString pendingExportType, pendingExportPath;
+    QString runningExportType, runningExportPath;
 
     using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;

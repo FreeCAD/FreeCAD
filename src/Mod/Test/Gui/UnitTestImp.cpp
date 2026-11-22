@@ -246,7 +246,7 @@ void UnitTestDialog::onStartButtonClicked()
  */
 void UnitTestDialog::showErrorDialog(const char* title, const char* message)
 {
-    QMessageBox::critical(this, QString::fromLatin1(title), QString::fromLatin1(message));
+    QMessageBox::critical(this, QString::fromUtf8(title), QString::fromUtf8(message));
 }
 
 /**

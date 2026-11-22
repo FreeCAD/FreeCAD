@@ -61,6 +61,7 @@ public:
      *  are calculated according to the linked line
      */
     App::PropertyLinkSub ReferenceAxis;
+    App::PropertyBool ProjectAxis;
 
     /** @name methods override feature */
     //@{

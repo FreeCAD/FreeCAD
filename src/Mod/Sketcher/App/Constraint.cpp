@@ -1,40 +1,35 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QDateTime>
 #include <boost/random.hpp>
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <ranges>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "nlohmann/json.hpp"
-
-#include <fmt/ranges.h>
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -192,11 +187,19 @@ void Constraint::Save(Writer& writer) const
         auto posIds = elements
             | std::views::transform([](const GeoElementId& e) { return e.posIdAsInt(); });
 
-        const std::string ids = fmt::format("{}", fmt::join(geoIds, " "));
-        const std::string positions = fmt::format("{}", fmt::join(posIds, " "));
+        auto writeOut = [&](const auto& name, const auto& ids) {
+            if (!ids.empty()) {
+                auto id = ids.begin();
+                writer.Stream() << name << "=\"" << *id;
+                while (ids.end() != ++id) {
+                    writer.Stream() << " " << *id;
+                }
+                writer.Stream() << "\" ";
+            }
+        };
 
-        writer.Stream() << "ElementIds=\"" << ids << "\" "
-                        << "ElementPositions=\"" << positions << "\" ";
+        writeOut("ElementIds", geoIds);
+        writeOut("ElementPositions", posIds);
     }
 
     writer.Stream() << "/>\n";
@@ -280,7 +283,7 @@ void Constraint::Restore(XMLReader& reader)
 
         if (ids.size() != positions.size()) {
             throw Base::ParserError(
-                fmt::format(
+                std::format(
                     "ElementIds and ElementPositions do not match in "
                     "size. Got {} ids and {} positions.",
                     ids.size(),
@@ -361,7 +364,7 @@ void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int to
 
 std::string Constraint::toString() const
 {
-    return fmt::format(
+    return std::format(
         "Type={}, IntAlignType={}, Elements={}",
         this->typeToString(),
         this->internalAlignmentTypeToString(),
@@ -376,9 +379,9 @@ std::string Constraint::elementsToString() const
         | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
 
-    return fmt::format(
+    return std::format(
         "[{}]",
-        fmt::join(
+        Base::Tools::joinFormatted(
             elements | std::views::transform([](const auto& element) { return element.toString(); }),
             ", "
         )
@@ -422,15 +425,13 @@ GeoElementId Constraint::getElement(size_t index) const
     }
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                return GeoElementId(First, FirstPos);
-            case 1:
-                return GeoElementId(Second, SecondPos);
-            case 2:
-                return GeoElementId(Third, ThirdPos);
-        }
+    switch (index) {
+        case 0:
+            return GeoElementId(First, FirstPos);
+        case 1:
+            return GeoElementId(Second, SecondPos);
+        case 2:
+            return GeoElementId(Third, ThirdPos);
     }
 #endif
     return elements[index];
@@ -438,28 +439,25 @@ GeoElementId Constraint::getElement(size_t index) const
 
 void Constraint::setElement(size_t index, GeoElementId element)
 {
-    if (ensureElementExists(index)) {
-        elements[index] = element;
+    ensureElementExists(index);
+    elements[index] = element;
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-        if (index < 3) {
-            switch (index) {
-                case 0:
-                    First = element.GeoId;
-                    FirstPos = element.Pos;
-                    break;
-                case 1:
-                    Second = element.GeoId;
-                    SecondPos = element.Pos;
-                    break;
-                case 2:
-                    Third = element.GeoId;
-                    ThirdPos = element.Pos;
-                    break;
-            }
-        }
-#endif
+    switch (index) {
+        case 0:
+            First = element.GeoId;
+            FirstPos = element.Pos;
+            break;
+        case 1:
+            Second = element.GeoId;
+            SecondPos = element.Pos;
+            break;
+        case 2:
+            Third = element.GeoId;
+            ThirdPos = element.Pos;
+            break;
     }
+#endif
 }
 
 size_t Constraint::getElementsSize() const
@@ -481,15 +479,13 @@ void Constraint::addElement(GeoElementId element)
 int Constraint::getGeoId(size_t index) const
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                return First;
-            case 1:
-                return Second;
-            case 2:
-                return Third;
-        }
+    switch (index) {
+        case 0:
+            return First;
+        case 1:
+            return Second;
+        case 2:
+            return Third;
     }
 #endif
     return hasElement(index) ? elements[index].GeoId : GeoEnum::GeoUndef;
@@ -498,15 +494,13 @@ int Constraint::getGeoId(size_t index) const
 PointPos Constraint::getPosId(size_t index) const
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                return FirstPos;
-            case 1:
-                return SecondPos;
-            case 2:
-                return ThirdPos;
-        }
+    switch (index) {
+        case 0:
+            return FirstPos;
+        case 1:
+            return SecondPos;
+        case 2:
+            return ThirdPos;
     }
 #endif
     return hasElement(index) ? elements[index].Pos : PointPos::none;
@@ -515,15 +509,13 @@ PointPos Constraint::getPosId(size_t index) const
 int Constraint::getPosIdAsInt(size_t index) const
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                return (int)FirstPos;
-            case 1:
-                return (int)SecondPos;
-            case 2:
-                return (int)ThirdPos;
-        }
+    switch (index) {
+        case 0:
+            return (int)FirstPos;
+        case 1:
+            return (int)SecondPos;
+        case 2:
+            return (int)ThirdPos;
     }
 #endif
     return hasElement(index) ? elements[index].posIdAsInt() : 0;
@@ -531,9 +523,8 @@ int Constraint::getPosIdAsInt(size_t index) const
 
 bool Constraint::hasElement(size_t index) const
 {
-    return index >= 0 && static_cast<decltype(elements)::size_type>(index) < elements.size();
+    return static_cast<decltype(elements)::size_type>(index) < elements.size();
 }
-
 
 size_t Constraint::getElementIndexForGeoId(int geoId) const
 {
@@ -557,78 +548,65 @@ size_t Constraint::getElementIndexForGeoId(int geoId) const
 void Constraint::setGeoId(size_t index, int geoId)
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                First = geoId;
-                break;
-            case 1:
-                Second = geoId;
-                break;
-            case 2:
-                Third = geoId;
-                break;
-        }
+    switch (index) {
+        case 0:
+            First = geoId;
+            break;
+        case 1:
+            Second = geoId;
+            break;
+        case 2:
+            Third = geoId;
+            break;
     }
 #endif
-    if (ensureElementExists(index)) {
-        elements[index].GeoId = geoId;
-    }
+    ensureElementExists(index);
+    elements[index].GeoId = geoId;
 }
 
 void Constraint::setPosId(size_t index, PointPos pos)
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                FirstPos = pos;
-                break;
-            case 1:
-                SecondPos = pos;
-                break;
-            case 2:
-                ThirdPos = pos;
-                break;
-        }
+    switch (index) {
+        case 0:
+            FirstPos = pos;
+            break;
+        case 1:
+            SecondPos = pos;
+            break;
+        case 2:
+            ThirdPos = pos;
+            break;
     }
 #endif
-    if (ensureElementExists(index)) {
-        elements[index].Pos = pos;
-    }
+    ensureElementExists(index);
+    elements[index].Pos = pos;
 }
 
 void Constraint::setPosId(size_t index, int pos)
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                FirstPos = static_cast<PointPos>(pos);
-                break;
-            case 1:
-                SecondPos = static_cast<PointPos>(pos);
-                break;
-            case 2:
-                ThirdPos = static_cast<PointPos>(pos);
-                break;
-        }
+    switch (index) {
+        case 0:
+            FirstPos = static_cast<PointPos>(pos);
+            break;
+        case 1:
+            SecondPos = static_cast<PointPos>(pos);
+            break;
+        case 2:
+            ThirdPos = static_cast<PointPos>(pos);
+            break;
     }
 #endif
-    if (ensureElementExists(index)) {
-        elements[index].Pos = static_cast<PointPos>(pos);
-    }
+    ensureElementExists(index);
+    elements[index].Pos = static_cast<PointPos>(pos);
 }
 
-bool Constraint::ensureElementExists(size_t index)
+void Constraint::ensureElementExists(size_t index)
 {
-    if (index < 0) {
-        return false;  // Indicate failure for an invalid index
-    }
     if (static_cast<decltype(elements)::size_type>(index) >= elements.size()) {
         elements.resize(index + 1);
     }
-    return true;
 }
 
 void Constraint::swapElements(size_t index1, size_t index2)
@@ -636,9 +614,9 @@ void Constraint::swapElements(size_t index1, size_t index2)
     if (index1 == index2) {
         return;
     }
-    if (ensureElementExists(index1) && ensureElementExists(index2)) {
-        std::swap(elements[index1], elements[index2]);
-    }
+    ensureElementExists(index1);
+    ensureElementExists(index2);
+    std::swap(elements[index1], elements[index2]);
 }
 
 bool Constraint::isElementsEmpty() const

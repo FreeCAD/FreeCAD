@@ -23,6 +23,7 @@
 import FreeCAD as App
 import Arch
 import ArchSectionPlane
+import ArchVRM
 import Draft
 from bimtests import TestArchBaseGui
 
@@ -76,3 +77,36 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
         App.ActiveDocument.recompute()
         svg_new = ArchSectionPlane.getSVG(section)
         self.assertNotEqual(svg, svg_new)
+
+    def test_solid_view_window_part_colors(self):
+        """Tests if a Solid section view draws each window part in its own color"""
+
+        points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
+        line = Draft.make_wire(points)
+        wall = Arch.makeWall(line, height=2000)
+        wpl = App.Placement(App.Vector(500, 0, 1500), App.Vector(1, 0, 0), -90)
+        win = Arch.makeWindowPreset(
+            "Open 1-pane",
+            width=1000.0,
+            height=1000.0,
+            h1=50.0,
+            h2=50.0,
+            h3=50.0,
+            w1=100.0,
+            w2=50.0,
+            o1=0.0,
+            o2=50.0,
+            placement=wpl,
+        )
+        win.Hosts = [wall]
+        section = Arch.makeSectionPlane([wall, win])
+        section.Placement = App.Placement(
+            App.Vector(1000, -50, 1000), App.Rotation(App.Vector(1, 0, 0), -90)
+        )
+        App.ActiveDocument.recompute()
+
+        frame = win.ViewObject.DiffuseColor[0]
+        glass = win.ViewObject.DiffuseColor[-1]
+        self.assertNotEqual(frame[:3], glass[:3])
+        svg = ArchSectionPlane.getSVG(section, renderMode="Solid")
+        self.assertIn("fill:" + ArchVRM.Renderer().getFill(glass), svg)

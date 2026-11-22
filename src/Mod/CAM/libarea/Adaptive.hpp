@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "clipper.hpp"
 #include "clipper2/clipper.h"
 #include <vector>
 #include <list>
@@ -46,7 +45,6 @@
 
 namespace AdaptivePath
 {
-using namespace ClipperLib;
 
 enum MotionType
 {
@@ -95,16 +93,16 @@ struct AdaptiveOutput
 
 struct DebugSVGInfo
 {
-    Paths step3Paths;
-    Paths step4Paths;
-    Paths step5a_stockRev;
-    Paths step5b_outsideOfStock;
-    Paths step5c_inputPathsUnion;
-    Paths step5d_clearedArea;
-    Paths step5e_inputPaths;
-    std::vector<Paths> allToolBoundPaths;
-    std::vector<Paths> allFinishingPaths;
-    std::vector<Paths> allFinalClearedPaths;
+    Clipper2Lib::Paths64 step3Paths;
+    Clipper2Lib::Paths64 step4Paths;
+    Clipper2Lib::Paths64 step5a_stockRev;
+    Clipper2Lib::Paths64 step5b_outsideOfStock;
+    Clipper2Lib::Paths64 step5c_inputPathsUnion;
+    Clipper2Lib::Paths64 step5d_clearedArea;
+    Clipper2Lib::Paths64 step5e_inputPaths;
+    std::vector<Clipper2Lib::Paths64> allToolBoundPaths;
+    std::vector<Clipper2Lib::Paths64> allFinishingPaths;
+    std::vector<Clipper2Lib::Paths64> allFinalClearedPaths;
 };
 
 // used to isolate state -> enable potential adding of multi-threaded processing of separate regions
@@ -140,8 +138,7 @@ public:
 
 private:
     std::list<AdaptiveOutput> results;
-    Paths inputPaths;
-    Paths stockInputPaths;
+    Clipper2Lib::Paths64 stockInputPaths;
     long scaleFactor = 100;
     double stepOverScaled = 1;
     long toolRadiusScaled = 10;
@@ -155,76 +152,83 @@ private:
     clock_t lastProgressTime = 0;
 
     std::function<bool(TPaths)>* progressCallback = NULL;
-    Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
     void ProcessPolyNode(
-        Paths boundPaths,
-        Paths toolBoundPaths,
-        Paths finishingPaths,
-        const Paths& initialClearedPaths,
-        DebugSVGInfo* svgInfo = nullptr
+        Clipper2Lib::Paths64 boundPaths,
+        Clipper2Lib::Paths64 toolBoundPaths,
+        Clipper2Lib::Paths64 finishingPaths,
+        const Clipper2Lib::Paths64& initialClearedPaths,
+        DebugSVGInfo& svgInfo
     );
     bool FindEntryPoint(
         TPaths& progressPaths,
-        const Paths& toolBoundPaths,
-        const Paths& bound,
+        const Clipper2Lib::Paths64& toolBoundPaths,
+        const Clipper2Lib::Paths64& boundPaths,
         ClearedArea& cleared /*output*/,
-        IntPoint& entryPoint /*output*/,
-        IntPoint& toolPos,
-        DoublePoint& toolDir,
+        Clipper2Lib::Point64& entryPoint /*output*/,
+        Clipper2Lib::Point64& toolPos,
+        Clipper2Lib::PointD& toolDir,
         long& helixRadiusScaled,
         AdaptiveOutput& adaptiveOutput
     );
-    std::pair<double, double> CalcCutArea(IntPoint toolPos, IntPoint newToolPos, ClearedArea& clearedArea);
+    std::pair<double, double> CalcCutArea(
+        Clipper2Lib::Point64 c1,
+        Clipper2Lib::Point64 c2,
+        ClearedArea& clearedArea
+    );
     std::optional<TPaths> FindLinkPath(
-        const std::optional<IntPoint>& prevPoint,
-        const IntPoint& pathStart,
-        const DoublePoint& pathDir,
+        const std::optional<Clipper2Lib::Point64>& prevPoint,
+        const Clipper2Lib::Point64& pathStart,
+        const Clipper2Lib::PointD& pathDir,
         ClearedArea& cleared,
-        const Paths& toolBoundPaths,
+        const Clipper2Lib::Paths64& toolBoundPaths,
         AdaptiveOutput& adaptiveOutput
     );
-    std::optional<std::pair<IntPoint, DoublePoint>> AppendToolPath(
+    std::optional<std::pair<Clipper2Lib::Point64, Clipper2Lib::PointD>> AppendToolPath(
         AdaptiveOutput& output,
-        const Path& passToolPath,
+        const Clipper2Lib::Path64& passToolPath,
         TPaths& linkPath,
         ClearedArea& cleared,
-        const Paths& toolBoundPaths
+        const Clipper2Lib::Paths64& toolBoundPaths
     );
-    bool IsClearPath(const Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
-    bool IsAllowedToCutTrough(
-        const IntPoint& p1,
-        const IntPoint& p2,
+    bool IsClearPath(
+        const Clipper2Lib::Path64& path,
         ClearedArea& clearedArea,
-        const Paths& toolBoundPaths,
+        double safetyDistanceScaled = 0
+    );
+    bool IsAllowedToCutTrough(
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
+        ClearedArea& clearedArea,
+        const Clipper2Lib::Paths64& toolBoundPaths,
         double areaFactor = 1.5,
         bool skipBoundsCheck = false
     );
     bool MakeLeadPath(
         bool leadIn,
-        const IntPoint& startPoint,
-        const DoublePoint& startDir,
-        IntPoint beaconPoint,
+        const Clipper2Lib::Point64& startPoint,
+        const Clipper2Lib::PointD& startDir,
+        Clipper2Lib::Point64 beaconPoint,
         ClearedArea& clearedArea,
-        const Paths& toolBoundPaths,
-        Path& output,
+        const Clipper2Lib::Paths64& toolBoundPaths,
+        Clipper2Lib::Path64& output,
         AdaptiveOutput& adaptiveOutput
     );
 
     bool ResolveLinkPath(
-        const IntPoint& startPoint,
-        const IntPoint& endPoint,
+        const Clipper2Lib::Point64& startPoint,
+        const Clipper2Lib::Point64& endPoint,
         ClearedArea& clearedArea,
-        Path& output
+        Clipper2Lib::Path64& output
     );
 
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
     void AddPathsToProgress(
         TPaths& progressPaths,
-        const Paths paths,
+        const Clipper2Lib::Paths64& paths,
         MotionType mt = MotionType::mtCutting
     );
-    void ApplyStockToLeave(Paths& inputPaths);
+    void ApplyStockToLeave(Clipper2Lib::Paths64& inputPaths);
 
 private:
     // Derivation for MIN_STEP_CLIPPPER (MSC for short in this derivation):

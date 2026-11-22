@@ -1,11 +1,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.TopoShapePy import TopoShape
+from Part.HLRBRep_Algo import HLRBRep_Algo
 from Base.PyObjectBase import PyObjectBase
-from typing import Optional
+from typing import Optional, overload
 
 @export(
     PythonName="Part.HLRToShapePy",
@@ -45,104 +44,94 @@ class HLRToShape(PyObjectBase):
     class.
     """
 
-    def vCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    @overload
+    def __init__(self, algo: HLRBRep_Algo, /) -> None: ...
+    def vCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        vCompound(Shape=None) -> TopoShape
+        vCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for visible sharp edges for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for visible sharp edges for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
-    def Rg1LineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def Rg1LineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        Rg1LineVCompound(Shape=None) -> TopoShape
+        Rg1LineVCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for visible smooth edges for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for visible smooth edges for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
-    def RgNLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def RgNLineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        RgNLineVCompound(Shape=None) -> TopoShape
+        RgNLineVCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for visible sewn edges for either shape Shape or for
-        all added shapes (Shape=None).
+        Sets the extraction filter for visible sewn edges for either the given shape or for
+        all added shapes (shape=None).
         """
-        ...
 
-    def outLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def outLineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        outLineVCompound(Shape=None) -> TopoShape
+        outLineVCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for visible outline edges for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for visible outline edges for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
-    def outLineVCompound3d(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def outLineVCompound3d(self) -> TopoShape:
         """
-        outLineVCompound(Shape=None) -> TopoShape
+        outLineVCompound3d() -> TopoShape
 
-        Sets the extraction filter for visible outline edges in 3D for either shape
-        Shape or for all added shapes (Shape=None).
+        Sets the extraction filter for visible outline edges in 3D for all added shapes.
         """
-        ...
 
-    def isoLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def isoLineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        isoLineVCompound(Shape=None) -> TopoShape
+        isoLineVCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for visible isoparameters for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for visible isoparameters for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
-    def hCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def hCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        hCompound(Shape=None) -> TopoShape
+        hCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for hidden sharp edges for either shape Shape or for
-        all added shapes (Shape=None).
+        Sets the extraction filter for hidden sharp edges for either the given shape or for
+        all added shapes (shape=None).
         """
-        ...
 
-    def Rg1LineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def Rg1LineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        Rg1LineHCompound(Shape=None) -> TopoShape
+        Rg1LineHCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for hidden smooth edges for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for hidden smooth edges for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
-    def RgNLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def RgNLineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        RgNLineHCompound(Shape=None) -> TopoShape
+        RgNLineHCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for hidden sewn edges for either shape Shape or for
-        all added shapes (Shape=None).
+        Sets the extraction filter for hidden sewn edges for either the given shape or for
+        all added shapes (shape=None).
         """
-        ...
 
-    def outLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def outLineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        outLineHCompound(Shape=None) -> TopoShape
+        outLineHCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for hidden outline edges for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for hidden outline edges for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
-    def isoLineHCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
+    def isoLineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
-        isoLineHCompound(Shape=None) -> TopoShape
+        isoLineHCompound(shape=None) -> TopoShape
 
-        Sets the extraction filter for hidden isoparameters for either shape Shape or
-        for all added shapes (Shape=None).
+        Sets the extraction filter for hidden isoparameters for either the given shape or
+        for all added shapes (shape=None).
         """
-        ...
 
     def compoundOfEdges(
         self, Type: int, Visible: bool, In3D: bool, Shape: Optional[TopoShape] = None
@@ -154,4 +143,3 @@ class HLRToShape(PyObjectBase):
         into account the kind of space (2d or 3d).  If Shape=None, return it for all
         added shapes, otherwise return it for shape Shape.
         """
-        ...

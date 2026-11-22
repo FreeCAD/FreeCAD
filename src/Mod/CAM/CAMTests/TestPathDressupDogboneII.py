@@ -100,9 +100,8 @@ def CreateDressup(path):
 
 
 def MNVR(gcode, begin=None):
-    # 'turns out the replace() isn't really necessary
-    # leave it here anyway for clarity
-    return PathLanguage.Maneuver.FromGCode(gcode.replace("/", "\n"), begin)
+    pp = Path.Path([Path.Command(x) for x in gcode.split("/")])
+    return PathLanguage.Maneuver.FromPath(pp, begin)
 
 
 def INSTR(gcode, begin=None):
@@ -646,3 +645,23 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
             obj2.Path,
             "G0Z10/G1Z0/G1X10/G1X11/G1X10/G1Y10/G1X11/G1X10/G1X0/G1X-1/G1X0/G1Y0/G1X-1/G1X0/G0Z10",
         )
+
+    def test95(self):
+        """Verify linking moves end a profile like a plunge, no bones at link corners"""
+
+        def bones(link):
+            loop1 = [Path.Command(c) for c in "G0Z10/G1Z0/G1X10/G1Y10/G1X0/G1Y0".split("/")]
+            loop2 = [Path.Command(c) for c in "G1X11/G1Y11/G1X-1/G1Y-1/G0Z10".split("/")]
+            obj = CreateDressup(loop1 + link + loop2)
+            obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+            obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+            obj.Side = Path.Dressup.DogboneII.Side.Right
+            obj.Proxy.execute(obj)
+            return len(obj.Proxy.bones)
+
+        # the second loop entered by retract and plunge
+        plunge = [Path.Command(c) for c in "G0Z10/G0X-1Y-1/G1Z0".split("/")]
+        # the second loop entered by a linking move at cut depth
+        link = Path.Command("G1X-1Y-1")
+        link.Annotations = {"type": "linking"}
+        self.assertEqual(bones([link]), bones(plunge))

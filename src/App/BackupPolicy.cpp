@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2020 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>      *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/regex.hpp>
@@ -191,14 +189,14 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                             try {
                                 if (!it.deleteFile()) {
                                     backupManagementError = true;
-                                    Base::Console().warning("Cannot remove backup file : %s\n",
-                                                            it.fileName().c_str());
+                                    Base::Console().warning("Cannot remove backup file : {}\n",
+                                                            it.fileName());
                                 }
                             }
                             catch (...) {
                                 backupManagementError = true;
-                                Base::Console().warning("Cannot remove backup file : %s\n",
-                                                        it.fileName().c_str());
+                                Base::Console().warning("Cannot remove backup file : {}\n",
+                                                        it.fileName());
                             }
                         }
                     }
@@ -228,7 +226,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         // An error here is typically that we over-ran the maximum buffer length (
                         // which should be a *very* unusual condition).
                         Base::Console().error("Failed to create valid backup file name from format string:\n");
-                        Base::Console().error(saveBackupDateFormat.c_str());
+                        Base::Console().error("{}", saveBackupDateFormat);
                         const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }
@@ -310,8 +308,8 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                 fi.deleteFile();
             }
             catch (...) {
-                Base::Console().warning("Cannot remove backup file: %s\n",
-                                        fi.fileName().c_str());
+                Base::Console().warning("Cannot remove backup file: {}\n",
+                                        fi.fileName());
                 backupManagementError = true;
             }
         }

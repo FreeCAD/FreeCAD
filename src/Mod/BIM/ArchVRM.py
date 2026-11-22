@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2012 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 "The FreeCAD Arch Vector Rendering Module"
 
@@ -126,6 +123,17 @@ class Renderer:
                 self.objects.append(o)
                 color = o.ViewObject.ShapeColor
                 if o.Shape.Faces:
+                    colors = getattr(o.ViewObject, "DiffuseColor", [])
+                    solids = o.Shape.Solids
+                    if len(colors) == len(o.Shape.Faces) == sum(len(s.Faces) for s in solids):
+                        # cut() rebuilds the faces from self.shapes, so keep one color per solid
+                        i = 0
+                        for sol in solids:
+                            self.shapes.append([sol, colors[i]])
+                            i += len(sol.Faces)
+                        for f, c in zip(o.Shape.Faces, colors):
+                            self.faces.append([f, c])
+                        continue
                     self.shapes.append([o.Shape, color])
                     for f in o.Shape.Faces:
                         self.faces.append([f, color])
@@ -300,7 +308,8 @@ class Renderer:
                             faces.append([f] + sh[1:])
                             # print("iscoplanar:",f.Vertexes[0].Point,f.normalAt(0,0),cutface.Vertexes[0].Point,cutface.normalAt(0,0))
                             if DraftGeomUtils.isCoplanar([f, cutface]):
-                                print("COPLANAR")
+                                if DEBUG:
+                                    print("COPLANAR")
                                 sections.append([f, fill])
                         if hidden:
                             c = sol.cut(invcutvolume)
@@ -496,7 +505,8 @@ class Renderer:
                 objs.append(o)
         for g in [walls, structs]:
             if g:
-                print("group:", g)
+                if DEBUG:
+                    print("group:", g)
                 col = g[0].ViewObject.DiffuseColor[0]
                 s = g[0].Shape
                 for o in g[1:]:
@@ -592,7 +602,8 @@ class Renderer:
                             str(self.faces.index(f2)),
                         )
                     r = self.compare(f1, f2)
-                    print("comparison result:", r)
+                    if DEBUG:
+                        print("comparison result:", r)
                     if r == 1:
                         faces.remove(f2)
                         sfaces.append(f2)

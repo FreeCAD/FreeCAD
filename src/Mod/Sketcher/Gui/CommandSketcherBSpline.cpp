@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2017 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2017 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <Inventor/SbString.h>
 #include <QApplication>
@@ -139,42 +136,69 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
-
-    std::vector<int> GeoIdList;
+    // Internal indices can change when conversion removes a conic's auxiliary geometry.
+    std::vector<std::pair<int, long>> selectedGeometry;
 
     for (const auto& subName : SubNames) {
-        // only handle edges
+        int GeoId;
         if (subName.size() > 4 && subName.substr(0, 4) == "Edge") {
-            int GeoId = std::atoi(subName.substr(4, 4000).c_str()) - 1;
-            GeoIdList.push_back(GeoId);
+            GeoId = std::atoi(subName.substr(4, 4000).c_str()) - 1;
         }
         else if (subName.size() > 12 && subName.substr(0, 12) == "ExternalEdge") {
-            int GeoId = -(std::atoi(subName.substr(12, 4000).c_str()) + 2);
-            GeoIdList.push_back(GeoId);
+            GeoId = -(std::atoi(subName.substr(12, 4000).c_str()) + 2);
         }
+        else {
+            continue;
+        }
+        if (!Obj->getGeometry(GeoId) || Obj->isExemptFromNURBSConversion(GeoId)) {
+            continue;
+        }
+        long id = 0;
+        if (GeoId >= 0) {
+            Obj->getGeometryId(GeoId, id);
+        }
+        selectedGeometry.emplace_back(GeoId, id);
     }
 
-    // for creating the poles and knots
-    for (auto GeoId : GeoIdList) {
-        Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-    }
-    for (auto GeoId : GeoIdList) {
-        Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
-    }
-
-    if (GeoIdList.empty()) {
-        abortCommand();
-
+    if (selectedGeometry.empty()) {
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("None of the selected elements is an edge.")
+            QObject::tr(
+                "None of the selected elements can be converted. Select edges that are neither "
+                "B-splines nor internal geometry."
+            )
         );
+        return;
     }
-    else {
-        commitCommand();
+
+    auto findGeometry = [Obj](long id) -> int {
+        for (int index = 0; index <= Obj->getHighestCurveIndex(); ++index) {
+            long currentId = 0;
+            Obj->getGeometryId(index, currentId);
+            if (currentId == id) {
+                return index;
+            }
+        }
+        return GeoEnum::GeoUndef;
+    };
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
+    for (const auto& [originalGeoId, id] : selectedGeometry) {
+        int GeoId = originalGeoId < 0 ? originalGeoId : findGeometry(id);
+        if (GeoId == GeoEnum::GeoUndef) {
+            continue;  // An auxiliary element removed by an earlier conversion.
+        }
+        int previousSize = Obj->Geometry.getSize();
+        Gui::cmdAppObjectArgs(Obj, "convertToNURBS(%d)", GeoId);
+        GeoId = originalGeoId < 0 ? previousSize : findGeometry(id);
+        const auto* converted = Obj->getGeometry(GeoId);
+        if (converted && converted->is<Part::GeomBSplineCurve>()) {
+            Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
+        }
     }
+    commitCommand();
+    getSelection().clearSelection();
     tryAutoRecomputeIfNotSolve(Obj);
 }
 

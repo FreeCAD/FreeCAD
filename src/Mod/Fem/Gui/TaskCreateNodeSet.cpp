@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -212,7 +214,7 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         tempSet.clear();
 
-        Base::Console().message("Picked Element:%i Face:%i\n", elem, face);
+        Base::Console().message("Picked Element:{} Face:{}\n", elem, face);
 
 
         if (!ui->checkBox_Add->isChecked()) {

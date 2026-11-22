@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-# (c) 2021 Werner Mayer LGPL
+# SPDX-FileCopyrightText: 2021 Werner Mayer
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from PySide import QtUiTools
 import FreeCADGui as Gui

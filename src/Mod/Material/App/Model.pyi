@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
+from ModelProperty import ModelProperty
 from typing import Final, List, Dict
 
 
@@ -57,14 +57,12 @@ class Model(BaseClass):
     Properties: Final[Dict[str, str]] = {}
     """Dictionary of model properties."""
 
-    def addInheritance(self) -> None:
+    def addInheritance(self, uuid: str, /) -> None:
         """
         Add an inherited model.
         """
-        ...
 
-    def addProperty(self) -> None:
+    def addProperty(self, property: ModelProperty, /) -> None:
         """
         Add a model property.
         """
-        ...

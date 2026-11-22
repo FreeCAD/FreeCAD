@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(JTREADER_TKJT_INCLUDE_DIRS CACHE PATH  "Include directory of TKJT headers")
 set(JTREADER_TKJT_LIBRARIES CACHE FILEPATH  "File path to TKJT library")
@@ -69,7 +70,7 @@ fc_target_copy_resource_flat(JtReader
     ${CMAKE_BINARY_DIR}/Mod/JtReader
     ${JtReader_Scripts})
 
-SET_BIN_DIR(JtReader JtReader /Mod/JtReader)
+SET_BIN_DIR(JtReader)
 SET_PYTHON_PREFIX_SUFFIX(JtReader)
 
 INSTALL(TARGETS JtReader DESTINATION ${CMAKE_INSTALL_LIBDIR})

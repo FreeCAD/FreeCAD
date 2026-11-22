@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export, no_args
 from Base.PyObjectBase import PyObjectBase
@@ -36,7 +35,6 @@ class MeasureManager(PyObjectBase):
         measureType : Measure.MeasureBasePython
             The actual measure type.
         """
-        ...
 
     @staticmethod
     @no_args
@@ -44,4 +42,3 @@ class MeasureManager(PyObjectBase):
         """
         Returns a list of all registered measure types.
         """
-        ...

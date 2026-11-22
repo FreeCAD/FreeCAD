@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -37,6 +39,7 @@
 #include "DlgPrefsTechDrawHLRImp.h"
 #include "DlgPrefsTechDrawScaleImp.h"
 #include "MDIViewPage.h"
+#include "TemplateTranslationService.h"
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderBalloon.h"
 #include "ViewProviderCosmeticExtension.h"
@@ -92,7 +95,7 @@ void loadTechDrawResource()
         int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
             Base::Console().warning(
-                "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
+                "TechDraw failed to load font file: {} from: {}\n", rc, qPrintable(fontFile));
         }
     }
 }
@@ -176,6 +179,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
 
     // add resources and reloads the translators
     loadTechDrawResource();
+    TechDrawGui::registerTemplateTranslationService();
 
     PyMOD_Return(mod);
 }

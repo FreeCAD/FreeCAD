@@ -168,7 +168,7 @@ short Revolved::mustExecute() const
     if (Placement.isTouched() || SideType.isTouched() || Type.isTouched() || Type2.isTouched()
         || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched() || UpToFace.isTouched()
         || UpToFace2.isTouched() || Angle.isTouched() || Angle2.isTouched() || StartType.isTouched()
-        || StartOffset.isTouched() || StartReference.isTouched()) {
+        || StartOffset.isTouched() || StartReference.isTouched() || ProjectAxis.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -185,8 +185,8 @@ void Revolved::onChanged(const App::Property* prop)
             App::DocumentObject* obj = Profile.getValue();
             auto baseName = obj ? obj->getNameInDocument() : "";
             Base::Console().warning(
-                "The 'Midplane' property being set for the revolution of %s is deprecated and has "
-                "been replaced by the 'SideType' property in Revolved; assuming SideType='%s'."
+                "The 'Midplane' property being set for the revolution of {} is deprecated and has "
+                "been replaced by the 'SideType' property in Revolved; assuming SideType='{}'."
                 " Please update your script, this property will be removed in a future version.\n",
                 baseName,
                 impliedSideType
@@ -274,7 +274,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
                 "The two revolution angles cancel each other resulting in an empty operation."
             )
         );
-        Base::Console().warning("%s\n", warning.c_str());
+        Base::Console().warning("{}\n", warning);
     }
 
     TopoShape sketchshape = getTopoShapeVerifiedFace();
@@ -835,7 +835,36 @@ void Revolved::updateAxis()
     const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
     Base::Vector3d base;
     Base::Vector3d dir;
-    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
+    getAxis(
+        pcReferenceAxis,
+        subReferenceAxis,
+        base,
+        dir,
+        ProjectAxis.getValue() ? ForbiddenAxis::NoCheck : ForbiddenAxis::NotParallelWithNormal
+    );
+
+    if (ProjectAxis.getValue() && !dir.IsNull()) {
+        gp_Pln profilePlane;
+        if (!getTopoShapeVerifiedFace().findPlane(profilePlane)) {
+            throw Base::ValueError(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Cannot project the axis because the profile is not planar"
+            ));
+        }
+
+        const auto normal = Base::convertTo<Base::Vector3d>(profilePlane.Axis().Direction());
+        const auto origin = Base::convertTo<Base::Vector3d>(profilePlane.Location());
+        dir.Normalize();
+        dir -= normal * dir.Dot(normal);
+        if (dir.Length() <= Precision::Angular()) {
+            throw Base::ValueError(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Cannot project an axis perpendicular to the profile plane"
+            ));
+        }
+        dir.Normalize();
+        base -= normal * (base - origin).Dot(normal);
+    }
 
     Base.setValue(base);
     Axis.setValue(dir);

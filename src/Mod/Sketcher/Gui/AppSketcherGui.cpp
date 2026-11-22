@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Base/Console.h>
@@ -31,6 +28,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/PythonWrapper.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/WidgetFactory.h>
 
@@ -71,6 +69,12 @@ public:
         : Py::ExtensionModule<Module>("SketcherGui")
     {
         add_varargs_method(
+            "findModelTreeWidget",
+            &Module::findModelTreeWidgetPy,
+            "Returns the Model TreeWidget if it exists"
+        );
+
+        add_varargs_method(
             "getActiveSketchPreselection",
             &Module::getActiveSketchPreselection,
             "getActiveSketchPreselection(tuple(int,int)) -> dictionary or None\n"
@@ -86,6 +90,18 @@ public:
     {}
 
 private:
+    Py::Object findModelTreeWidgetPy(const Py::Tuple& /*args*/)
+    {
+        auto tree = SketcherGui::findModelTreeWidget();
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadCoreModule() && tree) {
+            return wrap.fromQWidget(tree);
+        }
+
+        throw Py::RuntimeError("finding the Model TreeWidget failed");
+    }
+
     Py::Object getActiveSketchPreselection(const Py::Tuple& args)
     {
         PyObject* object;

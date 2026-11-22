@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2023 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """This NativeIFC module deals with properties and property sets"""
 
@@ -153,20 +150,20 @@ def show_psets(obj):
                 value = value.split("::")
             else:
                 ftype = "App::PropertyString"
-            # print("DEBUG: setting",pname, ptype, value)
-            if ftype:
-                if pname in obj.PropertiesList and obj.getGroupOfProperty(pname) == gname:
-                    if obj.getTypeOfProperty(pname) == ftype:
-                        pass
-                    if (
-                        ftype == "App::PropertyString"
-                        and obj.getTypeOfProperty(pname) == "App::PropertyStringList"
-                    ):
-                        value = [value]
-                else:
-                    print(pname, gname, obj.PropertiesList)
-                    obj.addProperty(ftype, pname, gname, ttip, locked=True)
+            # print("DEBUG: setting", pname, ptype, value)
+            if ftype is None:
+                continue
             if pname in obj.PropertiesList:
+                if (
+                    ftype == "App::PropertyString"
+                    and obj.getTypeIdOfProperty(pname) == "App::PropertyStringList"
+                ):
+                    ftype = "App::PropertyStringList"
+                    value = [value]
+            else:
+                # print(pname, gname, obj.PropertiesList)
+                obj.addProperty(ftype, pname, gname, ttip, locked=True)
+            if obj.getTypeIdOfProperty(pname) == ftype and obj.getGroupOfProperty(pname) == gname:
                 setattr(obj, pname, value)
 
 

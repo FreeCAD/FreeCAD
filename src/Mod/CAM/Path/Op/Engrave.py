@@ -269,8 +269,9 @@ class ObjectEngrave(EngraveBase.ObjectOp):
                 jobshapes.append(Part.makeCompound(wires))
 
         elif obj.BaseShapes:
-            # user added specific shapes
-            jobshapes.extend([base.Shape for base in obj.BaseShapes])
+            # user added specific shapes; read in the operation's frame, as
+            # Base geometry is
+            jobshapes.extend([self.shapeToFrame(base.Shape) for base in obj.BaseShapes])
         else:
             # process all objects in Job.Model.Group
             Path.Log.track(self.model)

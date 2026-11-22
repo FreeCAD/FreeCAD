@@ -151,20 +151,20 @@ void PrefWidget::onRestore()
 
 void PrefWidget::failedToSave(const QString& name) const
 {
-    QByteArray objname = name.toLatin1();
+    QByteArray objname = name.toUtf8();
     if (objname.isEmpty()) {
         objname = "Undefined";
     }
-    Console().warning("Cannot save %s (%s)\n", typeid(*this).name(), objname.constData());
+    Console().warning("Cannot save {} ({})\n", typeid(*this).name(), objname.toStdString());
 }
 
 void PrefWidget::failedToRestore(const QString& name) const
 {
-    QByteArray objname = name.toLatin1();
+    QByteArray objname = name.toUtf8();
     if (objname.isEmpty()) {
         objname = "Undefined";
     }
-    Console().warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
+    Console().warning("Cannot restore {} ({})\n", typeid(*this).name(), objname.toStdString());
 }
 
 // --------------------------------------------------------------------

@@ -69,6 +69,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     QMetaObject::connectSlotsByName(this);
 
     ui->ThreadType->addItem(tr("None"), QByteArray("None"));
@@ -512,6 +513,15 @@ void TaskHoleParameters::setCutDiagram()
         ui->labelHoleCutCountersinkAngle->setVisible(false);
     }
 
+    // Hiding the countersink angle moves Depth beside Head diameter.
+    // Keep the depth fields in the order of the visible rows.
+    const bool hasCountersinkAngle = isCountersink || isCounterdrill;
+    auto* firstDepth = hasCountersinkAngle ? ui->HoleCutDepth : ui->Depth;
+    auto* secondDepth = hasCountersinkAngle ? ui->Depth : ui->HoleCutDepth;
+    QWidget::setTabOrder(ui->HoleCutDiameter, ui->HoleCutCountersinkAngle);
+    QWidget::setTabOrder(ui->HoleCutCountersinkAngle, firstDepth);
+    QWidget::setTabOrder(firstDepth, secondDepth);
+
     if (isAngled) {
         baseFileName += includeAngle ? "_angled_included" : "_angled";
     }
@@ -893,7 +903,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     }
     bool ro = Prop.isReadOnly();
 
-    Base::Console().log("Parameter %s was updated\n", Prop.getName());
+    Base::Console().log("Parameter {} was updated\n", Prop.getName());
 
     auto updateCheckable = [&](QCheckBox* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
@@ -919,7 +929,10 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         widget->setDisabled(ro);
     };
 
-    if (&Prop == &hole->Threaded || &Prop == &hole->CosmeticThread) {
+    if (&Prop == &hole->Operation) {
+        updateComboBox(ui->comboOperation, hole->Operation.getValue());
+    }
+    else if (&Prop == &hole->Threaded || &Prop == &hole->CosmeticThread) {
         updateHoleTypeCombo();
     }
     else if (&Prop == &hole->ModelThread) {
@@ -1290,6 +1303,7 @@ int TaskHoleParameters::getBaseProfileType() const
 }
 void TaskHoleParameters::apply()
 {
+    TaskSketchBasedParameters::apply();
     auto hole = getObject<PartDesign::Hole>();
 
     ui->Diameter->apply();
@@ -1520,7 +1534,7 @@ void TaskHoleParameters::Observer::slotChangedObject(
 )
 {
     if (&Obj == hole) {
-        Base::Console().log("Parameter %s was updated with a new value\n", Prop.getName());
+        Base::Console().log("Parameter {} was updated with a new value\n", Prop.getName());
         if (Obj.getDocument()) {
             owner->changedObject(*Obj.getDocument(), Prop);
         }

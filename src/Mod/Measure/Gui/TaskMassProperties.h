@@ -95,6 +95,9 @@ private:
     bool deleteActivated = false;
 
     std::vector<MassPropertiesInput> objectsToMeasure;
+
+    // Forgets the custom coordinate system when it is deleted (undo, Python, temporary objects)
+    fastsignals::scoped_connection connectDeletedObject;
 };
 
 }  // namespace MassPropertiesGui

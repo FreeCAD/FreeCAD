@@ -40,15 +40,14 @@ import math
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-
-from draftgeoutils import edges
+from draftgeoutils import edges as geo_edges
+from draftobjects.dimension import AngularDimension, LinearDimension
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _wrn, _err
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
-
-from draftobjects.dimension import LinearDimension, AngularDimension
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_dimension import (
@@ -90,7 +89,7 @@ def _get_flip_text_ang(cen, sta, end, normal):
     import Part
 
     circle = Part.makeCircle(1, cen, normal, sta, end)
-    mid = edges.findMidpoint(circle)
+    mid = geo_edges.findMidpoint(circle)
     wp = WorkingPlane.get_working_plane(update=False)
     ang = DraftVecUtils.angle(wp.u, mid.sub(cen), normal)
     tol = 1e-4  # high tolerance
@@ -220,11 +219,13 @@ def make_dimension(p1, p2, p3=None, p4=None):
     return new_obj
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_dimension()",
+)
 def makeDimension(p1, p2, p3=None, p4=None):
     """Create a dimension. DEPRECATED. Use 'make_dimension'."""
-    _wrn(translate("draft", "This function is deprecated. Do not use this function directly."))
-    _wrn(translate("draft", "Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'."))
-
     return make_dimension(p1, p2, p3, p4)
 
 
@@ -672,13 +673,15 @@ def make_angular_dimension(
     return new_obj
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_angular_dimension()",
+)
 def makeAngularDimension(center, angles, p3, normal=None):
-    """Create an angle dimension. DEPRECATED. Use 'make_angular_dimension'."""
-    utils.use_instead("make_angular_dimension")
-
+    """DEPRECATED. Use 'make_angular_dimension'."""
     ang1, ang2 = angles
     angles = [math.degrees(ang2), math.degrees(ang1)]
-
     return make_angular_dimension(center=center, angles=angles, dim_line=p3, normal=normal)
 
 

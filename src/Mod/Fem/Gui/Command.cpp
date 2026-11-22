@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Peter McB                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
@@ -1584,12 +1586,7 @@ void CmdFemCompEmConstraints::languageChange()
                 ConstraintElectromagnetic->getMenuText()
             )
         );
-        cmd0->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintElectromagnetic",
-                ConstraintElectromagnetic->getToolTipText()
-            )
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, ConstraintElectromagnetic));
         cmd0->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintElectromagnetic",
@@ -1607,12 +1604,7 @@ void CmdFemCompEmConstraints::languageChange()
                 ConstraintCurrentDensity->getMenuText()
             )
         );
-        cmd1->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintCurrentDensity",
-                ConstraintCurrentDensity->getToolTipText()
-            )
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, ConstraintCurrentDensity));
         cmd1->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintCurrentDensity",
@@ -1627,12 +1619,7 @@ void CmdFemCompEmConstraints::languageChange()
         cmd2->setText(
             QApplication::translate("FEM_ConstraintMagnetization", ConstraintMagnetization->getMenuText())
         );
-        cmd2->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintMagnetization",
-                ConstraintMagnetization->getToolTipText()
-            )
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, ConstraintMagnetization));
         cmd2->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintMagnetization",
@@ -1652,12 +1639,7 @@ void CmdFemCompEmConstraints::languageChange()
                 ConstraintElectricChargeDensity->getMenuText()
             )
         );
-        cmd3->setToolTip(
-            QApplication::translate(
-                "FEM_ConstraintElectricChargeDensity",
-                ConstraintElectricChargeDensity->getToolTipText()
-            )
-        );
+        cmd3->setToolTip(Gui::Action::createToolTip(cmd3, ConstraintElectricChargeDensity));
         cmd3->setStatusTip(
             QApplication::translate(
                 "FEM_ConstraintElectricChargeDensity",
@@ -1768,9 +1750,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd0->setText(
             QApplication::translate("FEM_EquationElectrostatic", EquationElectrostatic->getMenuText())
         );
-        cmd0->setToolTip(
-            QApplication::translate("FEM_EquationElectrostatic", EquationElectrostatic->getToolTipText())
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, EquationElectrostatic));
         cmd0->setStatusTip(
             QApplication::translate("FEM_EquationElectrostatic", EquationElectrostatic->getStatusTip())
         );
@@ -1782,9 +1762,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd1->setText(
             QApplication::translate("FEM_EquationElectricforce", EquationElectricforce->getMenuText())
         );
-        cmd1->setToolTip(
-            QApplication::translate("FEM_EquationElectricforce", EquationElectricforce->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, EquationElectricforce));
         cmd1->setStatusTip(
             QApplication::translate("FEM_EquationElectricforce", EquationElectricforce->getStatusTip())
         );
@@ -1796,12 +1774,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd2->setText(
             QApplication::translate("FEM_EquationMagnetodynamic", EquationMagnetodynamic->getMenuText())
         );
-        cmd2->setToolTip(
-            QApplication::translate(
-                "FEM_EquationMagnetodynamic",
-                EquationMagnetodynamic->getToolTipText()
-            )
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, EquationMagnetodynamic));
         cmd2->setStatusTip(
             QApplication::translate("FEM_EquationMagnetodynamic", EquationMagnetodynamic->getStatusTip())
         );
@@ -1816,12 +1789,7 @@ void CmdFemCompEmEquations::languageChange()
                 EquationMagnetodynamic2D->getMenuText()
             )
         );
-        cmd3->setToolTip(
-            QApplication::translate(
-                "FEM_EquationMagnetodynamic2D",
-                EquationMagnetodynamic2D->getToolTipText()
-            )
-        );
+        cmd3->setToolTip(Gui::Action::createToolTip(cmd3, EquationMagnetodynamic2D));
         cmd3->setStatusTip(
             QApplication::translate(
                 "FEM_EquationMagnetodynamic2D",
@@ -1836,9 +1804,7 @@ void CmdFemCompEmEquations::languageChange()
         cmd4->setText(
             QApplication::translate("FEM_EquationStaticCurrent", EquationStaticCurrent->getMenuText())
         );
-        cmd4->setToolTip(
-            QApplication::translate("FEM_EquationStaticCurrent", EquationStaticCurrent->getToolTipText())
-        );
+        cmd4->setToolTip(Gui::Action::createToolTip(cmd4, EquationStaticCurrent));
         cmd4->setStatusTip(
             QApplication::translate("FEM_EquationStaticCurrent", EquationStaticCurrent->getStatusTip())
         );
@@ -1949,9 +1915,7 @@ void CmdFemCompMechEquations::languageChange()
         cmd1->setText(
             QApplication::translate("FEM_EquationElasticity", EquationElasticity->getMenuText())
         );
-        cmd1->setToolTip(
-            QApplication::translate("FEM_EquationElasticity", EquationElasticity->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, EquationElasticity));
         cmd1->setStatusTip(
             QApplication::translate("FEM_EquationElasticity", EquationElasticity->getStatusTip())
         );
@@ -1963,9 +1927,7 @@ void CmdFemCompMechEquations::languageChange()
         cmd0->setText(
             QApplication::translate("FEM_EquationDeformation", EquationDeformation->getMenuText())
         );
-        cmd0->setToolTip(
-            QApplication::translate("FEM_EquationDeformation", EquationDeformation->getToolTipText())
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, EquationDeformation));
         cmd0->setStatusTip(
             QApplication::translate("FEM_EquationDeformation", EquationDeformation->getStatusTip())
         );
@@ -2941,7 +2903,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         Fem::FemResultObject* result =
          static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
         //static_cast failed here
-        Base::Console().message("Debug: FemResultObject pointer = %p", result );
+        Base::Console().message("Debug: FemResultObject pointer = {}", result );
 
     */
 

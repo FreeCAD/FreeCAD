@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Om detta är markerat kommer funktioner att kräva sina barn i trädvyn</translation>
+      <translation>Om detta är markerat visas funktionernas underobjekt under respektive funktion i trädvyn</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
@@ -42,7 +42,7 @@
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Det maximala antalet ytor i en polygon, prisma eller kegelstump. Om fn är större än detta värde anses objektet vara cirkulärt. Sätt till 0 för ingen begränsning</translation>
+      <translation>Det maximala antalet ytor i en polygon, ett prisma eller en stympad kon. Om fn är större än detta värde betraktas objektet som cirkulärt. Ange 0 för ingen begränsning</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation>Temporär standardkatalog</translation>
+      <translation>Standardkatalog för temporära filer</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
       <source>Transfer directory</source>
-      <translation>Överföring av katalog</translation>
+      <translation>Överföringskatalog</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="243"/>
@@ -113,7 +113,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation>Använda ViewProviders i trädvyn</translation>
+      <translation>Använd ViewProviders i trädvyn</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
@@ -144,18 +144,18 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="425"/>
       <source>Mesh fallback</source>
-      <translation>Reservnät</translation>
+      <translation>Nät som reservlösning</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="445"/>
       <location filename="../ui/openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
-      <translation>Avböjning</translation>
+      <translation>Avvikelse</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="448"/>
       <source>deflection</source>
-      <translation>avböjning</translation>
+      <translation>avvikelse</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="455"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="../../InitGui.py" line="145"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation>Det ser ut som om du kanske använder en sandboxad version av FreeCAD.</translation>
+      <translation>Det verkar som om du använder en version av FreeCAD som körs i en sandlåda.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
-      <translation>Kan inte explodera %s</translation>
+      <translation>Kan inte dela upp %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -216,7 +216,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>as Mesh</source>
-      <translation>som Mesh</translation>
+      <translation>som nät</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="353"/>
@@ -280,7 +280,7 @@
       <location filename="../../OpenSCADCommands.py" line="483"/>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
-      <translation>Nätboolean</translation>
+      <translation>Boolesk nätoperation</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="488"/>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="650"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation>OpenSCAD-filen innehåller både 2D- och 3D-former. Det stöds inte i den här importören, alla former måste ha samma dimensionalitet.</translation>
+      <translation>OpenSCAD-filen innehåller både 2D- och 3D-former. Detta stöds inte vid importen; alla former måste ha samma dimensionalitet.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="661"/>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
-      <translation>Exploderande grupp</translation>
+      <translation>Dela upp grupp</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation>Exploderar en fusion eller förening och applicerar slumpmässiga färger</translation>
+      <translation>Delar upp en union eller ett sammansatt objekt och tilldelar delarna slumpmässiga färger</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
-      <translation>Färg Former</translation>
+      <translation>Färglägg former</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="121"/>
       <source>Colors shapes by validity and type</source>
-      <translation>Färgformer efter giltighet och typ</translation>
+      <translation>Färglägger former efter giltighet och typ</translation>
     </message>
   </context>
   <context>
@@ -393,7 +393,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="319"/>
       <source>Remove Objects and Children</source>
-      <translation>Ta bort objekt och barn</translation>
+      <translation>Ta bort objekt och underobjekt</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="322"/>
@@ -406,12 +406,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="567"/>
       <source>Hull</source>
-      <translation>Skrov</translation>
+      <translation>Konvext hölje</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="570"/>
       <source>Creates a hull</source>
-      <translation>Skapar ett skrov</translation>
+      <translation>Skapar ett konvext hölje</translation>
     </message>
   </context>
   <context>
@@ -424,7 +424,7 @@
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Frequently-used Part WB tools</source>
-      <translation>Ofta använda Part WB-verktyg</translation>
+      <translation>Ofta använda verktyg från arbetsbänken Part</translation>
     </message>
   </context>
   <context>
@@ -440,12 +440,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Mirror Mesh Feature</source>
-      <translation>Funktion för spegelnät</translation>
+      <translation>Funktion för nätspegling</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
       <source>Mirrors the mesh</source>
-      <translation>Speglar maskan</translation>
+      <translation>Speglar nätet</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="217"/>
       <source>Scale Mesh Feature</source>
-      <translation>Skala Mesh-funktion</translation>
+      <translation>Funktion för nätskalning</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation>Skalar maskorna</translation>
+      <translation>Skalar nätet</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation>Ändra storlek på nätfunktion</translation>
+      <translation>Funktion för att ändra nätets storlek</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="546"/>
       <source>Mesh Boolean</source>
-      <translation>Nät-boolean</translation>
+      <translation>Boolesk nätoperation</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>

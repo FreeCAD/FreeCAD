@@ -575,9 +575,6 @@ class svgHandler(xml.sax.ContentHandler):
                 shape = Part.makeFace(aWires, "Part::FaceMakerBullseye")
             else:
                 shape = aWires[0]
-        elif shape.Faces:
-            # applyTrans results in a B-spline face, we want a planar face:
-            shape = Part.makeFace(shape.Wires, "Part::FaceMakerBullseye")
 
         obj = self.doc.addObject("Part::Feature", name)
         obj.Shape = shape
@@ -1083,6 +1080,9 @@ class svgHandler(xml.sax.ContentHandler):
                 sh = transformCopyShape(sh, self.transform)
             for transform in self.grouptransform[::-1]:
                 sh = transformCopyShape(sh, transform)
+            if sh.Faces:
+                # transformCopyShape results in a B-spline face, we want a planar face:
+                return Part.makeFace(sh.Wires, "Part::FaceMakerBullseye")
             return sh
         elif utils.get_type(sh) in ["Dimension", "LinearDimension"]:
             pts = []

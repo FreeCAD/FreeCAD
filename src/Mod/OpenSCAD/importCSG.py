@@ -1,32 +1,33 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2012 Keith Sloan
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
+################################################################################
+#                                                                              #
+#   Thanks to shoogen on the FreeCAD forum and                                 #
+#   Peter Li for programming advice and some code.                             #
+#                                                                              #
+################################################################################
+
 # -*- coding: utf8 -*-
 
-#***************************************************************************
-#*   Copyright (c) 2012 Keith Sloan <keith@sloan-home.co.uk>               *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#*   Acknowledgements:                                                     *
-#*                                                                         *
-#*     Thanks to shoogen on the FreeCAD forum and Peter Li                 *
-#*     for programming advice and some code.                               *
-#*                                                                         *
-#*                                                                         *
-#***************************************************************************
 __title__ = "FreeCAD OpenSCAD Workbench - CSG importer"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
@@ -1108,13 +1109,13 @@ def p_cylinder_action(p):
                     mycyl.Dir = (0,0,h)
                     try :
                         import Draft
-                        mycyl.Base = Draft.makePolygon(n,r1,face=True)
+                        mycyl.Base = Draft.make_polygon(n, r1, face=True)
                     except Exception:
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
                         # or old level of FreeCAD
                         if printverbose:
-                            print("Draft makePolygon Failed, falling back on manual polygon")
+                            print("Draft make_polygon failed, falling back on manual polygon")
                         mycyl.Base = myPolygon(n,r1)
 
                     else :
@@ -1210,7 +1211,7 @@ def p_circle_action(p) :
         Draft._Circle(mycircle)
         mycircle.Radius = r
         mycircle.MakeFace = True
-        mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
+        mycircle = Draft.make_circle(r, face=True)
         FreeCAD.ActiveDocument.recompute()
     else :
         mycircle = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",'polygon')

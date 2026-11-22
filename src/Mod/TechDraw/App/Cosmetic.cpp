@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *   Copyright (c) 2022 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
@@ -100,6 +102,15 @@ CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
 CosmeticEdge::~CosmeticEdge()
 {
     //shared pointer will delete m_geometry when ref count goes to zero.
+
+    // DocumentObject cleans up the Python twin for object that inherit from it.
+    // CosmeticEdge does not inherit from DocumentObject, so we need to duplicate the
+    // clean up code here.
+    if (!PythonObject.is(Py::_None())) {
+        Base::PyGILStateLocker lock;
+        auto* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+        obj->setInvalid();
+    }
 }
 
 void CosmeticEdge::initialize()
@@ -189,8 +200,8 @@ std::string CosmeticEdge::toString() const
 
 void CosmeticEdge::dump(const char* title) const
 {
-    Base::Console().message("CE::dump - %s \n", title);
-    Base::Console().message("CE::dump - %s \n", toString().c_str());
+    Base::Console().message("CE::dump - {} \n", title);
+    Base::Console().message("CE::dump - {} \n", toString());
 }
 
 // Persistence implementers
@@ -220,7 +231,7 @@ void CosmeticEdge::Save(Base::Writer &writer) const
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->inverted()->Save(writer);
     } else {
-        Base::Console().warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
+        Base::Console().warning("CE::Save - unimplemented geomType: {}\n", static_cast<int>(m_geometry->getGeomType()));
     }
 
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
@@ -272,7 +283,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaEnd   = aoc->center;
         permaRadius = aoc->radius;
     } else {
-        Base::Console().warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+        Base::Console().warning("CE::Restore - unimplemented geomType: {}\n", static_cast<int>(gType));
     }
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
@@ -345,12 +356,17 @@ GeomFormat::GeomFormat(const int idx,
 
 GeomFormat::~GeomFormat()
 {
+    if (!PythonObject.is(Py::_None())) {
+        Base::PyGILStateLocker lock;
+        auto* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+        obj->setInvalid();
+    }
 }
 
 void GeomFormat::dump(const char* title) const
 {
-    Base::Console().message("GF::dump - %s \n", title);
-    Base::Console().message("GF::dump - %s \n", toString().c_str());
+    Base::Console().message("GF::dump - {} \n", title);
+    Base::Console().message("GF::dump - {} \n", toString());
 }
 
 std::string GeomFormat::toString() const

@@ -187,7 +187,8 @@ protected:
     static TopoShape moveProfileToStart(
         const TopoShape& profileShape,
         const gp_Dir& direction,
-        double offset
+        double offset,
+        bool copyProfile
     );
 
     /// Create a shape with shapes and faces from a given LinkSubList
@@ -238,7 +239,11 @@ protected:
     ) const;
 
     void onChanged(const App::Property* prop) override;
-    void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase) override;
+    void onBaseFeatureRerouted(
+        App::DocumentObject* oldBase,
+        App::DocumentObject* newBase,
+        BaseFeatureChange change
+    ) override;
 
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;

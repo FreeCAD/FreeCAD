@@ -137,7 +137,8 @@ void FeatureAddSub::updatePreviewShape()
     const auto notifyWarning = [](const QString& message) {
         Base::Console().translatedUserWarning(
             "Preview",
-            tr("Failure while computing removed volume preview: %1").arg(message).toUtf8()
+            "{}",
+            tr("Failure while computing removed volume preview: %1").arg(message).toStdString()
         );
     };
 
@@ -148,7 +149,6 @@ void FeatureAddSub::updatePreviewShape()
 
         if (!tool.isEmpty()) {
             try {
-                // Compute removed volume preview (for display)
                 TopoShape common;
                 common.makeElementBoolean(
                     Part::OpCodes::Common,
@@ -157,21 +157,17 @@ void FeatureAddSub::updatePreviewShape()
                     Precision::Confusion()
                 );
 
-                // does CUT change volume?
-                GProp_GProps propsBefore, propsAfter;
-                BRepGProp::VolumeProperties(base.getShape(), propsBefore);
+                // Use the boolean intersection, not the tool: compound tools may overlap.
+                GProp_GProps propsCommon;
+                BRepGProp::VolumeProperties(common.getShape(), propsCommon);
 
-                TopoShape cut;
-                cut.makeElementBoolean(
-                    Part::OpCodes::Cut,
-                    {base, tool},
-                    "PreviewCheck",
-                    Precision::Confusion()
-                );
-
-                BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
-
-                const double removed = propsBefore.Mass() - propsAfter.Mass();
+                // Subtraction removes the intersection; Common keeps it instead.
+                double removed = propsCommon.Mass();
+                if (getBooleanOperation() == BooleanOperation::Common) {
+                    GProp_GProps propsBase;
+                    BRepGProp::VolumeProperties(base.getShape(), propsBase);
+                    removed = propsBase.Mass() - removed;
+                }
 
                 if (removed <= Precision::Confusion()) {
                     notifyWarning(

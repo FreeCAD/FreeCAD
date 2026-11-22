@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any
 
 from Base.Metadata import export
@@ -21,14 +19,11 @@ class DrawViewClip(DrawView):
     License: LGPL-2.1-or-later
     """
 
-    def addView(self) -> Any:
+    def addView(self, view: DrawView, /) -> None:
         """addView(DrawView) - Add a View to this ClipView"""
-        ...
 
-    def removeView(self) -> Any:
+    def removeView(self, view: DrawView, /) -> None:
         """removeView(DrawView) - Remove specified View to this ClipView"""
-        ...
 
     def getChildViewNames(self) -> Any:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
-        ...

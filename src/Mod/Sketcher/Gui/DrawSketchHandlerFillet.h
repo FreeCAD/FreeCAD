@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2022 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -80,6 +77,9 @@ public:
                 if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
+                // Allow preselection of curve-curve vertices so the tool can
+                // explain on click why a point fillet isn't possible here.
+                return true;
                 // TODO: This could return true for any curve as long as
                 // int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim,
                 // bool createCorner, bool chamfer) evaluates two correct points that can be bound
@@ -146,6 +146,21 @@ public:
     }
 
 private:
+    bool isPointFilletPossible(int vertexId) const
+    {
+        SketchObject* obj = sketchgui->getSketchObject();
+        std::vector<int> geoIds;
+        std::vector<Sketcher::PointPos> posIds;
+        obj->getDirectlyCoincidentPoints(vertexId, geoIds, posIds);
+        geoIds = obj->chooseFilletsEdges(geoIds);
+
+        if (geoIds.size() != 2 || geoIds[0] < 0 || geoIds[1] < 0) {
+            return false;
+        }
+        return obj->getGeometry(geoIds[0])->is<Part::GeomLineSegment>()
+            && obj->getGeometry(geoIds[1])->is<Part::GeomLineSegment>();
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -393,6 +408,19 @@ private:
     void onButtonPressed(Base::Vector2d onSketchPos) override
     {
         this->updateDataAndDrawToPosition(onSketchPos);
+
+        if (state() == SelectMode::SeekFirst && vtId != -1 && !isPointFilletPossible(vtId)) {
+            Gui::TranslatedUserWarning(
+                sketchgui,
+                tr("Fillet/chamfer not possible"),
+                tr("Fillet/chamfer on a point only works between two lines. "
+                   "To fillet curves, select the two edges instead.")
+            );
+            vtId = -1;
+            updateHint();
+            return;
+        }
+
         if (canGoToNextMode()) {
             if (state() == SelectMode::SeekFirst) {
                 if (vtId != -1) {

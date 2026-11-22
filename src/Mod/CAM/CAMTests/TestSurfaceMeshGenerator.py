@@ -34,6 +34,20 @@ try:
 except ImportError:
     _HAS_CPP, _HAS_SIMPLIFICATION = False, False
 
+# Check if OCL is available
+_ocl_available = False
+try:
+    try:
+        import ocl
+
+        _ocl_available = True
+    except ImportError:
+        import opencamlib as ocl
+
+        _ocl_available = True
+except ImportError:
+    pass
+
 
 class TestSurfaceMesh(PathTestUtils.PathTestBase):
     """Tests for surface_mesh: Python/C++ tessellation, simplification, and STL generation."""
@@ -95,6 +109,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
 
     # -- Mesh Simplification Tests --
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test02_main_stl_converter_no_simplification(self):
         """
         Tests the main _shape_to_stl converter with mesh simplification disabled.
@@ -117,6 +132,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertGreater(stl_obj.size(), 0, "STL object should contain triangles")
 
     @unittest.skipUnless(_HAS_SIMPLIFICATION, "fast_simplification library not available")
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test03_mesh_simplification(self):
         """
         Verifies that mesh simplification reduces the triangle count.
@@ -145,6 +161,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
 
     # -- Safe STL and Orchestrator Tests --
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test04_safe_stl_generation(self):
         """
         Tests the generation of the secondary (safety) STL for collision avoidance.
@@ -170,7 +187,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         # the keep-out zone, exactly as _shape_to_safe_stl() expects to
         # receive it in production (built once, up front, by
         # surface_common.build_avoid_boundary()).
-        avoid_boundary = Part.Face(
+        avoid_boundary_stl = Part.Face(
             Part.makePolygon(
                 [
                     FreeCAD.Vector(7.5, 7.5, 0),
@@ -187,11 +204,12 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             bb_safe=self.box,
             pad_buffer=2.0,
             final_depth=0.0,
-            avoid_boundary=avoid_boundary,
+            avoid_boundary_stl=avoid_boundary_stl,
             start_depth=10.0,
             linear_deflection=0.1,
             angular_deflection=0.5,
             mesh_simplification=1,
+            use_cpp=True,
         )
 
         self.assertIsNotNone(safe_stl)
@@ -204,6 +222,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertGreater(safe_bb.maxpt.x - safe_bb.minpt.x, model_bb.XLength)
         self.assertGreater(safe_bb.maxpt.y - safe_bb.minpt.y, model_bb.YLength)
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test05_generate_stl_orchestrator(self):
         """
         Tests the main `generate_stl` orchestrator function.
@@ -213,7 +232,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         - Parameters: A model shape, needs_safe_stl=True, optimize_stl=False
           (so STL face-filtering is skipped and this test stays focused
           on the orchestration itself, not the optimization path).
-        - Input data: A simple box model, no Avoid Faces (avoid_boundary=None).
+        - Input data: A simple box model, no Avoid Faces (avoid_boundary_stl=None).
 
         EXPECTED OUTPUT:
         - Returns two valid ocl.STLSurf objects (stl, safe_stl).
@@ -232,7 +251,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             stl_faces=[],
             stl_filter_adj=0.0,
             bb_face=None,
-            avoid_boundary=None,
+            avoid_boundary_stl=None,
             tool_diam=6.0,
             needs_safe_stl=True,
             boundary_adjustment=2.0,
@@ -247,7 +266,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
         self.assertIsNotNone(safe_stl)
         self.assertGreater(stl.size(), 0)
         self.assertGreater(safe_stl.size(), 0)
-        # With avoid_boundary=None, the safe_stl is still larger due to the base plate
+        # With avoid_boundary_stl=None, the safe_stl is still larger due to the base plate
         self.assertGreater(
             safe_stl.bb.maxpt.x - safe_stl.bb.minpt.x, stl.bb.maxpt.x - stl.bb.minpt.x
         )

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-License-Identifier: LGPL-2.1-only
 
 /**************************************************************************
 **
@@ -54,12 +54,8 @@ QPixmap getStandardIcon(QWidget* widget, QStyle::StandardPixmap standardPixmap)
     int iconSize = widget->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, nullptr, widget);
     QIcon icon = widget->style()->standardIcon(standardPixmap);
     if (!icon.isNull()) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return icon.pixmap(QSize(iconSize, iconSize));
-#else
         qreal dpr = widget->devicePixelRatio();
         return icon.pixmap(QSize(iconSize, iconSize), dpr);
-#endif
     }
 
     return {};

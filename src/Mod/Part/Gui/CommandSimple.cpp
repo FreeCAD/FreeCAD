@@ -433,7 +433,7 @@ void CmdPartRefineShape::activated(int iMsg)
                 Gui::copyVisualT(newObj->getNameInDocument(), "PointColor", obj->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().warning("%s: %s\n", obj->Label.getValue(), e.what());
+                Base::Console().warning("{}: {}\n", obj->Label.getValue(), e.what());
             }
         });
         commitCommand();
@@ -507,7 +507,7 @@ void CmdPartDefeaturing::activated(int iMsg)
             );
         }
         catch (const Base::Exception& e) {
-            Base::Console().warning("%s: %s\n", it->getFeatName(), e.what());
+            Base::Console().warning("{}: {}\n", it->getFeatName(), e.what());
         }
     }
     commitCommand();

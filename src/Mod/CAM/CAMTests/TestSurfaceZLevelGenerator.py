@@ -176,6 +176,18 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
         plan_snap = _generate_sampling_plan(15.0, 5.0, 0.001, critical_heights, 8, tool_3d)
         self.assertGreater(len(plan_snap), 8, "Snap logic should have added an extra sample point")
 
+    def test11_lollipop_samples_like_ballend(self):
+        """A lollipop (no CornerRadius) samples exactly as a ball end of its diameter."""
+        from Path.Base.Generator.surface_zlevel import _generate_sampling_plan
+
+        ballend = self._get_mock_tool_params("ballend", radius=5.0, corner_rad=5.0)
+        lollipop = {"radius": 5.0, "c_rad": 0.0, "profile": "lollipop", "is_threeD": True}
+        for heights in (set(), {17.0}):
+            self.assertEqual(
+                _generate_sampling_plan(15.0, 5.0, 0.001, heights, 8, lollipop),
+                _generate_sampling_plan(15.0, 5.0, 0.001, heights, 8, ballend),
+            )
+
     # -- Stack and G-code Generation (Integration Tests) --
 
     def test20_stack_generation(self):

@@ -346,15 +346,15 @@ Action* StdCmdFreezeViews::createAction()
 
     // add the action items
     saveView = pcAction->addAction(QObject::tr("&Save Views…"));
-    saveView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    saveView->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* loadView = pcAction->addAction(QObject::tr("&Load Views…"));
-    loadView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    loadView->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     pcAction->addAction(QStringLiteral(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("F&reeze View"));
-    freezeView->setShortcut(QString::fromLatin1(getAccel()));
-    freezeView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    freezeView->setShortcut(QString::fromUtf8(getAccel()));
+    freezeView->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     clearView = pcAction->addAction(QObject::tr("&Clear Views"));
-    clearView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    clearView->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     separator = pcAction->addAction(QStringLiteral(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
@@ -785,43 +785,43 @@ Gui::Action* StdCmdDrawStyle::createAction()
     a0->setChecked(true);
     a0->setObjectName(QStringLiteral("Std_DrawStyleAsIs"));
     a0->setShortcut(QKeySequence(QStringLiteral("V,1")));
-    a0->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a0->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a1->setObjectName(QStringLiteral("Std_DrawStylePoints"));
     a1->setShortcut(QKeySequence(QStringLiteral("V,2")));
-    a1->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a1->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     a2->setObjectName(QStringLiteral("Std_DrawStyleWireframe"));
     a2->setShortcut(QKeySequence(QStringLiteral("V,3")));
-    a2->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a2->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleHiddenLine"));
     a3->setObjectName(QStringLiteral("Std_DrawStyleHiddenLine"));
     a3->setShortcut(QKeySequence(QStringLiteral("V,4")));
-    a3->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a3->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStyleNoShading"));
     a4->setObjectName(QStringLiteral("Std_DrawStyleNoShading"));
     a4->setShortcut(QKeySequence(QStringLiteral("V,5")));
-    a4->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a4->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* a5 = pcAction->addAction(QString());
     a5->setCheckable(true);
     a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     a5->setObjectName(QStringLiteral("Std_DrawStyleShaded"));
     a5->setShortcut(QKeySequence(QStringLiteral("V,6")));
-    a5->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a5->setWhatsThis(QString::fromUtf8(getWhatsThis()));
     QAction* a6 = pcAction->addAction(QString());
     a6->setCheckable(true);
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a6->setObjectName(QStringLiteral("Std_DrawStyleFlatLines"));
     a6->setShortcut(QKeySequence(QStringLiteral("V,7")));
-    a6->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+    a6->setWhatsThis(QString::fromUtf8(getWhatsThis()));
 
     pcAction->setIcon(a0->icon());
 
@@ -2006,11 +2006,6 @@ Action* StdViewDockUndockFullscreen::createAction()
 
 void StdViewDockUndockFullscreen::activated(int iMsg)
 {
-    // Check if main window is in fullscreen mode.
-    if (getMainWindow()->isFullScreen()) {
-        getMainWindow()->showNormal();
-    }
-
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) {  // no active view
         return;
@@ -2028,8 +2023,9 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         return;
     }
 
-    // Change the view mode after an mdi view was already visible doesn't
-    // work well with Qt5 any more because of some strange OpenGL behaviour.
+    // Changing the view mode after an mdi view was already visible causes
+    // the window to reload strangely while flashing to black, identified
+    // as an OpenGL problem.
     // A workaround is to clone the mdi view, set its view mode and delete
     // the original view.
 
@@ -2039,13 +2035,14 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     if (clone) {
         if (mode == MDIView::Child) {
             getMainWindow()->addWindow(clone);
+            getMainWindow()->setActiveWindow(clone);
+            qApp->processEvents();  // let the close and any queued activation settle
+            view->deleteSelf();
         }
         else {
+            view->deleteSelf();
             clone->setCurrentViewMode(mode);
         }
-
-        // destroy the old view
-        view->deleteSelf();
     }
     else {
         // no clone needed, simply change the view mode
@@ -2580,7 +2577,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     command += camera;
     command += "\")";
 
-    Base::Console().message("%s\n", camera.c_str());
+    Base::Console().message("{}\n", camera);
     getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.c_str());
 }
 

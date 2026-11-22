@@ -31,7 +31,6 @@
 #include <Gui/BitmapFactory.h>
 
 #include <Gui/Application.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "TaskHelixParameters.h"
 #include "ViewProviderHelix.h"

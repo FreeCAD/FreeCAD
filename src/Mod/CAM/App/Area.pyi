@@ -4,6 +4,7 @@ from typing import Any, Final
 
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
+from Part.App.TopoShape import TopoShape
 
 @export(
     Include="Mod/CAM/App/Area.h",
@@ -24,11 +25,10 @@ class Area(BaseClass):
     License: LGPL-2.1-or-later
     """
 
-    def add(self, **kwargs) -> Any:
+    def add(self, shape: TopoShape, Operation: int = 0) -> Area:
         """"""
-        ...
 
-    def setPlane(self) -> None:
+    def setPlane(self, shape: TopoShape, /) -> Area:
         """
         Set the working plane.
 
@@ -38,60 +38,71 @@ class Area(BaseClass):
         Area will try to find a working plane from the added children shape using the
         same algorithm
         """
-        ...
 
-    def getShape(self, **kwargs) -> Any:
+    def getShape(self, index: int = -1, rebuild: bool = False) -> TopoShape:
         """
         Return the resulting shape
 
         * index (-1): the index of the section. -1 means all sections. No effect on planar shape.
         * rebuild: clean the internal cache and rebuild
         """
-        ...
 
-    def makeOffset(self, **kwargs) -> Any:
+    def makeOffset(
+        self,
+        index: int = -1,
+        Offset: float = 0.0,
+        ExtraPass: int = 0,
+        Stepover: float = 0.0,
+    ) -> TopoShape:
         """Make an offset of the shape."""
-        ...
 
-    def makePocket(self, **kwargs) -> Any:
+    def makePocket(
+        self,
+        index: int = -1,
+        PocketMode: int = 0,
+        ToolRadius: float = 1.0,
+        PocketExtraOffset: float = 0.0,
+        PocketStepover: float = 0.0,
+        FromCenter: bool = False,
+        Angle: float = 45,
+        AngleShift: float = 0.0,
+        Shift: float = 0.0,
+        ForceMaxStepover: bool = False,
+    ) -> TopoShape:
         """Generate pocket toolpath of the shape."""
-        ...
 
-    def makeSections(self, **kwargs) -> Any:
+    def makeSections(
+        self,
+        SectionMode: int = 2,
+        Project: bool = False,
+        heights: object = None,
+        plane: TopoShape = None,
+    ) -> list[Area]:
         """Make a list of area holding the sectioned children shapes on given heights."""
-        ...
 
-    def getRestArea(self) -> Any:
+    def getRestArea(self, clearedAreas: list[Area], diameter: float, /) -> Area | None:
         """Rest machining: Gets the area left to be machined, assuming some of this area has already been cleared by previous tool paths."""
-        ...
 
     def toTopoShape(self) -> Any:
         """Convert the Area object to a TopoShape."""
-        ...
 
     def setParams(self, **kwargs) -> Any:
         """Set algorithm parameters."""
-        ...
 
     def setDefaultParams(self, **kwargs) -> Any:
         """Static method to set the default parameters of all following Path.Area, plus the following additional parameters."""
-        ...
 
     def getDefaultParams(self) -> Any:
         """Static method to return the current default parameters."""
-        ...
 
     def getParamsDesc(self, **kwargs) -> Any:
         """Returns a list of supported parameters and their descriptions."""
-        ...
 
     def getParams(self) -> Any:
         """Get current algorithm parameters as a dictionary."""
-        ...
 
     def abort(self, **kwargs) -> Any:
         """Abort the current operation."""
-        ...
     Sections: Final[list]
     """List of sections in this area."""
 

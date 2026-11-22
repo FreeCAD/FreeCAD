@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -40,7 +42,6 @@
 #include <Geom_Line.hxx>
 #include <Geom_Plane.hxx>
 #include <Precision.hxx>
-#include <Standard_Version.hxx>
 #include <ShapeAnalysis_Surface.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -49,10 +50,6 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <Adaptor3d_HSurface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -68,11 +65,6 @@
 
 using namespace Fem;
 namespace sp = std::placeholders;
-
-#if OCC_VERSION_HEX >= 0x070600
-using Adaptor3d_HSurface = Adaptor3d_Surface;
-using BRepAdaptor_HSurface = BRepAdaptor_Surface;
-#endif
 
 static const App::PropertyFloatConstraint::Constraints scaleConstraint
     = {0.0, std::numeric_limits<double>::max(), 0.1};
@@ -338,8 +330,8 @@ bool Constraint::getPoints(
             gp_Pnt center;
 
             // Get an estimate for the number of arrows by finding the average length of curves
-            Handle(Adaptor3d_HSurface) hsurf;
-            hsurf = new BRepAdaptor_HSurface(surface);
+            Handle(Adaptor3d_Surface) hsurf;
+            hsurf = new BRepAdaptor_Surface(surface);
 
             Adaptor3d_IsoCurve isoc(hsurf);
             try {

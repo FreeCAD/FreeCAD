@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
@@ -27,77 +26,72 @@ class ComplexGeoData(Persistence):
         """
         Return a list of element types present in the complex geometric data.
         """
-        ...
 
     @constmethod
-    def countSubElements(self) -> int:
+    def countSubElements(self, type: str, /) -> int:
         """
         Return the number of elements of a type.
         """
-        ...
 
     @constmethod
-    def getFacesFromSubElement(self, ) -> tuple[list[Vector], list[tuple[int, int, int]]]:
+    def getFacesFromSubElement(
+        self, type: str, index: int, /
+    ) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return vertexes and faces from a sub-element.
         """
-        ...
 
     @constmethod
-    def getLinesFromSubElement(self, ) -> tuple[list[Vector], list[tuple[int, int]]]:
+    def getLinesFromSubElement(
+        self, type: str, index: int, /
+    ) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return vertexes and lines from a sub-element.
         """
-        ...
 
     @constmethod
-    def getPoints(self) -> tuple[list[Vector], list[Vector]]:
+    def getPoints(self, accuracy: float, /) -> tuple[list[Vector], list[Vector]]:
         """
         Return a tuple of points and normals with a given accuracy
         """
-        ...
 
     @constmethod
-    def getLines(self) -> tuple[list[Vector], list[tuple[int, int]]]:
+    def getLines(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return a tuple of points and lines with a given accuracy
         """
-        ...
 
     @constmethod
-    def getFaces(self) -> tuple[list[Vector], list[tuple[int, int, int]]]:
+    def getFaces(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return a tuple of points and triangles with a given accuracy
         """
-        ...
 
     def applyTranslation(self, translation: Vector, /) -> None:
         """
         Apply an additional translation to the placement
         """
-        ...
 
     def applyRotation(self, rotation: Rotation, /) -> None:
         """
         Apply an additional rotation to the placement
         """
-        ...
 
     def transformGeometry(self, transformation: Matrix, /) -> None:
         """
         Apply a transformation to the underlying geometry
         """
-        ...
 
     def setElementName(
         self,
         *,
         element: str,
-        name: str = None,
-        postfix: str = None,
-        overwrite: bool = False,
-        sid: Any = None,
-    ) -> None:
+        name: str = ...,
+        postfix: str = ...,
+        overwrite: bool = ...,
+        sid: Any = ...,
+        tag: int = ...,
+    ) -> str:
         """
         Set an element name.
 
@@ -111,28 +105,28 @@ class ComplexGeoData(Persistence):
         An element can have multiple mapped names. However, a name can only be mapped
         to one element
         """
-        ...
 
     @constmethod
     def getElementName(self, name: str, direction: int = 0, /) -> str:
         """
         Return a mapped element name or reverse.
         """
-        ...
 
     @constmethod
-    def getElementIndexedName(self, name: str, /) -> str | tuple[str, list[int]]:
+    def getElementIndexedName(
+        self, name: str, return_id: bool = ..., /
+    ) -> str | tuple[str, list[int]]:
         """
         Return the indexed element name.
         """
-        ...
 
     @constmethod
-    def getElementMappedName(self, name: str, /) -> str | tuple[str, list[int]]:
+    def getElementMappedName(
+        self, name: str, return_id: bool = ..., /
+    ) -> str | tuple[str, list[int]]:
         """
         Return the mapped element name
         """
-        ...
 
     BoundBox: Final[BoundBox] = ...
     """Get the bounding box (BoundBox) of the complex geometric data."""

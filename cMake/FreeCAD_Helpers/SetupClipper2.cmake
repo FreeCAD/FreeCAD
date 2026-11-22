@@ -14,6 +14,7 @@ else()
 
     add_subdirectory(src/3rdParty/Clipper2)
     add_library(Clipper2::Clipper2Z ALIAS Clipper2Z)
+    get_target_property(Clipper2_VERSION Clipper2Z VERSION)
 endif()
 
 endmacro(SetupClipper2)

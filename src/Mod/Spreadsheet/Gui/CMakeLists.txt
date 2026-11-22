@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 generate_from_py(ViewProviderSpreadsheet)
 
@@ -131,7 +132,7 @@ endif()
 
 target_compile_warn_error(SpreadsheetGui)
 
-SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
+SET_BIN_DIR(SpreadsheetGui)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
 
 fc_copy_sources(SpreadsheetGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet" ${SpreadsheetGuiIcon_SVG})

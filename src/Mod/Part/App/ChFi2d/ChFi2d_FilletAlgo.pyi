@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from typing import overload
 from Base.Vector import Vector
+from Part.App.Plane import Plane
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeWire import TopoShapeWire
 
 @export(
     Name="ChFi2d_FilletAlgoPy",
@@ -23,11 +25,14 @@ class FilletAlgo(PyObjectBase):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    @overload
+    def init(self, wire: TopoShapeWire, plane: Plane, /) -> None: ...
+    @overload
+    def init(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, plane: Plane, /) -> None: ...
+    def init(self, *args) -> None:
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane
         """
-        ...
 
     def perform(self, radius: float, /) -> bool:
         """
@@ -35,13 +40,11 @@ class FilletAlgo(PyObjectBase):
 
         Constructs a fillet edge
         """
-        ...
 
-    def numberOfResults(self) -> int:
+    def numberOfResults(self, point: Vector, /) -> int:
         """
         Returns number of possible solutions
         """
-        ...
 
     def result(self, point: Vector, solution: int = -1, /) -> tuple[object, object, object]:
         """
@@ -49,4 +52,3 @@ class FilletAlgo(PyObjectBase):
 
         Returns result (fillet edge, modified edge1, modified edge2)
         """
-        ...

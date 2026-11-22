@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import (
     export,
     constmethod,
 )
 from GeometrySurface import GeometrySurface
+from Base.Vector import Vector
 from typing import Final, Tuple, Any
 
 @export(
@@ -53,7 +52,6 @@ class BezierSurface(GeometrySurface):
         """
         Returns the parametric bounds (U1, U2, V1, V2) of this Bezier surface.
         """
-        ...
 
     @constmethod
     def isURational(self) -> bool:
@@ -63,7 +61,6 @@ class BezierSurface(GeometrySurface):
         In other words, returns false if for each row of poles, the associated
         weights are identical.
         """
-        ...
 
     @constmethod
     def isVRational(self) -> bool:
@@ -73,21 +70,18 @@ class BezierSurface(GeometrySurface):
         In other words, returns false if for each column of poles, the associated
         weights are identical.
         """
-        ...
 
     @constmethod
     def isUPeriodic(self) -> bool:
         """
         Returns false.
         """
-        ...
 
     @constmethod
     def isVPeriodic(self) -> bool:
         """
         Returns false.
         """
-        ...
 
     @constmethod
     def isUClosed(self) -> bool:
@@ -96,7 +90,6 @@ class BezierSurface(GeometrySurface):
         Returns true if, in the table of poles the first row and the last
         row are identical.
         """
-        ...
 
     @constmethod
     def isVClosed(self) -> bool:
@@ -105,7 +98,6 @@ class BezierSurface(GeometrySurface):
         Returns true if, in the table of poles the first column and the
         last column are identical.
         """
-        ...
 
     def increase(self, DegreeU: int, DegreeV: int, /) -> None:
         """
@@ -113,9 +105,8 @@ class BezierSurface(GeometrySurface):
         Increases the degree of this Bezier surface in the two
         parametric directions.
         """
-        ...
 
-    def insertPoleColAfter(self, index: int, /) -> None:
+    def insertPoleColAfter(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, after the column
         of poles of index.
@@ -124,9 +115,8 @@ class BezierSurface(GeometrySurface):
         other, or collectively different from the existing weights in the
         table.
         """
-        ...
 
-    def insertPoleRowAfter(self, index: int, /) -> None:
+    def insertPoleRowAfter(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, after the row
         of poles of index.
@@ -135,9 +125,8 @@ class BezierSurface(GeometrySurface):
         other, or collectively different from the existing weights in the
         table.
         """
-        ...
 
-    def insertPoleColBefore(self, index: int, /) -> None:
+    def insertPoleColBefore(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, before the column
         of poles of index.
@@ -146,9 +135,8 @@ class BezierSurface(GeometrySurface):
         other, or collectively different from the existing weights in the
         table.
         """
-        ...
 
-    def insertPoleRowBefore(self, index: int, /) -> None:
+    def insertPoleRowBefore(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, before the row
         of poles of index.
@@ -157,7 +145,6 @@ class BezierSurface(GeometrySurface):
         other, or collectively different from the existing weights in the
         table.
         """
-        ...
 
     def removePoleCol(self, VIndex: int, /) -> None:
         """
@@ -166,7 +153,6 @@ class BezierSurface(GeometrySurface):
         poles of this Bezier surface.
         If this Bezier curve is rational, it can become non-rational.
         """
-        ...
 
     def removePoleRow(self, UIndex: int, /) -> None:
         """
@@ -175,7 +161,6 @@ class BezierSurface(GeometrySurface):
         poles of this Bezier surface.
         If this Bezier curve is rational, it can become non-rational.
         """
-        ...
 
     def segment(self, U1: float, U2: float, V1: float, V2: float, /) -> None:
         """
@@ -199,60 +184,51 @@ class BezierSurface(GeometrySurface):
         The orientation of the surface is inverted if one (and only one)
         parametric direction is inverted.
         """
-        ...
 
-    def setPole(self, pole: Any, /) -> None:
+    def setPole(self, u_index: int, v_index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier surface.
         """
-        ...
 
-    def setPoleCol(self, poles: Any, /) -> None:
+    def setPoleCol(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Set the column of poles of the Bezier surface.
         """
-        ...
 
-    def setPoleRow(self, poles: Any, /) -> None:
+    def setPoleRow(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Set the row of poles of the Bezier surface.
         """
-        ...
 
     @constmethod
     def getPole(self, UIndex: int, VIndex: int, /) -> Any:
         """
         Get a pole of index (UIndex, VIndex) of the Bezier surface.
         """
-        ...
 
     @constmethod
     def getPoles(self) -> Any:
         """
         Get all poles of the Bezier surface.
         """
-        ...
 
     def setWeight(self, UIndex: int, VIndex: int, weight: float, /) -> None:
         """
         Set the weight of pole of the index (UIndex, VIndex)
         for the Bezier surface.
         """
-        ...
 
     def setWeightCol(self, VIndex: int, weights: Any, /) -> None:
         """
         Set the weights of the poles in the column of poles
         of index VIndex of the Bezier surface.
         """
-        ...
 
     def setWeightRow(self, UIndex: int, weights: Any, /) -> None:
         """
         Set the weights of the poles in the row of poles
         of index UIndex of the Bezier surface.
         """
-        ...
 
     @constmethod
     def getWeight(self, UIndex: int, VIndex: int, /) -> float:
@@ -260,14 +236,12 @@ class BezierSurface(GeometrySurface):
         Get a weight of the pole of index (UIndex, VIndex)
         of the Bezier surface.
         """
-        ...
 
     @constmethod
     def getWeights(self) -> Any:
         """
         Get all weights of the Bezier surface.
         """
-        ...
 
     @constmethod
     def getResolution(self, Tolerance3D: float, /) -> Tuple[float, float]:
@@ -283,7 +257,6 @@ class BezierSurface(GeometrySurface):
         |v1 - v0| < VTolerance
         ====> ||f(u1, v1) - f(u2, v2)|| < Tolerance3D
         """
-        ...
 
     def exchangeUV(self) -> None:
         """
@@ -294,4 +267,3 @@ class BezierSurface(GeometrySurface):
            the two parametric directions, and
         -- the orientation of the surface is reversed.
         """
-        ...

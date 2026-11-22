@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Extension import Extension
 
@@ -11,5 +10,3 @@ class DocumentObjectExtension(Extension):
     Author: Stefan Troeger (stefantroeger@gmx.net)
     Licence: LGPL
     """
-
-    ...

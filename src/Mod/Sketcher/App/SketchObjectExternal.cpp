@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <cmath>
@@ -206,7 +203,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
     }
     catch (Base::Exception& e) {
         Base::Console().warning(
-            "Probably, there is a circular reference in the document. Error: %s\n", e.what());
+            "Probably, there is a circular reference in the document. Error: {}\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
 
@@ -284,7 +281,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     }
     catch (Base::Exception& e) {
         Base::Console().warning(
-            "Probably, there is a circular reference in the document. Error: %s\n", e.what());
+            "Probably, there is a circular reference in the document. Error: {}\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
 
@@ -479,8 +476,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             for (auto& obj : Objects) {
                 if (obj == sobj && SubElements[i] == sSubElements[si]) {
                     Base::Console().error(
-                        "Link to %s already exists in this sketch. Delete the link and try again\n",
-                        sSubElements[si].c_str()
+                        "Link to {} already exists in this sketch. Delete the link and try again\n",
+                        sSubElements[si]
                     );
                     return -1;
                 }
@@ -500,7 +497,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             rebuildExternalGeometry();
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
             // revert to original values
             ExternalGeometry.setValues(originalObjects, originalSubElements);
             return -1;
@@ -831,7 +828,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         if (Types[i] == static_cast<int>(ExtType::Both)
             || (Types[i] == static_cast<int>(ExtType::Projection) && !intersection)
             || (Types[i] == static_cast<int>(ExtType::Intersection) && intersection)) {
-            Base::Console().error("Link to %s already exists in this sketch.\n", SubName);
+            Base::Console().error("Link to {} already exists in this sketch.\n", SubName);
             return -1;
         }
         // Case where projections are already there when adding intersections.
@@ -856,7 +853,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         rebuildExternalGeometry(ext);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
         return -1;
@@ -1035,7 +1032,7 @@ int SketchObject::delAllExternal()
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
         for (Constraint* it : newConstraints) {
@@ -1352,11 +1349,15 @@ void SketchObject::validateExternalLinks()
         }
         catch (Base::IndexError& indexError) {
             Base::Console().warning(
-                this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
+                this->getFullLabel(),
+                "{}",
+                indexError.getMessage() + "\n");
         }
         catch (Base::ValueError& valueError) {
             Base::Console().warning(
-                this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
+                this->getFullLabel(),
+                "{}",
+                valueError.getMessage() + "\n");
         }
         catch (Standard_Failure&) {
         }
@@ -2141,7 +2142,7 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - {} - while projecting shape\n",
             e.GetMessageString());
         throw Base::RuntimeError("SketchObject::projectShape - OCC error");
     }

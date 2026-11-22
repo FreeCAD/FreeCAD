@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -52,6 +54,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
+#include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
@@ -104,6 +107,14 @@ PaperAttributes PagePrinter::getPaperAttributes(ViewProviderPage* vpPage)
     return getPaperAttributes(page);
 }
 
+Base::ScopeGuard PagePrinter::suspendScreenMode()
+{
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    return Base::ScopeGuard([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
+}
 
 //! construct a page layout object that reflects the characteristics of a DrawPage
 void PagePrinter::makePageLayout(TechDraw::DrawPage* dPage, QPageLayout& pageLayout, double& width,
@@ -145,6 +156,8 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
     makePageLayout(dPage, pageLayout, width, height);
     printer->setPageLayout(pageLayout);
     QPainter painter(printer);
+
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
 
     auto ourDoc = Gui::Application::Instance->getDocument(doc);
     auto docModifiedState = ourDoc->isModified();
@@ -195,7 +208,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         // Note: this does not protect against the case where the proposed file does not exist yet
         //       and creation of the file will not be permitted (ex attempt to write to restricted
         //       directory).
-        Base::Console().error("File %s is not available for writing.\n", qPrintable(outputFile));
+        Base::Console().error("File {} is not available for writing.\n", qPrintable(outputFile));
         return;
     }
 
@@ -227,6 +240,8 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     // to get several pages into the same pdf, we must use the same painter for each page and not have any
     // start() or end() until all the pages are printed.
     QPainter painter(&pdfWriter);
+
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
 
     auto ourDoc = Gui::Application::Instance->getDocument(doc);
     auto docModifiedState = ourDoc->isModified();
@@ -338,6 +353,8 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
 
     QPainter painter(printer);
 
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
+
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
 
@@ -365,7 +382,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     if (fi.exists() && !fi.isWritable()) {
          // this guards against a no-write situation on Win (issue #25299)
          // See comment in printAllPdf re new file creaion
-        Base::Console().error("File %s is not available for writing.\n", file.c_str());
+        Base::Console().error("File {} is not available for writing.\n", file);
         return;
     }
 
@@ -393,6 +410,8 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     // first page does not respect page layout unless painter is created after
     // pdfWriter layout is established.
     QPainter painter(&pdfWriter);
+
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
 
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
@@ -451,6 +470,8 @@ void PagePrinter::saveSVG(ViewProviderPage* vpPage, const std::string& file)
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(file);
     QString filename = QString::fromStdString(filespec);
+
+    auto restoreScreenMode = PagePrinter::suspendScreenMode();
 
     auto ourScene = vpPage->getQGSPage();
     ourScene->setExportingSvg(true);

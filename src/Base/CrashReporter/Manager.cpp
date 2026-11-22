@@ -42,14 +42,18 @@ using namespace Base::CrashReporter;
 static std::string s_crashReportDirectory;
 static std::vector<ParsedCrashReport> s_reports;
 
-void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy policy)
+void Manager::scan(
+    const std::string& crashReportDirectory,
+    RetentionPolicy policy,
+    const std::string& osVersion
+)
 {
     FileInfo fileInfo {crashReportDirectory};
     if (!fileInfo.exists()) {
         return;
     }
     if (!fileInfo.isDir()) {
-        Console().error("Expected parameter to be a directory: %s\n", crashReportDirectory.c_str());
+        Console().error("Expected parameter to be a directory: {}\n", crashReportDirectory);
         return;
     }
     s_crashReportDirectory = crashReportDirectory;
@@ -63,6 +67,9 @@ void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy poli
             // This is what we are looking for: read it
             try {
                 auto report = parse(contentItem.filePath());
+                if (!osVersion.empty()) {
+                    report.osVersion = osVersion;
+                }
                 archive(report);
                 report.stackFrames = trimLeadingPlumbingFrames(report.stackFrames);
                 s_reports.push_back(report);
@@ -70,8 +77,8 @@ void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy poli
             catch (const Base::Exception& e) {
                 // Some sort of corrupt report: log it
                 Console().warning(
-                    "Corrupted crash report file found: %s\n%s\n",
-                    contentItem.filePath().c_str(),
+                    "Corrupted crash report file found: {}\n{}\n",
+                    contentItem.filePath(),
                     e.what()
                 );
                 FileInfo bad {contentItem.filePath()};
@@ -186,12 +193,12 @@ void Manager::enforceRetention(RetentionPolicy policy)
         // Delete the old fcrash file and its optional minidump companion
         std::string dmp = contentItem.dirPath() + "/" + contentItem.fileNamePure() + ".dmp";
         if (!contentItem.deleteFile()) {
-            Console().warning("Failed to delete file %s\n", contentItem.filePath().c_str());
+            Console().warning("Failed to delete file {}\n", contentItem.filePath());
         }
         FileInfo dmpInfo {dmp};
         if (dmpInfo.exists()) {
             if (!dmpInfo.deleteFile()) {
-                Console().warning("Failed to delete file %s\n", dmpInfo.filePath().c_str());
+                Console().warning("Failed to delete file {}\n", dmpInfo.filePath());
             }
         }
 
@@ -202,12 +209,12 @@ void Manager::enforceRetention(RetentionPolicy policy)
     }
 }
 
-std::pair<std::string, std::string> Manager::archiveFile(
+std::pair<std::string, std::optional<std::string>> Manager::archiveFile(
     const std::string& fcrashPath,
-    const std::string& dumpPath
+    const std::optional<std::string>& dumpPath
 )
 {
-    std::pair<std::string, std::string> newPaths {fcrashPath, dumpPath};
+    std::pair<std::string, std::optional<std::string>> newPaths {fcrashPath, dumpPath};
     auto archivePath = getArchive();
     if (!archivePath.exists()) {
         if (!archivePath.createDirectories()) {
@@ -219,8 +226,8 @@ std::pair<std::string, std::string> Manager::archiveFile(
         fcrashInfo.renameFile((archiveBase + "/" + fcrashInfo.fileName()).c_str());
         newPaths.first = fcrashInfo.filePath();
     }
-    if (!dumpPath.empty()) {
-        if (FileInfo dmpInfo {dumpPath}; dmpInfo.exists()) {
+    if (dumpPath.has_value() && !dumpPath.value().empty()) {
+        if (FileInfo dmpInfo {dumpPath.value()}; dmpInfo.exists()) {
             dmpInfo.renameFile((archiveBase + "/" + dmpInfo.fileName()).c_str());
             newPaths.second = dmpInfo.filePath();
         }

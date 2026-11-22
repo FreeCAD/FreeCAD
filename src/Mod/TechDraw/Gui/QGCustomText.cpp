@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -114,7 +116,7 @@ double QGCustomText::getWidth()
 }
 QVariant QGCustomText::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().message("QGCT::itemChange - this: %X change: %d\n", this, change);
+//    Base::Console().message("QGCT::itemChange - this: {:X} change: {}\n", this, change);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();

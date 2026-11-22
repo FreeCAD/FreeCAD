@@ -31,6 +31,7 @@
 
 namespace Base
 {
+struct NumericLocaleContext;
 class UnitsSchema;
 
 struct BaseExport QuantityFormat
@@ -163,6 +164,8 @@ public:
     std::string getSafeUserString() const;
 
     static Quantity parse(const std::string& string);
+    /** Parse quantity text using the supplied numeric-locale context. */
+    static Quantity parseUserInput(const std::string& string, const NumericLocaleContext& locale);
 
     /// returns the unit of the quantity
     const Unit& getUnit() const
@@ -334,6 +337,7 @@ public:
     static const Quantity MilliJoule;
     static const Quantity KiloJoule;
     static const Quantity NewtonMeter;
+    static const Quantity NewtonMilliMeter;
     static const Quantity VoltAmpereSecond;
     static const Quantity WattSecond;
     static const Quantity KiloWattHour;

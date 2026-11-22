@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(Assembly_LIBS
     Part
@@ -78,7 +79,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(Assembly AssemblyApp /Mod/Assembly)
+SET_BIN_DIR(Assembly AssemblyApp)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)
 
 INSTALL(TARGETS Assembly DESTINATION ${CMAKE_INSTALL_LIBDIR})

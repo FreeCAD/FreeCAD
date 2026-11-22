@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -97,16 +99,11 @@
 #include <StdMeshers_UseExisting_1D2D.hxx>
 
 // Opencascade
-#include <Standard_Version.hxx>
-
 #include <Adaptor3d_IsoCurve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HSurface.hxx>
-#endif
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>

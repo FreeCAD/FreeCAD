@@ -148,6 +148,7 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
 
     pcPreviewRoot = new SoSeparator;
     pcPreviewShape = new SoPreviewShape;
+    pcPreviewShape->color.setValue(Base::convertTo<SbColor>(PreviewColor.getValue()));
 
     attachPreview();
 
@@ -156,9 +157,10 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
         App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
 
         Base::Console().userTranslatedNotification(
+            "{}",
             tr("Preview requires a Part-based view provider; none found for %1.")
                 .arg(object ? QString::fromUtf8(object->getFullName().c_str()) : tr("unknown object"))
-                .toUtf8()
+                .toStdString()
         );
     }
 
@@ -212,7 +214,7 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
 
 void ViewProviderPreviewExtension::extensionOnChanged(const App::Property* prop)
 {
-    if (prop == &PreviewColor) {
+    if (prop == &PreviewColor && pcPreviewShape) {
         pcPreviewShape->color.setValue(Base::convertTo<SbColor>(PreviewColor.getValue()));
     }
 
@@ -300,9 +302,10 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape, SoP
     }
     catch (Standard_Failure& e) {
         Base::Console().userTranslatedNotification(
+            "{}",
             tr("Failure while rendering preview: %1. That usually indicates an error with model.")
                 .arg(QString::fromUtf8(e.GetMessageString()))
-                .toUtf8()
+                .toStdString()
         );
 
         updatePreviewShape(preview, {});

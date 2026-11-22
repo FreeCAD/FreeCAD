@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <cmath>
@@ -75,7 +72,7 @@ void SketchObject::retrieveSolverDiagnostics()
     lastMalformedConstraints = solvedSketch.getMalformedConstraints();
 }
 
-int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
+SketchSolveStatus SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -108,31 +105,31 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     lastSolveTime = 0.0;
 
     // Failure is default for notifying the user unless otherwise proven
-    lastSolverStatus = GCS::Failed;
+    lastSolverStatus = GCS::SolveStatus::Failed;
 
-    int err = 0;
+    auto status = SketchSolveStatus::Success;
 
     // redundancy is a lower priority problem than conflict/over-constraint/solver error
     // we set it here because we are indeed going to solve, as we can. However, we still want to
     // provide the right error code.
     if (lastHasRedundancies) {// redundant constraints
-        err = -2;
+        status = SketchSolveStatus::RedundantConstraints;
     }
 
     if (lastDoF < 0) {// over-constrained sketch
-        err = -4;
+        status = SketchSolveStatus::Overconstrained;
     }
     else if (lastHasConflict) {// conflicting constraints
         // The situation is exactly the same as in the over-constrained situation.
-        err = -3;
+        status = SketchSolveStatus::ConflictingConstraints;
     }
     else if (lastHasMalformedConstraints) {
-        err = -5;
+        status = SketchSolveStatus::MalformedConstraints;
     }
     else {
         lastSolverStatus = solvedSketch.solve();
-        if (lastSolverStatus != 0) {// solving
-            err = -1;
+        if (lastSolverStatus != GCS::SolveStatus::Success) {// solving
+            status = SketchSolveStatus::SolverError;
         }
     }
 
@@ -158,7 +155,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             "\"%1\" has partially redundant constraint(s)."
         ).arg(ref);
 
-        Base::Console().warning(this->getFullLabel(), "%s\n", msg.toUtf8().constData());
+        Base::Console().warning(this->getFullLabel(), "{}\n", msg.toStdString());
     }
 
     lastSolveTime = solvedSketch.getSolveTime();
@@ -166,7 +163,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     // In uncommon situations, the analysis of QR decomposition leads to full rank, but the result
     // does not converge. We avoid marking a sketch as fully constrained when no convergence is
     // achieved.
-    if (err == 0) {
+    if (status == SketchSolveStatus::Success) {
         FullyConstrained.setValue(lastDoF == 0);
         if (updateGeoAfterSolving) {
             // set the newly solved geometry
@@ -179,30 +176,30 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
 
     signalSolverUpdate();
 
-    return err;
+    return status;
 }
 
-int SketchObject::setDatum(int ConstrId, double Datum)
+SketchSolveStatus SketchObject::setDatum(int ConstrId, double Datum)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     // set the changed value for the constraint
     if (this->Constraints.hasInvalidGeometry())
-        return -6;
+        return SketchSolveStatus::InvalidGeometry;
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
-        return -1;
+        return SketchSolveStatus::SolverError;
     ConstraintType type = vals[ConstrId]->Type;
     // for tangent, value==0 is autodecide, value==Pi/2 is external and value==-Pi/2 is internal
     if (!vals[ConstrId]->isDimensional() && type != Tangent && type != Perpendicular)
-        return -1;
+        return SketchSolveStatus::SolverError;
 
     if ((type == Radius || type == Diameter || type == Weight) && Datum <= 0)
-        return (Datum == 0) ? -5 : -4;
+        return (Datum == 0) ? SketchSolveStatus::MalformedConstraints : SketchSolveStatus::Overconstrained;
 
     if (type == Distance && Datum == 0)
-            return -5;
+            return SketchSolveStatus::MalformedConstraints;
 
     // copy the list
     std::vector<Constraint*> newVals(vals);
@@ -212,12 +209,12 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     this->Constraints.setValues(std::move(newVals));
 
-    int err = solve();
+    const auto status = solve();
 
-    if (err)
+    if (status != SketchSolveStatus::Success)
         this->Constraints.getValues()[ConstrId]->setValue(oldDatum);// newVals is a shell now
 
-    return err;
+    return status;
 }
 double SketchObject::getDatum(int ConstrId) const
 {
@@ -2050,11 +2047,14 @@ void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& G
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
-void SketchObject::getDirectlyCoincidentPoints(
+int SketchObject::getDirectlyCoincidentPoints(
     const int GeoId1,
     const int GeoId2,
     std::vector<int>& GeoIds3,
-    std::vector<PointPos>& PosIds3
+    std::vector<PointPos>& PosIds3,
+    bool includePointOnObject,
+    bool verticesOnly,
+    bool ignoreMidPoint
 ) const
 {
     std::vector<int> constraints;
@@ -2067,6 +2067,10 @@ void SketchObject::getDirectlyCoincidentPoints(
             continue;
         }
 
+        if (ignoreMidPoint && (con->getElement(0).Pos == PointPos::mid || con->getElement(1).Pos == PointPos::mid || con->getElement(2).Pos == PointPos::mid)) {
+            continue;
+        }
+
         if (con->Type == Sketcher::ConstraintType::Coincident) {
             if (con->getElement(0).GeoId == GeoId1) {
                 GeoIds3.push_back(con->getElement(0).GeoId);
@@ -2076,8 +2080,19 @@ void SketchObject::getDirectlyCoincidentPoints(
                 GeoIds3.push_back(con->getElement(1).GeoId);
                 PosIds3.push_back(con->getElement(1).Pos);
             }
+        } else if (includePointOnObject && con->Type == Sketcher::ConstraintType::PointOnObject) {
+            if (con->getElement(0).GeoId == GeoId1 || (con->getElement(1).Pos == Sketcher::PointPos::none && verticesOnly)) {
+                GeoIds3.push_back(con->getElement(0).GeoId);
+                PosIds3.push_back(con->getElement(0).Pos);
+            }
+            else {
+                GeoIds3.push_back(con->getElement(1).GeoId);
+                PosIds3.push_back(con->getElement(1).Pos);
+            }
         }
     }
+
+    return GeoIds3.size();
 }
 
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
@@ -2544,13 +2559,13 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                 cntSuccess++;
 
             newVals[i] = constNew;
-            Base::Console().log("Constraint%i will be affected\n", i + 1);
+            Base::Console().log("Constraint{} will be affected\n", i + 1);
         }
     }
 
     this->Constraints.setValues(std::move(newVals));
 
-    Base::Console().log("ChangeConstraintsLocking: affected %i of %i tangent/perp constraints\n",
+    Base::Console().log("ChangeConstraintsLocking: affected {} of {} tangent/perp constraints\n",
                         cntSuccess,
                         cntToBeAffected);
 
@@ -2639,13 +2654,13 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
             if (!justAnalyze) {
                 newVals[ic] = constNew.release();
             }
-            Base::Console().log("Constraint%i will be affected\n", ic + 1);
+            Base::Console().log("Constraint{} will be affected\n", ic + 1);
         };
     }
 
     if (!justAnalyze) {
         this->Constraints.setValues(std::move(newVals));
-        Base::Console().log("Swapped start/end of reversed external arcs in %i constraints\n",
+        Base::Console().log("Swapped start/end of reversed external arcs in {} constraints\n",
                             cntToBeAffected);
     }
 
@@ -2698,6 +2713,9 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
                 // solver level, so they need locking angle calculation, tangency at knot constraint
                 // does not.
                 auto geof = getGeometryFacade(cstr->First);
+                if (!geof) {
+                    return false;
+                }
                 if (geof->isInternalType(InternalType::BSplineKnotPoint)) {
                     // there is point that is a B-Spline knot in a two element constraint
                     // this is not implement using AngleViaPoint (TangencyViaPoint)
@@ -2750,7 +2768,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
     }
     catch (Base::Exception& e) {
         // failure to determine tangency type is not a big deal, so a warning.
-        Base::Console().warning("Error in AutoLockTangency. %s \n", e.what());
+        Base::Console().warning("Error in AutoLockTangency. {} \n", e.what());
         return false;
     }
     return true;

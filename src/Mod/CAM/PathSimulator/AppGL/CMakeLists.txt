@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(CAMSimulator_LIBS
     Path
@@ -107,7 +108,7 @@ endif(FREECAD_USE_PCH)
 
 target_compile_warn_error(CAMSimulator)
 
-SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
+SET_BIN_DIR(CAMSimulator)
 SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)
 
 INSTALL(TARGETS CAMSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(Import_LIBS
     Part
@@ -78,7 +79,7 @@ fc_target_copy_resource(ImportPy
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
     ${CMAKE_BINARY_DIR}/Mod/Import)
 
-SET_BIN_DIR(Import Import /Mod/Import)
+SET_BIN_DIR(Import)
 SET_PYTHON_PREFIX_SUFFIX(Import)
 
 INSTALL(TARGETS Import DESTINATION ${CMAKE_INSTALL_LIBDIR})

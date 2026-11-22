@@ -23,6 +23,13 @@
       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="1">
        <widget class="QCheckBox" name="checkBox">
         <property name="text">
@@ -30,17 +37,20 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QScrollBar" name="horizontalScrollBar">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+      <item row="2" column="1">
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>RadioButton</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QSpinBox" name="spinBox"/>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="lineEdit"/>
       </item>
-      <item row="8" column="1">
+      <item row="1" column="1">
+       <widget class="Gui::ColorButton" name="colorButton"/>
+      </item>
+      <item row="11" column="1">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Orientation::Vertical</enum>
@@ -53,14 +63,7 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="1">
-       <widget class="QRadioButton" name="radioButton">
-        <property name="text">
-         <string>RadioButton</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
+      <item row="8" column="1">
        <widget class="QComboBox" name="comboBox">
         <item>
          <property name="text">
@@ -74,14 +77,24 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>PushButton</string>
+      <item row="7" column="1">
+       <widget class="QScrollBar" name="horizontalScrollBar">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="spinBox"/>
+      </item>
+      <item row="9" column="1">
+       <widget class="QComboBox" name="comboBox_2">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
        <widget class="QTabWidget" name="tabWidget">
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -95,8 +108,8 @@
         </widget>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Gui::ColorButton" name="colorButton"/>
+      <item row="6" column="1">
+       <widget class="QTextEdit" name="textEdit"/>
       </item>
      </layout>
     </widget>
