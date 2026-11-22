@@ -125,7 +125,7 @@ void LoftWidget::findShapes()
                 allClosed = false;
             }
         }
-//        if (wireCount == 1 && allClosed) {
+        //        if (wireCount == 1 && allClosed) {
         if (wireCount == 1) {
             viable = true;
         }
@@ -141,9 +141,9 @@ void LoftWidget::findShapes()
 
         if (viable) {
             int tpe = 0;
-            if(wireCount) {
-                tpe = (allClosed) ? 2:1;
-            }    
+            if (wireCount) {
+                tpe = (allClosed) ? 2 : 1;
+            }
 
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromUtf8(obj->getNameInDocument());
@@ -267,14 +267,16 @@ int LoftWidget::selectType()
 {
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
 
-    if(!count)
+    if (!count) {
         return 0;
+    }
 
     for (int i = 0; i < count; i++) {
         QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
         int tpe = child->data(1, Qt::UserRole).toInt();
-	if(tpe)
+        if (tpe) {
             return tpe;
+        }
     }
     return 0;
 }
@@ -285,20 +287,22 @@ void LoftWidget::setEnable()
     int count = d->ui.selector->availableTreeWidget()->topLevelItemCount();
 
     printf("count = %u, tpe=%u\n", count, tpe);
-    if(!tpe) {
+    if (!tpe) {
         for (int i = 0; i < count; i++) {
             QTreeWidgetItem* child = d->ui.selector->availableTreeWidget()->topLevelItem(i);
             child->setDisabled(false);
         }
-    } else {
+    }
+    else {
         for (int i = 0; i < count; i++) {
             QTreeWidgetItem* child = d->ui.selector->availableTreeWidget()->topLevelItem(i);
-            printf("child %lx, count=%u\n", (unsigned long) child, i);
+            printf("child %lx, count=%u\n", (unsigned long)child, i);
             int ctpe = child->data(1, Qt::UserRole).toInt();
             printf("ctpe = %u\n", ctpe);
-            if(!ctpe || ctpe == tpe) {
+            if (!ctpe || ctpe == tpe) {
                 child->setDisabled(false);
-            } else {
+            }
+            else {
                 child->setDisabled(true);
             }
         }

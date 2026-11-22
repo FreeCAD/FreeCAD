@@ -290,8 +290,9 @@ void ActionSelector::onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)
 void ActionSelector::onItemDoubleClicked(QTreeWidgetItem* item, int column)
 {
     Q_UNUSED(column);
-    if(item->isDisabled())
+    if (item->isDisabled()) {
         return;
+    }
 
     QTreeWidget* treeWidget = item->treeWidget();
     if (treeWidget == availableWidget) {
