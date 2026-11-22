@@ -116,32 +116,28 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     PyObject* main = PyImport_AddModule("__main__");
     PyObject* dict = PyModule_GetDict(main);
     Py::Dict d(PyDict_Copy(dict), true);
-    Py::String uiFile(args.getItem(0));
-    std::string file = uiFile.as_string();
-    std::replace(file.begin(), file.end(), '\\', '/');
+    d.setItem("uiFile", args.getItem(0));
 
-    QString cmd;
-    QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
-    str << "from PySide6 import __version_info__\n"
-        << "from PySide6.QtUiTools import loadUiType\n"
-        << "from PySide6 import QtCore, QtGui, QtWidgets\n"
-        << "import xml.etree.ElementTree as xml\n"
-        << "try:\n"
-        << "    from cStringIO import StringIO\n"
-        << "except Exception:\n"
-        << "    from io import StringIO\n"
-        << "\n"
-        << "uiFile = \"" << file.c_str()
-        << "\"\n"
-        // PySide 6.12 defaults to only looking for pyside6-uic beside sys.executable,
-        // which won't work for portable installations.
-        << "if __version_info__ >= (6, 12):\n"
-        << "    form_class, base_class = loadUiType(uiFile, path_search=True)\n"
-        << "else:\n"
-        << "    form_class, base_class = loadUiType(uiFile)\n";
+    const char* cmd = R"(
+from PySide6 import __version_info__
+from PySide6.QtUiTools import loadUiType
+from PySide6 import QtCore, QtGui, QtWidgets
+import xml.etree.ElementTree as xml
+try:
+    from cStringIO import StringIO
+except Exception:
+    from io import StringIO
 
-    PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
+# PySide 6.12 defaults to only looking for pyside6-uic beside sys.executable,
+# which won't work for portable installations.
+if __version_info__ >= (6, 12):
+    form_class, base_class = loadUiType(uiFile, path_search=True)
+else:
+    form_class, base_class = loadUiType(uiFile)
+)";
+
+    PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
     if (result) {
         Py_DECREF(result);
         if (d.hasKey("form_class") && d.hasKey("base_class")) {
