@@ -1336,9 +1336,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                 QMessageBox::warning(
                     Gui::getMainWindow(),
                     QObject::tr("Convert to Solid"),
-                    QObject::tr(
-                        "%1 is neither a shell nor a compound, so it cannot be converted to a solid."
-                    )
+                    QObject::tr("%1 is neither a shell nor a compound, so it cannot be converted to a solid.")
                         .arg(objLabel)
                 );
                 continue;
@@ -1379,11 +1377,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error(
-                    "Cannot convert {} because {}.\n",
-                    it->Label.getValue(),
-                    e.what()
-                );
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
 
