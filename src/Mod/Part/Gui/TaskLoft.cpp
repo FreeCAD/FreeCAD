@@ -259,7 +259,6 @@ void LoftWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem*
             (const char*)current->data(0, Qt::UserRole).toByteArray()
         );
     }
-    printf("CurrentItemChanged\n");
     setEnable();
 }
 
@@ -286,7 +285,6 @@ void LoftWidget::setEnable()
     int tpe = selectType();
     int count = d->ui.selector->availableTreeWidget()->topLevelItemCount();
 
-    printf("count = %u, tpe=%u\n", count, tpe);
     if (!tpe) {
         for (int i = 0; i < count; i++) {
             QTreeWidgetItem* child = d->ui.selector->availableTreeWidget()->topLevelItem(i);
@@ -296,9 +294,7 @@ void LoftWidget::setEnable()
     else {
         for (int i = 0; i < count; i++) {
             QTreeWidgetItem* child = d->ui.selector->availableTreeWidget()->topLevelItem(i);
-            printf("child %lx, count=%u\n", (unsigned long)child, i);
             int ctpe = child->data(1, Qt::UserRole).toInt();
-            printf("ctpe = %u\n", ctpe);
             if (!ctpe || ctpe == tpe) {
                 child->setDisabled(false);
             }
