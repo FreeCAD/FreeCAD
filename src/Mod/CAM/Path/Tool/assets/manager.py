@@ -99,6 +99,7 @@ class AssetManager:
         try:
             self._asset_observers.remove(callback)
         except ValueError:
+            # The callback is not registered; removal is idempotent by design.
             pass
 
     def notify_asset_changed(self, store_name: str, uri: Union[AssetUri, str], action: str) -> None:
