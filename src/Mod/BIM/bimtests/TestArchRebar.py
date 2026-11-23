@@ -21,6 +21,7 @@
 
 import FreeCAD
 import Arch
+import Draft
 import Part
 from bimtests import TestArchBase
 
@@ -204,3 +205,144 @@ class TestArchRebar(TestArchBase.TestArchBase):
         self.document.recompute()
         self.assertTrue(r, "Arch Rebar creation failed")
         self.assertFalse(r.Shape.isNull(), "Rebar shape is null")
+
+    def test_custom_spacing_rotated_host(self):
+        """Test CustomSpacing does not double-rotate bars when host is rotated.
+
+        See https://github.com/FreeCAD/FreeCAD/issues/33459
+        """
+        host = self._create_host_structure(length=3000.0, width=200.0, height=400.0)
+        host.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(500.0, 1000.0, 0.0),
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 90),
+        )
+        self.document.recompute()
+
+        rot = host.Placement.Rotation
+        p1 = host.Placement.multVec(FreeCAD.Vector(30.0, -70.0, -150.0))
+        p2 = host.Placement.multVec(FreeCAD.Vector(30.0, 70.0, -150.0))
+        wire = Draft.make_wire([p1, p2])
+        self.document.recompute()
+
+        direction = rot.multVec(FreeCAD.Vector(1, 0, 0))
+
+        uniform = Arch.makeRebar(baseobj=host, sketch=wire, diameter=12, amount=4, offset=30)
+        uniform.Direction = direction
+        custom = Arch.makeRebar(baseobj=host, sketch=wire, diameter=12, amount=2, offset=30)
+        custom.Direction = direction
+        custom.CustomSpacing = "4@980"
+        self.document.recompute()
+
+        self.assertEqual(custom.Amount, 4)
+        self.assertAlmostEqual(custom.Spacing.Value, 0.0, delta=1e-9)
+        self.assertTrue(custom.Shape.isValid())
+        self.assertEqual(len(uniform.PlacementList), 4)
+        self.assertEqual(len(custom.PlacementList), 4)
+        self.assertEqual(len(uniform.Shape.Solids), 4)
+        self.assertEqual(len(custom.Shape.Solids), 4)
+        self.assertEqual(len(uniform.Proxy.wires), 4)
+        self.assertEqual(len(custom.Proxy.wires), 4)
+
+        identity = FreeCAD.Rotation()
+        for pl_custom, pl_uniform in zip(custom.PlacementList, uniform.PlacementList):
+            self.assertTrue(pl_custom.Base.isEqual(pl_uniform.Base, 1e-6))
+            self.assertTrue(pl_custom.Rotation.isSame(identity, 1e-6))
+            self.assertTrue(pl_custom.Rotation.isSame(pl_uniform.Rotation, 1e-6))
+
+        for w_custom, w_uniform in zip(custom.Proxy.wires, uniform.Proxy.wires):
+            self.assertTrue(w_custom.CenterOfMass.isEqual(w_uniform.CenterOfMass, 1e-3))
+            self.assertAlmostEqual(
+                w_custom.BoundBox.XLength, w_uniform.BoundBox.XLength, delta=1e-2
+            )
+            self.assertAlmostEqual(
+                w_custom.BoundBox.YLength, w_uniform.BoundBox.YLength, delta=1e-2
+            )
+            self.assertAlmostEqual(
+                w_custom.BoundBox.ZLength, w_uniform.BoundBox.ZLength, delta=1e-2
+            )
+
+        for s_custom, s_uniform in zip(custom.Shape.Solids, uniform.Shape.Solids):
+            self.assertTrue(s_custom.CenterOfMass.isEqual(s_uniform.CenterOfMass, 1e-3))
+            self.assertAlmostEqual(
+                s_custom.BoundBox.XLength, s_uniform.BoundBox.XLength, delta=1e-2
+            )
+            self.assertAlmostEqual(
+                s_custom.BoundBox.YLength, s_uniform.BoundBox.YLength, delta=1e-2
+            )
+            self.assertAlmostEqual(
+                s_custom.BoundBox.ZLength, s_uniform.BoundBox.ZLength, delta=1e-2
+            )
+
+    def test_custom_spacing_rotated_host_with_sketch(self):
+        """Test CustomSpacing matches uniform placement for a sketch attached to a rotated host."""
+        host = self._create_host_structure(length=3000.0, width=200.0, height=400.0)
+        host.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(250.0, -150.0, 50.0),
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45),
+        )
+        self.document.recompute()
+
+        sketch = self.document.addObject("Sketcher::SketchObject", "RebarSketch")
+        sketch.AttachmentSupport = [(host, "Face5")]
+        sketch.MapMode = "FlatFace"
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(-70.0, 0.0, 0.0), FreeCAD.Vector(70.0, 0.0, 0.0)),
+            False,
+        )
+        self.document.recompute()
+
+        direction = host.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+
+        uniform = Arch.makeRebar(baseobj=host, sketch=sketch, diameter=12, amount=4, offset=30)
+        uniform.Direction = direction
+        custom = Arch.makeRebar(baseobj=host, sketch=sketch, diameter=12, amount=2, offset=30)
+        custom.Direction = direction
+        custom.CustomSpacing = "4@980"
+        self.document.recompute()
+
+        self.assertEqual(custom.Amount, 4)
+        self.assertAlmostEqual(custom.Spacing.Value, 0.0, delta=1e-9)
+        self.assertTrue(custom.Shape.isValid())
+        self.assertEqual(len(uniform.PlacementList), 4)
+        self.assertEqual(len(custom.PlacementList), 4)
+        self.assertEqual(len(uniform.Shape.Solids), 4)
+        self.assertEqual(len(custom.Shape.Solids), 4)
+
+        identity = FreeCAD.Rotation()
+        for pl_custom, pl_uniform in zip(custom.PlacementList, uniform.PlacementList):
+            self.assertTrue(pl_custom.Base.isEqual(pl_uniform.Base, 1e-6))
+            self.assertTrue(pl_custom.Rotation.isSame(identity, 1e-6))
+            self.assertTrue(pl_custom.Rotation.isSame(pl_uniform.Rotation, 1e-6))
+
+        for s_custom, s_uniform in zip(custom.Shape.Solids, uniform.Shape.Solids):
+            self.assertTrue(s_custom.CenterOfMass.isEqual(s_uniform.CenterOfMass, 1e-3))
+            self.assertAlmostEqual(
+                s_custom.BoundBox.XLength, s_uniform.BoundBox.XLength, delta=1e-2
+            )
+            self.assertAlmostEqual(
+                s_custom.BoundBox.YLength, s_uniform.BoundBox.YLength, delta=1e-2
+            )
+            self.assertAlmostEqual(
+                s_custom.BoundBox.ZLength, s_uniform.BoundBox.ZLength, delta=1e-2
+            )
+
+    def test_custom_spacing_without_host(self):
+        """Test CustomSpacing works on a standalone rebar without a host."""
+        sketch = self._create_sketch(length=500.0)
+        rebar = Arch.makeRebar(sketch=sketch, diameter=12, amount=2, offset=50)
+        rebar.Direction = FreeCAD.Vector(0, 0, 1)
+        rebar.Distance = 850.0
+        rebar.CustomSpacing = "2@200+2@300"
+        self.document.recompute()
+
+        self.assertEqual(rebar.Amount, 4)
+        self.assertAlmostEqual(rebar.Spacing.Value, 0.0, delta=1e-9)
+        self.assertEqual(len(rebar.PlacementList), 4)
+        self.assertEqual(len(rebar.Shape.Solids), 4)
+        self.assertTrue(rebar.Shape.isValid())
+
+        identity = FreeCAD.Rotation()
+        expected_z = [50.0, 250.0, 500.0, 800.0]
+        for pl, z in zip(rebar.PlacementList, expected_z):
+            self.assertTrue(pl.Base.isEqual(FreeCAD.Vector(0.0, 0.0, z), 1e-6))
+            self.assertTrue(pl.Rotation.isSame(identity, 1e-6))
