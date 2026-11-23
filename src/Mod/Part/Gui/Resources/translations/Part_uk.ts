@@ -6806,10 +6806,10 @@ Continue?</source>
       <translation>Неправильний вибір</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Продовжити</translation>
     </message>
@@ -7854,6 +7854,54 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation>Круговий масив</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Вісь</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Радіальна відстань</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Тангенціальна відстань</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation>Концентричні кола</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Симетрія</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation type="unfinished">Start at selected shape</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation type="unfinished">Binormal axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation type="unfinished">Flip binormal direction</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::PatternPathParametersWidget</name>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="17"/>
@@ -7958,54 +8006,6 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>PartGui::PatternCircularParametersWidget</name>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
-      <source>Circular Pattern</source>
-      <translation>Круговий масив</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
-      <source>Axis</source>
-      <translation>Вісь</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
-      <source>Radial distance</source>
-      <translation>Радіальна відстань</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
-      <source>Tangential distance</source>
-      <translation>Тангенціальна відстань</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
-      <source>Concentric circles</source>
-      <translation>Концентричні кола</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
-      <source>Symmetry</source>
-      <translation>Симетрія</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
-      <source>Start at selected shape</source>
-      <translation type="unfinished">Start at selected shape</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
-      <source>Binormal axis</source>
-      <translation type="unfinished">Binormal axis</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
-      <source>Flip binormal direction</source>
-      <translation type="unfinished">Flip binormal direction</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskLinkArrayParameters</name>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
@@ -8043,6 +8043,19 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation>Побудовник граней BuildFace</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation>Розділяє ребра в точках перетину й знаходить усі обмежені області граней. Обробляє довільну геометрію, що перекривається.</translation>
+    </message>
+  </context>
+  <context>
     <name>Part::FaceMakerUnified</name>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
@@ -8056,16 +8069,11 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerBuildFace</name>
+    <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation>Побудовник граней BuildFace</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Розділяє ребра в точках перетину й знаходить усі обмежені області граней. Обробляє довільну геометрію, що перекривається.</translation>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
+      <source>Direction 2</source>
+      <translation>Напрямок 2</translation>
     </message>
   </context>
   <context>
@@ -8177,6 +8185,19 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::PatternInstanceControls</name>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation>Відновлює цей екземпляр</translation>
+    </message>
+    <message>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation>Придушує цей екземпляр</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskLinkArrayParameters</name>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="165"/>
@@ -8279,27 +8300,6 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../TaskLinkArrayParameters.cpp" line="913"/>
       <source>Select an object to link.</source>
       <translation>Виберіть об'єкт для посилання.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternInstanceControls</name>
-    <message>
-      <location filename="../../PatternInstanceControls.cpp" line="226"/>
-      <source>Restores this instance</source>
-      <translation>Відновлює цей екземпляр</translation>
-    </message>
-    <message>
-      <location filename="../../PatternInstanceControls.cpp" line="231"/>
-      <source>Suppresses this instance</source>
-      <translation>Придушує цей екземпляр</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::TaskPatternParameters</name>
-    <message>
-      <location filename="../../TaskPatternParameters.cpp" line="147"/>
-      <source>Direction 2</source>
-      <translation>Напрямок 2</translation>
     </message>
   </context>
 </TS>

@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Accepteer</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,7 +114,7 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>Snijranden</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
@@ -193,7 +193,7 @@
       <location filename="../../TaskGeomFillSurface.cpp" line="385"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="393"/>
       <source>The tool requires two, three or four edges</source>
-      <translation type="unfinished">The tool requires two, three or four edges</translation>
+      <translation>Het gereedschap vereist twee, drie of vier randen</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="392"/>
@@ -488,8 +488,8 @@ This command only works with a mesh object.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="63"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
       <translation type="unfinished">Edit Filling</translation>
     </message>
@@ -550,7 +550,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Ongeldig object</translation>
     </message>
   </context>
 </TS>

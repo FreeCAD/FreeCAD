@@ -447,67 +447,6 @@
     </message>
   </context>
   <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="355"/>
-      <source>Parameters</source>
-      <translation>參數</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="358"/>
-      <source>Physical Properties</source>
-      <translation>物理屬性</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="361"/>
-      <source>Center of Gravity</source>
-      <translation>重心</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
-      <source>Center of Volume</source>
-      <translation>形心（體積中心）</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Inertia</source>
-      <translation>慣性</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="444"/>
-      <source>Close</source>
-      <translation>關閉</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="447"/>
-      <source>Save</source>
-      <translation>儲存</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="451"/>
-      <source>Reset</source>
-      <translation>重設</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1236"/>
-      <source> (Average)</source>
-      <translation>（平均）</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>質量屬性</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>計算選取物件的質量屬性</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskMeasure</name>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="121"/>
@@ -553,6 +492,67 @@
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
       <translation>幾何中心</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>質量屬性</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>計算選取物件的質量屬性</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="355"/>
+      <source>Parameters</source>
+      <translation>參數</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="358"/>
+      <source>Physical Properties</source>
+      <translation>物理屬性</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="361"/>
+      <source>Center of Gravity</source>
+      <translation>重心</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <source>Center of Volume</source>
+      <translation>形心（體積中心）</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
+      <source>Inertia</source>
+      <translation>慣性</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="444"/>
+      <source>Close</source>
+      <translation>關閉</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="447"/>
+      <source>Save</source>
+      <translation>儲存</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="451"/>
+      <source>Reset</source>
+      <translation>重設</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
+      <source> (Average)</source>
+      <translation>（平均）</translation>
     </message>
   </context>
 </TS>

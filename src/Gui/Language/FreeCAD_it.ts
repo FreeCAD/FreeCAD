@@ -7429,7 +7429,7 @@ Specificare un'altra directory?</translation>
     <message>
       <location filename="Translator.cpp" line="280"/>
       <source>Persian</source>
-      <translation type="unfinished">Persian</translation>
+      <translation>Persiano</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="239"/>

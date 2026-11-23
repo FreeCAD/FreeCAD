@@ -2814,12 +2814,12 @@ messaggio di errore che "MAXGS" deve essere aumentato.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>Raggio curvatura / diametro del tubo</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend angle</source>
-      <translation type="unfinished">Bend angle</translation>
+      <translation>Angolo di piega</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
@@ -3104,12 +3104,12 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
       <source>To define magnetic flux density</source>
-      <translation type="unfinished">To define magnetic flux density</translation>
+      <translation>Per definire la densità di flusso magnetico</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>Densità di flusso magnetico</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
@@ -3475,7 +3475,7 @@ le equazioni con corrente armonica/oscillante</translation>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
       <source>Concentrated</source>
-      <translation type="unfinished">Concentrated</translation>
+      <translation>Concentrato</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
@@ -3603,7 +3603,7 @@ le equazioni con corrente armonica/oscillante</translation>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <source>Index</source>
-      <translation type="unfinished">Index</translation>
+      <translation>Indice</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
@@ -3693,7 +3693,7 @@ Notes:
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
+      <translation>Distribuzione</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
@@ -3720,13 +3720,13 @@ Notes:
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
       <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
+      <translation>Progressione</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
+      <translation>Progressione Invertita</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
@@ -3852,7 +3852,7 @@ Notes:
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
+      <translation>Visualizza</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
@@ -4071,7 +4071,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>Orientamento Del Triangolo</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4192,7 +4192,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -4215,22 +4215,22 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
@@ -4589,12 +4589,12 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="512"/>
       <source> Full cycle</source>
-      <translation type="unfinished"> Full cycle</translation>
+      <translation> Ciclo completo</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Half cycle</source>
-      <translation type="unfinished">Half cycle</translation>
+      <translation>Metà ciclo</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="542"/>
@@ -5921,17 +5921,17 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="184"/>
       <source>Node count</source>
-      <translation type="unfinished">Node count</translation>
+      <translation>Numero di nodi</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count</source>
-      <translation type="unfinished">Triangle count</translation>
+      <translation>Numero di triangoli</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count</source>
-      <translation type="unfinished">Tetrahedron count</translation>
+      <translation>Numero di tetraedri</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>

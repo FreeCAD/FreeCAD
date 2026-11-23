@@ -2156,8 +2156,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ສ້າງມຸມເບິ່ງແບບຕັດຂາດ</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="1774"/>
+      <source>Create Spreadsheet View</source>
+      <translation>ສ້າງມຸມເບິ່ງສະເປຣດຊີດ</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>ບັນທຶກໜ້າເປັນ DXF</translation>
     </message>
@@ -2191,11 +2196,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1648"/>
       <source>Create DraftView</source>
       <translation>ສ້າງ DraftView</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1774"/>
-      <source>Create Spreadsheet View</source>
-      <translation>ສ້າງມຸມເບິ່ງສະເປຣດຊີດ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="347"/>
@@ -2507,8 +2507,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ສ້າງໜ້າຕັດແບບຊັບຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="587"/>
       <location filename="../../TaskComplexSection.cpp" line="659"/>
+      <location filename="../../TaskSectionView.cpp" line="587"/>
       <source>Edit Section View</source>
       <translation>ແກ້ໄຂມຸມເບິ່ງໜ້າຕັດ</translation>
     </message>
@@ -3054,6 +3054,23 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="649"/>
+      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
       <location filename="../../CommandAnnotate.cpp" line="117"/>
       <location filename="../../CommandAnnotate.cpp" line="122"/>
       <location filename="../../CommandAnnotate.cpp" line="313"/>
@@ -3083,23 +3100,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1429"/>
       <location filename="../../CommandHelpers.cpp" line="87"/>
       <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="639"/>
-      <location filename="../../Command.cpp" line="649"/>
-      <location filename="../../Command.cpp" line="866"/>
-      <location filename="../../Command.cpp" line="983"/>
-      <location filename="../../Command.cpp" line="990"/>
-      <location filename="../../Command.cpp" line="995"/>
-      <location filename="../../Command.cpp" line="1033"/>
-      <location filename="../../Command.cpp" line="1132"/>
-      <location filename="../../Command.cpp" line="1399"/>
-      <location filename="../../Command.cpp" line="1416"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1430"/>
-      <location filename="../../Command.cpp" line="1483"/>
-      <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -3159,21 +3159,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD ບໍ່ພົບໜ້າທີ່ຈະສົ່ງອອກ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1922"/>
-      <source>Save DXF file</source>
-      <translation>ບັນທຶກໄຟລ໌ DXF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2174"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>ທິດທາງທີ່ເລືອກຢູ່ໃນລະດັບ %1 ອົງສາຂອງທິດທາງມາດຕະຖານ. ຕ້ອງການປ່ຽນທິດທາງທີ່ເລືອກເປັນ %2 ບໍ່?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2179"/>
-      <source>Direction is close to standard</source>
-      <translation>ທິດທາງໃກ້ຄຽງກັບມາດຕະຖານ</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>ເລືອກວັດຖຸທີ່ຈະຕັດຂາດ ຫຼື ມຸມເບິ່ງຫຼັກ ແລະ ວັດຖຸທີ່ກຳນົດການຕັດຂາດ</translation>
@@ -3190,6 +3175,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ບໍ່ມີຮູບຊົງ, ກຸ່ມ ຫຼື ລິ້ງໃນສ່ວນທີ່ເລືອກນີ້</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../CommandExtensionPack.cpp" line="304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="607"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="328"/>
       <location filename="../../CommandExtensionDims.cpp" line="537"/>
       <location filename="../../CommandExtensionDims.cpp" line="825"/>
@@ -3197,11 +3194,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1524"/>
       <location filename="../../CommandExtensionDims.cpp" line="1893"/>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
-      <location filename="../../CommandExtensionPack.cpp" line="304"/>
-      <location filename="../../CommandExtensionPack.cpp" line="607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1472"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <location filename="../../CommandAnnotate.cpp" line="163"/>
       <location filename="../../CommandAnnotate.cpp" line="215"/>
@@ -3228,17 +3220,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1887"/>
       <location filename="../../CommandCreateDims.cpp" line="1983"/>
       <location filename="../../CommandCreateDims.cpp" line="2108"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
       <source>Task in progress</source>
       <translation>ວຽກກຳລັງດຳເນີນການ</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="906"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
       <location filename="../../CommandExtensionDims.cpp" line="538"/>
       <location filename="../../CommandExtensionDims.cpp" line="826"/>
@@ -3261,9 +3249,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1265"/>
       <location filename="../../CommandAnnotate.cpp" line="1346"/>
       <location filename="../../CommandAnnotate.cpp" line="1412"/>
-      <location filename="../../Command.cpp" line="750"/>
-      <location filename="../../Command.cpp" line="843"/>
-      <location filename="../../Command.cpp" line="906"/>
       <source>Close active task dialog and try again</source>
       <translation>ປິດໜ້າຕ່າງວຽກທີ່ກຳລັງເປີດຢູ່ແລ້ວລອງໃໝ່ອີກຄັ້ງ</translation>
     </message>
@@ -3284,14 +3269,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ບໍ່ມີມຸມເບິ່ງຫຼັກ, ຮູບຊົງ, ກຸ່ມ ຫຼື ລິ້ງໃນສ່ວນທີ່ເລືອກນີ້</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2384"/>
       <location filename="../../Command.cpp" line="1202"/>
+      <location filename="../../CommandCreateDims.cpp" line="2384"/>
       <source>Select an object first</source>
       <translation>ເລືອກວັດຖຸກ່ອນ</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2392"/>
       <location filename="../../Command.cpp" line="1209"/>
+      <location filename="../../CommandCreateDims.cpp" line="2392"/>
       <source>Too many objects selected</source>
       <translation>ເລືອກວັດຖຸຫຼາຍເກີນໄປ</translation>
     </message>
@@ -3314,6 +3299,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1908"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>ໜ້ານີ້ມີມຸມເບິ່ງ BIM ເຊິ່ງຈະບໍ່ຖືກສົ່ງອອກ. ຕ້ອງການດຳເນີນການຕໍ່ບໍ່?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1922"/>
+      <source>Save DXF file</source>
+      <translation>ບັນທຶກໄຟລ໌ DXF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2174"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>ທິດທາງທີ່ເລືອກຢູ່ໃນລະດັບ %1 ອົງສາຂອງທິດທາງມາດຕະຖານ. ຕ້ອງການປ່ຽນທິດທາງທີ່ເລືອກເປັນ %2 ບໍ່?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2179"/>
+      <source>Direction is close to standard</source>
+      <translation>ທິດທາງໃກ້ຄຽງກັບມາດຕະຖານ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -3437,12 +3437,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ເລືອກໄຟລ໌ SVG ເພື່ອເປີດ</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="139"/>
-      <location filename="../../TaskDimRepair.cpp" line="150"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../Command.cpp" line="1216"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <location filename="../../CommandExtensionPack.cpp" line="1883"/>
       <location filename="../../CommandExtensionPack.cpp" line="2007"/>
       <location filename="../../CommandAlign.cpp" line="55"/>
-      <location filename="../../TaskDimension.cpp" line="553"/>
+      <location filename="../../CommandDecorate.cpp" line="420"/>
+      <location filename="../../CommandDecorate.cpp" line="427"/>
+      <location filename="../../CommandDecorate.cpp" line="434"/>
+      <location filename="../../CommandDecorate.cpp" line="441"/>
+      <location filename="../../CommandDecorate.cpp" line="447"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <location filename="../../CommandCreateDims.cpp" line="2009"/>
       <location filename="../../CommandCreateDims.cpp" line="2025"/>
       <location filename="../../CommandCreateDims.cpp" line="2051"/>
@@ -3455,15 +3464,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2383"/>
       <location filename="../../CommandCreateDims.cpp" line="2391"/>
       <location filename="../../CommandCreateDims.cpp" line="2400"/>
-      <location filename="../../CommandDecorate.cpp" line="420"/>
-      <location filename="../../CommandDecorate.cpp" line="427"/>
-      <location filename="../../CommandDecorate.cpp" line="434"/>
-      <location filename="../../CommandDecorate.cpp" line="441"/>
-      <location filename="../../CommandDecorate.cpp" line="447"/>
-      <location filename="../../Command.cpp" line="1201"/>
-      <location filename="../../Command.cpp" line="1208"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1228"/>
       <source>Incorrect Selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -3795,27 +3795,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ຟັງຊັນນີ້ຕ້ອງການໜ້າ.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="858"/>
       <source>Export Page as PDF</source>
       <translation>ສົ່ງອອກໜ້າເປັນ PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="772"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>ສົ່ງອອກໜ້າເປັນ SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="795"/>
+      <location filename="../../MDIViewPage.cpp" line="800"/>
       <source>Export page as DXF</source>
       <translation>ສົ່ງອອກໜ້າເປັນ DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="836"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>Unable to Write File</source>
       <translation>ບໍ່ສາມາດຂຽນໄຟລ໌ໄດ້</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="837"/>
+      <location filename="../../MDIViewPage.cpp" line="842"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD ບໍ່ສາມາດເປີດໄຟລ໌ %1 ເພື່ອຂຽນໄດ້. ໄຟລ໌ອາດຈະຖືກເປີດຢູ່ໃນໂປຣແກຣມອື່ນ.</translation>
     </message>
@@ -3897,14 +3897,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ແກ້ໄຂໜ້າຕັດແບບຊັບຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="238"/>
       <location filename="../../TaskComplexSection.cpp" line="220"/>
+      <location filename="../../TaskSectionView.cpp" line="238"/>
       <source>Current View Direction</source>
       <translation>ທິດທາງການເບິ່ງປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="239"/>
       <location filename="../../TaskComplexSection.cpp" line="221"/>
+      <location filename="../../TaskSectionView.cpp" line="239"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>ທິດທາງການເບິ່ງໃນພິກັດ BaseView</translation>
     </message>
@@ -3919,8 +3919,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ກວດສອບ SectionNormal, Direction ແລະ/ຫຼື XDirection.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="653"/>
       <location filename="../../TaskComplexSection.cpp" line="726"/>
+      <location filename="../../TaskSectionView.cpp" line="653"/>
       <source>Operation Failed</source>
       <translation>ການດຳເນີນການລົ້ມເຫຼວ</translation>
     </message>
@@ -3955,9 +3955,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ແກ້ໄຂມຸມເບິ່ງລາຍລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
-      <location filename="../../ViewProviderDimension.cpp" line="141"/>
       <location filename="../../ViewProviderRichAnno.cpp" line="103"/>
+      <location filename="../../ViewProviderDimension.cpp" line="141"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>ແກ້ໄຂ %1</translation>
     </message>
@@ -4091,15 +4091,15 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw ປັບແຕ່ງຮູບແບບ</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <location filename="../../CommandExtensionPack.cpp" line="2148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2347"/>
       <location filename="../../CommandAnnotate.cpp" line="1026"/>
       <source>Selection is empty</source>
       <translation>ການເລືອກແມ່ນຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <location filename="../../CommandExtensionPack.cpp" line="2155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2363"/>
       <source>No object selected</source>
       <translation>ບໍ່ມີການເລືອກວັດຖຸ</translation>
     </message>
@@ -4284,11 +4284,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ເຄື່ອງມືສ້າງຂໍ້ຄວາມແບບ Rich Text</translation>
     </message>
     <message>
-      <location filename="../../SymbolChooser.cpp" line="61"/>
-      <source>Select a Symbol</source>
-      <translation>ເລືອກສັນຍະລັກ</translation>
-    </message>
-    <message>
       <location filename="../../QGIRichAnno.cpp" line="402"/>
       <source>Resize Rich Annotation</source>
       <translation>ປັບຂະໜາດຄຳບັນຍາຍແບບ Rich Text</translation>
@@ -4297,6 +4292,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../TemplateTextField.cpp" line="58"/>
       <source>Updates the text</source>
       <translation>ອັບເດດຂໍ້ຄວາມ</translation>
+    </message>
+    <message>
+      <location filename="../../SymbolChooser.cpp" line="61"/>
+      <source>Select a Symbol</source>
+      <translation>ເລືອກສັນຍະລັກ</translation>
     </message>
   </context>
   <context>
@@ -4318,17 +4318,17 @@ it has a weld symbol that would become broken.</source>
       <translation>ທ່ານບໍ່ສາມາດລົບມຸມມອງນີ້ໄດ້ ເພາະມັນມີມຸມມອງທີ່ຂຶ້ນຕໍ່ກັນໜຶ່ງຢ່າງ ຫຼື ຫຼາຍກວ່າທີ່ຈະເຮັດໃຫ້ເກີດຄວາມເສຍຫາຍ.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="167"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
-      <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="165"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <source>Object dependencies</source>
       <translation>ສ່ວນທີ່ຂຶ້ນຕໍ່ກັບວັດຖຸ</translation>
@@ -6371,71 +6371,71 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="102"/>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
       <source>&amp;Keep Updated</source>
       <translation>&amp;ຮັກສາໃຫ້ເປັນປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
       <source>Show &amp;Frames</source>
       <translation>ສະແດງ &amp;ຂອບ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="108"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Show &amp;Grid</source>
       <translation>ສະແດງ &amp;ຕາໜ່າງ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Screen &amp;Mode</source>
       <translation type="unfinished">Screen &amp;Mode</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="115"/>
       <source>&amp;Export SVG</source>
       <translation>ສົ່ງອອກ SVG (&amp;E)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="119"/>
       <source>Export DXF</source>
       <translation>ສົ່ງອອກ DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="123"/>
       <source>Export PDF</source>
       <translation>ສົ່ງອອກເປັນ PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="126"/>
+      <location filename="../../MDIViewPage.cpp" line="127"/>
       <source>Print All Pages</source>
       <translation>ພິມທຸກໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="448"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>Different orientation</source>
       <translation>ການວາງແນວທີ່ຕ່າງກັນ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="449"/>
+      <location filename="../../MDIViewPage.cpp" line="450"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>ເຄື່ອງພິມໃຊ້ການວາງແນວທີ່ຕ່າງຈາກແບບແຕ້ມ.
 ທ່ານຕ້ອງການສືບຕໍ່ຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="458"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>Different paper size</source>
       <translation>ຂະໜາດເຈ້ຍທີ່ຕ່າງກັນ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="459"/>
+      <location filename="../../MDIViewPage.cpp" line="460"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>ເຄື່ອງພິມໃຊ້ຂະໜາດເຈ້ຍທີ່ຕ່າງຈາກແບບແຕ້ມ.
 ທ່ານຕ້ອງການສືບຕໍ່ຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1416"/>
+      <location filename="../../MDIViewPage.cpp" line="1421"/>
       <source>Selected:</source>
       <translation>ທີ່ເລືອກ:</translation>
     </message>
@@ -10342,6 +10342,45 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation type="unfinished">Position Section View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>ເມັດຈຸດຕັດຕົບແຕ່ງ</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation type="unfinished">Adds cosmetic vertices at the intersectionss of selected edges</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>ຈຸດຍອດອັອບເຊັດ</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation type="unfinished">Creates an offset from one selected vertex</translation>
+    </message>
+  </context>
+  <context>
     <name>TaskSpreadsheetView</name>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
@@ -10440,105 +10479,34 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDraw_ExtensionPositionSectionView</name>
+    <name>CmdTechDrawExportPagePDF</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <location filename="../../Command.cpp" line="1949"/>
+      <source>File</source>
+      <translation>ໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_CommandVertexCreationGroup</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>ເມັດຈຸດຕັດຕົບແຕ່ງ</translation>
+      <location filename="../../Command.cpp" line="1950"/>
+      <source>Export Page as PDF</source>
+      <translation>ສົ່ງອອກໜ້າເປັນ PDF</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the intersectionss of selected edges</translation>
+      <location filename="../../Command.cpp" line="1951"/>
+      <source>Exports the current page as a PDF</source>
+      <translation>ສົ່ງອອກໜ້າປັດຈຸບັນເປັນ PDF</translation>
     </message>
   </context>
   <context>
-    <name>TechDraw_CommandAddOffsetVertex</name>
+    <name>CmdTechDrawExportGroup</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
-      <source>Offset Vertex</source>
-      <translation>ຈຸດຍອດອັອບເຊັດ</translation>
+      <location filename="../../Command.cpp" line="1979"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation type="unfinished">Creates an offset from one selected vertex</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="458"/>
-      <source>Restore Invisible Lines</source>
-      <translation>ກູ້ຄືນເສັ້ນທີ່ເບິ່ງບໍ່ເຫັນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::QGIViewSpreadsheet</name>
-    <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
-      <source>Add row</source>
-      <translation>ເພີ່ມແຖວ</translation>
-    </message>
-    <message>
-      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
-      <source>Add column</source>
-      <translation>ເພີ່ມຖັນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>Invalid Range</source>
-      <translation>ຊ່ວງບໍ່ຖືກຕ້ອງ</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
-      <source>The specified cell range is invalid. Please correct it.</source>
-      <translation>ຊ່ວງຫ້ອງທີ່ລະບຸບໍ່ຖືກຕ້ອງ. ກະລຸນາແກ້ໄຂຄືນ.</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
-      <source>Create Spreadsheet View</source>
-      <translation>ສ້າງມຸມມອງສະເປຣດຊີດ</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
-      <source>Edit Spreadsheet View</source>
-      <translation>ແກ້ໄຂມຸມມອງສະເປຣດຊີດ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>ເສັ້ນເຄິ່ງກາງລະຫວ່າງ 2 ເສັ້ນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>ເສັ້ນເຄິ່ງກາງລະຫວ່າງ 2 ຈຸດ</translation>
+      <location filename="../../Command.cpp" line="1980"/>
+      <source>Print All Pages</source>
+      <translation>ພິມທຸກໜ້າ</translation>
     </message>
   </context>
   <context>
@@ -10578,34 +10546,66 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPagePDF</name>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>File</source>
-      <translation>ໄຟລ໌</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Export Page as PDF</source>
-      <translation>ສົ່ງອອກໜ້າເປັນ PDF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Exports the current page as a PDF</source>
-      <translation>ສົ່ງອອກໜ້າປັດຈຸບັນເປັນ PDF</translation>
+      <location filename="../../TaskLineDecor.cpp" line="458"/>
+      <source>Restore Invisible Lines</source>
+      <translation>ກູ້ຄືນເສັ້ນທີ່ເບິ່ງບໍ່ເຫັນ</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportGroup</name>
+    <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../Command.cpp" line="1979"/>
-      <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>ເສັ້ນເຄິ່ງກາງລະຫວ່າງ 2 ເສັ້ນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>ເສັ້ນເຄິ່ງກາງລະຫວ່າງ 2 ຈຸດ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>Invalid Range</source>
+      <translation>ຊ່ວງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1980"/>
-      <source>Print All Pages</source>
-      <translation>ພິມທຸກໜ້າ</translation>
+      <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation>ຊ່ວງຫ້ອງທີ່ລະບຸບໍ່ຖືກຕ້ອງ. ກະລຸນາແກ້ໄຂຄືນ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
+      <source>Create Spreadsheet View</source>
+      <translation>ສ້າງມຸມມອງສະເປຣດຊີດ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
+      <source>Edit Spreadsheet View</source>
+      <translation>ແກ້ໄຂມຸມມອງສະເປຣດຊີດ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
+      <source>Add row</source>
+      <translation>ເພີ່ມແຖວ</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
+      <source>Add column</source>
+      <translation>ເພີ່ມຖັນ</translation>
     </message>
   </context>
 </TS>

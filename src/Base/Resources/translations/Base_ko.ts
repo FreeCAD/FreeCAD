@@ -64,27 +64,27 @@
     <message>
       <location filename="../../Exception.cpp" line="323"/>
       <source>No permission to read the file</source>
-      <translation type="unfinished">No permission to read the file</translation>
+      <translation>파일을 읽을 권한이 없습니다</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="325"/>
       <source>No write permission for the file or the file is read-only</source>
-      <translation type="unfinished">No write permission for the file or the file is read-only</translation>
+      <translation>파일에 쓰기 권한이 없거나 파일이 읽기 전용입니다</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="326"/>
       <source>File format not supported</source>
-      <translation type="unfinished">File format not supported</translation>
+      <translation>파일 형식이 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="327"/>
       <source>Error reading from file</source>
-      <translation type="unfinished">Error reading from file</translation>
+      <translation>파일을 읽는 중 오류가 발생하였습니다</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="328"/>
       <source>Error writing to file</source>
-      <translation type="unfinished">Error writing to file</translation>
+      <translation>파일을 쓰는 중 오류가 발생하였습니다</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="330"/>

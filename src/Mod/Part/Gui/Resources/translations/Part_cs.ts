@@ -1198,22 +1198,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2390"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2399"/>
+      <location filename="../../Command.cpp" line="2391"/>
       <source>Box Selection</source>
       <translation>Rámečkový výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2392"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>Vybere prvky v 3D pohledu pomocí výběru rámečkem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Box selection</source>
       <translation>Okno výběru</translation>
     </message>
@@ -1221,17 +1221,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="2312"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2313"/>
       <source>Check Geometry</source>
       <translation>Zkontrolovat geometrii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2322"/>
+      <location filename="../../Command.cpp" line="2314"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>Analyzuje vybrané tvary z hlediska chyb</translation>
     </message>
@@ -1239,17 +1239,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2346"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2347"/>
       <source>Appearance per &amp;Face</source>
       <translation>Vzhled podle &amp;stěny</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2348"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>Nastavuje vzhled jednotlivých stěn vybraného objektu</translation>
     </message>
@@ -1257,17 +1257,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1401"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Boolean Operation</source>
       <translation>Booleovské operace</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1409"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation>Aplikuje booleovskou operaci s vybranými tvary</translation>
     </message>
@@ -1330,17 +1330,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1701"/>
       <source>Shape Builder</source>
       <translation>Nástroj pro tvorbu tvarů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1703"/>
       <source>Advanced utility to create shapes</source>
       <translation>Rozšířené nástroje pro tvorbu útvarů</translation>
     </message>
@@ -1348,17 +1348,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1612"/>
+      <location filename="../../Command.cpp" line="1606"/>
       <source>Chamfer</source>
       <translation>Sražení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>Zkosí vybrané hrany tvaru</translation>
     </message>
@@ -1384,17 +1384,17 @@
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="817"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="822"/>
+      <location filename="../../Command.cpp" line="818"/>
       <source>Compound Tools</source>
       <translation>Kompozitní nástroje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="823"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Compound tools for working with multiple shapes</source>
       <translation>Kompozitní nástroje pro práci s více tvary</translation>
     </message>
@@ -1420,17 +1420,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1921"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1922"/>
       <source>Offset</source>
       <translation>Odsazení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1929"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Nástroje pro odsazení tvarů (vytvoří rovnoběžné tvary)</translation>
     </message>
@@ -1456,17 +1456,17 @@
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="932"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="933"/>
       <source>Compound</source>
       <translation>Složení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Compounds the selected shapes</source>
       <translation>Sloučí vybrané tvary</translation>
     </message>
@@ -1493,17 +1493,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
+      <location filename="../../Command.cpp" line="1661"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1668"/>
+      <location filename="../../Command.cpp" line="1662"/>
       <source>Cross-Sections</source>
       <translation>Příčné řezy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Creates cross-sections</source>
       <translation>Vytváří příčné řezy</translation>
     </message>
@@ -1584,17 +1584,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1140"/>
+      <location filename="../../Command.cpp" line="1134"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1141"/>
+      <location filename="../../Command.cpp" line="1135"/>
       <source>Export CAD File</source>
       <translation>Export CAD File</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>Exports to a CAD file</source>
       <translation>Exportuje do CAD souboru</translation>
     </message>
@@ -1602,17 +1602,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Extrude</source>
       <translation>Vysunutí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>Vytvoří výtlaček vybraného náčrtu nebo profilu</translation>
     </message>
@@ -1620,17 +1620,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1583"/>
+      <location filename="../../Command.cpp" line="1577"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1578"/>
       <source>Fillet</source>
       <translation>Zaoblení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1585"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>Zaoblí vybrané hrany tvaru</translation>
     </message>
@@ -1656,17 +1656,17 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="1070"/>
+      <location filename="../../Command.cpp" line="1064"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1071"/>
+      <location filename="../../Command.cpp" line="1065"/>
       <source>Import CAD File</source>
       <translation>Import CAD souboru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
+      <location filename="../../Command.cpp" line="1067"/>
       <source>Imports a CAD file</source>
       <translation>Importuje CAD soubor</translation>
     </message>
@@ -1674,17 +1674,17 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Import Curve Network</source>
       <translation>Importovat síť křivek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Imports a curve network</source>
       <translation>Importuje síť křivek</translation>
     </message>
@@ -1692,17 +1692,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>Loft</source>
       <translation>Profilování</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Lofts the selected profiles</source>
       <translation>Vytvoří skořepinu z vybraných profilů</translation>
     </message>
@@ -1710,17 +1710,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>Face From Wires</source>
       <translation>Plocha z čar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1498"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>Vytvoří plochu z vybraných čar (např. z náčrtu)</translation>
     </message>
@@ -1728,17 +1728,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1239"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1246"/>
+      <location filename="../../Command.cpp" line="1240"/>
       <source>Convert to Solid</source>
       <translation>Převést na pevný tvar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1247"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Přemění vybranou skořepinu nebo sloučeninu na pevný tvar</translation>
     </message>
@@ -1746,17 +1746,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1633"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1640"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Mirror</source>
       <translation>Zrcadlo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1641"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Mirrors the selected shape</source>
       <translation>Zrcadlí vybraný tvar</translation>
     </message>
@@ -1764,17 +1764,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1795"/>
+      <location filename="../../Command.cpp" line="1789"/>
       <source>3D Offset</source>
       <translation>3D odsazení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1796"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>Offsets shapes in 3D</source>
       <translation>Odsadí tvary ve 3D</translation>
     </message>
@@ -1782,17 +1782,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1855"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1856"/>
       <source>2D Offset</source>
       <translation>2D odsazení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1863"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>Odsadí rovinné tvary ve 2D</translation>
     </message>
@@ -1854,17 +1854,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2420"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2429"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>Project on Surface</source>
       <translation>Promítnout na povrch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2430"/>
+      <location filename="../../Command.cpp" line="2422"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1895,17 +1895,17 @@ Směr projekce určuje pohled kamery.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1333"/>
       <source>Reverse Shapes</source>
       <translation>Obrátit tvary</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1340"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Obrátí orientaci vybraných tvarů</translation>
     </message>
@@ -1913,17 +1913,17 @@ Směr projekce určuje pohled kamery.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1550"/>
       <source>Revolve</source>
       <translation>Orotovat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Revolves the selected shape</source>
       <translation>Orotuje vybraný tvar</translation>
     </message>
@@ -1931,17 +1931,17 @@ Směr projekce určuje pohled kamery.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2177"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Ruled Surface</source>
       <translation>Vzorovaný povrch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2178"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>Vytvoří pravidelnou plochu mezi 2 vybranými čarami</translation>
     </message>
@@ -1949,17 +1949,17 @@ Směr projekce určuje pohled kamery.</translation>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1000"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1001"/>
+      <location filename="../../Command.cpp" line="995"/>
       <source>Section</source>
       <translation>Řez</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1002"/>
+      <location filename="../../Command.cpp" line="996"/>
       <source>Sections 2 selected shapes</source>
       <translation>Ořízne 2 vybrané tvary</translation>
     </message>
@@ -2040,17 +2040,17 @@ Směr projekce určuje pohled kamery.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1765"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1766"/>
+      <location filename="../../Command.cpp" line="1760"/>
       <source>Sweep</source>
       <translation>Tažení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1767"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>Sweeps profiles along a wire</source>
       <translation>Profiluje tvary podél linie</translation>
     </message>
@@ -2058,27 +2058,27 @@ Směr projekce určuje pohled kamery.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2021"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2022"/>
       <source>Thickness</source>
       <translation>Tloušťka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2031"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>Odstraní vybrané plochy a posune zbývající tvar směrem ven, aby přidal tloušťku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2090"/>
+      <location filename="../../Command.cpp" line="2082"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2091"/>
+      <location filename="../../Command.cpp" line="2083"/>
       <source>Selected shape is not a solid</source>
       <translation>Vybraný tvar není těleso</translation>
     </message>
@@ -2144,97 +2144,97 @@ Směr projekce určuje pohled kamery.</translation>
       <translation>Sjednocení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../Command.cpp" line="972"/>
       <source>Compound</source>
       <translation>Směs</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1029"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Section</source>
       <translation>Řez</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1095"/>
       <source>Import Part</source>
       <translation>Importovat díl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Import Curve Net</source>
       <translation>Import křivkovou síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1352"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Reverse</source>
       <translation>Obrátit</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1515"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Make face</source>
       <translation>Vytvořit plochu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1821"/>
+      <location filename="../../Command.cpp" line="1815"/>
       <source>Make Offset</source>
       <translation>Vytvořit odsazení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1889"/>
+      <location filename="../../Command.cpp" line="1883"/>
       <source>Make 2D Offset</source>
       <translation>Vytvořit 2D odsazení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2090"/>
       <source>Make Thickness</source>
       <translation>Vytvořit tloušťku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2287"/>
+      <location filename="../../Command.cpp" line="2279"/>
       <source>Create ruled surface</source>
       <translation>Vytvořit přímkovou plochu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2651"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Circular Link Array</source>
       <translation type="unfinished">Circular Link Array</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2686"/>
+      <location filename="../../Command.cpp" line="2678"/>
       <source>Path Link Array</source>
       <translation type="unfinished">Path Link Array</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2721"/>
+      <location filename="../../Command.cpp" line="2713"/>
       <source>Point Link Array</source>
       <translation type="unfinished">Point Link Array</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2756"/>
+      <location filename="../../Command.cpp" line="2748"/>
       <source>Linear Link Array</source>
       <translation type="unfinished">Linear Link Array</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2791"/>
+      <location filename="../../Command.cpp" line="2783"/>
       <source>Polar Link Array</source>
       <translation type="unfinished">Polar Link Array</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2819"/>
+      <location filename="../../Command.cpp" line="2811"/>
       <source>Add coordinate system</source>
       <translation>Přidat souřadnicový systém</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2858"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Add datum plane</source>
       <translation>Přidat referenční rovinu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2892"/>
+      <location filename="../../Command.cpp" line="2884"/>
       <source>Add datum line</source>
       <translation>Přidat referenční linii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2926"/>
+      <location filename="../../Command.cpp" line="2918"/>
       <source>Add datum point</source>
       <translation>Přidat referenční bod</translation>
     </message>
@@ -6180,7 +6180,7 @@ ve 3D pohledu pro dráhu protažení.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
-      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../Command.cpp" line="1014"/>
       <source>Select 2 shapes</source>
       <translation>Vyberte 2 tvary</translation>
     </message>
@@ -6188,11 +6188,11 @@ ve 3D pohledu pro dráhu protažení.</translation>
       <location filename="../../Command.cpp" line="337"/>
       <location filename="../../Command.cpp" line="414"/>
       <location filename="../../Command.cpp" line="514"/>
-      <location filename="../../Command.cpp" line="956"/>
-      <location filename="../../Command.cpp" line="1019"/>
-      <location filename="../../Command.cpp" line="2281"/>
-      <location filename="../../Command.cpp" line="2552"/>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="2273"/>
+      <location filename="../../Command.cpp" line="2544"/>
+      <location filename="../../Command.cpp" line="2554"/>
       <source>Wrong Selection</source>
       <translation>Chybný výběr</translation>
     </message>
@@ -6216,39 +6216,39 @@ Chcete pokračovat?</translation>
       <translation>Vyberte alespoň 2 tvary. Případně vyberte 1 složený tvar obsahující 2 nebo více tvarů, které chcete spojit.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="951"/>
       <source>Select at least one shape</source>
       <translation>Vyberte alespoň jeden tvar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1084"/>
-      <location filename="../../Command.cpp" line="1154"/>
+      <location filename="../../Command.cpp" line="1078"/>
+      <location filename="../../Command.cpp" line="1148"/>
       <source>STEP with colors</source>
       <translation>STEP s barvami</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1086"/>
-      <location filename="../../Command.cpp" line="1156"/>
+      <location filename="../../Command.cpp" line="1080"/>
+      <location filename="../../Command.cpp" line="1150"/>
       <source>IGES with colors</source>
       <translation>IGES s barvami</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1199"/>
       <source>All CAD Files</source>
       <translation>Všechny CAD soubory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2545"/>
       <source>Select at most one object to array.</source>
       <translation type="unfinished">Select at most one object to array.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Select one object from the active document.</source>
       <translation type="unfinished">Select one object from the active document.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2282"/>
+      <location filename="../../Command.cpp" line="2274"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>Vyberte buď 2 hrany, nebo 2 čáry.</translation>
     </message>
@@ -7207,17 +7207,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Scale</source>
       <translation>Změna velikosti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Scales the selected shape</source>
       <translation>Změní měřítko vybraného tvaru</translation>
     </message>
@@ -7379,17 +7379,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2807"/>
+      <location filename="../../Command.cpp" line="2799"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2808"/>
+      <location filename="../../Command.cpp" line="2800"/>
       <source>Coordinate System</source>
       <translation>Souřadnicový systém</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2809"/>
+      <location filename="../../Command.cpp" line="2801"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>Vytvoří souřadnicový systém, který lze přiřadit k jiným objektům</translation>
     </message>
@@ -7397,17 +7397,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2985"/>
+      <location filename="../../Command.cpp" line="2977"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2986"/>
+      <location filename="../../Command.cpp" line="2978"/>
       <source>Datums</source>
       <translation>Referenční geometrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2988"/>
+      <location filename="../../Command.cpp" line="2980"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Vytvoří referenční objekt (souřadnicový systém, rovinu, přímku nebo bod), který lze přiřadit k jiným objektům</translation>
     </message>
@@ -7423,17 +7423,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2846"/>
+      <location filename="../../Command.cpp" line="2838"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2847"/>
+      <location filename="../../Command.cpp" line="2839"/>
       <source>Datum Plane</source>
       <translation>Referenční rovina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2848"/>
+      <location filename="../../Command.cpp" line="2840"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Vytvoří referenční rovinu, kterou lze připojit k jiným objektům</translation>
     </message>
@@ -7441,17 +7441,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2880"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2881"/>
+      <location filename="../../Command.cpp" line="2873"/>
       <source>Datum Line</source>
       <translation>Referenční čára</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2882"/>
+      <location filename="../../Command.cpp" line="2874"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Vytvoří referenční linii, kterou lze připojit k jiným objektům</translation>
     </message>
@@ -7459,17 +7459,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2914"/>
+      <location filename="../../Command.cpp" line="2906"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2915"/>
+      <location filename="../../Command.cpp" line="2907"/>
       <source>Datum Point</source>
       <translation>Referenční bod</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2916"/>
+      <location filename="../../Command.cpp" line="2908"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Vytvoří referenční bod, který lze připojit k jiným objektům</translation>
     </message>
@@ -7652,12 +7652,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2464"/>
+      <location filename="../../Command.cpp" line="2456"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>Trvalý sekč&amp;ní řez</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2465"/>
+      <location filename="../../Command.cpp" line="2457"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>Vytvoří nový objekt jako booleovský průnik všech viditelných tvarů a vybraných osových rovin</translation>
     </message>
@@ -7678,12 +7678,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartCmdVertexSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="193"/>
+      <location filename="../../CommandFilter.cpp" line="185"/>
       <source>Vertex Selection</source>
       <translation>Výběr vrcholů</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="194"/>
+      <location filename="../../CommandFilter.cpp" line="186"/>
       <source>Only allows the selection of vertices</source>
       <translation>Povoluje pouze výběr vrcholů</translation>
     </message>
@@ -7691,12 +7691,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartCmdEdgeSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="218"/>
+      <location filename="../../CommandFilter.cpp" line="210"/>
       <source>Edge Selection</source>
       <translation>Výběr hrany</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="219"/>
+      <location filename="../../CommandFilter.cpp" line="211"/>
       <source>Only allows the selection of edges</source>
       <translation>Umožňuje pouze výběr hran</translation>
     </message>
@@ -7704,12 +7704,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartCmdFaceSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="243"/>
+      <location filename="../../CommandFilter.cpp" line="235"/>
       <source>Face Selection</source>
       <translation>Výběr stěny</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="244"/>
+      <location filename="../../CommandFilter.cpp" line="236"/>
       <source>Only allows the selection of faces</source>
       <translation>Umožňuje pouze výběr stěn</translation>
     </message>
@@ -7717,12 +7717,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="273"/>
+      <location filename="../../CommandFilter.cpp" line="265"/>
       <source>No Selection Filters</source>
       <translation>Žádné výběrové filtry</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="274"/>
+      <location filename="../../CommandFilter.cpp" line="266"/>
       <source>Clears all selection filters</source>
       <translation>Vymaže všechny výběrové filtry</translation>
     </message>
@@ -7853,78 +7853,6 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::PatternPointParametersWidget</name>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
-      <source>Point object</source>
-      <translation>Bodový objekt</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
-      <source>Select Point Object</source>
-      <translation>Vybrat bodový objek</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
-      <source>Relative to first</source>
-      <translation type="unfinished">Relative to first</translation>
-    </message>
-    <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
-      <source>Origin point index</source>
-      <translation type="unfinished">Origin point index</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::PatternCircularParametersWidget</name>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
-      <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
-      <source>Axis</source>
-      <translation>Osa</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
-      <source>Radial distance</source>
-      <translation>Radiální vzdálenost</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
-      <source>Tangential distance</source>
-      <translation>Tangenciální vzdálenost</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
-      <source>Concentric circles</source>
-      <translation>Soustředné kruhy</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
-      <source>Symmetry</source>
-      <translation>Symetrie</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
-      <source>Start at selected shape</source>
-      <translation type="unfinished">Start at selected shape</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
-      <source>Binormal axis</source>
-      <translation type="unfinished">Binormal axis</translation>
-    </message>
-    <message>
-      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
-      <source>Flip binormal direction</source>
-      <translation type="unfinished">Flip binormal direction</translation>
-    </message>
-  </context>
-  <context>
     <name>PartGui::PatternPathParametersWidget</name>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="17"/>
@@ -8029,6 +7957,54 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::PatternCircularParametersWidget</name>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
+      <source>Axis</source>
+      <translation>Osa</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="48"/>
+      <source>Radial distance</source>
+      <translation>Radiální vzdálenost</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
+      <source>Tangential distance</source>
+      <translation>Tangenciální vzdálenost</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
+      <source>Concentric circles</source>
+      <translation>Soustředné kruhy</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
+      <source>Symmetry</source>
+      <translation>Symetrie</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation type="unfinished">Start at selected shape</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation type="unfinished">Binormal axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation type="unfinished">Flip binormal direction</translation>
+    </message>
+  </context>
+  <context>
     <name>TaskLinkArrayParameters</name>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
@@ -8042,24 +8018,161 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::TaskPatternParameters</name>
+    <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="147"/>
-      <source>Direction 2</source>
-      <translation>Směr 2</translation>
+      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
+      <source>Point object</source>
+      <translation>Bodový objekt</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
+      <source>Select Point Object</source>
+      <translation>Vybrat bodový objek</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
+      <source>Relative to first</source>
+      <translation type="unfinished">Relative to first</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
+      <source>Origin point index</source>
+      <translation type="unfinished">Origin point index</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::PatternInstanceControls</name>
+    <name>Part::FaceMakerUnified</name>
     <message>
-      <location filename="../../PatternInstanceControls.cpp" line="226"/>
-      <source>Restores this instance</source>
-      <translation>Obnovit tuto instanci</translation>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>Unifikovaný nástroj pro tvorbu stěn</translation>
     </message>
     <message>
-      <location filename="../../PatternInstanceControls.cpp" line="231"/>
-      <source>Suppresses this instance</source>
-      <translation>Potlačit tuto instanci</translation>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>Sjednocené: zpracovává vnořené otvory, překrývající se čáry a zakřivené plochy</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBuildFace</name>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
+      <source>BuildFace facemaker</source>
+      <translation>BuildFace – nástroj pro tvorbu stěn</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
+      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
+      <translation>Rozdělí hrany v bodech průsečíků a vyhledá všechny ohraničené oblasti ploch. Zvládá libovolnou překrývající se geometrii.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayCircular</name>
+    <message>
+      <location filename="../../Command.cpp" line="2628"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2629"/>
+      <source>Circular Link Array</source>
+      <translation type="unfinished">Circular Link Array</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2630"/>
+      <source>Creates a concentric circular array of linked objects</source>
+      <translation type="unfinished">Creates a concentric circular array of linked objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPath</name>
+    <message>
+      <location filename="../../Command.cpp" line="2663"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2664"/>
+      <source>Path Link Array</source>
+      <translation type="unfinished">Path Link Array</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2665"/>
+      <source>Creates an array of linked objects along a path</source>
+      <translation type="unfinished">Creates an array of linked objects along a path</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPoint</name>
+    <message>
+      <location filename="../../Command.cpp" line="2698"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2699"/>
+      <source>Point Link Array</source>
+      <translation type="unfinished">Point Link Array</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2700"/>
+      <source>Creates an array of linked objects at each point of a sketch or shape</source>
+      <translation type="unfinished">Creates an array of linked objects at each point of a sketch or shape</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayLinear</name>
+    <message>
+      <location filename="../../Command.cpp" line="2733"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2734"/>
+      <source>Linear Link Array</source>
+      <translation type="unfinished">Linear Link Array</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2735"/>
+      <source>Creates a linear array of linked objects</source>
+      <translation type="unfinished">Creates a linear array of linked objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPolar</name>
+    <message>
+      <location filename="../../Command.cpp" line="2768"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2769"/>
+      <source>Polar Link Array</source>
+      <translation type="unfinished">Polar Link Array</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2770"/>
+      <source>Creates a polar array of linked objects</source>
+      <translation type="unfinished">Creates a polar array of linked objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrays</name>
+    <message>
+      <location filename="../../Command.cpp" line="2941"/>
+      <source>Part</source>
+      <translation>Part</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2942"/>
+      <source>Link Arrays</source>
+      <translation type="unfinished">Link Arrays</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2943"/>
+      <source>Creates link arrays</source>
+      <translation type="unfinished">Creates link arrays</translation>
     </message>
   </context>
   <context>
@@ -8168,137 +8281,24 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartLinkArrayCircular</name>
+    <name>PartGui::PatternInstanceControls</name>
     <message>
-      <location filename="../../Command.cpp" line="2636"/>
-      <source>Part</source>
-      <translation>Part</translation>
+      <location filename="../../PatternInstanceControls.cpp" line="226"/>
+      <source>Restores this instance</source>
+      <translation>Obnovit tuto instanci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2637"/>
-      <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2638"/>
-      <source>Creates a concentric circular array of linked objects</source>
-      <translation type="unfinished">Creates a concentric circular array of linked objects</translation>
+      <location filename="../../PatternInstanceControls.cpp" line="231"/>
+      <source>Suppresses this instance</source>
+      <translation>Potlačit tuto instanci</translation>
     </message>
   </context>
   <context>
-    <name>CmdPartLinkArrayPath</name>
+    <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../Command.cpp" line="2671"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2672"/>
-      <source>Path Link Array</source>
-      <translation type="unfinished">Path Link Array</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2673"/>
-      <source>Creates an array of linked objects along a path</source>
-      <translation type="unfinished">Creates an array of linked objects along a path</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrayPoint</name>
-    <message>
-      <location filename="../../Command.cpp" line="2706"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2707"/>
-      <source>Point Link Array</source>
-      <translation type="unfinished">Point Link Array</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2708"/>
-      <source>Creates an array of linked objects at each point of a sketch or shape</source>
-      <translation type="unfinished">Creates an array of linked objects at each point of a sketch or shape</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrayLinear</name>
-    <message>
-      <location filename="../../Command.cpp" line="2741"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2742"/>
-      <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2743"/>
-      <source>Creates a linear array of linked objects</source>
-      <translation type="unfinished">Creates a linear array of linked objects</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrayPolar</name>
-    <message>
-      <location filename="../../Command.cpp" line="2776"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2777"/>
-      <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2778"/>
-      <source>Creates a polar array of linked objects</source>
-      <translation type="unfinished">Creates a polar array of linked objects</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLinkArrays</name>
-    <message>
-      <location filename="../../Command.cpp" line="2949"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2950"/>
-      <source>Link Arrays</source>
-      <translation type="unfinished">Link Arrays</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2951"/>
-      <source>Creates link arrays</source>
-      <translation type="unfinished">Creates link arrays</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerBuildFace</name>
-    <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
-      <source>BuildFace facemaker</source>
-      <translation>BuildFace – nástroj pro tvorbu stěn</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
-      <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Rozdělí hrany v bodech průsečíků a vyhledá všechny ohraničené oblasti ploch. Zvládá libovolnou překrývající se geometrii.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>Unifikovaný nástroj pro tvorbu stěn</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Sjednocené: zpracovává vnořené otvory, překrývající se čáry a zakřivené plochy</translation>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
+      <source>Direction 2</source>
+      <translation>Směr 2</translation>
     </message>
   </context>
 </TS>

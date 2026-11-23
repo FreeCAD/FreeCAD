@@ -4719,7 +4719,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation>Flächenerkennung-Algorithmus</translation>
+      <translation>Flächenerkennungs-Algorithmus</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>

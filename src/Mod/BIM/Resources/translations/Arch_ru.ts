@@ -1415,17 +1415,17 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation>Булевский ifc</translation>
+      <translation>Логический ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation>Ifc Целое число</translation>
+      <translation>Целое число Ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation>Ifc реальное число</translation>
+      <translation>Вещественное число Ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
@@ -2516,7 +2516,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="128"/>
       <source>Set "Move base" property to True by default</source>
-      <translation>Задать свойство «Переместить основу» в истину по умолчанию</translation>
+      <translation>Задать свойство «Переместить основу» в да по умолчанию</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="20"/>
@@ -5496,7 +5496,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="362"/>
       <source>Curtain Wall</source>
-      <translation>Фасад</translation>
+      <translation>Навесная стена</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTruss.py" line="58"/>
@@ -5508,7 +5508,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="125"/>
       <source>Create Curtain Wall</source>
-      <translation>Добавить фасад</translation>
+      <translation>Добавить навесную стену</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="759"/>
@@ -6685,7 +6685,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCurtainWall.py" line="741"/>
       <source>Refine</source>
-      <translation>Закрепить</translation>
+      <translation>Улучшить</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="64"/>
@@ -7364,22 +7364,22 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="737"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Смещение по оси X между базовой базой и осью инструмента (используется, только если BasePerpendicularToTool равен True)</translation>
+      <translation>Смещение по оси X между базовым объектом и осью инструмента (используется только если базовый объект перпендикулярен инструменты равен да)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="748"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Смещение по оси Y между базовой базой и осью инструмента (используется, только если BasePerpendicularToTool равен True)</translation>
+      <translation>Смещение по оси Y между базовым объектом и осью инструмента (используется только если базовый объект перпендикулярен инструменты равен да)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="759"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Зеркальное отображение базы по оси Y (используется только если BasePerpendicularToTool равен True)</translation>
+      <translation>Зеркальное отображение базового объекта по оси Y (используется только если базовый объект перпендикулярен инструменты равен да)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="770"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation>Вращение базы вокруг оси инструмента (используется только если BasePerpendicularToTool равен True)</translation>
+      <translation>Вращение базового объекта вокруг оси инструмента (используется только если базовый объект перпендикулярен инструменты равен да)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="780"/>
@@ -7985,7 +7985,7 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</so
     <message>
       <location filename="../../ArchSite.py" line="1447"/>
       <source>Update the Declination value based on the compass rotation</source>
-      <translation>Обновить значение наклона на основе ротации компаса</translation>
+      <translation>Обновить значение наклона на основе поворота компаса</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1457"/>
@@ -8901,87 +8901,87 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</so
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
       <source>An optional host object for this curtain wall</source>
-      <translation>Необязательный хост-объект для занавесной стены</translation>
+      <translation>Необязательный несущий объект для навесной стены</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="115"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation>Высота занавесной стены, если основана на краю</translation>
+      <translation>Высота навесной стены, определяется по выбранному ребру</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="124"/>
       <source>The number of vertical mullions</source>
-      <translation>Количество вертикальных стоек(бифориев, муллионов)</translation>
+      <translation>Количество вертикальных импостов</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="136"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation>Если профиль вертикальных мульонов (вертикальных элементов разделения либо декорации) выравнивается с поверхностью или нет</translation>
+      <translation>Выровнен ли профиль вертикальных импостов с поверхностью или нет</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="146"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation>Количество вертикальных участков этого светопрозрачного фасада</translation>
+      <translation>Количество вертикальных секций этой навесной стены</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="162"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation>Высота профиля вертикальных бифориев, если профиль не используется</translation>
+      <translation>Высота профиля вертикальных импостов, если профиль не задан отдельным параметром</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="174"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation>Ширина профиля вертикальных бифориев, если профиль не используется</translation>
+      <translation>Ширина профиля вертикальных импостов, если профиль не задан отдельным параметром</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="186"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
-      <translation>Профиль для вертикальных муллионов (отключает вертикальный размер муллиона)</translation>
+      <translation>Профиль для вертикальных импостов (отключает параметры размеров вертикальных импостов)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="194"/>
       <source>The number of horizontal mullions</source>
-      <translation>Количество горизонтальных муллионов</translation>
+      <translation>Количество горизонтальных импостов</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="206"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
-      <translation>Если профиль горизонтальных мульонов выравнивается с поверхностью или нет</translation>
+      <translation>Выровнен ли профиль горизонтальных импостов с поверхностью или нет</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="216"/>
       <source>The number of horizontal sections of this curtain wall</source>
-      <translation>Количество горизонтальных секций светопрозрачного фасада</translation>
+      <translation>Количество горизонтальных секций этой навесной стены</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="232"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation>Высота профиля горизонтального муллиона, если профиль не используется</translation>
+      <translation>Высота профиля горизонтальных импостов, если профиль не задан отдельным параметром</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="244"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation>Ширина горизонтальных муллионов профиля, если профиль не используется</translation>
+      <translation>Ширина профиля горизонтальных импостов, если профиль не задан отдельным параметром</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="256"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
-      <translation>Профиль для горизонтальных муллионов (отключает горизонтальный размер муллиона)</translation>
+      <translation>Профиль для горизонтальных импостов (отключает параметры размеров горизонтальных импостов)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="264"/>
       <source>The number of diagonal mullions</source>
-      <translation>Количество диагональных мульонов</translation>
+      <translation>Количество диагональных импостов</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="276"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation>Размер диагональных муллионов, если таковые имеются, если профиль не используется</translation>
+      <translation>Размер диагональных импостов, если таковые имеются и если профиль не задан отдельным параметром</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="288"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation>Профиль для диагональных муллионов, если они (отключает горизонтальный размер муллиона)</translation>
+      <translation>Профиль для диагональных импостов, если таковые имеются (отключает диагональный размер импоста)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="296"/>
@@ -9011,7 +9011,7 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</so
     <message>
       <location filename="../../ArchCurtainWall.py" line="344"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation>Вертикальный ориентир используемый объектом, чтобы провести вертикальные/горизонтальные направления. Разместите его приближенно к настоящему вертикальному направлению вашего свтопрозрачного фасада</translation>
+      <translation>Вертикальный ориентир используемый объектом, чтобы провести вертикальные/горизонтальные направления. Разместите его приближенно к настоящему вертикальному направлению вашей навесной стены</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="356"/>
@@ -10040,7 +10040,7 @@ Ignored if this wall is based on a solid.</source>
     <message>
       <location filename="../../bimcommands/BimFrame.py" line="45"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
-      <translation>Создаёт объект каркаса из плоских 2D-объектов (траекторию(-и) выдавливания) и профиль. Убедитесь, что объекты выбраны в данном порядке.</translation>
+      <translation>Создаёт объект каркаса из плоских двумерных объектов (траектории(й) выдавливания и профиля). Убедитесь, что объекты выбраны в данном порядке.</translation>
     </message>
   </context>
   <context>

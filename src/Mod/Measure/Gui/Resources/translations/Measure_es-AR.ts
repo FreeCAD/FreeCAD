@@ -67,7 +67,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Nominal distance: %1, Axis distance: %2</source>
-      <translation>Distancia nominal: %1, distancia del eje: %2</translation>
+      <translation>Distancia nominal: %1, Distancia del eje: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="233"/>
@@ -185,7 +185,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measures a feature</source>
-      <translation>Mide una característica</translation>
+      <translation>Mide una función</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
-      <translation>%1 auto guardado</translation>
+      <translation>%1 guardado automático</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
-      <translation>%1 empieza una nueva medida</translation>
+      <translation>%1 inicia una nueva medición</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="534"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="820"/>
       <source>Show Delta</source>
-      <translation>Mostrar delta</translation>
+      <translation>Mostrar Delta</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="263"/>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
       <source>Select…</source>
-      <translation>Seleccionar…</translation>
+      <translation>Seleccionar...</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="137"/>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation>Momentos principales de inercia</translation>
+      <translation>Principales momentos de inercia</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>

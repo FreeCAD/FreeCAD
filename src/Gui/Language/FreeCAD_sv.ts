@@ -7438,7 +7438,7 @@ Ange en annan katalog?</translation>
     <message>
       <location filename="Translator.cpp" line="280"/>
       <source>Persian</source>
-      <translation type="unfinished">Persian</translation>
+      <translation>Persiska</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="239"/>

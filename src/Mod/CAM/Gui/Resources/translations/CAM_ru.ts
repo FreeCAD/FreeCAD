@@ -2161,7 +2161,7 @@ Does not affect the toolpath point spacing (Sample Interval).</source>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="43"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="23"/>
       <source>Bounding box</source>
-      <translation>Ограничительная рамка</translation>
+      <translation>Габаритная рамка</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="55"/>
@@ -3332,7 +3332,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="500"/>
       <source>Bounding box</source>
-      <translation>Ограничительная рамка</translation>
+      <translation>Габаритная рамка</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="513"/>
