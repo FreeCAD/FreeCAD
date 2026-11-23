@@ -9,31 +9,16 @@ ${LangFileString} TEXT_WELCOME "Este asistente vai-no guiar na instalación do F
 				$\r$\n\
 				$_CLICK"
 
-#${LangFileString} FileTypeTitle "Documento FreeCAD"
-
-#${LangFileString} SecAllUsersTitle "Instalar para todos os usuários?"
 ${LangFileString} SecFileAssocTitle "Asociación dos ficheiros"
 ${LangFileString} SecDesktopTitle "Icone do ambiente de traballo"
 
 ${LangFileString} SecCoreDescription "Os ficheiros FreeCAD."
-#${LangFileString} SecAllUsersDescription "Instalar o FreeCAD monousuário ou multiusuário."
 ${LangFileString} SecFileAssocDescription "Asociar a extensión .FCStd co FreeCAD."
 ${LangFileString} SecDesktopDescription "Cria un icone do FreeCAD no ambiente de traballo."
-#${LangFileString} SecDictionaries "Dicionarios"
 
-#${LangFileString} PathName 'Camiño ao ficheiro $\"xxx.exe$\"'
-#${LangFileString} InvalidFolder 'O ficheiro $\"xxx.exe$\" non está no camiño especificado.'
-
-#${LangFileString} ConfigInfo "A configuración seguinte do FreeCAD irá demorar un pouco."
-
-#${LangFileString} RunConfigureFailed "Non se deu executado o script de configuración"
-${LangFileString} InstallRunning "O instalador xa está a correr!"
 ${LangFileString} AlreadyInstalled "O FreeCAD ${APP_SERIES_KEY2} xa está instalado!$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
 
-#${LangFileString} FinishPageMessage "Parabéns! O FreeCAD foi instalado con suceso.$\r$\n\
-#					$\r$\n\
-#					(O primeiro início do FreeCAD pode levar alguns segundos.)"
 ${LangFileString} FinishPageRun "Lanzar o FreeCAD"
 
 ${LangFileString} UnNotInRegistryLabel "Non se da achado o FreeCAD no registo.$\r$\n\
@@ -43,7 +28,6 @@ ${LangFileString} UnNotAdminLabel "Precisa de priviléxios de administrador para
 ${LangFileString} UnReallyRemoveLabel "Seguro que quer eliminar completamente o FreeCAD e todos os seus componentes?"
 ${LangFileString} UnFreeCADPreferencesTitle 'Preferéncias de usuário do FreeCAD'
 
-#${LangFileString} SecUnProgDescription "Desinstala xxx."
 ${LangFileString} SecUnPreferencesDescription 'Elimina as pastas de configuración do  FreeCAD$\r$\n\
 						$\"$AppPre\username\$\r$\n\
 						$AppSuff\$\r$\n\

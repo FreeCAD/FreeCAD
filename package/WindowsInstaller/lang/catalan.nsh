@@ -9,31 +9,16 @@ ${LangFileString} TEXT_WELCOME "Aquest assistent us guiarà en la instal·lació
 				$\r$\n\
 				$_CLICK"
 
-#${LangFileString} FileTypeTitle "Document FreeCAD"
-
-#${LangFileString} SecAllUsersTitle "Voleu instal·lar-ho per a tots els usuaris?"
 ${LangFileString} SecFileAssocTitle "Associació de fitxers"
 ${LangFileString} SecDesktopTitle "Icona a l'escriptori"
 
 ${LangFileString} SecCoreDescription "Els fitxers del FreeCAD."
-#${LangFileString} SecAllUsersDescription "Instal·la el FreeCAD per a tots els usuaris o només per a l'usuari actual."
 ${LangFileString} SecFileAssocDescription "Els fitxers amb extensió .FCStd s'obriran automàticament amb el FreeCAD."
 ${LangFileString} SecDesktopDescription "Una icona del FreeCAD a l'escriptori."
-#${LangFileString} SecDictionaries "Diccionaris"
 
-#${LangFileString} PathName 'Camí al fitxer $\"xxx.exe$\"'
-#${LangFileString} InvalidFolder 'El fitxer $\"xxx.exe$\" no es troba al camí indicat.'
-
-#${LangFileString} ConfigInfo "La configuració següent del FreeCAD pot trigar una mica."
-
-#${LangFileString} RunConfigureFailed "No es pot executar el programa de configuració"
-${LangFileString} InstallRunning "L'instal·lador ja s'està executant!"
 ${LangFileString} AlreadyInstalled "El FreeCAD ${APP_SERIES_KEY2} ja es troba instal·lat!$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
 
-#${LangFileString} FinishPageMessage "Felicitats! Heu instal·lat correctament el FreeCAD.$\r$\n\
-#					$\r$\n\
-#					(La primera execució del FreeCAD pot trigar alguns segons.)"
 ${LangFileString} FinishPageRun "Executa el FreeCAD"
 
 ${LangFileString} UnNotInRegistryLabel "No es possible trobar el FreeCAD al registre.$\r$\n\
@@ -43,7 +28,6 @@ ${LangFileString} UnNotAdminLabel "Necessiteu drets d'administrador per desinsta
 ${LangFileString} UnReallyRemoveLabel "Esteu segur de voler suprimir completament el FreeCAD i tots els seus components?"
 ${LangFileString} UnFreeCADPreferencesTitle 'Preferències d$\'usuari del FreeCAD'
 
-#${LangFileString} SecUnProgDescription "Desinstal·xxx."
 ${LangFileString} SecUnPreferencesDescription 'Suprimeix les carptes de configuració del FreeCAD$\r$\n\
 						$\"$AppPre\username\$\r$\n\
 						$AppSuff\$\r$\n\

@@ -12,41 +12,20 @@ ${LangFileString} TEXT_WELCOME "Dieser Assistent wird Sie durch die Installation
 				$\r$\n\
 				$_CLICK"
 
-#${LangFileString} TEXT_CONFIGURE_PYTHON "Kompiliere Python Skripte..."
-
-${LangFileString} TEXT_FINISH_DESKTOP "Ein Symbol auf der Arbeitsoberfläche erzeugen"
 ${LangFileString} TEXT_FINISH_WEBSITE "Besuchen Sie freecad.org für aktuelle Neuigkeiten"
 
-#${LangFileString} FileTypeTitle "FreeCAD-Dokument"
-
-#${LangFileString} SecAllUsersTitle "Für alle Nutzer installieren?"
 ${LangFileString} SecFileAssocTitle "Dateizuordnungen"
 ${LangFileString} SecDesktopTitle "Desktopsymbol"
 
 ${LangFileString} SecCoreDescription "Das Programm FreeCAD."
-#${LangFileString} SecAllUsersDescription "FreeCAD für alle Nutzer oder nur für den aktuellen Nutzer installieren."
 ${LangFileString} SecFileAssocDescription "Vernüpfung zwischen FreeCAD und der .FCStd Dateiendung."
 ${LangFileString} SecDesktopDescription "Verknüpfung zu FreeCAD auf dem Desktop."
-#${LangFileString} SecDictionaries "Wörterbücher"
-#${LangFileString} SecDictionariesDescription "Rechtschreibprüfung- Wörterbucher die heruntergeladen und installiert werden können."
 
-#${LangFileString} PathName 'Pfad zur Datei $\"xxx.exe$\"'
-#${LangFileString} InvalidFolder 'Kann die Datei $\"xxx.exe$\" nicht finden.'
-
-#${LangFileString} DictionariesFailed 'Herunterladen des Wörterbuchs für Sprache $\"$R3$\" fehlgeschlagen.'
-
-#${LangFileString} ConfigInfo "Die folgende Konfiguration von FreeCAD wird eine Weile dauern."
-
-#${LangFileString} RunConfigureFailed "Konnte das Konfigurationsskript nicht ausführen."
-${LangFileString} InstallRunning "Der Installer läuft bereits!"
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} ist bereits installiert!$\r$\n\
 				Wollen Sie FreeCAD dennoch über die bestehende Version installieren?"
 ${LangFileString} NewerInstalled "Sie versuchen eine Vesion von FreeCAD zu installieren, die älter als die derzeit installierte ist.$\r$\n\
 				  Wenn Sie das wirklich wollen, müssen Sie erst das existierende FreeCAD $OldVersionNumber deinstallieren."
 
-#${LangFileString} FinishPageMessage "Glückwunsch! FreeCAD wurde erfolgreich installiert.$\r$\n\
-#					$\r$\n\
-#					(Der erste Start von FreeCAD kann etwas länger dauern.)"
 ${LangFileString} FinishPageRun "FreeCAD starten"
 
 ${LangFileString} UnNotInRegistryLabel "Kann FreeCAD nicht in der Registry finden.$\r$\n\
@@ -56,7 +35,6 @@ ${LangFileString} UnNotAdminLabel "Sie benötigen Administratorrechte um FreeCAD
 ${LangFileString} UnReallyRemoveLabel "Sind Sie sicher, dass sie FreeCAD und all seine Komponenten deinstallieren möchten?"
 ${LangFileString} UnFreeCADPreferencesTitle 'FreeCADs Benutzereinstellungen'
 
-#${LangFileString} SecUnProgDescription "Deinstalliert xxx."
 ${LangFileString} SecUnPreferencesDescription 'Löscht FreeCADs Benutzereinstellungen$\r$\n\
 						(Ordner $\"$AppPre\username\$\r$\n\
 						$AppSuff\$\r$\n\

@@ -9,29 +9,16 @@ ${LangFileString} TEXT_WELCOME "Dit installatie programma zal FreeCAD op uw syst
 				$\r$\n\
 				$_CLICK"
 
-#${LangFileString} SecAllUsersTitle "Installeer voor alle gebruikers?"
 ${LangFileString} SecFileAssocTitle "Bestand associaties"
 ${LangFileString} SecDesktopTitle "Bureaublad pictogram"
 
 ${LangFileString} SecCoreDescription "De FreeCAD bestanden."
-#${LangFileString} SecAllUsersDescription "Installeer FreeCAD voor alle gebruikers of uitsluitend de huidige gebruiker?"
 ${LangFileString} SecFileAssocDescription "Associeer het FreeCAD programma met de .FCStd extensie."
 ${LangFileString} SecDesktopDescription "Een FreeCAD pictogram op het Bureaublad."
-#${LangFileString} SecDictionaries "Woordenboeken"
 
-#${LangFileString} PathName 'Map met het programma $\"xxx.exe$\"'
-#${LangFileString} InvalidFolder '$\"xxx.exe$\" is niet gevonden.'
-
-#${LangFileString} ConfigInfo "De volgende configuratie van FreeCAD zal enige tijd duren."
-
-#${LangFileString} RunConfigureFailed "Mislukte configuratie poging"
-${LangFileString} InstallRunning "Het installatieprogramma is al gestart!"
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} is reeds geinstalleerd!$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
 
-#${LangFileString} FinishPageMessage "Gefeliciteerd! FreeCAD is succesvol geinstalleerd.$\r$\n\
-#					$\r$\n\
-#					(De eerste keer dat u FreeCAD start kan dit enige seconden duren.)"
 ${LangFileString} FinishPageRun "Start FreeCAD"
 
 ${LangFileString} UnNotInRegistryLabel "FreeCAD is niet gevonden in het Windows register.$\r$\n\
@@ -40,7 +27,6 @@ ${LangFileString} UnInstallRunning "U moet FreeCAD eerst afsluiten!"
 ${LangFileString} UnNotAdminLabel "U heeft systeem-beheerrechten nodig om FreeCAD te verwijderen!"
 ${LangFileString} UnReallyRemoveLabel "Weet u zeker dat u FreeCAD en alle componenten volledig wil verwijderen van deze computer?"
 
-#${LangFileString} SecUnProgDescription "Verwijder xxx."
 ${LangFileString} SecUnPreferencesDescription 'Verwijder FreeCAD$\'s configuratie map$\r$\n\
 						$\"$AppPre\username\$\r$\n\
 						$AppSuff\$\r$\n\

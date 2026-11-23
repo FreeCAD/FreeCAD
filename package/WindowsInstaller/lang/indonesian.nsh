@@ -11,39 +11,20 @@ ${LangFileString} TEXT_WELCOME "Program ini akan memandu anda dalam melakukan in
 				$\r$\n\
 				$_CLICK"
 
-#${LangFileString} TEXT_CONFIGURE_PYTHON "Proses kompilasi skrip Python ..."
-
-${LangFileString} TEXT_FINISH_DESKTOP "Membuat pintasan ikon di destop"
 ${LangFileString} TEXT_FINISH_WEBSITE "Kunjungi freecad.org untuk berita terbaru serta dukungan"
 
-#${LangFileString} FileTypeTitle "Dokumen-FreeCAD"
-
-#${LangFileString} SecAllUsersTitle "Pasang untuk semua pengguna?"
 ${LangFileString} SecFileAssocTitle "Berkas yang terkait"
 ${LangFileString} SecDesktopTitle "Ikon Desktop"
 
 ${LangFileString} SecCoreDescription "Berkas-berkas FreeCAD."
-#${LangFileString} SecAllUsersDescription "Pasang FreeCAD untuk semua pengguna atau hanya untuk pengguna ini saja."
 ${LangFileString} SecFileAssocDescription "Berkas dengan ekstensi .FCStd akan otomatis dibuka menggunakan FreeCAD."
 ${LangFileString} SecDesktopDescription "Ikon FreeCAD muncul di desktop."
-#${LangFileString} SecDictionaries "Kamus"
-#${LangFileString} SecDictionariesDescription "Kamus pemeriksa ejaan yang dapat diunduh dan dipasang."
 
-#${LangFileString} PathName 'Lokasi tempat berkas $\"xxx.exe$\" berada'
-#${LangFileString} InvalidFolder 'Berkas $\"xxx.exe$\" tidak berada di lokasi tempat yang dinyatakan.'
-
-#${LangFileString} ConfigInfo "Proses konfigurasi FreeCAD selanjutnya akan memerlukan waktu beberapa saat."
-
-#${LangFileString} RunConfigureFailed "Tidak bisa menjalankan skrip konfigurasi"
-${LangFileString} InstallRunning "Program instalasi sedang berjalan!"
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} sudah pernah diinstal!$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
 ${LangFileString} NewerInstalled "Anda akan memasang versi FreeCAD yang lama dari yang sudah terpasang.$\r$\n\
 				  Jika memang dikehendaki, anda harus menghapus dulu FreeCAD yang ada, FreeCAD $OldVersionNumber."
 
-#${LangFileString} FinishPageMessage "Selamat! FreeCAD berhasil diinstal dengan sukses.$\r$\n\
-#					$\r$\n\
-#					(Menjalankan FreeCAD untuk pertama kali memerlukan waktu beberapa detik.)"
 ${LangFileString} FinishPageRun "Menjalankan FreeCAD"
 
 ${LangFileString} UnNotInRegistryLabel "Tidak bisa menemukan FreeCAD di catatan registry.$\r$\n\
@@ -53,7 +34,6 @@ ${LangFileString} UnNotAdminLabel "Anda harus berlaku dan mempunyai hak sebagai 
 ${LangFileString} UnReallyRemoveLabel "Apakah anda yakin akan menghapus FreeCAD secara menyeluruh termasuk semua komponen yang ada?"
 ${LangFileString} UnFreeCADPreferencesTitle 'Preferensi pengguna FreeCAD'
 
-#${LangFileString} SecUnProgDescription "Penghapusan program xxx."
 ${LangFileString} SecUnPreferencesDescription 'Menghapus berkas konfigurasi FreeCAD pada folder$\r$\n\
 						$\"$AppPre\username\$\r$\n\
 						$AppSuff\$\r$\n\
