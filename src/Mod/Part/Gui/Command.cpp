@@ -1325,17 +1325,12 @@ void CmdPartMakeSolid::activated(int iMsg)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error(
-                    "Cannot convert {} because {}.\n",
-                    it->Label.getValue(),
-                    e.what()
-                );
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
                 QMessageBox::warning(
                     Gui::getMainWindow(),
                     QObject::tr("Cannot Convert to Solid"),
-                    QObject::tr(
-                        "The selected object could not be converted to a solid:\n%1"
-                    ).arg(QString::fromUtf8(e.what()))
+                    QObject::tr("The selected object could not be converted to a solid:\n%1")
+                        .arg(QString::fromUtf8(e.what()))
                 );
             }
         }
