@@ -7,7 +7,7 @@ Language: Polish
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Zainstalowane dla bieżącego użytkownika)"
 
-${LangFileString} TEXT_WELCOME "Kreator przeprowadzi Ciebie przez proces instalacji FreeCAD$\'a.$\r$\n\
+${LangFileString} TEXT_WELCOME "Kreator przeprowadzi Ciebie przez proces instalacji $(^NameDA)$\'a.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

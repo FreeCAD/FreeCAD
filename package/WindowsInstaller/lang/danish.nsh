@@ -5,7 +5,7 @@ Language: Danish
 
 !insertmacro LANGFILE_EXT "Danish"
 
-${LangFileString} TEXT_WELCOME "Denne guide vil installere FreeCAD på din computer.$\r$\n\
+${LangFileString} TEXT_WELCOME "Denne guide vil installere $(^NameDA) på din computer.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

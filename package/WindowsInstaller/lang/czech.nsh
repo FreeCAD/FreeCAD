@@ -5,7 +5,7 @@ Language: Czech
 
 !insertmacro LANGFILE_EXT "Czech"
 
-${LangFileString} TEXT_WELCOME "Tento pomocník vás provede instalací FreeCADu.$\r$\n\
+${LangFileString} TEXT_WELCOME "Tento pomocník vás provede instalací $(^NameDA)u.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

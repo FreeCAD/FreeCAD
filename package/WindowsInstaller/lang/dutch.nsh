@@ -5,7 +5,7 @@ Language: Dutch
 
 !insertmacro LANGFILE_EXT "Dutch"
 
-${LangFileString} TEXT_WELCOME "Dit installatie programma zal FreeCAD op uw systeem installeren.$\r$\n\
+${LangFileString} TEXT_WELCOME "Dit installatie programma zal $(^NameDA) op uw systeem installeren.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

@@ -44,16 +44,14 @@ Available commands:
     gather:              update all ts files found in the source code
                          (runs updatets.py)
     status:              prints a status of the translations
-    update / upload:     updates crowdin the current version of .ts files
-                         found in the source code
+    update / upload:     uploads Qt and Windows installer source strings to Crowdin
     build:               builds a new downloadable package on crowdin with all
                          translated strings
     build-status:        shows the status of the current builds available on
                          crowdin
     download [build_id]: downloads build specified by 'build_id' or latest if
                          build_id is left blank
-    apply / install:     applies downloaded translations to source code
-                         (runs updatefromcrowdin.py)
+    apply / install:     applies downloaded Qt and approved Windows installer translations
 
 Example:
 
@@ -76,9 +74,10 @@ import subprocess
 import tempfile
 import zipfile
 import re
-from collections import namedtuple
+from collections import Counter, namedtuple
 from functools import lru_cache
 from os.path import basename, splitext
+from pathlib import Path
 from urllib.parse import quote_plus
 from urllib.request import Request
 from urllib.request import urlopen
@@ -263,11 +262,14 @@ class CrowdinUpdater:
             data = json.dumps(data).encode("utf-8")
 
         request = Request(url, headers=headers, method=method, data=data)
-        return json.loads(urlopen(request).read())["data"]
+        with urlopen(request) as response:
+            if response.status == 204:
+                return None
+            return json.load(response)["data"]
 
     def _get_files_info(self):
         files = self._make_project_api_req("/files?limit=250")
-        return {f["data"]["path"].strip("/"): str(f["data"]["id"]) for f in files}
+        return {f["data"]["path"].strip("/"): f["data"]["id"] for f in files}
 
     def _add_storage(self, filename, fp):
         response = self._make_api_req(
@@ -281,26 +283,59 @@ class CrowdinUpdater:
         )
         return response["id"]
 
-    def _update_file(self, project_id, ts_file, files_info):
-        filename = quote_plus(ts_file.filename)
-
-        with open(ts_file.src_path, "rb") as fp:
-            storage_id = self._add_storage(filename, fp)
-
-        if filename in files_info:
-            file_id = files_info[filename]
-            self._make_project_api_req(
-                f"/files/{file_id}",
-                method="PUT",
-                data={
-                    "storageId": storage_id,
-                    "updateOption": "keep_translations_and_approvals",
-                },
+    def _upload_file(self, name, content, file_id, update_option):
+        storage_id = self._add_storage(name, content)
+        if file_id is None:
+            created = self._make_project_api_req(
+                "/files", method="POST", data={"storageId": storage_id, "name": name}
             )
-            print(f"{filename} updated")
-        else:
-            self._make_project_api_req("/files", data={"storageId": storage_id, "name": filename})
-            print(f"{filename} uploaded")
+            print(f"{name} uploaded")
+            return created["id"]
+
+        self._make_project_api_req(
+            f"/files/{file_id}",
+            method="PUT",
+            data={"storageId": storage_id, "updateOption": update_option},
+        )
+        print(f"{name} updated")
+        return file_id
+
+    def _update_file(self, ts_file, files_info):
+        name = quote_plus(ts_file.filename)
+        with open(ts_file.src_path, "rb") as fp:
+            self._upload_file(name, fp, files_info.get(name), "keep_translations_and_approvals")
+
+    def put_catalog(self, name, strings):
+        file_id = self._get_files_info().get(name)
+        payload = json.dumps(strings, ensure_ascii=False, indent=2) + "\n"
+        # Keep suggestions, but require fresh approval when English changes.
+        return self._upload_file(name, payload.encode("utf-8"), file_id, "keep_translations")
+
+    def get_catalog(self, name):
+        file_id = self._get_files_info().get(name)
+        if file_id is None:
+            return None, None
+
+        source = self._make_project_api_req(f"/files/{file_id}/download")
+        with urlopen(source["url"], timeout=60) as response:
+            return file_id, json.load(response)
+
+    def export_catalog(self, file_id, language_id):
+        result = self._make_project_api_req(
+            "/translations/exports",
+            method="POST",
+            data={
+                "fileIds": [file_id],
+                "targetLanguageId": language_id,
+                "skipUntranslatedStrings": True,
+                "exportApprovedOnly": True,
+            },
+        )
+        if result is None:
+            return {}
+
+        with urlopen(result["url"], timeout=60) as response:
+            return json.load(response)
 
     def status(self):
         response = self._make_project_api_req("/languages/progress?limit=100")
@@ -326,12 +361,9 @@ class CrowdinUpdater:
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             for ts_file in ts_files:
                 if self.multithread:
-                    future = executor.submit(
-                        self._update_file, self.project_identifier, ts_file, files_info
-                    )
-                    futures.append(future)
+                    futures.append(executor.submit(self._update_file, ts_file, files_info))
                 else:
-                    self._update_file(self.project_identifier, ts_file, files_info)
+                    self._update_file(ts_file, files_info)
 
         # This blocks until all futures are complete and will also throw any exception
         for future in futures:
@@ -349,6 +381,112 @@ def load_token():
                 return token
     # if file doesn't exist, read from CROWDIN_TOKEN
     return os.environ.get("CROWDIN_TOKEN")
+
+
+_INSTALLER_LANG = Path(__file__).resolve().parents[2] / "package" / "WindowsInstaller" / "lang"
+_INSTALLER_CATALOG = "WindowsInstaller.json"
+_INSTALLER_LOCALES = {
+    "arabic": "ar",
+    "basque": "eu",
+    "catalan": "ca",
+    "czech": "cs",
+    "danish": "da",
+    "dutch": "nl",
+    "french": "fr",
+    "galician": "gl",
+    "german": "de",
+    "hungarian": "hu",
+    "indonesian": "id",
+    "italian": "it",
+    "japanese": "ja",
+    "norwegian": "no",
+    "polish": "pl",
+    "portuguese": "pt-PT",
+    "portugueseBR": "pt-BR",
+    "romanian": "ro",
+    "russian": "ru",
+    "slovak": "sk",
+    "spanish": "es-ES",
+    "swedish": "sv-SE",
+    "turkish": "tr",
+    "ukrainian": "uk",
+}
+_NSIS_ENTRY = re.compile(r"^\$\{LangFileString\}[ \t]+(\w+)[ \t]+((?:[^\n]*\\\n)*[^\n]*)", re.M)
+_NSIS_VAR = re.compile(r"\$(?:\{\w+\}|\(\^?\w+\)|[A-Za-z_]\w*|[0-9])", re.ASCII)
+_NSIS_ESCAPES = {r"$\r": "\r", r"$\n": "\n", r"$\t": "\t", "$$": "$"}
+_NSIS_ESCAPES.update({"$\\" + char: char for char in "\"'`"})
+_NSIS_ESCAPE = re.compile("|".join(re.escape(key) for key in _NSIS_ESCAPES))
+
+
+def _nsis_text(value):
+    value = re.sub(r"\\\n[ \t]*", "", value)
+    if value[0] not in "\"'`" or value[-1] != value[0]:
+        raise ValueError(f"Not an NSIS string: {value}")
+    text = _NSIS_ESCAPE.sub(lambda match: _NSIS_ESCAPES[match[0]], value[1:-1])
+    return text.replace("\r\n", "\n")
+
+
+def _quote_nsis(text):
+    # Preserve only the substitutions validated against the source string.
+    parts = []
+    start = 0
+    for match in _NSIS_VAR.finditer(text):
+        parts.append(_escape_nsis(text[start : match.start()]))
+        parts.append(match[0])
+        start = match.end()
+    parts.append(_escape_nsis(text[start:]))
+    return '"' + "".join(parts) + '"'
+
+
+def _escape_nsis(text):
+    return (
+        text.replace("$", "$$").replace('"', r'$\"').replace("\n", r"$\r$\n").replace("\t", r"$\t")
+    )
+
+
+def _merge_installer(path, source, translations):
+    updates = {}
+    for key, english in source.items():
+        text = translations.get(key, "")
+        if text == "" or text == english:
+            continue
+        if Counter(_NSIS_VAR.findall(text)) != Counter(_NSIS_VAR.findall(english)):
+            raise ValueError(f"Installer placeholders do not match English: {path.name}:{key}")
+        updates[key] = text
+
+    def replace(match):
+        key = match[1]
+        text = updates.pop(key, None)
+        if text is None:
+            return match[0]
+        return f"${{LangFileString}} {key} {_quote_nsis(text)}"
+
+    old = path.read_text(encoding="utf-8-sig")
+    content = _NSIS_ENTRY.sub(replace, old)
+    if updates:
+        entries = [f"${{LangFileString}} {key} {_quote_nsis(text)}" for key, text in updates.items()]
+        content = content.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
+    if content != old:
+        path.write_text(content, encoding="utf-8", newline="\n")
+
+
+def _installer_source(lang):
+    english = (lang / "english.nsh").read_text(encoding="utf-8-sig")
+    return {key: _nsis_text(value) for key, value in _NSIS_ENTRY.findall(english)}
+
+
+def _apply_installer(updater, lang, enabled):
+    source = _installer_source(lang)
+    file_id, published = updater.get_catalog(_INSTALLER_CATALOG)
+    if published != source:
+        print("Skipping installer translations: upload the current English catalog first")
+        return
+
+    for locale, language in _INSTALLER_LOCALES.items():
+        if language not in enabled:
+            continue
+        translations = updater.export_catalog(file_id, language)
+        _merge_installer(lang / f"{locale}.nsh", source, translations)
 
 
 def updateqrc(qrcpath, lncode):
@@ -632,6 +770,7 @@ if __name__ == "__main__":
             for (a, b) in names_and_path
         ]
         updater.update(ts_files)
+        updater.put_catalog(_INSTALLER_CATALOG, _installer_source(_INSTALLER_LANG))
 
     elif command in ["apply", "install"]:
         print("retrieving list of languages...")
@@ -641,6 +780,7 @@ if __name__ == "__main__":
             item["languageId"] for item in status if item["translationProgress"] > THRESHOLD
         ]
         applyTranslations(languages)
+        _apply_installer(updater, _INSTALLER_LANG, {item["languageId"] for item in status})
         print("Updating Translator.cpp...")
         for ln in languages:
             updateTranslatorCpp(ln)

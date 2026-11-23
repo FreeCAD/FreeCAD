@@ -5,7 +5,7 @@ Language: Galician
 
 !insertmacro LANGFILE_EXT "Galician"
 
-${LangFileString} TEXT_WELCOME "Este asistente vai-no guiar na instalación do FreeCAD no seu computador.$\r$\n\
+${LangFileString} TEXT_WELCOME "Este asistente vai-no guiar na instalación do $(^NameDA) no seu computador.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

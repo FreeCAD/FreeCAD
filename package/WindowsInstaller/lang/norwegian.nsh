@@ -7,7 +7,7 @@ Language: Norwegian
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Installer for denne brukeren)"
 
-${LangFileString} TEXT_WELCOME "Denne veiviseren installerer FreeCAD på datamaskinen din.$\r$\n\
+${LangFileString} TEXT_WELCOME "Denne veiviseren installerer $(^NameDA) på datamaskinen din.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

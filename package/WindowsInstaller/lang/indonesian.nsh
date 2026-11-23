@@ -7,7 +7,7 @@ Language: Indonesian
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Pasang untuk Pengguna Yang Ini)"
 
-${LangFileString} TEXT_WELCOME "Program ini akan memandu anda dalam melakukan instalasi FreeCAD.$\r$\n\
+${LangFileString} TEXT_WELCOME "Program ini akan memandu anda dalam melakukan instalasi $(^NameDA).$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

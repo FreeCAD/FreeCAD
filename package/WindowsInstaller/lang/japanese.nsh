@@ -7,7 +7,7 @@ Language: Japanese
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(現ユーザー用に導入を行う)"
 
-${LangFileString} TEXT_WELCOME "このウィザードが、あなたのFreeCAD導入作業中のご案内をします。$\r$\n\
+${LangFileString} TEXT_WELCOME "このウィザードが、あなたの$(^NameDA)導入作業中のご案内をします。$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

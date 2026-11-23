@@ -7,7 +7,7 @@ Language: Ukrainian
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Встановлено для поточного користувача)"
 
-${LangFileString} TEXT_WELCOME "За допомогою цього майстра ви зможете встановити FreeCAD у вашу систему.$\r$\n\
+${LangFileString} TEXT_WELCOME "За допомогою цього майстра ви зможете встановити $(^NameDA) у вашу систему.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

@@ -5,7 +5,7 @@ Language: Romanian
 
 !insertmacro LANGFILE_EXT "Romanian"
 
-${LangFileString} TEXT_WELCOME "Acest asistent vă va ghida în procesul de instalare a programului FreeCAD. $\r$\n\
+${LangFileString} TEXT_WELCOME "Acest asistent vă va ghida în procesul de instalare a programului $(^NameDA). $\r$\n\
 				$\r$\n\
 				$_CLICK"
 

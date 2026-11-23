@@ -5,7 +5,7 @@ Language: Catalan
 
 !insertmacro LANGFILE_EXT "Catalan"
 
-${LangFileString} TEXT_WELCOME "Aquest assistent us guiarà en la instal·lació del FreeCAD.$\r$\n\
+${LangFileString} TEXT_WELCOME "Aquest assistent us guiarà en la instal·lació del $(^NameDA).$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

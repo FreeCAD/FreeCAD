@@ -7,7 +7,7 @@ Language: Portuguese
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Instalado para o Utilizador Atual)"
 
-${LangFileString} TEXT_WELCOME "Este assistente de instalação irá guiá-lo através da instalação do FreeCAD.$\r$\n\
+${LangFileString} TEXT_WELCOME "Este assistente de instalação irá guiá-lo através da instalação do $(^NameDA).$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

@@ -5,7 +5,7 @@ Language: Turkish
 
 !insertmacro LANGFILE_EXT "Turkish"
 
-${LangFileString} TEXT_WELCOME "Bu sihirbaz size FreeCAD programını kuracak.$\r$\n\
+${LangFileString} TEXT_WELCOME "Bu sihirbaz size $(^NameDA) programını kuracak.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

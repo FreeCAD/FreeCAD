@@ -7,7 +7,7 @@ Language: Slovak
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Inštalované pre súčasného užívateľa)"
 
-${LangFileString} TEXT_WELCOME "Tento sprievodca Vám pomáha inštalovať FreeCAD.$\r$\n\
+${LangFileString} TEXT_WELCOME "Tento sprievodca Vám pomáha inštalovať $(^NameDA).$\r$\n\
 				$\r$\n\
 				$_CLICK"
 

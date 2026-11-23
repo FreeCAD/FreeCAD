@@ -7,7 +7,7 @@ Language: Hungarian
 
 ${LangFileString} TEXT_INSTALL_CURRENTUSER "(Telepítve az aktuális felhasználónak)"
 
-${LangFileString} TEXT_WELCOME "A varázsló segítségével tudja telepíteni a FreeCAD-et.$\r$\n\
+${LangFileString} TEXT_WELCOME "A varázsló segítségével tudja telepíteni a $(^NameDA)-et.$\r$\n\
 				$\r$\n\
 				$_CLICK"
 
