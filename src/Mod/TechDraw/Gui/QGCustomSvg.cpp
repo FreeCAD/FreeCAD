@@ -68,6 +68,7 @@ bool QGCustomSvg::load(QByteArray *svgBytes)
     bool success = m_svgRender->load(*svgBytes);
     prepareGeometryChange();
     setSharedRenderer(m_svgRender);
+    update();
     return(success);
 }
 
@@ -76,6 +77,7 @@ bool QGCustomSvg::load(QString filename)
     bool success = m_svgRender->load(filename);
     prepareGeometryChange();
     setSharedRenderer(m_svgRender);
+    update();
     return(success);
 }
 

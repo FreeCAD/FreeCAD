@@ -53,7 +53,8 @@ ViewProviderSymbol::ViewProviderSymbol()
 void ViewProviderSymbol::updateData(const App::Property* prop)
 {
     TechDraw::DrawViewSymbol *obj = getViewObject();
-    if (prop == &obj->Scale
+    if (!prop
+        || prop == &obj->Scale
         || prop == &obj->Rotation
         || prop == &obj->Symbol
         || prop == &obj->EditableTexts) {

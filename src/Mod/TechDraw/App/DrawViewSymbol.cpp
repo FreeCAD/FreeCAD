@@ -67,7 +67,9 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
     if (prop == &Symbol) {
         if (!isRestoring() && !Symbol.isEmpty()) {
             std::vector<std::string> editables = getEditableFields();
-            EditableTexts.setValues(editables);
+            if (EditableTexts.getValues() != editables) {
+                EditableTexts.setValues(editables);
+            }
         }
     }
     else if (prop == &EditableTexts) {
@@ -128,7 +130,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                              "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&editables](QDomElement& tspan) -> bool {
-            QString editableValue = tspan.firstChild().nodeValue();
+            QString editableValue = tspan.text();
             editables.emplace_back(editableValue.toStdString());
             return true;
         });

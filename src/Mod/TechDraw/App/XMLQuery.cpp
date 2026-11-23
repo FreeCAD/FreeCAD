@@ -52,7 +52,10 @@ static bool processElements(const QDomElement& element, const QString& queryStr,
             QDomElement element = node.toElement();
             if (element.hasAttribute(QString(QLatin1String(FREECAD_ATTR_EDITABLE)))) {
                 if (find_tspan) {
-                    element = element.firstChildElement();
+                    QDomElement tspan = element.firstChildElement(QString(QLatin1String("tspan")));
+                    if (!tspan.isNull()) {
+                        element = tspan;
+                    }
                 }
 
                 if (!process(element)) {

@@ -69,7 +69,7 @@ public:
     SvgString(int width, int height);
     void addLine(int xStart, int yStart, int xEnd, int yEnd);
     void addCircle(int xCenter, int yCenter, int radius);
-    void addText(int xText, int yText, std::string text);
+    void addText(int xText, int yText, std::string text, std::string editableName = "");
     std::string finish();
 
 }; // SvgString

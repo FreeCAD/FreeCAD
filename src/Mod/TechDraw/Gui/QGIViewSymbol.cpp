@@ -82,7 +82,7 @@ void QGIViewSymbol::updateView(bool update)
     if (!viewSymbol)
         return;
 
-    if (update || viewSymbol->isTouched() || viewSymbol->Symbol.isTouched()) {
+    if (update || viewSymbol->isTouched() || viewSymbol->Symbol.isTouched() || viewSymbol->EditableTexts.isTouched()) {
         draw();
     }
 
@@ -101,6 +101,7 @@ void QGIViewSymbol::draw()
 
     drawSvg();
     QGIView::draw();
+    update();
 }
 
 void QGIViewSymbol::drawSvg()
@@ -142,6 +143,8 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
                               getViewName());
     }
     m_svgItem->centerAt(0., 0.);
+    m_svgItem->update();
+    update();
 
     if (Preferences::lightOnDark()) {
         QColor color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));

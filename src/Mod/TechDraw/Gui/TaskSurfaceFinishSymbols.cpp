@@ -51,7 +51,9 @@ using namespace TechDrawGui;
 SvgString::SvgString(int width, int height)
 {
     svgStream << "<?xml version='1.0'?>\n";
-    svgStream << "<svg width='" << width << "' height='" << height << "'>\n";
+    svgStream << "<svg width='" << width << "' height='" << height << "'";
+    svgStream << " xmlns='" << SVG_NS_URI << "'";
+    svgStream << " xmlns:freecad='" << FREECAD_SVG_NS_URI << "'>\n";
 }
 
 void SvgString::addLine(int xStart, int yStart, int xEnd, int yEnd)
@@ -69,10 +71,17 @@ void SvgString::addCircle(int xCenter, int yCenter, int radius)
     svgStream << "' fill='none' stroke='#000' stroke-width='1'/>\n";
 }
 
-void SvgString::addText(int xText, int yText, std::string text)
+void SvgString::addText(int xText, int yText, std::string text, std::string editableName)
 {
-    svgStream << "<text x='" << xText << "' y='" << yText;
-    svgStream << "' style='font-size:18px'>" << text << "</text>\n";
+    if (editableName.empty()) {
+        svgStream << "<text x='" << xText << "' y='" << yText;
+        svgStream << "' style='font-size:18px'>" << text << "</text>\n";
+    }
+    else {
+        svgStream << "<text x='" << xText << "' y='" << yText;
+        svgStream << "' " << FREECAD_ATTR_EDITABLE << "='" << editableName << "'";
+        svgStream << " style='font-size:18px'><tspan>" << text << "</tspan></text>\n";
+    }
 }
 
 std::string SvgString::finish()
@@ -133,7 +142,7 @@ TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName)
         }
     }
 
-    raValues = {"Ra50", "Ra25", "Ra12, 5", "Ra6, 3",
+    raValues = {"", "Ra50", "Ra25", "Ra12, 5", "Ra6, 3",
                 "Ra3, 2", "Ra1, 6", "Ra0, 8", "Ra0, 4",
                 "Ra0, 2", "Ra0, 1", "Ra0, 05", "Ra0, 025"};
     laySymbols = {"", "=", "⟂", "X", "M", "C", "R"};
@@ -202,29 +211,42 @@ std::string TaskSurfaceFinishSymbols::completeSymbol()
         moveLeft = 5 ;
     }
     std::string methodText = leMethod->text().toStdString();
-    symbol.addText(42+moveLeft, 11, methodText);
+    if (!methodText.empty()) {
+        symbol.addText(42+moveLeft, 11, methodText, "Method");
+    }
     int methodTextLength = methodText.length();
     if (isISO)
     {
-        std::string raText = cbRA->itemText(cbRA->currentIndex()).toStdString();
-        symbol.addText(42+moveLeft, 30, raText);
+        std::string raText = cbRA->currentText().toStdString();
+        symbol.addText(42+moveLeft, 30, raText, "Roughness");
         int raTextLength = raText.length();
         maxTextLength = std::max(methodTextLength, raTextLength)*9.25+moveLeft;
     }
     else
     {
         std::string sampleText = leSamLength->text().toStdString();
-        symbol.addText(42+moveLeft, 30, sampleText);
+        symbol.addText(42+moveLeft, 30, sampleText, "SamplingLength");
         int sampleTextLength = sampleText.length();
         maxTextLength = std::max(methodTextLength, sampleTextLength)*9.25+moveLeft;
-        std::string minRoughtText = cbMinRought->itemText(cbMinRought->currentIndex()).toStdString();
-        symbol.addText(-10, 35, minRoughtText);
-        std::string maxRoughtText = cbMaxRought->itemText(cbMaxRought->currentIndex()).toStdString();
-        symbol.addText(-10, 20, maxRoughtText);
+        std::string minRoughtText = cbMinRought->currentText().toStdString();
+        if (!minRoughtText.empty()) {
+            symbol.addText(-10, 35, minRoughtText, "MinRoughness");
+        }
+        std::string maxRoughtText = cbMaxRought->currentText().toStdString();
+        if (!maxRoughtText.empty()) {
+            symbol.addText(-10, 20, maxRoughtText, "MaxRoughness");
+        }
     }
-    symbol.addLine(42, 14, 42+maxTextLength, 14);
-    symbol.addText(20, 60, cbLay->itemText(cbLay->currentIndex()).toStdString());
-    symbol.addText(-25, 60, leAddition->text().toStdString());
+    int shelfLength = std::max(maxTextLength, 37 + moveLeft);
+    symbol.addLine(42, 14, 42+shelfLength, 14);
+    std::string layText = cbLay->currentText().toStdString();
+    if (!layText.empty()) {
+        symbol.addText(20, 60, layText, "Lay");
+    }
+    std::string additionText = leAddition->text().toStdString();
+    if (!additionText.empty()) {
+        symbol.addText(-25, 60, additionText, "Addition");
+    }
     std::string symbolAsString = symbol.finish();
     return symbolAsString;
 }
@@ -291,9 +313,11 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing RA values
     cbRA = new(QComboBox);
     cbRA->resize(90, 20);
+    cbRA->setEditable(true);
     for (const std::string& nextValue : raValues)
         cbRA->addItem(QString::fromStdString(nextValue));
     cbRA->setToolTip(QObject::tr("Average roughness"));
+    cbRA->setCurrentIndex(1);
     proxyRA = symbolScene->addWidget(cbRA);
     proxyRA->setPos(2, -113);
     // QLineEdit showing sampling length value
@@ -314,6 +338,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing minimal roughness grade
     cbMinRought = new(QComboBox);
     cbMinRought->resize(55, 20);
+    cbMinRought->setEditable(true);
     for (const std::string& nextGrade : roughGrades)
         cbMinRought->addItem(QString::fromStdString(nextGrade));
     cbMinRought->setToolTip(QObject::tr("Minimum roughness grade number"));
@@ -324,6 +349,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing maximal roughness grade
     cbMaxRought = new(QComboBox);
     cbMaxRought->resize(55, 20);
+    cbMaxRought->setEditable(true);
     for (const std::string& nextGrade : roughGrades)
         cbMaxRought->addItem(QString::fromStdString(nextGrade));
     cbMaxRought->setToolTip(QObject::tr("Maximum roughness grade number"));
