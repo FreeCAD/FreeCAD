@@ -7873,7 +7873,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="210"/>
       <source>Start symbol</source>
-      <translation>Начать символ</translation>
+      <translation>Начальный символ</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="111"/>

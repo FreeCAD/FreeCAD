@@ -7427,7 +7427,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="Translator.cpp" line="280"/>
       <source>Persian</source>
-      <translation type="unfinished">Persian</translation>
+      <translation>Peirsis</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="239"/>

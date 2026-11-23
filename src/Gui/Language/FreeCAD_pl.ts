@@ -7475,7 +7475,7 @@ Wybierz inny katalog?</translation>
     <message>
       <location filename="Translator.cpp" line="280"/>
       <source>Persian</source>
-      <translation type="unfinished">Persian</translation>
+      <translation>perski</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="239"/>

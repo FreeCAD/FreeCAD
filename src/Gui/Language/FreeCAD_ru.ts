@@ -14172,12 +14172,12 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3531"/>
       <source>&amp;Bounding Box</source>
-      <translation>Габаритная рамка</translation>
+      <translation>&amp;Габаритная рамка</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3532"/>
       <source>Shows selection bounding box</source>
-      <translation>Показывает ограничительную рамку вокруг выделения в 3D-виде</translation>
+      <translation>Показывает габаритную рамку выделенного</translation>
     </message>
   </context>
   <context>
