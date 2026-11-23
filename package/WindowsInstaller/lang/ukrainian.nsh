@@ -61,9 +61,4 @@ ${LangFileString} SecUnPreferencesDescription 'Вилучає теку з нал
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						для всіх користувачів.'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Вилучити FreeCAD і всі його компоненти."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

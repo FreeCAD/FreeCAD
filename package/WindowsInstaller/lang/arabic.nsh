@@ -61,9 +61,4 @@ ${LangFileString} SecUnPreferencesDescription 'حذف FreeCAD$\'s ضبط$\r$\n\
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						لك او لكل المستخدمين (إذا كنت المدير).'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "إزالة ليك مع كل مكوناته."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

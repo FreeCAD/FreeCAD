@@ -16,8 +16,6 @@ ${LangFileString} TEXT_WELCOME "Этот мастер проведет вас ч
 ${LangFileString} TEXT_FINISH_DESKTOP "Создать ярлык на рабочем столе"
 ${LangFileString} TEXT_FINISH_WEBSITE "Перейти на freecad.org за новостями, поддержкой и советами"
 
-#${LangFileString} FileTypeTitle "FreeCAD-Document"
-
 #${LangFileString} SecAllUsersTitle "Установить для всех пользователей?"
 ${LangFileString} SecFileAssocTitle "Ассоциации файлов"
 ${LangFileString} SecDesktopTitle "Значок на рабочем столе"
@@ -61,9 +59,4 @@ ${LangFileString} SecUnPreferencesDescription 'Удалить настройки
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						для вас или для всех пользователей (если вы администратор).'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Удалить FreeCAD и все его компоненты."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

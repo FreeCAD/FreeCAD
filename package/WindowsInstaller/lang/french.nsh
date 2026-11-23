@@ -65,5 +65,3 @@ ${LangFileString} DialogUnPreferences 'Vous avez choisi de supprimer le réperto
 						Cela supprimera également tous les addons FreeCAD installés.$\r$\n\
 						Êtes-vous d$\'accord avec cela ?'
 ${LangFileString} SecUnProgramFilesDescription "Désinstaller FreeCAD et tous ses composants."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

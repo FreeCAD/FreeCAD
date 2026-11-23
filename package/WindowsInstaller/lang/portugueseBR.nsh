@@ -61,9 +61,4 @@ ${LangFileString} SecUnPreferencesDescription 'Exclui a configuração do FreeCA
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						para você ou para todos os usuários (se você for um administrador)).'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Desinstalar o FreeCAD e todos os seus componentes."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

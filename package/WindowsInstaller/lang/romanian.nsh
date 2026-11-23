@@ -5,16 +5,9 @@ Language: Romanian
 
 !insertmacro LANGFILE_EXT "Romanian"
 
-${LangFileString} TEXT_INSTALL_CURRENTUSER "(Installed for Current User)"
-
 ${LangFileString} TEXT_WELCOME "Acest asistent vă va ghida în procesul de instalare a programului FreeCAD. $\r$\n\
 				$\r$\n\
 				$_CLICK"
-
-#${LangFileString} TEXT_CONFIGURE_PYTHON "Compiling Python scripts..."
-
-${LangFileString} TEXT_FINISH_DESKTOP "Create desktop shortcut"
-${LangFileString} TEXT_FINISH_WEBSITE "Visit freecad.org for the latest news, support and tips"
 
 #${LangFileString} FileTypeTitle "Document FreeCAD"
 
@@ -27,12 +20,9 @@ ${LangFileString} SecCoreDescription "Fişierele FreeCAD."
 ${LangFileString} SecFileAssocDescription "Fişierele cu extensia .FCStd vor fi deschise automat cu FreeCAD."
 ${LangFileString} SecDesktopDescription "A iconiţă FreeCAD pe desktop."
 #${LangFileString} SecDictionaries "Dicționare"
-#${LangFileString} SecDictionariesDescription "Spell-checker dictionaries that can be downloaded and installed."
 
 #${LangFileString} PathName 'Calea către fişierul $\"xxx.exe$\"'
 #${LangFileString} InvalidFolder 'Fişierul $\"xxx.exe$\" nu se află în calea specificată.'
-
-#${LangFileString} DictionariesFailed 'Download of dictionary for language $\"$R3$\" failed.'
 
 #${LangFileString} ConfigInfo "Configurarea programului FreeCAD va dura o perioadă de timp."
 
@@ -40,8 +30,6 @@ ${LangFileString} SecDesktopDescription "A iconiţă FreeCAD pe desktop."
 ${LangFileString} InstallRunning "Programul de instalare este deja pornit!"
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} este deja instalat!$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
-${LangFileString} NewerInstalled "You are trying to install an older version of FreeCAD than what you have installed.$\r$\n\
-				  If you really want this, you must uninstall the existing FreeCAD $OldVersionNumber before."
 
 #${LangFileString} FinishPageMessage "Felicitări! FreeCAD a fost instalat cu succes.$\r$\n\
 #					$\r$\n\
@@ -61,9 +49,4 @@ ${LangFileString} SecUnPreferencesDescription 'Şterge directorul cu setările F
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						pentru toţi utilizatorii.'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Dezinstalaţi programul FreeCAD şi toate componentele lui."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

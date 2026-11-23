@@ -5,8 +5,6 @@ Language: Italian
 
 !insertmacro LANGFILE_EXT "Italian"
 
-${LangFileString} TEXT_INSTALL_CURRENTUSER "(Installed for Current User)"
-
 ${LangFileString} TEXT_WELCOME "Verrete guidati nell'installazione di $(^NameDA)$\r$\n\
 				$\r$\n\
 				$_CLICK"
@@ -61,9 +59,4 @@ ${LangFileString} SecUnPreferencesDescription 'Elimina la cartella con la config
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						per tutti gli utenti.'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Rimuove FreeCAD e tutti i suoi componenti."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

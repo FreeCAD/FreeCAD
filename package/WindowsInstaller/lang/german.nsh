@@ -66,5 +66,3 @@ ${LangFileString} DialogUnPreferences 'Sie haben ausgewählt, die FreeCAD-Benutz
 						Dies wird auch alle installierten FreeCAD-Addons löschen.$\r$\n\
 						Sind Sie damit einverstanden?'
 ${LangFileString} SecUnProgramFilesDescription "Deinstalliert FreeCAD und all seine Komponenten."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

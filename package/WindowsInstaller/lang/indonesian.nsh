@@ -32,8 +32,6 @@ ${LangFileString} SecDesktopDescription "Ikon FreeCAD muncul di desktop."
 #${LangFileString} PathName 'Lokasi tempat berkas $\"xxx.exe$\" berada'
 #${LangFileString} InvalidFolder 'Berkas $\"xxx.exe$\" tidak berada di lokasi tempat yang dinyatakan.'
 
-#${LangFileString} DictionariesFailed 'Download of dictionary for language $\"$R3$\" failed.'
-
 #${LangFileString} ConfigInfo "Proses konfigurasi FreeCAD selanjutnya akan memerlukan waktu beberapa saat."
 
 #${LangFileString} RunConfigureFailed "Tidak bisa menjalankan skrip konfigurasi"
@@ -61,9 +59,4 @@ ${LangFileString} SecUnPreferencesDescription 'Menghapus berkas konfigurasi Free
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						untuk semua pengguna.'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Penghapusan FreeCAD serta semua komponen yang ada."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."

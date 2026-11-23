@@ -5,16 +5,9 @@ Language: Danish
 
 !insertmacro LANGFILE_EXT "Danish"
 
-${LangFileString} TEXT_INSTALL_CURRENTUSER "(Installed for Current User)"
-
 ${LangFileString} TEXT_WELCOME "Denne guide vil installere FreeCAD på din computer.$\r$\n\
 				$\r$\n\
 				$_CLICK"
-
-#${LangFileString} TEXT_CONFIGURE_PYTHON "Compiling Python scripts..."
-
-${LangFileString} TEXT_FINISH_DESKTOP "Create desktop shortcut"
-${LangFileString} TEXT_FINISH_WEBSITE "Visit freecad.org for the latest news, support and tips"
 
 #${LangFileString} FileTypeTitle "FreeCAD-Dokument"
 
@@ -27,12 +20,9 @@ ${LangFileString} SecCoreDescription "Filerne til FreeCAD."
 ${LangFileString} SecFileAssocDescription "Opret association mellem FreeCAD og .FCStd filer."
 ${LangFileString} SecDesktopDescription "Et FreeCAD ikon på skrivebordet"
 #${LangFileString} SecDictionaries "Ordbøger"
-#${LangFileString} SecDictionariesDescription "Spell-checker dictionaries that can be downloaded and installed."
 
 #${LangFileString} PathName 'Sti til filen $\"xxx.exe$\"'
 #${LangFileString} InvalidFolder 'Kunne ikke finde $\"xxx.exe$\".'
-
-#${LangFileString} DictionariesFailed 'Download of dictionary for language $\"$R3$\" failed.'
 
 #${LangFileString} ConfigInfo "Den følgende konfiguration af FreeCAD vil tage et stykke tid."
 
@@ -40,8 +30,6 @@ ${LangFileString} SecDesktopDescription "Et FreeCAD ikon på skrivebordet"
 ${LangFileString} InstallRunning "Installationsprogrammet kører allerede!"
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} er allerede installeret!$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
-${LangFileString} NewerInstalled "You are trying to install an older version of FreeCAD than what you have installed.$\r$\n\
-				  If you really want this, you must uninstall the existing FreeCAD $OldVersionNumber before."
 
 #${LangFileString} FinishPageMessage "Tillykke!! FreeCAD er installeret.$\r$\n\
 #					$\r$\n\
@@ -53,7 +41,6 @@ ${LangFileString} UnNotInRegistryLabel "Kunne ikke finde FreeCAD i registrerings
 ${LangFileString} UnInstallRunning "Du ma afslutte FreeCAD forst!"
 ${LangFileString} UnNotAdminLabel "Du skal have administrator-rettigheder for at afinstallere FreeCAD!"
 ${LangFileString} UnReallyRemoveLabel "Er du sikker på, at du vil slette FreeCAD og alle tilhørende komponenter?"
-${LangFileString} UnFreeCADPreferencesTitle 'FreeCAD$\'s user preferences'
 
 #${LangFileString} SecUnProgDescription 'Afinstallerer programmet $\"xxx$\".'
 ${LangFileString} SecUnPreferencesDescription 'Sletter FreeCAD$\'s konfigurations mappe$\r$\n\
@@ -61,9 +48,4 @@ ${LangFileString} SecUnPreferencesDescription 'Sletter FreeCAD$\'s konfiguration
 						$AppSuff\$\r$\n\
 						${APP_DIR_USERDATA}$\")$\r$\n\
 						for alle brugere.'
-${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user configuration.$\r$\n\
-						This will also delete all installed FreeCAD addons.$\r$\n\
-						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Afinstallerer FreeCAD og alle dets komponenter."
-
-${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty. Choose an empty folder."
