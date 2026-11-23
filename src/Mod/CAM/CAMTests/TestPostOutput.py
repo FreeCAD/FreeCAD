@@ -1766,6 +1766,22 @@ G1 X20.000 Y10.000 F6000.000
                 f"Should have 0 decimal places for spindle speed\n---\n{results}\n---",
             )
 
+    def test123b_invalid_precision_falls_back_to_defaults(self):
+        """An invalid or missing machine precision gives the PrecisionOptions defaults."""
+        from Machine.models.machine import PrecisionOptions
+
+        machine = self._create_machine()
+        machine.output.precision.axis = -1
+        machine.output.precision.feed = None
+        machine.output.precision.spindle = None
+
+        post = self._create_postprocessor(machine)
+
+        defaults = PrecisionOptions()
+        self.assertEqual(post.values["AXIS_PRECISION"], defaults.axis)
+        self.assertEqual(post.values["FEED_PRECISION"], defaults.feed)
+        self.assertEqual(post.values["SPINDLE_DECIMALS"], defaults.spindle)
+
     def test124_comment_symbol_formatting(self):
         """
         Test that comment_symbol controls comment format.

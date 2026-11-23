@@ -121,6 +121,17 @@ class TestMachineValidate(PathTestUtils.PathTestBase):
         self.assertIn("unknown-properties", _codes(findings, Severity.WARNING))
         self.assertIn("not_a_real_property", str(findings))
 
+    def test071_removed_postprocessor_property_is_not_reported(self):
+        """A file written before the precision properties were removed stays valid."""
+        machine = self._valid_machine()
+        machine.postprocessor_file_name = "generic"
+        machine.postprocessor_properties = {
+            "axis_precision": 3,
+            "feed_precision": 3,
+            "spindle_decimals": 0,
+        }
+        self.assertNotIn("unknown-properties", _codes(validate_machine(machine)))
+
     # ------------------------------------------------------------------
     # dropped-data detection
     # ------------------------------------------------------------------

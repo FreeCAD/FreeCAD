@@ -138,8 +138,6 @@ class DynapathPost(PostProcessor):
                 )
             elif name == "supported_commands":
                 prop["default"] = "\n".join(prop["default"].split("\n") + EXTRA_SUPPORTED)
-            elif name == "spindle_decimals":
-                prop["default"] = 0
             elif name == "parameter_order":
                 prop["default"] = PARAMETER_ORDER
 

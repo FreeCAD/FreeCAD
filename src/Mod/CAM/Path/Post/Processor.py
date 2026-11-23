@@ -55,7 +55,12 @@ from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMN
 from Path.Base.MachineState import MachineState
 import Path.Base.FeedRate as PathFeedRate
 import Path.Base.Util as PathUtil
-from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
+from Machine.models.machine import (
+    MachineFactory,
+    OutputUnits,
+    PrecisionOptions,
+    ToolheadType,
+)
 
 translate = FreeCAD.Qt.translate
 
@@ -710,39 +715,6 @@ class PostProcessor:
                 ),
             },
             {
-                "name": "axis_precision",
-                "scope": SCOPE_MACHINE,
-                "type": "int",
-                "label": translate("CAM", "Axis precision in output"),
-                "default": 2,  # degrees
-                "help": translate(
-                    "CAM",
-                    "Decimals of precision for axis motion",
-                ),
-            },
-            {
-                "name": "feed_precision",
-                "scope": SCOPE_MACHINE,
-                "type": "int",
-                "label": translate("CAM", "Feedrate precision in output"),
-                "default": 3,
-                "help": translate(
-                    "CAM",
-                    "Decimals of precision for feedrate (F)",
-                ),
-            },
-            {
-                "name": "spindle_decimals",
-                "scope": SCOPE_MACHINE,
-                "type": "int",
-                "label": translate("CAM", "Spindle-speed precision in output"),
-                "default": 1,  # rpm
-                "help": translate(
-                    "CAM",
-                    "Decimals of precision for spindle-speed",
-                ),
-            },
-            {
                 "name": "f_for_rapid_moves",
                 "scope": SCOPE_MACHINE,
                 "type": "bool",
@@ -1194,6 +1166,13 @@ class PostProcessor:
                     Path.Log.warning(
                         f"Invalid spindle precision value: {precision.spindle}. Must be non-negative. Using default."
                     )
+
+        # No post-processor property supplies these, so an invalid or missing
+        # machine value falls back to the PrecisionOptions defaults.
+        default_precision = PrecisionOptions()
+        self.values.setdefault("AXIS_PRECISION", default_precision.axis)
+        self.values.setdefault("FEED_PRECISION", default_precision.feed)
+        self.values.setdefault("SPINDLE_DECIMALS", default_precision.spindle)
 
         # Duplicate options
         duplicates = getattr(output_options, "duplicates", object())
