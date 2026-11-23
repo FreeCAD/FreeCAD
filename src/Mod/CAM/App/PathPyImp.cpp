@@ -238,7 +238,7 @@ int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-PyObject* PathPy::getClearedArea(PyObject* args)
+PyObject* PathPy::getClearedArea(PyObject* args) const
 {
     PY_TRY
     {

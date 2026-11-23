@@ -279,6 +279,10 @@ ANNOT_ADDED_TLO = "tool_length_offset"
 # The canned-cycle terminator keeps it directly before its tap.
 ANNOT_RIGID_TAP_SPEED = "rigid_tap_speed"
 
+# Postable.data key: the item is the setup of the operation that follows it
+# (the fixture selection and the pose change of its work plane)
+DATA_OPERATION_SETUP = "operation_setup"
+
 # Moves from linking generator
 ANNOT_LINKING = {"type": "linking"}
 

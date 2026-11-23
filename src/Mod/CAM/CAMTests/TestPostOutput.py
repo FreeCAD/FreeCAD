@@ -642,48 +642,38 @@ class TestExport2Integration(unittest.TestCase):
     def _get_full_machine_config():  # FIXME: find other example that creates this correctly
         """Helper to get the complete machine config used in multiple tests."""
         return {
-            "freecad_version": "1.2.0",
+            "freecad_version": "26.3.0",
             "machine": {
                 "axes": {
                     "A": {
                         "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
-                        "max": 180,
                         "max_velocity": 36000,
-                        "min": -180,
                         "prefer_positive": True,
                         "sequence": 0,
-                        "type": "angular",
+                        "type": "rotary",
                     },
                     "C": {
                         "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
-                        "max": 180,
                         "max_velocity": 36000,
-                        "min": -180,
                         "prefer_positive": True,
                         "sequence": 0,
-                        "type": "angular",
+                        "type": "rotary",
                     },
                     "X": {
-                        "joint": [[1.0, 0.0, 0.0], [0, 0, 0]],
-                        "max": 500.0,
+                        "joint": [[0, 0, 0], [1.0, 0.0, 0.0]],
                         "max_velocity": 10000,
-                        "min": 50.0,
                         "sequence": 0,
                         "type": "linear",
                     },
                     "Y": {
-                        "joint": [[0.0, 1.0, 0.0], [0, 0, 0]],
-                        "max": 1000,
+                        "joint": [[0, 0, 0], [0.0, 1.0, 0.0]],
                         "max_velocity": 10000,
-                        "min": 0,
                         "sequence": 0,
                         "type": "linear",
                     },
                     "Z": {
-                        "joint": [[0.0, 0.0, 1.0], [0, 0, 0]],
-                        "max": 1000,
+                        "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
                         "max_velocity": 10000,
-                        "min": 0,
                         "sequence": 0,
                         "type": "linear",
                     },
@@ -691,7 +681,7 @@ class TestExport2Integration(unittest.TestCase):
                 "description": "My linuxcnc mill",
                 "manufacturer": "Supermax",
                 "name": "MillStone",
-                "spindles": [
+                "toolheads": [
                     {
                         "id": "spindle1",
                         "max_power_kw": 3.0,
@@ -702,31 +692,25 @@ class TestExport2Integration(unittest.TestCase):
                         "coolant_flood": False,
                         "coolant_mist": False,
                         "coolant_delay": 0.0,
-                        "spindle_wait": 0.0,
+                        "toolhead_wait": 0.0,
                     }
                 ],
                 "units": "metric",
             },
             "output": {
-                "axis_precision": 3,
-                "blank_lines": True,
-                "command_space": " ",
-                "comment_symbol": ";",
-                "comments": False,
-                "end_of_line_chars": "\n",
-                "feed_precision": 3,
-                "header": False,
-                "line_increment": 10,
-                "line_number_start": 100,
-                "line_numbers": False,
-                "list_tools_in_preamble": False,
-                "machine_name": False,
-                "output_bcnc_comments": True,
-                "output_duplicate_parameters": True,
-                "output_units": "metric",
-                "path_labels": False,
-                "show_operation_labels": True,
-                "spindle_decimals": 0,
+                "units": "metric",
+                "header": {
+                    "output_header": False,
+                    "include_date": False,
+                    "include_description": False,
+                    "include_document_name": False,
+                    "include_machine_name": False,
+                    "include_project_file": False,
+                    "include_units": False,
+                    "include_tool_list": False,
+                    "include_fixture_list": False,
+                },
+                "comments": {"enabled": False},
             },
             "postprocessor": {
                 "file_name": "",
@@ -1113,7 +1097,7 @@ class TestExport2Integration(unittest.TestCase):
                     G0 X10 Y20
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["spindle_wait"] = 2.5
+        config["machine"]["toolheads"][0]["toolhead_wait"] = 2.5
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1156,7 +1140,7 @@ class TestExport2Integration(unittest.TestCase):
             G0 X10 Y20   (no G4 between)
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["spindle_wait"] = 0.0
+        config["machine"]["toolheads"][0]["toolhead_wait"] = 0.0
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1187,7 +1171,7 @@ class TestExport2Integration(unittest.TestCase):
                     G1 X10 F100
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["coolant_delay"] = 1.5
+        config["machine"]["toolheads"][0]["coolant_delay"] = 1.5
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1436,6 +1420,141 @@ G1 X20.000 Y10.000 F6000.000
                 self.assertEqual(
                     lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
                 )
+
+    def test104_bcnc_block_position(self):
+        """
+        Test that the bCNC block headers are in the correct position:
+            - each operation has a block header before its first move
+            - the post_amble block header is before the postamble lines
+        """
+        machine = self._create_machine(output_bcnc_comments=True, comments_enabled=False)
+        machine.postprocessor_properties["postamble"] = "M2"
+
+        results = self._run_export2(machine)
+        gcode = self._get_first_section_gcode(results)
+        lines = gcode.split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertGreater(len(names), 1, "Each operation should have a bCNC block header")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertEqual(names.count("(Block-name: post_amble)"), 1)
+
+        first_move = next(i for i, l in enumerate(lines) if l.startswith(("G0", "G1")))
+        self.assertLess(
+            lines.index(names[0]), first_move, "Operation block header should precede its moves"
+        )
+
+        post_amble = lines.index("(Block-name: post_amble)")
+        last_m2 = len(lines) - 1 - lines[::-1].index("M2")
+        self.assertLess(post_amble, last_m2, "post_amble block should precede the postamble")
+
+    def _bcnc_block_layout(self, sublist):
+        """The bCNC block names of a section, each with the labels of the items in the block."""
+        layout = []
+        for item in sublist:
+            if item.label == "Post: bCNC block":
+                layout.append((item.path.Commands[0].Name, []))
+            elif layout:
+                layout[-1][1].append(item.label)
+        return layout
+
+    def _bcnc_postable(self, item_type, label, command, data=None):
+        return PostList.Postable(
+            item_type=item_type,
+            label=label,
+            path=Path.Path([Path.Command(command)]),
+            source=None,
+            data=data or {},
+        )
+
+    def test105_bcnc_tool_change_and_fixture_blocks(self):
+        """
+        Test that a tool change and a Job fixture each have their own bCNC block.
+
+        If the tool change of Op2 is in the block of Op1, then a disabled Op1
+        block makes Op2 run with the tool of Op1.
+        """
+        post = self._create_postprocessor(self._create_machine(output_bcnc_comments=True))
+        postables = [
+            (
+                "allitems",
+                [
+                    self._bcnc_postable("fixture", "Fixture", "G54"),
+                    self._bcnc_postable("tool_controller", "T1", "M6 T1"),
+                    self._bcnc_postable("operation", "Op1", "G0 X1"),
+                    self._bcnc_postable("tool_controller", "T2", "M6 T2"),
+                    self._bcnc_postable("operation", "Op2", "G0 X2"),
+                ],
+            )
+        ]
+
+        result = post._expand_bcnc_commands(postables)
+
+        self.assertEqual(
+            self._bcnc_block_layout(result[0][1]),
+            [
+                ("(Block-name: Fixture)", ["Fixture"]),
+                ("(Block-name: T1)", ["T1"]),
+                ("(Block-name: Op1)", ["Op1"]),
+                ("(Block-name: T2)", ["T2"]),
+                ("(Block-name: Op2)", ["Op2"]),
+            ],
+        )
+
+    def test106_bcnc_operation_setup_in_operation_block(self):
+        """
+        Test that the fixture selection and the pose change of a work plane
+        are in the bCNC block of their operation, not in the previous block.
+        """
+        post = self._create_postprocessor(self._create_machine(output_bcnc_comments=True))
+        setup = {Constants.DATA_OPERATION_SETUP: True}
+        postables = [
+            (
+                "allitems",
+                [
+                    self._bcnc_postable("operation", "Op1", "G0 X1"),
+                    self._bcnc_postable("fixture", "Fixture", "G55", dict(setup)),
+                    self._bcnc_postable("rotation", "Rotary positioning", "G0 A90", dict(setup)),
+                    self._bcnc_postable("operation", "Op2", "G0 X2"),
+                ],
+            )
+        ]
+
+        result = post._expand_bcnc_commands(postables)
+
+        self.assertEqual(
+            self._bcnc_block_layout(result[0][1]),
+            [
+                ("(Block-name: Op1)", ["Op1"]),
+                ("(Block-name: Op2)", ["Fixture", "Rotary positioning", "Op2"]),
+            ],
+        )
+
+    def test107_bcnc_block_sequence(self):
+        """
+        Test the bCNC block sequence of a complete Job: the Header block,
+        the fixture block, the operation block, post_amble.
+        The pre-item lines are after the header of their block.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.comments.output_bcnc_comments = True
+
+        results = self._run_export2(machine)
+        lines = self._get_first_section_gcode(results).split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertEqual(names[0], "(Block-name: Header)")
+        self.assertEqual(names[-2], "(Block-name: TestProfile)")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertIn("(Block-name: Fixture)", names)
+        self.assertEqual(len(names), len(set(names)), "Each block name occurs one time")
+
+        self.assertLess(lines.index("(Block-name: Header)"), lines.index("(preamble)"))
+        self.assertLess(lines.index("(Block-name: Fixture)"), lines.index("(prefixture)"))
+        self.assertLess(lines.index("(Block-name: TestProfile)"), lines.index("(preoperation)"))
+        # The pose change of the operation is in the block of the operation
+        self.assertLess(lines.index("(Block-name: TestProfile)"), lines.index("(prerotary)"))
 
     # ===== 110-119: _expand_tool_change tests =====
 

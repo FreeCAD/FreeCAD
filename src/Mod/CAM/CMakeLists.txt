@@ -99,7 +99,6 @@ SET(PathPythonMain_SRCS
 
 SET(PathPythonMainGui_SRCS
     Path/Main/Gui/__init__.py
-    Path/Main/Gui/Camotics.py
     Path/Main/Gui/Editor.py
     Path/Main/Gui/Fixture.py
     Path/Main/Gui/Inspect.py
@@ -245,7 +244,6 @@ SET(PathPythonToolsToolBitModels_SRCS
 
 SET(PathPythonToolsToolBitSerializers_SRCS
     Path/Tool/toolbit/serializers/__init__.py
-    Path/Tool/toolbit/serializers/camotics.py
     Path/Tool/toolbit/serializers/fctb.py
     Path/Tool/toolbit/serializers/yaml.py
 )
@@ -278,7 +276,6 @@ SET(PathPythonToolsLibraryModels_SRCS
 SET(PathPythonToolsLibrarySerializers_SRCS
     Path/Tool/library/serializers/__init__.py
     Path/Tool/library/serializers/fctl.py
-    Path/Tool/library/serializers/camotics.py
     Path/Tool/library/serializers/linuxcnc.py
 )
 
@@ -641,6 +638,7 @@ SET(Tests_SRCS
     CAMTests/TestPathHelix.py
     CAMTests/TestPathHelpers.py
     CAMTests/TestPathHelixGenerator.py
+    CAMTests/TestPathJobRemove.py
     CAMTests/TestPathLeadInOutGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py

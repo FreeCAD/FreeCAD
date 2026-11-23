@@ -4,8 +4,11 @@
 target_sources( ${PROJECT_NAME}
     PRIVATE
         main.cpp
+        Helpers.cpp
         RandomNum.cpp
         TestData.cpp
+        test_ImageFile.cpp
+        test_extension_DIST.cpp
         test_SimpleData.cpp
         test_SimpleReader.cpp
         test_SimpleWriter.cpp

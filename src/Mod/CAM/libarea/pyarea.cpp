@@ -298,14 +298,20 @@ void init_pyarea(py::module& m)
         .def("MinY", &CBox2D::MinY)
         .def("MaxY", &CBox2D::MaxY);
 
+    py::enum_<Clipper2Lib::FillRule>(m, "FillRule")
+        .value("EvenOdd", Clipper2Lib::FillRule::EvenOdd)
+        .value("NonZero", Clipper2Lib::FillRule::NonZero)
+        .value("Positive", Clipper2Lib::FillRule::Positive)
+        .value("Negative", Clipper2Lib::FillRule::Negative);
+
     py::class_<CArea>(m, "Area")
         .def(py::init<>())
         .def("getCurves", &getCurves)
         .def("append", &CArea::append)
         .def("ClipperNoop", &CArea::ClipperNoop)
-        .def("Subtract", &CArea::Subtract)
-        .def("Intersect", &CArea::Intersect)
-        .def("Union", &CArea::Union)
+        .def("Subtract", &CArea::Subtract, py::arg("other"), py::arg("fill") = py::none())
+        .def("Intersect", &CArea::Intersect, py::arg("other"), py::arg("fill") = py::none())
+        .def("Union", &CArea::Union, py::arg("other"), py::arg("fill") = py::none())
         .def("Offset", [](CArea& self, double offset) { self.Offset(offset); })
         .def("OpenOffset", [](CArea& self, double offset) { return self.OpenOffset(offset); })
         .def("text", &print_area)

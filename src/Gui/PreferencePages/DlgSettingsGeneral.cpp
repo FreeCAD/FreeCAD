@@ -33,6 +33,7 @@
 #include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
+#include <Base/Version.h>
 
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -317,6 +318,11 @@ void DlgSettingsGeneral::loadSettings()
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
+    if (!Base::FCVersionInfo::IsDevelopmentVersion()) {
+        // hides it from the setting combobox but allows the user to activate
+        // this even in release builds via python
+        std::erase_if(list, [](const auto& entry) { return entry.second == "en-XA"; });
+    }
     ui->Languages->clear();
     ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
@@ -331,7 +337,7 @@ void DlgSettingsGeneral::loadSettings()
 
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
-        if (!native.isEmpty()) {
+        if (!native.isEmpty() && it->second != "en-XA") {
             if (native[0].isLetter()) {
                 native[0] = native[0].toUpper();
             }

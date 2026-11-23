@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2014 Yorik van Havre yorik@uncreated.net
-# SPDX-FileCopyrightText: 2022 Larry Woestman LarryWoestman2@gmail.com
+# SPDX-FileCopyrightText: 2014 Yorik van Havre
+# SPDX-FileCopyrightText: 2022 Larry Woestman
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################

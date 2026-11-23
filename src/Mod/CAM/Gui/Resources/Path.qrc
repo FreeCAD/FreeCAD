@@ -18,7 +18,6 @@
         <file>icons/CAM_BStep.svg</file>
         <file>icons/CAM_BStop.svg</file>
         <file>icons/CAM_BaseGeometry.svg</file>
-        <file>icons/CAM_Camotics.svg</file>
         <file>icons/CAM_Comment.svg</file>
         <file>icons/CAM_Compound.svg</file>
         <file>icons/CAM_Copy.svg</file>
@@ -53,6 +52,7 @@
         <file>icons/CAM_Profile_Face.svg</file>
         <file>icons/CAM_Profile.svg</file>
         <file>icons/CAM_Sanity.svg</file>
+        <file>icons/CAM_SanityQuick.svg</file>
         <file>icons/CAM_SelectLoop.svg</file>
         <file>icons/CAM_SetupSheet.svg</file>
         <file>icons/CAM_Shape.svg</file>
@@ -166,7 +166,6 @@
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
         <file>panels/ToolControllerEdit.ui</file>
-        <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>

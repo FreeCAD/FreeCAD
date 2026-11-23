@@ -106,8 +106,6 @@ class CAMWorkbench(Workbench):
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
         import PathCommands
-        import subprocess
-        from packaging.version import Version, parse
 
         FreeCADGui.addPreferencePage(
             AssetPreferences.AssetPreferencesPage,
@@ -125,7 +123,8 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Workplane", "CAM_Sanity"]
+        projcmdlist = ["CAM_Job", "CAM_Workplane"]
+        sanitycmdlist = ["CAM_Sanity", "CAM_QuickValidate"]
         postcmdlist = ["CAM_Post", "CAM_PostSelected"]
         toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
 
@@ -173,6 +172,14 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
+        sanitycmdgroup = ["CAM_SanityTools"]
+        FreeCADGui.addCommand(
+            "CAM_SanityTools",
+            PathCommandGroup(
+                sanitycmdlist,
+                QT_TRANSLATE_NOOP("CAM_SanityTools", "Sanity check"),
+            ),
+        )
         postcmdgroup = ["CAM_PostTools"]
         FreeCADGui.addCommand(
             "CAM_PostTools",
@@ -225,23 +232,6 @@ class CAMWorkbench(Workbench):
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
-                r = subprocess.run(
-                    ["camotics", "--version"], capture_output=True, text=True
-                ).stderr.strip()
-                v = parse(r)
-
-                if v >= Version("1.2.2"):
-                    toolcmdlist.append("CAM_Camotics")
-            except (FileNotFoundError, ModuleNotFoundError):
-                pass
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to execute camotics command: {e}")
-            except ValueError as ve:
-                print(f"Version error: {ve}")
-            except Exception as ex:
-                print(f"An unexpected error occurred: {ex}")
-
-            try:
                 try:
                     import ocl  # pylint: disable=unused-variable
                 except ImportError:
@@ -268,7 +258,7 @@ class CAMWorkbench(Workbench):
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Project Setup"),
-            projcmdlist + postcmdgroup,
+            projcmdlist + sanitycmdgroup + postcmdgroup,
         )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Tool Commands"),
@@ -287,6 +277,7 @@ class CAMWorkbench(Workbench):
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
+            + sanitycmdlist
             + postcmdlist
             + ["CAM_ExportTemplate", "Separator"]
             + simcmdlist

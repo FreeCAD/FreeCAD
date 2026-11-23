@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Billy Huddleston
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
-#                                                                              #
-#   © 2026 Billy Huddleston <billy@ivdc.com>                                   #
 #                                                                              #
 #   FreeCAD is free software: you can redistribute it and/or modify            #
 #   it under the terms of the GNU Lesser General Public License as             #
@@ -18,6 +18,7 @@
 #   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
 #                                                                              #
 ################################################################################
+
 import FreeCAD
 import Path
 from typing import Optional, Mapping
