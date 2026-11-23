@@ -38,6 +38,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Base/Type.h>
 #include <App/Link.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/Action.h>
@@ -1254,7 +1255,16 @@ void CmdPartMakeSolid::activated(int iMsg)
     );
     addModule(Doc, "Part");
     openCommand("Make solid");
+    Base::Type meshType = Base::Type::fromName("Mesh::Feature");
     for (auto it : objs) {
+        if (it->getTypeId().isDerivedFrom(meshType)) {
+            QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("Cannot Convert to Solid"),
+                QObject::tr("Convert the selected mesh to a shape first.")
+            );
+            continue;
+        }
         const TopoDS_Shape& shape = Part::Feature::getShape(
             it,
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
@@ -1298,6 +1308,15 @@ void CmdPartMakeSolid::activated(int iMsg)
                     "{} is ignored because it is neither a shell nor a compound.\n",
                     it->Label.getValue()
                 );
+
+                QMessageBox::warning(
+                    Gui::getMainWindow(),
+                    QObject::tr("Cannot Convert to Solid"),
+                    QObject::tr(
+                        "The selected object is neither a shell nor a compound. "
+                        "If it is a mesh, convert it to a shape first."
+                    )
+                );
             }
 
             try {
@@ -1306,7 +1325,18 @@ void CmdPartMakeSolid::activated(int iMsg)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
+                Base::Console().error(
+                    "Cannot convert {} because {}.\n",
+                    it->Label.getValue(),
+                    e.what()
+                );
+                QMessageBox::warning(
+                    Gui::getMainWindow(),
+                    QObject::tr("Cannot Convert to Solid"),
+                    QObject::tr(
+                        "The selected object could not be converted to a solid:\n%1"
+                    ).arg(QString::fromUtf8(e.what()))
+                );
             }
         }
     }
