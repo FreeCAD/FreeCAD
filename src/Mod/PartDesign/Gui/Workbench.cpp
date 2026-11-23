@@ -58,6 +58,7 @@ namespace sp = std::placeholders;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Helper Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Modeling Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start Part");
     //
     qApp->translate("Workbench", "Measure");
     qApp->translate("Workbench", "Refresh");
@@ -181,6 +182,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Defeaturing",
         "Part_DatumPoint",
         "Part_DatumLine",
         "Part_DatumPlane",
@@ -267,6 +269,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Defeaturing",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -352,6 +355,9 @@ void Workbench::activated()
         "PartDesign_Mirrored",
         "PartDesign_LinearPattern",
         "PartDesign_PolarPattern",
+        "PartDesign_CircularPattern",
+        "PartDesign_PathPattern",
+        "PartDesign_PointPattern",
         "PartDesign_MultiTransform",
         nullptr
     };
@@ -432,6 +438,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *transformations << "PartDesign_Mirrored"
                      << "PartDesign_LinearPattern"
                      << "PartDesign_PolarPattern"
+                     << "PartDesign_CircularPattern"
+                     << "PartDesign_PathPattern"
+                     << "PartDesign_PointPattern"
                      << "PartDesign_MultiTransform";
 
     // dressups
@@ -441,7 +450,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dressups << "PartDesign_Fillet"
               << "PartDesign_Chamfer"
               << "PartDesign_Draft"
-              << "PartDesign_Thickness";
+              << "PartDesign_Thickness"
+              << "PartDesign_Defeaturing";
 
     *part << "PartDesign_Body"
           << "Separator"
@@ -524,7 +534,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
-          << "PartDesign_Thickness";
+          << "PartDesign_Thickness"
+          << "PartDesign_Defeaturing";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Transformation Features");
@@ -532,6 +543,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
+          << "PartDesign_CircularPattern"
+          << "PartDesign_PathPattern"
+          << "PartDesign_PointPattern"
           << "PartDesign_MultiTransform";
 
     return root;

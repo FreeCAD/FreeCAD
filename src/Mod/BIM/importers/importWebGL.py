@@ -1,28 +1,25 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2013 Yorik van Havre
+# SPDX-FileCopyrightText: 2020 Travis Apple
+# SPDX-FileCopyrightText: 2025 baidakovil
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 Travis Apple <travisapple@gmail.com>               *
-# *   Copyright (c) 2025 baidakovil <baidakovil@icloud.com>                 *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # REFS:
 # https://github.com/mrdoob/three.js/blob/master/examples/webgl_interactive_buffergeometry.html
@@ -213,14 +210,15 @@ def export(
         label = obj.Label
         color, opacity = get_view_properties(obj, label, colors)
 
-        validObject = False
+        objShape = None
         if obj.isDerivedFrom("Mesh::Feature"):
             mesh = obj.Mesh
-            validObject = True
-        if obj.isDerivedFrom("Part::Feature"):
+        elif obj.isDerivedFrom("Part::Feature"):
             objShape = obj.Shape
-            validObject = True
-        if obj.isDerivedFrom("App::Link"):
+        elif obj.isDerivedFrom("App::Part"):
+            if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                objShape = obj.Shape
+        elif obj.isDerivedFrom("App::Link"):
             linkPlacement = obj.LinkPlacement
             while True:  # drill down to get to the actual obj
                 if obj.isDerivedFrom("App::Link"):
@@ -232,19 +230,19 @@ def export(
                     if hasattr(obj, "__len__"):
                         FreeCAD.Console.PrintMessage(f"{label}: Sub-Links are Unsupported.\n")
                         break
-                elif obj.isDerivedFrom("Part::Feature"):
-                    objShape = obj.Shape.copy(False)
-                    objShape.Placement = linkPlacement
-                    validObject = True
-                    break
                 elif obj.isDerivedFrom("Mesh::Feature"):
                     mesh = obj.Mesh.copy()
                     mesh.Placement = linkPlacement
-                    validObject = True
                     break
-
-        if not validObject:
-            continue
+                elif obj.isDerivedFrom("Part::Feature"):
+                    objShape = obj.Shape.copy(False)
+                    objShape.Placement = linkPlacement
+                    break
+                elif obj.isDerivedFrom("App::Part"):
+                    if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                        objShape = obj.Shape.copy(False)
+                        objShape.Placement = linkPlacement
+                        break
 
         objdata = {
             "name": label,
@@ -258,7 +256,7 @@ def export(
             "floats": [],
         }
 
-        if obj.isDerivedFrom("Part::Feature"):
+        if objShape is not None:
             deviation = 0.5
             if FreeCADGui and hasattr(obj.ViewObject, "Deviation"):
                 deviation = obj.ViewObject.Deviation

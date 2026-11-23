@@ -165,6 +165,13 @@ TEST_F(SketchObjectTest, testSplitLineSegment)
     setupLineSegment(lineSeg);
     int geoId = getObject()->addGeometry(&lineSeg);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
     int result = getObject()->split(geoId, splitPoint);
 
@@ -172,9 +179,11 @@ TEST_F(SketchObjectTest, testSplitLineSegment)
     EXPECT_EQ(result, 0);
     // One additional curve should be added
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
-    // Expect the resultant curves are line segments and shape is conserved
-    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
-    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    // Expect the resultant curves to be line segments and tangential (continuous)
+    int numberOfTangentConstraints = countConstraintsOfType(getObject(), Sketcher::Tangent);
+    EXPECT_EQ(numberOfTangentConstraints, 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testSplitCircle)
@@ -185,6 +194,13 @@ TEST_F(SketchObjectTest, testSplitCircle)
     setupCircle(circle);
     int geoId = getObject()->addGeometry(&circle);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
     int result = getObject()->split(geoId, splitPoint);
 
@@ -192,6 +208,8 @@ TEST_F(SketchObjectTest, testSplitCircle)
     EXPECT_EQ(result, 0);
     // The circle should be split into an arc now
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testSplitEllipse)
@@ -202,6 +220,13 @@ TEST_F(SketchObjectTest, testSplitEllipse)
     setupEllipse(ellipse);
     int geoId = getObject()->addGeometry(&ellipse);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
     int result = getObject()->split(geoId, splitPoint);
 
@@ -210,6 +235,105 @@ TEST_F(SketchObjectTest, testSplitEllipse)
     // The ellipse should be split into an arc of ellipse now
     // FIXME: Internal geometries may be added or removed which may cause some issues
     // EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
+}
+
+TEST_F(SketchObjectTest, testSplitEllipseKeepsInternalGeometry)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    int geoId = getObject()->addGeometry(&ellipse);
+    getObject()->exposeInternalGeometry(geoId);
+    int numInternal = countConstraintsOfType(getObject(), Sketcher::InternalAlignment);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(numInternal, 4);
+    const auto constraints = getObject()->Constraints.getValues();
+    int numAligned = std::count_if(constraints.begin(), constraints.end(), [&geoId](const auto* constr) {
+        return constr->Type == Sketcher::InternalAlignment && constr->Second == geoId;
+    });
+    EXPECT_EQ(numAligned, numInternal);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfHyperbolaKeepsInternalGeometry)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola arcOfHyperbola;
+    setupArcOfHyperbola(arcOfHyperbola);
+    Base::Vector3d splitPoint = arcOfHyperbola.pointAtParameter(
+        (arcOfHyperbola.getFirstParameter() + arcOfHyperbola.getLastParameter()) / 2
+    );
+    int geoId = getObject()->addGeometry(&arcOfHyperbola);
+    getObject()->exposeInternalGeometry(geoId);
+    int numInternal = countConstraintsOfType(getObject(), Sketcher::InternalAlignment);
+    int highestBefore = getObject()->getHighestCurveIndex();
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_GT(numInternal, 0);
+    // The arc is split into two pieces, the internal geometry stays with the first one
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), highestBefore + 1);
+    const auto constraints = getObject()->Constraints.getValues();
+    int numAligned = std::count_if(constraints.begin(), constraints.end(), [&geoId](const auto* constr) {
+        return constr->Type == Sketcher::InternalAlignment && constr->Second == geoId;
+    });
+    EXPECT_EQ(numAligned, numInternal);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfHyperbolaKeepsPiecesEqual)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola arcOfHyperbola;
+    setupArcOfHyperbola(arcOfHyperbola);
+    double firstParam = arcOfHyperbola.getFirstParameter();
+    double lastParam = arcOfHyperbola.getLastParameter();
+    int geoId = getObject()->addGeometry(&arcOfHyperbola);
+    getObject()->exposeInternalGeometry(geoId);
+    getObject()->solve();
+    int dofBefore = getObject()->getLastDoF();
+
+    // Act
+    getObject()->split(
+        geoId,
+        arcOfHyperbola.pointAtParameter(firstParam + (lastParam - firstParam) / 3)
+    );
+    int secondPiece = getObject()->getHighestCurveIndex();
+    const auto* piece = getObject()->getGeometry<Part::GeomArcOfHyperbola>(secondPiece);
+    getObject()->split(
+        secondPiece,
+        piece->pointAtParameter((piece->getFirstParameter() + piece->getLastParameter()) / 2)
+    );
+    auto result = getObject()->solve();
+
+    // Assert
+    EXPECT_EQ(result, Sketcher::SketchSolveStatus::Success);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::Equal), 2);
+    EXPECT_EQ(getObject()->getLastDoF(), dofBefore + 2);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfCircleAddsNoEqual)
+{
+    // Arrange
+    Part::GeomArcOfCircle arcOfCircle;
+    setupArcOfCircle(arcOfCircle);
+    int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Act
+    int result = getObject()->split(geoId, Base::Vector3d(-2.0, 3.1, 0.0));
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::Equal), 0);
 }
 
 TEST_F(SketchObjectTest, testSplitArcOfCircle)
@@ -219,6 +343,13 @@ TEST_F(SketchObjectTest, testSplitArcOfCircle)
     Part::GeomArcOfCircle arcOfCircle;
     setupArcOfCircle(arcOfCircle);
     int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
     int result = getObject()->split(geoId, splitPoint);
@@ -230,6 +361,8 @@ TEST_F(SketchObjectTest, testSplitArcOfCircle)
     // Expect the end points and centers of the resultant curve are coincident.
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 2);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testSplitArcOfConic)
@@ -240,6 +373,13 @@ TEST_F(SketchObjectTest, testSplitArcOfConic)
     Part::GeomArcOfParabola arcOfConic;
     setupArcOfParabola(arcOfConic);
     int geoId = getObject()->addGeometry(&arcOfConic);
+
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
     // TODO: Sample random points from both sides of the split
@@ -252,9 +392,11 @@ TEST_F(SketchObjectTest, testSplitArcOfConic)
     EXPECT_EQ(result, 0);
     // The arcOfConic should be split into two arcs of the same conic now
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
-    // Expect the end points of the resultant curve are coincident.
+    // Expect the end points and center points of the resultant curve are coincident.
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
-    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    EXPECT_EQ(numberOfCoincidentConstraints, 2);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
@@ -264,6 +406,13 @@ TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
     Base::Vector3d splitPoint(-0.5, 1.1, 0.0);
     int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
     // TODO: Put a point on this
+
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
     // TODO: sample before point(s) at a random parameter
@@ -276,8 +425,10 @@ TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
     EXPECT_EQ(result, 0);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
     // TODO: confirm sampled point(s) is/are at the same place
-    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Tangent);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testSplitPeriodicBSpline)
@@ -287,6 +438,13 @@ TEST_F(SketchObjectTest, testSplitPeriodicBSpline)
     Base::Vector3d splitPoint(-0.5, 1.1, 0.0);
     int geoId = getObject()->addGeometry(PeriodicBSpline.get());
     // TODO: Put a point on this
+
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
     // TODO: sample before point(s) at a random parameter
@@ -299,6 +457,8 @@ TEST_F(SketchObjectTest, testSplitPeriodicBSpline)
     EXPECT_EQ(result, 0);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
     // TODO: confirm sampled point(s) is/are at the same place
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimWithoutIntersection)
@@ -309,13 +469,22 @@ TEST_F(SketchObjectTest, testTrimWithoutIntersection)
     int geoId = getObject()->addGeometry(&lineSeg);
     Base::Vector3d trimPoint(2.0, 3.1, 0.0);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Once this line segment is trimmed, nothing should remain
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 // TODO: There are other combinations of constraints we may want to test with trim.
@@ -334,16 +503,25 @@ TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
     getObject()->addGeometry(&lineSegCut1);
     int geoId = getObject()->addGeometry(&lineSeg);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this line segment is trimmed, the curve should be "smaller"
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimLineSegmentMid)
@@ -369,11 +547,18 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     getObject()->addGeometry(&lineSegCut2);
     int geoId = getObject()->addGeometry(&lineSeg);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this line segment is trimmed, there should be two "smaller" curves in its place
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
@@ -382,6 +567,8 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimCircleEnd)
@@ -398,13 +585,22 @@ TEST_F(SketchObjectTest, testTrimCircleEnd)
     getObject()->addGeometry(&lineSegCut1);
     int geoId = getObject()->addGeometry(&circle);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this circle is trimmed, the circle should be deleted.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimCircleMid)
@@ -430,11 +626,18 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     getObject()->addGeometry(&lineSegCut2);
     int geoId = getObject()->addGeometry(&circle);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this circle is trimmed, there should be one arc.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
@@ -444,6 +647,8 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
@@ -462,15 +667,24 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
     getObject()->addGeometry(&lineSegCut1);
     int geoId = getObject()->addGeometry(&arcOfCircle);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be a "point-on-object" constraint on the intersecting curves
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
@@ -496,11 +710,18 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     getObject()->addGeometry(&lineSegCut2);
     int geoId = getObject()->addGeometry(&arcOfCircle);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // There should be a "point-on-object" constraint on the intersecting curves
     int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
@@ -510,6 +731,8 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 2);
     // TODO: Ensure shape is preserved
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimEllipseEnd)
@@ -526,18 +749,27 @@ TEST_F(SketchObjectTest, testTrimEllipseEnd)
     getObject()->addGeometry(&lineSegCut1);
     int geoId = getObject()->addGeometry(&ellipse);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Once this ellipse is trimmed, the ellipse should be deleted.
     // Only remaining: line segment
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimEllipseMid)
@@ -565,15 +797,22 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     // FIXME: Doing this to avoid trimming only until minor/major axes. Should not be needed.
     getObject()->deleteUnusedInternalGeometry(geoId);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Once this ellipse is trimmed, there should be one arc and line segments.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
@@ -583,6 +822,8 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 // TODO: Tests for other arcs of conics?
@@ -601,16 +842,25 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineEnd)
     getObject()->addGeometry(&lineSegCut1);
     int geoId = getObject()->addGeometry(periodicBSpline.get());
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // FIXME: This will fail because of deleted internal geometry
     // Once this periodicBSpline is trimmed, the periodicBSpline should be deleted, leaving only the
     // line segment.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
@@ -636,15 +886,22 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     getObject()->addGeometry(&lineSegCut2);
     int geoId = getObject()->addGeometry(periodicBSpline.get());
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Only remaining: Two line segments and the B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
@@ -654,6 +911,8 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
@@ -672,20 +931,29 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
     getObject()->addGeometry(&lineSegCut1);
     int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
     // FIXME: There should be a "point-on-object" constraint on the intersecting curves
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
@@ -711,8 +979,15 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     getObject()->addGeometry(&lineSegCut2);
     int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
         if (getObject()->getGeometry(i)->is<Part::GeomBSplineCurve>()) {
@@ -721,7 +996,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 3);
     // There should be a "point-on-object" constraint on the intersecting curves
@@ -730,6 +1005,8 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimEffectOnConstruction)
@@ -759,17 +1036,26 @@ TEST_F(SketchObjectTest, testTrimEffectOnConstruction)
     getObject()->addGeometry(&lineSegCut2);
     int geoId = getObject()->addGeometry(&circle, true);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
         auto* geom = getObject()->getGeometry(i);
         if (geom->is<Part::GeomArcOfCircle>()) {
             EXPECT_TRUE(GeometryFacade::getConstruction(geom));
         }
     }
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
@@ -796,15 +1082,24 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
                          .Length());
     getObject()->addConstraint(constr);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Assert
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 0);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
@@ -832,15 +1127,24 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
     constr->ThirdPos = Sketcher::PointPos::start;
     getObject()->addConstraint(constr);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Assert
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 0);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
@@ -870,11 +1174,18 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     getObject()->addConstraint(constraint);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Tangent), 1);
 
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
+
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: find tangent and confirm nature
     const auto& constraints = getObject()->Constraints.getValues();
     auto tangIt = std::ranges::find(
@@ -885,11 +1196,12 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     EXPECT_NE(tangIt, constraints.end());
     EXPECT_EQ((*tangIt)->FirstPos, Sketcher::PointPos::none);
     EXPECT_EQ((*tangIt)->SecondPos, Sketcher::PointPos::none);
+    EXPECT_TRUE(getObject()->noRecomputes);
+    EXPECT_TRUE(solverUpdated);
 }
 
 // TODO: Ensure endpoint constraints go to the appropriate new geometry
 // This will need a reliable way to get the resultant curves after the trim
-
 TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
 {
     // Arrange

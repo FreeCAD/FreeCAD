@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Geometry import Geometry
@@ -43,7 +41,6 @@ class Point(Geometry):
         """
         Create a vertex from this point.
         """
-        ...
     X: float = ...
     """X component of this point."""
 

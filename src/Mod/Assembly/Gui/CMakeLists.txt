@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 
 set(AssemblyGui_LIBS
@@ -92,11 +93,9 @@ if(WIN32)
 endif(WIN32)
 
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(AssemblyGui)
-endif()
+target_compile_warn_error(AssemblyGui)
 
-SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
+SET_BIN_DIR(AssemblyGui)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)
 
 fc_copy_sources(AssemblyGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Assembly" ${AssemblyGuiIcon_SVG})

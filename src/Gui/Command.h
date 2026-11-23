@@ -29,6 +29,7 @@
 #include <vector>
 #include <fastsignals/signal.h>
 
+#include <Base/Maturity.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 
@@ -701,12 +702,17 @@ public:
     };
     friend class LogDisabler;
 
+    void setMaturity(Base::Maturity m);
+    Base::Maturity getMaturity() const;
+    bool allowedByMaturity() const;
+
 private:
     void _invoke(int, bool disablelog);
 
 protected:
     enum CmdType
     {
+        AlterNone = 0,      /**< Command change nothing */
         AlterDoc = 1,       /**< Command change the Document */
         Alter3DView = 2,    /**< Command change the Gui */
         AlterSelection = 4, /**< Command change the Selection */
@@ -725,6 +731,7 @@ protected:
     const char* sName;
     const char* sHelpUrl;
     int eType;
+    Base::Maturity eMaturity;
     /// Indicate if the command shall log to MacroManager
     bool bCanLog;
     //@}

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QApplication>
 #include <QCheckBox>
@@ -263,10 +260,9 @@ void CmdSketcherNewSketch::activated(int iMsg)
                                                            // on its support
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 
-        Part::Feature* part = static_cast<Part::Feature*>(
-            support.getValue());// if multi-part support, this will return 0
-        if (part) {
-            App::DocumentObjectGroup* grp = part->getGroup();
+        App::DocumentObject* supportObject = support.getValue();
+        if (supportObject) {
+            App::DocumentObjectGroup* grp = supportObject->getGroup();
             if (grp) {
                 doCommand(Doc,
                           "App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -1163,7 +1159,7 @@ namespace {
                     "CmdSketcherMergeSketches",
                     "Skipping external geometry #%1\n")
                     .arg(displayId);
-                Base::Console().message(msg.toUtf8().constData());
+                Base::Console().message("{}", msg.toStdString());
             }
         };
 
@@ -1206,7 +1202,7 @@ namespace {
                         "CmdSketcherMergeSketches",
                         "External geometry '%1' is out of scope:\n")
                         .arg(oldRefName.c_str());
-                    Base::Console().message(msg.toUtf8().constData());
+                    Base::Console().message("{}", msg.toStdString());
                     printSkippedDisplayIds(srcGeoIds);
                 }
                 continue;
@@ -1365,7 +1361,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                 .arg(addedConstraints)
                 .arg(srcConstraints)
                 .arg(srcSketch->getNameInDocument());
-            Base::Console().message(msg.toUtf8().constData());
+            Base::Console().message("{}", msg.toStdString());
         }
         if (addedConstraints > 0) {
             for (int i = 0; i < addedConstraints; i++) {
@@ -1380,7 +1376,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
                         "Skipping constraint #%1 of '%2': references unmerged geometry.\n")
                         .arg(i+1)
                         .arg(srcSketch->getNameInDocument());
-                    Base::Console().message(msg.toUtf8().constData());
+                    Base::Console().message("{}", msg.toStdString());
                     continue;
                 }
             }
@@ -1448,7 +1444,7 @@ void CmdSketcherViewSection::activated(int iMsg)
     QLatin1String revert = vp->getViewOrientationFactor() < 0 ? QLatin1String("True") : QLatin1String("False");
 
     cmdStr = cmdStr.arg(doc->getDocument()->getName(), vp->getSketchObject()->getNameInDocument(), revert);
-    doCommand(Doc, cmdStr.toLatin1());
+    doCommand(Doc, cmdStr.toUtf8());
 }
 
 bool CmdSketcherViewSection::isActive()

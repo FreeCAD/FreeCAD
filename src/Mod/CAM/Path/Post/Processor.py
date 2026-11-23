@@ -1,8 +1,9 @@
-# SPD-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2014 Yorik van Havre <yorik@uncreated.net>
-# SPDX-FileCopyrightText: 2014 sliptonic <shopinthewoods@gmail.com>
-# SPDX-FileCopyrightText: 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>
-# SPDX-FileCopyrightText: 2024 Ondsel <development@ondsel.com>
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre
+# SPDX-FileCopyrightText: 2014 sliptonic
+# SPDX-FileCopyrightText: 2022 Larry Woestman
+# SPDX-FileCopyrightText: 2024 Ondsel
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
 #                                                                              #
@@ -29,11 +30,14 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import sys
-from typing import Any, Dict, List, Optional, Tuple, Union
+import itertools
+from typing import Any
 import datetime
 from contextlib import contextmanager
 from itertools import groupby
+from dataclasses import replace
 
 import FreeCAD
 import Constants
@@ -44,9 +48,14 @@ from Path.Post import PostList
 import Path.Post.Utils as PostUtils
 from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
-from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
+from Path.Post import TiltedWorkPlane
+from Path.Post.UtilsParse import format_command_line
+from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
+from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
-from Machine.models.machine import MachineFactory, OutputUnits
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.Util as PathUtil
+from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
 translate = FreeCAD.Qt.translate
 
@@ -200,18 +209,115 @@ class _HeaderBuilder:
 #
 # Define some types that are used throughout this file.
 #
-Defaults = Dict[str, bool]
+Defaults = dict[str, bool]
 FormatHelp = str
-GCodeOrNone = Optional[str]
-GCodeSections = List[Tuple[str, GCodeOrNone]]
+GCodeOrNone = str | None
+GCodeSections = list[tuple[str, GCodeOrNone]]
 Parser = argparse.ArgumentParser
-ParserArgs = Union[None, str, argparse.Namespace]
-Postables = Union[List, List[Tuple[str, List]]]
-Section = Tuple[str, List]
-Sublist = List
+ParserArgs = None | str | argparse.Namespace
+Postables = list | list[tuple[str, list]]
+Section = tuple[str, list]
+Sublist = list
 Units = str
-Values = Dict[str, Any]
-Visible = Dict[str, bool]
+Values = dict[str, Any]
+Visible = dict[str, bool]
+
+
+# ---------------------------------------------------------------------------
+# Property scope
+# ---------------------------------------------------------------------------
+#
+# Every entry in a postprocessor property schema declares a *scope*: the tier
+# at which the property may be edited.  The scopes correspond one-to-one with
+# the merge tiers in build_configuration_bundle().
+#
+SCOPE_MACHINE = "machine"
+"""Edited in the machine editor only; suppressed in the post-processing dialog.
+Persisted in the .fcm machine file.  Use for properties that describe the
+machine or controller itself and must not vary between runs."""
+
+SCOPE_JOB = "job"
+"""Edited in the machine editor (which sets the default) and overridable per
+run on the post-processing dialog's Options tab.  Persisted in the .fcm file;
+per-run changes go through Job.PostProcessorPropertyOverrides."""
+
+SCOPE_RUN = "run"
+"""Edited only on the post-processing dialog's Overview tab.  Never shown in
+the machine editor and never written back to the .fcm file - the value applies
+to a single export."""
+
+SCOPE_INTERNAL = "internal"
+"""Never presented in any UI.  Use for schema entries that exist so the
+postprocessor can read them from the configuration bundle but which are
+derived rather than user-set."""
+
+VALID_SCOPES = (SCOPE_MACHINE, SCOPE_JOB, SCOPE_RUN, SCOPE_INTERNAL)
+
+#: Scope assumed when a schema entry declares none.  Matches the historical
+#: behaviour of postprocessor-specific properties without a "runtime" key.
+DEFAULT_SCOPE = SCOPE_JOB
+
+
+def property_scope(prop: dict[str, Any]) -> str:
+    """Return the scope of a property schema entry.
+
+    Reads the "scope" key.  For backwards compatibility with schemas written
+    against the older API, a truthy "runtime" key is accepted as an alias for
+    SCOPE_RUN.  Entries declaring neither get DEFAULT_SCOPE.
+
+    An unrecognised scope is logged and treated as DEFAULT_SCOPE so that a
+    typo in a third-party postprocessor degrades to a visible property rather
+    than silently hiding it.
+
+    Args:
+        prop: A single property schema dictionary.
+
+    Returns:
+        One of VALID_SCOPES.
+    """
+    scope = prop.get("scope")
+    if scope is None:
+        # Deprecated: "runtime": True is the old spelling of scope "run".
+        if prop.get("runtime", False):
+            return SCOPE_RUN
+        return DEFAULT_SCOPE
+    if scope not in VALID_SCOPES:
+        Path.Log.warning(
+            f"Unknown property scope {scope!r} for property "
+            f"{prop.get('name', '?')!r}; treating as {DEFAULT_SCOPE!r}"
+        )
+        return DEFAULT_SCOPE
+    return scope
+
+
+def properties_in_scope(schema, *scopes) -> list[dict[str, Any]]:
+    """Filter a property schema down to the entries in the given scopes.
+
+    Args:
+        schema: A property schema (list of dicts), or None.
+        *scopes: One or more scope constants to keep.
+
+    Returns:
+        The matching schema entries, in schema order.
+    """
+    if not schema:
+        return []
+    wanted = set(scopes)
+    return [prop for prop in schema if property_scope(prop) in wanted]
+
+
+# A Fixture word as the Job's Fixtures list spells it: G54-G59, G59.1-G59.3,
+# or G54.1 with a P number.
+_FIXTURE_WORD = re.compile(r"^G5[4-9](?:\.[1-9])?(?:\s+P\d+)?$", re.IGNORECASE)
+
+
+def _tool_axis_tilted(placement):
+    """Whether a work plane's tool axis leaves Z: what needs rotary axes.
+
+    A plane with its Z up but an origin elsewhere, or a turned X, is not
+    tilted; any three-axis machine cuts it from world coordinates."""
+    z_up = FreeCAD.Vector(0, 0, 1)
+    return not placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6)
 
 
 class PostProcessorFactory:
@@ -235,6 +341,9 @@ class PostProcessorFactory:
         # Iterate all the paths to find the module
         for path in paths:
             module_path = os.path.join(path, f"{module_name}.py")
+            if not os.path.isfile(module_path):
+                continue
+
             spec = importlib.util.spec_from_file_location(module_name, module_path)
 
             if spec and spec.loader:
@@ -243,39 +352,40 @@ class PostProcessorFactory:
                     spec.loader.exec_module(module)
                     Path.Log.debug(f"found module {module_name} at {module_path}")
 
-                except (FileNotFoundError, ImportError, ModuleNotFoundError) as e:
+                except ModuleNotFoundError as e:
+                    # skips if module actually doesn't exist
+                    # throws if some error in executing it
                     Path.Log.debug(f"Failed to load {module_path}: {e}")
-                    continue  # with other paths
+                    if f"'{module_name}'" not in str(e):
+                        raise
+                    continue
 
                 try:
                     PostClass = getattr(module, class_name)
+                except AttributeError:
+                    # Return an instance of WrapperPost if no valid class is found
+                    Path.Log.debug(f"Post processor {postname} is a script")
+                    return WrapperPost(job, module_path, module_name)
+
+                try:
                     Path.Log.debug(f"Found class {class_name} in module {module_name}")
                     return PostClass(job)
-                except AttributeError as e:
-                    if f"has no attribute '{class_name}'" in str(e):
-                        # Return an instance of WrapperPost if no valid class is found
-                        Path.Log.debug(f"Post processor {postname} is a script")
-                        return WrapperPost(job, module_path, module_name)
-                    raise e
                 except Exception as e:
                     # Log any other exception during instantiation
                     Path.Log.debug(f"Error instantiating {class_name}: {e}")
                     # If job is None (filtering context), try to return the class itself
                     # so the machine editor can check its schema methods
                     if job is None:
-                        try:
-                            PostClass = getattr(module, class_name)
-                            Path.Log.debug(
-                                f"Returning uninstantiated class {class_name} for schema inspection"
-                            )
-                            # Return a mock instance that can be used for schema inspection
-                            return PostClass.__new__(PostClass)
-                        except:
-                            pass  # try other paths
+
+                        Path.Log.debug(
+                            f"Returning uninstantiated class {class_name} for schema inspection"
+                        )
+                        # Return a mock instance that can be used for schema inspection
+                        return PostClass.__new__(PostClass)
                     raise
 
         Path.Log.warning(
-            f"Post processor '{postname}' not found in any search path. "
+            f"Post processor '{postname}' found not in any search path. "
             f"Searched for '{module_name}.py' in {len(paths)} paths."
         )
         return CAMError(
@@ -290,8 +400,19 @@ def needsTcOp(oldTc, newTc):
 class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
+    # Which rotation strategies this post can emit for an operation on a
+    # tilted work plane, by RotationStrategy value. The machine selects one;
+    # a post that cannot write it refuses. "dwo" commands the rotaries and
+    # emits the path in the frame the machine reaches, "twp" declares the
+    # plane and emits the path in plane coordinates.
+    ROTATION_STRATEGIES = ("dwo", "twp")
+    # The tilted-work-plane command family this post writes for "twp": the
+    # control family is what selecting a post means. See
+    # Path.Post.TiltedWorkPlane for the dialects.
+    PLANE_COMMAND = TiltedWorkPlane.PlaneCommand.G68_2
+
     @classmethod
-    def get_common_property_schema(cls) -> List[Dict[str, Any]]:
+    def get_common_property_schema(cls) -> list[dict[str, Any]]:
         """
         Return schema for common properties that all postprocessors should expose.
 
@@ -313,6 +434,7 @@ class PostProcessor:
         return [  # FIXME: this list does not match _merge_machine_config(), nor machine_editor.py
             {
                 "name": "file_extension",
+                "scope": SCOPE_MACHINE,
                 "type": "string",
                 "label": translate("CAM", "File Extension"),
                 "default": "nc",
@@ -324,6 +446,7 @@ class PostProcessor:
             },
             {
                 "name": "supports_tool_radius_compensation",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Tool Radius Compensation (G41/G42)"),
                 "default": False,
@@ -335,6 +458,7 @@ class PostProcessor:
             },
             {
                 "name": "supported_commands",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Supported G-code Commands"),
                 "default": "\n".join(all_supported_commands),
@@ -345,19 +469,34 @@ class PostProcessor:
                 ),
             },
             {
+                "name": "ignored_commands",
+                "scope": SCOPE_MACHINE,
+                "type": "text",
+                "label": translate("CAM", "Ignore G-code Commands"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "List of G-code commands, "
+                    "tolerated but ignored by this post-processor (one per line). "
+                    "Commands in this list will be filtered out.",
+                ),
+            },
+            {
                 "name": "drill_cycles_to_translate",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Drill Cycles to Translate"),
-                "default": "\n".join(Constants.GCODE_MOVE_DRILL),
+                "default": "\n".join(Constants.EXPANDABLE_DRILL_CYCLES),
                 "help": translate(
                     "CAM",
                     "List of drill cycle commands to translate to G0/G1 moves (one per line). "
-                    f"Standard drill cycles: {', '.join(Constants.GCODE_MOVE_DRILL)}. "
+                    f"Standard drill cycles: {', '.join(Constants.EXPANDABLE_DRILL_CYCLES)}. "
                     "Leave empty if postprocessor supports drill cycles natively.",
                 ),
             },
             {
                 "name": "preamble",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Preamble"),
                 "default": "",
@@ -367,6 +506,7 @@ class PostProcessor:
             },
             {
                 "name": "postamble",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Postamble"),
                 "default": "",
@@ -374,6 +514,7 @@ class PostProcessor:
             },
             {
                 "name": "safetyblock",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Safety Block"),
                 "default": "",
@@ -384,6 +525,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_job",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Job"),
                 "default": "",
@@ -391,6 +533,7 @@ class PostProcessor:
             },
             {
                 "name": "post_job",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Job"),
                 "default": "",
@@ -398,6 +541,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_fixture_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Fixture"),
                 "default": "",
@@ -405,6 +549,7 @@ class PostProcessor:
             },
             {
                 "name": "post_fixture_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Fixture"),
                 "default": "",
@@ -412,6 +557,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_operation",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Operation"),
                 "default": "",
@@ -419,6 +565,7 @@ class PostProcessor:
             },
             {
                 "name": "post_operation",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Operation"),
                 "default": "",
@@ -426,6 +573,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_tool_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Tool Change"),
                 "default": "",
@@ -433,34 +581,106 @@ class PostProcessor:
             },
             {
                 "name": "post_tool_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Tool Change"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after tool changes."),
+                "help": translate(
+                    "CAM",
+                    "G-code to execute immediately after a tool change (M6), before the spindle is turned on. Use for a custom tool length offset routine, custom cutter compensation, or a return motion before the spindle starts.",
+                ),
             },
             {
                 "name": "tool_return",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Tool Return after tool changes"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after tool changes."),
+                "help": translate(
+                    "CAM",
+                    "G-code to execute immediately after the spindle is turned on after a tool change.",
+                ),
             },
             {
                 "name": "pre_rotary_move",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Rotary Move"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted before rotary axis moves."),
+                "help": translate(
+                    "CAM",
+                    "G-code commands inserted before the rotary axes move: before a rotary "
+                    "positioning move, and before a tilted work plane is declared when the "
+                    "control positions the axes itself. Put the moves that bring the tool clear "
+                    "of the part here, in machine coordinates (for example G53 G0 Z0); an "
+                    "operation's clearance height is measured in its own work plane and says "
+                    "nothing about the tool while the table turns.",
+                ),
             },
             {
                 "name": "post_rotary_move",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Rotary Move"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after rotary axis moves."),
+                "help": translate(
+                    "CAM",
+                    "G-code commands inserted after the rotary axes have moved, and after a "
+                    "tilted work plane has been declared and aligned to.",
+                ),
+            },
+            {
+                "name": "twp_control_positions_rotaries",
+                "scope": SCOPE_MACHINE,
+                "type": "bool",
+                "label": translate("CAM", "Tilted work plane: control positions the rotaries"),
+                "default": True,
+                "help": translate(
+                    "CAM",
+                    "The plane command positions the rotary axes itself (G53.1, TURN). Off, the "
+                    "program commands them with a rotary move before declaring the plane.",
+                ),
+            },
+            {
+                "name": "twp_declare",
+                "scope": SCOPE_MACHINE,
+                "type": "string",
+                "label": translate("CAM", "Tilted work plane: declare"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "The line that declares a tilted work plane, with {x} {y} {z} the plane's "
+                    "origin and {a1} {a2} {a3} the plane command's angles. Empty uses the "
+                    "plane command's own form.",
+                ),
+            },
+            {
+                "name": "twp_align",
+                "scope": SCOPE_MACHINE,
+                "type": "string",
+                "label": translate("CAM", "Tilted work plane: align"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "The line that points the tool along a declared plane when the control "
+                    "positions the rotary axes itself. Empty uses the plane command's own form.",
+                ),
+            },
+            {
+                "name": "twp_cancel",
+                "scope": SCOPE_MACHINE,
+                "type": "string",
+                "label": translate("CAM", "Tilted work plane: cancel"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "The line that cancels a declared plane. Empty uses the plane command's "
+                    "own form.",
+                ),
             },
             {
                 "name": "show_dialog",
+                "scope": SCOPE_RUN,
                 "type": "bool",
                 "label": translate("CAM", "Show Pre-processing Dialogs"),
                 "default": True,
@@ -472,13 +692,15 @@ class PostProcessor:
             },
             {
                 "name": "parameter_order",
+                "scope": SCOPE_MACHINE,
                 "type": "text",  # one line
                 "label": translate("CAM", "Generated Parameter Order for GCode"),
-                "default": "XYZABCFSIJTQRPH",  # FIXME: only list `supported`
+                "default": Constants.PARAMETER_ORDER,
                 "help": translate("CAM", "Generated Parameter Order for GCode for output"),
             },
             {
                 "name": "output_tool_length_offset",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "TLO after tool-change"),
                 "default": True,
@@ -488,37 +710,8 @@ class PostProcessor:
                 ),
             },
             {
-                "name": "translate_drill_cycles",
-                "type": "bool",
-                "label": translate("CAM", "Expand drill-cycles"),
-                "default": False,
-                "help": translate(
-                    "CAM",
-                    "Expand drill-cycles (cf. 'Drill Cycles to Translate') to moves",
-                ),
-            },
-            {
-                "name": "tool_change",
-                "type": "bool",
-                "label": translate("CAM", "Allow tool-change"),
-                "default": True,
-                "help": translate(
-                    "CAM",
-                    "Unchecked to suppress tool-change (M6)",
-                ),
-            },
-            {
-                "name": "output_units",
-                "type": "str",
-                "label": translate("CAM", "Unit-command in output"),
-                "default": OutputUnits.METRIC,
-                "help": translate(
-                    "CAM",
-                    "Unit-command in output",
-                ),
-            },
-            {
                 "name": "axis_precision",
+                "scope": SCOPE_MACHINE,
                 "type": "int",
                 "label": translate("CAM", "Axis precision in output"),
                 "default": 2,  # degrees
@@ -529,6 +722,7 @@ class PostProcessor:
             },
             {
                 "name": "feed_precision",
+                "scope": SCOPE_MACHINE,
                 "type": "int",
                 "label": translate("CAM", "Feedrate precision in output"),
                 "default": 3,
@@ -539,6 +733,7 @@ class PostProcessor:
             },
             {
                 "name": "spindle_decimals",
+                "scope": SCOPE_MACHINE,
                 "type": "int",
                 "label": translate("CAM", "Spindle-speed precision in output"),
                 "default": 1,  # rpm
@@ -549,6 +744,7 @@ class PostProcessor:
             },
             {
                 "name": "f_for_rapid_moves",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Output F parameter for G0 (rapid)"),
                 "default": False,
@@ -557,10 +753,23 @@ class PostProcessor:
                     "Whether to output the F parameter for G0 (rapid moves)",
                 ),
             },
+            {
+                "name": "translate_no_engagement_feed",
+                "scope": SCOPE_MACHINE,
+                "type": "bool",
+                "label": translate(
+                    "CAM", "Output non-engaging moves at the no-engagement feed rate"
+                ),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    'Certain G0\'s become G1 for operations that have "No-Engagement Feedrate"',
+                ),
+            },
         ]
 
     @classmethod
-    def get_property_schema(cls) -> List[Dict[str, Any]]:
+    def get_property_schema(cls) -> list[dict[str, Any]]:
         """
         Return schema describing configurable properties for this postprocessor.
 
@@ -573,7 +782,16 @@ class PostProcessor:
         - type: str - Property type: 'bool', 'int', 'float', 'str', 'text', 'choice', 'file'
         - label: str - Human-readable label for the UI
         - default: Any - Default value for the property
-        - runtime: Bool - True means only appears on the post-process Overview tab, written to .postprocessor_properties
+        - scope: str - Where the property may be edited.  One of:
+            SCOPE_MACHINE  ("machine")  machine editor only; suppressed in the
+                                        post-processing dialog
+            SCOPE_JOB      ("job")      machine editor sets the default; the
+                                        dialog's Options tab overrides it per run
+            SCOPE_RUN      ("run")      dialog Overview tab only; never shown in
+                                        the machine editor, never persisted
+            SCOPE_INTERNAL ("internal") never presented in any UI
+          Omitting the key means SCOPE_JOB.  The deprecated "runtime": True is
+          still honoured as an alias for SCOPE_RUN.
         - help: str - Help text describing the property
         - Additional type-specific keys:
           - For 'int'/'float': min, max, decimals (float only)
@@ -586,7 +804,7 @@ class PostProcessor:
         return []
 
     @classmethod
-    def get_full_property_schema(cls) -> List[Dict[str, Any]]:
+    def get_full_property_schema(cls) -> list[dict[str, Any]]:
         """
         Return the complete property schema including both common and postprocessor-specific properties.
 
@@ -610,6 +828,13 @@ class PostProcessor:
         self._bcnc_postamble_commands = None
         self._operation = None
 
+        # Reset this to None when not in-use (e.g. _convert_job_sections)
+        # Use `with self.use_machine_state():`
+        self.machine_state = None
+
+        # The parsed command names of the ignored and supported text properties
+        self._command_name_sets = {}
+
         # Handle job: can be single job or list of jobs
         if isinstance(job, list):
             self._jobs = job
@@ -626,11 +851,11 @@ class PostProcessor:
             # Validate all jobs have the same machine (if Machine attribute exists)
             if hasattr(self._jobs[0], "Machine"):
                 machine_name = self._jobs[0].Machine
-                for job in self._jobs[1:]:
-                    if hasattr(job, "Machine") and job.Machine != machine_name:
+                for my_job in self._jobs[1:]:
+                    if hasattr(my_job, "Machine") and my_job.Machine != machine_name:
                         raise CAMAttributeError(
-                            f"All jobs must have the same machine '{machine_name}' (as in <{self._jobs[0].Label}>), saw '{job.Machine}'",
-                            job=job,
+                            f"All jobs must have the same machine '{machine_name}' (as in <{self._jobs[0].Label}>), saw '{my_job.Machine}'",
+                            job=my_job,
                         )
         else:
             self._jobs = [job]
@@ -660,19 +885,6 @@ class PostProcessor:
         else:
             # Job doesn't have Machine attribute yet (e.g., MockJob or legacy job)
             self._machine = None
-        self._modal_state = {
-            "X": None,
-            "Y": None,
-            "Z": None,
-            "A": None,
-            "B": None,
-            "C": None,
-            "U": None,
-            "V": None,
-            "W": None,
-            "F": None,
-            "S": None,
-        }
         self.reinitialize()
 
         self._operations = []
@@ -718,12 +930,156 @@ class PostProcessor:
     def _buildPostList(self):
         """Determine the specific objects and order to postprocess.
 
-        Reads early_tool_prep from self._machine.processing if available.
+        Then applies the machine's tool change format / early tool prep /
+        assert tool prep from self._machine.processing.
 
         Returns:
             List of (name, operations) tuples where every item is a PostList.Postable.
         """
-        return PostList.buildPostList(self)
+        return self._apply_tool_change_format(PostList.buildPostList(self))
+
+    def _tool_change_format(self) -> "Constants.ToolChangeFormat":
+        """The machine's tool change format, M6_T if unset or unrecognised."""
+        processing = getattr(getattr(self, "_machine", None), "processing", None)
+        raw = getattr(processing, "tool_change_format", None)
+        raw = getattr(raw, "value", raw)  # the machine's enum, or already a plain value
+        try:
+            return Constants.ToolChangeFormat(raw)
+        except ValueError:
+            return Constants.ToolChangeFormat.M6_T
+
+    def _tool_prep_postable(self, tool_number) -> Postable:
+        """Standalone 'T<n>' command item."""
+        return self._make_postable(
+            "Command", Path.Command(f"{Constants.GCODE_BARE_T[0]}{int(tool_number)}")
+        )
+
+    def _ends_with_tool_prep(self, item: Postable, tool_number) -> bool:
+        """True if the item's last command is already 'T<tool_number>'."""
+        cmds = item.path.Commands if item.path else []
+        return bool(cmds) and cmds[-1].Name == f"{Constants.GCODE_BARE_T[0]}{int(tool_number)}"
+
+    def _apply_tool_change_format(self, postlist: list[tuple[str, list]]) -> list[tuple[str, list]]:
+        """
+        Rewrite tool change items according to the machine's tool change settings.
+
+        tool_change_format (Constants.ToolChangeFormat), applied when the G-code is written:
+            M6_T             M6 T4          (tool change to T4)
+            T_M6             T4 M6          (tool change to T4)
+            M6_T_EARLY_PREP  M6 T6          (M6 changes to the prepped tool, T6 preps the NEXT tool)
+            M6_ONLY          M6             (no T parameter. T parameter may be written by early tool prep)
+            NO_TOOL_CHANGE                  (No T or M parameters written)
+
+        The M6 command itself always keeps T<current tool>; the layout is stored in its
+        annotations (Constants.ANNOT_TOOL_CHANGE_FORMAT, Constants.ANNOT_NEXT_TOOL).
+
+        machine.processing.early_tool_prep:
+            For formats other than M6_T_EARLY_PREP, a standalone "T<next>" is emitted after
+            each tool change so the machine can prep the next tool while the current one cuts.
+            For M6_T_EARLY_PREP the next tool prep is part of the M6 line, and the first tool
+            of each output group is prepped with a standalone "T<n>" before its M6.
+
+        machine.processing.assert_tool_prep (only active with early_tool_prep):
+            A "T<n>" is written immediately before every M6
+            Useful when starting partway through the file.
+
+        Redundant consecutive T commands for the same tool are never written. Example with
+        early prep + assert, format M6_ONLY:
+            T4          <- prep / assert
+            M6
+            T6          <- prep next tool
+            (gcode)
+            T6          <- assert
+            M6
+        """
+        fmt = self._tool_change_format()
+        processing = getattr(getattr(self, "_machine", None), "processing", None)
+        early_tool_prep = bool(getattr(processing, "early_tool_prep", False))
+        assert_tool_prep = bool(getattr(processing, "assert_tool_prep", False))
+
+        use_early = early_tool_prep
+        use_assert = early_tool_prep and assert_tool_prep
+        early_tool_change_fmt = fmt == Constants.ToolChangeFormat.M6_T_EARLY_PREP
+        no_tool_change = fmt == Constants.ToolChangeFormat.NO_TOOL_CHANGE
+
+        # Flatten tool controllers across all groups so "next tool" can cross group boundaries.
+        all_tcs = [
+            (g, i)
+            for g, (_, sub) in enumerate(postlist)
+            for i, item in enumerate(sub)
+            if item.item_type == "tool_controller"
+        ]
+        next_lookup = {}
+        for pos, key in enumerate(all_tcs):
+            if pos + 1 < len(all_tcs):
+                ng, ni = all_tcs[pos + 1]
+                next_lookup[key] = postlist[ng][1][ni].data.get("tool_number")
+
+        def add_tool(new_sublist: list, tool_number) -> None:
+            if tool_number is None:
+                return
+            if new_sublist and self._ends_with_tool_prep(new_sublist[-1], tool_number):
+                return  # redundant, same T directly before
+            new_sublist.append(self._tool_prep_postable(tool_number))
+
+        new_postlist = []
+
+        for g, (name, sublist) in enumerate(postlist):
+            new_sublist: list = []
+            first_in_group = True
+            for i, item in enumerate(sublist):
+                if item.item_type != "tool_controller":
+                    new_sublist.append(item)
+                    continue
+
+                cmds = list(item.path.Commands)
+                m6_idx = next(
+                    (k for k, c in enumerate(cmds) if c.Name in Constants.MCODE_TOOL_CHANGE), None
+                )
+                tool_number = item.data.get("tool_number")
+                if m6_idx is None or tool_number is None:
+                    new_sublist.append(item)
+                    continue
+
+                next_tool = next_lookup.get((g, i))
+
+                # Formats whose M6 line does not name the tool being changed to need the first
+                # tool of each output group prepped explicitly.
+                needs_initial_prep = first_in_group and (
+                    early_tool_change_fmt
+                    or (use_early and fmt == Constants.ToolChangeFormat.M6_ONLY)
+                )
+                if (
+                    (needs_initial_prep or use_assert)
+                    and not no_tool_change
+                    and fmt != Constants.ToolChangeFormat.T_M6  # format already leads with this T
+                ):
+                    add_tool(new_sublist, tool_number)
+
+                # The M6 keeps T<current tool> so everything downstream that reads
+                # Parameters["T"] (G43 TLO, tool tracking) keeps working. The requested layout
+                # is an annotation that is applied when the G-code text is written in
+                # _format_tool_change.
+                annotations = {Constants.ANNOT_TOOL_CHANGE_FORMAT: fmt.value}
+                if next_tool is not None:
+                    annotations[Constants.ANNOT_NEXT_TOOL] = str(int(next_tool))
+                cmds[m6_idx : m6_idx + 1] = [
+                    Path.Command(cmds[m6_idx].Name, {"T": int(tool_number)}, annotations)
+                ]
+                new_sublist.append(replace(item, path=Path.Path(cmds)))
+
+                # Prep for next tool
+                if (
+                    use_early
+                    and not early_tool_change_fmt
+                    and not no_tool_change
+                    and next_tool is not None
+                ):
+                    new_sublist.append(self._tool_prep_postable(next_tool))
+
+                first_in_group = False
+            new_postlist.append((name, new_sublist))
+        return new_postlist
 
     def _merge_machine_config(self):
         """Merge machine configuration into the values dict.
@@ -845,12 +1201,59 @@ class PostProcessor:
         self.values["OUTPUT_DOUBLES"] = getattr(duplicates, "parameters", False)
 
         # Processing options
-        for (
-            option
-        ) in "split_arcs f_for_rapid_moves translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
-            " "
+        for option in (
+            "filter_inefficient_moves",
+            "split_arcs",
+            "translate_drill_cycles",
+            "translate_rapid_moves",
+            "xy_before_z_after_tool_change",
         ):
             self.values[option.upper()] = getattr(self._machine.processing, option)
+
+        # Toolhead limits
+        self._merge_toolhead_limits()
+
+    def _merge_toolhead_limits(self):
+        """Merge the machine's spindle speed limits into the values dict.
+
+        The limits live on Toolhead in the machine model, so every
+        machine-based postprocessor gets them without redeclaring them in its
+        own property schema.
+
+        The model has no notion of an active toolhead, so the limits are only
+        merged when the machine defines exactly one.  Machines with several
+        toolheads leave them unset, and the checks that read them are skipped
+        rather than guessing which toolhead a job uses.
+
+        A limit of 0 in the model means "not specified".  It is stored here as
+        None so consumers can tell it apart from a real limit of zero.
+        """
+        self.values["MIN_SPINDLE_SPEED"] = None
+        self.values["MAX_SPINDLE_SPEED"] = None
+
+        toolheads = getattr(self._machine, "toolheads", None) or []
+        if len(toolheads) != 1:
+            Path.Log.debug(
+                f"Machine has {len(toolheads)} toolheads; spindle speed limits not merged"
+            )
+            return
+
+        toolhead = toolheads[0]
+        if toolhead.toolhead_type is not ToolheadType.ROTARY:
+            # On laser, plasma and waterjet heads S is power, not rpm.
+            Path.Log.debug(
+                f"Toolhead is {toolhead.toolhead_type.value}; spindle speed limits not merged"
+            )
+            return
+
+        for key, attribute in (
+            ("MIN_SPINDLE_SPEED", "min_rpm"),
+            ("MAX_SPINDLE_SPEED", "max_rpm"),
+        ):
+            limit = getattr(toolhead, attribute, 0)
+            if isinstance(limit, (int, float)) and limit > 0:
+                self.values[key] = float(limit)
+                Path.Log.debug(f"Set {key} to: {self.values[key]}")
 
     def _apply_schema_defaults(self):
         """Populate postprocessor_properties with schema defaults for missing keys.
@@ -875,7 +1278,7 @@ class PostProcessor:
             if name and name not in self._machine.postprocessor_properties:
                 default = prop.get("default", "")
                 self._machine.postprocessor_properties[name] = default
-                Path.Log.debug(f"Schema default applied: {name} = {repr(default)}")
+                Path.Log.debug(f"Schema default applied: {name} = {default!r}")
 
     def build_configuration_bundle(self, overrides=None):
         """Build the complete postprocessor configuration as a flat dict.
@@ -907,7 +1310,7 @@ class PostProcessor:
         schema = self.get_full_property_schema()
         schema_keys = {x["name"] for x in schema}
         # HACK: not really schema-keys, but no-where else to deal with
-        schema_keys |= set("comment selected_fixtures job_author".split(" "))
+        schema_keys |= {"comment", "selected_fixtures", "job_author"}
 
         for prop in schema:
             name = prop.get("name", "")
@@ -950,6 +1353,9 @@ class PostProcessor:
         """
         self.values = {}
 
+        if overrides is None:
+            overrides = self._read_job_overrides()
+
         bundle = self.build_configuration_bundle(overrides)
 
         # Write back to machine postprocessor_properties
@@ -963,6 +1369,15 @@ class PostProcessor:
         # IF they weren't already set (by _merge_machine_config)
         for key, value in bundle.items():
             if key.upper() not in self.values:
+                self.values[key.upper()] = value
+
+        # Explicit overrides (job dialog / caller-supplied) are documented as
+        # highest priority, so they must win even over values already set by
+        # _merge_machine_config() straight from the live machine model —
+        # otherwise a per-job override of e.g. f_for_rapid_moves
+        # is silently discarded in favor of the machine-level setting.
+        for key, value in overrides.items():
+            if key in bundle:
                 self.values[key.upper()] = value
 
         Path.Log.debug(f"Configuration bundle applied — " f"bundle: {bundle}")
@@ -1024,18 +1439,16 @@ class PostProcessor:
                 gcodeheader.add_machine_info(self.values["MACHINE_NAME"])
 
             # Add project file if enabled
-            if self.values["PROJECT_FILE_IN_HEADER"] and self._job:
-                if hasattr(self._job, "Document") and self._job.Document:
-                    project_file = self._job.Document.FileName
-                    if project_file:
-                        gcodeheader.add_project_file(project_file)
+            if self.values["PROJECT_FILE_IN_HEADER"] and getattr(self._job, "Document", None):
+                project_file = self._job.Document.FileName
+                if project_file:
+                    gcodeheader.add_project_file(project_file)
 
             # Add document name if enabled
-            if self.values["DOCUMENT_NAME_IN_HEADER"] and self._job:
-                if hasattr(self._job, "Document") and self._job.Document:
-                    doc_name = self._job.Document.Label
-                    if doc_name:
-                        gcodeheader.add_document_name(doc_name)
+            if self.values["DOCUMENT_NAME_IN_HEADER"] and getattr(self._job, "Document", None):
+                doc_name = self._job.Document.Label
+                if doc_name:
+                    gcodeheader.add_document_name(doc_name)
 
             # Add description if enabled
             if self.values["DESCRIPTION_IN_HEADER"]:
@@ -1070,15 +1483,81 @@ class PostProcessor:
                             if tool_key not in seen_tools:
                                 seen_tools.add(tool_key)
                                 gcodeheader.add_tool(tool_key, item.label)
-                    elif item.item_type == "fixture":
-                        if list_fixtures:
-                            if item.path and item.path.Commands:
-                                fixture_name = item.path.Commands[0].Name
-                                if fixture_name not in seen_fixtures:
-                                    seen_fixtures.add(fixture_name)
-                                    gcodeheader.add_fixture(fixture_name)
+                    elif (
+                        item.item_type == "fixture"
+                        and list_fixtures
+                        and item.path
+                        and item.path.Commands
+                    ):
+                        fixture_name = item.path.Commands[0].Name
+                        if fixture_name not in seen_fixtures:
+                            seen_fixtures.add(fixture_name)
+                            gcodeheader.add_fixture(fixture_name)
 
         return gcodeheader
+
+    def _add_line_numbers(self, postables):
+        """Add N word if we are line-numbering
+        Subclasses are expected to render N as line-number (if present)
+            the default _convert_move() will do that
+        Numbering does not know about the subclass inserting/removing commands/lines,
+            so is NOT the physical line-number.
+
+        Subclasses can override to customize.
+        """
+        if not self.values["OUTPUT_LINE_NUMBERS"]:
+            return
+
+        Path.Log.track("Line numbering")
+
+        start = self.values["LINE_NUMBER_START"]
+        increment = self.values["LINE_INCREMENT"]
+
+        for section_name, sublist in postables:
+            # per section
+            line_number = itertools.count(start, increment)
+
+            for item in sublist:
+
+                # count 'str' lines, because it might be gcode/commands
+                if item.item_type == "str":
+                    str_lines = item.data["str"].count("\n")
+                    if item.data["str"] != "" and not item.data["str"].endswith("\n"):
+                        # count last line
+                        str_lines += 1
+                    for _ in range(str_lines):
+                        next(line_number)
+
+                # number Path.Command's
+                elif item.Path:
+                    new_commands = []
+                    for command in item.Path.Commands:
+
+                        # don't count comments
+                        if command.Name.startswith("("):
+                            new_commands.append(command)
+                            continue
+
+                        # Have to remake, because we change Parameters
+                        # _convert_move() does the LINE_NUMBER_PREFIX
+                        new_params = {"N": next(line_number)}
+                        new_params.update(command.Parameters)
+                        new_commands.append(
+                            Path.Command(command.Name, new_params, command.Annotations)
+                        )
+                    item.path = Path.Path(new_commands)
+
+    def _expand_rapid_feed(self, postables):
+        """Add missed rapid feed"""
+        if not self._machine.postprocessor_properties.get("f_for_rapid_moves"):
+            return
+        for section_name, sublist in postables:
+            for item in sublist:
+                if item.source and getattr(item.source, "ToolController", None):
+                    commands = PathFeedRate.setFeedRate(
+                        item.path.Commands, item.source.ToolController, onlyMissedRapid=True
+                    )
+                    item.path = Path.Path(commands)
 
     def _expand_canned_cycles(self, postables):
         """Terminate canned drill cycles in postable paths.
@@ -1094,20 +1573,9 @@ class PostProcessor:
             for item in sublist:
                 has_drill_cycles = False
                 if item.path:
-                    drill_commands = [
-                        "G73",
-                        "G74",
-                        "G81",
-                        "G82",
-                        "G83",
-                        "G84",
-                        "G85",
-                        "G86",
-                        "G87",
-                        "G88",
-                        "G89",
-                    ]
-                    has_drill_cycles = any(cmd.Name in drill_commands for cmd in item.path.Commands)
+                    has_drill_cycles = any(
+                        cmd.Name in Constants.GCODE_DRILL_COMMANDS for cmd in item.path.Commands
+                    )
 
                 if has_drill_cycles:
                     item.path = PostUtils.cannedCycleTerminator(item.path)
@@ -1131,17 +1599,17 @@ class PostProcessor:
     def _expand_spindle_wait(self, postables):
         """Inject G4 dwell after spindle start commands (M3/M4).
 
-        When a spindle has spindle_wait > 0, inserts a G4 pause command
+        When the toolhead has toolhead_wait > 0, inserts a G4 pause command
         after each spindle start command to allow the spindle to reach speed.
 
         Subclasses can override to customize spindle wait behavior.
         """
 
-        spindle = self._machine.get_spindle_by_index(0)  # FIXME: should be an annotation
-        if not (spindle and spindle.spindle_wait > 0):
+        toolheads = self._machine.toolheads
+        if not (toolheads and toolheads[0].toolhead_wait > 0):
             return
 
-        wait_time = spindle.spindle_wait
+        wait_time = toolheads[0].toolhead_wait
         for section_name, sublist in postables:
             for item in sublist:
                 if item.path:
@@ -1156,13 +1624,13 @@ class PostProcessor:
     def _expand_coolant_delay(self, postables):
         """Inject G4 dwell after coolant on commands.
 
-        When a spindle has coolant_delay > 0, inserts a G4 pause command
+        When the toolhead has coolant_delay > 0, inserts a G4 pause command
         after each coolant on command.
 
         Subclasses can override to customize coolant delay behavior.
         """
-        spindle = self._machine.get_spindle_by_index(0)  # FIXME: needs to be in .values
-        if not (spindle and spindle.coolant_delay > 0):
+        toolheads = self._machine.toolheads  # FIXME: needs to be in .values
+        if not (toolheads and toolheads[0].coolant_delay > 0):
             return
 
         for section_name, sublist in postables:
@@ -1172,19 +1640,20 @@ class PostProcessor:
                     for cmd in item.path.Commands:
                         new_commands.append(cmd)
                         if cmd.Name in Constants.MCODE_COOLANT_ON:
-                            pause_cmd = Path.Command("G4", {"P": spindle.coolant_delay})
+                            pause_cmd = Path.Command("G4", {"P": toolheads[0].coolant_delay})
                             new_commands.append(pause_cmd)
                     item.path = Path.Path(new_commands)
 
     def _expand_translate_rapids(self, postables):
-        """Replace G0 rapid moves with G1 linear moves.
-
-        When machine processing.translate_rapid_moves is True, replaces
-        G0/G00 commands with G1 using the tool controller rapid rate.
+        """Replace G0 rapid moves with G1 linear moves for TRANSLATE_RAPID_MOVES.
+        Replace G0 with G1 if ANNOT_NO_ENGAGEMENT_FEED and TRANSLATE_NO_ENGAGEMENT_FEED.
 
         Subclasses can override to customize rapid move translation.
         """
-        if not self.values["TRANSLATE_RAPID_MOVES"]:
+        if (
+            not self.values["TRANSLATE_RAPID_MOVES"]
+            and not self.values["TRANSLATE_NO_ENGAGEMENT_FEED"]
+        ):
             return
 
         for section_name, sublist in postables:
@@ -1193,8 +1662,47 @@ class PostProcessor:
                     new_commands = []
                     Path.Log.debug(f"Translating rapid moves for {item.label}")
                     for cmd in item.path.Commands:
-                        if cmd.Name in Constants.GCODE_MOVE_RAPID:
+
+                        # Modify to G1?
+                        if (
+                            self.values["TRANSLATE_RAPID_MOVES"]
+                            and cmd.Name in Constants.GCODE_MOVE_RAPID
+                        ):
                             cmd.Name = "G1"
+
+                        # G0->G1 for non-engagement-feed
+                        elif (
+                            self.values["TRANSLATE_NO_ENGAGEMENT_FEED"]
+                            and (
+                                feed_str := cmd.Annotations.get(
+                                    Constants.ANNOT_NO_ENGAGEMENT_FEED, None
+                                )
+                            )
+                            is not None
+                        ):
+                            if not isinstance(feed_str, str):
+                                raise CAMAttributeError(
+                                    f"Expected ANNOT_NO_ENGAGEMENT_FEED to be a string convertable to a float, saw {feed_str.__class__.__name__} '{feed_str}'",
+                                    job=self._job,
+                                    operation=self._operation,
+                                    command=cmd,
+                                    pp=self.values["MACHINE_NAME"],
+                                )
+
+                            cmd.Name = "G1"
+                            try:
+                                feed = float(feed_str)
+                            except Exception:
+                                # any conversion error
+                                raise CAMAttributeError(
+                                    f"Expected ANNOT_NO_ENGAGEMENT_FEED to be convertable to a float, saw '{feed_str}'",
+                                    job=self._job,
+                                    operation=self._operation,
+                                    command=cmd,
+                                    pp=self.values["MACHINE_NAME"],
+                                )
+                            cmd.Parameters = {**cmd.Parameters, **{"F": feed}}
+
                         new_commands.append(cmd)
                     item.path = Path.Path(new_commands)
 
@@ -1212,8 +1720,8 @@ class PostProcessor:
             Path.Log.debug("Drill cycle translation disabled")
             return
 
-        with self.use_machine_state():
-            for section_name, sublist in postables:
+        for section_name, sublist in postables:
+            with self.use_machine_state():
                 for item in sublist:
                     Path.Log.track(f"Processing item: {item.label}")
                     if item.path:
@@ -1225,7 +1733,10 @@ class PostProcessor:
                             Path.Log.debug(f"Translating drill cycles for {item.label}")
                             expander = DrillCycleExpander(self.machine_state)
                             item.path = expander.expand_path(item.path)
+                            # DrillCycleExpander tracks it's commands: machine_state.addCommands(...)
+
                         else:
+                            # track a normal command
                             self.machine_state.addCommands(item.path.Commands)
 
     @contextmanager
@@ -1333,8 +1844,12 @@ class PostProcessor:
         """Inject or remove bCNC block annotation commands.
 
         When OUTPUT_BCNC is True, injects bCNC block-name, block-expand,
-        and block-enable commands at the start of each operation's path,
-        and stores postamble commands for later insertion.
+        and block-enable commands before the prefix lines ("Header"), each
+        tool change, each Job fixture and each operation, and stores
+        postamble commands for later insertion. The fixture selection and the
+        pose change that a work plane adds are in the block of their operation.
+
+        Returns the new postable list. The caller must keep the result.
 
         When OUTPUT_BCNC is False, removes any existing bCNC commands.
 
@@ -1350,24 +1865,56 @@ class PostProcessor:
         if output_bcnc:
             Path.Log.debug("Creating bCNC commands")
 
-            def insert_op_bcnc(section_name: str, item, section_state: dict):
-                if item.item_type == "operation" and item.path:
+            def block_header(name: str):
+                return self._make_postable(
+                    "Post: bCNC block",
+                    [
+                        Path.Command(f"(Block-name: {name})", {}, {"bcnc": "block_start"}),
+                        Path.Command("(Block-expand: 0)", {}, {"bcnc": "block_meta"}),
+                        Path.Command("(Block-enable: 1)", {}, {"bcnc": "block_meta"}),
+                    ],
+                )
 
-                    new_postable = self._make_postable(
-                        "Post: bCNC preop",
-                        [
-                            Path.Command(
-                                f"(Block-name: {item.label})", {}, {"bcnc": "block_start"}
-                            ),
-                            Path.Command("(Block-expand: 0)", {}, {"bcnc": "block_meta"}),
-                            Path.Command("(Block-enable: 1)", {}, {"bcnc": "block_meta"}),
-                        ],
-                    )
-                    return 1, [new_postable]
-                else:
-                    return None, None
+            def next_operation(sublist, start):
+                for later in sublist[start:]:
+                    if later.item_type == "operation":
+                        return later
+                return None
 
-            # Create bCNC postamble commands
+            new_sections = []
+            for section_name, sublist in postables:
+                new_sublist = []
+                # The lines before the first item of the Job: safety block, header, preamble
+                has_prefix = bool(sublist) and sublist[0].label.startswith("Post: ")
+                header_done = not has_prefix
+                # True while the setup items of the next operation go by
+                in_setup = False
+                for index, item in enumerate(sublist):
+                    if not header_done and item.label != "Post: start optimizable":
+                        # after the marker, which must stay first
+                        new_sublist.append(block_header("Header"))
+                        header_done = True
+
+                    if item.data.get(Constants.DATA_OPERATION_SETUP):
+                        # The fixture selection and the pose change of an operation
+                        # are in the block of that operation
+                        operation = next_operation(sublist, index)
+                        if not in_setup and operation is not None and operation.path:
+                            new_sublist.append(block_header(operation.label))
+                            in_setup = True
+                    elif item.item_type == "operation":
+                        if not in_setup and item.path:
+                            new_sublist.append(block_header(item.label))
+                        in_setup = False
+                    elif item.item_type in ("tool_controller", "fixture") and item.path:
+                        # As in the legacy post: a block for each tool change and
+                        # each fixture, so that a disabled operation block does
+                        # not remove the tool change of the next operation
+                        new_sublist.append(block_header(item.label))
+
+                    new_sublist.append(item)
+                new_sections.append((section_name, new_sublist))
+
             # Store bCNC postamble commands for later insertion
             self._bcnc_postamble_commands = [
                 Path.Command("(Block-name: post_amble)", {}, {"bcnc": "postamble_start"}),
@@ -1375,7 +1922,7 @@ class PostProcessor:
                 Path.Command("(Block-enable: 1)", {}, {"bcnc": "postamble_meta"}),
             ]
 
-            return self._edit_postable_list(postables, insert_op_bcnc)
+            return new_sections
 
         else:
             Path.Log.debug("Removing existing bCNC commands")
@@ -1395,36 +1942,58 @@ class PostProcessor:
                             item.path = Path.Path(filtered_commands)
             return postables
 
-    def _expand_tool_length_offset(self, postables):
-        """Inject or remove G43 tool length offset commands.
-
-        When OUTPUT_TOOL_LENGTH_OFFSET is True, adds G43 commands after M6
-        tool change commands in operations and tool change items.
-
-        When OUTPUT_TOOL_LENGTH_OFFSET is False, removes any existing G43
-        commands from operation paths.
-
-        Simplified single-pass implementation.
+    def _expand_tool_length_offset_post_command(self, item, command):
+        """override in a PP if your TLO is different.
+        return a list of Path.Commands
         """
+        tool_num = command.Parameters["T"]
+        Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
+        return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True})]
+
+    def _expand_tool_change(self, postables):
+        """Expand what follows a tool change (M6).
+        Immediately after each M6, inserts in order:
+          1. POST_TOOL_CHANGE lines, verbatim, if non-empty
+          2. G43 H<tool>, if OUTPUT_TOOL_LENGTH_OFFSET
+        When OUTPUT_TOOL_LENGTH_OFFSET is off, existing G43 commands are
+        replaced with a comment.
+        """
+
         output_tool_length_offset = self.values["OUTPUT_TOOL_LENGTH_OFFSET"]
         Path.Log.debug(f"OUTPUT_TOOL_LENGTH_OFFSET value: {output_tool_length_offset}")
 
         def edit(section_name, item, cmd, section_state):
-            # suppress
-            if not output_tool_length_offset:
-                if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET:
+            # suppress G43
+            if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET:
+                if not output_tool_length_offset:
                     return 0, [Path.Command(f"(TLO suppressed {cmd.toGCode()})")]
                 else:
                     return None, None
 
-            # add
-            else:
-                if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
+            # append things after M6
+            elif cmd.Name in Constants.MCODE_TOOL_CHANGE:
+                # accumulate changes
+                changes = []
+
+                # POST_TOOL_CHANGE
+                if (block := self.values["POST_TOOL_CHANGE"]) != "":
+                    # instead of inserting an item of type=='str'
+                    for l in block.split("\n"):
+                        if l != "":
+                            changes.append(Path.Command("", {}, {Constants.ANNOT_AS_IS: l}))
+
+                # add G43
+                if output_tool_length_offset and "T" in cmd.Parameters:
                     tool_num = cmd.Parameters["T"]
                     Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
-                    return 1, [Path.Command("G43", {"H": tool_num}, {"tool_length_offset": True})]
+                    changes.extend(self._expand_tool_length_offset_post_command(item, cmd))
+
+                if changes:
+                    return 1, changes
                 else:
                     return None, None
+            else:
+                return None, None
 
         self._edit_command_list(postables, edit)
 
@@ -1477,7 +2046,10 @@ class PostProcessor:
             return Path.Command("G20")
         else:
             raise CAMAttributeError(
-                f"Must have _machine.output.units (in {self._machine.name}) as one of [{OutputUnits.METRIC},{OutputUnits.IMPERIAL}], someone replaced the default with: {self.values['OUTPUT_UNITS'].__class__.__name__} {self.values['OUTPUT_UNITS']}"
+                f"Must have _machine.output.units (in {self._machine.name}) as one of [{OutputUnits.METRIC},{OutputUnits.IMPERIAL}], someone replaced the default with: {self.values['OUTPUT_UNITS'].__class__.__name__} {self.values['OUTPUT_UNITS']}",
+                job=self._job,
+                operation=self._operation,
+                pp=self.values["MACHINE_NAME"],
             )
 
     def _expand_pre_job(self, postables):
@@ -1509,7 +2081,7 @@ class PostProcessor:
 
         def prepend(section_name, item, section_state):
             if item.item_type == "tool_controller":
-                if not self.values["TOOL_CHANGE"]:
+                if self._tool_change_format() == Constants.ToolChangeFormat.NO_TOOL_CHANGE:
                     tool_num = item.data["tool_number"]
                     return (
                         -1,
@@ -1537,6 +2109,452 @@ class PostProcessor:
 
         return self._edit_postable_list(postables, prepend)
 
+    def _rotation_strategy(self):
+        """The machine's RotationStrategy, or None when there is no rotary machine."""
+        machine = self._machine
+        if machine is None or not getattr(machine, "has_rotary_axes", False):
+            return None
+        return machine.kinematics.rotation_strategy
+
+    def _refuse_without_rotary_axes(self, item):
+        machine = getattr(self._machine, "name", None)
+        raise CAMValueError(
+            translate(
+                "CAM",
+                "{op} is on a tilted work plane, and {machine} has no rotary axes to point the "
+                "tool along it. Without rotary axes a work plane must be parallel to the table.",
+            ).format(
+                op=item.label,
+                machine=("machine '%s'" % machine) if machine else translate("CAM", "the Job"),
+            ),
+            job=self._job,
+            operation=item.source,
+        )
+
+    def _check_rotation_strategy(self, strategy, item):
+        """Refuse a tilted operation the machine or this post cannot express."""
+        from Machine.models.machine import RotationStrategy
+
+        name = self._machine.name
+        if strategy == RotationStrategy.NONE:
+            raise CAMValueError(
+                translate(
+                    "CAM",
+                    "{op} is on a tilted work plane, and machine '{machine}' does not say how "
+                    "it handles rotation. Set its Rotation strategy in the Machine Editor: DWO "
+                    "for a control with dynamic work offsets, TWP for one with a tilted work "
+                    "plane command.",
+                ).format(op=item.label, machine=name),
+                job=self._job,
+                operation=item.source,
+            )
+        if strategy == RotationStrategy.POST_TRANSFORM:
+            raise CAMValueError(
+                translate(
+                    "CAM",
+                    "{op} is on a tilted work plane, and machine '{machine}' declares the "
+                    "post-transform strategy, which is not available yet.",
+                ).format(op=item.label, machine=name),
+                job=self._job,
+                operation=item.source,
+            )
+        if strategy.value not in self.ROTATION_STRATEGIES:
+            raise CAMValueError(
+                translate(
+                    "CAM",
+                    "{op} is on a tilted work plane, and this post-processor cannot emit the "
+                    "{strategy} strategy machine '{machine}' declares.",
+                ).format(op=item.label, strategy=strategy.value.upper(), machine=name),
+                job=self._job,
+                operation=item.source,
+                pp=self.values["MACHINE_NAME"],
+            )
+
+    def _format_angle(self, value):
+        precision = self.values["AXIS_PRECISION"]
+        return f"{float(value):.{precision}f}"
+
+    def _plane_postables(self, key, placement=None):
+        """Postables for one tilted-work-plane line: TWP_DECLARE, TWP_ALIGN or
+        TWP_CANCEL, from the post property of that name when it is set, else
+        the plane command's own form.
+        """
+        dialect = self.PLANE_COMMAND
+        text = TiltedWorkPlane.template(
+            dialect, key.split("_", 1)[1].lower(), self.values.get(key) or None
+        )
+        if not text:
+            return []
+        fields = {}
+        if key == "TWP_DECLARE":
+            a1, a2, a3 = TiltedWorkPlane.plane_angles(dialect, placement.Rotation)
+            fields = {
+                "x": self.format_parameter("X", placement.Base.x),
+                "y": self.format_parameter("Y", placement.Base.y),
+                "z": self.format_parameter("Z", placement.Base.z),
+                "a1": self._format_angle(a1),
+                "a2": self._format_angle(a2),
+                "a3": self._format_angle(a3),
+            }
+        label = {
+            "TWP_DECLARE": "Work plane",
+            "TWP_ALIGN": "Align to work plane",
+            "TWP_CANCEL": "Cancel work plane",
+        }[key]
+        return [self._make_postable(f"Post: {label}", text.format(**fields))]
+
+    def _rotary_block_postables(self, key):
+        """The machine's PRE_ROTARY_MOVE or POST_ROTARY_MOVE block, if any."""
+        lines = self.values.get(key) or ""
+        if not lines.strip():
+            return []
+        label = "pre-rotary" if key == "PRE_ROTARY_MOVE" else "post-rotary"
+        return [self._make_postable(f"Post: {label}", lines)]
+
+    def _pose_change_postables(
+        self, strategy, placement, positions, declared, rotaries_move, fixture=None, before=None
+    ):
+        """What the machine does between one operation's pose and the next.
+
+        DWO: the rotary move. TWP: cancel the plane that was declared,
+        position the rotaries unless the control's align command does it,
+        declare the new plane, align. A return to the table-parallel pose
+        under TWP cancels and commands the rotaries home explicitly, since
+        cancelling a plane moves nothing.
+
+        A Fixture to select goes after the cancel and before anything that
+        depends on the coordinate system: a plane command is relative to
+        the active fixture, and a control will not change fixtures under a
+        declared plane.
+
+        The rotaries move one sequence number at a time, lowest first, and
+        axes that share a number move together. before is where they are, as
+        rounded angles; a group already there is left out.
+
+        When the rotaries move, the machine's pre- and post-rotary blocks
+        wrap the whole of it. That is where the moves that bring the tool
+        clear of the part belong: a rotary move here is marked so
+        _expand_rotary_move does not wrap it a second time.
+        """
+        from Machine.models.machine import RotationStrategy
+
+        items = []
+        twp = strategy == RotationStrategy.TWP
+        tilted = _tool_axis_tilted(placement)
+        control_positions = (
+            twp and tilted and self.values.get("TWP_CONTROL_POSITIONS_ROTARIES", True)
+        )
+
+        if rotaries_move:
+            items.extend(self._rotary_block_postables("PRE_ROTARY_MOVE"))
+        if twp and declared:
+            items.extend(self._plane_postables("TWP_CANCEL"))
+        if fixture:
+            items.append(self._fixture_postable(fixture))
+        if positions and rotaries_move and not control_positions:
+            groups = {}
+            for name, angle in positions.items():
+                groups.setdefault(self._machine.rotary_axes[name].sequence, {})[name] = angle
+            moves = [
+                group
+                for _, group in sorted(groups.items())
+                if before is None or any(round(v, 6) != before.get(k) for k, v in group.items())
+            ]
+            items.append(
+                Postable(
+                    item_type="rotation",
+                    label="Rotary positioning",
+                    path=Path.Path([Path.Command("G0", move) for move in moves]),
+                    source=None,
+                    data={"pose_change": True},
+                )
+            )
+        if twp and tilted:
+            items.extend(self._plane_postables("TWP_DECLARE", placement))
+            if control_positions:
+                items.extend(self._plane_postables("TWP_ALIGN"))
+        if rotaries_move:
+            items.extend(self._rotary_block_postables("POST_ROTARY_MOVE"))
+        return items
+
+    @staticmethod
+    def _operation_setup(items):
+        """Mark items as the setup of the operation that follows them: the
+        fixture selection and the pose change that the operation's work plane
+        needs. They belong to that operation, and anything that groups the
+        output by operation (the bCNC blocks) must keep them with it."""
+        for item in items:
+            item.data[Constants.DATA_OPERATION_SETUP] = True
+        return items
+
+    def _operations_to_post(self):
+        """The operations this export covers: the selected ones or the Job's,
+        minus any that are inactive - the same set the post list is built
+        from. A disabled operation must not block or colour the output."""
+        return [op for op in self._operations if PathUtil.activeForOp(op)]
+
+    def _solve_pose(self, placement, chain, current=None):
+        """The rotary positions that index the machine to placement's tool
+        axis: zeros when the axis is Z, the solver's answer otherwise.
+        current is where the rotaries are, the previous operation's
+        positions: of the poses that reach the plane the solver prefers the
+        nearest, so operations on one plane keep one pose.
+        Returns (positions, reason); positions is None when unreachable."""
+        from Path.Base.Generator import rotation
+
+        if not _tool_axis_tilted(placement):
+            return {axis.name: 0.0 for axis in chain}, None
+        tool_axis = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+        result = rotation.solve_orientation(self._machine, tool_axis, current_state=current)
+        if not result.success:
+            return None, result.reason
+        return {k: float(v) for k, v in result.angles.items()}, None
+
+    def _solve_positions(self, item, placement, chain, current=None):
+        """Rotary positions for an operation, or a refusal naming the plane,
+        the machine and its rotary limits."""
+        import Path.Dressup.Utils as PathDressup
+
+        positions, reason = self._solve_pose(placement, chain, current)
+        if positions is not None:
+            return positions
+        plane = getattr(PathDressup.baseOp(item.source), "Workplane", None)
+        limits = ", ".join(
+            "%s %g to %g" % (axis.name, axis.min_limit, axis.max_limit) for axis in chain
+        )
+        raise CAMValueError(
+            translate(
+                "CAM",
+                "{op} is on work plane '{plane}', which machine '{machine}' cannot index to: "
+                "{reason}. Its rotary limits are {limits}.",
+            ).format(
+                op=item.label,
+                plane=plane.Label if plane is not None else "?",
+                machine=self._machine.name,
+                reason=reason,
+                limits=limits,
+            ),
+            job=self._job,
+            operation=item.source,
+        )
+
+    @staticmethod
+    def _fixture_postable(fixture):
+        """The selection of a work coordinate system, as a Job-level fixture
+        item is shaped, so the fixture blocks wrap it and the header lists it."""
+        return Postable(
+            item_type="fixture",
+            label="Fixture",
+            path=Path.Path([Path.Command(fixture)]),
+            source=None,
+            data={"work_plane_fixture": True},
+        )
+
+    def _plane_fixture_of(self, item):
+        """The Fixture the operation's work plane names, or None.
+
+        A malformed one is refused here, naming the plane: the control would
+        take an unknown word as a fault or, worse, as something else."""
+        import Path.Dressup.Utils as PathDressup
+        import Path.Main.Workplane as PathWorkplane
+
+        if item.source is None or item.item_type != "operation":
+            return None
+        plane = getattr(PathDressup.baseOp(item.source), "Workplane", None)
+        fixture = PathWorkplane.fixtureOf(plane)
+        if fixture is None:
+            return None
+        if not _FIXTURE_WORD.match(fixture):
+            raise CAMValueError(
+                translate(
+                    "CAM",
+                    "Work plane '{plane}' names '{fixture}' as its fixture, which is not a "
+                    "work coordinate system (G54-G59.9, or G54.1 Pn).",
+                ).format(plane=plane.Label, fixture=fixture),
+                job=self._job,
+                operation=item.source,
+            )
+        return fixture.upper()
+
+    def _expand_workplane_frames(self, postables):
+        """Operations on a work plane: express each in the form the machine runs.
+
+        An operation's path is stored in its work plane's frame, with the
+        operation's Placement positioning it in the world. Generation knows
+        nothing about the machine; this is where the machine comes in. The
+        rotary positions are solved here, from the Placement, for the machine
+        this post is running for - on a rotary machine every operation gets a
+        pose, zeros included, because operations are atomic and the pose is
+        commanded explicitly before each one - and the machine's rotation
+        strategy decides the shape:
+
+        DWO (dynamic work offset): the rotaries move to the recorded
+        positions and the path is emitted in the frame the machine reaches
+        after that move - world coordinates rotated by the machine's rotation
+        for those angles, relative to the Job's zero. The control applies the
+        pivot. Rotating a world path by that rotation is exact for the path
+        representation, because it is the one that makes the plane's cuts
+        horizontal again: lines stay lines and arcs stay arcs in XY.
+
+        TWP (tilted work plane): the plane is declared to the control in its
+        own command and the path is emitted exactly as stored, in plane
+        coordinates. The control positions the rotaries and applies the
+        pivot. The plane is cancelled before a tool or fixture change and at
+        the end of the section. Only a tilted plane is declared: a datum
+        plane or a turned X is a shift and a turn about Z, which world
+        coordinates carry exactly, and is emitted as under DWO.
+
+        Whenever the rotaries move, the machine's pre- and post-rotary blocks
+        wrap the move: that is where the user puts the moves that bring the
+        tool clear of the part, since an operation's clearance height is
+        measured in its own plane and says nothing about the tool while the
+        table turns. A pose is commanded when it differs from the previous
+        operation's, and after a tool or fixture change, where the control's
+        state is not assumed.
+
+        A tilted operation on a rotary machine that declares no strategy, or
+        one this post cannot emit, refuses to post, and so does a tilted
+        operation without a rotary machine at all. An operation with no plane
+        and no recorded positions is left untouched, so a three-axis Job is
+        byte-identical to before. A plane parallel to the table - a datum for
+        depths, a turned X - is placed into world coordinates without a
+        rotary machine, and under a strategy the machine has not declared:
+        rotating a 2.5D path about Z keeps it 2.5D, and any machine cuts it.
+
+        A work plane may name a Fixture. It is selected with the pose, the
+        first time an operation on the plane comes up after the Job's own
+        fixture or another plane's, and the Job's fixture is selected again
+        for the next operation that does not name one. This works the same
+        with and without a rotary machine, so a two-sided job on a
+        three-axis machine can give each side its own fixture.
+        """
+        from Path.Base.Generator import rotation
+        from Machine.models.machine import RotationStrategy
+
+        machine = self._machine
+        strategy = self._rotation_strategy()
+        chain = rotation.build_kinematic_chain(machine) if strategy is not None else []
+
+        def placement_of(item):
+            """The operation's frame, or None for anything that is not an
+            operation. Without a rotary machine an unframed operation is
+            None too, so a three-axis Job passes through untouched."""
+            src = item.source
+            if src is None or item.item_type != "operation":
+                return None
+            placement = getattr(src, "Placement", None) or FreeCAD.Placement()
+            if strategy is None and placement.isIdentity(1e-9):
+                return None
+            return placement
+
+        tool_axis_tilted = _tool_axis_tilted
+
+        def pose_of(placement, positions):
+            frame = tuple(round(v, 6) for v in placement.toMatrix().A)
+            angles = tuple(sorted((k, round(v, 6)) for k, v in positions.items()))
+            return frame, angles
+
+        result = []
+        # Where the rotaries are: the last operation's positions. A tool or
+        # fixture change does not move them, so this outlives the pose.
+        positions = None
+        for section_name, sublist in postables:
+            pose = None  # (frame, angles) the machine is at; None when not assumed
+            declared = False  # a TWP plane is in effect
+            job_fixture = None  # the Job's own fixture, from the last fixture item
+            selected = None  # the fixture the control has selected; None when not assumed
+            new_items = []
+            for item in sublist:
+                if item.item_type in ("tool_controller", "fixture"):
+                    if declared:
+                        new_items.extend(self._plane_postables("TWP_CANCEL"))
+                        declared = False
+                    pose = None
+                    if item.item_type == "fixture" and item.path.Commands:
+                        job_fixture = selected = item.path.Commands[0].Name.upper()
+                    new_items.append(item)
+                    continue
+
+                # The fixture this operation runs under: its plane's, or the
+                # Job's. A change is emitted with the pose change below, or
+                # on its own when nothing else changes.
+                wanted = self._plane_fixture_of(item) or job_fixture
+                fixture_change = wanted if wanted is not None and wanted != selected else None
+
+                placement = placement_of(item)
+                if placement is None:
+                    if fixture_change:
+                        new_items.extend(
+                            self._operation_setup([self._fixture_postable(fixture_change)])
+                        )
+                        selected = fixture_change
+                    new_items.append(item)
+                    continue
+                tilted = tool_axis_tilted(placement)
+
+                if strategy is None:
+                    if tilted:
+                        self._refuse_without_rotary_axes(item)
+                    if fixture_change:
+                        new_items.extend(
+                            self._operation_setup([self._fixture_postable(fixture_change)])
+                        )
+                        selected = fixture_change
+                    item.path = PathUtil.applyPlacementToPath(placement, item.path)
+                    new_items.append(item)
+                    continue
+
+                if tilted:
+                    self._check_rotation_strategy(strategy, item)
+                positions = self._solve_positions(item, placement, chain, positions)
+
+                # A plane that will not be declared has no pose of its own
+                # beyond the rotary angles: two datum planes at different
+                # heights share one, and nothing moves between them.
+                declares = strategy == RotationStrategy.TWP and tilted
+                frame, angles = pose_of(placement if declares else FreeCAD.Placement(), positions)
+                if (frame, angles) != pose or fixture_change:
+                    rotaries_move = pose is None or angles != pose[1]
+                    new_items.extend(
+                        self._operation_setup(
+                            self._pose_change_postables(
+                                strategy,
+                                placement,
+                                positions,
+                                declared,
+                                rotaries_move,
+                                fixture_change,
+                                dict(pose[1]) if pose else None,
+                            )
+                        )
+                    )
+                    if fixture_change:
+                        selected = fixture_change
+                    pose = (frame, angles)
+                    declared = strategy == RotationStrategy.TWP and tilted
+
+                if strategy != RotationStrategy.TWP or not tilted:
+                    # A datum plane under TWP is not declared: its frame is
+                    # a shift and a turn about Z, which world coordinates
+                    # carry exactly, with nothing for the control to solve.
+                    # world = placement * local; machine = R_m * world
+                    machine_rotation = (
+                        rotation.compute_rotation_matrix(chain, positions)
+                        if positions
+                        else FreeCAD.Rotation()
+                    )
+                    to_machine = FreeCAD.Placement(
+                        FreeCAD.Vector(0, 0, 0), machine_rotation
+                    ).multiply(placement)
+                    if not to_machine.isIdentity(1e-9):
+                        item.path = PathUtil.applyPlacementToPath(to_machine, item.path)
+                new_items.append(item)
+
+            if declared:
+                new_items.extend(self._plane_postables("TWP_CANCEL"))
+            result.append((section_name, new_items))
+        return result
+
     def _expand_rotary_move(self, postables):
         """Wrap any commands that have ABC axis
         with PRE_ROTARY_MOVE/POST_ROTARY_MOVE
@@ -1554,6 +2572,9 @@ class PostProcessor:
 
             def is_rotary_pred(cmd):
                 return any(param in cmd.Parameters for param in ["A", "B", "C"])
+
+            if item.data.get("pose_change"):
+                return None, None  # already wrapped by _expand_workplane_frames
 
             # only rebuild if there is a rotary
             if item.Path and any(is_rotary_pred(c) for c in item.Path.Commands):
@@ -1582,33 +2603,6 @@ class PostProcessor:
 
         self._edit_item_list(postables, wrap_rotary)
 
-    def _expand_tool_change(self, postables):
-        """Suppress M6 if not TOOL_CHANGE"""
-
-        def suppress_m6(section_name: str, item, section_state: dict):
-            """We edit-in-place it with a comment"""
-
-            if item.Path:
-                locations = any(c.Name in ("M6", "M06") for c in item.Path.Commands)
-                if locations:
-                    new_commands = []
-                    for cmd in item.Path.Commands:
-                        if cmd.Name in ("M6", "M06"):
-                            new_commands.append(
-                                Path.Command(f"(Tool change suppressed: {cmd.toGCode()})")
-                            )
-                        else:
-                            new_commands.append(cmd)
-                    item.Path = Path.Path(new_commands)
-                return None, None
-            else:
-                return None, None
-
-        if self.values["TOOL_CHANGE"]:
-            return  # no suppress
-
-        self._edit_item_list(postables, suppress_m6)
-
     def _convert_item_commands(self, item, gcode_lines) -> None:
         """Convert Path.Commands to G-code strings for a single item.
 
@@ -1622,10 +2616,14 @@ class PostProcessor:
 
         if item.item_type == "str":
             # append the output & done
-            str_lines = item.data["str"].rstrip("\n").split("\n")
+            str_lines = [line for line in item.data["str"].split("\n") if line != ""]
             # no empty
             if str_lines:
                 gcode_lines.extend(str_lines)
+
+            # could be "gcode" in the block, so MachineState is now invalid
+            self.machine_state.setState(None)
+            self.machine_state.addGcodeText(item.data["str"])
             return
 
         if not item.path:
@@ -1636,7 +2634,17 @@ class PostProcessor:
             )
 
         for cmd in item.path.Commands:
+            # Update the MachineState before the PP converts it
+            # So, `machine_state` reflects where we end up.
+            # And, so `machine_state` reflects the intended location for the next command
+            # (we can't update on the result of the PP's convert).
+            # `.previous` is where we were before the cmd (often useful)
+            # If the MachineState won't be right after the PP's convert,
+            # then the PP must fix MachineState.
+            self.machine_state.addCommand(cmd)
+
             try:
+
                 gcode = self.convert_command_to_gcode(cmd)
 
                 if gcode is not None and gcode.strip():
@@ -1644,7 +2652,7 @@ class PostProcessor:
 
             except (ValueError, AttributeError) as e:  # FIXCAME
                 Path.Log.error(f"Failed to convert a command to output {cmd.Name}: {e}")
-                raise e
+                raise
 
     def _expand_post_item(self, postables) -> None:
         """Expand post-block lines for a postable item based on its type.
@@ -1679,7 +2687,7 @@ class PostProcessor:
 
             # item -> 'str' Postable's
             if item.item_type == "tool_controller":
-                return 1, [pblock("POST_TOOL_CHANGE"), pblock("TOOL_RETURN")]
+                return 1, [pblock("TOOL_RETURN")]
             elif item.item_type == "fixture":
                 return 1, [pblock("POST_FIXTURE_CHANGE")]
             elif item.item_type == "operation":
@@ -1693,13 +2701,16 @@ class PostProcessor:
         self,
         label: str,
         contents: str | list[str] | Path.Command | list[Path.Command] | list[Any],
-        extra_data={},
+        extra_data=None,
     ) -> Postable:
         """Makes a Postable with the right kind of args and item_type
         for the supported inputs.
         A postable contents=[] is fine, it's just a marker with no content
         extra_data is added to the `data`
         """
+        if extra_data is None:
+            extra_data = {}
+
         if isinstance(contents, str):
             args = {"item_type": "str", "data": {"str": contents}, "path": None, "source": None}
         elif isinstance(contents, Path.Command):
@@ -1729,14 +2740,14 @@ class PostProcessor:
         args["data"].update(extra_data)
         return Postable(label=label, **args)
 
-    def _edit_command_list(self, postables: list[Postable], edit_fn):
+    def _edit_command_list(self, postables: list[Postable], edit_fn, all_postables=False):
         """in place edit commands in each item.Path in postables
         edit_fn(section_name, item, command, section_state) is called for each item
             section_state is a dict for you, you have to initialize your sub-state:
                 # e.g.
                 # section_state is reset to {} for each section
                 if "myfnname" not in section_state:
-                section_state["myfnname"] = { mystate:x }
+                    section_state["myfnname"] = { mystate:x }
              return: ( editflag, [items] )
                 editflag:
                 -1  insert before
@@ -1744,6 +2755,11 @@ class PostProcessor:
                  1  insert after
                 None    no action
             eliding None commands in the list
+        If all_postables==False, edit_fn() only gets called for a postable with .path (each .Path.Commands)
+        If all_postables==True, it's called like this (once per postable):
+            # Treat `item` as readonly, no edits allowed
+            _,_ = edit_fn(section_name, item, None, section_state)
+            # this let's you see other postables go by, and check their annotations and type
         """
         for section_name, sublist in postables:
             section_state = {}
@@ -1785,6 +2801,10 @@ class PostProcessor:
                             )
                     if new_commands:
                         item.path = Path.Path(new_commands)
+
+                elif all_postables:
+                    # let edit_fn() see it, but no edits
+                    edit_fn(section_name, item, None, section_state)
 
     def _edit_item_list(self, postables: list[Postable], edit_fn):
         """in place edit items in postables
@@ -1883,51 +2903,74 @@ class PostProcessor:
             new_sections.append((section_name, new_sublist))
         return new_sections
 
-    def _optimize_gcode(self, gcode_lines) -> str:
-        """Apply G-code optimizations and produce a final string.
-        Starting at self._optimize_start line (to skip prefix material)
-
-        Separates header comments from body, applies deduplication,
-        redundant-axis suppression, inefficient-move filtering, and
-        line numbering to the body only, then reassembles with the
-        configured line ending.
+    def _optimize_duplicates_doubles(self, postables):
+        """Remove the .Name if duplicate
+        Remove a .Parameter if duplicate
         """
-        from Path.Post.GcodeProcessingUtils import (
-            deduplicate_repeated_commands,
-            suppress_redundant_axes_words,
-            filter_inefficient_moves,
-            insert_line_numbers,
-        )
 
-        if not gcode_lines:
-            return ""
+        def edit(section_name, item, cmd, section_state):
 
-        num_header_lines = self._optimize_start
-        if num_header_lines is None:
-            # not a user-level CAM error
-            raise AttributeError(
-                "Internal: expected self._optimize_start, set by an item w/ {optimizable:True}"
-            )
+            # "previous" crosses postables, but not sections
+            if "previous" not in section_state:
+                section_state["previous"] = None
 
-        header_part = gcode_lines[:num_header_lines]
-        body_part = gcode_lines[num_header_lines:]
+            # A non-path.command postable: is a dedup barrier
+            if cmd is None:
+                section_state["previous"] = None
+                return None, None  # no-edit, result not used
 
-        if body_part:
-            if not self.values["OUTPUT_DUPLICATE_COMMANDS"]:
-                body_part = deduplicate_repeated_commands(body_part)
-            if not self.values["OUTPUT_DOUBLES"]:
-                body_part = suppress_redundant_axes_words(body_part)
+            else:
 
-        if body_part and self.values["FILTER_INEFFICIENT_MOVES"]:
-            body_part = filter_inefficient_moves(body_part)
+                params = cmd.Parameters
+                if (
+                    cmd.Name in Constants.GCODE_MOVE_RAPID
+                    and not self.values["F_FOR_RAPID_MOVES"]
+                    and "F" in params
+                ):
+                    # remove F from rapid to not drop it in mill if F equals
+                    params.pop("F", None)
+                    cmd.Parameters = params
 
-        if body_part and self.values["OUTPUT_LINE_NUMBERS"]:
-            start = self.values["LINE_NUMBER_START"]
-            increment = self.values["LINE_INCREMENT"]
-            body_part = insert_line_numbers(body_part, start=start, increment=increment)
+                # Modal Axis always runs on the original command, so "previous"
+                # accumulates the axis state under the command's real name.
+                # Deriving it from a name-stripped command instead makes every
+                # other duplicate compare unequal and re-emit its gcode word.
+                next_previous, axis_command = modal_axis(cmd, section_state["previous"])
+                new_command = axis_command if not self.values["OUTPUT_DOUBLES"] else cmd
 
-        final_lines = header_part + body_part
-        return final_lines
+                # Modal GCode
+                if not self.values["OUTPUT_DUPLICATE_COMMANDS"] and new_command is not None:
+                    _, new_command = modal_gcode(new_command, section_state["previous"])
+
+                section_state["previous"] = next_previous
+
+                # we always replace, even if we didn't edit the command
+                # can elide when new_command is None
+                return 0, [new_command]
+
+        self._edit_command_list(postables, edit, all_postables=True)
+
+    def _optimize_g0(self, postables):
+        """Collapse g0 chains, conservatively"""
+
+        def edit(section_name, item, section_state):
+            if not item.path:
+                return None, None
+
+            # "previous" crosses postables, but not sections
+            if "previous" not in section_state:
+                section_state["previous"] = None
+
+            # A non-path.command postable: is a dedup barrier
+            if cmd is None:
+                section_state["previous"] = None
+                return None, None  # no-edit, not used
+
+            else:
+                item.Path = Path.Path(list(collapse_g0(item.path.Commands)))
+                return None, None  # updated item.Path, in place
+
+        self._edit_item_list(self, postables, edit)
 
     def _expand_trailing_lines(self, postables) -> None:
         """Append post_job and postamble lines, to each section."""
@@ -1942,11 +2985,10 @@ class PostProcessor:
                 section.extend(trailing)
 
     def _expand_bcnc_postamble(self, postables) -> None:
-        """Append bCNC postamble to the last section only.
+        """Append the bCNC postamble block header to each section.
 
-        bCNC postamble tracks global state across all sections; proper
-        per-section bCNC support in split mode requires per-section
-        tracking (future work).
+        Call this before _expand_trailing_lines, so that the block
+        contains the post_job and postamble lines.
         """
         if self._bcnc_postamble_commands:
             for _, sections in postables:
@@ -1958,57 +3000,44 @@ class PostProcessor:
 
     def _convert_start_section(self, section_name, sublist):
         """Override if your PP needs to notice when each section (file) starts"""
-        pass
 
     def _convert_job_sections(self, postables):
         """Convert each section to output-code"""
 
         job_sections = []
+
         for section_name, sublist in postables:
-            gcode_lines = []
-            self._optimize_start = None
 
-            self._operation = None
-            self._convert_start_section(section_name, sublist)
+            # MachineState per file (section)
+            with self.use_machine_state():
+                gcode_lines = []
 
-            for item in sublist:
-                # for error context
-                if item.item_type == "operation":
-                    self._operation = item.source
+                # For _optimize_gcode, FIXME: do annotations on Postables instead
+                self._optimize_start = None
 
-                self._convert_item_commands(item, gcode_lines)
+                self._convert_start_section(section_name, sublist)
 
-                self._operation = None  # operation `item` is over
+                for item in sublist:
+                    # for error context
+                    if item.item_type == "operation":
+                        self._operation = item.source
 
-            # ===== STAGE 4: G-CODE OPTIMIZATION =====
-            gcode_string = self._optimize_gcode(gcode_lines)
+                    self._convert_item_commands(item, gcode_lines)
 
-            if gcode_string:
-                # one place for end-of-line_chars
-                gcode_string = "\n".join(gcode_string)
-                line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
-                if line_ending != "\n":
-                    gcode_string = gcode_string.replace("\n", line_ending)
+                    self._operation = None  # operation `item` is over
 
-                job_sections.append((section_name, gcode_string))
+                if gcode_lines:
+                    # one place for end-of-line_chars
+                    gcode_string = "\n".join(gcode_lines)
+                    line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
+                    if line_ending != "\n":
+                        gcode_string = gcode_string.replace("\n", line_ending)
+
+                    job_sections.append((section_name, gcode_string))
 
         return job_sections
 
-    def dump_sections(self, msg, sections):
-        """Print the sections
-        for development/debugging
-        """
-        print(f"## proc DUMP {msg}")
-        for si, (sn, postables) in enumerate(sections):
-            print(f"Section[{si}] '{sn}'")
-            for pi, p in enumerate(postables):
-                print(f"  Postable[{pi}] {p.item_type}:'{p.Name}'")
-                print(f"    {p}")
-                if p.Path:
-                    for i, c in enumerate(p.Path.Commands):
-                        print(f"        [{i}] {c.toGCode()}")
-
-    def export2(self) -> Union[None, GCodeSections]:
+    def export2(self) -> None | GCodeSections:
         """
         Process jobs through all postprocessing stages to produce final G-code.
 
@@ -2033,60 +3062,78 @@ class PostProcessor:
         if not getattr(self, "_bundle_applied", False):
             self.apply_configuration_bundle()
 
-        # ===== STAGE 1: ORDERING =====
-        all_job_sections = []
+        # ===== STAGE 1: Postable List =====
+        # FreeCAD "supported" g-code
         postables = self._buildPostList()
         self._expand_postprocessor_commands(postables)
 
         # ===== STAGE 2: COMMAND EXPANSION =====
+        # and block insertion
+        # Postable world:
+        # Either a_Postable.item.path of Path.Commands,
+        # or a_Postable.item.type == "str" for opaque "blob" of text
+        # Path.Commands can become "Non-Conforming"
+
+        # First, before anything reads a coordinate: bring each operation's
+        # path from its work plane's frame into the frame the machine reaches,
+        # and command the rotaries it was solved for.
+        postables = self._expand_workplane_frames(postables)
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
+        # After _expand_prefix: the Header block contains the prefix lines
+        # Before _expand_pre_item: a bCNC block header comes before the pre-item lines
+        postables = self._expand_bcnc_commands(postables)
         postables = self._expand_pre_item(postables)
 
-        self._expand_translate_drill_cycles(postables)
+        self._expand_rapid_feed(postables)
         self._expand_canned_cycles(postables)
+        self._expand_translate_drill_cycles(postables)
         self._expand_split_arcs(postables)
         self._expand_spindle_wait(postables)
         self._expand_coolant_delay(postables)
         self._expand_translate_rapids(postables)
         self._expand_xy_before_z(postables)
-        self._expand_bcnc_commands(postables)
-        self._expand_tool_length_offset(postables)
+        self._expand_tool_change(postables)
 
         postables = self._expand_post_item(postables)
+        # Before _expand_trailing_lines: the bCNC block contains the post_job and postamble lines
+        self._expand_bcnc_postamble(postables)
         self._expand_trailing_lines(postables)
-        self._expand_tool_change(postables)
         self._expand_rotary_move(postables)
 
+        # must be after all expansions
+        self._optimize_duplicates_doubles(postables)
+
+        # Add line-numbers to all Path.Command's (if option is on)
         # must be last
-        self._expand_bcnc_postamble(postables)
+        self._add_line_numbers(postables)
 
         Path.Log.debug(postables)
 
         # ===== STAGE 3: COMMAND CONVERSION =====
+        # String world
 
         # convert postables to machine-specific gcode
+        # [ gcode-stringified ]
         job_sections = self._convert_job_sections(postables)
-
-        all_job_sections.extend(job_sections)
 
         # ===== STAGE 5: OUTPUT PRODUCTION =====
 
-        Path.Log.debug(f"Returning {len(all_job_sections)} sections")
-        Path.Log.debug(f"Sections: {all_job_sections}")
+        Path.Log.debug(f"Returning {len(job_sections)} sections")
+        Path.Log.debug(f"Sections: {job_sections}")
 
         # ===== STAGE 6: REMOTE POSTING =====
         try:
-            self.remote_post(all_job_sections)
+            self.remote_post(job_sections)
         except Exception as e:
             # Our output still might be interesting, so continue
             # FIXME: can we make the user notice this situation?
             Path.Log.error(f"Remote posting failed: {e}")
 
-        return all_job_sections
+        return job_sections
 
-    def export(self) -> Union[None, GCodeSections]:
+    def export(self) -> None | GCodeSections:
         """Process the parser arguments, then postprocess the 'postables'."""
         args: ParserArgs
         flag: bool
@@ -2155,7 +3202,6 @@ class PostProcessor:
 
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
-        #
         PostUtilsArguments.init_shared_values(values)
         #
         # Set any values here that need to override the default values set
@@ -2163,7 +3209,7 @@ class PostProcessor:
         #
         values["UNITS"] = self._units
 
-    def process_arguments(self) -> Tuple[bool, ParserArgs]:
+    def process_arguments(self) -> tuple[bool, ParserArgs]:
         """Process any arguments to the postprocessor."""
         #
         # This function is separated out to make it easier to inherit from this class.
@@ -2231,6 +3277,8 @@ class PostProcessor:
         self.parser: Parser = self.init_arguments(
             self.values, self.argument_defaults, self.arguments_visible
         )
+        self.machine_state = None
+
         #
         # Create another parser just to get a list of all possible arguments
         # that may be output using --output_all_arguments.
@@ -2253,7 +3301,6 @@ class PostProcessor:
         Args:
             gcode_sections: List of (section_name, gcode) tuples containing all generated G-code
         """
-        pass
 
     def _expand_postprocessor_commands(self, postables):
         """
@@ -2266,7 +3313,6 @@ class PostProcessor:
         Args:
             postables: List of (section_name, items) tuples
         """
-        pass
 
     def pre_processing_dialog(self):
         """
@@ -2291,12 +3337,17 @@ class PostProcessor:
 
     def get_sanity_checks(self, job):
         """
-        Hook for postprocessor-specific sanity checks.
+        Run the sanity checks for this postprocessor.
 
-        This method allows postprocessors to define custom validation rules
-        specific to their machine capabilities, configuration requirements,
-        or operational constraints. These checks are integrated into the
-        CAM_QuickValidation system and displayed alongside generic checks.
+        The checks themselves live in the methods returned by
+        sanity_check_methods().  A postprocessor that needs to change one
+        check should override that check, and one that needs to add or drop a
+        check should override sanity_check_methods(); overriding this method
+        is rarely necessary.  A subclass that does override it should call
+        super() so the machine-level checks still run.
+
+        A failing check is logged and skipped so that one broken check does
+        not suppress the rest of the report.
 
         Args:
             job: FreeCAD CAM job object to validate
@@ -2304,21 +3355,266 @@ class PostProcessor:
         Returns:
             list: List of squawk dictionaries following the same format as CAMSanity
                   Each squawk should have: Date, Operator, Note, squawkType, squawkIcon
-
-        Example:
-            def get_sanity_checks(self, job):
-                squawks = []
-
-                # Check plasma cutter specific settings
-                if self.values['PIERCE_DELAY'] < 300:
-                    squawks.append(self._create_squawk(
-                        "WARNING",
-                        "Pierce delay may be too short for material piercing"
-                    ))
-
-                return squawks
         """
-        return []  # Default implementation: no custom checks
+        squawks = []
+        for check in self.sanity_check_methods():
+            try:
+                squawks.extend(check(job))
+            except Exception as e:
+                Path.Log.warning(f"Sanity check {check.__name__} failed: {e}")
+        return squawks
+
+    def sanity_check_methods(self):
+        """
+        The checks run by get_sanity_checks(), in report order.
+
+        Each takes the job and returns a list of squawks.
+
+        Returns:
+            list: List of bound methods.
+        """
+        return [
+            self._sanity_spindle_speed,
+            self._rotation_sanity_checks,
+            self._fixture_sanity_checks,
+            self._tool_change_sanity_checks,
+        ]
+
+    def _sanity_spindle_speed(self, job):
+        """
+        Squawk for commanded spindle speeds outside the machine's range.
+
+        The limits come from the machine's toolhead by way of
+        _merge_toolhead_limits().  When neither limit is known the speeds are
+        not checked, so a machine that has not specified them is not squawked
+        at.  A machine whose limits could not be resolved gets a NOTE instead.
+
+        Args:
+            job: FreeCAD CAM job object to validate
+
+        Returns:
+            list: List of squawk dictionaries.
+        """
+        min_speed = self.values.get("MIN_SPINDLE_SPEED")
+        max_speed = self.values.get("MAX_SPINDLE_SPEED")
+        if min_speed is None and max_speed is None:
+            return self._sanity_spindle_speed_unresolved()
+
+        squawks = []
+        for label, speed in self._commanded_spindle_speeds(job):
+            if speed == 0:
+                # Zero is "spindle not running".  CAMSanity already squawks
+                # about tool controllers with no spindle speed.
+                continue
+            if min_speed is not None and speed < min_speed:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM_Post",
+                            "'{}' commands spindle speed {} rpm, below the machine minimum of {} rpm",
+                        ).format(label, f"{speed:g}", f"{min_speed:g}"),
+                    )
+                )
+            # Not elif: a machine misconfigured with min_rpm > max_rpm
+            # should report both violations, not hide the second.
+            if max_speed is not None and speed > max_speed:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM_Post",
+                            "'{}' commands spindle speed {} rpm, above the machine maximum of {} rpm",
+                        ).format(label, f"{speed:g}", f"{max_speed:g}"),
+                    )
+                )
+        return squawks
+
+    def _sanity_spindle_speed_unresolved(self):
+        """
+        Squawk when spindle speed limits exist but could not be applied.
+
+        With several toolheads there is no rule for which one a job uses, so
+        _merge_toolhead_limits() leaves the limits unset.  Say so, rather
+        than let the check silently do nothing.
+
+        Returns:
+            list: List of squawk dictionaries.
+        """
+        toolheads = getattr(getattr(self, "_machine", None), "toolheads", None) or []
+        if len(toolheads) > 1:
+            return [
+                self._create_squawk(
+                    "NOTE",
+                    translate(
+                        "CAM_Post",
+                        "Machine defines {} toolheads; spindle speed was not checked against their limits",
+                    ).format(len(toolheads)),
+                )
+            ]
+        return []
+
+    def _commanded_spindle_speeds(self, job):
+        """
+        The distinct spindle speeds commanded by a job.
+
+        Speeds are read from the commands rather than from
+        ToolController.SpindleSpeed so that anything rewriting the spindle
+        command is accounted for.  Tool controllers are the usual source, but
+        operations are scanned too in case a generator emits its own M3/M4.
+
+        Args:
+            job: FreeCAD CAM job object to scan
+
+        Returns:
+            list: List of (label, speed) tuples, without duplicates.
+        """
+        sources = list(getattr(getattr(job, "Tools", None), "Group", None) or [])
+        sources += list(getattr(getattr(job, "Operations", None), "Group", None) or [])
+
+        seen = []
+        for source in sources:
+            path = getattr(source, "Path", None)
+            if not path:
+                continue
+            for command in path.Commands:
+                if command.Name not in Constants.MCODE_SPINDLE_ON:
+                    continue
+                speed = command.Parameters.get("S")
+                if speed is None:
+                    continue
+                entry = (getattr(source, "Label", ""), float(speed))
+                if entry not in seen:
+                    seen.append(entry)
+        return seen
+
+    def _rotation_sanity_checks(self, job):
+        """Warn when this program will move the rotary axes between operations
+        and the machine's Pre-Rotary Move block is empty: nothing then brings
+        the tool clear of the part before the table turns."""
+        machine = getattr(self, "_machine", None)
+        if machine is None or not getattr(machine, "has_rotary_axes", False):
+            return []
+        if (getattr(self, "values", {}).get("PRE_ROTARY_MOVE") or "").strip():
+            return []
+        if not self._rotaries_move_between_operations(job):
+            return []
+        return [
+            self._create_squawk(
+                "WARNING",
+                translate(
+                    "CAM",
+                    "The rotary axes move between operations and the Pre-Rotary Move property "
+                    "of machine '{machine}' is empty. Put the moves that bring the tool clear "
+                    "of the part there, in machine coordinates (for example G53 G0 Z0).",
+                ).format(machine=machine.name),
+            )
+        ]
+
+    def _tool_change_sanity_checks(self, job):
+        """Warns:
+        if early tool prep and T# M6 are both enabled as that is likely
+        a mistake. The T# will likely force a tool change to the wrong tool
+
+        if assert tool prep is on but early tool prep is off as assert early tool
+        prep will do nothing in this instance.
+        """
+        squawks = []
+        machine = getattr(self, "_machine", None)
+        processing = getattr(machine, "processing", None)
+        if processing is None:
+            return squawks
+        tool_change_format = self._tool_change_format()
+        if tool_change_format == Constants.ToolChangeFormat.T_M6 and getattr(
+            processing, "early_tool_prep", False
+        ):
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "'T# M6' tool change and early "
+                        "tool prep are both enabled. Depending on the machine this may cause the "
+                        "wrong tool to be loaded",
+                    ).format(machine=machine.name),
+                )
+            )
+        if getattr(processing, "assert_tool_prep", False) and not getattr(
+            processing, "early_tool_prep", False
+        ):
+            squawks.append(
+                self._create_squawk(
+                    "WARNING",
+                    translate(
+                        "CAM",
+                        "Machine '{machine}' uses Assert Tool Prep without Early Tool Prep. "
+                        "No tool prep commands will be written",
+                    ).format(machine=machine.name),
+                )
+            )
+
+        return squawks
+
+    def _fixture_sanity_checks(self, job):
+        """Warn about a work plane's Fixture before the post refuses it, and
+        about one the Job also repeats the program for: inside that repetition
+        the plane's selection wins, which is rarely what was meant."""
+        import Path.Main.Workplane as PathWorkplane
+
+        squawks = []
+        job_fixtures = [f.upper() for f in (getattr(job, "Fixtures", None) or [])]
+        for plane in PathWorkplane.workplanesOf(job):
+            fixture = PathWorkplane.fixtureOf(plane)
+            if fixture is None:
+                continue
+            if not _FIXTURE_WORD.match(fixture):
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM",
+                            "Work plane '{plane}' names '{fixture}' as its fixture, which is "
+                            "not a work coordinate system (G54-G59.9, or G54.1 Pn). The post "
+                            "will refuse it.",
+                        ).format(plane=plane.Label, fixture=fixture),
+                    )
+                )
+            elif len(job_fixtures) > 1 and fixture.upper() in job_fixtures:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM",
+                            "Work plane '{plane}' selects {fixture}, which is also one of the "
+                            "fixtures the Job repeats its program for. Inside each repetition "
+                            "the plane's selection wins.",
+                        ).format(plane=plane.Label, fixture=fixture),
+                    )
+                )
+        return squawks
+
+    def _rotaries_move_between_operations(self, job):
+        """Whether consecutive operations solve to different rotary positions
+        on this post's machine. An unreachable plane is skipped here; the
+        export refuses it with the reason."""
+        from Path.Base.Generator import rotation
+        import Path.Dressup.Utils as PathDressup
+
+        chain = rotation.build_kinematic_chain(self._machine)
+        previous = None
+        current = None
+        for op in self._operations_to_post():
+            base = PathDressup.baseOp(op)
+            placement = getattr(base, "Placement", None) or FreeCAD.Placement()
+            positions, _ = self._solve_pose(placement, chain, current)
+            if positions is None:
+                continue
+            current = positions
+            key = tuple(sorted((k, round(float(v), 6)) for k, v in positions.items()))
+            if previous is not None and key != previous:
+                return True
+            previous = key
+        return False
 
     def _create_squawk(self, squawk_type, note):
         """
@@ -2331,8 +3627,6 @@ class PostProcessor:
         Returns:
             dict: Squawk dictionary compatible with CAMSanity
         """
-        from datetime import datetime
-
         # Map to same icons used by CAMSanity
         icon_map = {
             "TIP": "Sanity_Bulb",
@@ -2342,12 +3636,26 @@ class PostProcessor:
         }
 
         return {
-            "Date": datetime.now().strftime("%c"),
+            "Date": datetime.datetime.now().strftime("%c"),
             "Operator": self.__class__.__name__,
             "Note": note,
             "squawkType": squawk_type,
             "squawkIcon": f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{icon_map.get(squawk_type, 'Sanity_Note')}.svg",
         }
+
+    def _command_names(self, value) -> frozenset:
+        """The command names in a text property, one per line, or in a list.
+
+        A text property is matched name by name, not as a substring: G1 is
+        not in "G17", nor G5 in "G54".
+        """
+        if not isinstance(value, str):
+            return frozenset(value or ())
+        names = self._command_name_sets.get(value)
+        if names is None:
+            names = frozenset(name.strip() for name in value.splitlines() if name.strip())
+            self._command_name_sets[value] = names
+        return names
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:
         """
@@ -2385,19 +3693,48 @@ class PostProcessor:
                 return super()._convert_drill_cycle(command)
         """
 
-        # Validate command is supported
-        supported = self.values.get(
-            "SUPPORTED_COMMANDS",
-            Constants.GCODE_SUPPORTED + Constants.GCODE_FIXTURES + Constants.MCODE_SUPPORTED,
-        )
-        if (
-            command.Name not in supported
-            and not command.Name.startswith("(")
-            and not command.Name.startswith("T")
-            and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
+        # Pass through G-code as-is
+        if "as-is" in command.Annotations:
+            # and we no longer know the MachineState
+            self.machine_state.setState(None)
+            self.machine_state.addGcodeText(command.Annotations[Constants.ANNOT_AS_IS])
+            return command.Annotations[Constants.ANNOT_AS_IS]
+
+        # "ignored" commands need not be in "SUPPORTED_COMMANDS"
+        if command.Name != "" and command.Name in self._command_names(
+            self.values["IGNORED_COMMANDS"]
         ):
+            Path.Log.debug(f"ignored {command}")
+            return None
+
+        # Validate command is supported
+        supported = self._command_names(
+            self.values.get(
+                "SUPPORTED_COMMANDS",
+                Constants.GCODE_SUPPORTED + Constants.GCODE_FIXTURES + Constants.MCODE_SUPPORTED,
+            )
+        )
+        if not (
+            command.Name == ""  # a modal-stripped command: its parameters alone
+            or command.Name in supported
+            or (len(command.Name) > 0 and command.Name[0] in Constants.GCODE_NON_CONFORMING_BARE)
+            or command.Name.startswith("(")
+            or command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
+        ):
+            # Try to help them if it is Custom op
+            extra = ""
+            if (
+                self._operation
+                and getattr(self._operation, "source", None)
+                and getattr(self._operation.source, "Proxy", None)
+                and isinstance(self._operation.source.Proxy, Path.Op.Custom.ObjectCustom)
+            ):
+                extra = translate(
+                    "CAM",
+                    " (in the Custom op, uncheck Post Process Output, or put '!' in front of specific command)",
+                )
             raise CAMValueError(
-                f"Unsupported command: {command.Name}",
+                f"Unsupported command: {command.Name}{extra}",
                 job=self._job,
                 operation=self._operation,
                 command=command,
@@ -2433,7 +3770,7 @@ class PostProcessor:
             return self._convert_arc_move(command)
 
         # Drill cycles
-        if command_name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
+        if command_name in Constants.EXPANDABLE_DRILL_CYCLES + Constants.GCODE_DRILL_EXTENDED:
             return self._convert_drill_cycle(command)
 
         # Probe
@@ -2464,10 +3801,11 @@ class PostProcessor:
         if command_name in Constants.GCODE_FIXTURES:
             return self._convert_fixture(command)
 
-        # Modal commands (G43, G80, G90, G91, G92, G93, G94, G95, G96, G97, G98, G99, etc.)
+        # Modal commands (G17, G43, G80, G90, G91, G92, G93, G94, G95, G96, G97, G98, G99, etc.)
         if (
             command_name
-            in Constants.GCODE_TOOL_LENGTH_OFFSET
+            in Constants.GCODE_PLANE
+            + Constants.GCODE_TOOL_LENGTH_OFFSET
             + Constants.GCODE_CYCLE_CANCEL
             + Constants.GCODE_DISTANCE_MODE
             + Constants.GCODE_OFFSET
@@ -2528,7 +3866,7 @@ class PostProcessor:
         else:
             return f"{block_delete_string}{comment_symbol} {comment_text}"  # FIXME: no extra space
 
-    def format_parameter(self, param_name, value):
+    def format_parameter(self, param_name, value, command_name=None):
 
         def _convert_axis_param(value):
             # Apply unit conversion based on machine units setting
@@ -2566,7 +3904,16 @@ class PostProcessor:
             """Format integer parameter."""
             return str(int(value))
 
+        def format_p_param(value):
+            """Format P according to what it means for this command."""
+            if command_name in Constants.GCODE_P_IS_DWELL:
+                # A dwell keeps the axis precision but must not be unit converted
+                precision = self.values["AXIS_PRECISION"]
+                return f"{value:.{precision}f}"
+            return format_axis_param(value)
+
         # Parameter type mappings
+        # Should cover Constants.PARAMETER_ORDER
         param_formatters = {
             # Axis parameters
             "X": format_axis_param,
@@ -2575,9 +3922,10 @@ class PostProcessor:
             "U": format_axis_param,
             "V": format_axis_param,
             "W": format_axis_param,
-            "A": format_axis_param,
-            "B": format_axis_param,
-            "C": format_axis_param,
+            # Rotary axes are angles: precision, but no mm -> inch conversion
+            "A": self._format_angle,
+            "B": self._format_angle,
+            "C": self._format_angle,
             # Arc parameters
             "I": format_axis_param,
             "J": format_axis_param,
@@ -2587,8 +3935,8 @@ class PostProcessor:
             # Feed and spindle
             "F": format_feed_param,
             "S": format_spindle_param,
-            # P parameter - use axis formatting to support decimal values (e.g., G4 P2.5)
-            "P": format_axis_param,
+            # P is a dwell on G4 and the canned cycles, a distance on G5/G64
+            "P": format_p_param,
             # Integer parameters
             "D": format_int_param,
             "H": format_int_param,
@@ -2603,11 +3951,10 @@ class PostProcessor:
 
     def _convert_move(self, command: Path.Command) -> str:
         """
-        Converts a rapid move command to gcode.
+        Converts a generic move command to gcode.
 
         This method can be overridden by derived postprocessors to customize rapid move handling.
         """
-        from Path.Post.UtilsParse import format_command_line
 
         # Extract command components
         command_name = command.Name
@@ -2617,44 +3964,75 @@ class PostProcessor:
         # Check for blockdelete annotation
         block_delete_string = "/" if annotations.get("blockdelete") else ""  # FIXME: never set
 
+        # Parameter words that are written before the command name, e.g. T4 M6
+        lead_params = annotations.get(Constants.ANNOT_LEAD_PARAMS, "")
+
         # Build command line
         command_line = []
-        command_line.append(command_name)
+
+        # line numbers as prefix
+        if params.get("N", None) is not None:
+            prefix = self.values["LINE_NUMBER_PREFIX"]
+            command_line.append(f"{prefix}{ int(params['N']):d}")
+
+        # Lead words follow the line number and precede the command name. They go into
+        # command_line as words, so format_command_line() separates them with COMMAND_SPACE
+        for letter in lead_params:
+            if letter in params:
+                formatted_value = self.format_parameter(letter, params[letter], command_name)
+                command_line.append(f"{letter}{formatted_value}")
+
+        # A modal-stripped command has no name. Appending it anyway leaves an
+        # empty leading element, which format_command_line renders as a leading
+        # separator: "G1 X1.0 Y2.0" followed by " X3.0 Y4.0".
+        if command_name:
+            command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
-        parameter_order = self.values.get(
-            "PARAMETER_ORDER",
-            # FIXME: dry
-            ["X", "Y", "Z", "A", "B", "C", "F", "I", "J", "K", "R", "Q", "P", "S", "T"],
-        )
+        parameter_order = list(self.values.get("PARAMETER_ORDER", Constants.PARAMETER_ORDER))
 
+        # An arc's center is given in its plane. The center word along the
+        # plane's normal, K on a G17 arc, J on G18, I on G19, says nothing
+        # (a helix carries its pitch in the axis word), and LinuxCNC and Fanuc
+        # refuse it. The plane follows G17 G18 G19 in the path and in the
+        # text blocks the post emits as written; the default is G17.
+        normal_word = None
+        if command_name in Constants.GCODE_MOVE_ARC:
+            plane = self.machine_state.Plane if self.machine_state else "G17"
+            normal_word = Constants.ARC_CENTER_WORD_NORMAL_TO_PLANE.get(plane)
+
+        words_emitted = 0
         for parameter in parameter_order:
+            if parameter == normal_word or parameter in lead_params:
+                continue
             if parameter in params:
                 # Check if we should suppress duplicate parameters
                 current_value = params[parameter]
-                if not self.values["OUTPUT_DOUBLES"]:
-                    # Suppress parameters that haven't changed
-                    if (
-                        parameter in self._modal_state
-                        and self._modal_state[parameter] == current_value
-                    ):
-                        continue  # Skip this parameter
-                elif (
+                if (
                     parameter == "F"
                     and command_name in Constants.GCODE_MOVE_RAPID
-                    and (not self.values["F_FOR_RAPID_MOVES"] or current_value == 0.0)
-                ):
-                    continue  # no F for G0, or the F is 0.0 which should be skipped too
+                    and not self.values["F_FOR_RAPID_MOVES"]
+                ):  # skip rapid F in command
+                    continue
 
-                formatted_value = self.format_parameter(parameter, current_value)
+                formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
-
-                self._modal_state[parameter] = params[parameter]
+                words_emitted += 1
 
         # Suppress commands where all parameters were removed by duplicate suppression
         # or parameter_order exclusion (e.g., Z suppression for wire EDM).
-        # A bare move (G0, G1, G2, G3) or dwell (G4) with no parameters is meaningless.
-        if params and len(command_line) == 1:
+        # A bare move, canned cycle or dwell with no parameters is meaningless.
+        if words_emitted == 0 and command_name in (
+            Constants.GCODE_MOVE_LINE
+            + Constants.GCODE_MOVE_ARC
+            + Constants.GCODE_DRILL_COMMANDS
+            + Constants.GCODE_DWELL
+        ):
+            return None
+
+        # Nothing left to emit, e.g. a modal command whose parameters were all
+        # suppressed as duplicates.
+        if not command_line:
             return None
 
         # Format the command line
@@ -2689,13 +4067,53 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _tapping_to_speed(self, command: Path.Command) -> Path.Command:
+        """Updates F to the speed, not pitch, if appropriate
+        Returns original command, or modified command
+        Override in the PP if the logic is completely different
+        """
+        # Tapping F is pitch, convert to speed
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and "tapping" == command.Annotations.get("operation", "")
+            and "F" in command.Parameters
+        ):
+            # we are still FreeCAD units: mm and secs, so mm/min -> mm/sec
+            spindle_speed = command.Parameters.get("S", None)
+            if spindle_speed is None:
+                raise CAMAttributeError(
+                    translate("CAM", "S parameter is required for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            if spindle_speed <= 0:
+                raise CAMValueError(
+                    translate("CAM", "S parameter must be > 0 for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            f = command.Parameters["F"] * spindle_speed / 60.0
+            new_command = Path.Command(
+                command.Name, {**command.Parameters, "F": f}, command.Annotations
+            )
+            return new_command
+        else:
+            return command
+
     def _convert_drill_cycle(self, command: Path.Command) -> str:
         """
         Converts a drill cycle command to gcode.
 
         This method can be overridden by derived postprocessors to customize drill cycle handling.
         """
-        return self._convert_move(command)
+
+        new_command = self._tapping_to_speed(command)
+
+        return self._convert_move(new_command)
 
     def _convert_probe(self, command: Path.Command) -> str:
         """
@@ -2733,17 +4151,62 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _format_tool_change(self, command: Path.Command, tool_change_format: str) -> str:
+        """Write tool changes according to the machine's tool_change_format.
+        M6_T             M6 T4   (T is the current tool)
+        T_M6             T4 M6   (T is the current tool)
+        M6_T_EARLY_PREP  M6 T6   (T is the NEXT tool; should be used with early tool prep)
+        M6_ONLY          M6      (No T written. early tool prep will add a T before this line)
+        NO_TOOL_CHANGE   (Tool change suppressed: M6 T4)
+
+        The line is always assembled by _convert_move(), so the line number, block delete
+        and COMMAND_SPACE are handled the same as for any other command.
+        """
+        try:
+            fmt = Constants.ToolChangeFormat(tool_change_format)
+        except ValueError:
+            fmt = Constants.ToolChangeFormat.M6_T
+
+        tool = command.Parameters.get("T")
+        params = {k: v for k, v in command.Parameters.items() if k != "T"}
+        annotations = command.Annotations
+
+        if fmt == Constants.ToolChangeFormat.NO_TOOL_CHANGE:
+            text = "M6" if tool is None else f"M6 T{int(tool)}"
+            return self._convert_comment(Path.Command(f"(Tool change suppressed: {text})"))
+
+        if fmt == Constants.ToolChangeFormat.T_M6 and tool is not None:
+            # T leads the command name, after any line number: "N100 T4 M6"
+            lead = {**annotations, Constants.ANNOT_LEAD_PARAMS: "T"}
+            return self._convert_move(Path.Command(command.Name, command.Parameters, lead))
+
+        if fmt == Constants.ToolChangeFormat.M6_T_EARLY_PREP:
+            next_tool = annotations.get(Constants.ANNOT_NEXT_TOOL)
+            if next_tool not in (None, ""):
+                params["T"] = int(next_tool)
+            return self._convert_move(Path.Command(command.Name, params, annotations))
+
+        if fmt in (Constants.ToolChangeFormat.M6_ONLY, Constants.ToolChangeFormat.T_M6):
+            # M6_ONLY, or T_M6 with no tool number: no T written
+            return self._convert_move(Path.Command(command.Name, params, annotations))
+
+        return self._convert_move(command)  # M6_T
+
     def _convert_tool_change(self, command: Path.Command) -> str:
         """
         Converts a tool change command to gcode.
 
         This method can be overridden by derived postprocessors to customize tool change handling.
         """
-        result = self._convert_move(command)
+        tool_change_format = command.Annotations.get(Constants.ANNOT_TOOL_CHANGE_FORMAT)
+        if tool_change_format is not None:
+            result = self._format_tool_change(command, tool_change_format)
+        else:
+            result = self._convert_move(command)
+
         # Reset modal state after tool change so that subsequent commands
         # (M3 S..., G4 P..., G0 X... etc.) are not suppressed as duplicates.
-        for key in self._modal_state:
-            self._modal_state[key] = None
+        self.machine_state.setState(None)
         return result
 
     def _convert_spindle_command(self, command: Path.Command) -> str:
@@ -2799,7 +4262,7 @@ class WrapperPost(PostProcessor):
     """Wrapper class for old post processors that are scripts."""
 
     def __init__(self, job, script_path, module_name, *args, **kwargs):
-        super().__init__(job, tooltip=None, tooltipargs=None, units=None, *args, **kwargs)
+        super().__init__(job, *args, tooltip=None, tooltipargs=None, units=None, **kwargs)
         self.script_path = script_path
         self.module_name = module_name
         Path.Log.debug(f"WrapperPost.__init__({script_path})")
@@ -2812,7 +4275,7 @@ class WrapperPost(PostProcessor):
             self.script_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(self.script_module)
         except Exception as e:
-            raise ImportError(f"Failed to load script: {e}")
+            raise ImportError(f"Failed to load script as module '{self.module_name}': {e}")
 
         if not hasattr(self.script_module, "export"):
             raise AttributeError("The script does not have an 'export' function.")
@@ -2825,17 +4288,57 @@ class WrapperPost(PostProcessor):
     def export(self):
         """Dynamically reload the module for the export to ensure up-to-date usage."""
 
+        self._refuse_tilted_operations()
         postables = self._buildPostList()
+        self._place_operations(postables)
         Path.Log.debug(f"postables count: {len(postables)}")
 
         g_code_sections = []
-        for idx, section in enumerate(postables):
+        for section in postables:
             partname, sublist = section
 
             gcode = self.script_module.export(sublist, "-", self._job.PostProcessorArgs)
             Path.Log.debug(f"Exported {partname}")
             g_code_sections.append((partname, gcode))
         return g_code_sections
+
+    def _refuse_tilted_operations(self):
+        """Legacy posts read world coordinates and never position a rotary
+        machine. Multi-axis output is for post-processors of the current
+        kind; an operation on a tilted work plane is refused here rather
+        than posted unpositioned. A plane parallel to the table - a datum, a
+        turned X - is fine: world coordinates are all it needs. Only the
+        operations being posted count: a disabled one, or one left out of a
+        selection, is no reason to refuse the rest."""
+        import Path.Dressup.Utils as PathDressup
+
+        for op in self._operations_to_post():
+            base = PathDressup.baseOp(op)
+            placement = getattr(base, "Placement", None)
+            if placement is not None and _tool_axis_tilted(placement):
+                raise CAMValueError(
+                    translate(
+                        "CAM",
+                        "{op} is on a tilted work plane. Legacy post-processor '{post}' cannot "
+                        "position a rotary machine; select a post-processor of the current kind.",
+                    ).format(op=base.Label, post=self.module_name),
+                    job=self._job,
+                    operation=base,
+                )
+
+    @staticmethod
+    def _place_operations(postables):
+        """An operation on a work plane stores its path in the plane's frame;
+        a legacy script reads the path it is given as world coordinates. Place
+        each one, as the current posts do in _expand_workplane_frames."""
+        for _, items in postables:
+            for item in items:
+                if item.item_type != "operation" or item.source is None:
+                    continue
+                placement = getattr(item.source, "Placement", None)
+                if placement is not None and not placement.isIdentity(1e-9):
+                    item.path = PathUtil.applyPlacementToPath(placement, item.path)
+                    item.data["placed"] = True
 
     @property
     def tooltip(self):

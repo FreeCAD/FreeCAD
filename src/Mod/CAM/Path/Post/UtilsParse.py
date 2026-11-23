@@ -1,33 +1,29 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre
+# SPDX-FileCopyrightText: 2014 sliptonic
+# SPDX-FileCopyrightText: 2015 Dan Falck
+# SPDX-FileCopyrightText: 2018 Gauthier Briere
+# SPDX-FileCopyrightText: 2019 Schildkroet
+# SPDX-FileCopyrightText: 2022 Larry Woestman
+# SPDX-FileCopyrightText: 2024 Carl Slater
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
-# *   Copyright (c) 2018, 2019 Gauthier Briere                              *
-# *   Copyright (c) 2019, 2020 Schildkroet                                  *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
-# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>           *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import math
 import re
@@ -86,6 +82,7 @@ def check_for_drill_translate(
         if values["OUTPUT_COMMENTS"]:  # Comment the original command
             comment = create_comment(values, format_command_line(values, command_line))
             gcode.append(f"{linenumber(values)}{comment}")
+
         # wrap this block to ensure that the value of values["MOTION_MODE"]
         # is restored in case of error
         try:
@@ -207,6 +204,7 @@ def default_axis_parameter(
     if (
         not values["OUTPUT_DOUBLES"]
         and param in current_location
+        and current_location[param] is not None
         and math.fabs(current_location[param] - param_value) < epsilon
     ):
         return ""
@@ -267,7 +265,9 @@ def default_F_parameter(
     # then feed is in linear units
     found = False
     for key in ("X", "Y", "Z", "U", "V", "W"):
-        if key in parameters and math.fabs(current_location[key] - parameters[key]) > epsilon:
+        if current_location[key] is None or (
+            key in parameters and math.fabs(current_location[key] - parameters[key]) > epsilon
+        ):
             found = True
     if found:
         return format_for_feed(values, feed)
@@ -429,12 +429,8 @@ def drill_translate(
     # TODO: Defaulting to 0.0 when an axis is missing from motion_location
     # silently degrades G98 safe-height retract (max(initial_z, R) uses 0
     # instead of the real tool height). Consider requiring a valid initial
-    # position and warning when motion_location is incomplete.
-    initial_position = {
-        "X": motion_location.get("X", 0.0),
-        "Y": motion_location.get("Y", 0.0),
-        "Z": motion_location.get("Z", 0.0),
-    }
+    # position and warning when machine_state is incomplete.
+    initial_position = {k: motion_location.get(k, 0.0) for k in "XYZ"}
 
     # Per ADR-002, Path Command coordinates are always absolute.
     # No G91-to-absolute conversion is needed.
@@ -447,7 +443,8 @@ def drill_translate(
         return
 
     # Create expander and expand the drill cycle
-    expander = DrillCycleExpander(MachineState(initial_position))
+    machine_state = MachineState(initial_position)
+    expander = DrillCycleExpander(machine_state)
     expander.machine_state.addCommand(Path.Command(drill_retract_mode))
 
     expanded = expander.expand_command(Path.Command(command, drill_params))
@@ -689,25 +686,12 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     swap_tool_change_order = False
     if "TOOL_BEFORE_CHANGE" in values and values["TOOL_BEFORE_CHANGE"]:
         swap_tool_change_order = True
-    current_location.update(
-        # the goal is to have initial values that aren't likely to match
-        # any "real" first parameter values
-        Path.Command(
-            "G0",
-            {
-                "X": 123456789.0,
-                "Y": 123456789.0,
-                "Z": 123456789.0,
-                "U": 123456789.0,
-                "V": 123456789.0,
-                "W": 123456789.0,
-                "A": 123456789.0,
-                "B": 123456789.0,
-                "C": 123456789.0,
-                "F": 123456789.0,
-            },
-        ).Parameters
-    )
+
+    # initialize currrent_location for tracking
+    # the goal is to have initial values that aren't likely to match
+    # any "real" first parameter values
+    current_location.update({k: 123456789.0 for k in "XYZUVWABCF"})
+
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
     path_to_process = pathobj.Path
@@ -763,6 +747,7 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         lastcommand = command
         # Remember the current location
         current_location.update(c.Parameters)
+
         if command in ("G90", "G91"):
             # Remember the motion mode
             values["MOTION_MODE"] = command

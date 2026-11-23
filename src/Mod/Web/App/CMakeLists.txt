@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(Web_LIBS
     FreeCADApp
@@ -34,11 +35,9 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Web)
-endif()
+target_compile_warn_error(Web)
 
-SET_BIN_DIR(Web Web /Mod/Web)
+SET_BIN_DIR(Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)
 
 install(TARGETS Web DESTINATION ${CMAKE_INSTALL_LIBDIR})

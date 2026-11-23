@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <sstream>
 
@@ -83,15 +80,13 @@ bool FeaturePythonImp::execute()
             }
             return true;
         }
-        else {
-            Py::Tuple args(1);
-            args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Object res = Base::pyCall(py_execute.ptr(), args.ptr());
-            if (res.isBoolean() && !res.isTrue()) {
-                return false;
-            }
-            return true;
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Object res = Base::pyCall(py_execute.ptr(), args.ptr());
+        if (res.isBoolean() && !res.isTrue()) {
+            return false;
         }
+        return true;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -113,12 +108,10 @@ bool FeaturePythonImp::mustExecute() const
             Py::Object res(Base::pyCall(py_mustExecute.ptr()));
             return res.isTrue();
         }
-        else {
-            Py::Tuple args(1);
-            args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Object res(Base::pyCall(py_mustExecute.ptr(), args.ptr()));
-            return res.isTrue();
-        }
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Object res(Base::pyCall(py_mustExecute.ptr(), args.ptr()));
+        return res.isTrue();
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text

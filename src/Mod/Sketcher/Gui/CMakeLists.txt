@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(SketcherGui_LIBS
     Sketcher
@@ -40,6 +41,8 @@ SET(SketcherGui_SRCS
     ${SketcherGui_SRCS}
     ${SketcherGui_UIC_HDRS}
     AppSketcherGui.cpp
+    FontProvider.h
+    FontProvider.cpp
     GeometryCreationMode.h
     Command.h
     Command.cpp
@@ -208,11 +211,15 @@ target_include_directories(
 )
 
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(SketcherGui)
+
+if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|FreeBSD|OpenBSD|NetBSD)$")
+    find_package(Fontconfig REQUIRED)
+    target_link_libraries(SketcherGui Fontconfig::Fontconfig)
 endif()
 
-SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
+target_compile_warn_error(SketcherGui)
+
+SET_BIN_DIR(SketcherGui)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
 
 fc_copy_sources(SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG})

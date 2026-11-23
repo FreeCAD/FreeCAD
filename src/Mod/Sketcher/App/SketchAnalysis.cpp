@@ -1,27 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2018 Abdullah Tahiri
+// SPDX-FileCopyrightText: 2013 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2018 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <cmath>
 
@@ -618,17 +615,17 @@ Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 
 void SketchAnalysis::solveSketch(const char* errorText)
 {
-    int status {};
+    SketchSolveStatus status;
     int dofs {};
     solvesketch(status, dofs, true);
 
-    if (status == int(Solver::RedundantConstraints)) {
+    if (status == SketchSolveStatus::RedundantConstraints) {
         sketch->autoRemoveRedundants(DeleteOption::NoFlag);
 
         solvesketch(status, dofs, false);
     }
 
-    if (status) {
+    if (status != SketchSolveStatus::Success) {
         THROWMT(Base::RuntimeError, errorText);
     }
 }
@@ -711,6 +708,18 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
                 verthorizConstraints.push_back(id);
             }
         }
+    }
+
+    // Only propose constraints that are not already active in the sketch.
+    for (const auto* constraint : sketch->Constraints.getValues()) {
+        if (!constraint->isActive) {
+            continue;
+        }
+        std::erase_if(verthorizConstraints, [constraint](const ConstraintIds& id) {
+            return constraint->Type == id.Type && constraint->First == id.First
+                && constraint->FirstPos == id.FirstPos && constraint->Second == id.Second
+                && constraint->SecondPos == id.SecondPos;
+        });
     }
 
     return int(verthorizConstraints.size());
@@ -832,7 +841,7 @@ void SketchAnalysis::makeMissingEqualityOneByOne()
     radiusequalityConstraints.clear();
 }
 
-void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
+void SketchAnalysis::solvesketch(SketchSolveStatus& status, int& dofs, bool updategeo)
 {
     status = sketch->solve(updategeo);
 
@@ -844,14 +853,14 @@ void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
     }
 
     if (sketch->getLastHasRedundancies()) {
-        status = int(Solver::RedundantConstraints);
+        status = SketchSolveStatus::RedundantConstraints;
     }
 
     if (dofs < 0) {
-        status = int(Solver::OverConstrained);
+        status = SketchSolveStatus::Overconstrained;
     }
     else if (sketch->getLastHasConflicts()) {
-        status = int(Solver::ConflictingConstraints);
+        status = SketchSolveStatus::ConflictingConstraints;
     }
 }
 
@@ -949,8 +958,8 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
     int ne = detectMissingEqualityConstraints(precision);
 
     Base::Console().log(
-        "Constraints: Vertical/Horizontal: %d found. "
-        "Point-on-point: %d. Equality: %d\n",
+        "Constraints: Vertical/Horizontal: {} found. "
+        "Point-on-point: {}. Equality: {}\n",
         nhv,
         nc,
         ne

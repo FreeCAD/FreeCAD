@@ -405,6 +405,22 @@ QString Action::createToolTip(
     return tooltip + cmdName;
 }
 
+QString Action::createToolTip(const QAction* action, const Command* command)
+{
+    if (!action || !command) {
+        return {};
+    }
+
+    // Use the same translation context as Command::applyCommandData()
+    const char* context = command->className();
+    if (dynamic_cast<const PythonCommand*>(command)
+        || dynamic_cast<const PythonGroupCommand*>(command)) {
+        context = command->getName();
+    }
+    QString helpText = QApplication::translate(context, command->getToolTipText());
+    return createToolTip(helpText, action->text(), action->font(), command->getShortcut(), command);
+}
+
 QString Action::toolTip() const
 {
     return _tooltip;
@@ -622,15 +638,9 @@ void ActionGroup::onHovered(QAction* act)
     // events are processed.
     QMenu* foundMenu = nullptr;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // Use associatedObjects() which includes non-widget associated objects.
     const auto associatedObjects = act->associatedObjects();
     for (QObject* obj : associatedObjects) {
-#else
-    // Use associatedWidgets() for Qt < 6.0 (associatedObjects() requires Qt 6.0+).
-    const auto associatedWidgets = act->associatedWidgets();
-    for (QWidget* obj : associatedWidgets) {
-#endif
         if (auto* menu = qobject_cast<QMenu*>(obj)) {
             if (menu->isVisible()) {
                 foundMenu = menu;
@@ -836,6 +846,7 @@ public:
         if (!updating && reason && strcmp(reason, "RecentFiles") == 0) {
             Base::StateLocker guard(updating);
             master->restore();
+            Q_EMIT master->recentFilesListModified();
         }
     }
 
@@ -866,11 +877,22 @@ public:
 
 /* TRANSLATOR Gui::RecentFilesAction */
 
-RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
+RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent, bool addOpen)
     : ActionGroup(pcCmd, parent)
     , visibleItems(4)
     , maximumItems(20)
 {
+    if (addOpen) {
+        QAction* openAction = groupAction()->addAction(QLatin1String(""));
+        openAction->setText(tr("Open..."));
+        openAction->setStatusTip(tr("Open a document or import files."));
+        openAction->setToolTip(tr("Open a document or import files."));
+        openAction->setIcon(Gui::BitmapFactory().iconFromTheme("document-open"));
+
+        QAction* openSeparator = groupAction()->addAction(QLatin1String(""));
+        openSeparator->setSeparator(true);
+    }
+
     _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
 
@@ -884,7 +906,7 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
     clearRecentFilesListAction.setToolTip({});
     this->groupAction()->addAction(&clearRecentFilesListAction);
 
-    auto clearFun = [this, hGrp = _pimpl->handle]() {
+    auto clearFun = [this]() {
         // prompt user before clearing the recent files list
         QMessageBox::StandardButton reply = QMessageBox::question(
             getMainWindow(),
@@ -898,23 +920,13 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
             return;
         }
 
-        const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
-        for (size_t i = 0; i < recentFilesListSize; i++) {
-            const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
-            hGrp->SetASCII(key.data(), "");
-        }
-        restore();
-        clearRecentFilesListAction.setEnabled(false);
+        setFiles({});
+        save();
+        _pimpl->trySaveUserParameter();
+        Q_EMIT recentFilesListModified();
     };
 
     connect(&clearRecentFilesListAction, &QAction::triggered, this, clearFun);
-
-    connect(
-        &clearRecentFilesListAction,
-        &QAction::triggered,
-        this,
-        &RecentFilesAction::recentFilesListModified
-    );
 }
 
 RecentFilesAction::~RecentFilesAction()
@@ -967,31 +979,29 @@ static QString numberToLabel(int number)
  */
 void RecentFilesAction::setFiles(const QStringList& files)
 {
-    QList<QAction*> recentFiles = groupAction()->actions();
-
-    int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
+    int numRecentFiles = std::min<int>(recentFileActions.count(), files.count());
     for (int index = 0; index < numRecentFiles; index++) {
         QString numberLabel = numberToLabel(index + 1);
         QFileInfo fi(files[index]);
         QString fileName {fi.fileName()};
         fileName.replace(QLatin1Char('&'), QStringLiteral("&&"));
-        recentFiles[index]->setText(QStringLiteral("%1 %2").arg(numberLabel, fileName));
-        recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
-        recentFiles[index]->setToolTip(files[index]);  // set the full name that we need later for saving
-        recentFiles[index]->setData(QVariant(index));
-        recentFiles[index]->setVisible(true);
+        recentFileActions[index]->setText(QStringLiteral("%1 %2").arg(numberLabel, fileName));
+        recentFileActions[index]->setStatusTip(tr("Open file %1").arg(files[index]));
+        recentFileActions[index]->setToolTip(files[index]);  // set the full name that we need later
+                                                             // for saving
+        recentFileActions[index]->setData(QVariant(index));
+        recentFileActions[index]->setVisible(true);
     }
 
     // if less file names than actions
     numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
-    for (int index = numRecentFiles; index < recentFiles.count(); index++) {
-        if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) {
-            continue;
-        }
-        recentFiles[index]->setVisible(false);
-        recentFiles[index]->setText(QString());
-        recentFiles[index]->setToolTip(QString());
+    for (int index = numRecentFiles; index < recentFileActions.count(); index++) {
+        recentFileActions[index]->setVisible(false);
+        recentFileActions[index]->setText(QString());
+        recentFileActions[index]->setToolTip(QString());
     }
+
+    clearRecentFilesListAction.setEnabled(!files.isEmpty());
 }
 
 /**
@@ -1000,9 +1010,8 @@ void RecentFilesAction::setFiles(const QStringList& files)
 QStringList RecentFilesAction::files() const
 {
     QStringList files;
-    QList<QAction*> recentFiles = groupAction()->actions();
-    for (int index = 0; index < recentFiles.count(); index++) {
-        QString file = recentFiles[index]->toolTip();
+    for (QAction* action : recentFileActions) {
+        QString file = action->toolTip();
         if (file.isEmpty()) {
             break;
         }
@@ -1034,10 +1043,11 @@ void RecentFilesAction::activateFile(int id)
 void RecentFilesAction::resizeList(int size)
 {
     this->visibleItems = size;
-    int diff = this->visibleItems - this->maximumItems;
     // create new items if needed
-    for (int i = 0; i < diff; i++) {
-        groupAction()->addAction(QLatin1String(""))->setVisible(false);
+    while (recentFileActions.count() < this->visibleItems) {
+        QAction* action = groupAction()->addAction(QLatin1String(""));
+        action->setVisible(false);
+        recentFileActions.append(action);
     }
     setFiles(files());
 }
@@ -1051,8 +1061,10 @@ void RecentFilesAction::restore()
     this->visibleItems = hGrp->GetInt("RecentFiles", this->visibleItems);
 
     int count = std::max<int>(this->maximumItems, this->visibleItems);
-    for (int i = 0; i < count; i++) {
-        groupAction()->addAction(QLatin1String(""))->setVisible(false);
+    while (recentFileActions.count() < count) {
+        QAction* action = groupAction()->addAction(QLatin1String(""));
+        action->setVisible(false);
+        recentFileActions.append(action);
     }
     std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
     QStringList files;
@@ -1073,11 +1085,10 @@ void RecentFilesAction::save()
     hGrp->Clear();
 
     // count all set items
-    QList<QAction*> recentFiles = groupAction()->actions();
-    int num = std::min<int>(count, recentFiles.count());
+    int num = std::min<int>(count, recentFileActions.count());
     for (int index = 0; index < num; index++) {
         QString key = QStringLiteral("MRU%1").arg(index);
-        QString value = recentFiles[index]->toolTip();
+        QString value = recentFileActions[index]->toolTip();
         if (value.isEmpty()) {
             break;
         }
@@ -1196,7 +1207,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             " by default, if this is now blank then you should revert it back to"
             " Ctrl+Shift+ by pressing both keys at the same time."
         );
-        Base::Console().warning("%s\n", qPrintable(msgMain));
+        Base::Console().warning("{}\n", qPrintable(msgMain));
     }
 }
 

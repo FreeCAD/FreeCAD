@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -82,9 +84,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
-        m_inProgressLock = false;
-        return;
+        throw Base::RuntimeError("TaskRichAnno - Parent page not found");
     }
 
     //m_baseFeat can be null
@@ -105,9 +105,8 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
     }
 
-    QGVPage* graphicsView = nullptr;
-    graphicsView = m_vpp->getQGVPage();
-    m_toolbar = new MRichTextEdit(graphicsView->viewport());
+    // Create the toolbar as a top-level floating window parented to main window
+    m_toolbar = new MRichTextEdit(Gui::getMainWindow());
 
     m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
 
@@ -202,7 +201,8 @@ void TaskRichAnno::finishSetup()
         return;
     }
 
-    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+    m_toolbar->setWindowFlag(Qt::WindowStaysOnTopHint, false);
     m_toolbar->setAttribute(Qt::WA_DeleteOnClose);
     m_toolbar->setProperty("floating", true);
 
@@ -294,6 +294,9 @@ void TaskRichAnno::finishSetup()
         m_viewport->installEventFilter(this);
     }
 
+    // Install event filter on main window to reposition toolbar when window moves
+    Gui::getMainWindow()->installEventFilter(this);
+
     QTimer::singleShot(0, m_qgiAnno, &QGIRichAnno::updateLayout);
 
     m_inProgressLock = false;
@@ -342,20 +345,20 @@ void TaskRichAnno::onViewPositionChanged()
         // Calculate the top-center point of the item in Scene coordinates
         QPointF topCenterScenePos(itemRect.center().x(), itemRect.top());
 
-        // Map from scene using the correct QGVPage object
+        // Map from scene to view coordinates
         QPoint viewPos = graphicsView->mapFromScene(topCenterScenePos);
 
-        // Map the QGraphicsView point to global screen coordinates
+        // Map view coordinates to global screen coordinates
         QPoint globalPos = graphicsView->mapToGlobal(viewPos);
 
-        // Position the toolbar above this point, centered horizontally
+        // Position the toolbar at global screen coordinates
         int yOffset = 10;
         QPoint toolbarPos(globalPos.x() - m_toolbar->width() / 2,
                           globalPos.y() - m_toolbar->height() - yOffset);
 
         m_toolbar->move(toolbarPos);
 
-        // Ensure the toolbar is raised to the top
+        // Ensure the toolbar stays on top
         m_toolbar->raise();
     }
 }
@@ -543,6 +546,15 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
         return QWidget::eventFilter(watched, event);
     }
     
+    // Handle main window move events to reposition toolbar
+    if (watched == Gui::getMainWindow()) {
+        if (event->type() == QEvent::Move || event->type() == QEvent::Resize) {
+            if (m_qgiAnno) {
+                onViewPositionChanged();
+            }
+        }
+    }
+    
     if (watched == m_viewport) {
         if (event->type() == QEvent::Enter) {
             if (!m_placementMode && m_qgiAnno) {
@@ -597,6 +609,8 @@ void TaskRichAnno::removeViewFilter()
         m_viewport->removeEventFilter(this);
         m_viewport = nullptr;
     }
+    // Remove event filter from main window
+    Gui::getMainWindow()->removeEventFilter(this);
 }
 
 //******************************************************************************
@@ -629,8 +643,7 @@ void TaskRichAnno::createAndSetupAnnotation(const QPointF* scenePos)
     }
 
     // Now that the feature exists, create the toolbar and finish setup
-    QGVPage* graphicsView = m_vpp->getQGVPage();
-    m_toolbar = new MRichTextEdit(graphicsView->viewport());
+    m_toolbar = new MRichTextEdit(Gui::getMainWindow());
 
     createAnnoFeature(scenePos);  // Create the feature at the specified position
 
@@ -747,7 +760,7 @@ void TaskRichAnno::commonFeatureUpdate()
 QPointF TaskRichAnno::calcTextStartPos(double scale)
 {
     Q_UNUSED(scale)
-//    Base::Console().message("TRA::calcTextStartPos(%.3f)\n", scale);
+//    Base::Console().message("TRA::calcTextStartPos({:.3f})\n", scale);
     double textWidth = 100.0; // Default guess for text width in document units
     double textHeight = 20.0; // Default guess for text height
     double horizGap(Rez::appX(5.0)); // 5mm gap from leader end point in document units

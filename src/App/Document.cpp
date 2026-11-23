@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <bitset>
 #include <stack>
@@ -273,6 +270,14 @@ bool Document::redo(const int id)
     return true;
 }
 
+Base::ScopeGuard Document::setDefiningTransaction()
+{
+    d->definingTransaction = true;
+    return Base::ScopeGuard([this]() {
+        d->definingTransaction = false;
+    });
+}
+
 void Document::changePropertyOfObject(TransactionalObject* obj,
                                       const Property* prop,
                                       const std::function<void()>& changeFunc)
@@ -299,6 +304,16 @@ void Document::renamePropertyOfObject(TransactionalObject* obj,
 {
     changePropertyOfObject(obj, prop, [this, obj, prop, oldName]() {
         d->activeUndoTransaction->renameProperty(obj, prop, oldName);
+    });
+}
+
+void Document::arrangeMovePropertyOfObject(TransactionalObject* obj,
+                                           const Property* prop,
+                                           TransactionalObject* targetObj,
+                                           Property* newProp)
+{
+    changePropertyOfObject(obj, prop, [this, obj, prop, targetObj, newProp]() {
+        d->activeUndoTransaction->arrangeMoveProperty(obj, prop, targetObj, newProp);
     });
 }
 
@@ -862,9 +877,9 @@ void Document::onChanged(const Property* prop)
         if (!TransDirNew.exists()) {
             if (TransDirOld.exists()) {
                 if (!TransDirOld.renameFile(new_dir.c_str())) {
-                    Base::Console().warning("Failed to rename '%s' to '%s'\n",
-                                            old_dir.c_str(),
-                                            new_dir.c_str());
+                    Base::Console().warning("Failed to rename '{}' to '{}'\n",
+                                            old_dir,
+                                            new_dir);
                 }
                 else {
                     this->TransientDir.setValue(new_dir);
@@ -872,7 +887,7 @@ void Document::onChanged(const Property* prop)
             }
             else {
                 if (!TransDirNew.createDirectories()) {
-                    Base::Console().warning("Failed to create '%s'\n", new_dir.c_str());
+                    Base::Console().warning("Failed to create '{}'\n", new_dir);
                 }
                 else {
                     this->TransientDir.setValue(new_dir);
@@ -885,9 +900,9 @@ void Document::onChanged(const Property* prop)
             // make sure that the uuid is unique
             std::string uuid = this->Uid.getValueStr();
             Base::Uuid id;
-            Base::Console().warning("Document with the UUID '%s' already exists, change to '%s'\n",
-                                    uuid.c_str(),
-                                    id.getValue().c_str());
+            Base::Console().warning("Document with the UUID '{}' already exists, change to '{}'\n",
+                                    uuid,
+                                    id.getValue());
             // recursive call of onChanged()
             this->Uid.setValue(id);
         }
@@ -907,7 +922,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Prop
     if (Who->isDerivedFrom<DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const DocumentObject*>(Who), *What);
     }
-    if (!d->rollback && !globalIsRelabeling) {
+    if (!d->rollback && !globalIsRelabeling && !d->definingTransaction) {
         _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction) {
             d->activeUndoTransaction->addObjectChange(Who, What);
@@ -942,7 +957,7 @@ Document::Document(const char* documentName)
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().log("+App::Document: %p\n", this);
+    Console().log("+App::Document: {}\n", this);
 #endif
     std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = GetApplication()
@@ -1037,7 +1052,7 @@ Document::Document(const char* documentName)
 Document::~Document()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Console().log("-App::Document: %s %p\n", getName(), this);
+    Console().log("-App::Document: {} {}\n", getName(), this);
 #endif
 
     try {
@@ -1047,7 +1062,7 @@ Document::~Document()
     }
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().log("-Delete Features of %s \n", getName());
+    Console().log("-Delete Features of {} \n", getName());
 #endif
 
     d->clearDocument();
@@ -1192,7 +1207,7 @@ void Document::Restore(Base::XMLReader& reader)
                 addObject(type.c_str(), name.c_str(), /*isNew=*/false);
             }
             catch (Base::Exception&) {
-                Base::Console().message("Cannot create object '%s'\n", name.c_str());
+                Base::Console().message("Cannot create object '{}'\n", name);
             }
         }
         reader.readEndElement("Features");
@@ -1677,7 +1692,7 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
+            Base::Console().error("Cannot create object '{}': ({})\n", name, e.what());
         }
     }
     if (!testStatus(Status::Importing)) {
@@ -1723,9 +1738,9 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             pObj->setStatus(ObjectStatus::Restore, false);
 
             if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
-                Base::Console().error("Object \"%s\" was subject to a partial restore. As a result "
+                Base::Console().error("Object \"{}\" was subject to a partial restore. As a result "
                                       "geometry may have changed or be incomplete.\n",
-                                      name.c_str());
+                                      name);
                 reader.clearPartialRestoreDocumentObject();
             }
         }
@@ -1768,6 +1783,17 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
         reader.FileVersion = 0;
     }
 
+    // Imported objects may reference strings stored in the source document's
+    // StringHasher table, for example in topological element maps. Restore the
+    // source table before reading the objects so their persisted references can
+    // be resolved. Use a separate hasher instead of replacing the target
+    // document's table.
+    if (reader.hasAttribute("StringHasher")) {
+        StringHasherRef sourceHasher = new StringHasher;
+        sourceHasher->Restore(reader);
+        addStringHasher(sourceHasher);
+    }
+
     std::vector<DocumentObject*> objs = readObjects(reader);
     for (const auto o : objs) {
         if (o && o->isAttachedToDocument()) {
@@ -1796,6 +1822,7 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
     reader.readEndElement("Document");
 
     signalImportObjects(objs, reader);
+    DocumentP::checkStringHasher(reader);
     afterRestore(objs, true);
 
     signalFinishImportObjects(objs);
@@ -1942,7 +1969,7 @@ bool Document::saveToFile(const char* filename) const
     auto hGrp = GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document");
     int compression = static_cast<int>(hGrp->GetInt("CompressionLevel", 7));
-    compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
+    compression = std::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     bool policy = GetApplication()
                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
@@ -1983,7 +2010,7 @@ bool Document::saveToFile(const char* filename) const
     // check if file is writeable, then block the save if it is not.
     Base::FileInfo originalFileInfo(nativePath);
     if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
-        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+        throw Base::FileWritePermissionException(originalFileInfo);
     }
 
     // make a tmp. file where to save the project data first and then rename to
@@ -2174,7 +2201,7 @@ void Document::restore(const char* filename,
         Document::Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().error("Invalid Document.xml: {}\n", e.what());
         setStatus(Document::RestoreError, true);
     }
 
@@ -3021,7 +3048,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                 if (it->isError()) {
                     const char* text = getErrorDescription(it);
                     if (text) {
-                        Base::Console().error("%s: %s\n", it->Label.getValue(), text);
+                        Base::Console().error("{}: {}\n", it->Label.getValue(), text);
                     }
                 }
             }

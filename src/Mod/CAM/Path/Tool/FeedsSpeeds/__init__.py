@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2026 sliptonic
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
@@ -34,6 +34,7 @@ from .presets import (
     derive_preset_label,
     get_presets,
     make_preset,
+    preset_key,
     set_presets,
 )
 
@@ -50,6 +51,7 @@ __all__ = (
     "derive_preset_label",
     "get_presets",
     "make_preset",
+    "preset_key",
     "resolve",
     "set_presets",
 )

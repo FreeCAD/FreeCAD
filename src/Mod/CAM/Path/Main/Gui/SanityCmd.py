@@ -1,27 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 This file has the GUI command for checking and catching common errors in FreeCAD
@@ -31,6 +27,9 @@ CAM projects.
 from Path.Main.Sanity import Sanity
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide.QtGui import QFileDialog
+from Path import Preferences
+from Path.Post.Utils import apply_path_substitutions
+from PathScripts import PathUtils
 import FreeCAD
 import FreeCADGui
 import Path
@@ -57,34 +56,54 @@ class CommandCAMSanity:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelectionEx()
-        if len(selection) == 0:
-            return False
-        obj = selection[0].Object
-        return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
+        return bool(PathUtils.GetJobs())
 
     def Activated(self):
-        FreeCADGui.addIconPath(":/icons")
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        job = None
+        if not job and (selection := FreeCADGui.Selection.getSelection()):
+            job = PathUtils.findParentJob(selection[0])
+        if not job and (jobs := PathUtils.GetJobs()):
+            job = PathUtils.UserInput.chooseJob(jobs)
+        if not job:
+            Path.Log.info(translate("CAM_Sanity", "Sanity Check not executed. Job not defined"))
+            return
 
         # Ask the user for a filename to save the report to
 
-        defaultDir = os.path.split(FreeCAD.ActiveDocument.getFileName())[0]
+        pref_report_file = Preferences.defaultSanityReportOutputFile()
+        default_filename = None
 
-        if defaultDir == "":
-            defaultDir = os.path.expanduser("~")
+        # Use the preference as the template for the filename, or default next to the document
+        if pref_report_file.strip():
+            # If the preference is an absolute or relative path, expand substitutions
+            template_path = pref_report_file
+            expanded = apply_path_substitutions(template_path, job)
+            # Ensure .html extension
+            if not expanded.lower().endswith(".html"):
+                expanded += ".html"
+            default_filename = expanded
+        else:
+            # No preference set: default next to the document
+            doc_path = FreeCAD.ActiveDocument.getFileName()
+            if doc_path:
+                defaultDir = os.path.dirname(doc_path)
+                base = os.path.splitext(os.path.basename(doc_path))[0]
+                default_filename = os.path.join(defaultDir, f"{base}.html")
+            else:
+                defaultDir = os.path.expanduser("~")
+                default_filename = os.path.join(defaultDir, "setupreport.html")
 
         file_location = QFileDialog.getSaveFileName(
             None,
             translate("Path", "Save Sanity Check Report"),
-            defaultDir,
+            default_filename,
             "HTML files (*.html)",
         )[0]
 
-        if file_location == "":
+        if not file_location:
             return
 
-        sanity_checker = Sanity.CAMSanity(obj, file_location)
+        sanity_checker = Sanity.CAMSanity(job, file_location)
         html = sanity_checker.get_output_report()
 
         if html is None:
@@ -94,8 +113,7 @@ class CommandCAMSanity:
         with open(file_location, "w") as fp:
             fp.write(html)
 
-        FreeCAD.Console.PrintMessage("Sanity check report written to: {}\n".format(file_location))
-
+        FreeCAD.Console.PrintMessage(f"Sanity check report written to: {file_location}\n")
         webbrowser.open_new_tab(file_location)
 
 
@@ -104,27 +122,30 @@ class CommandCAMQuickValidate:
 
     def GetResources(self):
         return {
-            "Pixmap": "CAM_Sanity",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Quick Validate"),
+            "Pixmap": "CAM_SanityQuick",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_QuickValidate", "Quick Validate"),
             "Accel": "P, V",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Sanity",
+                "CAM_QuickValidate",
                 "Validates the CAM job for common issues without generating a full report",
             ),
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelectionEx()
-        if len(selection) == 0:
-            return False
-        obj = selection[0].Object
-        return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
+        return bool(PathUtils.GetJobs())
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        job = None
+        if not job and (selection := FreeCADGui.Selection.getSelection()):
+            job = PathUtils.findParentJob(selection[0])
+        if not job and (jobs := PathUtils.GetJobs()):
+            job = PathUtils.UserInput.chooseJob(jobs)
+        if not job:
+            Path.Log.info(translate("CAM_Sanity", "Sanity Check not executed. Job not defined"))
+            return
 
         try:
-            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(obj)
+            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(job)
         except Exception as e:
             Path.Log.error(f"CAM_QuickValidate: Validation failed: {e}")
             FreeCAD.Console.PrintError(f"Quick Validate failed: {e}\n")

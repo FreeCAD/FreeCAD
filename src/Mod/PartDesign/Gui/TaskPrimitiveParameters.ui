@@ -131,7 +131,7 @@
         <number>6</number>
        </property>
        <item row="0" column="0">
-        <layout class="QGridLayout" name="_4">
+        <layout class="QGridLayout" name="boxParametersLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -366,7 +366,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <layout class="QGridLayout" name="gridLayout_1">
+        <layout class="QGridLayout" name="cylinderAngleLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -532,7 +532,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <layout class="QGridLayout" name="gridLayout_7">
+        <layout class="QGridLayout" name="coneAngleLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -652,7 +652,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <layout class="QGridLayout" name="_12">
+        <layout class="QGridLayout" name="sphereAnglesLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -874,7 +874,7 @@ If zero, it is equal to Radius2</string>
         </widget>
        </item>
        <item row="2" column="0">
-        <layout class="QGridLayout" name="_16">
+        <layout class="QGridLayout" name="ellipsoidAnglesLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -1069,7 +1069,7 @@ If zero, it is equal to Radius2</string>
         </widget>
        </item>
        <item row="2" column="0">
-        <layout class="QGridLayout" name="_18">
+        <layout class="QGridLayout" name="torusAnglesLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -1192,7 +1192,7 @@ If zero, it is equal to Radius2</string>
         <number>6</number>
        </property>
        <item row="0" column="0">
-        <layout class="QGridLayout" name="_21">
+        <layout class="QGridLayout" name="prismParametersLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -1340,7 +1340,7 @@ If zero, it is equal to Radius2</string>
      <widget class="QWidget" name="page7_wedge">
       <layout class="QGridLayout" name="gridLayout_8">
        <item row="0" column="0">
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout" name="wedgeParametersLayout">
          <property name="sizeConstraint">
           <enum>QLayout::SetDefaultConstraint</enum>
          </property>
@@ -2345,6 +2345,34 @@ If zero, it is equal to Radius2</string>
       </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="operationLayout">
+     <item>
+      <widget class="QLabel" name="labelOperation">
+       <property name="text">
+        <string>Operation</string>
+       </property>
+       <property name="buddy">
+        <cstring>comboOperation</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboOperation">
+       <item>
+        <property name="text">
+         <string>Subtraction</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Common</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

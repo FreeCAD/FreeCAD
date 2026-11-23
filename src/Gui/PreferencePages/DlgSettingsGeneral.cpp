@@ -1,26 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Werner Mayer
+// SPDX-FileCopyrightText: 2023 FreeCAD Project Association
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *   Copyright (c) 2023 FreeCAD Project Association                         *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <cmath>
@@ -35,6 +33,7 @@
 #include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
+#include <Base/Version.h>
 
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -253,6 +252,7 @@ void DlgSettingsGeneral::saveSettings()
         requireRestart();
     }
     ui->FineGrainedRecompute->onSave();
+    ui->ComboBoxWheelEventFilter->onSave();
 
     setRecentFileSize();
     bool force = setLanguage();
@@ -307,6 +307,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->ActivateOverlay->onRestore();
     setProperty("ActivateOverlay", ui->ActivateOverlay->isChecked());
     ui->FineGrainedRecompute->onRestore();
+    ui->ComboBoxWheelEventFilter->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -317,6 +318,11 @@ void DlgSettingsGeneral::loadSettings()
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
+    if (!Base::FCVersionInfo::IsDevelopmentVersion()) {
+        // hides it from the setting combobox but allows the user to activate
+        // this even in release builds via python
+        std::erase_if(list, [](const auto& entry) { return entry.second == "en-XA"; });
+    }
     ui->Languages->clear();
     ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
@@ -331,7 +337,7 @@ void DlgSettingsGeneral::loadSettings()
 
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
-        if (!native.isEmpty()) {
+        if (!native.isEmpty() && it->second != "en-XA") {
             if (native[0].isLetter()) {
                 native[0] = native[0].toUpper();
             }

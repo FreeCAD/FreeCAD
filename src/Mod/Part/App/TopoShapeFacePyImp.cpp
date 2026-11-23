@@ -54,7 +54,6 @@
 #include <ShapeAnalysis.hxx>
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_Wire.hxx>
-#include <Standard_Version.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -499,7 +498,6 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject* args) const
         return Py::new_reference_to(list);
     }
 
-#if OCC_VERSION_HEX >= 0x070600
     for (int i = 1; i <= mesh->NbNodes(); i++) {
         gp_Pnt2d pt2d = mesh->UVNode(i);
         Py::Tuple uv(2);
@@ -507,16 +505,6 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject* args) const
         uv.setItem(1, Py::Float(pt2d.Y()));
         list.append(uv);
     }
-#else
-    const TColgp_Array1OfPnt2d& aNodesUV = mesh->UVNodes();
-    for (int i = aNodesUV.Lower(); i <= aNodesUV.Upper(); i++) {
-        gp_Pnt2d pt2d = aNodesUV(i);
-        Py::Tuple uv(2);
-        uv.setItem(0, Py::Float(pt2d.X()));
-        uv.setItem(1, Py::Float(pt2d.Y()));
-        list.append(uv);
-    }
-#endif
 
     return Py::new_reference_to(list);
 }
@@ -1021,15 +1009,6 @@ Py::Tuple TopoShapeFacePy::getParameterRange() const
 // deprecated
 Py::Object TopoShapeFacePy::getWire() const
 {
-    try {
-        Py::Object sys_out(PySys_GetObject("stdout"));
-        Py::Callable write(sys_out.getAttr("write"));
-        Py::Tuple arg(1);
-        arg.setItem(0, Py::String("Warning: Wire is deprecated, use OuterWire\n"));
-        write.apply(arg);
-    }
-    catch (const Py::Exception&) {
-    }
     return getOuterWire();
 }
 

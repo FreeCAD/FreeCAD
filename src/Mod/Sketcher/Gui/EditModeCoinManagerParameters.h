@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2021 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -146,13 +143,17 @@ struct DrawingParameters
     float axisTransparency = 0.3f;
     // transparency of axis when occluded
     float occludedAxisTransparency = 0.9f;
+    // The visible origin point must explicitly override inherited transparency.
+    static constexpr float originTransparency = 0.0f;
 
-    int CurveWidth = 2;             // width of normal edges
-    int ConstructionWidth = 1;      // width of construction edges
-    int InternalWidth = 1;          // width of internal edges
-    int ExternalWidth = 1;          // width of external edges
-    int ExternalDefiningWidth = 1;  // width of external defining edges
-    int InformationWidth = 1;       // width of information edges
+    int CurveWidth = 2;                      // width of normal edges
+    int ConstructionWidth = 1;               // width of construction edges
+    int InternalWidth = 1;                   // width of internal edges
+    int ExternalWidth = 1;                   // width of external edges
+    int ExternalDefiningWidth = 1;           // width of external defining edges
+    int InformationWidth = 1;                // width of information edges
+    int DimensionalConstraintLineWidth = 2;  // width of dimensional constraint lines
+    int AxisLineWidth = 2;                   // width of axis lines
 
     unsigned int CurvePattern = 0b1111111111111111;             // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;      // pattern of construction edges
@@ -160,6 +161,9 @@ struct DrawingParameters
     unsigned int ExternalPattern = 0b1111110011111100;          // pattern of external edges
     unsigned int ExternalDefiningPattern = 0b1111111111111111;  // pattern of external defining edges
     unsigned int InformationPattern = 0b1111110011111100;  // pattern of information layer edges
+    unsigned int DimensionalConstraintLinePattern = 0b1111111111111111;  // pattern of dimensional
+                                                                         // constraints lines
+    unsigned int AxisLinePattern = 0b1111111111111111;                   // pattern of axis lines
     //@}
 
     DrawingParameters()
@@ -204,7 +208,7 @@ struct GeometryLayerNodes
  * @warning the layer is * not * the logical layer (the one of GeometryFacade), but the coin layer.
  * See GeometryLayerParameters.
  *
- * Overloaded operators and specialisation of std::less enable it to be used in containers including
+ * Overloaded equality and less-than operators enable it to be used in containers including
  * ordered containers.
  */
 class MultiFieldId
@@ -234,6 +238,13 @@ public:
             || this->geoTypeId != obj.geoTypeId;
     }
 
+    // Orders by layer, then field index; geoTypeId does not take part.
+    inline bool operator<(const MultiFieldId& obj) const
+    {
+        return (this->layerId != obj.layerId) ? (this->layerId < obj.layerId)
+                                              : (this->fieldIndex < obj.fieldIndex);
+    }
+
     int fieldIndex = -1;
     int layerId = 0;
     int geoTypeId = 0;
@@ -243,20 +254,6 @@ public:
 
 
 }  // namespace SketcherGui
-
-namespace std
-{
-template<>
-struct less<SketcherGui::MultiFieldId>
-{
-    bool operator()(const SketcherGui::MultiFieldId& lhs, const SketcherGui::MultiFieldId& rhs) const
-    {
-        return (lhs.layerId != rhs.layerId)
-            ? (lhs.layerId < rhs.layerId)
-            : (static_cast<int>(lhs.fieldIndex) < static_cast<int>(rhs.fieldIndex));
-    }
-};
-}  // namespace std
 
 
 namespace SketcherGui

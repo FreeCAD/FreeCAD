@@ -358,7 +358,7 @@ vertices that are not on the boundary.</source>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Закрпа</translation>
+      <translation>Попуни граничне криве</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>

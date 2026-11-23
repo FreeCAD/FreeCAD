@@ -28,7 +28,6 @@
 #include <Base/ServiceProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Utilities.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "ViewProviderSketchBased.h"
@@ -107,7 +106,7 @@ void ViewProviderSketchBased::updateProfileShape()
 
     // set the correct coordinate space for the profile shape
     profileShape.setPlacement(
-        profileShape.getPlacement() * profileBased->Placement.getValue().inverse()
+        profileBased->Placement.getValue().inverse() * profileShape.getPlacement()
     );
 
     updatePreviewShape(profileShape, pcProfileShape);

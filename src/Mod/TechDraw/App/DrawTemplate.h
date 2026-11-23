@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -47,6 +49,7 @@ public:
     App::PropertyLength Width;
     App::PropertyLength Height;
     App::PropertyEnumeration Orientation;
+    App::PropertyEnumeration Language;
 
     App::PropertyMap EditableTexts;
 

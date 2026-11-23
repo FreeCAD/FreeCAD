@@ -80,6 +80,17 @@ struct GuiExport Number: public Expr
     Value evaluate([[maybe_unused]] const EvaluationContext& context) const override;
 };
 
+struct GuiExport StringLiteral: public Expr
+{
+    std::string value;
+
+    explicit StringLiteral(std::string value)
+        : value(std::move(value))
+    {}
+
+    Value evaluate([[maybe_unused]] const EvaluationContext& context) const override;
+};
+
 struct GuiExport Color: public Expr
 {
     Base::Color color;
@@ -181,8 +192,8 @@ private:
     std::unique_ptr<Expr> parseColor();
     bool peekParameter();
     std::unique_ptr<Expr> parseParameter();
-    bool peekFunction();
-    std::unique_ptr<Expr> parseFunctionCall();
+    bool peekIdentifier();
+    std::unique_ptr<Expr> parseIdentifier();
     int parseInt();
     std::unique_ptr<Expr> parseNumber();
     std::string parseUnit();

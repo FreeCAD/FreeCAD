@@ -1,32 +1,25 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Yorik van Havre
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
-#include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-#endif
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -92,10 +85,6 @@
 
 
 using namespace Import;
-
-#if OCC_VERSION_HEX >= 0x070600
-using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 namespace
 {
@@ -600,7 +589,7 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName, std::set
     // 2. Find the raw block data.
     auto it = this->Blocks.find(blockName);
     if (it == this->Blocks.end()) {
-        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        ImportError("Block '{}' is referenced but not defined. Skipping.", blockName);
         return;
     }
     const Block& blockData = it->second;
@@ -673,7 +662,7 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName, std::se
     // 2. Find the raw block data from the parsing phase.
     auto it = this->Blocks.find(blockName);
     if (it == this->Blocks.end()) {
-        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        ImportError("Block '{}' is referenced but not defined. Skipping.", blockName);
         return;
     }
     const Block& blockData = it->second;
@@ -929,7 +918,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 
     // Step 3: Check for duplicates to prevent errors.
     if (this->Blocks.count(name)) {
-        ImportError("Duplicate block name '%s' found. Ignoring subsequent definition.", name.c_str());
+        ImportError("Duplicate block name '{}' found. Ignoring subsequent definition.", name);
         return SkipBlockContents();
     }
 
@@ -1774,7 +1763,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
 {
     // export Edges
     TopExp_Explorer edges(input, TopAbs_EDGE);
-    for (int i = 1; edges.More(); edges.Next(), i++) {
+    for (; edges.More(); edges.Next()) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
@@ -1881,7 +1870,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         }
         else {
             Base::Console().warning(
-                "ImpExpDxf - unknown curve type: %d\n",
+                "ImpExpDxf - unknown curve type: {}\n",
                 static_cast<int>(adapt.GetType())
             );
         }
@@ -1890,7 +1879,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
     if (optionExpPoints) {
         TopExp_Explorer verts(input, TopAbs_VERTEX);
         std::vector<gp_Pnt> duplicates;
-        for (int i = 1; verts.More(); verts.Next(), i++) {
+        for (; verts.More(); verts.Next()) {
             const TopoDS_Vertex& v = TopoDS::Vertex(verts.Current());
             gp_Pnt p = BRep_Tool::Pnt(v);
             duplicates.push_back(p);
@@ -2041,7 +2030,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 
     Standard_Real tol3D = 0.001;
     Standard_Integer maxDegree = 3, maxSegment = 200;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(c);
     Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
         spline = approx.Curve();
@@ -2057,7 +2046,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
             s = c.Value(f);
             ePt = c.Value(l);
             Base::Console().message(
-                "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
+                "DxfWrite::exportBSpline - no result- from:({:.3f},{:.3f}) to:({:.3f},{:.3f})\n",
                 s.X(),
                 s.Y(),
                 ePt.X(),

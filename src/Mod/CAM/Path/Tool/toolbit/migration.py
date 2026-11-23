@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 Billy Huddleston
+# SPDX-FileNotice: Part of the FreeCAD project.
 
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -104,6 +101,8 @@ def migrate_parameters(accessor: ParameterAccessor) -> bool:
     Currently handles:
     - TorusRadius → CornerRadius
     - FlatRadius/Diameter → CornerRadius
+    - Dovetail without NeckCuttingHeight → NeckCuttingHeight = 0
+    - Reamer without FluteLength → FluteLength = its old CuttingEdgeHeight (now derived 0)
     - Infers Units from parameter strings if not set
 
     Args:
@@ -182,5 +181,35 @@ def migrate_parameters(accessor: ParameterAccessor) -> bool:
                 migrated = True
             except Exception as e:
                 Path.Log.error(f"Failed to migrate FlatRadius for toolbit {name}: {e}")
+
+    kind = str(shape_type or "").lower()
+
+    # Dovetails saved before NeckCuttingHeight existed have no fluted neck.
+    if kind == "dovetail" and not accessor.has("NeckCuttingHeight"):
+        diameter = accessor.get("Diameter") if accessor.has("Diameter") else None
+        imperial = isinstance(diameter, str) and diameter.strip().endswith("in")
+        value = "0.0000 in" if imperial else "0.0000 mm"
+        accessor.add_property(
+            "App::PropertyLength",
+            "NeckCuttingHeight",
+            "Shape",
+            "Fluted length of the neck above the head",
+        )
+        accessor.set("NeckCuttingHeight", value)
+        Path.Log.info(f"Added NeckCuttingHeight={value} for {name}")
+        migrated = True
+
+    # A reamer's CuttingEdgeHeight used to be the length of its fluted body.
+    if kind == "reamer" and not accessor.has("FluteLength") and accessor.has("CuttingEdgeHeight"):
+        value = accessor.get("CuttingEdgeHeight")
+        accessor.add_property(
+            "App::PropertyLength",
+            "FluteLength",
+            "Shape",
+            "Length of the fluted body",
+        )
+        accessor.set("FluteLength", value)
+        Path.Log.info(f"Copied CuttingEdgeHeight to FluteLength={value} for {name}")
+        migrated = True
 
     return migrated

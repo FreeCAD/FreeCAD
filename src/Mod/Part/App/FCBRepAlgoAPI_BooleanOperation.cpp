@@ -127,11 +127,7 @@ void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& progress
         myArguments = myOriginalArguments;
     }
     else {
-#if OCC_VERSION_HEX >= 0x070600
         BRepAlgoAPI_BooleanOperation::Build(progressRange);
-#else
-        BRepAlgoAPI_BooleanOperation::Build();
-#endif
     }
     if (progressRange.UserBreak()) {
         throw Standard_ConstructionError("User aborted");

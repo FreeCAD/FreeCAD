@@ -11,12 +11,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD 可執行</translation>
+      <translation>OpenSCAD 執行檔</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation>此路徑可以在 OpenSCAD 上執行</translation>
+      <translation>OpenSCAD 執行檔路徑</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation>The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>與 OpenSCAD 之間傳輸資料的機制</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="388"/>
       <source>Convexity</source>
-      <translation>Convexity</translation>
+      <translation>凸性</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
@@ -108,22 +108,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>OpenSCAD 匯入</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>在樹狀檢視中使用檢視提供者</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>透過以下方式傳送到 OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>OpenSCAD 匯出</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -144,23 +144,23 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="425"/>
       <source>Mesh fallback</source>
-      <translation>網格退縮</translation>
+      <translation>網格備援</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="445"/>
       <location filename="../ui/openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
-      <translation>偏斜</translation>
+      <translation>偏差</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="448"/>
       <source>deflection</source>
-      <translation>偏斜</translation>
+      <translation>偏差</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="455"/>
       <source>Triangulation settings</source>
-      <translation>三角測量設定</translation>
+      <translation>三角化設定</translation>
     </message>
   </context>
   <context>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
-      <translation>Unable to explode %s</translation>
+      <translation>無法打散 %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -227,32 +227,32 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>將邊轉換為面</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>請先選取 3 個物件</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>清除程式碼</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>開啟…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>儲存…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>作為網格</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="429"/>
@@ -274,18 +274,18 @@
       <location filename="../../OpenSCADCommands.py" line="457"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Perform</source>
-      <translation>Perform</translation>
+      <translation>執行</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="483"/>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
-      <translation>Mesh Boolean</translation>
+      <translation>網格布林</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="488"/>
       <source>Minkowski sum</source>
-      <translation>Minkowski sum</translation>
+      <translation>Minkowski 和</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="650"/>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
-      <translation>Explode Group</translation>
+      <translation>打散群組</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>打散融合或複合體並套用隨機色彩</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
-      <translation>Color Shapes</translation>
+      <translation>形狀上色</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="121"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>依有效性與類型為形狀上色</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>建立精煉形狀</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>建立用來增加公差的特徵</translation>
     </message>
   </context>
   <context>
@@ -367,12 +367,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation>Expand Placements</translation>
+      <translation>展開放置</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>在樹狀檢視中向下展開所有放置</translation>
     </message>
   </context>
   <context>
@@ -380,12 +380,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="306"/>
       <source>Replace Object</source>
-      <translation>Replace Object</translation>
+      <translation>替換物件</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="309"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>在樹狀檢視中替換物件</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="319"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>移除物件及其子項</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="322"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>移除選取的物件，以及未被其他物件參考的所有子項</translation>
     </message>
   </context>
   <context>
@@ -406,12 +406,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="567"/>
       <source>Hull</source>
-      <translation>殼體</translation>
+      <translation>凸包</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="570"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>建立凸包</translation>
     </message>
   </context>
   <context>
@@ -424,7 +424,7 @@
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Frequently-used Part WB tools</source>
-      <translation>Frequently-used Part WB tools</translation>
+      <translation>常用零件工作台工具</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>將邊轉換為面</translation>
     </message>
   </context>
   <context>
@@ -440,12 +440,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Mirror Mesh Feature</source>
-      <translation type="unfinished">Mirror Mesh Feature</translation>
+      <translation>鏡射網格特徵</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>鏡射網格</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="217"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>縮放網格特徵</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>縮放網格</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>調整網格大小特徵</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>調整網格大小</translation>
     </message>
   </context>
   <context>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="535"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>使用 OpenSCAD 執行檔，依輸入的 OpenSCAD 程式碼新增元素</translation>
     </message>
   </context>
   <context>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="546"/>
       <source>Mesh Boolean</source>
-      <translation>Mesh Boolean</translation>
+      <translation>網格布林</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>使用 OpenSCAD 執行檔執行布林運算</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="587"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Minkowski 和</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="590"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>建立 Minkowski 和</translation>
     </message>
   </context>
 </TS>

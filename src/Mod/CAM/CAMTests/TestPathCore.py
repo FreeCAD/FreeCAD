@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
+
 import FreeCAD
 import Path
 from CAMTests.PathTestUtils import PathTestBase
@@ -88,6 +90,54 @@ class TestPathCore(PathTestBase):
         c3.setFromGCode("G1X1Y-1.2345e-06Z10")
         self.assertEqual(str(c3), "Command G1 [ X:1 Y:-1.2345e-06 Z:10 ]")
 
+    def test01(self):
+        """Test that assigning Parameters replaces the parameter set"""
+        c = Path.Command("G1", {"X": 1, "Y": 2, "Z": 3})
+
+        # keys missing from the assigned dictionary are removed
+        c.Parameters = {"X": 5}
+        self.assertEqual(c.Parameters, {"X": 5.0})
+        self.assertEqual(c.toGCode(), "G1 X5.000000")
+
+        # the removed parameters no longer feed the placement
+        self.assertEqual(c.Placement.Base, FreeCAD.Vector(5, 0, 0))
+
+        # an empty dictionary clears every parameter
+        c.Parameters = {}
+        self.assertEqual(c.Parameters, {})
+        self.assertEqual(c.toGCode(), "G1")
+
+        # keys are normalised to upper case and values to float
+        c.Parameters = {"x": 1, "f": 2}
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0})
+
+        # read-modify-write of a single parameter keeps the others
+        params = c.Parameters
+        params["Y"] = 7
+        c.Parameters = params
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+
+        # assignment does not empty the caller's dictionary, so the same
+        # dictionary can be assigned to another command afterwards
+        self.assertEqual(params, {"X": 1.0, "F": 2.0, "Y": 7.0})
+        d = Path.Command("G0", {"Z": 10})
+        d.Parameters = params
+        self.assertEqual(d.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+
+        # a bad value leaves the existing parameters untouched
+        with self.assertRaises(TypeError):
+            c.Parameters = {"X": "one"}
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+        with self.assertRaises(TypeError):
+            c.Parameters = {1: 1.0}
+        self.assertEqual(c.Parameters, {"X": 1.0, "F": 2.0, "Y": 7.0})
+
+        # a replaced command round-trips through a Path
+        c.Parameters = {"Z": -1}
+        p = Path.Path([c])
+        self.assertEqual(p.Commands[0].Parameters, {"Z": -1.0})
+        self.assertEqual(p.toGCode(), "G1 Z-1.000000\n")
+
     def test10(self):
         """Test Path Object core functionality"""
 
@@ -139,3 +189,99 @@ G0 Z0.500000
         path = Path.Path(commands)
 
         self.assertEqual(path.Length, 2)
+
+    def test51(self):
+        """Test Path arc length and cycle time calculations"""
+        path = Path.Path(
+            [
+                Path.Command("G0 X2 Y0"),
+                Path.Command("G3 X3 Y1 I0 J1"),
+            ]
+        )
+        expected_length = 2 + math.pi / 2
+        self.assertAlmostEqual(path.Length, expected_length, places=12)
+        self.assertAlmostEqual(path.getCycleTime(1, 1, 1), expected_length, places=12)
+
+        absolute_center_path = Path.Path(
+            [
+                Path.Command("G0 X2 Y0"),
+                Path.Command("G90.1"),
+                Path.Command("G3 X3 Y1 I2 J1"),
+            ]
+        )
+        self.assertAlmostEqual(absolute_center_path.Length, expected_length, places=12)
+
+    # Command (App/Command.cpp) does not try to correctly parse modal g-code.
+    # (strings with just the axis, missing the "command" part).
+    # As implemented, Command (setFromGCode()) skips non-alpha leading chars (unless comment).
+    # So, " X1" is the Command.Name X1, not the axis X.
+    # Similarly, it does not try to render a modal via toGCode(),
+    # Path.Command("",{"X":1}).toGCode() gives " X1.00000".
+    # Code should not rely on "modal" behavior.
+    # No tests around this, therefore.
+
+    def test_ramp_cycle_time(self):
+        """
+        Test that getCycleTime for a ramp move uses F feed rate, not the default
+        vertical or horizontal feed rate.
+
+        The test path starts with a G1 setting the feed, then a G0 setting the
+        rapid feed, then does the ramp. The ramp should use the feed from the G1
+        """
+
+        h_feed = 600.0 / 60
+        v_feed = 300.0 / 60
+        rapid = 3000.0 / 60
+
+        g1_length = 5.0
+        g0_length = 5.0
+
+        dx = 3
+        dz = -4
+        ramp_length = math.hypot(dx, dz)
+
+        def check_ramp_cycle_time(feed):
+            with self.subTest(feed=feed):
+                path = Path.Path(
+                    [
+                        Path.Command("G1", {"X": g1_length, "F": feed}),
+                        Path.Command("G0", {"Y": g0_length, "F": rapid}),
+                        Path.Command("G1", {"X": g1_length + dx, "Z": dz, "F": feed}),
+                    ]
+                )
+                t = path.getCycleTime(h_feed, v_feed, rapid)
+
+                t_g1 = g1_length / feed
+                t_g0 = g0_length / rapid
+                t_ramp = ramp_length / feed
+                t_expected = t_g1 + t_g0 + t_ramp
+
+                self.assertAlmostEqual(t, t_expected)
+
+        check_ramp_cycle_time(h_feed)
+        check_ramp_cycle_time(v_feed)
+        check_ramp_cycle_time((h_feed + v_feed) / 2)
+
+    def test_cleared_area_plunge_retract(self):
+        """A plunge followed by a retract at the same XY clears a circle the size of the tool."""
+        diameter = 2
+        bbox = FreeCAD.BoundBox(-10, -10, -10, 10, 10, 10)
+
+        def area_cleared(commands):
+            path = Path.Path([Path.Command(c) for c in commands])
+            area = path.getClearedArea(diameter, 0, bbox)
+            area.setParams(Fill=1)  # return a Face, instead of wires
+            return area.getShape().Area
+
+        plunge_gcodes = [["G0 X5 Y5 Z10", "G1 Z-1"]]  # plunge
+        plunge_gcodes.append(plunge_gcodes[-1] + ["G0 Z10"])  # plunge, retract
+        plunge_gcodes.append(plunge_gcodes[-1] + ["G1 Z-1"])  # plunge, retract, plunge
+        areas_cleared = [area_cleared(gcode) for gcode in plunge_gcodes]
+
+        # Each cleared area is the tool circle, oversized by getClearedArea's buffer of
+        # 3 * Accuracy. Assert that the area is as expected
+        accuracy = Path.Area.getDefaultParams()["Accuracy"]
+        radius = diameter / 2 + 3 * accuracy
+        for gcode, area in zip(plunge_gcodes, areas_cleared):
+            with self.subTest(gcode=gcode):
+                self.assertAlmostEqual(area, math.pi * radius**2)

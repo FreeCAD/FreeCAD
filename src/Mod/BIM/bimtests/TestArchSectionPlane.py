@@ -1,35 +1,59 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 Furgo                                              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Arch
+import ArchSectionPlane
 import Draft
+import Part
 import os
 import FreeCAD as App
 from bimtests import TestArchBase
 
 
 class TestArchSectionPlane(TestArchBase.TestArchBase):
+
+    def _makeBox(self, length=1000, width=2000, height=3000):
+        box = self.document.addObject("Part::Box", "SectionPlaneFitBox")
+        box.Length = length
+        box.Width = width
+        box.Height = height
+        self.document.recompute()
+        return box
+
+    def _create_TD_page(self):
+        tpath = os.path.join(
+            App.getResourceDir(),
+            "Mod",
+            "TechDraw",
+            "Templates",
+            "Blank",
+            "A3",
+            "landscape",
+            "A3_blank_landscape.svg",
+        )
+        page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
+        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = tpath
+        page.Template = template
+        return page
 
     def test_makeSectionPlane(self):
         """Test the makeSectionPlane function."""
@@ -43,6 +67,55 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.assertEqual(
             section_plane.Label, "TestSectionPlane", "Section plane label is incorrect."
         )
+
+    def testSectionPlaneFitUsesLocalAxesAfterRotateY(self):
+        """Resize-to-fit dimensions follow the rotated section plane axes."""
+
+        box = self._makeBox()
+        placement = App.Placement(App.Vector(0, 0, 0), App.Rotation(App.Vector(0, 1, 0), 90))
+
+        length, height = ArchSectionPlane.getSectionPlaneFit([box], placement)
+
+        self.assertAlmostEqual(length, 3300)
+        self.assertAlmostEqual(height, 2300)
+
+    def testSectionPlaneFitCombinesMultipleObjects(self):
+        """Resize-to-fit covers the combined bounds of all objects."""
+
+        box = self._makeBox()
+        second_box = self._makeBox()
+        second_box.Placement.Base = App.Vector(2000, 500, -100)
+        self.document.recompute()
+
+        length, height = ArchSectionPlane.getSectionPlaneFit([box, second_box], App.Placement())
+
+        self.assertAlmostEqual(length, 3300)
+        self.assertAlmostEqual(height, 2800)
+
+    def testSectionPlaneFitUsesLocalAxesAfterRotateZ(self):
+        """Resize-to-fit handles in-plane rotations without swapping axes."""
+
+        box = self._makeBox()
+        placement = App.Placement(App.Vector(0, 0, 0), App.Rotation(App.Vector(0, 0, 1), 90))
+
+        length, height = ArchSectionPlane.getSectionPlaneFit([box], placement)
+
+        self.assertAlmostEqual(length, 2200)
+        self.assertAlmostEqual(height, 1200)
+
+    def testSectionPlaneCenterRecentersLocalBounds(self):
+        """Recenter moves the placement base to the local bound-box center."""
+
+        box = self._makeBox()
+        placement = App.Placement(App.Vector(500, -250, 125), App.Rotation(App.Vector(0, 1, 0), 90))
+        center = ArchSectionPlane.getSectionPlaneCenter([box], placement)
+        recentered = App.Placement(center, placement.Rotation)
+
+        local_boundbox = ArchSectionPlane.getSectionPlaneLocalBoundBox([box], recentered)
+
+        self.assertAlmostEqual(local_boundbox.Center.x, 0)
+        self.assertAlmostEqual(local_boundbox.Center.y, 0)
+        self.assertAlmostEqual(local_boundbox.Center.z, 0)
 
     def testTechDrawViewGeneration(self):
         """Tests the whole TD view generation workflow"""
@@ -77,21 +150,15 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         # Create a drawing view
         section = Arch.makeSectionPlane(level)
         drawing = Arch.make2DDrawing()
-        view = Draft.make_shape2dview(section)
-        cut = Draft.make_shape2dview(section)
+        view = Draft.make_shape_2d_view(section)
+        cut = Draft.make_shape_2d_view(section)
         cut.InPlace = False
         cut.ProjectionMode = "Cutfaces"
         drawing.addObjects([view, cut])
         App.ActiveDocument.recompute()
 
         # Create a TD page
-        tpath = os.path.join(
-            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
-        )
-        page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
-        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
-        template.Template = tpath
-        page.Template = template
+        page = self._create_TD_page()
         view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft", "DraftView")
         view.Source = drawing
         page.addView(view)
@@ -120,7 +187,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
 
         section = Arch.makeSectionPlane(wall)
-        shp_view = Draft.make_shape2dview(section)
+        shp_view = Draft.make_shape_2d_view(section)
         shp_view.InPlace = False
         shp_view.ProjectionMode = "Cutfaces"
         App.ActiveDocument.recompute()
@@ -130,3 +197,57 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
 
         area_expected = 1200 * 2200 - 800 * 1800
         self.assertAlmostEqual(face.Area, area_expected)
+
+    def testTechDrawViewWindowSymbols(self):
+        """Tests the display of plan symbols in a TD view from
+        a section with 'Only Solids' set to true.
+        Regression test for:
+        https://github.com/FreeCAD/FreeCAD/pull/32672
+        """
+
+        door = Arch.makeWindowPreset(
+            "Simple door",
+            width=1000.0,
+            height=2400.0,
+            h1=50.0,
+            h2=50.0,
+            h3=50.0,
+            w1=100.0,
+            w2=50.0,
+            o1=0.0,
+            o2=50.0,
+            placement=App.Placement(App.Vector(), App.Vector(1, 0, 0), 90),
+        )
+        door.SymbolPlan = True
+        App.ActiveDocument.recompute()
+
+        # Create a section
+        section = Arch.makeSectionPlane(door)
+        section.OnlySolids = True
+        App.ActiveDocument.recompute()
+
+        # Create a TD page
+        page = self._create_TD_page()
+        view = App.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIMView")
+        view.Source = section
+        page.addView(view)
+        App.ActiveDocument.recompute()
+        self.assertTrue("A" in view.Symbol)
+
+    def testCutVolumeClipWhenPlaneCutsNothing(self):
+        """Clip and Depth still apply when the section plane cuts nothing."""
+
+        box = Part.makeBox(10, 10, 10)
+        above = Part.makePlane(4, 4, App.Vector(3, 3, 20))
+        below = Part.makePlane(4, 4, App.Vector(3, 3, -20))
+
+        self.assertEqual(Arch.getCutVolume(above, [box]), (None, None, None))
+
+        cutvolume = Arch.getCutVolume(above, [box], clip=True)[1]
+        self.assertAlmostEqual(box.cut(cutvolume).Volume, 160)
+
+        cutvolume = Arch.getCutVolume(below, [box], clip=True)[1]
+        self.assertAlmostEqual(box.cut(cutvolume).Volume, 0)
+
+        cutvolume = Arch.getCutVolume(above, [box], depth=15)[1]
+        self.assertAlmostEqual(box.cut(cutvolume).Volume, 500)

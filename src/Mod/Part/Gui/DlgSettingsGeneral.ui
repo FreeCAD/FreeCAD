@@ -52,10 +52,10 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Automatically refine model after boolean operation</string>
+         <string>Automatic refinement of Part Boolean results</string>
         </property>
         <property name="toolTip">
-         <string>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</string>
+         <string>Refines Part Boolean results by removing redundant edges and merging adjacent faces</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -77,10 +77,10 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Automatically refine model after applying operations</string>
+         <string>Automatic refinement of Part Design features</string>
         </property>
         <property name="toolTip">
-         <string>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</string>
+         <string>Refines Part Design features after creation by removing unnecessary edges</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -423,6 +423,9 @@
         <property name="text">
          <string>Enable coarse snapping while dragging</string>
         </property>
+        <property name="toolTip">
+         <string>Enables larger snapping increments while  manipulating draggers</string>
+        </property>
         <property name="checked">
          <bool>true</bool>
         </property>
@@ -445,6 +448,9 @@
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="fineSnapModifier">
+          <property name="toolTip">
+           <string>Defines the modifier key used for fine snapping while dragging</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>FineSnapModifier</cstring>
           </property>
@@ -505,6 +511,9 @@
           <property name="value">
            <number>5</number>
           </property>
+          <property name="toolTip">
+           <string>Multiplies the base movement increment when coarse snapping is active</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>CoarseLinearSnapMultiplier</cstring>
           </property>
@@ -534,6 +543,9 @@
           </property>
           <property name="value">
            <number>5</number>
+          </property>
+          <property name="toolTip">
+          <string>Sets the rotation step in degrees applied when coarse snapping is active</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>CoarseRotationSnapMultiplier</cstring>

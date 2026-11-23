@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <App/Document.h>
@@ -29,6 +26,8 @@
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
+#include <QApplication>
+#include <QCoreApplication>
 
 #include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
@@ -37,6 +36,29 @@
 using namespace App;
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
+
+namespace
+{
+QString aliasHelpTooltip()
+{
+    return QCoreApplication::translate(
+        "PropertiesDialog",
+        "Allows referring to a cell by an alias name, for example\n"
+        "Spreadsheet.my_alias_name instead of Spreadsheet.B1"
+    );
+}
+
+QColor defaultTextColor(const QWidget* widget)
+{
+    return QApplication::palette(widget).color(QPalette::Text);
+}
+
+QColor invalidTextColor(const QWidget* widget)
+{
+    const QColor normal = defaultTextColor(widget);
+    return normal.lightness() < 128 ? QColor(255, 90, 90) : QColor(200, 0, 0);
+}
+}  // namespace
 
 PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ranges, QWidget* parent)
     : QDialog(parent)
@@ -180,9 +202,13 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 
     // Alias
     connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
+    ui->aliasStatus->setVisible(false);
+    QPalette statusPalette = ui->aliasStatus->palette();
+    statusPalette.setColor(QPalette::WindowText, invalidTextColor(ui->aliasStatus));
+    ui->aliasStatus->setPalette(statusPalette);
+    ui->alias->setToolTip(aliasHelpTooltip());
 
     ui->tabWidget->setCurrentIndex(0);
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
 void PropertiesDialog::foregroundColorChanged(const QColor& color)
@@ -274,18 +300,25 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 
         if (expr) {
             displayUnit = DisplayUnit(text.toStdString(), expr->getUnit(), expr->getScaler());
-            palette.setColor(QPalette::Text, Qt::black);
+            palette.setColor(QPalette::Text, defaultTextColor(ui->displayUnit));
             displayUnitOk = true;
         }
         else {
             displayUnit = DisplayUnit();
-            palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+            palette.setColor(
+                QPalette::Text,
+                text.size() == 0 ? defaultTextColor(ui->displayUnit)
+                                 : invalidTextColor(ui->displayUnit)
+            );
             displayUnitOk = false;
         }
     }
     catch (...) {
         displayUnit = DisplayUnit();
-        palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+        palette.setColor(
+            QPalette::Text,
+            text.size() == 0 ? defaultTextColor(ui->displayUnit) : invalidTextColor(ui->displayUnit)
+        );
         displayUnitOk = false;
     }
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
@@ -295,12 +328,48 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 void PropertiesDialog::aliasChanged(const QString& text)
 {
     QPalette palette = ui->alias->palette();
+    const std::string aliasText = text.toStdString();
+    QString tooltip = aliasHelpTooltip();
+    QString statusText;
 
-    aliasOk = text.isEmpty() || sheet->isValidAlias(text.toStdString());
+    aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
+    if (!text.isEmpty() && !aliasOk) {
+        const auto reservedToken = Sheet::classifyReservedAliasName(aliasText);
+        if (reservedToken == Sheet::ReservedAliasToken::Unit) {
+            tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
+            statusText = tr("Invalid: reserved unit token");
+        }
+        else if (reservedToken == Sheet::ReservedAliasToken::Constant) {
+            tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
+            statusText = tr("Invalid: reserved constant token");
+        }
+        else if (!sheet->getAddressFromAlias(aliasText).empty()) {
+            tooltip = tr("Alias already defined");
+            statusText = tr("Invalid: alias already exists");
+        }
+        else if (sheet->getCells()->isValidCellAddressName(aliasText)) {
+            tooltip = tr("Alias cannot look like a cell address such as A1 or C12");
+            statusText = tr("Invalid: alias matches cell address pattern");
+        }
+        else if (sheet->getPropertyByName(aliasText.c_str())) {
+            tooltip = tr("Alias conflicts with an existing spreadsheet property name");
+            statusText = tr("Invalid: conflicts with existing property name");
+        }
+        else {
+            tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'");
+            statusText = tr("Invalid: bad alias syntax");
+        }
+    }
 
-    alias = aliasOk ? text.toStdString() : "";
-    palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
+    alias = aliasOk ? aliasText : "";
+    palette.setColor(
+        QPalette::Text,
+        aliasOk ? defaultTextColor(ui->alias) : invalidTextColor(ui->alias)
+    );
     ui->alias->setPalette(palette);
+    ui->alias->setToolTip(tooltip);
+    ui->aliasStatus->setText(statusText);
+    ui->aliasStatus->setVisible(!statusText.isEmpty());
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 

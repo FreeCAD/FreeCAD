@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <boost/graph/topological_sort.hpp>
@@ -60,6 +57,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
             PropertyExpressionContainer::slotRelabelDocument);
         GetApplication().signalRenameDynamicProperty.connect(
             PropertyExpressionContainer::slotRenameDynamicProperty);
+        GetApplication().signalMoveDynamicProperty.connect(
+            PropertyExpressionContainer::slotMoveDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -86,6 +85,14 @@ void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property&
 {
     for (auto container : _ExprContainers) {
         container->onRenameDynamicProperty(prop, oldName);
+    }
+}
+
+void PropertyExpressionContainer::slotMoveDynamicProperty(const App::Property& prop,
+                                                          const App::DocumentObject& targetObj)
+{
+    for (auto container : _ExprContainers) {
+        container->onMoveDynamicProperty(prop, targetObj);
     }
 }
 
@@ -157,8 +164,11 @@ struct PropertyExpressionEngine::Private
             buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
         }
 
-        // Create graph
-        g = DiGraph(nodes.size());
+        // Create graph.
+        g.clear();
+        for (std::size_t i = 0; i < nodes.size(); ++i) {
+            add_vertex(g);
+        }
 
         // Add edges to graph
         for (const auto& edge : edges) {
@@ -1174,6 +1184,18 @@ void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop
 {
     ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
     ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
+}
+
+void PropertyExpressionEngine::onMoveDynamicProperty(const App::Property& prop,
+                                                     const DocumentObject& targetObj)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop);
+    ObjectIdentifier newNameId = ObjectIdentifier(&targetObj, std::string(prop.getName()));
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };

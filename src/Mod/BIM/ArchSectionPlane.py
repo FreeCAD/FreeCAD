@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 ## @package ArchSectionPlane
 #  \ingroup ARCH
@@ -63,6 +60,50 @@ else:
     # \endcond
 
 ISRENDERING = False  # flag to prevent concurrent runs of the coin renderer
+
+
+def getSectionPlaneLocalBoundBox(objects, placement):
+    """Return object bounds expressed in section plane local coordinates."""
+
+    if not objects:
+        return FreeCAD.BoundBox()
+
+    inverse_matrix = placement.inverse().Matrix
+    local_boundbox = None
+    for obj in Draft.get_group_contents(objects):
+        if not hasattr(obj, "Shape") or not hasattr(obj.Shape, "BoundBox"):
+            continue
+        boundbox = obj.Shape.BoundBox
+        if not boundbox.isValid():
+            continue
+        transformed_boundbox = boundbox.transformed(inverse_matrix)
+        local_boundbox = (
+            transformed_boundbox
+            if local_boundbox is None
+            else local_boundbox.united(transformed_boundbox)
+        )
+    return local_boundbox or FreeCAD.BoundBox()
+
+
+def getSectionPlaneFit(objects, placement):
+    """Return display length and height needed to cover objects from a placement."""
+
+    local_boundbox = getSectionPlaneLocalBoundBox(objects, placement)
+    if not local_boundbox.isValid():
+        return None
+
+    margin = local_boundbox.XLength * 0.1
+    return local_boundbox.XLength + margin, local_boundbox.YLength + margin
+
+
+def getSectionPlaneCenter(objects, placement):
+    """Return the world-space center of object bounds for a section placement."""
+
+    local_boundbox = getSectionPlaneLocalBoundBox(objects, placement)
+    if not local_boundbox.isValid():
+        return None
+
+    return placement.multVec(local_boundbox.Center)
 
 
 def getSectionData(source):
@@ -646,11 +687,11 @@ def getSVG(
 
     # add additional edge symbols from windows
     cutwindows = []
-    if cutface and windows and BoundBoxValid(cutface.BoundBox):
+    if cutface and windows and cutface.BoundBox.isValid():
         cutwindows = [
             w.Name
             for w in windows
-            if BoundBoxValid(w.Shape.BoundBox) and w.Shape.BoundBox.intersect(cutface.BoundBox)
+            if w.Shape.BoundBox.isValid() and w.Shape.BoundBox.intersect(cutface.BoundBox)
         ]
     if windows:
         sh = []
@@ -684,11 +725,6 @@ def getSVG(
                 svg += "</g>"
 
     return svg
-
-
-def BoundBoxValid(boundBox) -> bool:
-    """Return true if boundBox has a non-zero volume"""
-    return boundBox.XLength > 0 and boundBox.YLength > 0 and boundBox.ZLength > 0
 
 
 def getDXF(obj):
@@ -1178,14 +1214,6 @@ class _ViewProviderSectionPlane:
                 locked=True,
             )
             vobj.LineWidth = 1
-        if not "CutDistance" in pl:
-            vobj.addProperty(
-                "App::PropertyLength",
-                "CutDistance",
-                "SectionPlane",
-                QT_TRANSLATE_NOOP("App::Property", "Show the cut in the 3D view"),
-                locked=True,
-            )
         if not "LineColor" in pl:
             vobj.addProperty(
                 "App::PropertyColor",
@@ -1247,6 +1275,13 @@ class _ViewProviderSectionPlane:
     def onDocumentRestored(self, vobj):
 
         self.setProperties(vobj)
+
+    def finishRestoring(self):
+        """Remove CutDistance from older documents."""
+        vobj = self.Object.ViewObject
+        if "CutDistance" in vobj.PropertiesList:
+            vobj.setPropertyStatus("CutDistance", "-LockDynamic")
+            vobj.removeProperty("CutDistance")
 
     def getIcon(self):
 
@@ -1717,39 +1752,19 @@ class SectionPlaneTaskPanel:
     def rotateZ(self):
         self.rotate(FreeCAD.Vector(0, 0, 1))
 
-    def getBB(self):
-        bb = FreeCAD.BoundBox()
-        if self.obj:
-            for o in Draft.get_group_contents(self.obj.Objects):
-                if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
-                    bb.add(o.Shape.BoundBox)
-        return bb
-
     def resize(self):
         if self.obj and self.obj.ViewObject:
-            bb = self.getBB()
-            n = self.obj.Proxy.getNormal(self.obj)
-            margin = bb.XLength * 0.1
-            if (n.getAngle(FreeCAD.Vector(1, 0, 0)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(-1, 0, 0)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.YLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
-            elif (n.getAngle(FreeCAD.Vector(0, 1, 0)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(0, -1, 0)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.XLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
-            elif (n.getAngle(FreeCAD.Vector(0, 0, 1)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(0, 0, -1)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.XLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.YLength + margin
-            self.obj.Proxy.execute(self.obj)
+            fit = getSectionPlaneFit(self.obj.Objects, self.obj.Placement)
+            if fit is not None:
+                self.obj.ViewObject.DisplayLength = fit[0]
+                self.obj.ViewObject.DisplayHeight = fit[1]
+                self.obj.Proxy.execute(self.obj)
 
     def recenter(self):
         if self.obj:
-            self.obj.Placement.Base = self.getBB().Center
+            center = getSectionPlaneCenter(self.obj.Objects, self.obj.Placement)
+            if center is not None:
+                self.obj.Placement.Base = center
 
     def onTreeClick(self):
         if self.tree.selectedItems():

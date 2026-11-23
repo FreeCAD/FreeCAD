@@ -40,9 +40,9 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria3",
         "constraints": ["temperature", "heat flux", "initial temperature", "section print"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "elmer"],
         "material": "solid",
-        "equations": ["mechanical"],
+        "equations": ["heat"],
     }
 
 def get_explanation(header=""):
@@ -60,7 +60,7 @@ Analytical solution - heat flux 6.9 W/m^2 = 6.9e-3 mW/mm^2
 
 Special approaches required:
 - long transient instead of steady-state analysis
-- negative ambient temperature to specify that the cavity is closed
+- the cavity is closed
 """
     )
 
@@ -113,6 +113,17 @@ def setup(doc=None, solvertype="calculix"):
         solver_obj.TimeMinimumIncrement = 0
         solver_obj.TimePeriod = 5000000
         analysis.addObject(solver_obj)
+    elif solvertype == "elmer":
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        eq_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
+        eq_flux = ObjectsFem.makeEquationFlux(doc, solver_obj)
+        solver_obj.SimulationType = "Transient"
+        solver_obj.TimestepIntervals = [20]
+        solver_obj.TimestepSizes = [250000]
+        eq_heat.LinearPreconditioning = "ILU4"
+        eq_heat.NonlinearIterations = 3
+        eq_flux.FluxVariable = "Temperature"
+        analysis.addObject(solver_obj)
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -153,18 +164,18 @@ def setup(doc=None, solvertype="calculix"):
     con_hf1 = ObjectsFem.makeConstraintHeatflux(doc, "RadiationHot")
     con_hf1.References = [(compound_obj, "Edge3")]
     con_hf1.ConstraintType = "Radiation"
-    con_hf1.AmbientTemp = -300
     con_hf1.Emissivity = 0.02
     con_hf1.CavityRadiation = True
+    con_hf1.ClosedCavity = True
     con_hf1.CavityName = "cav"
     analysis.addObject(con_hf1)
     
     con_hf2 = ObjectsFem.makeConstraintHeatflux(doc, "RadiationCold")
     con_hf2.References = [(compound_obj, "Edge5")]
     con_hf2.ConstraintType = "Radiation"
-    con_hf2.AmbientTemp = -300
     con_hf2.Emissivity = 0.02
     con_hf2.CavityRadiation = True
+    con_hf2.ClosedCavity = True
     con_hf2.CavityName = "cav"
     analysis.addObject(con_hf2)
     

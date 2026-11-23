@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -62,7 +59,6 @@ ENABLE_BITMASK_OPERATORS(Sketcher::DeleteOption)
 
 namespace Sketcher
 {
-
 class SketchAnalysis;
 
 struct ExternalToAdd
@@ -98,17 +94,17 @@ public:
      0 refers to sketch axes and external geometry.  posId is a PointPos enum, documented in
      Constraint.h.
     */
-    Part ::PropertyGeometryList Geometry;
+    Part::PropertyGeometryList Geometry;
     Sketcher::PropertyConstraintList Constraints;
-    App ::PropertyLinkSubList ExternalGeometry;
+    App::PropertyLinkSubList ExternalGeometry;
     App::PropertyIntegerList ExternalTypes;
-    App ::PropertyLinkListHidden Exports;
-    Part ::PropertyGeometryList ExternalGeo;
-    App ::PropertyBool FullyConstrained;
-    App ::PropertyPrecision ArcFitTolerance;
-    Part ::PropertyPartShape InternalShape;
-    App ::PropertyPrecision InternalTolerance;
-    App ::PropertyBool MakeInternals;
+    App::PropertyLinkListHidden Exports;
+    Part::PropertyGeometryList ExternalGeo;
+    App::PropertyBool FullyConstrained;
+    App::PropertyPrecision ArcFitTolerance;
+    Part::PropertyPartShape InternalShape;
+    App::PropertyPrecision InternalTolerance;
+    App::PropertyBool MakeInternals;
     // Internal-face pipeline: 1 = legacy FaceMakerRing (<= 1.1), 2 = FaceMakerBuildFace.
     // Kept so old documents' internal-face names stay stable and references resolve.
     App::PropertyInteger _InternalFaceVersion;
@@ -340,25 +336,20 @@ public:
      * the sketch object */
     int diagnoseAdditionalConstraints(std::vector<Sketcher::Constraint*> additionalconstraints);
 
-    /** solves the sketch and updates the geometry, but not all the dependent features (does not
-       recompute) When a recompute is necessary, recompute triggers execute() which solves the
-       sketch and updates all dependent features When a solve only is necessary (e.g. DoF changed),
-       solve() solves the sketch and updates the geometry (if updateGeoAfterSolving==true), but does
-       not trigger any recompute.
-       @return 0 if no error, if error, the following codes in this order of priority:
-       -4 if overconstrained,
-       -3 if conflicting constraints,
-       -5 if malformed constraints,
-       -1 if solver error,
-       -2 if redundant constraints
-    */
-    int solve(bool updateGeoAfterSolving = true);
+    /** Solves the sketch and (optionally) updates the geometry.
+     * Does not trigger a recompute of any dependent features; when that is necessary, call
+     * execute() instead. A change in DoF does not require updating dependents, for instance.
+     * @return SketchSolveStatus::Success if no error, or else any of these in this order of
+     *         priority: Overconstrained, ConflictingConstraints, MalformedConstraints,
+     *         SolverError, RedundantConstraints.
+     */
+    SketchSolveStatus solve(bool updateGeoAfterSolving = true);
     /// set the datum of a Distance or Angle constraint and solve
-    int setDatum(int ConstrId, double Datum);
+    SketchSolveStatus setDatum(int ConstrId, double Datum);
     /// get the datum of a Distance or Angle constraint
     double getDatum(int ConstrId) const;
     /// set the text and font of a text constraint
-    int setTextAndFont(
+    SketchSolveStatus setTextAndFont(
         int ConstrId,
         std::string& newText,
         std::string& newFont,
@@ -422,13 +413,13 @@ public:
     /// set the visibility of a group of constraints at once
     int setVisibility(std::vector<int> constrIds, bool isVisible);
     /// move this point to a new location and solve
-    int moveGeometries(
+    SketchSolveStatus moveGeometries(
         const std::vector<GeoElementId>& geoEltIds,
         const Base::Vector3d& toPoint,
         bool relative = false,
         bool updateGeoBeforeMoving = false
     );
-    int moveGeometry(
+    SketchSolveStatus moveGeometry(
         int GeoId,
         PointPos PosId,
         const Base::Vector3d& toPoint,
@@ -481,9 +472,9 @@ public:
     );
 
     /// trim a curve
-    int trim(int geoId, const Base::Vector3d& point);
+    SketchSolveStatus trim(int geoId, const Base::Vector3d& point, bool includeSketchAxes = false);
     /// extend a curve
-    int extend(int geoId, double increment, PointPos endPoint);
+    SketchSolveStatus extend(int geoId, double increment, PointPos endPoint);
     /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
     /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
     /// assuming all constraints on the end points of the old curve have been transferred or
@@ -493,7 +484,8 @@ public:
         const int oldId,
         const std::vector<int>& newIds,
         const Constraint* con,
-        std::vector<Constraint*>& newConstraints
+        std::vector<Constraint*>& newConstraints,
+        const bool assumeTangency = false
     ) const;
     // Explicitly giving `newGeos` for cases where they are not yet added
     bool deriveConstraintsForPieces(
@@ -501,7 +493,8 @@ public:
         const std::vector<int>& newIds,
         const std::vector<const Part::Geometry*>& newGeo,
         const Constraint* con,
-        std::vector<Constraint*>& newConstraints
+        std::vector<Constraint*>& newConstraints,
+        const bool assumeTangency = false
     ) const;
 
     /// split a curve
@@ -587,6 +580,17 @@ public:
      succeed.
      */
     bool convertToNURBS(int GeoId);
+    /**
+     * @brief Whether convertToNURBS() leaves @p GeoId unchanged.
+     *
+     * Replacing an existing spline would discard its constraints and detach its internal
+     * geometry, and converting an axis or pole would detach it from its parent. External geometry
+     * is never exempt, since its conversion creates a new internal copy.
+     *
+     * @param[in] GeoId The geometry to check.
+     * @return @c true for internal splines and internal-aligned geometry.
+     */
+    bool isExemptFromNURBSConversion(int GeoId) const;
 
     /*!
      \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
@@ -668,13 +672,31 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
+
+    /// Returns two synced lists of all the geometries connecting GeoId1 and GeoId2.
+    /// GeoIds3 will only contain the GeoId1, except using verticesOnly = true, in which case it
+    /// could be GeoId2 for some entries.
+    /// If includePointOnObject == false, it'll only include Coincident constraint, so the output
+    /// will automatically only be vertices.
+    /// If PointOnObject constraints are included, the output can contain edges, use verticesOnly =
+    /// true to return the vertex connected to the edge instead of the edge itself
+    /// ignoreMidPoints ignores constraints using PointPos::mid
+    int getDirectlyCoincidentPoints(
+        int GeoId1,
+        int GeoId2,
+        std::vector<int>& GeoIds3,
+        std::vector<PointPos>& PosIds3,
+        bool includePointOnObject = false,
+        bool verticesOnly = false,
+        bool ignoreMidPoints = false
+    ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
     // Returns true if the sketch has 1 or more block constraint
     bool hasBlockConstraint() const;
 
     /// returns a list of indices of all constraints involving given GeoId
-    void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
+    void getConstraintIndices(int GeoId, std::vector<int>& constraintList) const;
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int>& conflicting, std::string& msg);
@@ -746,7 +768,7 @@ public:
         return lastHasMalformedConstraints;
     }
     /// gets solver status of last solver execution
-    inline int getLastSolverStatus() const
+    inline GCS::SolveStatus getLastSolverStatus() const
     {
         return lastSolverStatus;
     }
@@ -795,26 +817,21 @@ public: /* Solver exposed interface */
     /// Forwards a request for a temporary initMove to the solver using the current sketch state as
     /// a reference (enables dragging)
 
-    inline int initTemporaryMove(std::vector<GeoElementId> moved, bool fine = true);
-    inline int initTemporaryMove(int geoId, PointPos pos, bool fine = true);
+    inline int initTemporaryMove(std::vector<GeoElementId> moved);
+    inline int initTemporaryMove(int geoId, PointPos pos);
     /// Forwards a request for a temporary initBSplinePieceMove to the solver using the current
     /// sketch state as a reference (enables dragging)
-    inline int initTemporaryBSplinePieceMove(
-        int geoId,
-        PointPos pos,
-        const Base::Vector3d& firstPoint,
-        bool fine = true
-    );
+    inline int initTemporaryBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint);
     /** Forwards a request for point or curve temporary movement to the solver using the current
      * state as a reference (enables dragging). NOTE: A temporary move operation must always be
      * preceded by a initTemporaryMove() operation.
      */
-    inline int moveGeometriesTemporary(
+    inline GCS::SolveStatus moveGeometriesTemporary(
         std::vector<GeoElementId> moved,
         Base::Vector3d toPoint,
         bool relative = false
     );
-    inline int moveGeometryTemporary(
+    inline GCS::SolveStatus moveGeometryTemporary(
         int geoId,
         PointPos pos,
         Base::Vector3d toPoint,
@@ -940,6 +957,7 @@ public:
     bool seekTrimPoints(
         int GeoId,
         const Base::Vector3d& point,
+        bool includeSketchAxes,
         int& GeoId1,
         Base::Vector3d& intersect1,
         int& GeoId2,
@@ -1030,6 +1048,9 @@ protected:
     int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+    /// center-coincident arc of the same conic (left by a trim) that can take over the internal
+    /// alignment of GeoId, or GeoUndef
+    int findInternalAlignmentSibling(int GeoId) const;
 
     void onGeometryChanged();
     void onConstraintsChanged();
@@ -1060,19 +1081,6 @@ protected:
     void updateGeoHistory();
     void generateId(const Part::Geometry* geo);
 
-    /*!
-     \brief Transfer constraints on lines being filleted.
-
-     Since filleting moves the endpoints of the input geometry, existing constraints may no longer
-     be sensible. If fillet() was called with preserveCorner=false, the constraints are simply
-     deleted. But if the lines are coincident and preserveCorner=true, we can preserve most
-     constraints on the old end points by moving them to the preserved corner, or transforming
-     distance constraints on straight lines into point-to-point distance constraints.
-
-     \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
-     */
-    void transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
-
     // refactoring functions
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
@@ -1089,6 +1097,9 @@ protected:
 
     // migration functions
     void migrateSketch();
+    /// Derive the signed-constraint orientations of a legacy sketch from its stored geometry.
+    /// Must be called once the external geometry of the sketch is available.
+    void migrateConstraintOrientations();
 
     static void appendConstraintsMsg(
         const std::vector<int>& vector,
@@ -1154,8 +1165,14 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    /// As getGeometry, but warns instead of quietly returning nullptr when @p geoId cannot be
+    /// resolved, so that a constraint left without an orientation is traceable.
+    const Part::Geometry* getGeometryOrWarn(int geoId) const;
     void setOrientationDistance(Constraint* constr);
     void setOrientationTangent(Constraint* constr);
+    /// Re-derive the orientation of every signed constraint that references one of
+    /// @p reversedGeoIds, whose projection came back running the other way.
+    void reorientConstraintsOnReversedGeometry(const std::set<int>& reversedGeoIds);
 
     /// Internal helper method for exposeInternalGeometryForType
     /// Add geometry and constraints to `this`, then delete the geometry and constraints in the
@@ -1184,7 +1201,7 @@ private:
     bool lastHasRedundancies;
     bool lastHasPartialRedundancies;
     bool lastHasMalformedConstraints;
-    int lastSolverStatus;
+    GCS::SolveStatus lastSolverStatus;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
@@ -1247,26 +1264,25 @@ private:
     mutable std::map<std::string, std::string> internalElementMap;
 };
 
-inline int SketchObject::initTemporaryMove(std::vector<GeoElementId> moved, bool fine /*=true*/)
+inline int SketchObject::initTemporaryMove(std::vector<GeoElementId> moved)
 {
     if (solverNeedsUpdate) {
         solve();
     }
 
-    return solvedSketch.initMove(moved, fine);
+    return solvedSketch.initMove(moved);
 }
 
-inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
+inline int SketchObject::initTemporaryMove(int geoId, PointPos pos)
 {
     std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
-    return initTemporaryMove(moved, fine);
+    return initTemporaryMove(moved);
 }
 
 inline int SketchObject::initTemporaryBSplinePieceMove(
     int geoId,
     PointPos pos,
-    const Base::Vector3d& firstPoint,
-    bool fine
+    const Base::Vector3d& firstPoint
 )
 {
     // if a previous operation did not update the geometry (including geometry extensions)
@@ -1276,15 +1292,16 @@ inline int SketchObject::initTemporaryBSplinePieceMove(
         solve();
     }
 
-    return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
+    return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint);
 }
 
-inline int SketchObject::
+inline GCS::SolveStatus SketchObject::
     moveGeometriesTemporary(std::vector<GeoElementId> geoEltIds, Base::Vector3d toPoint, bool relative /*=false*/)
 {
     return solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 }
-inline int SketchObject::moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative /*=false*/)
+inline GCS::SolveStatus SketchObject::
+    moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative /*=false*/)
 {
     std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
     return moveGeometriesTemporary(moved, toPoint, relative);

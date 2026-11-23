@@ -1,26 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre
+# SPDX-FileCopyrightText: 2026 Manfred Moitzi
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 __title__ = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -511,7 +509,7 @@ def export(exportList, filename, colors=None, preferences=None):
         # handle assemblies (arrays, app::parts, references, etc...)
 
         assemblyElements = []
-        assemblyTypes = ["IfcApp::Part", "IfcPart::Compound", "IfcElementAssembly"]
+        assemblyTypes = ["IfcApp::Part", "IfcElementAssembly"]
 
         if ifctype == "IfcArray" and obj.ArrayType == "ortho":
             ifctype = "IfcElementAssembly"
@@ -560,8 +558,6 @@ def export(exportList, filename, colors=None, preferences=None):
                 group = []
                 for subobj in obj.Group:
                     group.extend([subobj] + Draft.get_windows(subobj))
-            elif hasattr(obj, "Links"):
-                group = obj.Links
             else:
                 group = [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]
             assemblyElements.extend(subobj.Name for subobj in group)
@@ -1725,7 +1721,7 @@ def getIfcTypeFromObj(obj):
         # https://forum.freecad.org/viewtopic.php?p=662934#p662927
     elif hasattr(obj, "IfcType"):
         ifctype = obj.IfcType.replace(" ", "")
-    elif dtype in ["App::Part", "Part::Compound"]:
+    elif dtype == "App::Part":
         ifctype = "IfcElementAssembly"
     elif dtype in ["App::DocumentObjectGroup"]:
         ifctype = "IfcGroup"
@@ -1767,7 +1763,6 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
             {
                 "CompositionType": "ELEMENT",
                 "InteriorOrExteriorSpace": internal,
-                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin * scale,
             }
         )
     elif ifctype == "IfcReinforcingBar":
@@ -2381,47 +2376,30 @@ def getRepresentation(
                             for fcface in fcsolid.Faces:
                                 loops = []
                                 verts = [v.Point for v in fcface.OuterWire.OrderedVertexes]
-                                c = fcface.CenterOfMass
                                 if len(verts) < 1:
                                     print(
                                         "Warning: OuterWire returned no ordered Vertexes in ",
                                         obj.Label,
                                     )
-                                    # Part.show(fcface)
-                                    # Part.show(fcsolid)
                                     continue
-                                v1 = verts[0].sub(c)
-                                v2 = verts[1].sub(c)
-                                try:
-                                    n = fcface.normalAt(0, 0)
-                                except Part.OCCError:
-                                    continue  # this is a very wrong face, it probably shouldn't be here...
-                                if DraftVecUtils.angle(v2, v1, n) >= 0:
-                                    verts.reverse()  # inverting verts order if the direction is couterclockwise
                                 pts = [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
                                 loop = ifcbin.createIfcPolyLoop(pts)
                                 bound = ifcfile.createIfcFaceOuterBound(loop, True)
                                 loops.append(bound)
+                                outerhash = fcface.OuterWire.hashCode()
                                 for wire in fcface.Wires:
-                                    if wire.hashCode() != fcface.OuterWire.hashCode():
-                                        verts = [v.Point for v in wire.OrderedVertexes]
-                                        if len(verts) > 1:
-                                            v1 = verts[0].sub(c)
-                                            v2 = verts[1].sub(c)
-                                            if (
-                                                DraftVecUtils.angle(v2, v1, DraftVecUtils.neg(n))
-                                                >= 0
-                                            ):
-                                                verts.reverse()
-                                            pts = [
-                                                ifcbin.createIfcCartesianPoint(tuple(v))
-                                                for v in verts
-                                            ]
-                                            loop = ifcbin.createIfcPolyLoop(pts)
-                                            bound = ifcfile.createIfcFaceBound(loop, True)
-                                            loops.append(bound)
-                                        else:
-                                            print("Warning: wire with one/no vertex in ", obj.Label)
+                                    if wire.hashCode() == outerhash:
+                                        continue
+                                    verts = [v.Point for v in wire.OrderedVertexes]
+                                    if len(verts) > 1:
+                                        pts = [
+                                            ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts
+                                        ]
+                                        loop = ifcbin.createIfcPolyLoop(pts)
+                                        bound = ifcfile.createIfcFaceBound(loop, True)
+                                        loops.append(bound)
+                                    else:
+                                        print("Warning: wire with one/no vertex in ", obj.Label)
                                 face = ifcfile.createIfcFace(loops)
                                 faces.append(face)
 

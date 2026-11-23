@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2023 Bas Ruigrok (Rexbas) <Rexbas@proton.me>             *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2023 Bas Ruigrok
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include "NavigationAnimation.h"
@@ -64,7 +62,7 @@ FixedTimeAnimation::FixedTimeAnimation(
 {
     setDuration(duration);
     setStartValue(0.0);
-    setEndValue(duration * 1.0);
+    setEndValue(1.0);
     setEasingCurve(easingCurve);
 }
 
@@ -90,8 +88,7 @@ void FixedTimeAnimation::initialize()
     // Convert post-multiplication axis to a pre-multiplication axis
     navigation->getCamera()->orientation.getValue().inverse().multVec(rotationAxisPost, rotationAxis);
 
-    angularVelocity = angle / duration();
-    linearVelocity = targetTranslation / duration();
+    targetAngle = angle;
 }
 
 /**
@@ -104,8 +101,9 @@ void FixedTimeAnimation::update(const QVariant& value)
         return;
     }
 
-    float angle = value.toFloat() * angularVelocity;
-    SbVec3f translation = value.toFloat() * linearVelocity;
+    const float progress = value.toFloat();
+    const float angle = progress * targetAngle;
+    const SbVec3f translation = progress * targetTranslation;
 
     SbRotation rotation(rotationAxis, angle - prevAngle);
 

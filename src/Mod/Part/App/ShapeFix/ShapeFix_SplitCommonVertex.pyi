@@ -1,9 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.TopoShape import TopoShape
 
 @export(
     PythonName="Part.ShapeFix.SplitCommonVertex",
@@ -19,20 +18,17 @@ class ShapeFix_SplitCommonVertex(ShapeFix_Root):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    def init(self, shape: TopoShape, /) -> None:
         """
         Initializes by shape
         """
-        ...
 
     def perform(self) -> None:
         """
         Iterates on sub- shape and performs fixes
         """
-        ...
 
     def shape(self) -> object:
         """
         Returns resulting shape
         """
-        ...

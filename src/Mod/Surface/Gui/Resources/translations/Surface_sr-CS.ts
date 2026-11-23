@@ -358,7 +358,7 @@ Površ može biti prisiljena da prolazi kroz dodatne unutrašnje krive i tačke.
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Zakrpa</translation>
+      <translation>Popuni granične krive</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>

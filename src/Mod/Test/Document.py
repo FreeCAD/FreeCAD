@@ -554,6 +554,35 @@ class DocumentBasicCases(unittest.TestCase):
         obj1.Link = obj2
         self.assertEqual(obj1.MustExecute, True)
 
+    def testNullLinkSubPythonRoundTrip(self):
+        obj = self.Doc.addObject("App::FeaturePython", "Reference")
+        obj.addProperty("App::PropertyLinkSub", "Axis")
+        self.assertIsNone(obj.Axis)
+        for subnames in ("X_Axis", ["Y_Axis"], ("Z_Axis", "X_Axis")):
+            with self.subTest(subnames=subnames):
+                obj.Axis = (None, subnames)
+                expected = [subnames] if isinstance(subnames, str) else list(subnames)
+                self.assertEqual(obj.Axis, (None, expected))
+        with self.assertRaises(TypeError):
+            obj.Axis = (None, [1])
+        with self.assertRaises(TypeError):
+            obj.Axis = (1, ["X_Axis"])
+        obj.Axis = None
+        self.assertIsNone(obj.Axis)
+        obj.Axis = (None, [])
+        self.assertIsNone(obj.Axis)
+
+    def testNullLinkSubSaveRestore(self):
+        obj = self.Doc.addObject("App::FeaturePython", "Reference")
+        obj.addProperty("App::PropertyLinkSub", "Axis")
+        obj.Axis = (None, ["Y_Axis"])
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "CreateTest.FCStd")
+            self.Doc.saveAs(filename)
+            FreeCAD.closeDocument(self.Doc.Name)
+            self.Doc = FreeCAD.openDocument(filename)
+            self.assertEqual(self.Doc.Reference.Axis, (None, ["Y_Axis"]))
+
     def testProp_OutputPropertyLink(self):
         obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
         obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
@@ -1913,6 +1942,26 @@ class DocumentFileIncludeCases(unittest.TestCase):
         L7.File = (L5.File, "Copy.txt")
         self.assertTrue(os.path.exists(L7.File))
         FreeCAD.closeDocument("Doc2")
+
+    def testBinarySaveRestore(self):
+        payload = bytes((i % 251 for i in range(150000))) + b"\x00FreeCAD\x00restore\x00"
+        source_path = os.path.join(tempfile.gettempdir(), "FileIncludeBinarySource.bin")
+        doc_path = os.path.join(tempfile.gettempdir(), "FileIncludeTests.FCStd")
+
+        with open(source_path, "wb") as file:
+            file.write(payload)
+
+        obj = self.Doc.addObject("App::DocumentObjectFileIncluded", "BinaryFile")
+        obj.File = (source_path, "BinaryPayload.bin")
+        self.Doc.saveAs(doc_path)
+
+        FreeCAD.closeDocument("FileIncludeTests")
+        self.Doc = FreeCAD.open(doc_path)
+        obj = self.Doc.getObject("BinaryFile")
+
+        with open(obj.File, "rb") as file:
+            self.assertEqual(file.read(), payload)
+        self.assertEqual(obj.File.split("/")[-1], "BinaryPayload.bin")
 
     def tearDown(self):
         # closing doc

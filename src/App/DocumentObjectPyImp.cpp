@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2007 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Base/GeometryPyCXX.h>
@@ -76,12 +73,7 @@ Py::Object DocumentObjectPy::getDocument() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Document* doc = object->getDocument();
-    if (!doc) {
-        return Py::None();
-    }
-    else {
-        return Py::Object(doc->getPyObject(), true);
-    }
+    return doc ? Py::Object(doc->getPyObject(), true) : Py::None();
 }
 
 PyObject* DocumentObjectPy::isAttachedToDocument(PyObject* args) const
@@ -648,37 +640,33 @@ PyObject* DocumentObjectPy::getSubObject(PyObject* args, PyObject* keywds)
             if (retEnum == ReturnType::PyObject) {
                 return ret.pyObj;
             }
-            else if (retEnum == ReturnType::DocObject && !pyMat) {
+            if (retEnum == ReturnType::DocObject && !pyMat) {
                 return ret.obj;
             }
-            else if (!ret.sobj) {
+            if (!ret.sobj) {
                 return Py::None();
             }
-            else if (retEnum == ReturnType::Placement) {
+            if (retEnum == ReturnType::Placement) {
                 return Py::Placement(Base::Placement(ret.mat));
             }
-            else if (retEnum == ReturnType::Matrix) {
+            if (retEnum == ReturnType::Matrix) {
                 return Py::Matrix(ret.mat);
             }
-            else if (retEnum == ReturnType::LinkAndPlacement
-                     || retEnum == ReturnType::LinkAndMatrix) {
+            if (retEnum == ReturnType::LinkAndPlacement
+                || retEnum == ReturnType::LinkAndMatrix) {
                 ret.sobj->getLinkedObject(true, &ret.mat, false);
                 if (retEnum == ReturnType::LinkAndPlacement) {
                     return Py::Placement(Base::Placement(ret.mat));
                 }
-                else {
-                    return Py::Matrix(ret.mat);
-                }
+                return Py::Matrix(ret.mat);
             }
-            else {
-                Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
-                rret.setItem(0, ret.obj);
-                rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
-                if (retEnum != ReturnType::DocObject) {
-                    rret.setItem(2, ret.pyObj);
-                }
-                return rret;
+            Py::Tuple rret(retEnum == ReturnType::DocObject ? 2 : 3);
+            rret.setItem(0, ret.obj);
+            rret.setItem(1, Py::asObject(new Base::MatrixPy(ret.mat)));
+            if (retEnum != ReturnType::DocObject) {
+                rret.setItem(2, ret.pyObj);
             }
+            return rret;
         };
 
         if (single) {
@@ -1092,4 +1080,24 @@ PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
         return new Base::PlacementPy(new Base::Placement(p));
     }
     PY_CATCH
+}
+
+PyObject* DocumentObjectPy::moveProperty(PyObject* args) const
+{
+    char* name {};
+    PyObject* targetObjObj {};
+    if (PyArg_ParseTuple(args, "sO", &name, &targetObjObj) == 0) {
+        return nullptr;
+    }
+
+    try {
+        DocumentObject* targetObj =
+            static_cast<DocumentObjectPy*>(targetObjObj)->getDocumentObjectPtr();
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(name);
+        getDocumentObjectPtr()->moveDynamicProperty(prop, targetObj);
+        Py_Return;
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }

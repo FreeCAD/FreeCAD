@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+disable_occt8_deprecation_warnings()
 
 add_subdirectory(App)
 if(BUILD_GUI)
@@ -21,6 +24,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchCarbonCopyReverseMapping.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
     SketcherTests/TestSketchInternalFaces.py
+    SketcherTests/TestSketcherEllipse.py
 )
 
 if(BUILD_GUI)
@@ -30,10 +34,17 @@ if(BUILD_GUI)
     )
     list (APPEND Sketcher_TestScripts
           SketcherTests/TestConstraintPreselectionGui.py
+          SketcherTests/TestDistanceLabelExtensionGui.py
+          SketcherTests/TestConstraintCommandsGui.py
+          SketcherTests/TestCoincidentCommandGui.py
           SketcherTests/GuiTestCase.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
           SketcherTests/TestExternalFacePreselection.py
+          SketcherTests/TestVisualLayerListGui.py
+          SketcherTests/TestCarbonCopyModelTreeDragging.py
+          SketcherTests/TestViewSectionGui.py
+          SketcherTests/TestConvertToNURBSGui.py
     )
 endif(BUILD_GUI)
 

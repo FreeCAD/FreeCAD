@@ -1,18 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, deprecated_attributes, export, constmethod
 from Base.Vector import Vector
 from TopoShape import TopoShape
 from typing import Final, Tuple, Dict, Optional, List, Sequence, overload
 
 @export(
+    PythonName="Part.Face",
     Twin="TopoShape",
     TwinPointer="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="Mod/Part/App/TopoShapePy.h",
     Constructor=True,
+)
+@deprecated_attributes(
+    Wire={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "OuterWire",
+    },
 )
 class TopoShapeFace(TopoShape):
     """
@@ -105,8 +111,8 @@ class TopoShapeFace(TopoShape):
         Adds a wire to the face.
         addWire(wire)
         """
-        ...
 
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="makeOffset2D")
     @constmethod
     def makeOffset(self, dist: float, /) -> object:
         """
@@ -115,7 +121,6 @@ class TopoShapeFace(TopoShape):
         --
         Returns Compound of Wires. Deprecated - use makeOffset2D instead.
         """
-        ...
 
     @constmethod
     def makeEvolved(
@@ -131,7 +136,6 @@ class TopoShapeFace(TopoShape):
         """
         Profile along the spine
         """
-        ...
 
     @constmethod
     def getUVNodes(self) -> List[Tuple[float, float]]:
@@ -141,7 +145,6 @@ class TopoShapeFace(TopoShape):
         --
         An exception is raised if the face is not triangulated.
         """
-        ...
 
     @constmethod
     def tangentAt(self, u: float, v: float, /) -> Vector:
@@ -149,7 +152,6 @@ class TopoShapeFace(TopoShape):
         Get the tangent in u and v isoparametric at the given point if defined
         tangentAt(u,v) -> Vector
         """
-        ...
 
     @constmethod
     def valueAt(self, u: float, v: float, /) -> Vector:
@@ -157,15 +159,13 @@ class TopoShapeFace(TopoShape):
         Get the point at the given parameter [0|Length] if defined
         valueAt(u,v) -> Vector
         """
-        ...
 
     @constmethod
-    def normalAt(self, pos: float, /) -> Vector:
+    def normalAt(self, u: float, v: float, /) -> Vector:
         """
         Get the normal vector at the given parameter [0|Length] if defined
-        normalAt(pos) -> Vector
+        normalAt(u,v) -> Vector
         """
-        ...
 
     @constmethod
     def derivative1At(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
@@ -173,7 +173,6 @@ class TopoShapeFace(TopoShape):
         Get the first derivative at the given parameter [0|Length] if defined
         derivative1At(u,v) -> (vectorU,vectorV)
         """
-        ...
 
     @constmethod
     def derivative2At(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
@@ -181,7 +180,6 @@ class TopoShapeFace(TopoShape):
         Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined
         derivative2At(u,v) -> (vectorU,vectorV)
         """
-        ...
 
     @constmethod
     def curvatureAt(self, u: float, v: float, /) -> float:
@@ -189,7 +187,6 @@ class TopoShapeFace(TopoShape):
         Get the curvature at the given parameter [0|Length] if defined
         curvatureAt(u,v) -> Float
         """
-        ...
 
     @constmethod
     def isPartOfDomain(self, u: float, v: float, /) -> bool:
@@ -197,7 +194,6 @@ class TopoShapeFace(TopoShape):
         Check if a given (u,v) pair is inside the domain of a face
         isPartOfDomain(u,v) -> bool
         """
-        ...
 
     @constmethod
     def makeHalfSpace(self, pos: object, /) -> object:
@@ -205,28 +201,24 @@ class TopoShapeFace(TopoShape):
         Make a half-space solid by this face and a reference point.
         makeHalfSpace(pos) -> Shape
         """
-        ...
 
     def validate(self) -> None:
         """
         Validate the face.
         validate()
         """
-        ...
 
     @constmethod
     def countNodes(self) -> int:
         """
         Returns the number of nodes of the triangulation.
         """
-        ...
 
     @constmethod
     def countTriangles(self) -> int:
         """
         Returns the number of triangles of the triangulation.
         """
-        ...
 
     @constmethod
     def curveOnSurface(self, Edge: object, /) -> Optional[Tuple[object, float, float]]:
@@ -237,11 +229,9 @@ class TopoShapeFace(TopoShape):
         If this curve exists then a tuple of curve and parameter range is returned.
         Returns None if this curve does not exist.
         """
-        ...
 
     def cutHoles(self, list_of_wires: List[object], /) -> None:
         """
         Cut holes in the face.
         cutHoles(list_of_wires)
         """
-        ...

@@ -7,10 +7,10 @@ that is implemented in the Part application module. Helper aliases and simple
 module-level declarations that the callable surface depends on live here.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict, overload
+
+from Base.Metadata import deprecated
 
 Point3: TypeAlias = tuple[float, float, float]
 ShapeSequence: TypeAlias = Sequence[Shape] | Shape
@@ -33,30 +33,26 @@ ExportUnits = TypedDict(
 )
 
 # File and document I/O
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="Import.open")
 def open(name: str, /) -> None:
     """Open one Part-supported file into the active document context."""
-    ...
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="Import.insert")
 def insert(name: str, doc_name: str, /) -> None:
     """Insert one Part-supported file into an existing document."""
-    ...
 
 def export(objects: Sequence[DocumentObject], name: str, /) -> None:
     """Export document objects to one Part-supported file."""
-    ...
 
 def read(name: str, /) -> Shape:
     """Read one Part-supported file and return the resulting shape."""
-    ...
 
 def show(shape: Shape, name: str = "Shape", /) -> Feature:
     """Create a document feature that shows one shape."""
-    ...
 
 # Shape extraction and inspection
 def getFacets(shape: Shape, /) -> list[tuple[Point3, Point3, Point3]]:
     """Return the triangulated facet vertices of one shape."""
-    ...
 
 @overload
 def getShape(
@@ -70,7 +66,6 @@ def getShape(
     refine: bool = False,
 ) -> Shape:
     """Return only the resolved shape."""
-    ...
 
 @overload
 def getShape(
@@ -84,7 +79,6 @@ def getShape(
     refine: bool = False,
 ) -> tuple[Shape, Matrix, DocumentObject | None]:
     """Return the shape together with placement and resolved subobject context."""
-    ...
 
 @overload
 def getShape(
@@ -98,11 +92,9 @@ def getShape(
     refine: bool = False,
 ) -> Shape | tuple[Shape, Matrix, DocumentObject | None]:
     """Accept any retType and reflect the broad union used at runtime."""
-    ...
 
 def cast_to_shape(shape: Shape, /) -> Shape:
     """Normalize a shape-like proxy to the public `Shape` wrapper."""
-    ...
 
 # Surface, sweep, and topology builders
 @overload
@@ -117,7 +109,6 @@ def makeRevolution(
     /,
 ) -> Shape:
     """Revolve a curve geometry into a shape, optionally choosing the result class."""
-    ...
 
 @overload
 def makeRevolution(
@@ -131,7 +122,6 @@ def makeRevolution(
     /,
 ) -> Shape:
     """Revolve an edge into a shape, optionally choosing the result class."""
-    ...
 
 def makeCompound(
     shapes: ShapeSequence,
@@ -139,11 +129,9 @@ def makeCompound(
     op: str | None = None,
 ) -> Compound:
     """Build a compound from one shape or a shape sequence."""
-    ...
 
 def makeShell(shapes: ShapeSequence, op: str | None = None) -> Shell:
     """Build a shell from one shape or a shape sequence."""
-    ...
 
 def makeFace(
     shapes: ShapeSequence,
@@ -153,7 +141,6 @@ def makeFace(
     noElementMap: bool = False,
 ) -> Face:
     """Build a face from one shape or a compatible shape sequence."""
-    ...
 
 def makeFilledSurface(
     shapes: ShapeSequence,
@@ -173,7 +160,6 @@ def makeFilledSurface(
     op: str | None = None,
 ) -> Face:
     """Build a filled surface face from boundary shapes and optional supports."""
-    ...
 
 def makeFilledFace(
     shapes: ShapeSequence,
@@ -193,11 +179,9 @@ def makeFilledFace(
     op: str | None = None,
 ) -> Face:
     """Build a filled face from boundary shapes and optional supports."""
-    ...
 
 def makeSolid(shape: Shape, op: str | None = None) -> Solid:
     """Convert one shell-like shape into a solid."""
-    ...
 
 def makeRuledSurface(
     path: Edge | Wire,
@@ -206,11 +190,9 @@ def makeRuledSurface(
     op: str | None = None,
 ) -> Face | Shell:
     """Create a ruled surface between two path shapes."""
-    ...
 
 def makeShellFromWires(shape: ShapeSequence, op: str | None = None) -> Shell:
     """Create a shell from a compatible wire sequence."""
-    ...
 
 def makeTube(
     pshape: Shape,
@@ -221,7 +203,6 @@ def makeTube(
     /,
 ) -> Face:
     """Create a tube surface around one path shape."""
-    ...
 
 def makeSweepSurface(
     path: Shape,
@@ -231,7 +212,6 @@ def makeSweepSurface(
     /,
 ) -> Shape:
     """Sweep one profile along one path and return the resulting shape."""
-    ...
 
 def makeLoft(
     shapes: list[Shape],
@@ -242,7 +222,6 @@ def makeLoft(
     op: str | None = None,
 ) -> Shape:
     """Loft a sequence of section shapes into a new shape."""
-    ...
 
 # Text and OCC static helpers
 @overload
@@ -255,24 +234,20 @@ def makeWireString(
     /,
 ) -> list[list[Wire]]:
     """Use the legacy ``(text, fontdir, fontfile, ...)`` calling convention."""
-    ...
 
 @overload
 def makeWireString(
     intext: str | bytes, fontspec: str, height: float, track: float = 0, /
 ) -> list[list[Wire]]:
     """Use the newer ``(text, fontspec, ...)`` calling convention."""
-    ...
 
 @overload
 def setStaticValue(name: str, cval: str, /) -> None:
     """Set an OCC interface static from a string value."""
-    ...
 
 @overload
 def setStaticValue(name: str, value: int | float, /) -> None:
     """Set an OCC interface static from an integer or floating-point value."""
-    ...
 
 # Primitive constructors
 def makePlane(
@@ -284,7 +259,6 @@ def makePlane(
     /,
 ) -> Face:
     """Create a planar face from dimensions and optional orientation vectors."""
-    ...
 
 def makeBox(
     length: float,
@@ -295,7 +269,6 @@ def makeBox(
     /,
 ) -> Solid:
     """Create a box solid from dimensions and optional placement."""
-    ...
 
 def makeWedge(
     xmin: float,
@@ -313,15 +286,12 @@ def makeWedge(
     /,
 ) -> Solid:
     """Create a wedge solid from the OCC wedge parameters."""
-    ...
 
 def makeLine(obj1: Vector | Point3, obj2: Vector | Point3, /) -> Edge:
     """Create a line edge between two points."""
-    ...
 
 def makePolygon(pcObj: Sequence[Vector | Point3], pclosed: bool = False, /) -> Wire:
     """Create a polygon wire from a point sequence."""
-    ...
 
 def makeCircle(
     radius: float,
@@ -332,7 +302,6 @@ def makeCircle(
     /,
 ) -> Edge:
     """Create a circular edge or arc."""
-    ...
 
 def makeSphere(
     radius: float,
@@ -344,7 +313,6 @@ def makeSphere(
     /,
 ) -> Solid:
     """Create a sphere solid or spherical segment."""
-    ...
 
 def makeCylinder(
     radius: float,
@@ -355,7 +323,6 @@ def makeCylinder(
     /,
 ) -> Solid:
     """Create a cylinder solid or cylindrical segment."""
-    ...
 
 def makeCone(
     radius1: float,
@@ -367,7 +334,6 @@ def makeCone(
     /,
 ) -> Solid:
     """Create a cone or frustum solid."""
-    ...
 
 def makeTorus(
     radius1: float,
@@ -380,7 +346,6 @@ def makeTorus(
     /,
 ) -> Solid:
     """Create a torus solid or toroidal segment."""
-    ...
 
 def makeHelix(
     pitch: float,
@@ -392,7 +357,6 @@ def makeHelix(
     /,
 ) -> Wire:
     """Create a helix wire."""
-    ...
 
 def makeLongHelix(
     pitch: float,
@@ -403,11 +367,9 @@ def makeLongHelix(
     /,
 ) -> Wire:
     """Create a long helix wire using the extended implementation."""
-    ...
 
 def makeThread(pitch: float, depth: float, height: float, radius: float, /) -> Wire:
     """Create a thread-profile wire."""
-    ...
 
 # Shape utilities and interoperability
 def makeSplitShape(
@@ -417,40 +379,30 @@ def makeSplitShape(
     /,
 ) -> tuple[list[Shape], list[Shape]]:
     """Split a shape by splitter pairs and return outside and inside fragments."""
-    ...
 
 def exportUnits(unit: str | None = None, /) -> ExportUnits:
     """Return the current Part export-unit configuration."""
-    ...
 
 def getSortedClusters(obj: EdgeSequence, /) -> list[list[Edge]]:
     """Group edges into connected clusters."""
-    ...
 
 def __sortEdges__(obj: EdgeSequence, /) -> list[Edge]:
     """Return one legacy sorted edge sequence."""
-    ...
 
 def sortEdges(obj: EdgeSequence, tol3d: float | None = None, /) -> list[list[Edge]]:
     """Group and order connected edges with an optional tolerance override."""
-    ...
 
 def __toPythonOCC__(shape: Shape, /) -> object:
     """Convert one Part shape to a PythonOCC proxy object."""
-    ...
 
 def __fromPythonOCC__(proxy: object, /) -> Shape:
     """Convert one PythonOCC proxy object to a Part shape."""
-    ...
 
 def clearShapeCache() -> None:
     """Clear the process-wide Part shape conversion cache."""
-    ...
 
 def splitSubname(subname: str, /) -> list[str]:
     """Split one mapped subname string into its path components."""
-    ...
 
 def joinSubname(sub: str, mapped: str, element: str, /) -> str:
     """Join mapped subname components into one canonical string."""
-    ...

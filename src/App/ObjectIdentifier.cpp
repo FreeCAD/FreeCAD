@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <cassert>
 #include <limits>
@@ -824,23 +821,21 @@ App::DocumentObject* ObjectIdentifier::getDocumentObject(const App::Document* do
     if (!objectByLabel && !objectById) {  // Not found at all
         return nullptr;
     }
-    else if (!objectByLabel) {  // Found by name
+    if (!objectByLabel) {  // Found by name
         flags.set(ResolveByIdentifier);
         return objectById;
     }
-    else if (!objectById) {  // Found by label
+    if (!objectById) {  // Found by label
         flags.set(ResolveByLabel);
         return objectByLabel;
     }
-    else if (objectByLabel == objectById) {  // Found by both name and label, same object
+    if (objectByLabel == objectById) {  // Found by both name and label, same object
         flags.set(ResolveByIdentifier);
         flags.set(ResolveByLabel);
         return objectByLabel;
     }
-    else {
-        flags.set(ResolveAmbiguous);
-        return nullptr;  // Found by both name and label, two different objects
-    }
+    flags.set(ResolveAmbiguous);
+    return nullptr;  // Found by both name and label, two different objects
 }
 
 void ObjectIdentifier::resolve(ResolveResults& results) const
@@ -1008,21 +1003,19 @@ Document* ObjectIdentifier::getDocument(String name, bool* ambiguous) const
     if (!docById) {
         return docByLabel;  // Either not found at all, or on label
     }
-    else {
-        /* Not found on label? */
-        if (!docByLabel) { /* Then return doc by id */
-            return docById;
-        }
-
-        /* docByLabel and docById could be equal; that is ok */
-        if (docByLabel == docById) {
-            return docById;
-        }
-        if (ambiguous) {
-            *ambiguous = true;
-        }
-        return nullptr;
+    /* Not found on label? */
+    if (!docByLabel) { /* Then return doc by id */
+        return docById;
     }
+
+    /* docByLabel and docById could be equal; that is ok */
+    if (docByLabel == docById) {
+        return docById;
+    }
+    if (ambiguous) {
+        *ambiguous = true;
+    }
+    return nullptr;
 }
 
 DocumentObject* ObjectIdentifier::getDocumentObject() const
@@ -1108,7 +1101,14 @@ void ObjectIdentifier::getDep(Dependencies& deps,
 
     if (!result.resolvedProperty) {
         if (!result.propertyName.empty()) {
-            deps[result.resolvedDocumentObject].insert(result.propertyName);
+            std::string canonicalPropertyName =
+                result.resolvedDocumentObject->getCanonicalPropertyName(
+                        result.propertyName.c_str()
+                );
+            deps[result.resolvedDocumentObject].insert(
+                canonicalPropertyName.empty() ? result.propertyName
+                : canonicalPropertyName
+            );
         }
         return;
     }
@@ -1182,9 +1182,7 @@ ObjectIdentifier ObjectIdentifier::parse(const DocumentObject* docObj, const std
     if (v) {
         return v->getPath();
     }
-    else {
-        FC_THROWM(Base::RuntimeError, "Invalid property specification.");
-    }
+    FC_THROWM(Base::RuntimeError, "Invalid property specification.");
 }
 
 std::string ObjectIdentifier::resolveErrorString() const
@@ -1401,12 +1399,7 @@ bool ObjectIdentifier::hasDocumentObjectName(bool forced) const
 
 std::string ObjectIdentifier::String::toString(bool toPython) const
 {
-    if (isRealString()) {
-        return quote(str, toPython);
-    }
-    else {
-        return str;
-    }
+    return isRealString() ? quote(str, toPython) : str;
 }
 
 void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
@@ -1863,9 +1856,7 @@ bool ObjectIdentifier::isTouched() const
             if (result.propertyType == PseudoNone) {
                 return result.resolvedProperty->isTouched();
             }
-            else {
-                return result.resolvedDocumentObject->isTouched();
-            }
+            return result.resolvedDocumentObject->isTouched();
         }
     }
     catch (...) {

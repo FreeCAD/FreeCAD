@@ -32,13 +32,39 @@ using namespace TechDraw;
 
 //! general purpose line format specifier
 
-LineFormat::LineFormat()
+LineFormat::LineFormat() :
+    m_style(getDefEdgeStyle()),
+    m_weight(getDefEdgeWidth()),
+    m_color(getDefEdgeColor()),
+    m_visible(true),
+    m_lineNumber(1)     // Solid (continuous) line
 {
-    m_style = getDefEdgeStyle();
-    m_weight = getDefEdgeWidth();
-    m_color= getDefEdgeColor();
-    m_visible = true;
-    m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
+}
+
+LineFormat::LineFormat(const int style,
+                       const double weight,
+                       const Base::Color& color,
+                       const bool visible,
+                       const int lineNumber) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible),
+    m_lineNumber(lineNumber)
+{
+}
+
+//! this is the old constructor. retained for compatibility.
+LineFormat::LineFormat(const int style,
+                       const double weight,
+                       const Base::Color& color,
+                       const bool visible) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible),
+    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
+{
 }
 
 // static loader of default format
@@ -53,7 +79,7 @@ void LineFormat::initCurrentLineFormat()
 
 LineFormat& LineFormat::getCurrentLineFormat()
 {
-    static TechDraw::LineFormat currentLineFormat;
+    static TechDraw::LineFormat currentLineFormat;      // only 1 of these
     return currentLineFormat;
 }
 
@@ -66,22 +92,11 @@ void LineFormat::setCurrentLineFormat(LineFormat& newFormat)
     getCurrentLineFormat().setLineNumber(newFormat.getLineNumber());
 }
 
-LineFormat::LineFormat(const int style,
-                       const double weight,
-                       const Base::Color& color,
-                       const bool visible) :
-    m_style(style),
-    m_weight(weight),
-    m_color(color),
-    m_visible(visible),
-    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
-{
-}
 
 void LineFormat::dump(const char* title)
 {
-    Base::Console().message("LF::dump - %s \n", title);
-    Base::Console().message("LF::dump - %s \n", toString().c_str());
+    Base::Console().message("LF::dump - {} \n", title);
+    Base::Console().message("LF::dump - {} \n", toString());
 }
 
 std::string LineFormat::toString() const
@@ -110,4 +125,12 @@ int LineFormat::getDefEdgeStyle()
     return Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLineStyle", 2);   //dashed
 }
 
+//! true if both have same attributes.
+bool LineFormat::isEqual(const LineFormat& lf0, const LineFormat& lf1)
+{
+    return lf0.getColor() == lf1.getColor()  &&
+        lf0.getWidth() == lf1.getWidth()  &&
+        lf0.getVisible() == lf1.getVisible()  &&
+        lf0.getLineNumber() == lf1.getLineNumber();
+}
 

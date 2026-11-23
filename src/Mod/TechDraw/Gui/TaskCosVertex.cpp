@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -146,7 +148,7 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 void TaskCosVertex::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
+//    Base::Console().message("TCV::onTrackerClicked() m_pbTrackerState: {}\n",
 //                            m_pbTrackerState);
 
     removeTracker();

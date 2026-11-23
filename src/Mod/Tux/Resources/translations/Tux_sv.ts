@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="103"/>
       <source>Navigation style not recognized.</source>
-      <translation>Navigationsstilen känns inte igen.</translation>
+      <translation>Navigeringsstilen känns inte igen.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Orbit style</source>
-      <translation>Orbit-stil</translation>
+      <translation>Rotationsstil</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="662"/>
       <source>Rounded Arcball</source>
-      <translation>Rundad bågboll</translation>
+      <translation>Avrundad Arcball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="663"/>
@@ -112,7 +112,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="675"/>
       <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation>Navigationsstilar</translation>
+      <translation>Navigeringsstilar</translation>
     </message>
   </context>
 </TS>

@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Part.App.Geom2d.Geometry2d import Geometry2d
 from Part.App.Geom2d.BSplineCurve import BSplineCurve
+from Part.GeometrySurface import GeometrySurface
+from Part.TopoShapeFace import TopoShapeFace
 from typing import Final, overload, List
 
 @export(
@@ -42,33 +42,64 @@ class Curve2d(Geometry2d):
         """
         Changes the direction of parametrization of the curve.
         """
-        ...
 
+    @overload
     @constmethod
-    def toShape(self) -> object:
+    def toShape(self) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, param1: float, param2: float, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, surface: GeometrySurface, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, surface: GeometrySurface, param1: float, param2: float, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, face: TopoShapeFace, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, face: TopoShapeFace, param1: float, param2: float, /) -> object: ...
+    @constmethod
+    def toShape(self, *args) -> object:
         """
         Return the shape for the geometry.
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, *, Number: int) -> List[Vector]: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, QuasiNumber: int) -> List[Vector]: ...
+    def discretize(
+        self, QuasiNumber: int, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, Distance: float) -> List[Vector]: ...
+    def discretize(
+        self, Distance: float, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, Deflection: float) -> List[Vector]: ...
+    def discretize(
+        self, Deflection: float, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, QuasiDeflection: float) -> List[Vector]: ...
+    def discretize(
+        self, QuasiDeflection: float, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, Angular: float, Curvature: float, Minimum: int = 2) -> List[Vector]: ...
+    def discretize(
+        self,
+        Angular: float,
+        Curvature: float,
+        First: float = None,
+        Last: float = None,
+        Minimum: int = 2,
+    ) -> List[Vector]: ...
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
         """
@@ -104,7 +135,6 @@ class Curve2d(Geometry2d):
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
         """
-        ...
 
     @overload
     def length(self, /) -> float: ...
@@ -119,7 +149,6 @@ class Curve2d(Geometry2d):
         Computes the length of a curve
         length([uMin,uMax,Tol]) -> Float
         """
-        ...
 
     @overload
     def parameterAtDistance(self, abscissa: float, /) -> float: ...
@@ -131,65 +160,56 @@ class Curve2d(Geometry2d):
         the given distance from a starting parameter.
         parameterAtDistance([abscissa, startingParameter]) -> Float
         """
-        ...
 
     def value(self, u: float, /) -> Vector:
         """
         Computes the point of parameter u on this curve
         """
-        ...
 
     def tangent(self, u: float, /) -> Vector:
         """
         Computes the tangent of parameter u on this curve
         """
-        ...
 
     def parameter(self, point: Vector, /) -> float:
         """
         Returns the parameter on the curve of the
         nearest orthogonal projection of the point.
         """
-        ...
 
     @constmethod
     def normal(self, pos: float, /) -> Vector:
         """
         Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined.
         """
-        ...
 
     @constmethod
     def curvature(self, pos: float, /) -> float:
         """
         Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined.
         """
-        ...
 
     @constmethod
     def centerOfCurvature(self, pos: float, /) -> Vector:
         """
         Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined.
         """
-        ...
 
     @constmethod
-    def intersectCC(self, other: "Curve2d", /) -> List[Vector]:
+    def intersectCC(self, other: "Curve2d", tolerance: float = ..., /) -> List[Vector]:
         """
         Returns all intersection points between this curve and the given curve.
         """
-        ...
 
     @overload
     def toBSpline(self, /) -> BSplineCurve: ...
     @overload
-    def toBSpline(self, First: float, Last: float, /) -> BSplineCurve: ...
+    def toBSpline(self, First: float = ..., Last: float = ..., /) -> BSplineCurve: ...
     def toBSpline(self, *args: float) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)
         toBSpline([Float=First, Float=Last]) -> B-Spline curve
         """
-        ...
 
     def approximateBSpline(
         self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
@@ -198,4 +218,3 @@ class Curve2d(Geometry2d):
         Approximates a curve of any type to a B-Spline curve
         approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
         """
-        ...

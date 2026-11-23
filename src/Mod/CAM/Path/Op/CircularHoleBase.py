@@ -56,6 +56,9 @@ else:
 class ObjectOp(PathOp.ObjectOp):
     """Base class for proxy objects of all operations on circular holes."""
 
+    # keep holes of different diameters at one position, as the steps of a stepped hole
+    keepsHoleSteps = False
+
     def opFeatures(self, obj):
         """opFeatures(obj) ... calls circularHoleFeatures(obj) and ORs in the standard features required for processing circular holes.
         Do not overwrite, implement circularHoleFeatures(obj) instead"""
@@ -149,9 +152,11 @@ class ObjectOp(PathOp.ObjectOp):
                 return shape.Curve.Radius * 2
 
             if isinstance(shape, Part.Face):
-                for edge in shape.Edges:
-                    if isinstance(edge.Curve, Part.Circle):
-                        return edge.Curve.Radius * 2
+                if edges := [e for e in shape.Edges if isinstance(e.Curve, Part.Circle)]:
+                    # the bottom circular edge, the outer one on a counterbore's floor
+                    bottom = min(e.BoundBox.ZMax for e in edges)
+                    edges = [e for e in edges if Path.Geom.isRoughly(e.BoundBox.ZMax, bottom)]
+                    return max(e.Curve.Radius for e in edges) * 2
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
@@ -221,6 +226,8 @@ class ObjectOp(PathOp.ObjectOp):
                     continue
                 diam = self.holeDiameter(base, sub)
                 for hole in holes:  # check positions repeats
+                    if self.keepsHoleSteps and not Path.Geom.isRoughly(diam, hole["d"]):
+                        continue  # another step of a stepped hole, not a repeat
                     if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
                         if diam > hole["d"] and not Path.Geom.isRoughly(diam, hole["d"]):
                             # use bigger hole and disable with less diameter
@@ -238,16 +245,23 @@ class ObjectOp(PathOp.ObjectOp):
                             obj.Disabled = disabled
                         break
                 else:  # is not a repeat, add unique position
-                    holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
+                    # an edge stands for its wall, down to the step's floor
+                    shape = base.Shape.getElement(sub)
+                    faces = base.Shape.ancestorsOfType(shape, Part.Face) if "Edge" in sub else []
+                    walls = [f for f in faces if isinstance(f.Surface, Part.Cylinder)]
+                    bottom = min(f.BoundBox.ZMin for f in walls + [shape])
+                    holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub, "bottom": bottom})
 
         for pos in getattr(obj, "Locations", []):
             holes.append({"x": pos.x, "y": pos.y, "d": 0})
 
-        if len(holes) > 0:
+        if holes:
             if obj.SortingMode == "Automatic":
                 # Use the c++ implementation of the TSP sorting algorithm for better performance
-                startPoint = [obj.StartPoint.x, obj.StartPoint.y]
-                endPoint = [obj.EndPoint.x, obj.EndPoint.y] if obj.UseEndPoint else None
+                start = self.startPoint(obj)
+                startPoint = [start.x, start.y]
+                end = self.toFrame(obj.EndPoint)
+                endPoint = [end.x, end.y] if obj.UseEndPoint else None
                 holes = PathUtils.sort_locations_tsp(
                     holes, ["x", "y"], startPoint=startPoint, endPoint=endPoint
                 )

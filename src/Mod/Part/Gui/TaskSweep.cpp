@@ -23,13 +23,14 @@
  ***************************************************************************/
 
 
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTimer>
 #include <QTreeWidget>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -203,7 +204,7 @@ void SweepWidget::findShapes()
             }
             // or all children are edges
             else if (hEdges->Length() == numChilds) {
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+                Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                     hEdges,
                     Precision::Confusion(),
                     Standard_False,
@@ -219,7 +220,7 @@ void SweepWidget::findShapes()
             && (shape.ShapeType() == TopAbs_FACE || shape.ShapeType() == TopAbs_WIRE
                 || shape.ShapeType() == TopAbs_EDGE || shape.ShapeType() == TopAbs_VERTEX)) {
             QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QString name = QString::fromUtf8(obj->getNameInDocument());
 
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -282,7 +283,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
                 hEdges->Append(xp.Current());
             }
 
-            ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+            Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                 hEdges,
                 Precision::Confusion(),
                 Standard_True,
@@ -387,11 +388,11 @@ bool SweepWidget::accept()
     for (int i = 0; i < count; i++) {
         QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
         QString name = child->data(0, Qt::UserRole).toString();
-        if (name == QLatin1String(spineObject.c_str())) {
+        if (name == QString::fromStdString(spineObject)) {
             QMessageBox::critical(
                 this,
                 tr("Wrong Selection"),
-                tr("'%1' cannot be used as profile and path.").arg(QString::fromUtf8(spineLabel.c_str()))
+                tr("'%1' cannot be used as profile and path.").arg(QString::fromStdString(spineLabel))
             );
             return false;
         }

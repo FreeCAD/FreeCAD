@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2022 Boyer Pierre-Louis
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -94,6 +91,11 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
+        const Gui::InputHint elementsHint {
+            tr("%1/%2 increase/decrease number of elements", "Sketcher Rotate: hint"),
+            {KeyU, KeyJ}
+        };
+
         return Gui::lookupHints<SelectMode>(
             state(),
             {
@@ -101,16 +103,19 @@ public:
                  .hints =
                      {
                          {tr("%1 pick center point", "Sketcher Rotate: hint"), {MouseLeft}},
+                         elementsHint,
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 set start angle", "Sketcher Rotate: hint"), {MouseLeft}},
+                         elementsHint,
                      }},
                 {.state = SelectMode::SeekThird,
                  .hints =
                      {
                          {tr("%1 set rotation angle", "Sketcher Rotate: hint"), {MouseLeft}},
+                         elementsHint,
                      }},
             });
     }
@@ -320,7 +325,7 @@ private:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometries([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
     }
 
@@ -589,7 +594,7 @@ void DSHRotateController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p4_rotate", "Elements (+'U'/ -'J')")
+        QApplication::translate("TaskSketcherTool_p4_rotate", "Elements")
     );
     toolWidget->setParameter(OnViewParameter::First, 1.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());

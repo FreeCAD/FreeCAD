@@ -115,10 +115,19 @@ public:
 
     void onChanged(const App::Property* prop) override;
 
-    /// Called by Body::removeObject() when this feature's BaseFeature is
-    /// rerouted around a deleted feature. Subclasses may reroute only the
-    /// subelement links that are known to follow BaseFeature.
-    virtual void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase);
+    enum class BaseFeatureChange
+    {
+        Insertion,
+        Removal
+    };
+
+    /// Called by Body after assigning BaseFeature during insertion or removal.
+    /// Subclasses may reroute only the subelement links that follow BaseFeature.
+    virtual void onBaseFeatureRerouted(
+        App::DocumentObject* oldBase,
+        App::DocumentObject* newBase,
+        BaseFeatureChange change
+    );
 
     App::DocumentObject* getSubObject(
         const char* subname,

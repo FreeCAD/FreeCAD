@@ -11,12 +11,12 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation>Begränsar ytan att passera genom de valda kanterna</translation>
+      <translation>Begränsar ytan så att den går genom de valda kanterna</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation>Icke-gränskanter</translation>
+      <translation>Kanter som inte utgör gränsen</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation>Dra föremålen för att omårdna listan</translation>
+      <translation>Dra posterna för att ändra ordningen i listan</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -114,7 +114,7 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation>Sektionkanter</translation>
+      <translation>Sektionskanter</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Listan kan omårdnas genom att dra&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ändra ordningen i listan genom att dra posterna&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -211,7 +211,7 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation>Hörnpungtsbegränsningar</translation>
+      <translation>Hörnpunktsbegränsningar</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation type="unfinished">Non-Boundary Vertices</translation>
+      <translation>Hörnpunkter som inte ligger på gränsen</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
@@ -239,12 +239,12 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="14"/>
       <source>Blend Curve</source>
-      <translation>Blandningskurva</translation>
+      <translation>Övergångskurva</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="20"/>
       <source>Start Edge</source>
-      <translation>Påbörja Kant</translation>
+      <translation>Startkant</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
@@ -273,7 +273,7 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
       <source>End Edge</source>
-      <translation>Avsluta Kant</translation>
+      <translation>Slutkant</translation>
     </message>
   </context>
   <context>
@@ -320,7 +320,8 @@
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
       <translation>Skapar en yta av ett antal valda gränskanter.
-Ytan kan även begränsas av kanter och hörn som inte är på gränsen.</translation>
+Ytan kan även begränsas av kanter och
+hörnpunkter som inte ligger på gränsen.</translation>
     </message>
   </context>
   <context>
@@ -335,7 +336,7 @@ Ytan kan även begränsas av kanter och hörn som inte är på gränsen.</transl
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation>Blandningskurva</translation>
+      <translation>Övergångskurva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
@@ -345,7 +346,7 @@ Ytan kan även begränsas av kanter och hörn som inte är på gränsen.</transl
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="410"/>
       <source>Edit blending curve</source>
-      <translation>Redigera blandningskurva</translation>
+      <translation>Redigera övergångskurva</translation>
     </message>
   </context>
   <context>
@@ -396,7 +397,7 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Blend Curve</source>
-      <translation>Blandningskurva</translation>
+      <translation>Övergångskurva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -523,9 +524,9 @@ Detta kommando fungerar endast med ett nätobjekt.</translation>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Kant har %n angränsande sidor</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>Kanten har %n angränsande yta</numerusform>
+        <numerusform>Kanten har %n angränsande ytor</numerusform>
       </translation>
     </message>
     <message>

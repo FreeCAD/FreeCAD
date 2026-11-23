@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /**************************************************************************
-#                                                                           *
-#    Copyright (c) 2026 AstoCAD <hello@astocad.com>                         *
-#                                                                           *
-#    This file is part of FreeCAD.                                          *
-#                                                                           *
-#    FreeCAD is free software: you can redistribute it and/or modify it     *
-#    under the terms of the GNU Lesser General Public License as            *
-#    published by the Free Software Foundation, either version 2.1 of the   *
-#    License, or (at your option) any later version.                        *
-#                                                                           *
-#    FreeCAD is distributed in the hope that it will be useful, but         *
-#    WITHOUT ANY WARRANTY; without even the implied warranty of             *
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-#    Lesser General Public License for more details.                        *
-#                                                                           *
-#    You should have received a copy of the GNU Lesser General Public       *
-#    License along with FreeCAD. If not, see                                *
-#    <https://www.gnu.org/licenses/>.                                       *
-#                                                                           *
-# **************************************************************************/
+# SPDX-FileCopyrightText: 2026 AstoCAD
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD as App
 
@@ -46,9 +44,9 @@ class CommandCreateSnapshot:
     def GetResources(self):
         return {
             "Pixmap": "Std_ViewScreenShot",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_Snapshot", "Snapshot"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSnapshot", "Snapshot"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_Snapshot",
+                "Assembly_CreateSnapshot",
                 "Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.",
             ),
             "CmdType": "ForEdit",

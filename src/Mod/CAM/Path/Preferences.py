@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Path
@@ -54,11 +52,18 @@ PostProcessorBlacklist = "PostProcessorBlacklist"
 PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 PostProcessorShowEditor = "PostProcessorShowEditor"
+SanityReportOutputFile = "PathSanityReportOutputFile"
+
+ToolBitDimensionColorLight = "ToolBitDimensionColorLight"
+ToolBitDimensionColorDark = "ToolBitDimensionColorDark"
+ToolBitDimensionHighlightColor = "ToolBitDimensionHighlightColor"
+ToolBitArtworkBrightness = "ToolBitArtworkBrightness"
 
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
 LastToolLibrarySortKey = "LastToolLibrarySortKey"
+ToolUpdateOnLoad = "ToolUpdateOnLoad"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -70,6 +75,16 @@ WarningSuppressSelectionMode = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib = "WarningSuppressOpenCamLib"
 EnableExperimentalFeatures = "EnableExperimentalFeatures"
 EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
+
+
+def setSanityReportOutputFile(fileName):
+    pref = preferences()
+    pref.SetString(SanityReportOutputFile, fileName)
+
+
+def defaultSanityReportOutputFile():
+    pref = preferences()
+    return pref.GetString(SanityReportOutputFile, "")
 
 
 _observers = defaultdict(list)  # maps group name to callback functions
@@ -89,12 +104,53 @@ def preferences():
     return FreeCAD.ParamGet(PreferencesGroup)
 
 
+def _color_as_hex(name, default):
+    """Read a color preference, returning it as an "#rrggbb" string.
+
+    Color preferences are stored packed as ((R * 256 + G) * 256 + B) * 256 + A.
+    """
+    red, green, blue = (int(default[i : i + 2], 16) for i in (1, 3, 5))
+    packed = preferences().GetUnsigned(name, ((red * 256 + green) * 256 + blue) * 256 + 255)
+    return "#%02x%02x%02x" % ((packed >> 24) & 0xFF, (packed >> 16) & 0xFF, (packed >> 8) & 0xFF)
+
+
+def toolBitDimensionColor(dark: bool) -> str:
+    """Color of the dimensioning in the tool bit shape drawings."""
+    if dark:
+        return _color_as_hex(ToolBitDimensionColorDark, "#23818d")
+    return _color_as_hex(ToolBitDimensionColorLight, "#111111")
+
+
+def toolBitDimensionHighlightColor() -> str:
+    """Color of the one dimension the user is pointing at."""
+    return _color_as_hex(ToolBitDimensionHighlightColor, "#ff8c00")
+
+
+def toolBitArtworkBrightness() -> float:
+    """
+    How brightly to draw the tool artwork on a dark theme, as a factor of its
+    drawn-for-white-paper colors. Stored as a percentage.
+    """
+    return min(max(preferences().GetInt(ToolBitArtworkBrightness, 85), 10), 100) / 100.0
+
+
 def tool_preferences():
     return FreeCAD.ParamGet(ToolGroup)
 
 
 def addToolPreferenceObserver(callback):
     _add_group_observer(ToolGroup, callback)
+
+
+def tool_update_on_load_enabled() -> bool:
+    """Whether opening a document should check for and offer to apply
+    tool preset updates from the library. Defaults to True (current
+    behavior); the CAM preferences Assets tab exposes this as a checkbox."""
+    return tool_preferences().GetBool(ToolUpdateOnLoad, True)
+
+
+def set_tool_update_on_load_enabled(enabled: bool) -> None:
+    tool_preferences().SetBool(ToolUpdateOnLoad, enabled)
 
 
 def pathPostSourcePath():

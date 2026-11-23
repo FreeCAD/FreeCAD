@@ -238,6 +238,10 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
 
             self.apply()
 
+    def modifyStandardButtons(self, box):
+        btn_apply = box.button(QtGui.QDialogButtonBox.Apply)
+        btn_apply.setText(FreeCAD.Qt.translate("FEM", "Run"))
+
     def apply(self):
         self.run_process()
 

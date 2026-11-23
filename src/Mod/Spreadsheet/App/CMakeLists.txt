@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 if(WIN32)
     add_definitions(-DFCAppSpreadsheet)
@@ -64,12 +65,10 @@ if (MSVC)
     target_compile_options(Spreadsheet PRIVATE /wd4251 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Spreadsheet)
-endif()
+target_compile_warn_error(Spreadsheet)
 
 
-SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)
+SET_BIN_DIR(Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(Spreadsheet)
 
 INSTALL(TARGETS Spreadsheet DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -74,14 +74,12 @@ if (MSVC)
     target_compile_options(QtUnitGui PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(QtUnitGui)
-endif()
+target_compile_warn_error(QtUnitGui)
 
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/Mod/Test" qtunittest.py)
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})
 
-SET_BIN_DIR(QtUnitGui QtUnitGui /Mod/Test)
+SET_BIN_DIR(QtUnitGui)
 SET_PYTHON_PREFIX_SUFFIX(QtUnitGui)
 
 INSTALL(TARGETS QtUnitGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

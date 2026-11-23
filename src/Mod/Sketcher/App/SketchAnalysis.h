@@ -1,31 +1,27 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2018 Abdullah Tahiri
+// SPDX-FileCopyrightText: 2013 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2018 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include <Precision.hxx>
@@ -41,11 +37,15 @@ namespace Sketcher
 class SketchObject;
 
 
-enum class Solver
+enum class SketchSolveStatus : int8_t
 {
-    RedundantConstraints = -2,
+    Success = 0,
+    Overconstrained = -4,
     ConflictingConstraints = -3,
-    OverConstrained = -4,
+    MalformedConstraints = -5,
+    SolverError = -1,
+    RedundantConstraints = -2,
+    InvalidGeometry = -6,
 };
 
 
@@ -182,7 +182,7 @@ public:
     /// solves the sketch and retrieves the error status, and the degrees of freedom.
     /// It enables to solve updating the geometry (so moving the geometry to match the constraints)
     /// or preserving the geometry.
-    void solvesketch(int& status, int& dofs, bool updategeo);
+    void solvesketch(SketchSolveStatus& status, int& dofs, bool updategeo);
 
     // third type of routines
     std::vector<Base::Vector3d> getOpenVertices() const;

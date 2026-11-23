@@ -96,7 +96,7 @@ void StdCmdWorkbench::activated(int i)
         doCommand(Gui, "Gui.activateWorkbench(\"%s\")", switch_to.c_str());
     }
     catch (const Base::PyException& e) {
-        QString msg(QLatin1String(e.what()));
+        QString msg(QString::fromUtf8(e.what()));
         // ignore '<type 'exceptions.*Error'>' prefixes
         QRegularExpression rx;
         rx.setPattern(QLatin1String(R"(^\s*<type 'exceptions.\w*'>:\s*)"));
@@ -309,6 +309,47 @@ void StdCmdAboutQt::activated(int iMsg)
     qApp->aboutQt();
 }
 
+//===========================================================================
+// Std_HelpGroup
+//===========================================================================
+class StdCmdHelpGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdHelpGroup()
+        : GroupCommand("Std_HelpGroup")
+    {
+        sGroup = "File";
+        sMenuText = QT_TR_NOOP("Help");
+        sToolTipText = QT_TR_NOOP("Opens the documentation corresponding to the selection");
+        sWhatsThis = "Std_HelpGroup";
+        sStatusTip = sToolTipText;
+        sPixmap = "help-browser";
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Std_WhatsThis");
+        addCommand("Std_OnlineHelp");
+        addCommand();  // separator
+        addCommand("Std_FreeCADUserHub");
+        addCommand("Std_FreeCADForum");
+        addCommand("Std_ReportBug");
+        addCommand();  // separator
+        addCommand("Std_RestartInSafeMode");
+        addCommand();  // separator
+        addCommand("Std_DevHandbook");
+        addCommand("Std_PythonHelp");
+        addCommand();  // separator
+        addCommand("Std_FreeCADWebsite");
+        addCommand("Std_FreeCADDonation");
+        addCommand("Std_About");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdHelpGroup";
+    }
+};
 //===========================================================================
 // Std_WhatsThis
 //===========================================================================
@@ -1078,6 +1119,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     rcCmdMgr.addCommand(new StdCmdDevHandbook());
+    rcCmdMgr.addCommand(new StdCmdHelpGroup());
     // rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     // rcCmdMgr.addCommand(new StdCmdDescription());
     rcCmdMgr.addCommand(new StdCmdAnnotationLabel());

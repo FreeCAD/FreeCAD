@@ -67,6 +67,11 @@ class MockToolController:
         return []
 
 
+class MockDocument:
+    def __init__(self, label):
+        self.Label = label
+
+
 class MockOperation:
     """Mock Operation object for testing postprocessors."""
 
@@ -75,6 +80,7 @@ class MockOperation:
         self.Label = label or name
         self.Active = active
         self.ToolController = tool_controller
+        self.Document = MockDocument(label="mocklabel")
 
         # Create an empty path by default
         self.Path = Path.Path()
@@ -118,11 +124,11 @@ class MockSetupSheet:
 
 
 class MockToolhead:
-    """Mock Toolhead/Spindle object."""
+    """Mock Toolhead object."""
 
     def __init__(self, index=0):
         self.index = index
-        self.spindle_wait = 0  # Default to 0 to avoid spindle wait expansion
+        self.toolhead_wait = 0  # Default to 0 to avoid spindle wait expansion
         self.coolant_delay = 0  # Default to 0 to avoid coolant delay expansion
 
 
@@ -137,20 +143,14 @@ class MockMachine:
             "early_tool_prep": False,
             "filter_inefficient_moves": False,
             "split_arcs": False,
-            "tool_change": False,  # Disable tool change to avoid extra M3 commands
             "translate_rapid_moves": False,
             "xy_before_z_after_tool_change": False,
             "spindle": False,  # Disable spindle commands to avoid M3 S1000
             "coolant": False,  # Disable coolant commands
+            "ignored_commands": "",
         }
         # Make processing properties accessible as attributes
         self.processing = type("Processing", (), processing_config)()
-
-    def get_spindle_by_index(self, index):
-        """Get toolhead by index (legacy compatibility method)."""
-        if 0 <= index < len(self.toolheads):
-            return self.toolheads[index]
-        return None
 
 
 class MockJob:

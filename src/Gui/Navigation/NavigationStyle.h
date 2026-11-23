@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2008 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -37,6 +35,7 @@
 
 #include <QEvent>
 #include <QAction>
+#include <QObject>
 #include <Base/BaseClass.h>
 #include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
@@ -47,6 +46,7 @@
 // forward declarations
 class SoEvent;
 class SoMouseWheelEvent;
+class SoGesturePinchEvent;
 class SoMotion3Event;
 class SoQtViewer;
 class SoCamera;
@@ -61,6 +61,21 @@ class View3DInventorViewer;
 class NavigationAnimator;
 class AbstractMouseSelection;
 class NavigationAnimation;
+class ViewProviderDocumentObject;
+
+class NavigationStyleContextMenuReceiver: public QObject
+{
+    Q_OBJECT
+
+public:
+    NavigationStyleContextMenuReceiver(ViewProviderDocumentObject* viewProvider, QObject* parent);
+
+public Q_SLOTS:
+    void startEditing();
+
+private:
+    ViewProviderDocumentObject* viewProvider {nullptr};
+};
 
 /**
  * @author Werner Mayer
@@ -244,6 +259,29 @@ public:
     virtual SbBool processKeyboardEvent(const SoKeyboardEvent* const event);
     virtual SbBool processClickEvent(const SoMouseButtonEvent* const event);
     virtual SbBool processWheelEvent(const SoMouseWheelEvent* const event);
+    virtual SbBool processPinchEvent(const SoGesturePinchEvent* const event);
+
+    struct PinchAction
+    {
+        bool zoom = false;
+        float zoomLogFactor = 0.0F;
+        bool rotate = false;
+        float rotateAngle = 0.0F;
+    };
+
+    static PinchAction pinchAction(const SoGesturePinchEvent* const event, bool touchTiltDisabled);
+
+    enum class WheelAction
+    {
+        Zoom,
+        Pan,
+        Orbit
+    };
+
+    static WheelAction wheelAction(bool preciseDevice, bool scrollPans, bool shiftDown, bool ctrlDown);
+
+    static bool touchpadScrollPansByDefault();
+    static bool touchpadScrollPans();
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled() const;

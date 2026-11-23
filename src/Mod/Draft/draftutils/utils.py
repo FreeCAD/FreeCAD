@@ -358,7 +358,7 @@ def get_trimex_unsupported_reason(obj, subobjects=None):
     obj : App::DocumentObject
         Object that Trimex should operate on.
     subobjects : list, optional
-        Selected subobjects associated with `obj`.
+        Retained for compatibility.
 
     Returns
     -------
@@ -380,15 +380,7 @@ def get_trimex_unsupported_reason(obj, subobjects=None):
 
     shape = obj.Shape
     if shape.Faces:
-        if len(shape.Faces) == 1:
-            return None
-        if (
-            subobjects
-            and len(subobjects) == 1
-            and getattr(subobjects[0], "ShapeType", None) == "Face"
-        ):
-            return None
-        return translate("draft", "Only a single face can be extruded")
+        return translate("draft", "Trimex does not support this object type")
 
     if obj.isDerivedFrom("Sketcher::SketchObject"):
         return translate("draft", "Trimex does not support this object type")
@@ -873,6 +865,8 @@ def _modifiers_process_subselection(sels, copy):
             if copy and "Vertex" in sub:
                 continue
             obj = sel.Object.getSubObject(sub, 1)
+            if get_type(obj) != "Wire":
+                continue
             pla = sel.Object.getSubObject(sub, 3)
             if "Vertex" in sub:
                 vert_idx = int(sub.rpartition("Vertex")[2]) - 1
@@ -1204,6 +1198,26 @@ def pyopen(
     if encoding is None:
         encoding = "utf-8"
     return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
+
+
+def get_number_length(text):
+    """Return the length of the numerical portion of a string with units.
+
+    Parameters
+    ----------
+    text: str
+        For example: "12.3 mm"
+
+    Returns
+    -------
+    int
+    """
+    num_len = len(text)
+    for char in text[::-1]:
+        if char in "0123456789.,-+/":
+            break
+        num_len -= 1
+    return num_len
 
 
 ## @}

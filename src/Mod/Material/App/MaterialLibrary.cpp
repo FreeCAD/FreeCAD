@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2023 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QDirIterator>
 #include <QFileInfo>
@@ -160,8 +158,8 @@ void MaterialLibraryLocal::createFolder(const QString& path)
     QDir fileDir(filePath);
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(filePath)) {
-            Base::Console().error("Unable to create directory path '%s'\n",
-                                  filePath.toStdString().c_str());
+            Base::Console().error("Unable to create directory path '{}'\n",
+                                  filePath.toStdString());
         }
     }
 }
@@ -174,8 +172,8 @@ void MaterialLibraryLocal::renameFolder(const QString& oldPath, const QString& n
     QDir fileDir(filePath);
     if (fileDir.exists()) {
         if (!fileDir.rename(filePath, newFilePath)) {
-            Base::Console().error("Unable to rename directory path '%s'\n",
-                                  filePath.toStdString().c_str());
+            Base::Console().error("Unable to rename directory path '{}'\n",
+                                  filePath.toStdString());
         }
     }
 
@@ -235,7 +233,7 @@ void MaterialLibraryLocal::deleteDir(MaterialManager& manager, const QString& pa
     // Finally, remove ourself
     QDir dir;
     if (!dir.rmdir(path)) {
-        throw DeleteError(path);
+        throw DeleteError(path.toStdString());
     }
 }
 
@@ -255,8 +253,7 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
         _materialPathMap->erase(rPath);
     }
     else {
-        QString error = QStringLiteral("DeleteError: Unable to delete ") + path;
-        throw DeleteError(error);
+        throw DeleteError("DeleteError: Unable to delete " + path.toStdString());
     }
 }
 
@@ -293,23 +290,20 @@ MaterialLibraryLocal::saveMaterial(const std::shared_ptr<Material>& material,
     QDir fileDir(info.path());
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(info.path())) {
-            Base::Console().error("Unable to create directory path '%s'\n",
-                                  info.path().toStdString().c_str());
+            Base::Console().error("Unable to create directory path '{}'\n",
+                                  info.path().toStdString());
         }
     }
 
     if (info.exists()) {
         if (!overwrite) {
-            Base::Console().error("File already exists '%s'\n", info.path().toStdString().c_str());
+            Base::Console().error("File already exists '{}'\n", info.path().toStdString());
             throw MaterialExists();
         }
     }
 
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        stream.setCodec("UTF-8");
-#endif
         stream.setGenerateByteOrderMark(true);
 
         // Write the contents

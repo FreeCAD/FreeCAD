@@ -23,6 +23,7 @@
 
 
 #include <algorithm>
+#include <format>
 #include <iomanip>
 #include <limits>
 #include <QApplication>
@@ -587,9 +588,7 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
         display += i;
     }
 
-    propName = display;
-
-    QString str = QApplication::translate("App::Property", propName.toUtf8());
+    QString str = QApplication::translate("App::Property", display.toUtf8());
     displayText = str;
 }
 
@@ -638,7 +637,7 @@ void PropertyItem::setPropertyValue(const std::string& value)
     }
     catch (Base::PyException& e) {
         e.reportException();
-        Base::Console().error("Stack Trace: %s\n", e.getStackTrace().c_str());
+        Base::Console().error("Stack Trace: {}\n", e.getStackTrace());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -923,11 +922,7 @@ QWidget* PropertyFontItem::createEditor(
 void PropertyFontItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto cb = qobject_cast<QComboBox*>(editor);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     cb->addItems(familyNames);
     int index = familyNames.indexOf(data.toString());
     cb->setCurrentIndex(index);
@@ -1122,7 +1117,8 @@ PropertyFloatItem::PropertyFloatItem() = default;
 QString PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    QString data = QLocale().toString(value, 'f', decimals());
+    // show the actual value, not the 2 decimal UI version
+    QString data = QLocale().toString(value, 'g', highPrec);
 
     if (hasExpression()) {
         data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
@@ -1157,7 +1153,8 @@ QWidget* PropertyFloatItem::createEditor(
 {
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setDecimals(decimals());
+    sb->setDecimals(highPrec);  // let users type in the full number, not just 2 decimals. Dont
+                                // truncate what they type.
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1196,7 +1193,7 @@ QString PropertyUnitItem::toString(const QVariant& prop) const
     const Base::Quantity& unit = prop.value<Base::Quantity>();
     std::string str = unit.getUserString();
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += std::format("  ( {} )", getExpressionString());
     }
 
     return QString::fromStdString(str);
@@ -1299,7 +1296,8 @@ PropertyFloatConstraintItem::PropertyFloatConstraintItem() = default;
 QString PropertyFloatConstraintItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
-    return QLocale().toString(value, 'f', decimals());
+    // same as above, show the real value not 2 decimals
+    return QLocale().toString(value, 'g', highPrec);
 }
 
 QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
@@ -1327,7 +1325,8 @@ QWidget* PropertyFloatConstraintItem::createEditor(
 ) const
 {
     auto sb = new Gui::DoubleSpinBox(parent);
-    sb->setDecimals(decimals());
+    sb->setDecimals(highPrec);  // let users type in the full number, not just 2 decimals. Dont
+                                // truncate what they type.
     sb->setFrame(static_cast<bool>(frameOption));
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
@@ -1475,7 +1474,7 @@ public:
                     Gui::Command::Doc,
                     "%s = %s",
                     propName.c_str(),
-                    str.toLatin1().constData()
+                    str.toUtf8().constData()
                 );
                 return true;
             }
@@ -1817,14 +1816,14 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QString PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    std::string str = fmt::format(
+    std::string str = std::format(
         "[{} {} {}]",
         Base::Quantity(value.x, Base::Unit::Length).getUserString(),
         Base::Quantity(value.y, Base::Unit::Length).getUserString(),
         Base::Quantity(value.z, Base::Unit::Length).getUserString()
     );
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += std::format("  ( {} )", getExpressionString());
     }
     return QString::fromStdString(str);
 }
@@ -1844,7 +1843,7 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
         return;
     }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
-    std::string val = fmt::format(
+    std::string val = std::format(
         "({:.{}g}, {:.{}g}, {:.{}g})",
         value.x,
         highPrec,
@@ -2600,7 +2599,7 @@ void PropertyRotationItem::setValue(const QVariant& value)
     Base::Vector3d axis;
     double angle {};
     h.getValue(axis, angle);
-    std::string val = fmt::format(
+    std::string val = std::format(
         "App.Rotation(App.Vector({:.{}g},{:.{}g},{:.{}g}),{:.{}g})",
         axis.x,
         highPrec,
@@ -2935,7 +2934,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     Base::Vector3d axis;
     double angle {};
     h.getValue(axis, angle);
-    std::string str = fmt::format(
+    std::string str = std::format(
         "App.Placement("
         "App.Vector({:.{}g},{:.{}g},{:.{}g}),"
         "App.Rotation(App.Vector({:.{}g},{:.{}g},{:.{}g}),{:.{}g}))",

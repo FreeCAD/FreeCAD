@@ -52,22 +52,6 @@
     </message>
   </context>
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="61"/>
-      <source>Element to measure</source>
-      <translation>Ölçülecek unsur</translation>
-    </message>
-  </context>
-  <context>
-    <name>App::PropertyVector</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="68"/>
-      <source>The result location</source>
-      <translation>Sonuç konumu</translation>
-    </message>
-  </context>
-  <context>
     <name>MeasureGui::QuickMeasure</name>
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
@@ -202,92 +186,92 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="137"/>
+      <location filename="../../TaskMeasure.cpp" line="138"/>
       <source>Measurement</source>
       <translation>Ölçüm</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
-      <source>Show Delta</source>
-      <translation type="unfinished">Show Delta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMeasure.cpp" line="159"/>
+      <location filename="../../TaskMeasure.cpp" line="149"/>
       <source>Auto Save</source>
       <translation>Otomatik Kaydet</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="163"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>Yeni bir ölçüme başlarken son ölçümün otomatik olarak kaydedilmesi. Bu davranışı geçici olarak tersine çevirmek için Shift tuşunu kullanın.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="168"/>
+      <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
       <translation>Seçime ekle</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="174"/>
+      <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>İşaretlenirse, yeni seçim ölçüme eklenecektir. İşaretlenmezse, mevcut ölçüme bir seçim eklemek için Ctrl tuşuna basılması gerekir, aksi takdirde yeni bir ölçüm başlatılacaktır.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="187"/>
+      <location filename="../../TaskMeasure.cpp" line="175"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="199"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Auto</source>
       <translation>Otomatik</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="231"/>
+      <location filename="../../TaskMeasure.cpp" line="222"/>
       <source>Mode</source>
       <translation>Mod</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="245"/>
+      <location filename="../../TaskMeasure.cpp" line="228"/>
       <source>Result</source>
       <translation>Sonuç</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="551"/>
+      <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
       <translation type="unfinished">%1 auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
       <translation type="unfinished">%1 start new measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 add to measurement</source>
       <translation type="unfinished">%1 add to measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="780"/>
+      <location filename="../../TaskMeasure.cpp" line="740"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="785"/>
+      <location filename="../../TaskMeasure.cpp" line="745"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="281"/>
+      <location filename="../../TaskMeasure.cpp" line="820"/>
+      <source>Show Delta</source>
+      <translation type="unfinished">Show Delta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="263"/>
       <source>Saves the measurement in the active document</source>
       <translation>Ölçümü aktif belgeye kaydeder.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="287"/>
+      <location filename="../../TaskMeasure.cpp" line="269"/>
       <source>Close</source>
       <translation>Kapat</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="288"/>
+      <location filename="../../TaskMeasure.cpp" line="270"/>
       <source>Close the measurement task.</source>
       <translation>Ölçüm fonksiyonunu kapatın</translation>
     </message>
@@ -295,52 +279,9 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="280"/>
+      <location filename="../../TaskMeasure.cpp" line="262"/>
       <source>Save</source>
       <translation>Kaydet</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskMeasure</name>
-    <message>
-      <location filename="../../../InitGui.py" line="44"/>
-      <source>Center of mass</source>
-      <translation>Kitlesel merkez kullanın</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="119"/>
-      <source>Distance</source>
-      <translation>Uzaklık</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="127"/>
-      <source>Distance Free</source>
-      <translation>Serbest mesafe</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="135"/>
-      <source>Angle</source>
-      <translation>Açı</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="143"/>
-      <source>Length</source>
-      <translation>Uzunluk</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="151"/>
-      <source>Position</source>
-      <translation>Konum</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="159"/>
-      <source>Area</source>
-      <translation>Alan</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="175"/>
-      <source>Radius</source>
-      <translation>Yarıçap</translation>
     </message>
   </context>
   <context>
@@ -501,6 +442,102 @@
     </message>
   </context>
   <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>Uzaklık</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>Serbest mesafe</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>Açı</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>Uzunluk</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>Konum</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>Alan</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>Çap</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>Yarıçap</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <source>Parameters</source>
+      <translation>Parametreler</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <source>Physical Properties</source>
+      <translation type="unfinished">Physical Properties</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <source>Center of Gravity</source>
+      <translation type="unfinished">Center of Gravity</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <source>Center of Volume</source>
+      <translation type="unfinished">Center of Volume</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <source>Inertia</source>
+      <translation type="unfinished">Inertia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="434"/>
+      <source>Close</source>
+      <translation>Kapat</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="437"/>
+      <source>Save</source>
+      <translation>Kaydet</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="441"/>
+      <source>Reset</source>
+      <translation>Sıfırla</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1222"/>
+      <source> (Average)</source>
+      <translation type="unfinished"> (Average)</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdMassProperties</name>
     <message>
       <location filename="../../Command.cpp" line="97"/>
@@ -511,54 +548,6 @@
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
       <translation type="unfinished">Calculates mass properties of selected objects</translation>
-    </message>
-  </context>
-  <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
-      <source>Parameters</source>
-      <translation>Parametreler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
-      <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
-      <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
-      <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
-      <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
-      <source>Close</source>
-      <translation>Kapat</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Save</source>
-      <translation>Kaydet</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
-      <source>Reset</source>
-      <translation>Sıfırla</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
-      <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
     </message>
   </context>
 </TS>

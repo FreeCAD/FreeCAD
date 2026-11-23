@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, export, constmethod
 from TopoShape import TopoShape
 from typing import Dict, List, Final, overload, Optional, Sequence
 
 @export(
+    PythonName="Part.Wire",
     Twin="TopoShape",
     TwinPointer="TopoShape",
     FatherInclude="Mod/Part/App/TopoShapePy.h",
@@ -90,18 +89,17 @@ class TopoShapeWire(TopoShape):
     """List of ordered vertexes in this shape."""
 
     @constmethod
-    def makeOffset(self) -> object:
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="makeOffset2D")
+    def makeOffset(self, dist: float, /) -> TopoShape:
         """
         Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.
         """
-        ...
 
     def add(self, edge: object, /) -> None:
         """
         Add an edge to the wire
         add(edge)
         """
-        ...
 
     def fixWire(self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
         """
@@ -110,7 +108,6 @@ class TopoShapeWire(TopoShape):
         --
         A face and a tolerance can optionally be supplied to the algorithm:
         """
-        ...
 
     @constmethod
     def makeHomogenousWires(self, wire: object, /) -> object:
@@ -118,7 +115,6 @@ class TopoShapeWire(TopoShape):
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
         """
-        ...
 
     @constmethod
     def makePipe(self, profile: object, /) -> object:
@@ -126,7 +122,6 @@ class TopoShapeWire(TopoShape):
         Make a pipe by sweeping along a wire.
         makePipe(profile) -> Shape
         """
-        ...
 
     @constmethod
     def makePipeShell(
@@ -143,23 +138,20 @@ class TopoShapeWire(TopoShape):
         --
         Transition can be 0 (default), 1 (right corners) or 2 (rounded corners).
         """
-        ...
 
     @constmethod
     def makeEvolved(
         self,
         Profile: TopoShape,
-        Join: int,
-        *,
-        AxeProf: bool,
-        Solid: bool,
-        ProfOnSpine: bool,
-        Tolerance: float,
+        Join: int = ...,
+        AxeProf: bool = True,
+        Solid: bool = False,
+        ProfOnSpine: bool = False,
+        Tolerance: float = 1e-07,
     ) -> TopoShape:
         """
         Profile along the spine
         """
-        ...
 
     @constmethod
     def approximate(
@@ -173,55 +165,59 @@ class TopoShapeWire(TopoShape):
         Approximate B-Spline-curve from this wire
         approximate([Tol2d,Tol3d=1e-4,MaxSegments=10,MaxDegree=3]) -> BSpline
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, Number: int) -> List[object]:
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> List[object]:
         """
         discretize(Number=n) -> list
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, QuasiNumber: int) -> List[object]:
+    def discretize(self, QuasiNumber: int, First: float = None, Last: float = None) -> List[object]:
         """
         discretize(QuasiNumber=n) -> list
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, Distance: float) -> List[object]:
+    def discretize(self, Distance: float, First: float = None, Last: float = None) -> List[object]:
         """
         discretize(Distance=d) -> list
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, Deflection: float) -> List[object]:
+    def discretize(
+        self, Deflection: float, First: float = None, Last: float = None
+    ) -> List[object]:
         """
         discretize(Deflection=d) -> list
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, QuasiDeflection: float) -> List[object]:
+    def discretize(
+        self, QuasiDeflection: float, First: float = None, Last: float = None
+    ) -> List[object]:
         """
         discretize(QuasiDeflection=d) -> list
         """
-        ...
 
     @overload
     @constmethod
-    def discretize(self, Angular: float, Curvature: float, Minimum: int = 2) -> List[object]:
+    def discretize(
+        self,
+        Angular: float,
+        Curvature: float,
+        First: float = None,
+        Last: float = None,
+        Minimum: int = 2,
+    ) -> List[object]:
         """
         discretize(Angular=a,Curvature=c,[Minimum=m]) -> list
         """
-        ...
 
     @constmethod
     def discretize(self, **kwargs) -> List[object]:
@@ -264,4 +260,3 @@ class TopoShapeWire(TopoShape):
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
         """
-        ...

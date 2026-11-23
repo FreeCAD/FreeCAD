@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShapeCompound import TopoShapeCompound
@@ -25,16 +23,13 @@ class ShapeFix_FreeBounds(PyObjectBase):
         """
         Returns compound of closed wires out of free edges
         """
-        ...
 
     def openWires(self) -> TopoShapeCompound:
         """
         Returns compound of open wires out of free edges
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         Returns modified source shape
         """
-        ...

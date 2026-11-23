@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <cmath>
@@ -88,6 +85,14 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::
     setConstraintSelectability(ViewProviderSketch& vp, bool enabled /*= true*/)
 {
     vp.setConstraintSelectability(enabled);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(
+    ViewProviderSketch& vp,
+    bool hollow
+)
+{
+    vp.setOriginPointMarker(hollow);
 }
 
 inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(
@@ -242,7 +247,7 @@ CurveConverter::CurveConverter()
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
-        Base::Console().developerError("CurveConverter", "Malformed parameter string: %s\n", e.what());
+        Base::Console().developerError("CurveConverter", "Malformed parameter string: {}\n", e.what());
     }
 
     updateCurvedEdgeCountSegmentsParameter();
@@ -397,7 +402,15 @@ void DrawSketchHandler::setSketchGui(ViewProviderSketch* vp)
 
 void DrawSketchHandler::deactivate()
 {
+    // Some tools (bspline for instance) may get exited while a transaction is still opened.
+    // Exiting should abort any opened transaction.
+    // The following recompute is needed else we have acces violation because preselection still
+    // referenced the removed bspline points.
+    abortCommand();
+    tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
+
     Gui::ToolHandler::deactivate();
+    ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(*sketchgui, false);
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
 
     // clear temporary Curve and Markers from the scenograph
@@ -413,6 +426,7 @@ void DrawSketchHandler::deactivate()
 
 void DrawSketchHandler::preActivated()
 {
+    ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(*sketchgui, true);
     this->signalToolChanged();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
 }
@@ -826,25 +840,56 @@ bool DrawSketchHandler::updateTangentAutoConstraintHint()
     return false;
 }
 
-bool DrawSketchHandler::renderTangentAutoConstraintHint() const
+void DrawSketchHandler::renderDirectionalAutoConstraintHints() const
 {
-    if (!tangentAutoConstraintHint.isValid) {
-        return false;
-    }
-
     if (!areDirectionalAutoConstraintHintsVisible()) {
         clearParallelPerpendicularHintDrawing();
-        return true;
+        return;
     }
 
-    double halfLength = 1000.0 * sketchgui->getScaleFactor();
-    const Base::Vector2d p1 = tangentAutoConstraintHint.start
-        - halfLength * tangentAutoConstraintHint.direction;
-    const Base::Vector2d p2 = tangentAutoConstraintHint.start
-        + halfLength * tangentAutoConstraintHint.direction;
+    const double halfLength = 1000.0 * sketchgui->getScaleFactor();
+    std::vector<Base::Vector2d> hintLines;
+    int activeLineIndex = -1;
 
-    drawParallelPerpendicularHint({p1, p2}, tangentAutoConstraintHint.isActive ? 0 : -1);
-    return true;
+    if (tangentAutoConstraintHint.isValid) {
+        hintLines.push_back(
+            tangentAutoConstraintHint.start - halfLength * tangentAutoConstraintHint.direction
+        );
+        hintLines.push_back(
+            tangentAutoConstraintHint.start + halfLength * tangentAutoConstraintHint.direction
+        );
+        if (tangentAutoConstraintHint.isActive) {
+            activeLineIndex = 0;
+        }
+    }
+
+    if (parallelPerpendicularRefGeoId != GeoEnum::GeoUndef) {
+        SketchObject* obj = sketchgui->getSketchObject();
+        Base::Vector2d startPoint;
+        const Part::Geometry* geometry = obj ? obj->getGeometry(parallelPerpendicularRefGeoId)
+                                             : nullptr;
+        if (obj && getStartPointOfCurrentSegment(startPoint) && geometry
+            && geometry->is<Part::GeomLineSegment>()) {
+            auto* line = static_cast<const Part::GeomLineSegment*>(geometry);
+            Base::Vector2d lineDir = toVector2d(line->getEndPoint() - line->getStartPoint());
+            if (lineDir.Sqr() > Precision::SquareConfusion()) {
+                lineDir.Normalize();
+                const Base::Vector2d perpDir(-lineDir.y, lineDir.x);
+                const int firstReferenceLineIndex = static_cast<int>(hintLines.size() / 2);
+
+                hintLines.push_back(startPoint - halfLength * lineDir);
+                hintLines.push_back(startPoint + halfLength * lineDir);
+                hintLines.push_back(startPoint - halfLength * perpDir);
+                hintLines.push_back(startPoint + halfLength * perpDir);
+
+                if (parallelPerpendicularActiveHintLine >= 0) {
+                    activeLineIndex = firstReferenceLineIndex + parallelPerpendicularActiveHintLine;
+                }
+            }
+        }
+    }
+
+    drawParallelPerpendicularHint(hintLines, activeLineIndex);
 }
 
 bool DrawSketchHandler::isDirectionCloseToTangentHint(const Base::Vector2d& direction) const
@@ -903,7 +948,7 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
         // Suggest vertical constraint
         constr.Type = Sketcher::Vertical;
     }
-    else if (!tangentAutoConstraintHint.isValid && parallelPerpendicularRefGeoId != GeoEnum::GeoUndef) {
+    else if (parallelPerpendicularRefGeoId != GeoEnum::GeoUndef) {
         SketchObject* obj = sketchgui->getSketchObject();
 
         const Part::Geometry* geometry = obj->getGeometry(parallelPerpendicularRefGeoId);
@@ -1748,9 +1793,7 @@ int DrawSketchHandler::seekAndRenderAutoConstraint(
 {
     const int constraintCount = seekAutoConstraint(suggestedConstraints, Pos, Dir, type);
     renderLineExtensionAutoConstraintHint();
-    if (!renderTangentAutoConstraintHint()) {
-        renderParallelPerpendicularHint();
-    }
+    renderDirectionalAutoConstraintHints();
 
     if (constraintCount) {
         renderSuggestConstraintsCursor(suggestedConstraints);
@@ -1868,54 +1911,6 @@ void DrawSketchHandler::clearParallelPerpendicularHintDrawing() const
     drawParallelPerpendicularHint(std::vector<Base::Vector2d>());
 }
 
-void DrawSketchHandler::renderParallelPerpendicularHint() const
-{
-    if (!areDirectionalAutoConstraintHintsVisible()) {
-        clearParallelPerpendicularHintDrawing();
-        return;
-    }
-
-    if (parallelPerpendicularRefGeoId == GeoEnum::GeoUndef) {
-        clearParallelPerpendicularHintDrawing();
-        return;
-    }
-
-    SketchObject* obj = sketchgui->getSketchObject();
-    Base::Vector2d startPoint;
-    if (!obj || !getStartPointOfCurrentSegment(startPoint)) {
-        clearParallelPerpendicularHintDrawing();
-        return;
-    }
-
-    const Part::Geometry* geometry = obj->getGeometry(parallelPerpendicularRefGeoId);
-    if (!geometry || !geometry->is<Part::GeomLineSegment>()) {
-        clearParallelPerpendicularHintDrawing();
-        return;
-    }
-    auto* line = static_cast<const Part::GeomLineSegment*>(geometry);
-
-    Base::Vector3d lineStart = line->getStartPoint();
-    Base::Vector3d lineEnd = line->getEndPoint();
-    Base::Vector2d lineDir = toVector2d(lineEnd - lineStart);
-
-    if (lineDir.Sqr() <= Precision::SquareConfusion()) {
-        clearParallelPerpendicularHintDrawing();
-        return;
-    }
-
-    lineDir.Normalize();
-    Base::Vector2d perpDir(-lineDir.y, lineDir.x);
-
-    double halfLength = 1000.0 * sketchgui->getScaleFactor();
-
-    Base::Vector2d p1 = startPoint - halfLength * lineDir;
-    Base::Vector2d p2 = startPoint + halfLength * lineDir;
-    Base::Vector2d p3 = startPoint - halfLength * perpDir;
-    Base::Vector2d p4 = startPoint + halfLength * perpDir;
-
-    drawParallelPerpendicularHint({p1, p2, p3, p4}, parallelPerpendicularActiveHintLine);
-}
-
 bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
 {
     if (!sketchgui->Autoconstraints.getValue()) {
@@ -1987,10 +1982,6 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
     parallelPerpendicularActiveHintLine = -1;
 
     if (!sketchgui->Autoconstraints.getValue()) {
-        return false;
-    }
-
-    if (tangentAutoConstraintHint.isValid) {
         return false;
     }
 
@@ -2069,7 +2060,7 @@ void DrawSketchHandler::onHoverTimeout()
     if (lastHoveredGeoId != GeoEnum::GeoUndef) {
         parallelPerpendicularRefGeoId = lastHoveredGeoId;
         parallelPerpendicularRefFromEndpoint = false;
-        renderParallelPerpendicularHint();
+        renderDirectionalAutoConstraintHints();
     }
 }
 

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2005 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -332,6 +329,22 @@ public:
   virtual Property *getPropertyByName(const char* name) const;
 
   /**
+   * @brief Get the canonical property name.
+   *
+   * Some property containers may have alternative names for the same property.
+   * This method returns the canonical name of the property or an empty string
+   * if the property container has no knowledge of a canonical or alternative
+   * property name.
+   *
+   * @param[in] name The name of the property to find the canonical name for.
+   * @return The canonical name of the property, or an empty string if not found.
+   */
+  virtual std::string getCanonicalPropertyName(const char* /*name*/) const
+  {
+      return {};
+  }
+
+  /**
    * @brief Get the name of a property.
    *
    * @param[in] prop The property to get the name for.
@@ -520,7 +533,7 @@ public:
    * @return `true` if the update was successful; `false` otherwise.
    */
   bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
-      return dynamicProps.changeDynamicProperty(prop,group,doc);
+      return dynamicProps.changeDynamicProperty(prop, group, doc);
   }
 
   /**
@@ -533,7 +546,7 @@ public:
    * @throw Base::NameError If the new name is invalid or already exists.
    */
   virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop,name);
+      return dynamicProps.renameDynamicProperty(prop, name);
   }
 
   /**

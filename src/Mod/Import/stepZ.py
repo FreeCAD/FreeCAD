@@ -1,12 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 Maurice
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ****************************************************************************
-# *  Copyright (c) 2018 Maurice <easyw@katamail.com>                         *
-# *                                                                          *
-# *  StepZ Import Export compressed STEP files for FreeCAD                   *
-# *  License: LGPLv2+                                                        *
-# *                                                                          *
-# ****************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # workaround for unicode in gzipping filename
 # OCC7 doesn't support non-ASCII characters at the moment
@@ -17,11 +28,7 @@ import FreeCAD
 import FreeCADGui
 import shutil
 import os
-import re
 import ImportGui
-import PySide
-from PySide import QtCore
-from PySide import QtGui
 import tempfile
 
 ___stpZversion___ = "1.4.0"
@@ -32,7 +39,6 @@ ___stpZversion___ = "1.4.0"
 
 import gzip as gz
 import builtins
-import importlib
 
 
 import zipfile as zf
@@ -86,21 +92,16 @@ def import_stpz(fn, fc, doc):
     basepath = os.path.split(fn)[0]
     filepath = os.path.join(basepath, fname + ".stp")
 
-    tempdir = tempfile.gettempdir()  # get the current temporary directory
-    tempfilepath = os.path.join(tempdir, fname + ".stp")
-
-    with builtins.open(tempfilepath, "wb") as f:  # py3
-        f.write(fc)
-    # ImportGui.insert(filepath)
-    if doc is None:
-        ImportGui.open(tempfilepath)
-    else:
-        ImportGui.open(tempfilepath, doc.Name)
-    FreeCADGui.SendMsgToActiveView("ViewFit")
-    try:
-        os.remove(tempfilepath)
-    except OSError:
-        sayzerr("error on removing " + tempfilepath + " file")
+    # Private directory avoids predictable-path link attacks (GHSA-78hj-4hh8-w6f9)
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tempdir:
+        tempfile_path = os.path.join(tempdir, fname + ".stp")
+        with builtins.open(tempfile_path, "wb") as f:
+            f.write(fc)
+        if doc is None:
+            ImportGui.open(tempfile_path)
+        else:
+            ImportGui.open(tempfile_path, doc.Name)
+        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
 
 ###
@@ -144,40 +145,17 @@ def export(objs, filename):
     ext = os.path.splitext(os.path.basename(filename))[1]
     fname = os.path.splitext(os.path.basename(filename))[0]
     basepath = os.path.split(filename)[0]
-    tempdir = tempfile.gettempdir()  # get the current temporary directory
-
-    filepath = os.path.join(basepath, fname) + ".stp"
-    filepath_base = os.path.join(basepath, fname)
-
-    namefpath = os.path.join(basepath, fname)
-
     outfpath = os.path.join(basepath, fname) + ".stpZ"
-    outfpathT = os.path.join(tempdir, fname) + ".stpZ"
-    outfpath_stp = os.path.join(basepath, fname) + ".stp"
-    outfpathT_stp = os.path.join(tempdir, fname) + ".stp"
 
-    outfpath_base = basepath
-    # outfpath_str = mkz_string(os.path.join(basepath,fname))
-    outfpath_str = os.path.join(basepath, fname) + ".stp"
-    outfpathT_str = os.path.join(tempdir, fname) + ".stp"
-
-    if os.path.exists(outfpathT_stp):
-        os.remove(outfpathT_stp)
-        sayzw("Old temp file with the same name removed '" + outfpathT_stp + "'")
-    ImportGui.export(objs, outfpathT_stp)
-    with builtins.open(outfpathT_stp, "rb") as f_in:
-        file_content = f_in.read()
-        new_f_content = file_content
-        f_in.close()
-    with gz.open(outfpathT_str, "wb") as f_out:
-        f_out.write(new_f_content)
-        f_out.close()
-    if os.path.exists(outfpath):
-        shutil.move(outfpathT_str, outfpath)
-        # os.remove(outfpathT_stp)
-    else:
-        shutil.move(outfpathT_str, outfpath)
-        # os.remove(outfpathT_stp)
+    # Private directory avoids predictable-path link attacks (GHSA-78hj-4hh8-w6f9)
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tempdir:
+        tempfile_path = os.path.join(tempdir, fname) + ".stp"
+        ImportGui.export(objs, tempfile_path)
+        with builtins.open(tempfile_path, "rb") as f_in:
+            file_content = f_in.read()
+        with gz.open(tempfile_path, "wb") as f_out:
+            f_out.write(file_content)
+        shutil.move(tempfile_path, outfpath)
 
 
 ####

@@ -34,6 +34,7 @@
 /// @brief Data structures for E57 Simple API
 
 #include "E57Format.h"
+#include "E57SimpleDataExtensions.h"
 
 namespace e57
 {
@@ -950,6 +951,9 @@ namespace e57
 
       /// Representation for an image using the cylindrical camera projection model.
       CylindricalRepresentation cylindricalRepresentation;
+
+      /// Optional distortion parameters for a pinhole camera
+      std::unique_ptr<Extension::PinholeCameraDistortion> pinholeCameraDistortionExt;
    };
 
    /// @brief Identifies the format representation for the image data

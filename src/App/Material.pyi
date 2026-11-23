@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
@@ -10,6 +9,7 @@ from typing import Any, overload
 @export(
     Constructor=True,
     Delete=True,
+    RichCompare=True,
 )
 @class_declarations("""public:
     static Base::Color toColor(PyObject* value);
@@ -31,7 +31,6 @@ class Material(PyObjectBase):
         Brass, Bronze, Copper, Gold, Pewter, Plaster, Plastic, Silver, Steel, Stone, Shiny plastic,
         Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
         """
-        ...
 
     AmbientColor: Any = ...
     """Ambient color"""

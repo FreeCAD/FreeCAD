@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
@@ -10,6 +9,9 @@ from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from typing import TYPE_CHECKING, Any, Final, List, Optional, Union, Tuple
 
+if TYPE_CHECKING:
+    from FreeCADGui import ViewProviderDocumentObject as _ViewProviderDocumentObject
+
 
 class DocumentObject(ExtensionContainer):
     """
@@ -17,10 +19,6 @@ class DocumentObject(ExtensionContainer):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
-
-    if TYPE_CHECKING:
-        Label: str = ...
-        Label2: str = ...
 
     OutListProp: Final[List[DepEdge]] = []
     """A list of all objects which link to this object with properties."""
@@ -52,7 +50,7 @@ class DocumentObject(ExtensionContainer):
     State: Final[List[Any]] = []
     """State of the object in the document"""
 
-    ViewObject: Final[Any] = None
+    ViewObject: Final[_ViewProviderDocumentObject | None] = None
     """
     If the GUI is loaded the associated view provider is returned
     or None if the GUI is not up
@@ -86,69 +84,76 @@ class DocumentObject(ExtensionContainer):
         read_only: bool = False,
         hidden: bool = False,
         locked: bool = False,
-        enum_vals: list = [],
+        enum_vals: list[str] | None = None,
     ) -> "DocumentObject":
         """
         Add a generic property.
-        """
-        ...
 
-    def removeProperty(self, string: str, /) -> None:
+        Args:
+            type: The type of the property to add.
+            name: The name of the property.
+            group: The group to which the property belongs. Defaults to "".
+            doc: The documentation string for the property. Defaults to "".
+            attr: Attribute flags for the property. Defaults to 0.
+            read_only: Whether the property is read-only. Defaults to False.
+            hidden: Whether the property is hidden. Defaults to False.
+            locked: Whether the property is locked. Defaults to False.
+            enum_vals: Initial values for an enumeration property. Defaults to None.
+        """
+
+    def removeProperty(self, string: str, /) -> bool:
         """
         Remove a generic property.
 
         Note, you can only remove user-defined properties but not built-in ones.
         """
-        ...
 
     def supportedProperties(self) -> list:
         """
         A list of supported property types
         """
-        ...
 
-    def touch(self) -> None:
+    def touch(self, property_name: str = ..., /) -> None:
         """
         Mark the object as changed (touched)
+
+        With no argument the object is then forced to recompute. With an empty string as the
+        argument, this marks the object as touched *without* forcing a recompute. Finally, if a
+        property name is passed, this only touches that property.
         """
-        ...
 
     def purgeTouched(self) -> None:
         """
         Mark the object as unchanged
         """
-        ...
 
     def enforceRecompute(self) -> None:
         """
         Mark the object for recompute
         """
-        ...
 
-    def setExpression(self, name: str, expression: str, /) -> None:
+    def setExpression(self, name: str, expression: str | None, comment: str = ..., /) -> None:
         """
-        Register an expression for a property
+        Register an expression for a property.
+
+        Pass None as expression to clear an existing expression.
         """
-        ...
 
     def clearExpression(self, name: str, /) -> None:
         """
         Clear the expression for a property
         """
-        ...
 
     @classmethod
     def evalExpression(cls, expression: str, /) -> Any:
         """
         Evaluate an expression
         """
-        ...
 
-    def recompute(self, recursive: bool = False, /) -> None:
+    def recompute(self, recursive: bool = False, /) -> bool:
         """
         Recomputes this object
         """
-        ...
 
     @constmethod
     def getStatusString(self) -> str:
@@ -158,14 +163,12 @@ class DocumentObject(ExtensionContainer):
         If the object is valid but touched then 'Touched' will be returned,
         'Valid' otherwise.
         """
-        ...
 
     @constmethod
     def isValid(self) -> bool:
         """
         Returns True if the object is valid, False otherwise
         """
-        ...
 
     def getSubObject(
         self,
@@ -201,19 +204,16 @@ class DocumentObject(ExtensionContainer):
 
         * depth: current recursive depth
         """
-        ...
 
     def getSubObjectList(self, subname: str, /) -> list:
         """
         Return a list of objects referenced by a given subname including this object
         """
-        ...
 
     def getSubObjects(self, reason: int = 0, /) -> list:
         """
         Return subname reference of all sub-objects
         """
-        ...
 
     def getLinkedObject(
         self,
@@ -236,35 +236,30 @@ class DocumentObject(ExtensionContainer):
 
         * depth: current recursive depth
         """
-        ...
 
-    def setElementVisible(self, element: str, visible: bool, /) -> int:
+    def setElementVisible(self, element: str, visible: bool = True, /) -> int:
         """
         Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
-        ...
 
     def isElementVisible(self, element: str, /) -> int:
         """
         Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
         """
-        ...
 
     def hasChildElement(self) -> bool:
         """
         Return true to indicate the object having child elements
         """
-        ...
 
-    def getParentGroup(self) -> DocumentObjectGroup:
+    def getParentGroup(self) -> DocumentObjectGroup | None:
         """
         Returns the group the object is in or None if it is not part of a group.
 
         Note that an object can only be in a single group, hence only a single return value.
         """
-        ...
 
     def getParentGeoFeatureGroup(self) -> Any:
         """
@@ -273,7 +268,6 @@ class DocumentObject(ExtensionContainer):
 
         Note that an object can only be in a single group, hence only a single return value.
         """
-        ...
 
     def getParent(self) -> Any:
         """
@@ -283,13 +277,11 @@ class DocumentObject(ExtensionContainer):
         The parent can be a simple group as with getParentGroup() or a GeoFeature group as
         with getParentGeoFeatureGroup().
         """
-        ...
 
-    def getPathsByOutList(self) -> list:
+    def getPathsByOutList(self, target: DocumentObject, /) -> list[list[DocumentObject]]:
         """
         Get all paths from this object to another object following the OutList.
         """
-        ...
 
     @constmethod
     def resolve(self, subname: str, /) -> tuple:
@@ -302,10 +294,9 @@ class DocumentObject(ExtensionContainer):
         to call parent.isElementVisible/setElementVisible(). 'subElement' is the
         non-object sub-element name if any.
         """
-        ...
 
     @constmethod
-    def resolveSubElement(self, subname: str, append: bool, type: int, /) -> tuple:
+    def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple:
         """
         resolve both new and old style sub element
 
@@ -315,31 +306,39 @@ class DocumentObject(ExtensionContainer):
 
         Return tuple(obj,newElementName,oldElementName)
         """
-        ...
 
     def adjustRelativeLinks(self, parent: DocumentObject, recursive: bool = True, /) -> bool:
         """
         auto correct potential cyclic dependencies
         """
-        ...
 
     @constmethod
-    def getElementMapVersion(self, property_name: str, /) -> str:
+    def getElementMapVersion(self, property_name: str, restored: bool = False, /) -> str:
         """
         return element map version of a given geometry property
         """
-        ...
 
     @constmethod
     def isAttachedToDocument(self) -> bool:
         """
         Return true if the object is part of a document, false otherwise.
         """
-        ...
 
-    def getPlacementOf(self, subname: str, target: DocumentObject = None, /) -> Any:
+    def getPlacementOf(self, subname: str, target: DocumentObject | None = None, /) -> Any:
         """
         Return the placement of the sub-object relative to the link object.
         getPlacementOf(subname, [targetObj]) -> Base.Placement
         """
-        ...
+
+    @constmethod
+    def moveProperty(self, name: str, targetObj: DocumentObject, /) -> None:
+        """
+        moveProperty(name, targetObj) -> None
+
+        Move a property to the target container.
+
+        name : str
+            The name of the property to move.
+        targetObj : DocumentObject
+            The target object to move the property to.
+        """

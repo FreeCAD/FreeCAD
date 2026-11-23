@@ -1,23 +1,24 @@
-# ***************************************************************************
-# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Samuel Abels
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 import FreeCAD
 import Path
 from typing import Any, Dict, List, Optional
@@ -60,6 +61,7 @@ class DetachedDocumentObject:
             if thetype in [
                 "App::PropertyQuantity",
                 "App::PropertyLength",
+                "App::PropertyDistance",
                 "App::PropertyArea",
                 "App::PropertyVolume",
                 "App::PropertyAngle",
@@ -107,13 +109,18 @@ class DetachedDocumentObject:
         if prop_type == "App::PropertyEnumeration" and isinstance(value, (list, tuple)):
             self._property_enums[name] = list(value)
             assert len(value) > 0, f"Enum property '{name}' must have at least one entry"
-            self._properties.setdefault(name, value[0])
+            if not self._properties.get(name):
+                # addProperty() already created the key with a None value, so
+                # setdefault() would never fire here. Mimic FreeCAD, which makes
+                # the first choice the current value when the choices are set.
+                self._properties[name] = value[0]
             return
 
         # Attempt to convert string values to Quantity if the property type is Quantity
         elif prop_type in [
             "App::PropertyQuantity",
             "App::PropertyLength",
+            "App::PropertyDistance",
             "App::PropertyArea",
             "App::PropertyVolume",
             "App::PropertyAngle",
@@ -149,6 +156,10 @@ class DetachedDocumentObject:
     def getTypeIdOfProperty(self, name: str) -> Optional[str]:
         """Returns the stored type string for a property in detached state."""
         return self._property_types.get(name)
+
+    def getDocumentationOfProperty(self, name: str) -> Optional[str]:
+        """Returns the stored docstring for a property in detached state."""
+        return self._property_docs.get(name)
 
     def getEnumerationsOfProperty(self, name: str) -> List[str]:
         """Returns the stored enumeration list for a property."""

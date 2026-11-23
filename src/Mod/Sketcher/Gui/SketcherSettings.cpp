@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QMessageBox>
 #include <QPainter>
@@ -38,7 +35,6 @@
 #include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
-
 
 using namespace SketcherGui;
 
@@ -218,6 +214,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxLineGroup->onRestore();
+    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
     ui->checkBoxAddExtGeo->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
@@ -578,7 +575,7 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     catch (Base::PyException& e) {
         Base::Console().developerError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
         e.reportException();
-        errMsg = QString::fromLatin1(e.what());
+        errMsg = QString::fromUtf8(e.what());
     }
     catch (...) {
         errMsg = tr("Unexpected C++ exception");
@@ -688,7 +685,11 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
     ui->InformationPattern->setIconSize(LineIconSize);
     ui->InformationPattern->setItemDelegate(lineStyleDelegate);
-    const QBrush brush = palette().windowText();
+    ui->DimensionalConstraintLinePattern->setIconSize(LineIconSize);
+    ui->DimensionalConstraintLinePattern->setItemDelegate(lineStyleDelegate);
+    ui->AxisLinePattern->setIconSize(LineIconSize);
+    ui->AxisLinePattern->setItemDelegate(lineStyleDelegate);
+
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
         ui->ConstructionPattern->addItem(QString(), QVariant(style.pattern));
@@ -696,6 +697,8 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->ExternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
         ui->InformationPattern->addItem(QString(), QVariant(style.pattern));
+        ui->DimensionalConstraintLinePattern->addItem(QString(), QVariant(style.pattern));
+        ui->AxisLinePattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -712,7 +715,14 @@ bool SketcherSettingsAppearance::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+
+        // Resolve color from qss source - see src/Gui/Application.cpp (2869)
+        QLabel dummyLabel;
+        dummyLabel.show();
+
+        QColor textColor = dummyLabel.palette().color(QPalette::Text);
+        QBrush brush = QBrush(textColor);
+
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->EdgePattern->setItemIcon(i, icon);
@@ -721,6 +731,8 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->ExternalPattern->setItemIcon(i, icon);
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
             ui->InformationPattern->setItemIcon(i, icon);
+            ui->DimensionalConstraintLinePattern->setItemIcon(i, icon);
+            ui->AxisLinePattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -761,6 +773,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
     ui->InformationWidth->onSave();
+    ui->DimensionalConstraintLineWidth->onSave();
+    ui->AxisLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -790,6 +804,16 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->InformationPattern->itemData(ui->InformationPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("InformationPattern", pattern);
+
+    data = ui->DimensionalConstraintLinePattern->itemData(
+        ui->DimensionalConstraintLinePattern->currentIndex()
+    );
+    pattern = data.toInt();
+    hGrp->SetInt("DimensionalConstraintLinePattern", pattern);
+
+    data = ui->AxisLinePattern->itemData(ui->AxisLinePattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("AxisLinePattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -826,6 +850,8 @@ void SketcherSettingsAppearance::loadSettings()
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
     ui->InformationWidth->onRestore();
+    ui->DimensionalConstraintLineWidth->onRestore();
+    ui->AxisLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -874,6 +900,20 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->InformationPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("DimensionalConstraintLinePattern", 0b1111111111111111);
+    index = ui->DimensionalConstraintLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->DimensionalConstraintLinePattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("AxisLinePattern", 0b1111111111111111);
+    index = ui->AxisLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->AxisLinePattern->setCurrentIndex(index);
 }
 
 /**

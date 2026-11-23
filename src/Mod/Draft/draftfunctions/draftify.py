@@ -112,15 +112,15 @@ def draftify_shape(shape):
                         edge.Curve.value((first_parameter + last_parameter) / 2),
                         edge.Curve.value(last_parameter),
                     ]
-                    nobj = make_arc_3points.make_arc_3points(points)
+                    nobj = make_arc_3points.make_arc_3_points(points)
         # TODO: take into consideration trimmed curves and capture the specific
         # type of BSpline and Bezier that can be converted to a draft object.
         # elif edge_type == "BSplineCurve":
         #     knots = [edge.Curve.value(p) for p in edge.Curve.getKnots()]
         #     nobj = make_bspline.make_bspline(knots, closed=edge.isClosed())
         # elif edge_type == "BezierCurve":
-        #     nobj = make_bezcurve.make_bezcurve(edge.Curve.getPoles(),
-        #                                        closed=edge.isClosed())
+        #     nobj = make_bezcurve.make_bez_curve(edge.Curve.getPoles(),
+        #                                         closed=edge.isClosed())
     else:
         nobj = make_wire.make_wire(shape)
 

@@ -27,12 +27,12 @@ import unittest
 
 import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine
 import Constants
 import Path
 import Path.Post.Command as PathCommand
 from Path.Post import PostList
 import Path.Post.Utils as PostUtils
+from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
@@ -108,8 +108,6 @@ class TestFileNameGenerator(unittest.TestCase):
         cls.macro = FreeCAD.getUserMacroDir()
 
         # Create a simple geometry object for the job
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -326,6 +324,20 @@ class TestFileNameGenerator(unittest.TestCase):
 
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "OutsideProfile.nc"))
 
+    def test074(self):
+        """Test %O substitution when the template has literal text around it"""
+        teststring = "%j-Op-%O.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("OutsideProfile")
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(
+            self, filename, os.path.join(self.testfilepath, "MainJob-Op-OutsideProfile.nc")
+        )
+
     def test075(self):
         """Test path and filename substitutions together"""
         teststring = "%D/%j_%S.nc"
@@ -438,7 +450,7 @@ class TestExport2Integration(unittest.TestCase):
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54"]
 
-        cls.job.Machine = "Millstone"
+        cls.job.Machine = "linuxcnc"
 
         from Path.Tool.toolbit import ToolBit
 
@@ -630,48 +642,38 @@ class TestExport2Integration(unittest.TestCase):
     def _get_full_machine_config():  # FIXME: find other example that creates this correctly
         """Helper to get the complete machine config used in multiple tests."""
         return {
-            "freecad_version": "1.2.0",
+            "freecad_version": "26.3.0",
             "machine": {
                 "axes": {
                     "A": {
                         "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
-                        "max": 180,
                         "max_velocity": 36000,
-                        "min": -180,
                         "prefer_positive": True,
                         "sequence": 0,
-                        "type": "angular",
+                        "type": "rotary",
                     },
                     "C": {
                         "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
-                        "max": 180,
                         "max_velocity": 36000,
-                        "min": -180,
                         "prefer_positive": True,
                         "sequence": 0,
-                        "type": "angular",
+                        "type": "rotary",
                     },
                     "X": {
-                        "joint": [[1.0, 0.0, 0.0], [0, 0, 0]],
-                        "max": 500.0,
+                        "joint": [[0, 0, 0], [1.0, 0.0, 0.0]],
                         "max_velocity": 10000,
-                        "min": 50.0,
                         "sequence": 0,
                         "type": "linear",
                     },
                     "Y": {
-                        "joint": [[0.0, 1.0, 0.0], [0, 0, 0]],
-                        "max": 1000,
+                        "joint": [[0, 0, 0], [0.0, 1.0, 0.0]],
                         "max_velocity": 10000,
-                        "min": 0,
                         "sequence": 0,
                         "type": "linear",
                     },
                     "Z": {
-                        "joint": [[0.0, 0.0, 1.0], [0, 0, 0]],
-                        "max": 1000,
+                        "joint": [[0, 0, 0], [0.0, 0.0, 1.0]],
                         "max_velocity": 10000,
-                        "min": 0,
                         "sequence": 0,
                         "type": "linear",
                     },
@@ -679,7 +681,7 @@ class TestExport2Integration(unittest.TestCase):
                 "description": "My linuxcnc mill",
                 "manufacturer": "Supermax",
                 "name": "MillStone",
-                "spindles": [
+                "toolheads": [
                     {
                         "id": "spindle1",
                         "max_power_kw": 3.0,
@@ -690,31 +692,25 @@ class TestExport2Integration(unittest.TestCase):
                         "coolant_flood": False,
                         "coolant_mist": False,
                         "coolant_delay": 0.0,
-                        "spindle_wait": 0.0,
+                        "toolhead_wait": 0.0,
                     }
                 ],
                 "units": "metric",
             },
             "output": {
-                "axis_precision": 3,
-                "blank_lines": True,
-                "command_space": " ",
-                "comment_symbol": ";",
-                "comments": False,
-                "end_of_line_chars": "\n",
-                "feed_precision": 3,
-                "header": False,
-                "line_increment": 10,
-                "line_number_start": 100,
-                "line_numbers": False,
-                "list_tools_in_preamble": False,
-                "machine_name": False,
-                "output_bcnc_comments": True,
-                "output_duplicate_parameters": True,
-                "output_units": "metric",
-                "path_labels": False,
-                "show_operation_labels": True,
-                "spindle_decimals": 0,
+                "units": "metric",
+                "header": {
+                    "output_header": False,
+                    "include_date": False,
+                    "include_description": False,
+                    "include_document_name": False,
+                    "include_machine_name": False,
+                    "include_project_file": False,
+                    "include_units": False,
+                    "include_tool_list": False,
+                    "include_fixture_list": False,
+                },
+                "comments": {"enabled": False},
             },
             "postprocessor": {
                 "file_name": "",
@@ -730,22 +726,21 @@ class TestExport2Integration(unittest.TestCase):
                     "safetyblock": "(safety)",
                     "pre_operation": "(preoperation)",
                     "post_operation": "(postoperation)",
-                    "pre_tool_change": "(pretoolchange)",
-                    "post_tool_change": "(posttoolchange)",
                     "pre_job": "(prejob)",
                     "post_job": "(postjob)",
                     "pre_fixture_change": "(prefixture)",
                     "post_fixture_change": "(postfixture)",
                     "pre_rotary_move": "(prerotary)",
                     "post_rotary_move": "(Postrotary)",
-                    "tool_return": "(toolreturn)",
+                    "pre_tool_change": "(pretoolchange)",
+                    "post_tool_change": "(posttoolchange)",  # immediate after m6
+                    "tool_return": "(toolreturn)",  # at end of tool-change item
                 },
             },
             "processing": {
                 "early_tool_prep": False,
                 "filter_inefficient_moves": False,
                 "split_arcs": False,
-                "tool_change": True,
                 "translate_rapid_moves": False,
             },
             "version": 1,
@@ -769,8 +764,7 @@ class TestExport2Integration(unittest.TestCase):
         self.assertNotIn(" F", gcode)
 
         # Output G0 F's if asked
-
-        machine.processing.f_for_rapid_moves = True
+        machine.postprocessor_properties["f_for_rapid_moves"] = True
         post = self._create_postprocessor(machine)
 
         # convert_command_to_gcode level: no spurious F
@@ -783,11 +777,111 @@ class TestExport2Integration(unittest.TestCase):
         gcode = post.convert_command_to_gcode(cmd)
         self.assertIn(" F", gcode)
 
-        # Don't output G0 F's if they are zero (e.g. tool wasn't setup with rapid speed)
-
+        # set zero F if tool wasn't setup with rapid speed
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
-        self.assertNotIn(" F", gcode)
+        self.assertIn(" F0", gcode)
+
+    def test003_arc_center_words_follow_the_plane(self):
+        """K is dropped under G17, J under G18, I under G19. A plane word in a
+        block the post writes as-is, such as a '!' command, is read too."""
+        commands = [
+            Path.Command("G0 X0 Y0 Z0"),
+            Path.Command("G2 X10 Y10 Z-1 I10 J0 K-0.5 F10"),
+            Path.Command("G18"),
+            Path.Command("G2 X20 Z-10 I5 J0 K-5 F10"),
+            Path.Command("G19"),
+            Path.Command("G2 Y10 Z0 I0 J5 K5 F10"),
+            Path.Command("", {}, {"as-is": "G17"}),
+            Path.Command("G2 X0 Y0 I-5 J0 K0 F10"),
+        ]
+        with self._modify_operation_path(commands):
+            lines = [l.strip() for l in self._get_all_gcode(self._run_export2()).splitlines()]
+
+        arcs = [l for l in lines if l.startswith("G2 ")]
+        self.assertEqual(4, len(arcs), lines)
+        self.assertNotIn("K", arcs[0], arcs[0])
+        self.assertIn("G18", lines)
+        self.assertNotIn("J", arcs[1], arcs[1])
+        self.assertIn("K-5.000", arcs[1])
+        self.assertIn("G19", lines)
+        self.assertNotIn("I", arcs[2], arcs[2])
+        self.assertIn("J5.000", arcs[2])
+        self.assertIn("G17", lines)
+        self.assertNotIn("K", arcs[3], arcs[3])
+        self.assertIn("I-5.000", arcs[3])
+
+    def test004_unsupported_convert(self):
+        """Test if throws on unsupported"""
+
+        machine = self._create_machine()
+        post = self._create_postprocessor(machine)
+
+        # Basic unsupported
+        cmd = Path.Command("G9999")
+        with self.assertRaisesRegex(CAMValueError, "Unsupported command") as cm:
+            gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("Unsupported command: G9999", str(cm.exception))
+
+        # But, allow ANNOT_ALLOW_UNSUPPORTED
+        cmd = Path.Command("G9999", {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("G9999", gcode)
+
+    def test005_feed_move_never_runs_at_rapid_feed(self):
+        """
+        A G1 must run at its own feed, never at the F of an earlier G0.
+
+        F is modal on the control: a G0 F also sets the feed of the next G1.
+        So after a G0 that writes F, the next G1 must write its F again,
+        also when duplicate parameters are off and the F is the same as before.
+
+        Path (F in mm/s):          Control (F in mm/min):
+            G1 Z-1 F100                G1 Z-1.000 F6000.000
+            G1 X10 F100                G1 X10.000
+            G0 Z5 F3000                G0 Z5.000 [F180000.000]
+            G0 X20 F3000               G0 X20.000
+            G1 Z-1 F100                G1 Z-1.000 F6000.000   <- must have F
+        """
+        commands = [
+            Path.Command("G0", {"Z": 5.0, "F": 100.0}),
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            Path.Command("G1", {"Z": -1.0, "F": 100.0}),
+            Path.Command("G1", {"X": 10.0, "F": 100.0}),
+            Path.Command("G0", {"Z": 5.0, "F": 3000.0}),
+            Path.Command("G0", {"X": 20.0, "F": 3000.0}),
+            Path.Command("G1", {"Z": -1.0, "F": 100.0}),
+            Path.Command("G1", {"X": 30.0, "F": 100.0}),
+        ]
+        cut_feed = 6000.0  # 100 mm/s
+
+        for f_for_rapid_moves in (False, True):
+            for duplicates in (False, True):
+                with self.subTest(f_for_rapid_moves=f_for_rapid_moves, duplicates=duplicates):
+                    machine = self._create_machine(output_duplicate_parameters=duplicates)
+                    machine.postprocessor_properties["f_for_rapid_moves"] = f_for_rapid_moves
+                    with self._modify_operation_path(commands):
+                        gcode = self._run_export2(machine)[0][1]
+
+                    body = gcode.split("(TestProfile)")[-1]
+                    lines = [l.strip() for l in body.splitlines() if l.strip()[:2] in ("G0", "G1")]
+
+                    # Simulate the modal F of the control.
+                    modal_f = None
+                    cuts = 0
+                    for line in lines:
+                        for word in line.split():
+                            if word.startswith("F"):
+                                modal_f = float(word[1:])
+                        if line.startswith("G1"):
+                            cuts += 1
+                            self.assertEqual(
+                                modal_f,
+                                cut_feed,
+                                f"'{line}' runs at F{modal_f}, not F{cut_feed}:\n"
+                                + "\n".join(lines),
+                            )
+                    self.assertEqual(cuts, 4, "\n".join(lines))
 
     # ===== 010-019: Basic smoke tests =====
 
@@ -1003,7 +1097,7 @@ class TestExport2Integration(unittest.TestCase):
                     G0 X10 Y20
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["spindle_wait"] = 2.5
+        config["machine"]["toolheads"][0]["toolhead_wait"] = 2.5
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1046,7 +1140,7 @@ class TestExport2Integration(unittest.TestCase):
             G0 X10 Y20   (no G4 between)
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["spindle_wait"] = 0.0
+        config["machine"]["toolheads"][0]["toolhead_wait"] = 0.0
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1077,7 +1171,7 @@ class TestExport2Integration(unittest.TestCase):
                     G1 X10 F100
         """
         config = self._get_full_machine_config()
-        config["machine"]["spindles"][0]["coolant_delay"] = 1.5
+        config["machine"]["toolheads"][0]["coolant_delay"] = 1.5
         machine = Machine.from_dict(config)
 
         with self._modify_operation_path(
@@ -1142,6 +1236,60 @@ class TestExport2Integration(unittest.TestCase):
             self.assertGreaterEqual(
                 g1_count, 4, f"Should have at least 4 G1 commands, found {g1_count}"
             )
+
+    def test080_translate_no_engagement(self):
+        """
+        Test that _expand_translate_rapids converts G0 to G1
+        when TRANSLATE_NO_ENGAGEMENT_FEED && ANNOT_NO_ENGAGEMENT_FEED
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+
+        # Do G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = True
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),  # not translated
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 100.0},  # should replace F
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "500"},
+                ),  # translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G1 X10.000 Y10.000 F30000.000
+G1 X20.000 Y10.000 F6000.000
+"""
+
+            self.assertEqual(expected, interested)
+
+        # Don't G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = False
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                # not translated, and F is dropped ("f_for_rapid_moves")
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 500.0},
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "True"},
+                ),  # not translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G0 X10.000 Y10.000
+G1 X20.000 Y10.000 F6000.000
+"""
+            self.assertEqual(interested, expected)
 
     # ===== 090-099: _expand_xy_before_z tests =====
 
@@ -1265,20 +1413,154 @@ class TestExport2Integration(unittest.TestCase):
         lines = gcode.split("\n")
 
         for i, line in enumerate(lines):
-            if line.startswith("(Block-name:"):
-                if i + 2 < len(lines):
-                    self.assertEqual(
-                        lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
-                    )
-                    self.assertEqual(
-                        lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
-                    )
+            if line.startswith("(Block-name:") and i + 2 < len(lines):
+                self.assertEqual(
+                    lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
+                )
+                self.assertEqual(
+                    lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
+                )
 
-    # ===== 110-119: _expand_tool_length_offset tests =====
+    def test104_bcnc_block_position(self):
+        """
+        Test that the bCNC block headers are in the correct position:
+            - each operation has a block header before its first move
+            - the post_amble block header is before the postamble lines
+        """
+        machine = self._create_machine(output_bcnc_comments=True, comments_enabled=False)
+        machine.postprocessor_properties["postamble"] = "M2"
+
+        results = self._run_export2(machine)
+        gcode = self._get_first_section_gcode(results)
+        lines = gcode.split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertGreater(len(names), 1, "Each operation should have a bCNC block header")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertEqual(names.count("(Block-name: post_amble)"), 1)
+
+        first_move = next(i for i, l in enumerate(lines) if l.startswith(("G0", "G1")))
+        self.assertLess(
+            lines.index(names[0]), first_move, "Operation block header should precede its moves"
+        )
+
+        post_amble = lines.index("(Block-name: post_amble)")
+        last_m2 = len(lines) - 1 - lines[::-1].index("M2")
+        self.assertLess(post_amble, last_m2, "post_amble block should precede the postamble")
+
+    def _bcnc_block_layout(self, sublist):
+        """The bCNC block names of a section, each with the labels of the items in the block."""
+        layout = []
+        for item in sublist:
+            if item.label == "Post: bCNC block":
+                layout.append((item.path.Commands[0].Name, []))
+            elif layout:
+                layout[-1][1].append(item.label)
+        return layout
+
+    def _bcnc_postable(self, item_type, label, command, data=None):
+        return PostList.Postable(
+            item_type=item_type,
+            label=label,
+            path=Path.Path([Path.Command(command)]),
+            source=None,
+            data=data or {},
+        )
+
+    def test105_bcnc_tool_change_and_fixture_blocks(self):
+        """
+        Test that a tool change and a Job fixture each have their own bCNC block.
+
+        If the tool change of Op2 is in the block of Op1, then a disabled Op1
+        block makes Op2 run with the tool of Op1.
+        """
+        post = self._create_postprocessor(self._create_machine(output_bcnc_comments=True))
+        postables = [
+            (
+                "allitems",
+                [
+                    self._bcnc_postable("fixture", "Fixture", "G54"),
+                    self._bcnc_postable("tool_controller", "T1", "M6 T1"),
+                    self._bcnc_postable("operation", "Op1", "G0 X1"),
+                    self._bcnc_postable("tool_controller", "T2", "M6 T2"),
+                    self._bcnc_postable("operation", "Op2", "G0 X2"),
+                ],
+            )
+        ]
+
+        result = post._expand_bcnc_commands(postables)
+
+        self.assertEqual(
+            self._bcnc_block_layout(result[0][1]),
+            [
+                ("(Block-name: Fixture)", ["Fixture"]),
+                ("(Block-name: T1)", ["T1"]),
+                ("(Block-name: Op1)", ["Op1"]),
+                ("(Block-name: T2)", ["T2"]),
+                ("(Block-name: Op2)", ["Op2"]),
+            ],
+        )
+
+    def test106_bcnc_operation_setup_in_operation_block(self):
+        """
+        Test that the fixture selection and the pose change of a work plane
+        are in the bCNC block of their operation, not in the previous block.
+        """
+        post = self._create_postprocessor(self._create_machine(output_bcnc_comments=True))
+        setup = {Constants.DATA_OPERATION_SETUP: True}
+        postables = [
+            (
+                "allitems",
+                [
+                    self._bcnc_postable("operation", "Op1", "G0 X1"),
+                    self._bcnc_postable("fixture", "Fixture", "G55", dict(setup)),
+                    self._bcnc_postable("rotation", "Rotary positioning", "G0 A90", dict(setup)),
+                    self._bcnc_postable("operation", "Op2", "G0 X2"),
+                ],
+            )
+        ]
+
+        result = post._expand_bcnc_commands(postables)
+
+        self.assertEqual(
+            self._bcnc_block_layout(result[0][1]),
+            [
+                ("(Block-name: Op1)", ["Op1"]),
+                ("(Block-name: Op2)", ["Fixture", "Rotary positioning", "Op2"]),
+            ],
+        )
+
+    def test107_bcnc_block_sequence(self):
+        """
+        Test the bCNC block sequence of a complete Job: the Header block,
+        the fixture block, the operation block, post_amble.
+        The pre-item lines are after the header of their block.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.comments.output_bcnc_comments = True
+
+        results = self._run_export2(machine)
+        lines = self._get_first_section_gcode(results).split("\n")
+
+        names = [l for l in lines if l.startswith("(Block-name:")]
+        self.assertEqual(names[0], "(Block-name: Header)")
+        self.assertEqual(names[-2], "(Block-name: TestProfile)")
+        self.assertEqual(names[-1], "(Block-name: post_amble)")
+        self.assertIn("(Block-name: Fixture)", names)
+        self.assertEqual(len(names), len(set(names)), "Each block name occurs one time")
+
+        self.assertLess(lines.index("(Block-name: Header)"), lines.index("(preamble)"))
+        self.assertLess(lines.index("(Block-name: Fixture)"), lines.index("(prefixture)"))
+        self.assertLess(lines.index("(Block-name: TestProfile)"), lines.index("(preoperation)"))
+        # The pose change of the operation is in the block of the operation
+        self.assertLess(lines.index("(Block-name: TestProfile)"), lines.index("(prerotary)"))
+
+    # ===== 110-119: _expand_tool_change tests =====
 
     def test110_tool_length_offset_enabled(self):
         """
-        Test that _expand_tool_length_offset adds G43 after M6 in a tool controller path.
+        Test that _expand_tool_change adds G43 after M6 in a tool controller path.
 
         G43 (tool length offset) must be injected immediately after M6 in the tool
         controller postable's path.  M6 belongs in the tool_controller postable — not
@@ -1287,7 +1569,7 @@ class TestExport2Integration(unittest.TestCase):
 
         Given:  A tool_controller postable whose path is [M6 T1]
                 followed by an operation postable [G0 ...]
-        When:   _expand_tool_length_offset is called with output_tool_length_offset=True
+        When:   _expand_tool_change is called with output_tool_length_offset=True
         Then:   The tool_controller path becomes [M6 T1, G43 H1]
 
         Example:
@@ -1321,16 +1603,16 @@ class TestExport2Integration(unittest.TestCase):
         )
         postables = [("allitems", [tc_item, op_item])]
 
-        post._expand_tool_length_offset(postables)
+        post._expand_tool_change(postables)
 
         tc_commands = [cmd.Name for cmd in tc_item.path.Commands]
         self.assertIn("G43", tc_commands, "G43 should be injected into TC path after M6")
 
         m6_idx = tc_commands.index("M6")
+        g43_cmd = tc_item.path.Commands[m6_idx + 2]
         self.assertEqual(
-            tc_commands[m6_idx + 1], "G43", "G43 must immediately follow M6 in TC path"
+            g43_cmd.Name, "G43", "G43 must immediately follow M6\n(posttoolchange) in TC path"
         )
-        g43_cmd = tc_item.path.Commands[m6_idx + 1]
         self.assertIn("H", g43_cmd.Parameters, "G43 should carry an H (tool number) parameter")
         self.assertEqual(g43_cmd.Parameters["H"], 1, "G43 H value must match the T number in M6")
 
@@ -1700,6 +1982,122 @@ class TestExport2Integration(unittest.TestCase):
                 f"Bare G0 with no parameters should be suppressed, found: {bare_g0}",
             )
 
+    def test129b_modal_commands_and_axes_together(self):
+        """
+        Test that modal G-code words and modal axes both apply to the same run
+        of moves.
+
+        Modal axis has to run on the original command so that the running axis
+        state is accumulated under the command's real name.  Deriving it from
+        the name-stripped command made every other move compare unequal to its
+        predecessor, so the G-code word came back on alternating lines, and the
+        stripped lines kept a leading separator from the empty command name:
+
+            BEFORE: G0 Z7.000
+                    G1 X3.750 Y2.625
+                    " X3.753 Y2.621"     <- leading space, G1 wrongly dropped/restored
+                    G1 X3.756 Y2.617     <- G1 re-emitted
+                    " X3.758 Y2.612"
+                    G1 Y2.598
+
+            AFTER:  G0 Z7.000
+                    G1 X3.750 Y2.625
+                    X3.753 Y2.621
+                    X3.756 Y2.617
+                    X3.758 Y2.612
+                    Y2.598               <- X unchanged, so only Y is emitted
+        """
+        machine = self._create_machine(
+            commands=False,
+            parameters=False,
+            axis_precision=3,
+            line_numbers=False,
+            comments_enabled=False,
+            output_header=False,
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 7.0}),
+                Path.Command("G1", {"X": 3.750, "Y": 2.625}),
+                Path.Command("G1", {"X": 3.753, "Y": 2.621}),
+                Path.Command("G1", {"X": 3.756, "Y": 2.617}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.612}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.598}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+
+            # NB: deliberately not stripped, a stripped line hides the leading
+            # separator that an empty command name used to leave behind.
+            lines = gcode.split("\n")
+
+            expected = [
+                "G1 X3.750 Y2.625",
+                "X3.753 Y2.621",
+                "X3.756 Y2.617",
+                "X3.758 Y2.612",
+                "Y2.598",
+            ]
+
+            self.assertIn(
+                expected[0],
+                lines,
+                f"First cut should carry its G1, in\n{gcode}",
+            )
+            start = lines.index(expected[0])
+            self.assertEqual(
+                lines[start : start + len(expected)],
+                expected,
+                f"Modal moves should keep the G1 only on the first line, in\n{gcode}",
+            )
+
+    def test129c_modal_commands_without_modal_axes(self):
+        """
+        Test that modal G-code words alone (duplicates.parameters=True) still
+        drop only the command word, keeping every parameter.
+
+        Expected:
+            G1 X3.750 Y2.625
+            X3.753 Y2.621
+            X3.758 Y2.625     <- Y is a duplicate, but axis modal is off
+        """
+        machine = self._create_machine(
+            commands=False,
+            parameters=True,
+            axis_precision=3,
+            line_numbers=False,
+            comments_enabled=False,
+            output_header=False,
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 7.0}),
+                Path.Command("G1", {"X": 3.750, "Y": 2.625}),
+                Path.Command("G1", {"X": 3.753, "Y": 2.621}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.625}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = gcode.split("\n")
+
+            expected = [
+                "G1 X3.750 Y2.625",
+                "X3.753 Y2.621",
+                "X3.758 Y2.625",
+            ]
+
+            self.assertIn(expected[0], lines, f"First cut should carry its G1, in\n{gcode}")
+            start = lines.index(expected[0])
+            self.assertEqual(
+                lines[start : start + len(expected)],
+                expected,
+                f"Only the G1 word should be dropped, in\n{gcode}",
+            )
+
     def test130_modal_state_reset_after_tool_change(self):
         """
         Test that modal state resets after tool change so parameters are not
@@ -1762,9 +2160,9 @@ class TestExport2Integration(unittest.TestCase):
 
     # ===== 140-149: G-code blocks insertion tests =====
 
-    def test140_gcode_blocks_insertion(self):
+    def test140_blocks_insertion(self):
         """
-        Test that all G-code blocks from machine config are properly inserted.
+        Test that all blocks from machine config are properly inserted.
 
         Expected: safety, preamble, prejob, preoperation, postoperation,
                   postjob, and postamble all appear in output.
@@ -1793,7 +2191,11 @@ class TestExport2Integration(unittest.TestCase):
         """
         Test that pre/post rotary blocks are inserted around rotary axis moves.
 
-        Expected: 2 rotary groups → 2 pre-rotary + 2 post-rotary blocks.
+        Expected: 3 pre-rotary + 3 post-rotary blocks. On a machine with
+        rotary axes the post commands every operation's pose before it - here
+        the rotaries home, since the operation has no work plane - and that
+        move is wrapped like any other; the path's own 2 rotary groups are the
+        other two.
         """
         config = self._get_full_machine_config()
         machine = Machine.from_dict(config)
@@ -1816,13 +2218,13 @@ class TestExport2Integration(unittest.TestCase):
 
             self.assertEqual(
                 gcode.count("(prerotary)"),
-                2,
-                "Should have 2 pre-rotary blocks (one per rotary group)",
+                3,
+                "Should have 3 pre-rotary blocks (the initial pose, then one per rotary group)",
             )
             self.assertEqual(
                 gcode.count("(Postrotary)"),
-                2,
-                "Should have 2 post-rotary blocks (one per rotary group)",
+                3,
+                "Should have 3 post-rotary blocks (the initial pose, then one per rotary group)",
             )
 
     def test142_fixture_change_blocks_insertion(self):
@@ -2012,4 +2414,46 @@ class TestExport2Integration(unittest.TestCase):
                 machine.postprocessor_properties["file_extension"],
                 "nc",
                 "Existing property should not be overwritten",
+            )
+
+    def test080_dwell_not_scaled_in_imperial(self):
+        """
+        Test that a dwell time survives imperial output unscaled.
+
+        P on G4 and on a canned cycle is a time in seconds, not a distance.
+        Scaling it as an axis value divides it by 25.4, so a 0.1 second dwell
+        posts as P0.004.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.units = OutputUnits.IMPERIAL
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G4", {"P": 0.5}),
+                Path.Command(
+                    "G82", {"X": 0.0, "Y": 0.0, "Z": -10.0, "R": 2.0, "F": 100.0, "P": 0.1}
+                ),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [line.strip() for line in gcode.split("\n") if line.strip()]
+
+            def p_value(line):
+                for word in line.split():
+                    if word.startswith("P"):
+                        return float(word[1:])
+                return None
+
+            g4 = next((l for l in lines if l.startswith("G4")), None)
+            self.assertIsNotNone(g4, "expected a G4 dwell in the output")
+            self.assertAlmostEqual(
+                p_value(g4), 0.5, places=4, msg=f"G4 dwell must not be unit-scaled: {g4}"
+            )
+
+            g82 = next((l for l in lines if l.startswith("G82")), None)
+            self.assertIsNotNone(g82, "expected a G82 cycle in the output")
+            self.assertAlmostEqual(
+                p_value(g82), 0.1, places=4, msg=f"cycle dwell must not be unit-scaled: {g82}"
             )

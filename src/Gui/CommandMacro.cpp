@@ -72,8 +72,8 @@ void StdCmdDlgMacroRecord::activated(int iMsg)
         getGuiApplication()->macroManager()->commit();
         if (getAction()) {
             getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-record"));
-            getAction()->setText(QString::fromLatin1(sMenuText));
-            getAction()->setToolTip(QString::fromLatin1(sToolTipText));
+            getAction()->setText(QString::fromUtf8(sMenuText));
+            getAction()->setToolTip(QString::fromUtf8(sToolTipText));
         }
     }
 }
@@ -134,7 +134,7 @@ StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
 void StdCmdDlgMacroExecuteDirect::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Run\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Run\")");
 }
 
 bool StdCmdDlgMacroExecuteDirect::isActive()

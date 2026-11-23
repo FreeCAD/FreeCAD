@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.TopoShape import TopoShape
@@ -41,50 +39,42 @@ class ShapeFix_Shape(ShapeFix_Root):
     FixVertexTolMode: bool = ...
     """Mode for fixing tolerances of vertices on whole shape"""
 
-    def init(self) -> None:
+    def init(self, shape: TopoShape, /) -> None:
         """
         Initializes by shape
         """
-        ...
 
-    def perform(self) -> None:
+    def perform(self) -> bool:
         """
         Iterates on sub- shape and performs fixes
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         Returns resulting shape
         """
-        ...
 
     def fixSolidTool(self) -> object:
         """
         Returns tool for fixing solids
         """
-        ...
 
     def fixShellTool(self) -> object:
         """
         Returns tool for fixing shells
         """
-        ...
 
     def fixFaceTool(self) -> object:
         """
         Returns tool for fixing faces
         """
-        ...
 
     def fixWireTool(self) -> object:
         """
         Returns tool for fixing wires
         """
-        ...
 
     def fixEdgeTool(self) -> object:
         """
         Returns tool for fixing edges
         """
-        ...

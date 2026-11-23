@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #include <algorithm>
-#include <array>
 #include <QApplication>
 #include <QDir>
 #include <QKeyEvent>
@@ -32,20 +31,23 @@
 #include <QTranslator>
 #include <QWidget>
 
-#include <Base/Tools.h>
+#include <utility>
+
+#include <Base/NumericFormatting.h>
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
+#include "../NumericLocale.h"
 #include "Translator.h"
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+#include "PseudoTranslator.h"
 
 using namespace Gui;
 
 namespace
 {
+constexpr auto pseudoLanguage = "English (Pseudo A)";
+constexpr auto pseudoLocale = "en-XA";
+
 Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int format)
 {
     switch (format) {
@@ -63,18 +65,40 @@ Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int fo
     }
 }
 
-#ifdef FC_OS_WIN32
-QString getWindowsUserDefaultLocaleName()
+struct ResolvedNumericLocale
 {
-    std::array<wchar_t, LOCALE_NAME_MAX_LENGTH> buffer {};
-    const int written = GetUserDefaultLocaleName(buffer.data(), static_cast<int>(buffer.size()));
-    if (written <= 0) {
-        return {};
+    QLocale qtLocale;
+    Base::NumericLocaleContext numericContext;
+};
+
+ResolvedNumericLocale resolveNumericLocale(const Translator& translator, const std::string& language)
+{
+    QLocale qtLocale;
+    if (Base::isCLocaleName(language)) {
+        qtLocale = QLocale::c();
+    }
+    else {
+        qtLocale = QLocale::system();
+
+        if (!language.empty()) {
+            const std::string localeName = translator.locale(language);
+
+            if (Base::isCLocaleName(localeName)) {
+                qtLocale = QLocale::c();
+            }
+            else if (!localeName.empty()) {
+                const QLocale candidate(
+                    QString::fromStdString(localeName == pseudoLocale ? "en_US" : localeName)
+                );
+                if (candidate.language() != QLocale::C) {
+                    qtLocale = candidate;
+                }
+            }
+        }
     }
 
-    return QString::fromWCharArray(buffer.data());
+    return {qtLocale, Gui::numericLocaleContextFor(qtLocale)};
 }
-#endif
 }  // namespace
 
 /** \defgroup i18n Internationalization with FreeCAD
@@ -221,6 +245,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"                )] = "da";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                 )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"               )] = "en";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English (Pseudo A)"    )] = pseudoLocale;
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"              )] = "fil";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"               )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"                )] = "fr";
@@ -256,6 +281,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Tamil")] = "ta";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Irish")] = "ga-IE";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lao")] = "lo";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hebrew")] = "he";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
@@ -300,6 +326,8 @@ TStringMap Translator::supportedLocales() const
     if (!d->mapSupportedLocales.empty()) {
         return d->mapSupportedLocales;
     }
+
+    d->mapSupportedLocales.emplace(pseudoLanguage, pseudoLocale);
 
     // List all *_*.qm files, and if any match a known locale,
     // report that locale as supported.
@@ -371,44 +399,28 @@ void Translator::applyLocaleFormattingPreference() const
 
 void Translator::setLocale(const std::string& language) const
 {
-    const bool isCLocale = Base::Tools::isCLocaleName(language);
-
-    auto loc = QLocale::system();  // Defaulting to OS locale
-#ifdef FC_OS_WIN32
-    if (language.empty()) {
-        // Local Windows development runs can inherit shell state that makes Qt resolve the
-        // system locale differently from the user's regional format.
-        const auto operatingSystemLocale = getWindowsUserDefaultLocaleName();
-        if (!operatingSystemLocale.isEmpty()) {
-            loc = QLocale(operatingSystemLocale);
-        }
-    }
+    // Resolve Qt and the complete numeric-locale context from the same source
+    // so quantity formatting can match what Qt widgets display.
+    const auto resolved = resolveNumericLocale(*this, language);
+    auto nextContext = resolved.numericContext;
+#ifdef FC_DEBUG
+    const auto previousState = Base::currentNumericLocaleContext();
+    const bool localeChanged = previousState != nextContext;
 #endif
-    if (isCLocale) {
-        loc = QLocale::c();
-    }
-    else {
-        auto bcp47 = locale(language);
-        if (!bcp47.empty()) {
-            loc = QLocale(QString::fromStdString(bcp47));
-        }
-    }
-
-    auto icuLocaleId = loc.name().toStdString();
-    if (language.empty()) {
-        // QLocale keeps the effective numeric separators, but loc.name() may still report LANG.
-        const auto operatingSystemNumericLocale = Base::Tools::getOperatingSystemNumericLocale();
-        if (!operatingSystemNumericLocale.empty()) {
-            icuLocaleId = operatingSystemNumericLocale;
-        }
-    }
-    QLocale::setDefault(loc);
-    Base::Tools::setIcuDefaultLocale(isCLocale ? "C" : icuLocaleId);
+    // Complete the fallible ICU operation before publishing Qt and FreeCAD's context. A failure
+    // leaves all three locale consumers unchanged.
+    Base::setIcuDefaultLocale(nextContext.localeId);
+    QLocale::setDefault(resolved.qtLocale);
+    Base::publishNumericLocaleContext(std::move(nextContext));
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console()
-        .log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    if (localeChanged) {
+        const QByteArray bcp47Name = resolved.qtLocale.bcp47Name().toUtf8();
+        const QByteArray localeName = resolved.qtLocale.name().toUtf8();
+        Base::Console()
+            .log("Locale changed to {} => {}\n", bcp47Name.constData(), localeName.constData());
+    }
 #endif
 }
 
@@ -472,12 +484,20 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 }
 
 /**
- * This method checks for newly added (internal) .qm files which might be added at runtime. This
- * e.g. happens if a plugin gets loaded at runtime. For each newly added files that supports the
- * currently set language a new translator object is created to load the file.
+ * Installs the runtime pseudo-translator or loads newly available .qm files for the active
+ * language, including translations added by workbenches loaded at runtime.
  */
 void Translator::refresh()
 {
+    if (d->activatedLanguage == pseudoLanguage) {
+        if (d->translators.empty()) {
+            auto translator = new PseudoTranslator;
+            d->translators.push_back(translator);
+            qApp->installTranslator(translator);
+        }
+        return;
+    }
+
     std::map<std::string, std::string>::iterator tld = d->mapLanguageTopLevelDomain.find(
         d->activatedLanguage
     );
@@ -512,11 +532,7 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
             if (ev->spontaneous()) {
                 auto dp = QString(QLocale().decimalPoint());
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-                int dpcode = QKeySequence(dp)[0];
-#else
                 int dpcode = QKeySequence(dp)[0].key();
-#endif
                 if (kev->text() != dp) {
                     QKeyEvent modifiedKeyEvent(
                         kev->type(),

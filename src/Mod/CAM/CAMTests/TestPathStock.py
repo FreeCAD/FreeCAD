@@ -88,6 +88,20 @@ class TestPathStock(PathTestBase):
         stock = PathStock.CreateCylinder(self.job, 37, 24)
         self.assertEqual(37, stock.Radius)
         self.assertEqual(24, stock.Height)
+        self.assertEqual("Z", stock.Axis)
+        self.assertCoincide(stock.Shape.Faces[0].Surface.Axis, FreeCAD.Vector(0, 0, 1))
+
+        stock = PathStock.CreateCylinder(self.job, 37, 24, axis="X")
+        self.assertEqual(37, stock.Radius)
+        self.assertEqual(24, stock.Height)
+        self.assertEqual("X", stock.Axis)
+        self.assertCoincide(stock.Shape.Faces[0].Surface.Axis, FreeCAD.Vector(1, 0, 0))
+
+        stock = PathStock.CreateCylinder(self.job, 37, 24, axis="Y")
+        self.assertEqual(37, stock.Radius)
+        self.assertEqual(24, stock.Height)
+        self.assertEqual("Y", stock.Axis)
+        self.assertCoincide(stock.Shape.Faces[0].Surface.Axis, FreeCAD.Vector(0, 1, 0))
 
         placement = FreeCAD.Placement(FreeCAD.Vector(3, 8, -4), FreeCAD.Vector(0, 0, 1), -90)
         stock = PathStock.CreateCylinder(self.job, 1, 88, placement)

@@ -72,13 +72,18 @@
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
+#define TREE_SEND_MSG(notifier, msg) Base::Console().notify<Base::LogStyle::Message>(notifier, msg)
+#define TREE_SEND_WARN(notifier, msg) Base::Console().notify<Base::LogStyle::Warning>(notifier, msg)
+#define TREE_SEND_ERR(notifier, msg) Base::Console().notify<Base::LogStyle::Error>(notifier, msg)
+#define TREE_SEND_LOG(notifier, msg) Base::Console().notify<Base::LogStyle::Log>(notifier, msg)
+
 #define _TREE_PRINT(_level, _func, _msg) \
     _FC_PRINT(FC_LOG_INSTANCE, _level, _func, '[' << getTreeName() << "] " << _msg)
-#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG, notify<Base::LogStyle::Message>, _msg)
-#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN, notify<Base::LogStyle::Warning>, _msg)
-#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR, notify<Base::LogStyle::Error>, _msg)
-#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG, notify<Base::LogStyle::Log>, _msg)
-#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE, notify<Base::LogStyle::Log>, _msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG, TREE_SEND_MSG, _msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN, TREE_SEND_WARN, _msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR, TREE_SEND_ERR, _msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG, TREE_SEND_LOG, _msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE, TREE_SEND_LOG, _msg)
 
 using namespace Gui;
 namespace sp = std::placeholders;
@@ -468,11 +473,11 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
         return;
     }
 
-    // Clear State_Enabled for hidden objects so QSS ::item:disabled rules can
+    // Clear State_Enabled for invisible objects so QSS ::item:disabled rules can
     // override the overlay stylesheet's blanket ::item { color } for text fading.
     if (item->type() == TreeWidget::ObjectType) {
         if (auto* docItem = static_cast<DocumentObjectItem*>(item);
-            docItem->object() && !docItem->object()->isShow()) {
+            docItem->object() && !docItem->isVisibleInTree()) {
             option->state &= ~QStyle::State_Enabled;
         }
     }
@@ -1672,14 +1677,9 @@ int TreeWidget::getIconSize()
     if (defaultSize == 0) {
         auto tree = instance();
         if (tree) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QStyleOptionViewItem opt = tree->viewOptions();
-            defaultSize = opt.decorationSize.width();
-#else
             QStyleOptionViewItem opt;
             tree->initViewItemOption(&opt);
             defaultSize = opt.decorationSize.width();
-#endif
         }
         else {
             defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
@@ -1992,14 +1992,17 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
             if (raw->type() != ObjectType) {
                 continue;
             }
-            auto* vp = static_cast<DocumentObjectItem*>(raw)->object();
+            auto* item = static_cast<DocumentObjectItem*>(raw);
+            auto* vp = item->object();
             if (!vp || !vp->canToggleVisibility()) {
                 continue;
             }
             auto* appObj = vp->getObject();
-            vp->Gui::ViewProvider::toggleVisibility();
+            if (!item->toggleElementVisibility()) {
+                vp->Gui::ViewProvider::toggleVisibility();
+            }
             Selection().updateSelection(
-                vp->isShow(),
+                item->isVisibleInTree(),
                 appObj->getDocument()->getName(),
                 appObj->getNameInDocument()
             );
@@ -2045,24 +2048,10 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 
             // If the visibility icon was clicked, toggle the DocumentObject visibility
             if (iconRect.contains(mousePos)) {
-                auto obj = objitem->object()->getObject();
-                char const* objname = obj->getNameInDocument();
-
-                App::DocumentObject* parent = nullptr;
-                std::ostringstream subName;
-                objitem->getSubName(subName, parent);
-
                 // Try the ElementVisible API, if that is not supported toggle the Visibility property
-                int visible = -1;
-                if (parent) {
-                    visible = parent->isElementVisible(objname);
-                }
-                if (parent && visible >= 0) {
-                    parent->setElementVisible(objname, !visible);
-                }
-                else {
-                    visible = obj->Visibility.getValue();
-                    obj->Visibility.setValue(!visible);
+                if (!objitem->toggleElementVisibility()) {
+                    auto obj = objitem->object()->getObject();
+                    obj->Visibility.setValue(!obj->Visibility.getValue());
                 }
                 visibilityIconDoubleClickTimer.start();
                 visibilityIconPressed = true;
@@ -2119,6 +2108,12 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
         return;
     }
 
+    QModelIndex index = indexAt(event->pos());
+    if (index.column() != 0) {
+        QTreeWidget::mouseDoubleClickEvent(event);
+        return;
+    }
+
     try {
         if (item->type() == TreeWidget::DocumentType) {
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
@@ -2146,13 +2141,24 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
             auto lines = manager->getLines();
 
             std::ostringstream ss;
-            ss << Command::getObjectCmd(vp->getObject()) << ".ViewObject.doubleClicked()";
+            App::DocumentObject* root = nullptr;
+            std::ostringstream subname;
+            objitem->getSubName(subname, root);
+            if (root) {
+                subname << vp->getObject()->getNameInDocument() << '.';
+            }
+            else {
+                root = vp->getObject();
+            }
+            const App::SubObjectT reference(root, subname.str().c_str());
+            ss << Command::getObjectCmd(vp->getObject()) << ".ViewObject.doubleClicked("
+               << Command::getObjectCmd(root) << ", '" << reference.getSubName() << "')";
 
             const char* commandText = vp->getTransactionText();
             if (commandText) {
                 appdoc->openTransaction(commandText);
 
-                if (!vp->doubleClicked()) {
+                if (!vp->doubleClickedObject(reference)) {
                     QTreeWidget::mouseDoubleClickEvent(event);
                 }
                 else if (lines == manager->getLines()) {
@@ -2160,7 +2166,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
                 }
             }
             else {
-                if (!vp->doubleClicked()) {
+                if (!vp->doubleClickedObject(reference)) {
                     QTreeWidget::mouseDoubleClickEvent(event);
                 }
                 else if (lines == manager->getLines()) {
@@ -2316,19 +2322,11 @@ public:
 QPoint getPos(QEvent* event)
 {
     if (auto* dragMoveEvent = dynamic_cast<QDragMoveEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dragMoveEvent->pos();
-#else
         return dragMoveEvent->position().toPoint();
-#endif
     }
 
-    else if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dropEvent->pos();
-#else
+    if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
         return dropEvent->position().toPoint();
-#endif
     }
 
     // For unsupported event types or if casting fails
@@ -4103,6 +4101,10 @@ void TreeWidget::onItemSelectionChanged()
         }
     }
 
+    if (selItems.size() == 1 && selItems.front()->type() == ObjectType) {
+        static_cast<DocumentObjectItem*>(selItems.front())->displayStatusInfo();
+    }
+
     this->blockSelection(lock);
 }
 
@@ -5496,7 +5498,6 @@ void DocumentItem::clearSelection(DocumentObjectItem* exclude)
     // Block signals here otherwise we get a recursion and quadratic runtime
     bool ok = treeWidget()->blockSignals(true);
     FOREACH_ITEM_ALL(item);
-    _v.second->dirtyFlag = false;
     if (item == exclude) {
         if (item->selected > 0) {
             item->selected = -1;
@@ -5504,6 +5505,7 @@ void DocumentItem::clearSelection(DocumentObjectItem* exclude)
         else {
             item->selected = 0;
         }
+        _v.second->dirtyFlag = false;
         updateItemSelection(item);
         // The set has been changed while calling updateItemSelection
         // so that the iterator has become invalid -> Abort
@@ -6381,14 +6383,9 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
     // get the original icon set
     QIcon icon_org = object()->getIcon();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStyleOptionViewItem opt = getTree()->viewOptions();
-    int w = opt.decorationSize.width();
-#else
     QStyleOptionViewItem opt;
     getTree()->initViewItemOption(&opt);
     int w = opt.decorationSize.width();
-#endif
 
     QPixmap pxOn, pxOff;
 
@@ -6451,6 +6448,58 @@ QIcon DocumentObjectItem::getVisibilityIcon(int currentStatus, QIcon& original_i
     return new_icon;
 }
 
+App::DocumentObject* DocumentObjectItem::getElementVisibilityParent() const
+{
+    auto parentItem = getParentItem();
+    if (!parentItem) {
+        return nullptr;
+    }
+    auto parent = parentItem->object()->getObject();
+    if (!parent->getExtensionByType<App::GroupExtension>(true, false)) {
+        return parent;
+    }
+    // We are dealing with a plain group. It has special handling when
+    // linked, which allows it to have independent visibility control.
+    // We need to go up the hierarchy and see if there is any link to
+    // it.
+    for (auto pp = parentItem->getParentItem(); pp; pp = pp->getParentItem()) {
+        auto obj = pp->object()->getObject();
+        if (!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
+            return obj;
+        }
+    }
+    return nullptr;
+}
+
+bool DocumentObjectItem::isVisibleInTree() const
+{
+    int visible = -1;
+    if (auto parent = getElementVisibilityParent()) {
+        visible = parent->isElementVisible(object()->getObject()->getNameInDocument());
+    }
+
+    if (visible < 0) {
+        visible = object()->isShow() ? 1 : 0;
+    }
+
+    return visible != 0;
+}
+
+bool DocumentObjectItem::toggleElementVisibility()
+{
+    auto parent = getElementVisibilityParent();
+    if (!parent) {
+        return false;
+    }
+    const char* name = object()->getObject()->getNameInDocument();
+    int visible = parent->isElementVisible(name);
+    if (visible < 0) {
+        return false;
+    }
+    parent->setElementVisible(name, visible == 0);
+    return true;
+}
+
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
 {
     // guard against calling this during destruction when tree widget may be nullptr
@@ -6459,33 +6508,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     }
 
     App::DocumentObject* pObject = object()->getObject();
-
-    int visible = -1;
-    auto parentItem = getParentItem();
-    if (parentItem) {
-        auto parent = parentItem->object()->getObject();
-        auto ext = parent->getExtensionByType<App::GroupExtension>(true, false);
-        if (!ext) {
-            visible = parent->isElementVisible(pObject->getNameInDocument());
-        }
-        else {
-            // We are dealing with a plain group. It has special handling when
-            // linked, which allows it to have indpenedent visibility control.
-            // We need to go up the hierarchy and see if there is any link to
-            // it.
-            for (auto pp = parentItem->getParentItem(); pp; pp = pp->getParentItem()) {
-                auto obj = pp->object()->getObject();
-                if (!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
-                    visible = pp->object()->getObject()->isElementVisible(pObject->getNameInDocument());
-                    break;
-                }
-            }
-        }
-    }
-
-    if (visible < 0) {
-        visible = object()->isShow() ? 1 : 0;
-    }
+    auto visible = isVisibleInTree();
 
     auto obj = object()->getObject();
     auto linked = obj->getLinkedObject(false);
@@ -6545,6 +6568,17 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     this->setIcon(0, icon);
 }
 
+QVariant DocumentObjectItem::data(int column, int role) const
+{
+    if (column == 0 && role == Qt::ToolTipRole && object()) {
+        const QString tip = object()->getToolTip();
+        if (!tip.isEmpty()) {
+            return tip;
+        }
+    }
+    return QTreeWidgetItem::data(column, role);
+}
+
 void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
@@ -6559,7 +6593,7 @@ void DocumentObjectItem::displayStatusInfo()
     }
 
     QString status = TreeWidget::tr("%1, Internal name: %2")
-                         .arg(info, QString::fromLatin1(Obj->getNameInDocument()));
+                         .arg(info, QString::fromUtf8(Obj->getNameInDocument()));
 
     if (!Obj->isError()) {
         getMainWindow()->showMessage(status);

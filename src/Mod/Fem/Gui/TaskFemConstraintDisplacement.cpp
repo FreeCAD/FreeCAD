@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015, 2023 FreeCAD Developers                           *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -629,7 +631,7 @@ bool TaskDlgFemConstraintDisplacement::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
 

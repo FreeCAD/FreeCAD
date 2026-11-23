@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2024 David Carter
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
- *                                                                         *
- *   FreeCAD is free software: you can redistribute it and/or modify it    *
- *   under the terms of the GNU Lesser General Public License as           *
- *   published by the Free Software Foundation, either version 2.1 of the  *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful, but        *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with FreeCAD. If not, see                               *
- *   <https://www.gnu.org/licenses/>.                                      *
- *                                                                         *
- **************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QClipboard>
 #include <QStandardItem>
@@ -168,7 +166,7 @@ void DlgInspectMaterial::update(std::vector<Gui::ViewProvider*>& views)
             else {
                 ui->editObjectLabel->setText(QStringLiteral(""));
             }
-            ui->editObjectName->setText(QLatin1String(obj->getNameInDocument()));
+            ui->editObjectName->setText(QString::fromUtf8(obj->getNameInDocument()));
             appendClip(tr("Internal name: ") + QString::fromUtf8(obj->getNameInDocument()));
 
             auto subElement = Gui::Selection().getSelectionEx();
@@ -205,7 +203,7 @@ void DlgInspectMaterial::update(std::vector<Gui::ViewProvider*>& views)
 
 void DlgInspectMaterial::updateMaterialTree(const Materials::Material& material)
 {
-    Base::Console().log("Material '%s'\n", material.getName().toStdString().c_str());
+    Base::Console().log("Material '{}'\n", material.getName().toStdString());
 
     auto tree = ui->treeMaterials;
     auto model = qobject_cast<QStandardItemModel*>(tree->model());

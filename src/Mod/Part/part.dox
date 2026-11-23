@@ -2,6 +2,9 @@
  *  \ingroup CWORKBENCHES
  *  \brief Main anchor point with OpenCasCade functionality, base geometry tools
 
+Part also hosts the @ref PreviewFramework "Preview framework", used by any
+workbench to show an upcoming geometry change in the 3D view.
+
 See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
 
 */

@@ -25,6 +25,7 @@
 import FreeCAD, unittest, Part
 import copy
 import math
+import warnings
 from FreeCAD import Units
 from FreeCAD import Base
 
@@ -35,6 +36,10 @@ from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
+from parttests.TestLinkArrayCircular import TestLinkArrayCircular
+from parttests.TestLinkArrayLinear import TestLinkArrayLinear
+from parttests.TestLinkArrayPath import TestLinkArrayPath
+from parttests.TestLinkArrayPoint import TestLinkArrayPoint
 from parttests.TestPartMirror import TestPartMirroringRegression
 from parttests.TestFaceMakerUnifiedPlanar import *
 from parttests.TestFaceMakerUnifiedNonPlanar import *
@@ -76,6 +81,34 @@ class PartTestCases(unittest.TestCase):
         # result = Part.makeFilledFace([edge1,edge2,edge3,edge4])
         # self.Doc.addObject("Part::Feature","Face").Shape = result
         # self.assertTrue(isinstance(result.Surface, Part.BSplineSurface))
+
+    def testDeprecatedInsertWarningDoesNotCreateDocument(self):
+        document_name = "DeprecatedPartInsertTest"
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("error", DeprecationWarning)
+                with self.assertRaises(DeprecationWarning):
+                    Part.insert("missing.step", document_name)
+            self.assertNotIn(document_name, FreeCAD.listDocuments())
+        finally:
+            if document_name in FreeCAD.listDocuments():
+                FreeCAD.closeDocument(document_name)
+
+    def testDeprecatedInsertWarningIncludesLifecycle(self):
+        document_name = "DeprecatedPartInsertMessageTest"
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("error", DeprecationWarning)
+                with self.assertRaises(DeprecationWarning) as caught:
+                    Part.insert("missing.step", document_name)
+            self.assertEqual(
+                str(caught.exception),
+                "Method 'Part.insert' is deprecated since FreeCAD 26.3 and will be removed in "
+                "FreeCAD 27.2; use Import.insert instead.",
+            )
+        finally:
+            if document_name in FreeCAD.listDocuments():
+                FreeCAD.closeDocument(document_name)
 
     def tearDown(self):
         # closing doc
@@ -968,6 +1001,56 @@ class PartBOPTestContainer(unittest.TestCase):
         bp = BOPFeatures.BOPFeatures(self.Doc)
         fuse = bp.make_multi_common([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
+
+    def testMakeCutWithBodyBaseFeature(self):
+        # An object used as a PartDesign Body's BaseFeature reports the Body
+        # as its parent, but the Body neither lists it in Group nor accepts
+        # Part features. The boolean must not try to move anything into it.
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = box
+        self.Doc.recompute()
+        from BOPTools import BOPFeatures
+
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        cut = bp.make_cut([cyl.Name, box.Name])
+        self.assertIsNone(cut.getParent())
+        self.assertEqual(box, body.BaseFeature)
+
+    def testMakeCutWithBodyBaseFeatureAndGroup(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = cyl
+        self.Doc.recompute()
+        from BOPTools import BOPFeatures
+
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        cut = bp.make_cut([box.Name, cyl.Name])
+        self.assertEqual(part, cut.getParent())
+        self.assertEqual(cyl, body.BaseFeature)
+
+    def testMakeCutWithBaseFeatureInPart(self):
+        # The input is held by an App::Part and is also a Body's BaseFeature.
+        # getParent() may return the Body (first in InList), but the result
+        # must go into the Part, the group that actually holds the input.
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = box
+        self.Doc.recompute()
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        self.Doc.recompute()
+        from BOPTools import BOPFeatures
+
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        cut = bp.make_cut([box.Name, cyl.Name])
+        self.assertEqual(part, cut.getParent())
+        self.assertEqual(box, body.BaseFeature)
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)

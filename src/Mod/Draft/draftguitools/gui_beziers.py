@@ -210,7 +210,7 @@ class BezCurve(gui_lines.Line):
             try:
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = "Draft.make_bezcurve"
+                _cmd = "Draft.make_bez_curve"
                 _cmd += "("
                 _cmd += "points, "
                 _cmd += "closed=" + str(closed) + ", "
@@ -469,7 +469,7 @@ class CubicBezCurve(gui_lines.Line):
                 # to be committed through the `draftutils.todo.ToDo` class.
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = "Draft.make_bezcurve"
+                _cmd = "Draft.make_bez_curve"
                 _cmd += "("
                 _cmd += "points, "
                 _cmd += "closed=" + str(closed) + ", "
@@ -500,14 +500,14 @@ class CubicBezCurve(gui_lines.Line):
         if len(self.node) < 2:
             return [
                 Gui.InputHint(
-                    translate("draft", "%1 click and drag to define first point and knot"),
-                    Gui.UserInput.MouseLeft,
+                    translate("draft", "%1 define first point and knot"),
+                    Gui.UserInput.MouseMoveLeft,
                 )
             ]
         return [
             Gui.InputHint(
-                translate("draft", "%1 click and drag to define next point and knot"),
-                Gui.UserInput.MouseLeft,
+                translate("draft", "%1 define next point and knot"),
+                Gui.UserInput.MouseMoveLeft,
             )
         ]
 

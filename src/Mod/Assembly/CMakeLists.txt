@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+disable_occt8_deprecation_warnings()
 
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
 include_directories(
@@ -56,6 +59,7 @@ SET(AssemblyScripts_SRCS
 SET(AssemblyTests_SRCS
     AssemblyTests/__init__.py
     AssemblyTests/TestCore.py
+    AssemblyTests/TestCommandCreateView.py
     AssemblyTests/TestCommandInsertLink.py
     AssemblyTests/TestSimulationExport.py
     AssemblyTests/mocks/__init__.py

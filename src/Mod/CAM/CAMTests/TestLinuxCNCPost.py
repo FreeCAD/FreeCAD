@@ -26,7 +26,12 @@
 import Path
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
-from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Processor import (
+    PostProcessorFactory,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    properties_in_scope,
+)
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -115,6 +120,26 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         idx = lines.index("G21")  # throws IndexError if unexpectedly missing
         preamble = "\n".join(lines[:idx])
         return gcode, preamble
+
+    def test_blend_properties_are_job_scoped(self):
+        """Blend settings must be configurable in the machine editor.
+
+        They were previously "runtime": True, which made them Overview-tab
+        only and left no way to give a machine a default blending mode.
+        "job" scope keeps the per-run override while restoring the
+        machine-level default.
+        """
+        schema = self.post.__class__.get_full_property_schema()
+        by_name = {prop["name"]: prop for prop in schema}
+
+        for name in ("blend_mode", "blend_tolerance"):
+            with self.subTest(prop=name):
+                self.assertEqual(by_name[name].get("scope"), SCOPE_JOB)
+
+        # Scope "job" is what the machine editor renders alongside "machine".
+        editable = {p["name"] for p in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB)}
+        self.assertIn("blend_mode", editable)
+        self.assertIn("blend_tolerance", editable)
 
     def test_blend_mode_exact_path(self):
         """Test EXACT_PATH blend mode outputs G61."""
@@ -226,6 +251,66 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         gcode, preamble = self._gcode_and_preamble()
 
         self.assertIn("G64", preamble, "G64 command not found preamble: full gcode\n{gcode}")
+
+    def test_blend_command_separated_from_preamble(self):
+        """The blend command must not run into the last word of the preamble.
+
+        _expand_prefix() appends the blend command to PREAMBLE. Without a
+        separator the LinuxCNC default preamble came out as
+        "G17 G54 G40 G49 G80 G90G64 P0.0010", i.e. neither a G90 nor a G64.
+        """
+        self.profile_op.Path = Path.Path([])
+        self.post._machine.postprocessor_properties["blend_mode"] = "BLEND"
+        self.post._machine.postprocessor_properties["blend_tolerance"] = 0.001
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+
+        gcode, preamble = self._gcode_and_preamble()
+
+        self.assertIn(
+            "G17 G54 G40 G49 G80 G90 G64 P0.0010",
+            preamble,
+            f"Blend command should be a separate word, in\n{gcode}",
+        )
+
+    def test_blend_command_separator_cases(self):
+        """_expand_prefix() only adds a separator when one is missing.
+
+        An empty (or unset) preamble must not gain a leading space, and a
+        preamble that already ends in a newline must keep the blend command on
+        its own line.
+        """
+        cases = [
+            ("G17 G54 G40 G49 G80 G90", "G17 G54 G40 G49 G80 G90 G64 P0.0010"),
+            ("G17 G90\n", "G17 G90\nG64 P0.0010"),
+            ("G17 G90 ", "G17 G90 G64 P0.0010"),
+            ("", "G64 P0.0010"),
+            (None, "G64 P0.0010"),
+        ]
+
+        for preamble, expected in cases:
+            with self.subTest(preamble=preamble):
+                self.post.values["BLEND_MODE"] = "BLEND"
+                self.post.values["BLEND_TOLERANCE"] = 0.001
+                self.post.values["PREAMBLE"] = preamble
+                self.post._expand_prefix([])
+                self.assertEqual(self.post.values["PREAMBLE"], expected)
+
+    def test_tapping_g84_basic(self):
+        """
+        Test G84 tapping F-pitch to F-speed: it calls super() for non-rigid
+        """
+        # Setup - create G84 command with annotation
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.5, "S": 10}, {"operation": "tapping"})
+
+        # Execute
+        result = self.post._convert_drill_cycle(command)
+
+        # pitch->speed: units metric, speeds mm/min
+        expected_f = command.Parameters["F"] * command.Parameters["S"]
+
+        # Verify
+        self.assertEqual(f"G84 Z-10.000 F{expected_f:.3f} S10", result)
 
     def test_rigid_tapping_g84_basic(self):
         """
@@ -390,6 +475,60 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         # Verify - converted values (mm to inches)
         self.assertIn("Z-0.3937", result)  # -10mm / 25.4
         self.assertIn("K0.0591", result)  # 1.5mm / 25.4
+
+    def test_rotary_words_are_not_unit_converted(self):
+        """
+        A, B and C are angles. Imperial output converts X, Y, Z to inches but
+        must leave the rotary words in degrees.
+
+        Expected behavior:
+            BEFORE: G0 X10 A20 C-90 in imperial units
+
+            AFTER:  X0.3937, A20.000, C-90.000
+        """
+        self.post._machine.output.units = OutputUnits.IMPERIAL
+        self.post.apply_configuration_bundle()
+        precision = self.post.values["AXIS_PRECISION"]
+
+        self.assertEqual(self.post.format_parameter("X", 10.0, "G0"), f"{10 / 25.4:.{precision}f}")
+        self.assertEqual(self.post.format_parameter("A", 20.0, "G0"), f"{20.0:.{precision}f}")
+        self.assertEqual(self.post.format_parameter("C", -90.0, "G0"), f"{-90.0:.{precision}f}")
+
+    def test_arc_in_xy_plane_has_no_k_word(self):
+        """
+        LinuxCNC refuses a K word on an arc in the XY plane.
+
+        Expected behavior:
+            BEFORE: G2 X10 Y0 Z-1 I5 J0 K0
+
+            AFTER:  G2 X10.000 Y0.000 Z-1.000 I5.000 J0.000
+        """
+        self.post.apply_configuration_bundle()
+        command = Path.Command("G2", {"X": 10, "Y": 0, "Z": -1, "I": 5, "J": 0, "K": 0})
+        result = self.post.convert_command_to_gcode(command)
+
+        self.assertIn("I5.000", result)
+        self.assertIn("J0.000", result)
+        self.assertNotIn("K", result)
+
+    def test_arc_in_xz_plane_keeps_k_word(self):
+        """
+        A G18 arc gives its center with I and K; J is the word LinuxCNC refuses there.
+
+        Expected behavior:
+            BEFORE: G18, G2 X0 Y0 Z-10 I0 J0 K-5
+
+            AFTER:  G2 X0.000 Y0.000 Z-10.000 I0.000 K-5.000
+        """
+        self.post.apply_configuration_bundle()
+        with self.post.use_machine_state():
+            self.post.machine_state.addCommand(Path.Command("G18"))
+            command = Path.Command("G2", {"X": 0, "Y": 0, "Z": -10, "I": 0, "J": 0, "K": -5})
+            result = self.post.convert_command_to_gcode(command)
+
+        self.assertIn("I0.000", result)
+        self.assertIn("K-5.000", result)
+        self.assertNotIn("J", result)
 
     def test_rigid_tapping_block_delete(self):
         """

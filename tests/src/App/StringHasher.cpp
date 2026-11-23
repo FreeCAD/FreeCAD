@@ -6,6 +6,7 @@
 #include <App/StringHasher.h>
 #include <App/StringHasherPy.h>
 #include <App/StringIDPy.h>
+#include <Base/Interpreter.h>
 
 #include <QCryptographicHash>
 #include <array>
@@ -221,6 +222,7 @@ TEST_F(StringIDTest, getPyObject)  // NOLINT
 {
     // Arrange
     Py_Initialize();
+    Base::PyGILStateLocker lock;
     auto id = new App::StringID(1, nullptr);
     id->ref();
 
@@ -236,6 +238,7 @@ TEST_F(StringIDTest, getPyObjectWithIndex)  // NOLINT
 {
     // Arrange
     Py_Initialize();
+    Base::PyGILStateLocker lock;
     auto id = new App::StringID(1, nullptr);
     id->ref();
 
@@ -1007,6 +1010,7 @@ TEST_F(StringIDRefTest, toBytes)  // NOLINT
 TEST_F(StringIDRefTest, getPyObject)  // NOLINT
 {
     Py_Initialize();
+    Base::PyGILStateLocker lock;
     // Arrange
     auto ref = App::StringIDRef(createStringID());
     auto empty = App::StringIDRef();
@@ -1525,6 +1529,7 @@ TEST_F(StringHasherTest, count)  // NOLINT
 TEST_F(StringHasherTest, getPyObject)  // NOLINT
 {
     // Arrange - done in setUp()
+    Base::PyGILStateLocker lock;
 
     // Act
     Py::Object py(Hasher()->getPyObject(), true);

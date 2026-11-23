@@ -1,31 +1,29 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2021 Abdullah Tahiri
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
 #include <array>
 #include <bitset>
+#include <utility>
 
 namespace SketcherGui
 {
@@ -71,9 +69,7 @@ enum class FilterValue
     NumFilterValue  // SpecialFilterValue shall start at the same index as this
 };
 
-constexpr auto FilterValueLength = static_cast<std::underlying_type_t<FilterValue>>(
-    FilterValue::NumFilterValue
-);
+constexpr auto FilterValueLength = std::to_underlying(FilterValue::NumFilterValue);
 
 enum class SpecialFilterValue
 {
@@ -82,9 +78,7 @@ enum class SpecialFilterValue
     NumSpecialFilterValue
 };
 
-constexpr auto SpecialFilterValue = static_cast<std::underlying_type_t<FilterValue>>(
-    SpecialFilterValue::NumSpecialFilterValue
-);
+constexpr auto SpecialFilterValue = std::to_underlying(SpecialFilterValue::NumSpecialFilterValue);
 
 /// A std::bitset sized to provide one bit per FilterValue value
 using FilterValueBitset = std::bitset<FilterValueLength>;
@@ -93,13 +87,13 @@ using FilterValueBitset = std::bitset<FilterValueLength>;
 template<typename T>
 inline auto getFilterIntegral(T filterValue)
 {
-    return static_cast<std::underlying_type_t<T>>(filterValue);
+    return std::to_underlying(filterValue);
 }
 
 /// Helper function to test whether a FilterValue value is set in a FilterValueBitset
 inline bool checkFilterBitset(FilterValueBitset set, FilterValue filter)
 {
-    auto underlyingFilterValue = static_cast<std::underlying_type_t<FilterValue>>(filter);
+    auto underlyingFilterValue = std::to_underlying(filter);
 
     return set[underlyingFilterValue];
 }
@@ -109,7 +103,7 @@ inline bool checkFilterBitset(FilterValueBitset set, FilterValue filter)
 template<typename... Args>
 constexpr decltype(auto) buildBitset(Args... args)
 {
-    return (... | (1 << static_cast<std::underlying_type_t<Args>>(args)));
+    return (... | (1 << std::to_underlying(args)));
 }
 
 /// Array of FilterValue bit sets of size of the number of FilterValues indicating for each

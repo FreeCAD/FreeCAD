@@ -837,7 +837,7 @@ bool MeshAlgorithm::FillupHole(
         // in case the reference facet has not an open edge print a log message
         if (ref_side == max || tri_side == max) {
             Base::Console().log(
-                "MeshAlgorithm::FillupHole: Expected open edge for facet <%d, %d, %d>\n",
+                "MeshAlgorithm::FillupHole: Expected open edge for facet <{}, {}, {}>\n",
                 rFace._aulPoints[0],
                 rFace._aulPoints[1],
                 rFace._aulPoints[2]

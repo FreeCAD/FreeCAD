@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -34,10 +36,12 @@
 #include <Base/Quantity.h>
 
 #include "DrawPage.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawSVGTemplate.h"
 #include "DrawSVGTemplatePy.h"
 #include "DrawUtil.h"
 #include "XMLQuery.h"
+#include "TemplateTranslator.h"
 
 using namespace TechDraw;
 
@@ -133,6 +137,56 @@ QString DrawSVGTemplate::processTemplate()
         return QString();
     }
 
+    TechDraw::TemplateTranslator translator;
+    QStringList placeholderKeys = translator.getAllKeys();
+
+    int langEnumIndex = Language.getValue();
+    const std::vector<std::string> langEnumVec = Language.getEnumVector();
+    const char* langNameCStr = langEnumVec[langEnumIndex].c_str();
+    QString effectiveLanguageName = QString::fromUtf8(langNameCStr ? langNameCStr : LanguageEnums[0]);
+
+    QDomNodeList allTextElements = templateDocument.elementsByTagName(QStringLiteral("text"));
+    for (int i = 0; i < allTextElements.count(); ++i) {
+        QDomElement textElement = allTextElements.item(i).toElement();
+        if (textElement.isNull()) {
+            continue;
+        }
+
+        if (textElement.hasAttribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE))) {
+            continue;
+        }
+
+        std::function<void(QDomNode&)> processNodeContentsForStaticTranslation =
+            [&](QDomNode& parentNode) {
+                QDomNode childNode = parentNode.firstChild();
+                while (!childNode.isNull()) {
+                    if (childNode.isText()) {
+                        QDomText textDomNode = childNode.toText();
+                        QString currentText = textDomNode.data().trimmed();
+                        if (placeholderKeys.contains(currentText)) {
+                            QString translatedText = translator.translate(currentText, effectiveLanguageName);
+                            if (textDomNode.data().trimmed() == currentText) {
+                                textDomNode.setData(translatedText);
+                            }
+                        }
+                    }
+                    else if (childNode.isElement()) {
+                        QDomElement childElement = childNode.toElement();
+                        if (childElement.tagName().toLower() == QLatin1String("tspan")) {
+                            if (!childElement.hasAttribute(
+                                    QString::fromUtf8(FREECAD_ATTR_EDITABLE))) {
+                                processNodeContentsForStaticTranslation(childElement);
+                            }
+                        }
+                    }
+                    childNode = childNode.nextSibling();
+                }
+            };
+
+        processNodeContentsForStaticTranslation(textElement);
+    }
+
+
     XMLQuery query(templateDocument);
     std::map<std::string, std::string> substitutions = EditableTexts.getValues();
     // auto captureTextValues = m_initialTextValues;
@@ -204,12 +258,12 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     }
     QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template %s!\n", PageResult.getValue());
+        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template {}!\n", PageResult.getValue());
         return false;
     }
 
     if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate - failed to parse file: %s\n",
+        Base::Console().error("DrawSVGTemplate::processTemplate - failed to parse file: {}\n",
             PageResult.getValue());
         return false;
     }
@@ -298,7 +352,16 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawSVGTemplatePython, TechDraw::DrawSVGTemplate)
 template<> const char* TechDraw::DrawSVGTemplatePython::getViewProviderName() const {
-    return "TechDrawGui::ViewProviderPython";
+    return "TechDrawGui::ViewProviderTemplate";
+}
+template<>
+PyObject* TechDraw::DrawSVGTemplatePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawSVGTemplatePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

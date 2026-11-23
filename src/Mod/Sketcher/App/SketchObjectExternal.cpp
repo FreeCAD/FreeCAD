@@ -1,29 +1,27 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -205,7 +203,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
     }
     catch (Base::Exception& e) {
         Base::Console().warning(
-            "Probably, there is a circular reference in the document. Error: %s\n", e.what());
+            "Probably, there is a circular reference in the document. Error: {}\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
 
@@ -283,7 +281,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     }
     catch (Base::Exception& e) {
         Base::Console().warning(
-            "Probably, there is a circular reference in the document. Error: %s\n", e.what());
+            "Probably, there is a circular reference in the document. Error: {}\n", e.what());
         return true;// prohibiting this reference won't remove the problem anyway...
     }
 
@@ -478,8 +476,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             for (auto& obj : Objects) {
                 if (obj == sobj && SubElements[i] == sSubElements[si]) {
                     Base::Console().error(
-                        "Link to %s already exists in this sketch. Delete the link and try again\n",
-                        sSubElements[si].c_str()
+                        "Link to {} already exists in this sketch. Delete the link and try again\n",
+                        sSubElements[si]
                     );
                     return -1;
                 }
@@ -499,7 +497,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             rebuildExternalGeometry();
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
             // revert to original values
             ExternalGeometry.setValues(originalObjects, originalSubElements);
             return -1;
@@ -830,7 +828,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         if (Types[i] == static_cast<int>(ExtType::Both)
             || (Types[i] == static_cast<int>(ExtType::Projection) && !intersection)
             || (Types[i] == static_cast<int>(ExtType::Intersection) && intersection)) {
-            Base::Console().error("Link to %s already exists in this sketch.\n", SubName);
+            Base::Console().error("Link to {} already exists in this sketch.\n", SubName);
             return -1;
         }
         // Case where projections are already there when adding intersections.
@@ -855,7 +853,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         rebuildExternalGeometry(ext);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
         return -1;
@@ -1034,7 +1032,7 @@ int SketchObject::delAllExternal()
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
         for (Constraint* it : newConstraints) {
@@ -1351,11 +1349,15 @@ void SketchObject::validateExternalLinks()
         }
         catch (Base::IndexError& indexError) {
             Base::Console().warning(
-                this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
+                this->getFullLabel(),
+                "{}",
+                indexError.getMessage() + "\n");
         }
         catch (Base::ValueError& valueError) {
             Base::Console().warning(
-                this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
+                this->getFullLabel(),
+                "{}",
+                valueError.getMessage() + "\n");
         }
         catch (Standard_Failure&) {
         }
@@ -1899,8 +1901,14 @@ void processEdge(const TopoDS_Edge& edge,
         //           + minorRadius * sin(t) * origAxisMinorDir
         gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
         gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
-        double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
-        t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        double t_max = 0.0;
+        const double dPAPB = PA.SquareMagnitude() - PB.SquareMagnitude();
+
+        // For dPAPB=0 it's a circle where we use t_max=0
+        if (std::fabs(dPAPB) > std::numeric_limits<double>::epsilon()) {
+            t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
+            t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        }
         double t_min = t_max + 0.5 * pi;
 
         // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
@@ -2134,7 +2142,7 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - {} - while projecting shape\n",
             e.GetMessageString());
         throw Base::RuntimeError("SketchObject::projectShape - OCC error");
     }
@@ -2299,6 +2307,17 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
     fixMissingAxisInExternalGeo();
+
+    // Remember which way the projected lines currently run. Signed constraints record which side
+    // of a line their subject sits on, and that side is expressed relative to the line direction,
+    // so a projection that comes back reversed would otherwise drag the sketch to the other side.
+    std::map<long, Base::Vector3d> previousLineDirections;
+    for (const auto& geo : ExternalGeo.getValues()) {
+        if (auto* line = freecad_cast<const Part::GeomLineSegment*>(geo)) {
+            previousLineDirections[GeometryFacade::getId(geo)] =
+                line->getEndPoint() - line->getStartPoint();
+        }
+    }
 
     // Analyze the state of existing external geometries to infer the desired state for new ones.
     // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
@@ -2699,8 +2718,23 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         }
     }
 
+    std::set<int> reversedGeoIds;
+    for (std::size_t index = 0; index < geoms.size(); ++index) {
+        auto* line = freecad_cast<const Part::GeomLineSegment*>(geoms[index]);
+        if (!line) {
+            continue;
+        }
+        auto previous = previousLineDirections.find(GeometryFacade::getId(geoms[index]));
+        if (previous != previousLineDirections.end()
+            && (line->getEndPoint() - line->getStartPoint()).Dot(previous->second) < 0.0) {
+            reversedGeoIds.insert(-static_cast<int>(index) - 1);
+        }
+    }
+
     ExternalGeo.setValues(std::move(geoms));
     rebuildVertexIndex();
+
+    reorientConstraintsOnReversedGeometry(reversedGeoIds);
 
     // clean up geometry reference
     if(refSet.size() != (size_t)ExternalGeometry.getSize()) {

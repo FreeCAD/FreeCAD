@@ -31,6 +31,7 @@
 #include <TopoDS_Shape.hxx>
 
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
@@ -38,6 +39,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Link.h>
+#include <Gui/ActiveObjectList.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -74,6 +76,8 @@
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#include "TaskLinkArrayParameters.h"
 
 //===========================================================================
 // Part_PickCurveNet
@@ -638,7 +642,7 @@ void CmdPartCompJoinFeatures::languageChange()
     if (joinConnect) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate("Part_JoinFeatures", joinConnect->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("Part_JoinFeatures", joinConnect->getToolTipText()));
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, joinConnect));
         cmd0->setStatusTip(QApplication::translate("Part_JoinFeatures", joinConnect->getStatusTip()));
     }
 
@@ -646,7 +650,7 @@ void CmdPartCompJoinFeatures::languageChange()
     if (joinEmbed) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate("Part_JoinFeatures", joinEmbed->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_JoinFeatures", joinEmbed->getToolTipText()));
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, joinEmbed));
         cmd1->setStatusTip(QApplication::translate("Part_JoinFeatures", joinEmbed->getStatusTip()));
     }
 
@@ -654,7 +658,7 @@ void CmdPartCompJoinFeatures::languageChange()
     if (joinCutout) {
         QAction* cmd2 = a[2];
         cmd2->setText(QApplication::translate("Part_JoinFeatures", joinCutout->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("Part_JoinFeatures", joinCutout->getToolTipText()));
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, joinCutout));
         cmd2->setStatusTip(QApplication::translate("Part_JoinFeatures", joinCutout->getStatusTip()));
     }
 }
@@ -757,9 +761,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitBoolFragments) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate("Part_SplitFeatures", splitBoolFragments->getMenuText()));
-        cmd0->setToolTip(
-            QApplication::translate("Part_SplitFeatures", splitBoolFragments->getToolTipText())
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, splitBoolFragments));
         cmd0->setStatusTip(
             QApplication::translate("Part_SplitFeatures", splitBoolFragments->getStatusTip())
         );
@@ -769,9 +771,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitSliceApart) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSliceApart->getMenuText()));
-        cmd1->setToolTip(
-            QApplication::translate("Part_SplitFeatures", splitSliceApart->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, splitSliceApart));
         cmd1->setStatusTip(
             QApplication::translate("Part_SplitFeatures", splitSliceApart->getStatusTip())
         );
@@ -781,7 +781,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitSlice) {
         QAction* cmd1 = a[2];
         cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSlice->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_SplitFeatures", splitSlice->getToolTipText()));
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, splitSlice));
         cmd1->setStatusTip(QApplication::translate("Part_SplitFeatures", splitSlice->getStatusTip()));
     }
 
@@ -789,7 +789,7 @@ void CmdPartCompSplitFeatures::languageChange()
     if (splitXOR) {
         QAction* cmd2 = a[3];
         cmd2->setText(QApplication::translate("Part_SplitFeatures", splitXOR->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("Part_SplitFeatures", splitXOR->getToolTipText()));
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, splitXOR));
         cmd2->setStatusTip(QApplication::translate("Part_SplitFeatures", splitXOR->getStatusTip()));
     }
 }
@@ -886,7 +886,7 @@ void CmdPartCompCompoundTools::languageChange()
     if (cmdCompound) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate("CmdPartCompound", cmdCompound->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("CmdPartCompound", cmdCompound->getToolTipText()));
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, cmdCompound));
         cmd0->setStatusTip(QApplication::translate("CmdPartCompound", cmdCompound->getStatusTip()));
     }
 
@@ -894,7 +894,7 @@ void CmdPartCompCompoundTools::languageChange()
     if (cmdExplode) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate("Part_CompoundTools", cmdExplode->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("Part_CompoundTools", cmdExplode->getToolTipText()));
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, cmdExplode));
         cmd1->setStatusTip(QApplication::translate("Part_CompoundTools", cmdExplode->getStatusTip()));
     }
 
@@ -902,9 +902,7 @@ void CmdPartCompCompoundTools::languageChange()
     if (cmdCompoundFilter) {
         QAction* cmd2 = a[2];
         cmd2->setText(QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getMenuText()));
-        cmd2->setToolTip(
-            QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getToolTipText())
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, cmdCompoundFilter));
         cmd2->setStatusTip(
             QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getStatusTip())
         );
@@ -1264,12 +1262,12 @@ void CmdPartMakeSolid::activated(int iMsg)
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
-            QString name = QString::fromLatin1(it->getNameInDocument());
+            QString name = QString::fromUtf8(it->getNameInDocument());
             std::string label = it->Label.getValue();
             label = Base::Tools::escapeEncodeString(label);
             if (type == TopAbs_SOLID) {
                 Base::Console().message(
-                    "%s is ignored because it is already a solid.\n",
+                    "{} is ignored because it is already a solid.\n",
                     it->Label.getValue()
                 );
             }
@@ -1297,7 +1295,7 @@ void CmdPartMakeSolid::activated(int iMsg)
             }
             else {
                 Base::Console().message(
-                    "%s is ignored because it is neither a shell nor a compound.\n",
+                    "{} is ignored because it is neither a shell nor a compound.\n",
                     it->Label.getValue()
                 );
             }
@@ -1308,7 +1306,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert %s because %s.\n", it->Label.getValue(), e.what());
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
     }
@@ -1365,8 +1363,8 @@ void CmdPartReverseShape::activated(int iMsg)
                               "del __o__"
             )
                               .arg(
-                                  QString::fromLatin1(name.c_str()),
-                                  QString::fromLatin1(it->getNameInDocument()),
+                                  QString::fromUtf8(name.c_str()),
+                                  QString::fromUtf8(it->getNameInDocument()),
                                   QString::fromUtf8(label.c_str())
                               );
 
@@ -1377,7 +1375,7 @@ void CmdPartReverseShape::activated(int iMsg)
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("Cannot convert %s because %s.\n", it->Label.getValue(), e.what());
+                Base::Console().error("Cannot convert {} because {}.\n", it->Label.getValue(), e.what());
             }
         }
     }
@@ -1987,7 +1985,7 @@ void CmdPartCompOffset::languageChange()
     if (cmdOffset) {
         QAction* cmd0 = a[0];
         cmd0->setText(QApplication::translate(cmdOffset->className(), cmdOffset->getMenuText()));
-        cmd0->setToolTip(QApplication::translate(cmdOffset->className(), cmdOffset->getToolTipText()));
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, cmdOffset));
         cmd0->setStatusTip(QApplication::translate(cmdOffset->className(), cmdOffset->getStatusTip()));
     }
 
@@ -1995,9 +1993,7 @@ void CmdPartCompOffset::languageChange()
     if (cmdOffset2D) {
         QAction* cmd1 = a[1];
         cmd1->setText(QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getMenuText()));
-        cmd1->setToolTip(
-            QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getToolTipText())
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, cmdOffset2D));
         cmd1->setStatusTip(
             QApplication::translate(cmdOffset2D->className(), cmdOffset2D->getStatusTip())
         );
@@ -2508,13 +2504,292 @@ QString getAutoGroupCommandStr()
     }
 
     if (activeObj) {
-        QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+        QString activeName = QString::fromUtf8(activeObj->getNameInDocument());
         return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
     }
 
     return QStringLiteral("# Object created at document root.");
 }
+
+QString getAutoAssemblyOrPartGroupCommandStr()
+// Helper function to add the newly created object to the active Assembly or Part if present.
+// Link arrays are App::Link objects and are not valid children of PartDesign Bodies.
+{
+    return QStringLiteral(R"PY(activePart = Gui.activeView().getActiveObject('%1')
+activeAsm = Gui.activeView().getActiveObject('%2')
+if activePart and not activeAsm:
+    activePart.addObject(obj)
+elif not activePart and activeAsm:
+    activeAsm.addObject(obj)
+elif activePart and activeAsm:
+    if activePart.hasObject(activeAsm, True):
+        activeAsm.addObject(obj)
+    elif activeAsm.hasObject(activePart, True):
+        activePart.addObject(obj)
+)PY")
+        .arg(PARTKEY, ASSEMBLYKEY);
+}
+
+void activateLinkArrayCommand(
+    Gui::Command& command,
+    const char* transactionName,
+    const char* objectType,
+    const char* objectName
+)
+{
+    auto selection = Gui::Command::getSelection().getSelectionEx();
+    if (selection.size() > 1) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong Selection"),
+            QObject::tr("Select at most one object to array.")
+        );
+        return;
+    }
+
+    App::DocumentObject* source = selection.empty() ? nullptr : selection.front().getObject();
+    if (source && source->getDocument() != App::GetApplication().getActiveDocument()) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong Selection"),
+            QObject::tr("Select one object from the active document.")
+        );
+        return;
+    }
+
+    if (Gui::Control().activeDialog(command.getDocument())) {
+        return;
+    }
+
+    command.openCommand(transactionName);
+    Gui::Command::_doCommand(
+        __FILE__,
+        __LINE__,
+        Gui::Command::Doc,
+        "obj = App.activeDocument().addObject('%s', '%s')",
+        objectType,
+        objectName
+    );
+    if (source) {
+        Gui::Command::_doCommand(
+            __FILE__,
+            __LINE__,
+            Gui::Command::Doc,
+            "obj.LinkedObject = %s",
+            Gui::Command::getObjectCmd(source).c_str()
+        );
+    }
+    Gui::Command::_doCommand(
+        __FILE__,
+        __LINE__,
+        Gui::Command::Gui,
+        getAutoAssemblyOrPartGroupCommandStr().toUtf8()
+    );
+
+    App::DocumentObject* array = App::GetApplication().getActiveDocument()->getActiveObject();
+    if (!array) {
+        command.abortCommand();
+        return;
+    }
+
+    if (source && array->getDocument()->recomputeFeature(array)) {
+        array->purgeTouched();
+    }
+
+    App::SubObjectT reference(array);
+    if (auto* view = Gui::Application::Instance->activeView()) {
+        for (const char* key : {ASSEMBLYKEY, PARTKEY}) {
+            App::DocumentObject* root = nullptr;
+            std::string subname;
+            if (!view->getActiveObject<App::DocumentObject*>(key, &root, &subname)) {
+                continue;
+            }
+            subname += std::string(array->getNameInDocument()) + '.';
+            // Use the active container occurrence that actually received the new array.
+            if (root && root->getSubObject(subname.c_str()) == array) {
+                reference = App::SubObjectT(root, subname.c_str());
+                break;
+            }
+        }
+    }
+    PartGui::showLinkArrayTask(array, reference);
+}
 }  // namespace
+
+//===========================================================================
+// Part_LinkArrayCircular
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayCircular)
+
+CmdPartLinkArrayCircular::CmdPartLinkArrayCircular()
+    : Command("Part_LinkArrayCircular")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Circular Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a concentric circular array of linked objects");
+    sWhatsThis = "Part_LinkArrayCircular";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_CircularLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayCircular::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Circular Link Array"),
+        "Part::LinkArrayCircular",
+        "CircularLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayCircular::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPath
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPath)
+
+CmdPartLinkArrayPath::CmdPartLinkArrayPath()
+    : Command("Part_LinkArrayPath")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Path Link Array");
+    sToolTipText = QT_TR_NOOP("Creates an array of linked objects along a path");
+    sWhatsThis = "Part_LinkArrayPath";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PathLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPath::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Path Link Array"),
+        "Part::LinkArrayPath",
+        "PathLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayPath::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPoint
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPoint)
+
+CmdPartLinkArrayPoint::CmdPartLinkArrayPoint()
+    : Command("Part_LinkArrayPoint")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Point Link Array");
+    sToolTipText = QT_TR_NOOP("Creates an array of linked objects at each point of a sketch or shape");
+    sWhatsThis = "Part_LinkArrayPoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PointLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Point Link Array"),
+        "Part::LinkArrayPoint",
+        "PointLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayPoint::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayLinear
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayLinear)
+
+CmdPartLinkArrayLinear::CmdPartLinkArrayLinear()
+    : Command("Part_LinkArrayLinear")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Linear Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a linear array of linked objects");
+    sWhatsThis = "Part_LinkArrayLinear";
+    sStatusTip = sToolTipText;
+    sPixmap = "LinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayLinear::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Linear Link Array"),
+        "Part::LinkArrayLinear",
+        "LinearLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayLinear::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPolar
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPolar)
+
+CmdPartLinkArrayPolar::CmdPartLinkArrayPolar()
+    : Command("Part_LinkArrayPolar")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Polar Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a polar array of linked objects");
+    sWhatsThis = "Part_LinkArrayPolar";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PolarLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPolar::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(
+        *this,
+        QT_TRANSLATE_NOOP("Command", "Polar Link Array"),
+        "Part::LinkArrayPolar",
+        "PolarLinkArray"
+    );
+}
+
+bool CmdPartLinkArrayPolar::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
 
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
 
@@ -2654,6 +2929,41 @@ bool CmdPartDatumPoint::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Part_LinkArrays
+//===========================================================================
+class CmdPartLinkArrays: public Gui::GroupCommand
+{
+public:
+    CmdPartLinkArrays()
+        : GroupCommand("Part_LinkArrays")
+    {
+        sGroup = QT_TR_NOOP("Part");
+        sMenuText = QT_TR_NOOP("Link Arrays");
+        sToolTipText = QT_TR_NOOP("Creates link arrays");
+        sWhatsThis = "Part_LinkArrays";
+        sStatusTip = sToolTipText;
+        sPixmap = "LinkArray";
+
+        setCheckable(false);
+
+        addCommand("Part_LinkArrayLinear");
+        addCommand("Part_LinkArrayPolar");
+        addCommand("Part_LinkArrayCircular");
+        addCommand("Part_LinkArrayPath");
+        addCommand("Part_LinkArrayPoint");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartLinkArrays";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+    }
+};
 
 //===========================================================================
 // Part_Datums
@@ -2734,6 +3044,12 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
     rcCmdMgr.addCommand(new CmdPartSectionCut());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayCircular());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayLinear());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPath());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPoint());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPolar());
+    rcCmdMgr.addCommand(new CmdPartLinkArrays());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
     rcCmdMgr.addCommand(new CmdPartDatumPlane());

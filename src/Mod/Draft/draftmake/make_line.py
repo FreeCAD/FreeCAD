@@ -32,10 +32,11 @@
 # @{
 import FreeCAD as App
 import draftmake.make_wire as make_wire
+from freecad.deprecation import deprecated
 
 
 def make_line(first_param, last_param=None):
-    """makeLine(first_param, p2)
+    """make_line(first_param, p2)
 
     Creates a line from 2 points or from a given object.
 
@@ -53,23 +54,30 @@ def make_line(first_param, last_param=None):
     if last_param:
         p1 = first_param
         p2 = last_param
+    elif hasattr(first_param, "StartPoint") and hasattr(first_param, "EndPoint"):
+        p2 = first_param.EndPoint
+        p1 = first_param.StartPoint
+    elif hasattr(first_param, "Vertexes"):
+        p2 = first_param.Vertexes[-1].Point
+        p1 = first_param.Vertexes[0].Point
     else:
-        if hasattr(first_param, "StartPoint") and hasattr(first_param, "EndPoint"):
-            p2 = first_param.EndPoint
-            p1 = first_param.StartPoint
-        elif hasattr(p1, "Vertexes"):
-            p2 = first_param.Vertexes[-1].Point
-            p1 = first_param.Vertexes[0].Point
-        else:
-            _err = "Unable to create a line from the given parameters"
-            App.Console.PrintError(_err + "\n")
-            return
+        _err = "Unable to create a line from the given parameters"
+        App.Console.PrintError(_err + "\n")
+        return
 
     obj = make_wire.make_wire([p1, p2])
 
     return obj
 
 
-makeLine = make_line
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_line()",
+)
+def makeLine(*args, **kwarg):
+    """DEPRECATED. Use 'make_line'."""
+    return make_line(*args, **kwarg)
+
 
 ## @}

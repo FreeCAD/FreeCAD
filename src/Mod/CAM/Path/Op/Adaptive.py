@@ -51,6 +51,9 @@ if FreeCAD.GuiUp:
 
 __doc__ = "Class and implementation of the Adaptive CAM operation."
 
+# Set to a callable(results) to receive raw AdaptiveOutput lists after each Execute call.
+_debug_results_callback = None
+
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -69,7 +72,7 @@ else:
 
 translate = FreeCAD.Qt.translate
 
-ADAPTIVE_GENERATOR_VERSION = "1.0.2"
+ADAPTIVE_GENERATOR_VERSION = "1.0.3"
 
 
 def convertTo2d(pathArray):
@@ -155,6 +158,40 @@ def discretize(edge, flipDirection=False):
         pts.reverse()
 
     return pts
+
+
+def _initHelixFeedProperties(obj, legacy=False):
+    """Keep legacy entry feeds separate from new operations' ramp feeds."""
+    # Keep the version in a local: a setup sheet's OpPrototype cannot read properties back.
+    if hasattr(obj, "HelixFeedVersion"):
+        version = obj.HelixFeedVersion
+    else:
+        version = 0 if legacy else 1
+        obj.addProperty(
+            "App::PropertyInteger",
+            "HelixFeedVersion",
+            "AdaptiveHelixEntry",
+            "Helix entry feed: 0 uses VertFeed for compatibility; 1 uses RampFeed",
+        )
+        obj.HelixFeedVersion = version
+    obj.setEditorMode("HelixFeedVersion", 0 if version == 0 else 2)
+
+
+def _applyFeedRate(commands, feedRate):
+    """Apply the entry feed to milling moves, preserving straight plunge feeds."""
+    start = FreeCAD.Vector()
+    for command in commands:
+        if command.Name not in Constants.GCODE_MOVE_ALL:
+            continue
+        end = Path.Geom.commandEndPoint(command, start)
+        isPlunge = command.Name in Constants.GCODE_MOVE_STRAIGHT and Path.Geom.pointsCoincide(
+            Path.Geom.xy(start), Path.Geom.xy(end)
+        )
+        if command.Name in Constants.GCODE_MOVE_MILL and not isPlunge:
+            parameters = command.Parameters
+            parameters["F"] = feedRate
+            command.Parameters = parameters
+        start = end
 
 
 def GenerateGCode(op, obj, adaptiveResults):
@@ -252,6 +289,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                 op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
                 PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
+                # Legacy operations used VertFeed directly, without geometry limiting.
+                entryFeed = op.vertFeed if obj.HelixFeedVersion == 0 else op.rampFeed
+                _applyFeedRate(helixCommands, entryFeed)
                 op.commandlist.extend(helixCommands[2:])
 
                 if cone_angle_rad:
@@ -267,6 +307,8 @@ def GenerateGCode(op, obj, adaptiveResults):
                     }
                     spiralCommands = spiral.generate(**spiralArgs)
                     PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
+                    # The connecting spiral uses the same entry feed.
+                    _applyFeedRate(spiralCommands, entryFeed)
                     # remove first linear movements
                     while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
                         del spiralCommands[0]
@@ -308,7 +350,12 @@ def GenerateGCode(op, obj, adaptiveResults):
                         if z != lz:
                             op.commandlist.append(Path.Command("G0", {"Z": z}))
 
-                        op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
+                        cmd = Path.Command("G0", {"X": x, "Y": y})
+                        if op.noEngagementFeed:
+                            cmd.Annotations = {
+                                Constants.ANNOT_NO_ENGAGEMENT_FEED: str(op.noEngagementFeed)
+                            }
+                        op.commandlist.append(cmd)
 
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:
                         z = obj.ClearanceHeight.Value
@@ -401,7 +448,7 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
-        clearedArea = get_cleared_area(op, obj, pathArray)
+        clearedArea = get_cleared_area(op, obj, pathArray, obj.FinalDepth.Value)
 
         # put here all properties that influence calculation of adaptive base paths,
 
@@ -456,6 +503,8 @@ def Execute(op, obj):
 
             # EXECUTE
             results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
+            if _debug_results_callback is not None:
+                _debug_results_callback(results)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -510,9 +559,14 @@ def get_cleared_area(op, obj, pathArray, zOverride=None):
             for wire in shape.Wires:
                 outputWire = []
                 for edge in wire.Edges:
-                    assert edge.Curve.TypeId == "Part::GeomLine"
-                    v = edge.Vertexes[0].Point
-                    outputWire.append([v.x, v.y])
+                    typeId = edge.Curve.TypeId
+                    assert typeId in ("Part::GeomLine", "Part::GeomCircle"), typeId
+                    if typeId == "Part::GeomLine":
+                        points = [edge.Vertexes[0].Point]
+                    else:
+                        points = discretize(edge)[:-1]
+                    for v in points:
+                        outputWire.append([v.x, v.y])
                 clearedArea.append(outputWire)
 
     return clearedArea
@@ -716,6 +770,8 @@ def ExecuteModelAware(op, obj):
                 rdict["toolpaths"] = a2d.Execute(
                     stockPaths[rdict["startdepth"]], path2d, clearedArea, progressFn
                 )
+                if _debug_results_callback is not None:
+                    _debug_results_callback(rdict["toolpaths"])
 
             # Sort regions to cut by either depth or area.
             # TODO: Bonus points for ordering to minimize rapids
@@ -1537,6 +1593,7 @@ class PathAdaptive(PathOp.ObjectOp):
     def initOperation(self, obj):
         """initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses."""
+        _initHelixFeedProperties(obj)
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
@@ -1597,7 +1654,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave in the XY plane (eg for finishing operation)",
+                "Set how much stock to leave on the walls for the operation.",
             ),
         )
         obj.addProperty(
@@ -1606,7 +1663,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.",
+                "Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.",
             ),
         )
         obj.addProperty(
@@ -1627,6 +1684,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "To take a finishing profile path at the end",
             ),
         )
+        obj.setEditorMode("FinishingProfile", 2)  # hide this property
         obj.addProperty(
             "App::PropertyBool",
             "Stopped",
@@ -1818,6 +1876,8 @@ class PathAdaptive(PathOp.ObjectOp):
             Execute(self, obj)
 
     def opOnDocumentRestored(self, obj):
+        # Operations saved without a version retain their legacy entry feed.
+        _initHelixFeedProperties(obj, legacy=True)
         if not hasattr(obj, "HelixConeAngle"):
             obj.addProperty(
                 "App::PropertyAngle",
@@ -1863,7 +1923,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Adaptive",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "How much stock to leave along the Z axis (eg for finishing operation)",
+                    "Set how much stock to leave on the floor for the operation.",
                 ),
             )
 

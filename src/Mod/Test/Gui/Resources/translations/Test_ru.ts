@@ -144,7 +144,7 @@ FreeCAD UnitTest является частью FreeCAD и поддерживае
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>Ошибки скопированы в буфер обмена</translation>
     </message>
   </context>
 </TS>

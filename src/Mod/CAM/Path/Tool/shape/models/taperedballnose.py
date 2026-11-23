@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Billy Huddleston
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
-#                                                                              #
-#   © 2026 Billy Huddleston <billy@ivdc.com>                                   #
 #                                                                              #
 #   FreeCAD is free software: you can redistribute it and/or modify            #
 #   it under the terms of the GNU Lesser General Public License as             #
@@ -26,6 +26,7 @@ from .base import ToolBitShape
 
 class ToolBitShapeTaperedBallNose(ToolBitShape):
     name: str = "TaperedBallNose"
+    ball_end = True
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

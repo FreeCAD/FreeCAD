@@ -22,6 +22,7 @@
 
 #include <Inventor/nodes/SoCamera.h>
 #include <algorithm>
+#include <set>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -39,6 +40,8 @@
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
 #include <App/GeoFeature.h>
+#include <App/GroupExtension.h>
+#include <App/Link.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -73,6 +76,58 @@ FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
 
+DEF_STD_CMD_C(StdCmdOpenGroup)
+
+StdCmdOpenGroup::StdCmdOpenGroup()
+    : Command("Std_OpenGroup")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("&Open…");
+    sToolTipText = QT_TR_NOOP("Opens a document or imports files");
+    sWhatsThis = "Std_OpenGroup";
+    sStatusTip = sToolTipText;
+    sPixmap = "document-open";
+    eType = NoTransaction;
+}
+
+/**
+ * Opens the recent file at position \a iMsg in the menu.
+ * If the file does not exist or cannot be loaded this item is removed
+ * from the list.
+ */
+void StdCmdOpenGroup::activated(int iMsg)
+{
+    auto act = qobject_cast<RecentFilesAction*>(_pcAction);
+    if (act) {
+        if (iMsg == 0) {
+            CommandManager& rcCmdMgr = Application::Instance->commandManager();
+            rcCmdMgr.runCommandByName("Std_Open");
+        }
+        else if (iMsg == 1) {
+            return;  // should not happen it's the separator.
+        }
+        else {
+            act->activateFile(iMsg - 2);
+        }
+        _pcAction->setProperty("defaultAction", QVariant(0));
+        _pcAction->setToolTip(QString::fromLatin1(sToolTipText));
+        _pcAction->setStatusTip(QString::fromLatin1(sToolTipText));
+        _pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    }
+}
+
+/**
+ * Creates the QAction object containing the recent files.
+ */
+Action* StdCmdOpenGroup::createAction()
+{
+    auto pcAction = new RecentFilesAction(this, getMainWindow(), true);
+    pcAction->setObjectName(QLatin1String("openGroup"));
+    pcAction->setDropDownMenu(true);
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
 
 //===========================================================================
 // Std_Open
@@ -555,7 +610,7 @@ void StdCmdExport::activated(int iMsg)
     );
     if (!filename.isEmpty()) {
         const auto& selectedFilter = filterList[selectedFilterIndex];
-        hPath->SetASCII("FileExportFilter", selectedFilter.name.toLatin1().constData());
+        hPath->SetASCII("FileExportFilter", selectedFilter.name.toUtf8());
 
         SelectModule::Dict dict
             = SelectModule::exportHandler(filename, selectedFilter.toFilterString());
@@ -793,7 +848,10 @@ void StdCmdSave::activated(int iMsg)
         }
     }
 
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Save\")");
+    if (!getMainWindow()->activeWindow()) {
+        return;
+    }
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Save\")");
 }
 
 bool StdCmdSave::isActive()
@@ -822,7 +880,10 @@ StdCmdSaveAs::StdCmdSaveAs()
 void StdCmdSaveAs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"SaveAs\")");
+    if (!getMainWindow()->activeWindow()) {
+        return;
+    }
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"SaveAs\")");
 }
 
 bool StdCmdSaveAs::isActive()
@@ -853,7 +914,10 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 void StdCmdSaveCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"SaveCopy\")");
+    if (!getMainWindow()->activeWindow()) {
+        return;
+    }
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"SaveCopy\")");
 }
 
 bool StdCmdSaveCopy::isActive()
@@ -888,6 +952,39 @@ bool StdCmdSaveAll::isActive()
     return (getActiveGuiDocument() ? true : false);
 }
 
+
+//===========================================================================
+// Std_SaveGroup
+//===========================================================================
+class StdCmdSaveGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdSaveGroup()
+        : GroupCommand("Std_SaveGroup")
+    {
+        sGroup = "File";
+        sMenuText = QT_TR_NOOP("Save");
+        sToolTipText = QT_TR_NOOP("Saves the active document");
+        sWhatsThis = "Std_SaveGroup";
+        sPixmap = "document-save";
+        sStatusTip = sToolTipText;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Std_Save");
+        addCommand("Std_SaveAs");
+        addCommand("Std_SaveCopy");
+        addCommand("Std_SaveAll");
+        addCommand();  // separator
+        addCommand("Std_Export");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdSaveGroup";
+    }
+};
 
 //===========================================================================
 // Std_Revert
@@ -1581,10 +1678,10 @@ void StdCmdDelete::activated(int iMsg)
                             autoDeletion = false;
                             QString label;
                             if (parent->getDocument() != obj->getDocument()) {
-                                label = QLatin1String(parent->getFullName().c_str());
+                                label = QString::fromUtf8(parent->getFullName().c_str());
                             }
                             else {
-                                label = QLatin1String(parent->getNameInDocument());
+                                label = QString::fromUtf8(parent->getNameInDocument());
                             }
                             if (parent->Label.getStrValue() != parent->getNameInDocument()) {
                                 label += QStringLiteral(" (%1)").arg(
@@ -1668,7 +1765,7 @@ void StdCmdDelete::activated(int iMsg)
         QMessageBox::critical(
             getMainWindow(),
             QObject::tr("Delete Failed"),
-            QString::fromLatin1(e.what())
+            QString::fromUtf8(e.what())
         );
         e.reportException();
         App::GetApplication().abortTransaction(tid);
@@ -1850,6 +1947,32 @@ bool StdCmdTransform::isActive()
     return (Gui::Control().activeDialog() == nullptr);
 }
 
+namespace
+{
+bool hasPlacementGeometry(const App::DocumentObject* obj)
+{
+    std::set<const App::DocumentObject*> visited;
+    while (obj && visited.insert(obj).second) {
+        const auto* link = obj->getExtension<App::LinkBaseExtension>();
+        if (!link) {
+            return obj->isDerivedFrom<App::GeoFeature>() || obj->getExtension<App::GroupExtension>();
+        }
+        // Array links resolve to themselves through getLinkedObject(). Check their source instead.
+        obj = link->getTrueLinkedObject(false);
+    }
+    return false;
+}
+
+std::vector<App::DocumentObject*> getPlacementSelection()
+{
+    auto selection = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+    std::erase_if(selection, [](auto* obj) {
+        return !obj->getPlacementProperty() || !hasPlacementGeometry(obj);
+    });
+    return selection;
+}
+}  // namespace
+
 //===========================================================================
 // Std_Placement
 //===========================================================================
@@ -1873,40 +1996,33 @@ StdCmdPlacement::StdCmdPlacement()
 void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
-    );
-    auto plm = new Gui::Dialog::TaskPlacement();
-    if (!sel.empty()) {
-        App::Property* prop = sel.front()->getPropertyByName("Placement");
-        if (prop && prop->is<App::PropertyPlacement>()) {
-            plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
-
-            std::vector<Gui::SelectionObject> selection;
-            selection.reserve(sel.size());
-            std::transform(
-                sel.cbegin(),
-                sel.cend(),
-                std::back_inserter(selection),
-                [](App::DocumentObject* obj) { return Gui::SelectionObject(obj); }
-            );
-
-            plm->setPropertyName(QLatin1String("Placement"));
-            plm->setSelection(selection);
-            plm->bindObject();
-            plm->clearSelection();
-        }
+    auto sel = getPlacementSelection();
+    if (sel.empty()) {
+        return;
     }
+    auto* prop = sel.front()->getPlacementProperty();
+    if (!prop) {
+        return;
+    }
+    auto plm = new Gui::Dialog::TaskPlacement();
+    plm->setPlacement(prop->getValue());
+
+    std::vector<Gui::SelectionObject> selection;
+    selection.reserve(sel.size());
+    std::transform(sel.cbegin(), sel.cend(), std::back_inserter(selection), [](App::DocumentObject* obj) {
+        return Gui::SelectionObject(obj);
+    });
+
+    plm->setPropertyName(QLatin1String("Placement"));
+    plm->setSelection(selection);
+    plm->bindObject();
+    plm->clearSelection();
     Gui::Control().showDialog(plm, getDocument());
 }
 
 bool StdCmdPlacement::isActive()
 {
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
+    auto sel = getPlacementSelection();
     return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
                  auto* prop = obj->getPlacementProperty();
                  return obj->isFreezed() || !prop || prop->isReadOnly();
@@ -1932,17 +2048,14 @@ StdCmdTransformManip::StdCmdTransformManip()
 void StdCmdTransformManip::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    auto sel = getPlacementSelection();
+    if (sel.size() != 1) {
+        return;
+    }
     if (getActiveGuiDocument()->getInEdit()) {
         getActiveGuiDocument()->resetEdit();
     }
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
-    // FIXME: Need a way to force 'Transform' edit mode
-    // #0000477: Proper interface for edit modes of view provider
     if (vp) {
         getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
     }
@@ -1950,11 +2063,7 @@ void StdCmdTransformManip::activated(int iMsg)
 
 bool StdCmdTransformManip::isActive()
 {
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
+    auto sel = getPlacementSelection();
     return (
         sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
         && !sel.front()->getPlacementProperty()->isReadOnly()
@@ -2331,7 +2440,7 @@ protected:
             QMessageBox::critical(
                 getMainWindow(),
                 QObject::tr("Failed to paste expressions"),
-                QString::fromLatin1(e.what())
+                QString::fromUtf8(e.what())
             );
             e.reportException();
         }
@@ -2369,6 +2478,7 @@ void CreateDocCommands()
 
     rcCmdMgr.addCommand(new StdCmdNew());
     rcCmdMgr.addCommand(new StdCmdOpen());
+    rcCmdMgr.addCommand(new StdCmdOpenGroup());
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
@@ -2379,6 +2489,7 @@ void CreateDocCommands()
     rcCmdMgr.addCommand(new StdCmdSaveAs());
     rcCmdMgr.addCommand(new StdCmdSaveCopy());
     rcCmdMgr.addCommand(new StdCmdSaveAll());
+    rcCmdMgr.addCommand(new StdCmdSaveGroup());
     rcCmdMgr.addCommand(new StdCmdRevert());
     rcCmdMgr.addCommand(new StdCmdProjectInfo());
     rcCmdMgr.addCommand(new StdCmdProjectUtil());

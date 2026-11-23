@@ -1,25 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileCopyrightText: 2015 Eivind Kvedalen
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <sstream>
@@ -64,6 +63,7 @@ CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
     sWhatsThis = "Spreadsheet_MergeCells";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetMergeCells";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetMergeCells::activated(int iMsg)
@@ -125,6 +125,7 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
     sWhatsThis = "Spreadsheet_SplitCell";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetSplitCell";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetSplitCell::activated(int iMsg)
@@ -218,7 +219,7 @@ void CmdSpreadsheetImport::activated(int iMsg)
                 sheet->execute();
             }
             else {
-                Base::Console().error(errMsg.c_str());
+                Base::Console().error("{}", errMsg);
                 return;
             }
         }
@@ -244,6 +245,7 @@ CmdSpreadsheetExport::CmdSpreadsheetExport()
     sWhatsThis = "Spreadsheet_Export";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetExport";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetExport::activated(int iMsg)
@@ -289,6 +291,7 @@ CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
     sWhatsThis = "Spreadsheet_AlignLeft";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignLeft";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignLeft::activated(int iMsg)
@@ -346,6 +349,7 @@ CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
     sWhatsThis = "Spreadsheet_AlignCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignCenter";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignCenter::activated(int iMsg)
@@ -403,6 +407,7 @@ CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
     sWhatsThis = "Spreadsheet_AlignRight";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignRight";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignRight::activated(int iMsg)
@@ -460,6 +465,7 @@ CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
     sWhatsThis = "Spreadsheet_AlignTop";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignTop";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignTop::activated(int iMsg)
@@ -517,6 +523,7 @@ CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
     sWhatsThis = "Spreadsheet_AlignBottom";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignBottom";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignBottom::activated(int iMsg)
@@ -574,6 +581,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
     sWhatsThis = "Spreadsheet_AlignVCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignVCenter";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignVCenter::activated(int iMsg)
@@ -632,6 +640,7 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleBold";
     sAccel = "Ctrl+B";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetStyleBold::activated(int iMsg)
@@ -717,6 +726,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleItalic";
     sAccel = "Ctrl+I";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetStyleItalic::activated(int iMsg)
@@ -802,6 +812,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleUnderline";
     sAccel = "Ctrl+U";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetStyleUnderline::activated(int iMsg)
@@ -969,6 +980,7 @@ void CmdCreateSpreadsheet::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().addObject('Spreadsheet::Sheet','%s\')", FeatName.c_str());
     doCommand(Gui, "Gui.Selection.clearSelection()\n");
     doCommand(Gui, "Gui.Selection.addSelection(App.activeDocument().Name,'%s\')", FeatName.c_str());
+    doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     commitCommand();
 }
 

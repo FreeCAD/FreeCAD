@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2011 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Core API for architectural and Building Information Modeling (BIM) in FreeCAD.
 
@@ -53,6 +50,7 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 import FreeCAD
+from freecad.deprecation import deprecated
 from typing import Optional
 
 if FreeCAD.GuiUp:
@@ -257,8 +255,17 @@ def make2DDrawing(objectslist=None, baseobj=None, name=None):
     App::GeometryPython
         The created 2D drawing object.
     """
+    default_label = translate("Arch", "Drawing")
+    if name:
+        label = name
+    elif baseobj:
+        base_label = baseobj.Label or baseobj.Name
+        label = f"{base_label} - {default_label}"
+    else:
+        label = default_label
+
     obj = makeBuildingPart(objectslist)
-    obj.Label = name if name else translate("Arch", "Drawing")
+    obj.Label = label
     obj.IfcType = "Annotation"
     obj.ObjectType = "DRAWING"
     obj.setEditorMode("Area", 2)
@@ -883,12 +890,13 @@ def makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100]):
     return obj
 
 
+@deprecated(deprecated_in="26.3", removed_in="27.2")
 def makeProject(sites=None, name=None):
     """Create an Arch project.
 
     If sites are provided, add them as children of the new project.
 
-    .. deprecated:: 1.0.0
+    .. deprecated:: 26.3
 
     Parameters
     ----------
@@ -1802,7 +1810,7 @@ def joinWalls(walls, delete=False, deletebase=False):
                 else:
                     newSk = None
             if newSk:
-                sk = Draft.makeSketch(base.Base, autoconstraints=True, addTo=newSk)
+                sk = Draft.make_sketch(base.Base, autoconstraints=True, addTo=newSk)
                 base.Base = sk
             else:
                 sk = base.Base

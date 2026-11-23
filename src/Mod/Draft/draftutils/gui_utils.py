@@ -58,6 +58,26 @@ if App.GuiUp:
     # from PySide import QtSvg  # for load_texture
 
 
+def get_gui_document(document):
+    """Resolve a GUI document only while its application document is still open."""
+    if not App.GuiUp or not any(doc is document for doc in App.listDocuments().values()):
+        return None
+    try:
+        return Gui.getDocument(document)
+    except KeyError:
+        # GUI deletion precedes application document deletion.
+        return None
+
+
+def reset_edit(document, view_provider):
+    """Reset the captured edit session if it is still current."""
+    gui_document = get_gui_document(document)
+    if view_provider is None or gui_document is None:
+        return
+    if gui_document.getInEdit() is view_provider:
+        gui_document.resetEdit()
+
+
 def get_3d_view():
     """Return the current 3D view.
 
@@ -572,9 +592,9 @@ def format_object(target, origin=None, ignore_construction=False):
             if obrep.getEditorMode(p):
                 continue
             val = getattr(matchrep, p)
-            if isinstance(val, tuple):
+            if isinstance(val, (list, tuple)):
                 if len(val) != len_faces:
-                    val = (val[0],)
+                    val = [val[0]]
             elif hasattr(val, "Value"):
                 val = val.Value
             try:
@@ -585,7 +605,15 @@ def format_object(target, origin=None, ignore_construction=False):
             obrep.DisplayMode = matchrep.DisplayMode
         if hasattr(obrep, "DiffuseColor"):
             difcol = get_diffuse_color(origin)
-            if difcol and len(difcol) == len_faces:
+            if difcol and (len(difcol) == len_faces or hasattr(origin, "ColoredElements")):
+                # Since v1.1, Links, Link arrays and LinkGroups have a ShapeAppearance property
+                # that replaces their former ShapeMaterial property. The property has a default
+                # hard-coded value and is only used if OverrideMaterial is set to True. Because
+                # of the new property name the ShapeAppearance property they used to inherit
+                # from their source object is effectively overridden in the PropertiesList. But
+                # (if OverrideMaterial is False) the ShapeAppearance of the source object is
+                # used. As a workaround we always apply the difcolor for those object types.
+                # Note that we currently completely ignore the OverrideMaterial property.
                 obrep.DiffuseColor = difcol
     elif "FontName" not in obprops:
         # Apply 2 Draft style preferences, other style preferences are applied by Core.

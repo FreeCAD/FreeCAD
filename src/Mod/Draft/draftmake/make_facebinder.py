@@ -31,9 +31,9 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.facebinder import Facebinder
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_facebinder import ViewProviderFacebinder
@@ -67,6 +67,14 @@ def make_facebinder(selectionset, name="Facebinder"):
     return fb
 
 
-makeFacebinder = make_facebinder
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_facebinder()",
+)
+def makeFacebinder(*args, **kwarg):
+    """DEPRECATED. Use 'make_facebinder'."""
+    return make_facebinder(*args, **kwarg)
+
 
 ## @}

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2024 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2024 sliptonic
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
@@ -185,8 +185,8 @@ def adapt_material_from_job(job) -> MaterialContext:
 def adapt_machine_from_job(job) -> Optional[MachineContext]:
     """
     Build a MachineContext from the Job's Machine definition's first
-    spindle. Returns None when the job has no Machine configured or the
-    machine has no spindles. The resolver treats None as "no clamping."
+    toolhead. Returns None when the job has no Machine configured or the
+    machine has no toolheads. The resolver treats None as "no clamping."
     """
     if job is None or not hasattr(job, "Proxy"):
         return None
@@ -196,10 +196,10 @@ def adapt_machine_from_job(job) -> Optional[MachineContext]:
         return None
     if machine is None:
         return None
-    spindles = getattr(machine, "spindles", None) or []
-    if not spindles:
+    toolheads = getattr(machine, "toolheads", None) or []
+    if not toolheads:
         return None
-    s = spindles[0]
+    s = toolheads[0]
     return MachineContext(
         min_rpm=float(getattr(s, "min_rpm", 0.0) or 0.0),
         max_rpm=float(getattr(s, "max_rpm", 0.0) or 0.0),
@@ -315,6 +315,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
 
     def __init__(self, tc, parent=None):
         super().__init__(parent)
+        self._centered = False
         self.tc = tc
         ensure_tc_properties(tc)
         self.toolbit = _toolbit_from_tc(tc)
@@ -329,6 +330,17 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.setWindowTitle(translate("CAM_FeedsSpeeds", "Suggest Feeds & Speeds"))
         self._build_ui()
         self._refresh()
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        if not self._centered:
+            self._centered = True
+            screen = QtWidgets.QApplication.primaryScreen()
+            if screen is not None:
+                geo = screen.availableGeometry()
+                frame = self.frameGeometry()
+                frame.moveCenter(geo.center())
+                self.move(frame.topLeft())
 
     def _build_ui(self) -> None:
         outer = QtWidgets.QVBoxLayout(self)

@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from GeometrySurface import GeometrySurface
-from typing import Any, Final, Tuple
+from typing import Any, Final
 
 @export(
     Twin="GeomTrimmedSurface",
@@ -35,10 +33,9 @@ class RectangularTrimmedSurface(GeometrySurface):
     BasisSurface: Final[Any] = None
     """Represents the basis surface from which the trimmed surface is derived."""
 
-    def setTrim(self, params: Tuple[float, float, float, float], /) -> None:
+    def setTrim(self, u1: float, u2: float, v1: float, v2: float, /) -> None:
         """
-        setTrim(self, params: (u1, u2, v1, v2)) -> None
+        setTrim(self, u1, u2, v1, v2) -> None
 
         Modifies this patch by changing the trim values applied to the original surface
         """
-        ...

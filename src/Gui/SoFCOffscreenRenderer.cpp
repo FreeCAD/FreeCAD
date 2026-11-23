@@ -339,7 +339,7 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
     com << " </View>\n";
     com << " <Source>\n";
     com << "  <Creator>Unknown</Creator>\n";
-    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData()
+    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toUtf8().constData()
         << "</CreationDate>\n";
     com << "  <CreatingSystem>" << App::Application::getExecutableName() << " " << major << "."
         << minor << "</CreatingSystem>\n";

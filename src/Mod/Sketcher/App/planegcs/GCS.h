@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Konstantinos Poulios
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -50,7 +47,7 @@ namespace GCS
 // Solver
 ///////////////////////////////////////
 
-enum SolveStatus
+enum class SolveStatus : uint8_t
 {
     Success = 0,                    // Found a solution zeroing the error function
     Converged = 1,                  // Found a solution minimizing the error function
@@ -59,11 +56,11 @@ enum SolveStatus
                                     // resulting geometry is OCE-invalid
 };
 
-enum Algorithm
+enum Algorithm : uint8_t
 {
-    BFGS = 0,
-    LevenbergMarquardt = 1,
-    DogLeg = 2
+    BFGS,
+    LevenbergMarquardt,
+    DogLeg,
 };
 
 enum DogLegGaussStep
@@ -127,8 +124,10 @@ private:
     void clearSubSystems();
 
     VEC_D reference;
-    void setReference();      // copies the current parameter values to reference
-    void resetToReference();  // reverts all parameter values to the stored reference
+    /// Copies the current parameter values to reference.
+    void saveReference();
+    /// Reverts all parameter values to the stored reference.
+    void restoreReference();
 
     std::vector<VEC_pD> plists;  // partitioned plist except equality constraints
     // partitioned clist except equality constraints
@@ -145,9 +144,9 @@ private:
 
     bool emptyDiagnoseMatrix;  // false only if there is at least one driving constraint.
 
-    int solve_BFGS(SubSystem* subsys, bool isFine = true, bool isRedundantsolving = false);
-    int solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
-    int solve_DL(SubSystem* subsys, bool isRedundantsolving = false);
+    SolveStatus solve_BFGS(SubSystem* subsys, bool isRedundantsolving = false);
+    SolveStatus solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
+    SolveStatus solve_DL(SubSystem* subsys, bool isRedundantsolving = false);
 
     void makeReducedJacobian(
         Eigen::MatrixXd& J,
@@ -608,15 +607,10 @@ public:
     void declareDrivenParams(VEC_pD& params);
     void initSolution(Algorithm alg = DogLeg);
 
-    int solve(bool isFine = true, Algorithm alg = DogLeg, bool isRedundantsolving = false);
-    int solve(VEC_pD& params, bool isFine = true, Algorithm alg = DogLeg, bool isRedundantsolving = false);
-    int solve(
-        SubSystem* subsys,
-        bool isFine = true,
-        Algorithm alg = DogLeg,
-        bool isRedundantsolving = false
-    );
-    int solve(SubSystem* subsysA, SubSystem* subsysB, bool isFine = true, bool isRedundantsolving = false);
+    SolveStatus solve(Algorithm alg = DogLeg, bool isRedundantsolving = false);
+    SolveStatus solve(VEC_pD& params, Algorithm alg = DogLeg, bool isRedundantsolving = false);
+    SolveStatus solve(SubSystem* subsys, Algorithm alg = DogLeg, bool isRedundantsolving = false);
+    SolveStatus solve(SubSystem* subsysA, SubSystem* subsysB, bool isRedundantsolving = false);
 
     void applySolution();
     void evaluateDrivenConstraints();

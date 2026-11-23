@@ -44,6 +44,9 @@ class TemplateClassPyExport(template.ModelTemplate):
         exportName = self.export.Name
         inputDir = self.inputDir
         outputDir = self.outputDir
+        hasDeprecatedApi = any(method.Deprecated for method in self.export.Methode) or any(
+            attribute.Deprecated for attribute in self.export.Attribute
+        )
 
         def escapeString(s, indent=4):
             if not s:
@@ -54,6 +57,9 @@ class TemplateClassPyExport(template.ModelTemplate):
             s = s.replace('"', '\\"')
             s = s.replace("\n", f'\\n"\n{" "*indent}"')
             return s
+
+        def cppString(s, indent=4):
+            return f'"{escapeString(s, indent)}"' if s else "nullptr"
 
         print("TemplateClassPyExport", outputDir + exportName)
 
@@ -146,6 +152,9 @@ public:
 -
 + if (self.export.RichCompare):
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
+-
++ if (self.export.Hash):
+    static Py_hash_t hash(PyObject *self);
 -
 + if (self.export.DescriptorGetter):
     static PyObject* descriptorGetter(PyObject* self, PyObject* obj, PyObject* type);
@@ -356,6 +365,9 @@ public:
 // Every change you make here gets lost in the next full rebuild!
 // This File is normally built as an include in @self.export.Name@Imp.cpp! It's not intended to be in a project!
 
++ if (hasDeprecatedApi):
+#include <Base/Interpreter.h>
+-
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -397,6 +409,9 @@ PyTypeObject @self.export.Name@::Type = {
 + if (self.export.Sequence):
     .tp_as_sequence = @self.export.Namespace@::@self.export.Name@::Sequence,
     .tp_as_mapping = @self.export.Namespace@::@self.export.Name@::Mapping,
+-
++ if (self.export.Hash):
+    .tp_hash = @self.export.Namespace@::@self.export.Name@::hash,
 -
     .tp_getattro = __getattro,
     .tp_setattro = __setattro,
@@ -617,6 +632,33 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
 
 -
++ if (i.Deprecated is not None):
++ if (self.export.PythonName):
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "@self.export.PythonName@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+= else:
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "@self.export.Namespace@.@self.export.Twin@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+-
+        return nullptr;
+    }
+-
     try { // catches all exceptions coming up from c++ and generate a python exception
 + if i.Keyword:
 + if i.Static:
@@ -690,6 +732,33 @@ PyObject * @self.export.Name@::staticCallback_get@i.Name@ (PyObject *self, void 
         return nullptr;
     }
 
++ if (i.Deprecated is not None):
++ if (self.export.PythonName):
+    if (!Base::warnDeprecatedPythonApi(
+            "Attribute",
+            "@self.export.PythonName@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+= else:
+    if (!Base::warnDeprecatedPythonApi(
+            "Attribute",
+            "@self.export.Namespace@.@self.export.Twin@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+-
+        return nullptr;
+    }
+-
     try {
         return Py::new_reference_to(static_cast<@self.export.Name@*>(self)->get@i.Name@());
     } catch (const Py::Exception&) {
@@ -724,6 +793,33 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
         return -1;
     }
 
++ if (i.Deprecated is not None):
++ if (self.export.PythonName):
+    if (!Base::warnDeprecatedPythonApi(
+            "Attribute",
+            "@self.export.PythonName@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+= else:
+    if (!Base::warnDeprecatedPythonApi(
+            "Attribute",
+            "@self.export.Namespace@.@self.export.Twin@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+-
+        return -1;
+    }
+-
     try {
 + if (i.Parameter.Type == "Float"):
         static_cast<@self.export.Name@*>(self)->set@i.Name@(Py::@i.Parameter.Type@(PyNumber_Float(value),true));
@@ -1192,6 +1288,13 @@ PyObject* @self.export.Name@::richCompare(PyObject *v, PyObject *w, int op)
     return nullptr;
 }
 -
++ if (self.export.Hash):
+Py_hash_t @self.export.Name@::hash(PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return -1;
+}
+-
 + for i in self.export.Attribute:
 
 Py::@i.Parameter.Type@ @self.export.Name@::get@i.Name@() const
@@ -1537,6 +1640,13 @@ PyObject* @self.export.Name@::richCompare(PyObject *v, PyObject *w, int op)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return nullptr;
+}
+-
++ if (self.export.Hash):
+Py_hash_t @self.export.Name@::hash(PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return -1;
 }
 -
 

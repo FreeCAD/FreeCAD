@@ -65,19 +65,20 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     PointSize.setStatus(App::Property::Hidden, true);
     DisplayMode.setStatus(App::Property::Hidden, true);
 
-    // get the datum coloring scheme
-    //  set default color for datums (golden yellow with 60% transparency)
+    // Set the default datum face color (golden yellow with 60% transparency).
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/PartDesign"
     );
     unsigned long shcol = hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099);
+    unsigned long lncol = hGrp->GetUnsigned("DefaultDatumLineColor", 0xFA9600FF);
     Base::Color col((uint32_t)shcol);
+    Base::Color lineCol((uint32_t)lncol);
 
     ShapeAppearance.setDiffuseColor(col);
-    LineColor.setValue(col);
-    PointColor.setValue(col);
+    LineColor.setValue(lineCol);
+    PointColor.setValue(lineCol);
     Transparency.setValue(60);
-    LineWidth.setValue(1);
+    LineWidth.setValue(Gui::ViewParams::instance()->getDefaultShapeLineWidth());
 }
 
 ViewProviderShapeBinder::~ViewProviderShapeBinder() = default;
@@ -261,16 +262,15 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop)
         Base::Color shapeColor, lineColor, pointColor;
         int transparency, linewidth;
         if (UseBinderStyle.getValue()) {
-            // get the datum coloring scheme
-            //  set default color for datums (golden yellow with 60% transparency)
+            // Set the default datum face color (golden yellow with 60% transparency).
             static ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/PartDesign"
             );
             shapeColor.setPackedValue(hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099));
-            lineColor = shapeColor;
-            pointColor = shapeColor;
+            lineColor.setPackedValue(hGrp->GetUnsigned("DefaultDatumLineColor", 0xFA9600FF));
+            pointColor = lineColor;
             transparency = 60;
-            linewidth = 1;
+            linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
         }
         else {
             shapeColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeColor());

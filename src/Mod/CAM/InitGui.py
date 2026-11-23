@@ -88,6 +88,7 @@ class CAMWorkbench(Workbench):
         import Path.GuiInit
 
         from Path.Main.Gui import JobCmd as PathJobCmd
+        from Path.Main.Gui import WorkplaneCmd as PathWorkplaneCmd
         from Path.Main.Gui import SanityCmd as SanityCmd
         from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
@@ -105,8 +106,6 @@ class CAMWorkbench(Workbench):
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
         import PathCommands
-        import subprocess
-        from packaging.version import Version, parse
 
         FreeCADGui.addPreferencePage(
             AssetPreferences.AssetPreferencesPage,
@@ -124,7 +123,8 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Sanity"]
+        projcmdlist = ["CAM_Job", "CAM_Workplane"]
+        sanitycmdlist = ["CAM_Sanity", "CAM_QuickValidate"]
         postcmdlist = ["CAM_Post", "CAM_PostSelected"]
         toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
 
@@ -156,10 +156,12 @@ class CAMWorkbench(Workbench):
             "CAM_DressupArray",
             "CAM_DressupAxisMap",
             "CAM_DressupPathBoundary",
+            "CAM_DressupPathBoundary2",
             "CAM_DressupDogbone",
             "CAM_DressupDragKnife",
             "CAM_DressupLeadInOut",
             "CAM_DressupMirror",
+            "CAM_DressupPlungeMilling",
             "CAM_DressupRampEntry",
             "CAM_DressupTag",
             "CAM_DressupZCorrect",
@@ -170,6 +172,14 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
+        sanitycmdgroup = ["CAM_SanityTools"]
+        FreeCADGui.addCommand(
+            "CAM_SanityTools",
+            PathCommandGroup(
+                sanitycmdlist,
+                QT_TRANSLATE_NOOP("CAM_SanityTools", "Sanity check"),
+            ),
+        )
         postcmdgroup = ["CAM_PostTools"]
         FreeCADGui.addCommand(
             "CAM_PostTools",
@@ -216,28 +226,11 @@ class CAMWorkbench(Workbench):
         )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_PathShapeTC")
+            prepcmdlist.append("CAM_PathShape")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
-            twodopcmdlist.append("CAM_Slot")
+            engravecmdlist.append("CAM_Flute")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
-            try:
-                r = subprocess.run(
-                    ["camotics", "--version"], capture_output=True, text=True
-                ).stderr.strip()
-                v = parse(r)
-
-                if v >= Version("1.2.2"):
-                    toolcmdlist.append("CAM_Camotics")
-            except (FileNotFoundError, ModuleNotFoundError):
-                pass
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to execute camotics command: {e}")
-            except ValueError as ve:
-                print(f"Version error: {ve}")
-            except Exception as ex:
-                print(f"An unexpected error occurred: {ex}")
-
             try:
                 try:
                     import ocl  # pylint: disable=unused-variable
@@ -245,13 +238,12 @@ class CAMWorkbench(Workbench):
                     import opencamlib as ocl
                 from Path.Op.Gui import Surface
                 from Path.Op.Gui import Waterline
+                from Path.Op.Gui import PlanarSurface  # noqa: F401
+                from Path.Op.Gui import RotarySurface  # noqa: F401
 
-                threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
-
-                if Path.Preferences.experimentalFeaturesEnabled():
-                    from Path.Op.Gui import RotarySurface  # noqa: F401
-
-                    threedopcmdlist.append("CAM_RotarySurface")
+                threedopcmdlist.extend(
+                    ["CAM_Surface", "CAM_Waterline", "CAM_PlanarSurface", "CAM_RotarySurface"]
+                )
                 threedcmdgroup = ["CAM_3dTools"]
                 FreeCADGui.addCommand(
                     "CAM_3dTools",
@@ -266,7 +258,7 @@ class CAMWorkbench(Workbench):
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Project Setup"),
-            projcmdlist + postcmdgroup,
+            projcmdlist + sanitycmdgroup + postcmdgroup,
         )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Tool Commands"),
@@ -285,6 +277,7 @@ class CAMWorkbench(Workbench):
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
+            + sanitycmdlist
             + postcmdlist
             + ["CAM_ExportTemplate", "Separator"]
             + simcmdlist
@@ -293,6 +286,7 @@ class CAMWorkbench(Workbench):
             + ["Separator"]
             + twodopcmdlist
             + drillingcmdlist
+            + ["Separator"]
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist

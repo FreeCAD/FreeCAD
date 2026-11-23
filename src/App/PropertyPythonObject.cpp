@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2009 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 
@@ -276,8 +273,8 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Py::String typestr(this->object.type().str());
-        Base::Console().error("PropertyPythonObject::toString(): failed for %s\n",
-                              typestr.as_string().c_str());
+        Base::Console().error("PropertyPythonObject::toString(): failed for {}\n",
+                              typestr.as_string());
         Base::PyException e;  // extract the Python error text
         e.reportException();
     }
@@ -422,7 +419,7 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
         e.clear();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
     catch (...) {
         Base::Console().error("Critical error in PropertyPythonObject::restoreObject\n");
@@ -484,10 +481,10 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                 std::string moduleName = reader.getAttribute<const char*>("module");
                 if (!isAllowedModule(moduleName)) {
                     Base::Console().warning(
-                        "PropertyPythonObject::Restore: blocked import of module '%s' during"
+                        "PropertyPythonObject::Restore: blocked import of module '{}' during"
                         " document restore. Only modules from FreeCAD or installed addons"
                         " are permitted.\n",
-                        moduleName.c_str());
+                        moduleName);
                     throw Py::ImportError("module not permitted: " + moduleName);
                 }
                 Py::Module mod(PyImport_ImportModule(moduleName.c_str()), true);
@@ -526,8 +523,8 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         }
         else if (!load_failed) {
             Base::Console().warning(
-                "PropertyPythonObject::Restore: unsupported serialisation: %s\n",
-                buffer.c_str());
+                "PropertyPythonObject::Restore: unsupported serialisation: {}\n",
+                buffer);
         }
         restoreObject(reader);
         hasSetValue();

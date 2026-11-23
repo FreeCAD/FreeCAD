@@ -1,31 +1,39 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <algorithm>
-#include <boost/graph/graphviz.hpp>
 #include <random>
+
+// GCC reports boost::detail::write_graphviz_subgraph's edge iterators as
+// possibly uninitialized; they are assigned by tie(...) = edges(g).
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+#include <boost/graph/graphviz.hpp>
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic pop
+#endif
+
 #include <App/Application.h>
 
 #include "Application.h"
@@ -87,7 +95,7 @@ static PropType getPropType(DocumentObject* obj, const std::string& propName)
     if (obj->isInputProperty(propName)) {
         return PropType::PROP_INPUT;
     }
-    else if (obj->isOutputProperty(propName)) {
+    if (obj->isOutputProperty(propName)) {
         return PropType::PROP_OUTPUT;
     }
     return PropType::PROP_REGULAR;
@@ -447,24 +455,16 @@ void Document::exportGraphviz(std::ostream& out) const
             GlobalVertexList[getId(docObj)] = vertex_no++;
 
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
+            auto& props = get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]];
             if (!GraphList[docObj]) {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
-                // Set node label
-                if (name == label) {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
-                }
-                else {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] =
-                        name + "&#92;n(" + label + ")";
-                }
+                props["style"] = "rounded,filled";
+                props["shape"] = "box";
+                props["label"] = name == label ? name : name + "&#92;n(" + label + ")";
             }
             else {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["fixedsize"] =
-                    "true";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["width"] = "0";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["height"] = "0";
+                props["style"] = "invis";
+                props["shape"] = "point";
+                props["margin"] = "0";
             }
 
             // Add expressions and its dependencies

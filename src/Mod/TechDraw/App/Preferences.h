@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -41,6 +43,12 @@ class Color;
 namespace TechDraw
 {
 enum class ArrowType : int;
+
+enum class FaceFinderVersion {
+    v0_17 = 0,
+    v0_21 = 1,
+    v26_3 = 2
+};
 
 //getters for parameters used in multiple places.
 class TechDrawExport Preferences
@@ -174,6 +182,9 @@ public:
     static bool printCenterMarks();
 
     static bool fixColorAlphaOnLoad();
+
+    static FaceFinderVersion faceFinderVersion();
+    static void setFaceFinderVersion(FaceFinderVersion version);
 
 };
 

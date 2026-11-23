@@ -1,27 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Jürgen Riegel
+// SPDX-FileCopyrightText: 2011 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #pragma once
@@ -250,6 +247,9 @@ public:
 
     /// Get the name of the object in the document.
     const char* getNameInDocument() const;
+
+    /// Return the display label, falling back to the internal name if it is empty.
+    const char* getLabelOrName() const;
 
     /// Get the object ID that is unique within its owner document.
     long getID() const
@@ -1157,6 +1157,20 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
+    /**
+     * @brief Move the dynamic property to a document object.
+     *
+     * @param[in] prop The property to move.
+     * @param[in] targetObj The object to which the property is moved.
+     *
+     * @return a pointer to the moved property if successful; `nullptr` if the
+     * target object is the same as the current one.
+     * @throw Base::NameError If the property already exists in the object.
+     * @throw Base::RuntimeError On various runtime errors, such as when the
+     *   property is locked or the target object is invalid.
+     */
+    virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetObj);
+
     App::Property* addDynamicProperty(
         std::string_view type,
         const char* name = nullptr,
@@ -1471,6 +1485,11 @@ protected:
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
 private:
+    void moveExpressionTargetingProp(Property* prop, Property* newProp,
+                                     DocumentObject* targetObj);
+    void arrangeMoveProperty(Property* toBeMovedProp,
+                             Property* newProp,
+                             DocumentObject* targetObj);
     void printInvalidLinks() const;
     void setTouched(const char* propName);
 

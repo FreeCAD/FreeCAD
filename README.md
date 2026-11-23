@@ -12,20 +12,18 @@
 
 [![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
 
-<img src="/.github/images/partdesign.png" width="800"/>
+<img src="/.github/images/partdesign.jpg" width="800"/>
 
 Overview
 --------
 
-* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D 
-modeler made primarily to design real-life objects of any size. 
-Parametric modeling allows you to easily modify your design by going back into 
-your model history to change its parameters. 
+* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D
+modeler for designing real-life objects of any size. Parametric modeling lets
+you modify a design by changing parameters in its model history.
 
 * **Create 3D from 2D and back** FreeCAD lets you sketch geometry-constrained
- 2D shapes and use them as a base to build other objects.
- It contains many components to adjust dimensions or extract design details from 
- 3D models to create high quality production-ready drawings.
+2D shapes and use them as a base to build other objects. It also provides tools
+to adjust dimensions and create high-quality production drawings from 3D models.
 
 * **Designed for your needs** FreeCAD is designed to fit a wide range of uses
 including product design, mechanical engineering and architecture,
@@ -81,6 +79,14 @@ For more details see:
 - [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 
+Contributing Code
+-----------------
+
+Read the [contribution process](CONTRIBUTING.md) and the
+[contributor guidelines](contrib/guidelines/README.md) for practical advice on architecture,
+code reuse, implementation, UI design, testing, and review. The guides link to relevant
+sections of the [Developers Handbook](https://freecad.github.io/DevelopersHandbook/) and FEPs.
+
 > [!NOTE]
 The [FPA](https://fpa.freecad.org) offers developers the opportunity
 to apply for a grant to work on projects of their choosing. Check
@@ -90,8 +96,7 @@ to apply for a grant to work on projects of their choosing. Check
 Usage & Getting Help
 --------------------
 
-The FreeCAD wiki contains documentation on 
-general FreeCAD usage, Python scripting, and development.
+The FreeCAD wiki contains documentation on general usage and Python scripting.
 View these pages for more information:
 
 - [Getting started](https://wiki.freecad.org/Getting_started)

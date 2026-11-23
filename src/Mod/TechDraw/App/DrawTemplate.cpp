@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -31,11 +33,13 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawTemplate.h"
 #include "DrawTemplatePy.h"
 #include "DrawPage.h"
 #include "DrawUtil.h"
 #include "Preferences.h"
+#include "TemplateTranslator.h"
 
 
 using namespace TechDraw;
@@ -53,6 +57,9 @@ DrawTemplate::DrawTemplate()
 
     Orientation.setEnums(OrientationEnums);
     ADD_PROPERTY(Orientation, (0l));
+
+    Language.setEnums(LanguageEnums);
+    ADD_PROPERTY(Language, (0l));
 
     // Physical Properties inherent to every template class
     ADD_PROPERTY_TYPE(Width,     (0),  group, App::PropertyType::Prop_None, "Width of page");
@@ -198,7 +205,16 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTemplatePython, TechDraw::DrawTemplate)
 template<> const char* TechDraw::DrawTemplatePython::getViewProviderName() const {
-    return "TechDrawGui::ViewProviderPython";
+    return "TechDrawGui::ViewProviderTemplate";
+}
+template<>
+PyObject* TechDraw::DrawTemplatePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawTemplatePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

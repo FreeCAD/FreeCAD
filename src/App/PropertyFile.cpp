@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2008 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <Base/Console.h>
@@ -31,6 +28,8 @@
 #include <Base/Uuid.h>
 #include <Base/Tools.h>
 
+#include <array>
+
 #include "PropertyFile.h"
 #include "Document.h"
 #include "DocumentObject.h"
@@ -40,6 +39,12 @@
 using namespace App;
 using namespace Base;
 using namespace std;
+
+namespace {
+
+constexpr std::size_t includedFileBufferSize = 64 * 1024;
+
+}
 
 
 namespace
@@ -473,10 +478,26 @@ void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
     }
 
     // copy plain data
-    unsigned char c;
+    std::array<char, includedFileBufferSize> buffer {};
     std::ostream& to = writer.Stream();
-    while (from.get((char&)c)) {
-        to.put((char)c);
+    while (from) {
+        from.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+        const std::streamsize count = from.gcount();
+        if (count > 0) {
+            to.write(buffer.data(), count);
+            if (!to) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::SaveDocFile(): "
+                    << "File '" << _cValue << "' in transient directory cannot be written.";
+                throw Base::FileSystemError(str.str());
+            }
+        }
+    }
+    if (from.bad()) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::SaveDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be read.";
+        throw Base::FileSystemError(str.str());
     }
 }
 
@@ -498,11 +519,33 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 
     // copy plain data
     aboutToSetValue();
-    unsigned char c;
-    while (reader.get((char&)c)) {
-        to.put((char)c);
+    std::array<char, includedFileBufferSize> buffer {};
+    while (reader) {
+        reader.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+        const std::streamsize count = reader.gcount();
+        if (count > 0) {
+            to.write(buffer.data(), count);
+            if (!to) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::RestoreDocFile(): "
+                    << "File '" << _cValue << "' in transient directory cannot be written.";
+                throw Base::FileSystemError(str.str());
+            }
+        }
+    }
+    if (reader.bad()) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::RestoreDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be read.";
+        throw Base::FileSystemError(str.str());
     }
     to.close();
+    if (!to) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::RestoreDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be closed.";
+        throw Base::FileSystemError(str.str());
+    }
 
     // set read-only after restoring the file
     fi.setPermissions(Base::FileInfo::ReadOnly);
@@ -544,7 +587,7 @@ Property* PropertyFileIncluded::Copy() const
         }
 
         // remember the new name for the Undo
-        Base::Console().log("Copy '%s' to '%s'\n", _cValue.c_str(), newName.filePath().c_str());
+        Base::Console().log("Copy '{}' to '{}'\n", _cValue, newName.filePath());
         prop->_cValue = newName.filePath().c_str();
 
         // make backup files writable to avoid copying them again on undo/redo

@@ -27,6 +27,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <optional>
 #include <QIcon>
 #include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
@@ -64,6 +65,11 @@ class Color;
 
 class SoGroup;
 
+
+namespace App
+{
+class SubObjectT;
+}
 
 namespace Gui
 {
@@ -430,6 +436,12 @@ public:
      */
     virtual QIcon mergeColorfulOverlayIcons(const QIcon& orig) const;
 
+    /// Additional information shown when hovering over this object's tree item.
+    virtual QString getToolTip() const
+    {
+        return {};
+    }
+
     /** deliver the children belonging to this object
      * this method is used to deliver the objects to
      * the tree framework which should be grouped under its
@@ -713,6 +725,19 @@ public:
     virtual bool doubleClicked()
     {
         return false;
+    }
+    /// Dispatch a double click with the exact occurrence supplied by the caller.
+    bool doubleClickedObject(const App::SubObjectT& reference)
+    {
+        if (const auto result = doubleClickedOccurrence(reference)) {
+            return *result;
+        }
+        return doubleClicked();
+    }
+    /// Return nullopt to use the legacy callback, or true/false to accept/reject the click.
+    virtual std::optional<bool> doubleClickedOccurrence(const App::SubObjectT&)
+    {
+        return std::nullopt;
     }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s& cursorPos, View3DInventorViewer* viewer);

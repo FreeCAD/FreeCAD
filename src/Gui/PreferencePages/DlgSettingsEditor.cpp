@@ -1,24 +1,23 @@
-/***************************************************************************
- *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <QFontDatabase>
@@ -279,21 +278,6 @@ void DlgSettingsEditor::loadSettings()
     ui->fontSize->setValue(hGrp->GetInt("FontSize", ui->fontSize->value()));
 
     QByteArray defaultMonospaceFont = getMonospaceFont().family().toLatin1();
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-    QStringList fixedFamilyNames;
-    for (const auto& name : familyNames) {
-        if (QFontDatabase().isFixedPitch(name)) {
-            // cursor.pcf was removed to cope with a problem with the Qt Font Manager
-            // See https://github.com/FreeCAD/FreeCAD/issues/10514 for details
-            if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0
-                && name.compare(QLatin1String("cursor.pcf"), Qt::CaseInsensitive) != 0) {
-                fixedFamilyNames.append(name);
-            }
-        }
-    }
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
     QStringList fixedFamilyNames;
     for (const auto& name : familyNames) {
@@ -306,7 +290,6 @@ void DlgSettingsEditor::loadSettings()
             }
         }
     }
-#endif
     ui->fontFamily->addItems(fixedFamilyNames);
 
     // mark this combobox to be excluded from preference search

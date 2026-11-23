@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -580,7 +582,8 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid& solid) const
     TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
     ShapeAnalysis_ShapeTolerance analysis;
     double limit = analysis.Tolerance(solid, 1, shapetype);
-    Base::Console().log("The limit if a node is in or out: %.12lf in scientific: %.4e \n", limit, limit);
+    Base::Console()
+        .log("The limit if a node is in or out: {:.12f} in scientific: {:.4e} \n", limit, limit);
 
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
@@ -987,7 +990,7 @@ public:
         }
         else {
             Base::Console().warning(
-                "NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+                "NASTRAN: Failed to add face {} from nodes: ({}, {}, {},)\n",
                 element_id,
                 elements[0],
                 elements[1],
@@ -1056,8 +1059,8 @@ public:
         }
         else {
             Base::Console().warning(
-                "NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, "
-                "%d, %d, %d, %d, %d, %d)\n",
+                "NASTRAN: Failed to add volume {} from nodes: ({}, {}, {}, {}, "
+                "{}, {}, {}, {}, {}, {})\n",
                 element_id,
                 elements[1],
                 elements[0],
@@ -1401,7 +1404,7 @@ void FemMesh::readNastran(const std::string& Filename)
     inputfile.close();
 
     Base::Console().log(
-        "    %f: File read, start building mesh\n",
+        "    {:f}: File read, start building mesh\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 
@@ -1413,7 +1416,7 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readNastran95(const std::string& Filename)
@@ -1529,7 +1532,7 @@ void FemMesh::readNastran95(const std::string& Filename)
     inputfile.close();
 
     Base::Console().log(
-        "    %f: File read, start building mesh\n",
+        "    {:f}: File read, start building mesh\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 
@@ -1545,7 +1548,7 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readAbaqus(const std::string& FileName)
@@ -1585,7 +1588,7 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readZ88(const std::string& FileName)
@@ -1625,7 +1628,7 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::read(const char* FileName)

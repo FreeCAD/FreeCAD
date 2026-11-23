@@ -32,11 +32,8 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
-#endif
 
+#include <BRepAlgoAPI_Defeaturing.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -101,6 +98,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "ProgressIndicator.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -115,12 +113,6 @@
 #include "Tools.h"
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
-
-#if OCC_VERSION_HEX >= 0x070600
-using Adaptor3d_HCurve = Adaptor3d_Curve;
-using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-using BRepAdaptor_HCompCurve = BRepAdaptor_CompCurve;
-#endif
 
 namespace Part
 {
@@ -221,32 +213,18 @@ void TopoShape::setShape(const TopoDS_Shape& shape, bool resetElementMap)
 
 TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const TopLoc_Location& location)
 {
-#if OCC_VERSION_HEX < 0x070600
-    tds.Move(location);
-#else
     tds.Move(location, false);
-#endif
     return tds;
 }
 
 TopoDS_Shape TopoShape::moved(const TopoDS_Shape& tds, const TopLoc_Location& location)
 {
-#if OCC_VERSION_HEX < 0x070600
-    return tds.Moved(location);
-#else
     return tds.Moved(location, false);
-#endif
 }
 
 TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const gp_Trsf& transfer)
 {
-#if OCC_VERSION_HEX < 0x070600
-    static constexpr double scalePrecision {1e-14};
-    if (std::abs(transfer.ScaleFactor()) > scalePrecision)
-#else
-    if (std::abs(transfer.ScaleFactor()) > TopLoc_Location::ScalePrec())
-#endif
-    {
+    if (std::abs(transfer.ScaleFactor()) > TopLoc_Location::ScalePrec()) {
         auto transferCopy(transfer);
         transferCopy.SetScaleFactor(1.0);
         tds.Move(transferCopy);
@@ -461,15 +439,15 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
         case TopAbs_VERTEX:
             // Vertex search will do comparison with tolerance to account for
             // rounding error inccured through transformation.
-            for (auto& shape : getSubTopoShapes(TopAbs_VERTEX)) {
+            for (auto& shape : getSubShapes(TopAbs_VERTEX)) {
                 ++index;
-                if (BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()))
+                if (BRep_Tool::Pnt(TopoDS::Vertex(shape))
                         .SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(subshape.getShape())))
                     <= tol2) {
                     if (names) {
                         names->push_back(std::string("Vertex") + std::to_string(index));
                     }
-                    res.push_back(shape);
+                    res.push_back(getSubTopoShape(TopAbs_VERTEX, index));
                     if (singleSearch) {
                         return res;
                     }
@@ -2284,19 +2262,19 @@ TopoShape& TopoShape::makeElementRuledSurface(
 
     if (orientation == 0) {
         // Automatic
-        Handle(Adaptor3d_HCurve) a1;
-        Handle(Adaptor3d_HCurve) a2;
+        Handle(Adaptor3d_Curve) a1;
+        Handle(Adaptor3d_Curve) a2;
         if (!isWire) {
-            BRepAdaptor_HCurve adapt1(TopoDS::Edge(S1.getShape()));
-            BRepAdaptor_HCurve adapt2(TopoDS::Edge(S2.getShape()));
-            a1 = new BRepAdaptor_HCurve(adapt1);
-            a2 = new BRepAdaptor_HCurve(adapt2);
+            BRepAdaptor_Curve adapt1(TopoDS::Edge(S1.getShape()));
+            BRepAdaptor_Curve adapt2(TopoDS::Edge(S2.getShape()));
+            a1 = new BRepAdaptor_Curve(adapt1);
+            a2 = new BRepAdaptor_Curve(adapt2);
         }
         else {
-            BRepAdaptor_HCompCurve adapt1(TopoDS::Wire(S1.getShape()));
-            BRepAdaptor_HCompCurve adapt2(TopoDS::Wire(S2.getShape()));
-            a1 = new BRepAdaptor_HCompCurve(adapt1);
-            a2 = new BRepAdaptor_HCompCurve(adapt2);
+            BRepAdaptor_CompCurve adapt1(TopoDS::Wire(S1.getShape()));
+            BRepAdaptor_CompCurve adapt2(TopoDS::Wire(S2.getShape()));
+            a1 = new BRepAdaptor_CompCurve(adapt1);
+            a2 = new BRepAdaptor_CompCurve(adapt2);
         }
 
         if (!a1.IsNull() && !a2.IsNull()) {
@@ -2497,11 +2475,7 @@ TopoShape& TopoShape::makeElementPipeShell(
         FC_THROWM(Base::CADKernelError, "shape is not ready to build");
     }
     else {
-#if OCC_VERSION_HEX >= 0x070600
         mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-        mkPipeShell.Build();
-#endif
     }
 
     if (make_solid == MakeSolid::makeSolid) {
@@ -2609,11 +2583,7 @@ TopoShape& TopoShape::makeElementOffset(
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
-#if OCC_VERSION_HEX >= 0x070600
         aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-        aGenerator.Build();
-#endif
         if (!aGenerator.IsDone()) {
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
@@ -3046,11 +3016,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 }
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
-#if OCC_VERSION_HEX >= 0x070600
                 mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-                mkWire.Build();
-#endif
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
                 );
@@ -3174,7 +3140,7 @@ TopoShape& TopoShape::makeElementWires(
         if (hEdges->Length() == 0) {
             FC_THROWM(NullShapeException, "Null shape");
         }
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, Standard_True, hWires);
+        Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(hEdges, tol, Standard_True, hWires);
         if (hWires->Length() == 0) {
             FC_THROWM(NullShapeException, "Null shape");
         }
@@ -3970,11 +3936,7 @@ TopoShape& TopoShape::makeElementFilledFace(
         }
     }
 
-#if OCC_VERSION_HEX >= 0x070600
     maker.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    maker.Build();
-#endif
     if (!maker.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Failed to created face by filling edges");
     }
@@ -4238,6 +4200,54 @@ TopoShape& TopoShape::makeElementChamfer(
     return makeElementShape(mkChamfer, shape, op);
 }
 
+TopoShape& TopoShape::makeElementDefeaturing(
+    const TopoShape& shape,
+    const std::vector<TopoShape>& faces,
+    const char* op,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    if (!op) {
+        op = Part::OpCodes::Defeaturing;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (faces.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+
+    BRepAlgoAPI_Defeaturing mkDefeaturing;
+    mkDefeaturing.SetRunParallel(true);
+    mkDefeaturing.SetToFillHistory(true);
+    mkDefeaturing.SetShape(shape.getShape());
+    for (const auto& face : faces) {
+        if (face.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        const auto& faceShape = face.getShape();
+        if (faceShape.ShapeType() != TopAbs_FACE) {
+            FC_THROWM(Base::CADKernelError, "defeaturing input shape is not a face");
+        }
+        if (!shape.findShape(faceShape)) {
+            FC_THROWM(Base::CADKernelError, "defeaturing face does not belong to the shape");
+        }
+        mkDefeaturing.AddFaceToRemove(faceShape);
+    }
+
+    mkDefeaturing.Build(std::make_unique<Part::ProgressIndicator>()->Start());
+    if (!mkDefeaturing.IsDone()) {
+        Standard_SStream ss;
+        mkDefeaturing.DumpErrors(ss);
+        throw Base::RuntimeError(ss.str().c_str());
+    }
+    if (mkDefeaturing.Shape().IsNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    return makeElementShape(mkDefeaturing, shape, op, elementMapPolicy);
+}
+
 TopoShape& TopoShape::makeElementGeneralFuse(
     const std::vector<TopoShape>& _shapes,
     std::vector<std::vector<TopoShape>>& modifies,
@@ -4272,11 +4282,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
-#if OCC_VERSION_HEX >= 0x070600
     mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkGFA.Build();
-#endif
     if (!mkGFA.IsDone()) {
         FC_THROWM(Base::CADKernelError, "GeneralFuse failed");
     }
@@ -4574,11 +4580,7 @@ TopoShape& TopoShape::makeElementLoft(
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
 
-#if OCC_VERSION_HEX >= 0x070600
     aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    aGenerator.Build();
-#endif
     return makeShapeWithElementMap(
         aGenerator.Shape(),
         MapperThruSections(aGenerator, profiles),
@@ -4839,7 +4841,7 @@ TopoShape& TopoShape::makeElementRevolution(
         op = Part::OpCodes::Revolve;
     }
     if (Mode == RevolMode::None) {
-        Mode = RevolMode::FuseWithBase;
+        Modify = Standard_False;
     }
     TopoShape base(_base);
     if (base.isNull()) {
@@ -4852,14 +4854,18 @@ TopoShape& TopoShape::makeElementRevolution(
         base = base.makeElementFace(nullptr, face_maker, nullptr);
     }
 
+    auto mode = Mode;
     BRepFeat_MakeRevol mkRevol;
     for (TopExp_Explorer xp(profile, TopAbs_FACE); xp.More(); xp.Next()) {
-        mkRevol.Init(base.getShape(), xp.Current(), supportface, axis, static_cast<int>(Mode), Modify);
+        mkRevol.Init(base.getShape(), xp.Current(), supportface, axis, static_cast<int>(mode), Modify);
         mkRevol.Perform(uptoface);
         if (!mkRevol.IsDone()) {
             throw Base::RuntimeError("Revolution: Up to face: Could not revolve the sketch!");
         }
         base = mkRevol.Shape();
+        if (Mode == RevolMode::None) {
+            mode = RevolMode::FuseWithBase;
+        }
     }
     return makeElementShape(mkRevol, base, op);
 }
@@ -4910,11 +4916,7 @@ TopoShape& TopoShape::makeElementDraft(
         }
     } while (retry && !done);
 
-#if OCC_VERSION_HEX >= 0x070600
     mkDraft.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkDraft.Build();
-#endif
     return makeElementShape(mkDraft, shape, op);
 }
 
@@ -4966,11 +4968,7 @@ TopoShape& TopoShape::makeElementFace(
             mkFace->addTopoShape(shape);
         }
     }
-#if OCC_VERSION_HEX >= 0x070600
     mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mkFace->Build();
-#endif
 
     const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
@@ -5972,6 +5970,42 @@ bool TopoShape::fixSolidOrientation()
     return false;
 }
 
+#if OCC_VERSION_HEX < 0x070903
+namespace
+{
+
+/**
+ * @brief Test whether a shape carries a degenerate edge that has no parametric curve.
+ *
+ * Before OCCT 7.9.3, BOPAlgo_PaveFiller::ProcessDE() loads the parametric curve of every
+ * degenerate edge without testing the handle. Boom. Newer kernels skip the edge themselves,
+ * so this test is not necessary for later versions.
+ *
+ * @param[in] shape The shape about to be passed to a boolean operation.
+ * @return @c true if a degenerate edge without a parametric curve was found.
+ */
+bool hasDegenerateEdgeWithoutParametricCurve(const TopoDS_Shape& shape)
+{
+    for (TopExp_Explorer faces(shape, TopAbs_FACE); faces.More(); faces.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(faces.Current());
+        for (TopExp_Explorer edges(face, TopAbs_EDGE); edges.More(); edges.Next()) {
+            const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+            if (!BRep_Tool::Degenerated(edge)) {
+                continue;
+            }
+            Standard_Real first {};
+            Standard_Real last {};
+            if (BRep_Tool::CurveOnSurface(edge, face, first, last).IsNull()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+}  // namespace
+#endif
+
 TopoShape& TopoShape::makeElementBoolean(
     const char* maker,
     const TopoShape& shape,
@@ -6122,7 +6156,7 @@ TopoShape& TopoShape::makeElementBoolean(
             }
         }
     }
-    else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+    else if (strcmp(maker, Part::OpCodes::Cut) == 0 || strcmp(maker, Part::OpCodes::Common) == 0) {
         for (unsigned i = 1; i < shapes.size(); ++i) {
             auto& s = shapes[i];
             if (s.isNull()) {
@@ -6132,7 +6166,12 @@ TopoShape& TopoShape::makeElementBoolean(
                 if (_shapes.empty()) {
                     _shapes.insert(_shapes.end(), shapes.begin(), shapes.begin() + i);
                 }
+                const auto sizeBeforeExpansion = _shapes.size();
                 expandCompound(s, _shapes);
+                if (strcmp(maker, Part::OpCodes::Common) == 0
+                    && _shapes.size() == sizeBeforeExpansion) {
+                    _shapes.push_back(s);
+                }
             }
             else if (_shapes.size()) {
                 _shapes.push_back(s);
@@ -6187,19 +6226,15 @@ TopoShape& TopoShape::makeElementBoolean(
             FC_THROWM(NullShapeException, "Null input shape");
         }
 
-        if (!shape.isValid()) {
-            std::ostringstream details;
-            shape.analyze(false, details);
-
-            std::string message = "Invalid input shape for boolean ";
-            message += maker;
-            if (!details.str().empty()) {
-                message += ":\n";
-                message += details.str();
-            }
-
-            FC_THROWM(Base::CADKernelError, message.c_str());
+#if OCC_VERSION_HEX < 0x070903
+        if (hasDegenerateEdgeWithoutParametricCurve(shape.getShape())) {
+            FC_THROWM(
+                Base::CADKernelError,
+                "Invalid input shape for boolean " << maker
+                                                   << ": a degenerate edge has no parametric curve"
+            );
         }
+#endif
 
         if (++i == 0) {
             shapeArguments.Append(shape.getShape());
@@ -6220,11 +6255,7 @@ TopoShape& TopoShape::makeElementBoolean(
     else if (tolerance < 0.0) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
-#if OCC_VERSION_HEX >= 0x070600
     mk->Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    mk->Build();
-#endif
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }

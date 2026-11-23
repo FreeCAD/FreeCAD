@@ -1,31 +1,29 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2013 Yorik van Havre
+# SPDX-FileCopyrightText: 2025 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2025 Furgo                                              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # Unit tests for the Arch space module
 
 import os
+import unittest
 import Arch
 import Draft
 import Part
@@ -33,6 +31,14 @@ import FreeCAD as App
 from FreeCAD import Units
 from bimtests import TestArchBase
 import WorkingPlane
+
+# The IFC exporter needs ifcopenshell, which is an optional dependency
+try:
+    from importers import exportIFC
+
+    _HAS_IFCOPENSHELL = True
+except ImportError:
+    _HAS_IFCOPENSHELL = False
 
 
 def like(a, b):
@@ -61,6 +67,22 @@ class TestArchSpace(TestArchBase.TestArchBase):
         b.Shape = sb
         s = Arch.makeSpace([b])
         self.assertTrue(s, "Arch Space failed")
+
+    @unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
+    def testElevationWithFlooringIsNotInferred(self):
+        """Do not infer the finished floor elevation from the space geometry."""
+        shape = Part.makeBox(1, 1, 1, App.Vector(0, 0, 100))
+        base = App.ActiveDocument.addObject("Part::Feature", "ElevatedBox")
+        base.Shape = shape
+        space = Arch.makeSpace([base])
+        App.ActiveDocument.recompute()
+
+        expressions = dict(getattr(space, "ExpressionEngine", []))
+        self.assertNotIn("ElevationWithFlooring", expressions)
+        self.assertEqual(space.ElevationWithFlooring.Value, 0.0)
+
+        attributes = exportIFC.exportIFC2X3Attributes(space, {})
+        self.assertNotIn("ElevationWithFlooring", attributes)
 
     def testSpaceBBox(self):
         operation = "Checking Arch Space bound box..."

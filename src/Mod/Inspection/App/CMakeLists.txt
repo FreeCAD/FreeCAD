@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+disable_occt8_deprecation_warnings()
 
 set(Inspection_LIBS
     FreeCADApp
@@ -40,9 +43,7 @@ if (MSVC)
     target_compile_options(Inspection PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Inspection)
-endif()
+target_compile_warn_error(Inspection)
 
 fc_target_copy_resource_flat(Inspection
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -50,7 +51,7 @@ fc_target_copy_resource_flat(Inspection
     ${Inspection_Scripts}
 )
 
-SET_BIN_DIR(Inspection Inspection /Mod/Inspection)
+SET_BIN_DIR(Inspection)
 SET_PYTHON_PREFIX_SUFFIX(Inspection)
 
 INSTALL(TARGETS Inspection DESTINATION ${CMAKE_INSTALL_LIBDIR})

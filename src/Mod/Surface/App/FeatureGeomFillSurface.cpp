@@ -1,27 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Nathan Miller
+// SPDX-FileCopyrightText: 2014 Balázs Bámer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
- *                           Balázs Bámer                                  *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 
 #include <BRepBuilderAPI_Copy.hxx>
@@ -135,6 +132,7 @@ GeomFillSurface::GeomFillSurface()
     ADD_PROPERTY(FillType, ((long)0));
     ADD_PROPERTY(BoundaryList, (nullptr, "Dummy"));
     ADD_PROPERTY(ReversedList, (false));
+    ReversedList.setSize(0);
     FillType.setEnums(FillTypeEnums);
     BoundaryList.setScope(App::LinkScope::Global);
 }
@@ -151,13 +149,14 @@ short GeomFillSurface::mustExecute() const
 
 void GeomFillSurface::onChanged(const App::Property* prop)
 {
-    if (isRestoring()) {
-        if (prop == &BoundaryList) {
-            // auto-adjusting size of this list
-            if (BoundaryList.getSize() != ReversedList.getSize()) {
-                ReversedList.setSize(BoundaryList.getSize());
-            }
+    if (isRestoring() && prop == &BoundaryList) {
+        // auto-adjusting size of this list
+        if (BoundaryList.getSize() != ReversedList.getSize()) {
+            ReversedList.setSize(BoundaryList.getSize());
         }
+    }
+    if (prop == &ReversedList && ReversedList.getSize() > BoundaryList.getSize()) {
+        ReversedList.setSize(BoundaryList.getSize());
     }
     Part::Spline::onChanged(prop);
 }

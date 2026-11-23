@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-from __future__ import annotations
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
+from Model import Model
 from typing import Final, List, Dict
 
 
@@ -25,14 +25,12 @@ class ModelManager(BaseClass):
     Models: Final[Dict] = ...
     """List of model libraries."""
 
-    def getModel(self) ->...:
+    def getModel(self, uuid: str, /) -> Model:
         """
         Get a model object by specifying its UUID
         """
-        ...
 
-    def getModelByPath(self) ->...:
+    def getModelByPath(self, path: str, library: str = "", /) -> Model:
         """
-        Get a model object by specifying its path
+        Get a model object by specifying its path and optional library name
         """
-        ...

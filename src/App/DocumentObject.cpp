@@ -1,27 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Jürgen Riegel
+// SPDX-FileCopyrightText: 2011 Werner Mayer
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <stack>
 #include <memory>
@@ -140,10 +137,10 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
+        Base::Console().warning("{}: {} links are out of scope. Out of scope links to: {}\n",
                                 getTypeId().getName(),
                                 getNameInDocument(),
-                                objnames.c_str());
+                                objnames);
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -315,15 +312,13 @@ const char* DocumentObject::getStatusString() const
         const char* text = getDocument()->getErrorDescription(this);
         return text ? text : "Error";
     }
-    else if (isFreezed()){
+    if (isFreezed()){
         return "Freezed";
     }
-    else if (isTouched()) {
+    if (isTouched()) {
         return "Touched";
     }
-    else {
-        return "Valid";
-    }
+    return "Valid";
 }
 
 std::string DocumentObject::getFullName() const
@@ -355,6 +350,12 @@ const char* DocumentObject::getDagKey() const
         return nullptr;
     }
     return pcNameInDocument->c_str();
+}
+
+const char* DocumentObject::getLabelOrName() const
+{
+    const char* label = Label.getValue();
+    return Base::Tools::isNullOrEmpty(label) ? getNameInDocument() : label;
 }
 
 const char* DocumentObject::getNameInDocument() const
@@ -701,12 +702,7 @@ bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
-    if (std::ranges::find(_inList, linkTo) != _inList.end()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return std::ranges::find(_inList, linkTo) != _inList.end();
 }
 
 // helper for isInOutListRecursive()
@@ -888,6 +884,137 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     return renamed;
 }
 
+void DocumentObject::moveExpressionTargetingProp(Property* prop,
+                                                 Property* newProp,
+                                                 DocumentObject* targetObj)
+{
+    ObjectIdentifier propId = ObjectIdentifier(*prop);
+    ObjectIdentifier newPropId = ObjectIdentifier(*newProp);
+
+    boost::any pathValue = ExpressionEngine.getPathValue(propId);
+    if (pathValue.empty()) {
+        return;
+    }
+
+    auto info = boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(pathValue);
+    std::shared_ptr<Expression> expression = info.expression;
+
+    setExpression(propId, std::shared_ptr<Expression>());
+    targetObj->setExpression(newPropId, expression);
+
+    // force identifiers in the expression to use the document name
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
+    std::map<ObjectIdentifier, bool> ids = expression->getIdentifiers();
+    for (const auto& [id, _] : ids) {
+        ObjectIdentifier newOne = ObjectIdentifier(id);
+        newOne.setDocumentObjectName(this, true);
+        paths.emplace(id, newOne);
+    }
+    targetObj->ExpressionEngine.renameObjectIdentifiers(paths);
+}
+
+void DocumentObject::arrangeMoveProperty(Property* toBeMovedProp,
+                                         Property* newProp,
+                                         DocumentObject* targetObj)
+{
+    // register the move in the document for transactions
+    auto* objOfToBeMovedProp = freecad_cast<DocumentObject*>(toBeMovedProp->getContainer());
+    if (_pDoc) {
+        _pDoc->arrangeMovePropertyOfObject(this, toBeMovedProp, targetObj, newProp);
+    }
+    if  (targetObj->getDocument() != objOfToBeMovedProp->getDocument()) {
+        // register the move in the target document as well
+        targetObj->_pDoc->arrangeMovePropertyOfObject(targetObj, toBeMovedProp, targetObj, newProp);
+    }
+
+    // Phase 2: Move an expression that targets the current property
+    moveExpressionTargetingProp(toBeMovedProp, newProp, targetObj);
+
+    // do not record the following changes since we are defining a transaction
+    auto guard = targetObj->_pDoc->setDefiningTransaction();
+
+    // Phase 3: Paste the property
+    newProp->Paste(*toBeMovedProp);
+
+    // Phase 4: Rewrite expressions that reference the property to be moved
+    GetApplication().signalMoveDynamicProperty(*toBeMovedProp, *targetObj);
+
+    // The guard goes out of scope which enables recording changes in the
+    // transaction again.
+}
+
+Property* DocumentObject::moveDynamicProperty(Property* prop,
+                                              DocumentObject* targetObj)
+{
+    if (prop == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The property does not exist");
+    }
+
+    const char* propertyName = prop->getName();
+
+    if (targetObj == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The target container does not exist");
+    }
+
+    if (targetObj == this) {
+        FC_THROWM(Base::RuntimeError,
+                  "Cannot move property " << propertyName << " to its own container");
+    }
+
+    if (targetObj->getPropertyByName(propertyName) != nullptr) {
+        FC_THROWM(Base::NameError,
+                  "Property " << targetObj->getFullName() << '.' << propertyName << " already exists");
+    }
+
+    if (!prop->testStatus(App::Property::PropDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Property " << propertyName << " is not dynamic");
+    }
+
+    if (prop->testStatus(App::Property::LockDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                 "Property " << propertyName << " is locked");
+    }
+
+    if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Object " << getFullName() << " is being destroyed");;
+    }
+
+    if (prop->isDerivedFrom<PropertyLinkBase>()) {
+        clearOutListCache();
+    }
+
+    // Phase 1: Add a new property to the target object
+    Property* newProp =
+        targetObj->dynamicProps.addDynamicProperty(*targetObj,
+                                                   prop->getTypeId().getName(),
+                                                   propertyName,
+                                                   prop->getGroup(),
+                                                   prop->getDocumentation(),
+                                                   prop->getType(),
+                                                   prop->isReadOnly(),
+                                                   prop->testStatus(Property::Hidden));
+
+    if (newProp == nullptr) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to move property " << propertyName << " to container "
+                                             << targetObj->getFullName());
+    }
+
+    // Phases 2, 3, and 4
+    arrangeMoveProperty(prop, newProp, targetObj);
+
+    // Phase 5 remove the property from the source object
+    if (!dynamicProps.removeDynamicProperty(propertyName)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to remove property " << propertyName << " from container "
+                                                << prop->getContainer()->getFullName());
+    }
+
+    return newProp;
+}
+
 App::Property* DocumentObject::addDynamicProperty(
     std::string_view type,
     const char* name,
@@ -1045,6 +1172,7 @@ void DocumentObject::onChanged(const Property* prop)
 
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue()) {
         _pDoc->signalRelabelObject(*this);
+        oldLabel = Label.getStrValue();
     }
 
     bool fineGrained = GetApplication().isFineGrainedRecomputeEnabled();
@@ -1376,9 +1504,7 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
     if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo)) {
         return boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(value);
     }
-    else {
-        return PropertyExpressionEngine::ExpressionInfo();
-    }
+    return PropertyExpressionEngine::ExpressionInfo();
 }
 
 void DocumentObject::renameObjectIdentifiers(
@@ -1570,9 +1696,7 @@ DocumentObject* DocumentObject::resolve(const char* subname,
                     if (dot == subname) {
                         break;
                     }
-                    else {
-                        continue;
-                    }
+                    continue;
                 }
             }
             if (dot == subname) {

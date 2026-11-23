@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import TypeAlias
 
 from Base.Metadata import export
@@ -30,9 +28,8 @@ class FemPostObject(GeoFeature):
         filename: str
             File extension is automatically detected from data type.
         """
-        ...
 
-    def getDataSet(self) -> vtkDataSet:
+    def getDataSet(self) -> vtkDataSet | None:
         """
         Returns the current output dataset.
         For normal filters this is equal to the objects Data property output.
@@ -44,4 +41,3 @@ class FemPostObject(GeoFeature):
 
         Note that the returned value could be None, if no data is set at all.
         """
-        ...

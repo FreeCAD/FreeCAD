@@ -32,7 +32,7 @@ int main( int argc, char **argv )
    // IF our data path doesn't exist, then exclude some tests.
    if ( !TestData::Exists() )
    {
-      ::testing::GTEST_FLAG( filter ) = "-*Data.*";
+      ::testing::GTEST_FLAG( filter ) = "-SimpleReaderData.*:Extension_DIST.*";
    }
 
    std::cout << "e57Format version: " << e57::Version::library() << std::endl;

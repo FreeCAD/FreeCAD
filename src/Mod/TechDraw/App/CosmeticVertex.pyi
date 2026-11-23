@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, Final
 
 from Base.PyObjectBase import PyObjectBase
@@ -25,12 +23,10 @@ class CosmeticVertex(PyObjectBase):
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this CosmeticVertex"""
-        ...
 
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this CosmeticVertex"""
-        ...
 
     Tag: Final[str]
     """Gives the tag of the CosmeticVertex as string."""

@@ -252,6 +252,14 @@ class Dimension(gui_base_original.Creator):
         _cmd_list += ["Draft.autogroup(_dim_)", "FreeCAD.ActiveDocument.recompute()"]
         self.commit(translate("draft", "Create Dimension"), _cmd_list)
 
+    def get_linked_direction(self):
+        """Return "X" or "Y" if the command measures along the working plane axis, else None."""
+        if self.dir and self.dir.isEqual(self.wp.u, 1e-7):
+            return "X"
+        if self.dir and self.dir.isEqual(self.wp.v, 1e-7):
+            return "Y"
+        return None
+
     def create_radial_dimension_obj(self):
         """Create a radial dimension linked to a circular edge."""
         _cmd = "Draft.make_radial_dimension_obj"
@@ -287,7 +295,7 @@ class Dimension(gui_base_original.Creator):
                 elif self.force == 2:
                     self.create_linear_dimension_obj("X")
                 else:
-                    self.create_linear_dimension_obj()
+                    self.create_linear_dimension_obj(self.get_linked_direction())
             else:
                 # Not linked to any edge
                 self.create_linear_dimension()
@@ -400,25 +408,32 @@ class Dimension(gui_base_original.Creator):
                 # Draw constraint tracker line.
                 if shift and (not self.arcmode):
                     if len(self.node) == 2:
+                        # Save self.node[0] and self.node[1] so that they can be restored:
                         if not self.point1:
                             self.point1 = self.node[0]
                         if not self.point2:
                             self.point2 = self.node[1]
-                        # else:
-                        #     self.node[1] = self.point2
                         self.set_constraint_node()
                 else:
                     self.force = 0
                     self.proj_point1 = None
                     self.proj_point2 = None
+                    # Restore self.node[0] and self.node[1]:
                     if self.point1:
                         self.node[0] = self.point1
-                    if self.point2 and (len(self.node) > 1):
-                        self.node[1] = self.point2
-                        # self.point2 = None
+                        self.point1 = None
+                    if self.point2:
+                        if len(self.node) > 1:
+                            self.node[1] = self.point2
+                        self.point2 = None
                 # update the dimline
                 if self.node and not self.arcmode:
-                    self.dimtrack.update(self.node + [self.point] + [self.chain])
+                    nodes = self.node
+                    if self.link and not self.force and self.get_linked_direction():
+                        # show the linked edge along the direction of the command
+                        _p = DraftVecUtils.project(nodes[1].sub(nodes[0]), self.dir)
+                        nodes = [nodes[0], nodes[0].add(_p)]
+                    self.dimtrack.update(nodes + [self.point] + [self.chain])
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):

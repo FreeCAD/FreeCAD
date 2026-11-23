@@ -26,8 +26,10 @@ from .generator import (
     markdown_report,
     write_outputs,
 )
+from .index import DEFAULT_INDEX_URL, next_patch_number, published_versions
+from .project import Project
 from .model import DEFAULT_OVERLAY_DIR, DEFAULT_SOURCE_DIR, DEFAULT_STUBS_OUT_DIR
-from .parsing import iter_source_files
+from .parsing import load_source_files
 from .source_inputs import (
     collect_binding_classes,
     load_stub_signature_overrides,
@@ -100,6 +102,24 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
         action="store_true",
         help="Do not apply curated stub overlays to the merged output.",
     )
+    parser.add_argument(
+        "--version-override",
+        help=(
+            "Override the package version instead of composing it from api_version.json and "
+            "the patch number."
+        ),
+    )
+    parser.add_argument(
+        "--patch-number",
+        type=int,
+        default=0,
+        help="Patch component of the package version. Use the next-patch command to assign it.",
+    )
+    parser.add_argument(
+        "--dev-build",
+        type=int,
+        help="Mark the package as a development build by appending .devN to the version.",
+    )
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -113,7 +133,29 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             type=Path,
             help="Optional directory for individual generator and checker logs.",
         )
+        parser.add_argument(
+            "--no-pyright",
+            action="store_true",
+            help="Run pyrefly only. Pyright needs a provisioned pixi environment.",
+        )
         parser.set_defaults(command="check")
+        return parser.parse_args(argv[1:])
+
+    if argv and argv[0] == "next-patch":
+        parser = argparse.ArgumentParser(
+            description="Print the patch number to publish next on the current API version line."
+        )
+        add_common_path_args(parser)
+        parser.add_argument(
+            "--index-url",
+            default=DEFAULT_INDEX_URL,
+            help=(
+                "Simple index to count published releases on. Always the index that holds the "
+                f"real release line, even when building for a test index. Defaults to "
+                f"{DEFAULT_INDEX_URL}."
+            ),
+        )
+        parser.set_defaults(command="next-patch")
         return parser.parse_args(argv[1:])
 
     if argv and argv[0] == "lint-docs":
@@ -178,8 +220,9 @@ def run_generate(args: argparse.Namespace) -> int:
         print_stderr(f"source directory does not exist: {source_dir}\n")
         return 2
 
-    type_registrations = collect_type_registrations(root, list(iter_source_files(root, source_dir)))
-    methods = collect_methods(root, source_dir)
+    source_files = load_source_files(root, source_dir)
+    type_registrations = collect_type_registrations(root, source_files)
+    methods = collect_methods(root, source_files)
     methods = supplement_module_methods_from_stub_signatures(root, source_dir, methods)
     classes = collect_binding_classes(root, source_dir, type_registrations)
     stub_signature_overrides = load_stub_signature_overrides(
@@ -196,7 +239,7 @@ def run_generate(args: argparse.Namespace) -> int:
 
     if args.out_dir:
         out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
-        overlay_count = write_outputs(
+        generation_result = write_outputs(
             out_dir,
             root,
             source_dir,
@@ -205,10 +248,14 @@ def run_generate(args: argparse.Namespace) -> int:
             type_registrations,
             stub_signature_overrides,
             overlay_dir,
+            version_override=args.version_override,
+            patch_number=args.patch_number,
+            dev_build=args.dev_build,
         )
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
-            f"({overlay_count} overlay stub files applied)"
+            f"({generation_result.overlay_count} overlay stub files applied)\n"
+            f"{generation_result.cpp_property_report.summary()}"
         )
         print(summary)
         if getattr(args, "log_dir", None):
@@ -216,6 +263,14 @@ def run_generate(args: argparse.Namespace) -> int:
             write_log(log_dir / "python-stubs-generate.log", summary + "\n")
     else:
         print_stdout(markdown_report(methods))
+    return 0
+
+
+def run_next_patch(args: argparse.Namespace) -> int:
+    project = Project(args.root.resolve())
+    major, minor = project.api_version
+    versions = published_versions(project.package_name, args.index_url)
+    print(next_patch_number(major, minor, versions))
     return 0
 
 
@@ -230,12 +285,14 @@ def run_check(args: argparse.Namespace) -> int:
     stubs_dir = root / "src/Tools/typing"
     log_dir = args.log_dir.resolve() if args.log_dir else None
 
-    pyright_code, _ = run_logged_command(
-        "python-stubs-pyright",
-        ["pixi", "run", "pyright", "-p", "smoke/pyrightconfig.json"],
-        stubs_dir,
-        log_dir,
-    )
+    pyright_code = 0
+    if not args.no_pyright:
+        pyright_code, _ = run_logged_command(
+            "python-stubs-pyright",
+            ["pixi", "run", "pyright", "-p", "smoke/pyrightconfig.json"],
+            stubs_dir,
+            log_dir,
+        )
     pyrefly_code, _ = run_logged_command(
         "python-stubs-pyrefly",
         [
@@ -286,6 +343,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
     if args.command == "check":
         return run_check(args)
+    if args.command == "next-patch":
+        return run_next_patch(args)
     if args.command == "lint-docs":
         return run_lint_docs(args)
     return run_generate(args)

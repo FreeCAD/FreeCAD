@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 #pragma once
-
-#include <Mod/Sketcher/App/SketchObject.h>
 
 namespace SketcherGui
 {

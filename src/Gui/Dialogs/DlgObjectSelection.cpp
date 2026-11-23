@@ -98,6 +98,8 @@ void DlgObjectSelection::init(
     ui = new Ui_DlgObjectSelection;
     ui->setupUi(this);
 
+    ui->splitter->handle(1)->installEventFilter(this);  // receive double click events to reset splitter
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     ui->checkBoxAutoDeps->setChecked(hGrp->GetBool("ObjectSelectionAutoDeps", true));
     connect(ui->checkBoxAutoDeps, &QCheckBox::toggled, this, &DlgObjectSelection::onAutoDeps);
@@ -113,10 +115,13 @@ void DlgObjectSelection::init(
     ui->depList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->depList->setTextElideMode(Qt::ElideNone);
     ui->inList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->inList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->inList->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->inList->setTextElideMode(Qt::ElideNone);
     ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->treeWidget->setTextElideMode(Qt::ElideNone);
 
     ui->depList->headerItem()->setText(0, tr("Depending on"));
     ui->depList->headerItem()->setText(1, tr("Document"));
@@ -178,6 +183,12 @@ void DlgObjectSelection::init(
         this,
         &DlgObjectSelection::onItemSelectionChanged
     );
+    // Preserve custom split on horizontal splitter between the dependency lists
+    connect(ui->splitter, &QSplitter::splitterMoved, this, [this]() {
+        if (ui->depList->topLevelItemCount() > 0 && ui->inList->topLevelItemCount() > 0) {
+            userCustomDepSplit = ui->splitter->sizes();
+        }
+    });
     connect(useOriginalsBtn, &QPushButton::clicked, this, &DlgObjectSelection::onUseOriginalsBtnClicked);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DlgObjectSelection::accept);
@@ -194,6 +205,20 @@ DlgObjectSelection::~DlgObjectSelection()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+bool DlgObjectSelection::eventFilter(QObject* o, QEvent* e)
+{
+    if (o == ui->splitter->handle(1) && e->type() == QEvent::MouseButtonDblClick) {
+        if (ui->depList->topLevelItemCount() > 0 && ui->inList->topLevelItemCount() > 0) {
+            auto sizes = ui->splitter->sizes();
+            int total = sizes[0] + sizes[1];
+            ui->splitter->setSizes({total / 2, total - total / 2});
+            userCustomDepSplit.clear();  // empty means revert to equal split
+        }
+        return true;
+    }
+    return QDialog::eventFilter(o, e);
 }
 
 QTreeWidgetItem* DlgObjectSelection::getItem(
@@ -292,6 +317,45 @@ void DlgObjectSelection::updateAllItemState()
     else if (!count) {
         allItem->setCheckState(0, Qt::Unchecked);
     }
+}
+
+void DlgObjectSelection::updateDepSplitter()
+{
+    bool hasDep = ui->depList->topLevelItemCount() > 0;
+    bool hasIn = ui->inList->topLevelItemCount() > 0;
+
+    auto depSizes = ui->splitter->sizes();
+    int total = depSizes[0] + depSizes[1];
+
+    if (hasDep && !hasIn) {
+        depSizes[0] = total;
+        depSizes[1] = 0;
+    }
+    else if (!hasDep && hasIn) {
+        depSizes[0] = 0;
+        depSizes[1] = total;
+    }
+    else if (hasDep && hasIn && (depSizes[0] == 0 || depSizes[1] == 0)) {
+        depSizes[0] = depSizes[1] = total / 2;
+        if (userCustomDepSplit.size() == 2) {
+            int customTotal = userCustomDepSplit[0] + userCustomDepSplit[1];
+            if (customTotal > 0) {
+                depSizes[0] = total * userCustomDepSplit[0]
+                    / customTotal;  // in case of window resize
+                depSizes[1] = total - depSizes[0];
+            }
+        }
+    }
+    // both lists empty - currently show empty lists while dependency checkbox selected
+    else if (!hasDep && !hasIn) {
+        depSizes[0] = depSizes[1] = total / 2;
+    }
+    else {
+        // implicit case where both have content and user has manually
+        // resized, nothing to do
+        return;
+    }
+    ui->splitter->setSizes(depSizes);
 }
 
 void DlgObjectSelection::setItemState(App::DocumentObject* obj, Qt::CheckState state, bool forced)
@@ -455,6 +519,10 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem* objItem, int column)
         return;
     }
 
+    // setItemState() writes to the dependency lists too, so their signals have to be blocked as
+    // well or onDepItemChanged() re-enters and spreads the state to every selected row there
+    QSignalBlocker blocker(ui->depList);
+    QSignalBlocker blocker2(ui->inList);
     QSignalBlocker blocker3(ui->treeWidget);
     auto state = objItem->checkState(0);
     if (objItem == allItem) {
@@ -505,14 +573,22 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem* objItem, int column)
         // We treat selected item in tree widget specially in case of checking
         // items in depList or inList. To simplify logic, we change selection
         // here if an unselected item has been checked.
-        itemChanged[qvariant_cast<App::SubObjectT>(objItem->data(0, Qt::UserRole))] = state;
+        auto objT = qvariant_cast<App::SubObjectT>(objItem->data(0, Qt::UserRole));
+        if (auto obj = objT.getObject()) {
+            setItemState(obj, state, true);
+            itemChanged[objT] = state;
+        }
+
         onItemSelectionChanged();
     }
     else {
         const auto items = ui->treeWidget->selectedItems();
         for (auto item : items) {
-            setCheckState(item, state);
-            itemChanged[qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole))] = state;
+            auto objT = qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole));
+            if (auto obj = objT.getObject()) {
+                setItemState(obj, state, true);
+                itemChanged[objT] = state;
+            }
         }
     }
     timer.start(10);
@@ -707,6 +783,7 @@ void DlgObjectSelection::onItemSelectionChanged()
     if (enabled2) {
         ui->inList->setSortingEnabled(true);
     }
+    updateDepSplitter();
 }
 
 void DlgObjectSelection::onUseOriginalsBtnClicked()

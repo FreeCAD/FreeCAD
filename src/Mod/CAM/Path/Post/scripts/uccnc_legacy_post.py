@@ -1,29 +1,29 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 # *                                                                         *
 # *   based upon linuxcnc_post.py (c) sliptonic (shopinthewoods@gmail.com)  *
 # *                                                                         *
 # *   changed, but not enough to claim copyrights 2019-2021                 *
 # *   maintainer: A.H.M. Steenveld                                          *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
 #
 # DEPRECATED: This post processor is deprecated and replaced by the generic
 # post processor with Generic_UCCNC.fcm machine configuration file.
@@ -38,7 +38,7 @@ import FreeCAD
 from FreeCAD import Units
 import Path
 import Path.Base.Util as PathUtil
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import argparse
 import datetime
 
@@ -592,7 +592,7 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #    out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in PostUtils.cannedCycleTerminator(PathUtils.getPathWithPlacement(pathobj)).Commands:
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name.strip()  # command M or G code or comment string
             commandlist.append(command)

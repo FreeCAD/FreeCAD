@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <App/GeoFeaturePy.h>
 
@@ -73,6 +70,12 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
+const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry(const DocumentObject* object)
+{
+    auto* geoFeature = freecad_cast<const GeoFeature*>(object);
+    return geoFeature ? geoFeature->getPropertyOfGeometry() : nullptr;
+}
+
 PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
@@ -114,7 +117,7 @@ ElementNamePair GeoFeature::_getElementName(const char* name,
         mapped.index.appendToStringBuffer(result);
         return ElementNamePair(ss.str().c_str(), result.c_str());
     }
-    else if (mapped.name) {
+    if (mapped.name) {
         //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
         const char* dot = strrchr(name, '.');
         if (dot) {
@@ -126,11 +129,9 @@ ElementNamePair GeoFeature::_getElementName(const char* name,
         }
         return ElementNamePair(name, "");
     }
-    else {
-        std::string oldName;
-        mapped.index.appendToStringBuffer(oldName);
-        return ElementNamePair("", oldName.c_str());
-    }
+    std::string oldName;
+    mapped.index.appendToStringBuffer(oldName);
+    return ElementNamePair("", oldName.c_str());
 }
 
 DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,

@@ -87,6 +87,13 @@ public:
         const Command* command = nullptr
     );
 
+    /** Create the tool tip of an action that runs a given command, such as
+     * an item of a dropdown toolbar button
+     * @param action: the action, whose text and font are used
+     * @param command: the command, whose translated help text, name and shortcut are used
+     */
+    static QString createToolTip(const QAction* action, const Command* command);
+
     /** Obtain tool tip of a given command
      * @param cmd: input command
      * @param richFormat: whether to output rich text formatted tooltip
@@ -243,7 +250,11 @@ class GuiExport RecentFilesAction: public ActionGroup
     Q_OBJECT
 
 public:
-    explicit RecentFilesAction(Command* pcCmd, QObject* parent = nullptr);
+    /**
+     * @param addOpen Whether to prepend an Open action and separator to the recent-files
+     * menu.
+     */
+    explicit RecentFilesAction(Command* pcCmd, QObject* parent = nullptr, bool addOpen = false);
     ~RecentFilesAction() override;
 
     void appendFile(const QString&);
@@ -264,6 +275,7 @@ private:
     int maximumItems; /**< Number of maximum items */
 
     QAction sep, clearRecentFilesListAction;
+    QList<QAction*> recentFileActions;
 
     class Private;
     friend class Private;

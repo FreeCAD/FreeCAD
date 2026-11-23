@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, Final
 
 from Base.Metadata import export
@@ -31,7 +29,6 @@ class ViewProviderFemConstraint(ViewProviderGeometryObject):
         file_name : str
             Open Inventor file.
         """
-        ...
     SymbolNode: Final[Any]
     """A pivy SoSeparator with the nodes of the constraint symbols"""
 
@@ -40,3 +37,6 @@ class ViewProviderFemConstraint(ViewProviderGeometryObject):
 
     RotateSymbol: bool
     """Apply rotation on copies of the constraint symbol"""
+
+    ResourceSymbolDir: Final[str] = ""
+    """Path to system resource symbol directory"""
