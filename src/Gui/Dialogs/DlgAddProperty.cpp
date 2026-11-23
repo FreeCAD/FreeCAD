@@ -602,7 +602,7 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
     addButton->setText(tr("Add"));
     setAddEnabled(false);
 
-    comboBoxGroup.setFocus();
+    ui->lineEditName->setFocus();
 
     QWidget::setTabOrder(&comboBoxGroup, ui->comboBoxType);
     QWidget::setTabOrder(ui->comboBoxType, ui->lineEditName);
