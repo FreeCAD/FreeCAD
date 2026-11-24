@@ -872,19 +872,11 @@ inline UnitsSchemaSpec makeRadSchema(
     return base;
 }
 
-inline const UnitsSchemaSpec s10 = makeRadSchema(
-    s3,
-    10,
-    "InternalRad",
-    QT_TRANSLATE_NOOP("UnitsApi", "Standard (mm, kg, s, rad)")
-);
+inline const UnitsSchemaSpec s10
+    = makeRadSchema(s3, 10, "InternalRad", QT_TRANSLATE_NOOP("UnitsApi", "Standard (mm, kg, s, rad)"));
 
-inline const UnitsSchemaSpec s11 = makeRadSchema(
-    s6,
-    11,
-    "FEMRad",
-    QT_TRANSLATE_NOOP("UnitsApi", "FEM (mm, N, s, rad)")
-);
+inline const UnitsSchemaSpec s11
+    = makeRadSchema(s6, 11, "FEMRad", QT_TRANSLATE_NOOP("UnitsApi", "FEM (mm, N, s, rad)"));
 
 inline const std::vector schemaSpecs {s3, s4, s5, s6, s7, s8, s9, s0, s1, s2, s10, s11};
 
