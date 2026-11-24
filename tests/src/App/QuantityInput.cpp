@@ -56,6 +56,7 @@ namespace App::QuantityInputTest
 {
 
 const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
+const Base::NumericLocaleContext deDE {"de_DE", ",", ".", "+", "-", 3, 3, "0"};
 
 TEST(QuantityInput, QuantityInputUnitUsesDisplayedScaleAndSafeFallbacks)
 {
@@ -886,7 +887,7 @@ TEST(QuantityInput, SharedLocalizedInputCorpus)
     }
 }
 
-TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
+TEST(QuantityInput, UnitsPunctuationOperators)
 {
     tests::initApplication();
     ScopedExpressionOwner owner;
@@ -894,9 +895,13 @@ TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
     const QuantityConstraints constraints;
 
     for (const auto& [input, expected] : {
-             std::pair {"-1\" + 0.25\"", -19.05},
              std::pair {"-1\"+0.25\"", -19.05},
+             std::pair {"-1\" + 0.25\"", -19.05},
+             std::pair {"-1\" +0.25\"", -19.05},
+             std::pair {"-1 \" +0.25\"", -19.05},
              std::pair {"-1in+0.25\"", -19.05},
+             std::pair {"1,234.5 mm", 1234.5},
+             std::pair {"1'2,500\"", 63804.8},
          }) {
         const auto result = interpretQuantityInput(
             input,
@@ -912,6 +917,95 @@ TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
         EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
         EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
     }
+
+    for (const auto& [input, expected] :
+         {std::pair {"1.234,5 mm", 1234.5}, std::pair {"1'2,500\"", 368.3}}) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Expression,
+            path,
+            Base::Unit::Length,
+            deDE,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+    }
 }
+
+TEST(QuantityInput, UnaryOperators)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] :
+         {std::pair {"-1\"", -25.4},
+          std::pair {"+1\"", 25.4},
+          std::pair {"(-1\")", -25.4},
+          std::pair {"1\" + -0.25\"", 19.05},
+          std::pair {"1\"+-0.25\"", 19.05},
+          std::pair {"1\"+ -0.25\"", 19.05}}) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Expression,
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+    }
+}
+
+TEST(QuantityInput, AlphaNumericIds)
+{
+    tests::initApplication();
+    std::string docName = App::GetApplication().getUniqueDocumentName("quantity_input");
+    App::Document* doc = App::GetApplication().newDocument(docName.c_str(), "testUser");
+    App::DocumentObject* obj = doc->addObject("App::VarSet", "VarSet");
+    auto* owner = freecad_cast<App::PropertyFloat*>(
+        obj->addDynamicProperty("App::PropertyFloat", "result", "Test")
+    );
+    auto* gross = freecad_cast<App::PropertyFloat*>(
+        obj->addDynamicProperty("App::PropertyFloat", "Größ", "Test")
+    );
+    auto* gross2 = freecad_cast<App::PropertyFloat*>(
+        obj->addDynamicProperty("App::PropertyFloat", "Größ2", "Test")
+    );
+
+    gross->setValue(5.0);
+    gross2->setValue(1.0);
+
+    const auto path = App::ObjectIdentifier(*owner);
+    const QuantityConstraints constraints;
+
+    std::string input = "Größ+2";
+
+    const auto result = interpretQuantityInput(
+        input,
+        QuantityInputGrammar::Expression,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        constraints
+    );
+    ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+    ASSERT_TRUE(result.quantity);
+    EXPECT_DOUBLE_EQ(result.quantity->getValue(), 7.0);
+    EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+
+    App::GetApplication().closeDocument(docName.c_str());
+}
+
 
 }  // namespace App::QuantityInputTest
