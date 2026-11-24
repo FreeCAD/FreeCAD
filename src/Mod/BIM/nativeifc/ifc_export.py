@@ -62,7 +62,7 @@ def get_export_preferences(ifcfile, preferred_context=None, create=None):
     if the exact context is not found, a new one is created"""
 
     prefs = exportIFC.getPreferences()
-    prefs["SCHEMA"] = ifcfile.wrapped_data.schema_name()
+    prefs["SCHEMA"] = ifcfile.schema_identifier
     s = ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
     # the above lines yields meter -> file unit scale factor. We need mm
     prefs["SCALE_FACTOR"] = 0.001 / s
