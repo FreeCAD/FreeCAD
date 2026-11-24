@@ -1122,16 +1122,17 @@ class wireTracker(Tracker):
     def update(self, wire, forceclosed=False):
         """Update the tracker."""
         if wire:
+            verts = wire.Vertexes
             if self.closed or forceclosed:
-                self.line.numVertices.setValue(len(wire.Vertexes) + 1)
+                self.line.numVertices.setValue(len(verts) + 1)
             else:
-                self.line.numVertices.setValue(len(wire.Vertexes))
-            for i in range(len(wire.Vertexes)):
-                p = wire.Vertexes[i].Point
+                self.line.numVertices.setValue(len(verts))
+            for i in range(len(verts)):
+                p = verts[i].Point
                 self.coords.point.set1Value(i, [p.x, p.y, p.z])
             if self.closed or forceclosed:
-                t = len(wire.Vertexes)
-                p = wire.Vertexes[0].Point
+                t = len(verts)
+                p = verts[0].Point
                 self.coords.point.set1Value(t, [p.x, p.y, p.z])
 
     def updateFromPointlist(self, points, forceclosed=False):
