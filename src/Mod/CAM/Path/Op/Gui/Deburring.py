@@ -67,6 +67,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         tuples.append(("sorting", "SortingMode"))
         tuples.append(("splitArcs", "SplitArcs"))
         tuples.append(("strategy", "Strategy"))
+        tuples.append(("useLongestEdge", "UseLongestEdge"))
+        tuples.append(("useStartPoint", "UseStartPoint"))
 
         return tuples
 
@@ -116,6 +118,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.SortingMode = str(self.form.sorting.currentData())
         if obj.SplitArcs != self.form.splitArcs.isChecked():
             obj.SplitArcs = self.form.splitArcs.isChecked()
+        if obj.UseLongestEdge != self.form.useLongestEdge.isChecked():
+            obj.UseLongestEdge = self.form.useLongestEdge.isChecked()
+        if obj.UseStartPoint != self.form.useStartPoint.isChecked():
+            obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -130,6 +136,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.processHoles.setChecked(obj.ProcessHoles)
         self.form.processPerimeter.setChecked(obj.ProcessPerimeter)
         self.form.splitArcs.setChecked(obj.SplitArcs)
+        self.form.useLongestEdge.setChecked(obj.UseLongestEdge)
+        self.form.useStartPoint.setChecked(obj.UseStartPoint)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -147,28 +155,24 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.sorting.currentIndexChanged)
         signals.append(self.form.splitArcs.checkStateChanged)
         signals.append(self.form.strategy.currentIndexChanged)
+        signals.append(self.form.useLongestEdge.checkStateChanged)
+        signals.append(self.form.useStartPoint.checkStateChanged)
 
         return signals
 
     def updateData(self, obj, prop):
-        tools = ["ballend", "bullnose", "endmill"]
-        toolShape = self.obj.ToolController.Tool.ShapeID
-
-        if self.obj.Strategy == "Chamfer":
+        if obj.Strategy == "Chamfer":
+            self.form.label_chamferWidth.setText("Chamfer width")
             self.form.label_chamferAngle.show()
             self.form.chamferAngle.show()
         else:
+            self.form.label_chamferWidth.setText("Fillet radius")
             self.form.label_chamferAngle.hide()
             self.form.chamferAngle.hide()
 
-        if self.obj.Strategy == "Chamfer":
-            self.form.label_chamferWidth.setText("Chamfer width")
-        else:
-            self.form.label_chamferWidth.setText("Fillet radius")
-
         geo = any(
             Path.Geom.isHorizontal(base.Shape.getElement(n))
-            for base, names in self.obj.Base
+            for base, names in obj.Base
             for n in names
             if n.startswith("Face")
         )
@@ -176,8 +180,26 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.processHoles.setEnabled(geo)
         self.form.processPerimeter.setEnabled(geo)
 
+        tools = ("ballend", "bullnose", "endmill")
+        toolShape = obj.ToolController.Tool.ShapeID
         self.form.chamferAngle.setEnabled(toolShape in tools)
         self.form.fromBottom.setEnabled(toolShape in tools)
+
+        self.form.useLongestEdge.setEnabled(not obj.UseStartPoint)
+
+    def registerSignalHandlers(self, obj):
+        self.form.setStartPoint.clicked.connect(self.setStartPoint)
+
+    def setStartPoint(self):
+        selEx = FreeCADGui.Selection.getSelectionEx()
+        if selEx and selEx[0].PickedPoints:
+            point = selEx[0].PickedPoints[0]
+            self.obj.StartPoint = point
+            self.setDirty()
+            Path.Log.info(
+                translate("CAM_Deburring", "Set start point: %s, %s")
+                % (round(point.x, 3), round(point.y, 3))
+            )
 
 
 Command = PathOpGui.SetupOperation(

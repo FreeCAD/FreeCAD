@@ -53,14 +53,15 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
 
     def opFeatures(self, obj):
         return (
-            PathOp.FeatureTool
-            | PathOp.FeatureHeights
-            | PathOp.FeatureStepDown
+            PathOp.FeatureCoolant
             | PathOp.FeatureBaseEdges
             | PathOp.FeatureBaseFaces
-            | PathOp.FeatureCoolant
             | PathOp.FeatureBaseGeometry
+            | PathOp.FeatureHeights
             | PathOp.FeatureLinking
+            | PathOp.FeatureStartPoint
+            | PathOp.FeatureStepDown
+            | PathOp.FeatureTool
         )
 
     def initOperation(self, obj):
@@ -188,22 +189,13 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyVectorDistance",
-                "StartPoint",
-                "Sorting",
-                QT_TRANSLATE_NOOP("App::Property", "The start point for sorting"),
-            ),
-            (
-                "App::PropertyVectorDistance",
-                "EndPoint",
-                "Sorting",
-                QT_TRANSLATE_NOOP("App::Property", "The end point for sorting"),
-            ),
-            (
                 "App::PropertyBool",
-                "UseEndPoint",
-                "Sorting",
-                QT_TRANSLATE_NOOP("App::Property", "Use end point for sorting"),
+                "UseLongestEdge",
+                "Start Point",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Override start point\nShoud be used only with disabled UseStartPoint",
+                ),
             ),
         ]
 
@@ -303,11 +295,10 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
         obj.setEditorMode("EndPoint", sortingMode)
         obj.setEditorMode("UseEndPoint", sortingMode)
 
-    def opOnDocumentRestored(self, obj):
-        if obj.StepDown == 0:
-            obj.clearExpression("StepDown")
-            obj.StepDown = 999
+        useLongestEdgeMode = 0 if not obj.UseStartPoint else 2
+        obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
 
+    def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
         self.initOpProperties(obj, warn=True)
         self.opSetDefaultValues(obj, PathUtils.findParentJob(obj))
@@ -431,7 +422,7 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
             "min_dist": 0,
         }
 
-        startPoint = self.startPoint(obj)
+        startPoint = self.startPoint(obj) if obj.UseStartPoint else FreeCAD.Vector()
         linkingArgs = linking.get_linking_args(obj, self.job)
 
         for i, (wire, isHole) in enumerate(owireTups):
@@ -439,6 +430,9 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
             pathParams["shapes"] = [wire]
             if wire.isClosed():
                 pathParams["start"] = startPoint
+                if obj.UseLongestEdge and not obj.UseStartPoint:
+                    longestEdge = max(wire.Edges, key=lambda edge: edge.Length)
+                    pathParams["start"] = longestEdge.discretize(3)[1]
             else:  # open wire
                 first_point, last_point = wire.Vertexes[0].Point, wire.Vertexes[-1].Point
                 pathParams["start"] = first_point if obj.Direction == "CW" else last_point
@@ -489,7 +483,7 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
         sortedIndexes = tsp_solver.solveTunnels(
             tunnels,
             allowFlipping=False,
-            routeStartPoint=self.toFrame(obj.StartPoint),
+            routeStartPoint=self.startPoint(obj) if obj.UseStartPoint else None,
             routeEndPoint=self.toFrame(obj.EndPoint) if obj.UseEndPoint else None,
         )
         return [wireTups[t["index"]] for t in sortedIndexes]
@@ -517,7 +511,9 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
 
         offsets = []
         depths = []
-        step_down = obj.StepDown.Value
+        step_down = (
+            obj.StepDown.Value if Path.Geom.isStrictlyGreater(obj.StepDown.Value, 0) else 999999
+        )
         radial_offset = obj.RadialStockToLeave.Value
         extra_depth = obj.ExtraDepth.Value
         width = obj.Width.Value
@@ -673,19 +669,7 @@ class ObjectDeburring(PathEngraveBase.ObjectOp):
 
 def SetupProperties():
     setup = []
-    setup.append("Angle")
-    setup.append("Direction")
-    setup.append("ExtraDepth")
-    setup.append("ProcessHoles")
-    setup.append("ProcessPerimeter")
-    setup.append("RadialStockToLeave")
-    setup.append("Side")
-    setup.append("SplitArcs")
-    setup.append("SortingMode")
-    setup.append("StartFromBottom")
-    setup.append("Strategy")
-    setup.append("Width")
-    setup.append("UseEndPoint")
+    setup.extend([tup[1] for tup in ObjectDeburring.opPropertyDefinitions(False)])
     return setup
 
 

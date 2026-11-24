@@ -150,6 +150,35 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="0">
+      <widget class="QCheckBox" name="useLongestEdge">
+       <property name="text">
+        <string>Use longest edge</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="useStartPoint">
+       <property name="text">
+        <string>Use start point</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QToolButton" name="setStartPoint">
+       <property name="toolTip">
+        <string>Set picked point as start point</string>
+       </property>
+       <property name="text">
+        <string notr="true">…</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg
+        </iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
