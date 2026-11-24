@@ -646,6 +646,8 @@ class Scheme(IntEnum):
     ImperialCivil = 7
     FEM = 8
     MeterDecimal = 9
+    InternalRad = 10
+    FEMRad = 11
 
 
 class NumberFormat(IntEnum):
