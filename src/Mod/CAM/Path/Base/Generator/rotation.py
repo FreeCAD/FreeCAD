@@ -74,9 +74,10 @@ def build_kinematic_chain(
 
     The root axis is the outermost (closest to the machine base),
     and the last axis is the innermost (closest to the workpiece/tool).
+    An axis's parent is the axis it is mounted on.
 
-    For a C-A table-table machine where C is root and A is child:
-      chain = [C, A]   (C is root/outer, A is leaf/inner)
+    For an A that carries a C:
+      chain = [A, C]   (A is root/outer, C is leaf/inner)
 
     Args:
         machine: Machine configuration
@@ -137,15 +138,19 @@ def build_kinematic_chain(
 def compute_rotation_matrix(chain: List[RotaryAxis], angles: Dict[str, float]) -> FreeCAD.Rotation:
     """Compute cumulative rotation matrix for given axis chain and angles.
 
-    For table-table machines the axes are sorted so the azimuth
-    (Z-rotation) axis is applied first (rightmost in the matrix product)
-    and the tilt axis is applied last (leftmost).  This gives
-    ``R_tilt · R_azimuth`` regardless of the parent/child order in the
-    kinematic tree, matching the analytical decomposition used by the
-    solver.
+    Each axis is mounted on its parent, so the axes of a table, or of a
+    head, compose from the root outward: ``R_root · … · R_leaf``. The leaf
+    turns first and every axis it rides on turns it further. A table whose
+    A carries its C gives ``R_A · R_C``, one whose C carries an A gives
+    ``R_C · R_A``, and a head whose C carries its B gives ``R_C · R_B``.
 
-    For head or mixed machines the chain order is used directly with
-    left-multiply (``R_leaf · … · R_root``).
+    Two axes not mounted one on the other are taken as the usual machine:
+    for a table the tilt carries the azimuth (Z-rotation), for a head the
+    azimuth carries the tilt, and of two tilts the one listed last carries
+    the other.
+
+    For mixed machines the chain order is used directly with left-multiply
+    (``R_leaf · … · R_root``).
 
     Args:
         chain: Ordered list of RotaryAxis objects (root first, leaf last)
@@ -157,20 +162,29 @@ def compute_rotation_matrix(chain: List[RotaryAxis], angles: Dict[str, float]) -
     if not chain:
         return FreeCAD.Rotation()
 
-    # For table-table machines, sort so azimuth (Z-rot) iterates first.
-    # Left-multiply then gives R_tilt · R_azimuth.
     all_table = all(ax.role == AxisRole.TABLE_ROTARY for ax in chain)
-    if all_table and len(chain) >= 2:
-        ordered = sorted(chain, key=lambda ax: 0 if abs(ax.rotation_vector.z) > 0.9 else 1)
-    else:
-        ordered = chain
-
+    all_head = all(ax.role == AxisRole.HEAD_ROTARY for ax in chain)
     total_rotation = FreeCAD.Rotation()
+
+    if not (all_table or all_head):
+        for axis in chain:
+            if axis.name in angles:
+                rot = FreeCAD.Rotation(axis.rotation_vector, angles[axis.name])
+                total_rotation = rot.multiply(total_rotation)
+        return total_rotation
+
+    mounted = all(chain[i].parent == chain[i - 1].name for i in range(1, len(chain)))
+    # Root first: unmounted, the tilt for a table, the azimuth for a head
+    ordered = (
+        chain
+        if mounted
+        else sorted(reversed(chain), key=lambda ax: (abs(ax.rotation_vector.z) > 0.9) == all_table)
+    )
 
     for axis in ordered:
         if axis.name in angles:
             rot = FreeCAD.Rotation(axis.rotation_vector, angles[axis.name])
-            total_rotation = rot.multiply(total_rotation)
+            total_rotation = total_rotation.multiply(rot)
 
     return total_rotation
 
@@ -451,8 +465,9 @@ def _solve_analytical_2axis(
         ]
         # Try both decomposition orders; FK validation filters incorrect ones.
         # _decompose_2axis(first, second) solves R_second · R_first · desired = Z.
-        # compute_rotation_matrix sorts axes: azimuth (Z-rot) first, tilt last,
-        # giving R_tilt · R_azimuth.  Match by decomposing azimuth-first.
+        # A tilt carrying the azimuth gives R_tilt · R_azimuth, matched by
+        # decomposing azimuth-first; an azimuth carrying the tilt is matched
+        # by the other order.
         # Identify azimuth (Z-rotation) and tilt axes.
         azimuth_idx = None
         for i, ax in enumerate(chain):

@@ -68,10 +68,6 @@ sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip
 # copy resources
 cp resources/* ${conda_env}
 
-# Remove __pycache__ folders and .pyc files
-find . -path "*/__pycache__/*" -delete
-find . -name "*.pyc" -type f -delete
-
 # fix problematic rpaths and reexport_dylibs for signing
 # see https://github.com/FreeCAD/FreeCAD/issues/10144#issuecomment-1836686775
 # and https://github.com/FreeCAD/FreeCAD-Bundle/pull/203
@@ -125,6 +121,10 @@ if ! "${conda_env}/bin/freecadcmd" --safe-mode --console "import pivy; from pivy
     echo "FreeCAD bundled Pivy smoke test failed; the macOS bundle cannot import the bundled Coin/Pivy runtime."
     exit 1
 fi
+
+# Remove __pycache__ folders and .pyc files, including those written by the smoke tests
+find . -path "*/__pycache__/*" -delete
+find . -name "*.pyc" -type f -delete
 
 # move plugins into their final location (Library only exists for macOS < 15.0 builds)
 if [ -d "${conda_env}/Library" ]; then

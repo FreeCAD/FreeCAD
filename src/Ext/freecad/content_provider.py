@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# (c) 2026 Frank Martínez <mnesarco> LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Frank Martínez
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 """
 Python API for Content Providers.

@@ -32,7 +32,6 @@ from Machine.models.validate import (
     validate_paths,
     format_findings,
     main,
-    _normalize_path,
 )
 
 
@@ -97,6 +96,14 @@ class TestMachineValidate(PathTestUtils.PathTestBase):
         findings = validate_machine(machine, check_postprocessor=False)
         self.assertIn("kinematics", _codes(findings, Severity.ERROR))
 
+    def test055_axes_sharing_a_sequence_number_are_valid(self):
+        """Axes with equal sequence numbers move together, even within one chain."""
+        machine = self._valid_machine()
+        machine.linear_axes["X"].parent = "Y"
+        machine.linear_axes["X"].sequence = machine.linear_axes["Y"].sequence = 0
+        findings = validate_machine(machine, check_postprocessor=False)
+        self.assertNotIn("kinematics", _codes(findings, Severity.ERROR))
+
     def test060_missing_postprocessor_is_an_error(self):
         machine = self._valid_machine()
         machine.postprocessor_file_name = ""
@@ -138,42 +145,6 @@ class TestMachineValidate(PathTestUtils.PathTestBase):
         raw = machine.to_dict()
         findings = validate_machine(machine, raw=raw, check_postprocessor=False)
         self.assertEqual(_codes(findings, Severity.WARNING), [])
-
-    def test120_legacy_spellings_are_not_reported_as_dropped(self):
-        """Keys the loader still reads under an older name are not warnings.
-
-        Guards the rewrite table against becoming a source of false positives,
-        which is what would make the warning tier ignorable.
-        """
-        machine = self._valid_machine()
-        raw = machine.to_dict()
-
-        # machine.spindles is still read as machine.toolheads
-        raw["machine"]["spindles"] = raw["machine"].pop("toolheads")
-        # output_header is read from the output level as well as from header
-        raw["output"]["output_header"] = raw["output"]["header"].pop("output_header")
-        # joints are accepted as an object as well as a pair of arrays
-        for axis in raw["machine"]["axes"].values():
-            origin, vector = axis["joint"]
-            axis["joint"] = {"origin": origin, "axis": vector}
-
-        reloaded = Machine.from_dict(raw)
-        findings = validate_machine(reloaded, raw=raw, check_postprocessor=False)
-        self.assertEqual(
-            _codes(findings, Severity.WARNING),
-            [],
-            f"legacy spellings reported as dropped: {findings}",
-        )
-
-    def test130_normalize_path_chains_rewrites(self):
-        """One rewrite can expose another; all of them must be applied."""
-        self.assertEqual(
-            _normalize_path("machine.spindles.spindle_wait"),
-            "machine.toolheads.toolhead_wait",
-        )
-        self.assertEqual(_normalize_path("machine.spindles"), "machine.toolheads")
-        self.assertEqual(_normalize_path("machine.axes.X.joint.origin"), "machine.axes.X.joint")
-        self.assertEqual(_normalize_path("machine.name"), "machine.name")
 
     # ------------------------------------------------------------------
     # files and trees

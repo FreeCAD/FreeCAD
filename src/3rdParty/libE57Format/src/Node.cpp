@@ -352,6 +352,11 @@ values:
 */
 NodeType Node::type() const
 {
+   if ( impl_ == nullptr )
+   {
+      throw E57_EXCEPTION2( ErrorInternal, "(node implementation is null)" );
+   }
+
    return impl_->type();
 }
 

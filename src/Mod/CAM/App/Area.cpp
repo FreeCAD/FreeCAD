@@ -671,6 +671,11 @@ private:
 
     void line(const Base::Vector3d& last, const Base::Vector3d& next)
     {
+        if (last.x == next.x && last.y == next.y) {
+            point(last.z < next.z ? last : next);
+            return;
+        }
+
         if (last.z <= maxZ && next.z <= maxZ) {
             Base::BoundBox2d segBox = {};
             segBox.Add({last.x, last.y});

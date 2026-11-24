@@ -196,11 +196,9 @@ namespace e57
       // Prepare CompressedVectorSectionHeader
       CompressedVectorSectionHeader header;
       header.sectionLogicalLength = sectionLogicalLength_;
-      header.dataPhysicalOffset =
-         dataPhysicalOffset_; //??? can be zero, if no data written ???not set yet
-      header.indexPhysicalOffset =
-         topIndexPhysicalOffset_; //??? can be zero, if no data written ???not set
-                                  // yet
+      header.dataPhysicalOffset = dataPhysicalOffset_;
+      header.indexPhysicalOffset = topIndexPhysicalOffset_;
+
 #ifdef E57_VERBOSE
       std::cout << "  CompressedVectorSectionHeader:" << std::endl;
       header.dump( 4 ); //???

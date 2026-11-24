@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 """Test that dragging in the model tree
 does not trigger CarbonCopy multiple times.
