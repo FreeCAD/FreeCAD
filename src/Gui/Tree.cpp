@@ -6474,10 +6474,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     bool external = object()->getDocument() != getOwnerDocument()->document()
         || (linked && linked->getDocument() != obj->getDocument());
     bool freezed = pObject->isFreezed();
-
-    // A collapsed item stands in for its hidden descendants, so it also shows their errors.
     bool error = pObject->isError();
-    bool childError = !error && !isExpanded() && hasErrorInChildren();
+    bool childError = !error && !isExpanded() && hasErrorInDescendants();
 
     int currentStatus = ((freezed ? 1 : 0) << 5) | ((external ? 1 : 0) << 4)
         | ((object()->showInTree() ? 0 : 1) << 3) | ((error || childError ? 1 : 0) << 2)
@@ -6534,24 +6532,23 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     this->setIcon(0, icon);
 }
 
-// Objects are walked instead of child items because a collapsed item may not have
-// created its child items yet.
-bool DocumentObjectItem::hasErrorInChildren() const
+bool DocumentObjectItem::hasErrorInDescendants() const
 {
+    const auto& table = getTree()->ObjectTable;
     std::set<App::DocumentObject*> visited;
     std::vector<App::DocumentObject*> pending(myData->children.begin(), myData->children.end());
     while (!pending.empty()) {
         auto obj = pending.back();
         pending.pop_back();
-        if (!obj || !visited.insert(obj).second) {
+        if (!obj || !obj->isAttachedToDocument() || !visited.insert(obj).second) {
             continue;
         }
         if (obj->isError()) {
             return true;
         }
-        auto it = myOwner->ObjectMap.find(obj);
-        if (it != myOwner->ObjectMap.end()) {
-            const auto& children = it->second->children;
+        auto it = table.find(obj);
+        if (it != table.end() && !it->second.empty()) {
+            const auto& children = (*it->second.begin())->children;
             pending.insert(pending.end(), children.begin(), children.end());
         }
     }
