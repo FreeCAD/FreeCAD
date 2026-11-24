@@ -20,14 +20,17 @@
 #                                                                              #
 ################################################################################
 
+import copy
 import json
 import Path
 import FreeCAD
 import pathlib
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Tuple, Callable
+from typing import Any
+from collections.abc import Callable
 from collections import namedtuple
 from enum import Enum
+from Constants import ToolChangeFormat  # defined in Constants, used here and re-exported
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -164,17 +167,19 @@ class ProcessingOptions:
     # Conversion and expansion of Path Objects. Does not affect final gcode generation
 
     early_tool_prep: bool = False  # Prepare tool before operation (affects postlist ordering)
+    assert_tool_prep: bool = (
+        False  # Write T# before every tool change to force tool prep. Useful for starting in the middle of a file.
+    )
+    tool_change_format: ToolChangeFormat = ToolChangeFormat.M6_T  # Dropdown of tool change formats
     filter_inefficient_moves: bool = False  # Collapse redundant G0 rapid move chains
     split_arcs: bool = False
-    tool_change: bool = True  # Enable tool change commands
     translate_drill_cycles: bool = False  # Expand canned drill cycles to G0/G1 moves
     translate_rapid_moves: bool = False
-    f_for_rapid_moves = False
     xy_before_z_after_tool_change: bool = (
         False  # Decompose first move after tool change: XY first, then Z
     )
 
-    return_to: Optional[Tuple[float, float, float]] = None  # (x, y, z) or None
+    return_to: tuple[float, float, float] | None = None  # (x, y, z) or None
 
 
 # ============================================================================
@@ -186,8 +191,8 @@ class ProcessingOptions:
 class BaseFrame:
     """Base coordinate frame definition."""
 
-    origin: List[float] = field(default_factory=lambda: [0, 0, 0])
-    orientation_quaternion: List[float] = field(default_factory=lambda: [0, 0, 0, 1])
+    origin: list[float] = field(default_factory=lambda: [0, 0, 0])
+    orientation_quaternion: list[float] = field(default_factory=lambda: [0, 0, 0, 1])
 
 
 class RotationStrategy(Enum):
@@ -247,8 +252,12 @@ class LinearAxis:
     max_velocity: float = 10000
     sequence: int = 0
     role: AxisRole = AxisRole.TABLE_LINEAR
-    parent: Optional[str] = None
-    joint_origin: List[float] = field(default_factory=lambda: [0, 0, 0])
+    parent: str | None = None
+    joint_origin: list[float] = field(default_factory=lambda: [0, 0, 0])
+
+    # keys in the loaded axis this FreeCAD does not read, kept on the axis itself so an axis
+    # built new (the editor's machine Type) does not take another axis's keys
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Normalize direction vector and validate parameters after initialization"""
@@ -343,11 +352,15 @@ class RotaryAxis:
     sequence: int = 0
     prefer_positive: bool = True
     role: AxisRole = AxisRole.TABLE_ROTARY
-    parent: Optional[str] = None
-    joint_origin: List[float] = field(default_factory=lambda: [0, 0, 0])
+    parent: str | None = None
+    joint_origin: list[float] = field(default_factory=lambda: [0, 0, 0])
     solution_preference: str = "shortest"  # "shortest", "positive", "negative"
     allow_flip: bool = True
     wrap_strategy: WrapStrategy = WrapStrategy.UNWOUND
+
+    # keys in the loaded axis this FreeCAD does not read, kept on the axis itself so an axis
+    # built new (the editor's machine Type) does not take another axis's keys
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Normalize rotation vector and validate parameters after initialization"""
@@ -547,7 +560,7 @@ class Toolhead:
 
     name: str
     toolhead_type: ToolheadType = ToolheadType.ROTARY
-    id: Optional[str] = None
+    id: str | None = None
 
     # Power and performance specifications
     max_power_kw: float = 0
@@ -566,13 +579,17 @@ class Toolhead:
     toolhead_wait: float = 0.0  # seconds to wait after toolhead start
 
     # Type-specific parameters
-    laser_wavelength: Optional[float] = None  # nm, for lasers
-    laser_focus_range: Optional[Tuple[float, float]] = None  # min/max focus distance
-    waterjet_pressure: Optional[float] = None  # bar, for waterjets
-    plasma_amperage: Optional[float] = None  # amps, for plasma
+    laser_wavelength: float | None = None  # nm, for lasers
+    laser_focus_range: tuple[float, float] | None = None  # min/max focus distance
+    waterjet_pressure: float | None = None  # bar, for waterjets
+    plasma_amperage: float | None = None  # amps, for plasma
 
     # Capabilities (auto-generated based on type)
-    capabilities: Optional[ToolheadCapabilities] = None
+    capabilities: ToolheadCapabilities | None = None
+
+    # keys in the loaded toolhead this FreeCAD does not read, kept on the toolhead itself so
+    # they stay with it when toolheads are removed or reordered
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Set default values and capabilities"""
@@ -586,9 +603,8 @@ class Toolhead:
         elif self.toolhead_type == ToolheadType.WATERJET:
             if self.waterjet_pressure is None:
                 self.waterjet_pressure = 4000.0  # Default 4000 bar
-        elif self.toolhead_type == ToolheadType.PLASMA:
-            if self.plasma_amperage is None:
-                self.plasma_amperage = 45.0  # Default 45 amps
+        elif self.toolhead_type == ToolheadType.PLASMA and self.plasma_amperage is None:
+            self.plasma_amperage = 45.0  # Default 45 amps
 
     def is_rotary(self) -> bool:
         """Check if this is a rotary toolhead."""
@@ -622,28 +638,7 @@ class Toolhead:
         """Check if this toolhead can control power."""
         return self.capabilities.has_power_control if self.capabilities else False
 
-    # Legacy compatibility properties
-    @property
-    def spindle_wait(self) -> float:
-        """Legacy compatibility property for toolhead_wait."""
-        return self.toolhead_wait
-
-    @spindle_wait.setter
-    def spindle_wait(self, value: float):
-        """Legacy compatibility setter for toolhead_wait."""
-        self.toolhead_wait = value
-
-    @property
-    def spindle_type(self) -> ToolheadType:
-        """Legacy compatibility property for toolhead_type."""
-        return self.toolhead_type
-
-    @spindle_type.setter
-    def spindle_type(self, value: ToolheadType):
-        """Legacy compatibility setter for toolhead_type."""
-        self.toolhead_type = value
-
-    def to_dict(self):
+    def to_dict(self, keep_unknown=True):
         """Serialize to dictionary for JSON persistence"""
         data = {
             "name": self.name,
@@ -671,13 +666,16 @@ class Toolhead:
         if self.id is not None:
             data["id"] = self.id
 
+        if keep_unknown:
+            _restore_keys(data, self.unknown_keys)
+
         return data
 
     @classmethod
     def from_dict(cls, data):
         """Deserialize from dictionary"""
         # Parse toolhead type
-        toolhead_type_str = data.get("toolhead_type", data.get("spindle_type", "rotary"))
+        toolhead_type_str = data.get("toolhead_type", "rotary")
         toolhead_type = ToolheadType(toolhead_type_str)
 
         # Parse laser focus range
@@ -688,7 +686,7 @@ class Toolhead:
 
         # Keyword arguments so that adding or reordering a dataclass field
         # cannot silently shift every loaded value onto the wrong field.
-        return cls(
+        toolhead = cls(
             name=data["name"],
             toolhead_type=toolhead_type,
             id=data.get("id"),
@@ -699,20 +697,51 @@ class Toolhead:
             coolant_flood=data.get("coolant_flood", False),
             coolant_mist=data.get("coolant_mist", False),
             coolant_delay=data.get("coolant_delay", 0.0),
-            toolhead_wait=data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
+            toolhead_wait=data.get("toolhead_wait", 0.0),
             laser_wavelength=data.get("laser_wavelength"),
             laser_focus_range=laser_focus_range,
             waterjet_pressure=data.get("waterjet_pressure"),
             plasma_amperage=data.get("plasma_amperage"),
         )
+        toolhead.unknown_keys = list(_unknown_keys(data, toolhead.to_dict()))
+        return toolhead
+
+
+def _unknown_keys(source, known, path=()):
+    """Yield (path, value) for each key in source that known, this FreeCAD's own
+    serialization of it, does not have."""
+    if isinstance(source, dict) and isinstance(known, dict):
+        for key, value in source.items():
+            if key in known:
+                yield from _unknown_keys(value, known[key], path + (key,))
+            else:
+                yield path + (key,), copy.deepcopy(value)
+
+
+def _restore_keys(data, unknown_keys):
+    """Put each kept (path, value) back into data."""
+    for path, value in unknown_keys:
+        _restore_key(data, path, value)
+
+
+def _restore_key(data, path, value):
+    """Put value back at path in data, unless what held it was removed."""
+    parent = data
+    for step in path[:-1]:
+        try:
+            parent = parent[step]
+        except (KeyError, TypeError):
+            return
+    if isinstance(parent, dict):
+        parent.setdefault(path[-1], copy.deepcopy(value))
 
 
 @dataclass
 class Machine:
-    """Represents a CNC machine configuration with axes, spindles, and output settings.
+    """Represents a CNC machine configuration with axes, toolheads, and output settings.
 
     This class encapsulates all machine parameters including linear and rotary axes,
-    spindles, post-processor settings, and G-code generation options. It provides
+    toolheads, post-processor settings, and G-code generation options. It provides
     methods for serialization to/from JSON and various factory methods for common
     machine configurations (3-axis, 4-axis, 5-axis).
     """
@@ -722,7 +751,7 @@ class Machine:
     with post-processor settings.
 
     This is the single source of truth for all machine-related configuration,
-    including physical capabilities (axes, spindles) and G-code generation
+    including physical capabilities (axes, toolheads) and G-code generation
     preferences (output options, formatting, processing).
     """
 
@@ -736,18 +765,16 @@ class Machine:
     description: str = ""
 
     # Machine components
-    linear_axes: Dict[str, LinearAxis] = field(default_factory=dict)
-    rotary_axes: Dict[str, RotaryAxis] = field(default_factory=dict)
-    toolheads: List[Toolhead] = field(default_factory=list)
+    linear_axes: dict[str, LinearAxis] = field(default_factory=dict)
+    rotary_axes: dict[str, RotaryAxis] = field(default_factory=dict)
+    toolheads: list[Toolhead] = field(default_factory=list)
 
     # Kinematics configuration
     kinematics: Kinematics = field(default_factory=Kinematics)
 
     # Rotary axis configuration (legacy - will be deprecated)
-    primary_rotary_axis: Optional[str] = None
-    secondary_rotary_axis: Optional[str] = None
-    compound_moves: bool = True
-    prefer_positive_rotation: bool = True
+    primary_rotary_axis: str | None = None
+    secondary_rotary_axis: str | None = None
 
     # Units and versioning
     configuration_units: str = "metric"  # Internal storage for configuration_units
@@ -764,10 +791,14 @@ class Machine:
 
     # Post-processor selection and configuration
     postprocessor_file_name: str = ""
-    postprocessor_properties: Dict[str, Any] = field(default_factory=dict)
+    postprocessor_properties: dict[str, Any] = field(default_factory=dict)
 
     # Dynamic state (for runtime)
-    parameter_functions: Dict[str, Callable] = field(default_factory=dict)
+    parameter_functions: dict[str, Callable] = field(default_factory=dict)
+
+    # keys in the loaded file this FreeCAD does not read, as (path, value); to_dict() writes
+    # them back so a save here keeps what another FreeCAD version wrote
+    unknown_keys: list = field(default_factory=list, repr=False, compare=False)
 
     def __post_init__(self):
         """Initialize computed fields and handle backward compatibility"""
@@ -871,14 +902,14 @@ class Machine:
         return len(self.rotary_axes) == 1
 
     @property
-    def motion_commands(self) -> List[str]:
+    def motion_commands(self) -> list[str]:
         """Get list of motion commands that change position"""
         import Path.Geom as PathGeom
 
         return PathGeom.CmdMoveAll
 
     @property
-    def rapid_moves(self) -> List[str]:
+    def rapid_moves(self) -> list[str]:
         """Get list of rapid move commands"""
         import Path.Geom as PathGeom
 
@@ -906,7 +937,7 @@ class Machine:
         )
         return self
 
-    def add_spindle(
+    def add_toolhead(
         self,
         name,
         id=None,
@@ -971,50 +1002,12 @@ class Machine:
         """Get a rotary axis by name"""
         return self.rotary_axes.get(name)
 
-    def get_spindle_by_index(self, index: int) -> Optional[Toolhead]:
-        """Get toolhead by index (legacy compatibility method).
-
-        Args:
-            index: Index of the toolhead to retrieve
-
-        Returns:
-            Toolhead object if found, None otherwise
-        """
-        if 0 <= index < len(self.toolheads):
-            return self.toolheads[index]
-        return None
-
-    @property
-    def spindles(self) -> List[Toolhead]:
-        """Legacy compatibility property for toolheads."""
-        return self.toolheads
-
-    @spindles.setter
-    def spindles(self, value: List[Toolhead]):
-        """Legacy compatibility setter for toolheads."""
-        self.toolheads = value
-
-    def get_spindle_by_name(self, name):
-        """Get a toolhead by name (case-insensitive)"""
-        name_lower = name.lower()
-        for toolhead in self.toolheads:
-            if toolhead.name.lower() == name_lower:
-                return toolhead
-        raise ValueError(f"Toolhead with name '{name}' not found")
-
-    def get_spindle_by_id(self, id):
-        """Get a toolhead by ID"""
-        for toolhead in self.toolheads:
-            if toolhead.id == id:
-                return toolhead
-        raise ValueError(f"Toolhead with ID '{id}' not found")
-
     @classmethod
     def create_AC_table_config(cls, a_limits=(-120, 120), c_limits=(-360, 360)):
         """Create standard A/C table configuration.
 
         Kinematic tree:
-          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> A (tilt, table_rotary) -> C (azimuth, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         config = cls("AC Table Configuration")
@@ -1024,10 +1017,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
         config.rotary_axes["C"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["C"].parent = "A"
         config.rotary_axes["C"].sequence = 0
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
         config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
-        config.rotary_axes["A"].parent = "C"
         config.rotary_axes["A"].sequence = 1
         config.set_alignment_axes("C", "A")
         return config
@@ -1037,7 +1030,7 @@ class Machine:
         """Create standard B/C head configuration.
 
         Kinematic tree:
-          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> C (azimuth, head_rotary) -> B (tilt, head_rotary)
           BaseFrame -> X, Y (table_linear)
         """
         config = cls("BC Head Configuration")
@@ -1047,13 +1040,12 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.rotary_axes["B"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["B"].parent = "C"
         config.rotary_axes["B"].sequence = 0
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
         config.rotary_axes["C"].role = AxisRole.HEAD_ROTARY
-        config.rotary_axes["C"].parent = "B"
         config.rotary_axes["C"].sequence = 1
         config.set_alignment_axes("C", "B")
-        config.compound_moves = True  # Ensure compound moves are enabled for test compatibility
         return config
 
     @classmethod
@@ -1061,7 +1053,7 @@ class Machine:
         """Create standard A/B table configuration.
 
         Kinematic tree:
-          BaseFrame -> A (tilt-X, table_rotary) -> B (tilt-Y, table_rotary)
+          BaseFrame -> B (tilt-Y, table_rotary) -> A (tilt-X, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         config = cls("AB Table Configuration")
@@ -1072,10 +1064,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
         config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].parent = "B"
         config.rotary_axes["A"].sequence = 0
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
-        config.rotary_axes["B"].parent = "A"
         config.rotary_axes["B"].sequence = 1
         config.set_alignment_axes("A", "B")
         return config
@@ -1118,7 +1110,7 @@ class Machine:
         config.description = "4-axis machine with B-axis rotary table (rotation around Y-axis)"
         return config
 
-    def to_dict(self):
+    def to_dict(self, keep_unknown=True):
         """Serialize configuration to dictionary for JSON persistence"""
         # Build flattened axes structure with enhanced fields
         axes = {}
@@ -1137,6 +1129,8 @@ class Machine:
                 "limits": {"min": axis_obj.min_limit, "max": axis_obj.max_limit},
                 "max_velocity": axis_obj.max_velocity,
             }
+            if keep_unknown:
+                _restore_keys(axes[axis_name], axis_obj.unknown_keys)
 
         # Add rotary axes
         for axis_name, axis_obj in self.rotary_axes.items():
@@ -1155,6 +1149,8 @@ class Machine:
                 "allow_flip": axis_obj.allow_flip,
                 "wrap_strategy": axis_obj.wrap_strategy.value,
             }
+            if keep_unknown:
+                _restore_keys(axes[axis_name], axis_obj.unknown_keys)
 
         data = {
             "freecad_version": self.freecad_version,
@@ -1174,7 +1170,7 @@ class Machine:
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
-                "toolheads": [toolhead.to_dict() for toolhead in self.toolheads],
+                "toolheads": [toolhead.to_dict(keep_unknown) for toolhead in self.toolheads],
             },
             "version": self.version,
         }
@@ -1230,15 +1226,19 @@ class Machine:
         # Processing options
         data["processing"] = {
             "early_tool_prep": self.processing.early_tool_prep,
+            "assert_tool_prep": self.processing.assert_tool_prep,
+            "tool_change_format": self.processing.tool_change_format.value,
             "filter_inefficient_moves": self.processing.filter_inefficient_moves,
             "split_arcs": self.processing.split_arcs,
-            "tool_change": self.processing.tool_change,
             "translate_drill_cycles": self.processing.translate_drill_cycles,
             "translate_rapid_moves": self.processing.translate_rapid_moves,
             "xy_before_z_after_tool_change": self.processing.xy_before_z_after_tool_change,
         }
         if self.processing.return_to:
             data["processing"]["return_to"] = list(self.processing.return_to)
+
+        if keep_unknown:
+            _restore_keys(data, self.unknown_keys)
 
         return data
 
@@ -1252,9 +1252,8 @@ class Machine:
         self.rotary_axes = {}
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
-        self.compound_moves = True
 
-    def validate_kinematic_chain(self) -> List[str]:
+    def validate_kinematic_chain(self) -> list[str]:
         """Validate the kinematic chain configuration.
 
         Returns:
@@ -1285,48 +1284,9 @@ class Machine:
                             break
                         current = parent_axis.parent if parent_axis else None
 
-        # Validate sequence numbers are unique within each chain
-        chains = self._get_kinematic_chains()
-        for chain_name, chain_axes in chains.items():
-            sequences = [axis.sequence for axis in chain_axes]
-            if len(sequences) != len(set(sequences)):
-                errors.append(f"Duplicate sequence numbers in chain {chain_name}")
-
         return errors
 
-    def _get_kinematic_chains(self) -> Dict[str, List]:
-        """Group axes by their kinematic chains.
-
-        Returns:
-            Dictionary mapping chain names to lists of axes
-        """
-        chains = {}
-        all_axes = {**self.linear_axes, **self.rotary_axes}
-
-        # Find root axes (those with no parent)
-        root_axes = [name for name, axis in all_axes.items() if axis.parent is None]
-
-        for root_name in root_axes:
-            chain = []
-            visited = set()
-
-            def collect_chain(axis_name):
-                if axis_name in visited or axis_name not in all_axes:
-                    return
-                visited.add(axis_name)
-                chain.append(all_axes[axis_name])
-
-                # Find children
-                for child_name, child_axis in all_axes.items():
-                    if child_axis.parent == axis_name:
-                        collect_chain(child_name)
-
-            collect_chain(root_name)
-            chains[root_name] = chain
-
-        return chains
-
-    def get_axis_chain(self, axis_name: str) -> List[str]:
+    def get_axis_chain(self, axis_name: str) -> list[str]:
         """Get the kinematic chain for a specific axis.
 
         Args:
@@ -1393,7 +1353,7 @@ class Machine:
         """Initialize as a 5-axis AC table configuration.
 
         Kinematic tree:
-          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> A (tilt, table_rotary) -> C (azimuth, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         self._initialize_3axis_config()
@@ -1403,7 +1363,7 @@ class Machine:
             min_limit=c_limits[0],
             max_limit=c_limits[1],
             role=AxisRole.TABLE_ROTARY,
-            parent=None,
+            parent="A",
             sequence=0,
         )
         self.rotary_axes["A"] = RotaryAxis(
@@ -1412,7 +1372,7 @@ class Machine:
             min_limit=a_limits[0],
             max_limit=a_limits[1],
             role=AxisRole.TABLE_ROTARY,
-            parent="C",
+            parent=None,
             sequence=1,
         )
         self.primary_rotary_axis = "C"
@@ -1422,7 +1382,7 @@ class Machine:
         """Initialize as a 5-axis BC head configuration.
 
         Kinematic tree:
-          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> C (azimuth, head_rotary) -> B (tilt, head_rotary)
           BaseFrame -> X, Y (table_linear)
         """
         self._initialize_3axis_config()
@@ -1432,7 +1392,7 @@ class Machine:
             min_limit=b_limits[0],
             max_limit=b_limits[1],
             role=AxisRole.HEAD_ROTARY,
-            parent=None,
+            parent="C",
             sequence=0,
         )
         self.rotary_axes["C"] = RotaryAxis(
@@ -1441,7 +1401,7 @@ class Machine:
             min_limit=c_limits[0],
             max_limit=c_limits[1],
             role=AxisRole.HEAD_ROTARY,
-            parent="B",
+            parent=None,
             sequence=1,
         )
         self.primary_rotary_axis = "B"
@@ -1471,12 +1431,11 @@ class Machine:
         self.rotary_axes = {}
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
-        self.compound_moves = True
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Machine":
-        """Deserialize configuration from dictionary (supports both old and new formats)"""
-        machine_data = data.get("machine", data)  # Support both old and new formats
+    def from_dict(cls, data: dict[str, Any]) -> "Machine":
+        """Deserialize configuration from dictionary"""
+        machine_data = data.get("machine", {})
 
         # Extract basic configuration
         config = cls(
@@ -1495,58 +1454,7 @@ class Machine:
         for axis_name, axis_data in axes.items():
             axis_type = axis_data.get("type", "linear")
             limits = axis_data.get("limits", {})
-            joint = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
-
-            # Handle both old array format [[origin], [axis]] and new object format {"origin": [], "axis": []}
-            if isinstance(joint, dict) and "origin" in joint and "axis" in joint:
-                # New object format
-                joint_origin = joint.get("origin", [0, 0, 0])
-                axis_vector = joint.get("axis", [0, 0, 0])
-            elif isinstance(joint, list) and len(joint) >= 2:
-                # Old array format - need to detect which element is which
-                vec0 = (
-                    FreeCAD.Vector(joint[0][0], joint[0][1], joint[0][2])
-                    if len(joint[0]) >= 3
-                    else FreeCAD.Vector(0, 0, 0)
-                )
-                vec1 = (
-                    FreeCAD.Vector(joint[1][0], joint[1][1], joint[1][2])
-                    if len(joint[1]) >= 3
-                    else FreeCAD.Vector(0, 0, 0)
-                )
-
-                if axis_type == "linear":
-                    # For linear axes, check which vector has non-zero magnitude
-                    if vec0.Length > 1e-6:  # joint[0] is direction vector (old structure)
-                        axis_vector = [vec0.x, vec0.y, vec0.z]
-                        joint_origin = joint[1] if len(joint[1]) >= 3 else [0, 0, 0]
-                    elif vec1.Length > 1e-6:  # joint[1] is direction vector (new structure)
-                        axis_vector = [vec1.x, vec1.y, vec1.z]
-                        joint_origin = joint[0] if len(joint[0]) >= 3 else [0, 0, 0]
-                    else:
-                        # Both vectors are zero, use defaults
-                        axis_vector = [1, 0, 0]  # Default X-axis
-                        joint_origin = [0, 0, 0]
-                        Path.Log.warning(
-                            f"Invalid joint data for linear axis {axis_name}, using defaults"
-                        )
-                else:
-                    # For rotary axes, joint[1] is usually the rotation vector
-                    if vec1.Length > 1e-6:
-                        axis_vector = [vec1.x, vec1.y, vec1.z]
-                        joint_origin = joint[0] if len(joint[0]) >= 3 else [0, 0, 0]
-                    else:
-                        # Fallback - assume joint[0] is rotation vector
-                        axis_vector = [vec0.x, vec0.y, vec0.z]
-                        joint_origin = [0, 0, 0]
-                        Path.Log.warning(
-                            f"Invalid joint data for rotary axis {axis_name}, using defaults"
-                        )
-            else:
-                # Malformed joint data - use defaults
-                joint_origin = [0, 0, 0]
-                axis_vector = [1, 0, 0] if axis_type == "linear" else [0, 0, 1]
-                Path.Log.warning(f"Malformed joint data for axis {axis_name}, using defaults")
+            joint_origin, axis_vector = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
 
             if axis_type == "linear":
                 # Create linear axis with parsed joint data
@@ -1570,7 +1478,7 @@ class Machine:
                     parent=parent,
                     joint_origin=joint_origin,
                 )
-            elif axis_type in ["angular", "rotary"]:  # Support both old and new type names
+            elif axis_type == "rotary":
                 # Create rotary axis with parsed joint data
                 rotation_vec = FreeCAD.Vector(axis_vector[0], axis_vector[1], axis_vector[2])
 
@@ -1579,7 +1487,7 @@ class Machine:
                 max_velocity = axis_data.get("max_velocity", 36000)
                 role = AxisRole(axis_data.get("role", "table_rotary"))
                 parent = axis_data.get("parent")
-                sequence = axis_data.get("sequence", 0)
+                sequence = int(axis_data.get("sequence") or 0)
                 solution_preference = axis_data.get("solution_preference", "shortest")
                 allow_flip = axis_data.get("allow_flip", True)
 
@@ -1612,12 +1520,9 @@ class Machine:
                 "orientation_quaternion", [0, 0, 0, 1]
             )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
-            # A file from before rotation_strategy existed said only whether
-            # DWO was supported; that flag still selects the strategy.
-            strategy = kinematics_data.get("rotation_strategy")
-            if strategy is None:
-                strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
-            config.kinematics.rotation_strategy = RotationStrategy(strategy)
+            config.kinematics.rotation_strategy = RotationStrategy(
+                kinematics_data.get("rotation_strategy", "none")
+            )
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility
@@ -1630,14 +1535,13 @@ class Machine:
             config.secondary_rotary_axis = rotary_axis_names[1]
 
         # Parse toolheads if present
-        toolheads = machine_data.get("toolheads", machine_data.get("spindles", []))
+        toolheads = machine_data.get("toolheads", [])
         config.toolheads = [Toolhead.from_dict(s) for s in toolheads]
 
         # Parse post-processor settings if present
         post_data = data.get("postprocessor", {})
         if post_data:
             config.postprocessor_file_name = post_data.get("file_name", "")
-            config.postprocessor_args = post_data.get("args", "")
             config.postprocessor_properties = post_data.get("properties", {})
 
         # Load output options
@@ -1655,142 +1559,76 @@ class Machine:
 
             # Header options
             header_data = output_data.get("header", {})
-            # Handle backward compatibility - if header is a bool, use it for include_date
-            if isinstance(header_data, bool):
-                # Old structure: header was a boolean controlling all header output
-                config.output.output_header = header_data
-                config.output.header.include_date = header_data
-                config.output.header.include_description = header_data
-                config.output.header.include_document_name = header_data
-                config.output.header.include_machine_name = header_data
-                config.output.header.include_project_file = header_data
-                config.output.header.include_units = header_data
-                config.output.header.include_tool_list = header_data
-                config.output.header.include_fixture_list = header_data
-            else:
-                # New nested structure - output_header can be in header subsection or main output
-                config.output.output_header = header_data.get(
-                    "output_header", output_data.get("output_header", True)
-                )
-                config.output.header.include_date = header_data.get("include_date", True)
-                config.output.header.include_description = header_data.get(
-                    "include_description", True
-                )
-                config.output.header.include_document_name = header_data.get(
-                    "include_document_name", True
-                )
-                config.output.header.include_machine_name = header_data.get(
-                    "include_machine_name", True
-                )
-                config.output.header.include_project_file = header_data.get(
-                    "include_project_file", True
-                )
-                config.output.header.include_units = header_data.get("include_units", True)
-                config.output.header.include_tool_list = header_data.get("include_tool_list", True)
-                config.output.header.include_fixture_list = header_data.get(
-                    "include_fixture_list", True
-                )
+            config.output.output_header = header_data.get("output_header", True)
+            config.output.header.include_date = header_data.get("include_date", True)
+            config.output.header.include_description = header_data.get("include_description", True)
+            config.output.header.include_document_name = header_data.get(
+                "include_document_name", True
+            )
+            config.output.header.include_machine_name = header_data.get(
+                "include_machine_name", True
+            )
+            config.output.header.include_project_file = header_data.get(
+                "include_project_file", True
+            )
+            config.output.header.include_units = header_data.get("include_units", True)
+            config.output.header.include_tool_list = header_data.get("include_tool_list", True)
+            config.output.header.include_fixture_list = header_data.get(
+                "include_fixture_list", True
+            )
 
             # Comment options
             comments_data = output_data.get("comments", {})
-            # Handle backward compatibility - if comments is a bool, use it for enabled
-            if isinstance(comments_data, bool):
-                # Old structure: comments was a boolean controlling all comment output
-                config.output.comments.enabled = comments_data
-                config.output.comments.symbol = "("  # Default symbol
-                config.output.comments.include_operation_labels = False
-                config.output.comments.include_blank_lines = True
-                config.output.comments.output_bcnc_comments = False
-            else:
-                # New nested structure
-                config.output.comments.enabled = comments_data.get("enabled", True)
-                config.output.comments.symbol = comments_data.get("symbol", "(")
-                config.output.comments.include_operation_labels = comments_data.get(
-                    "include_operation_labels", False
-                )
-                config.output.comments.include_blank_lines = comments_data.get(
-                    "include_blank_lines", True
-                )
-                config.output.comments.output_bcnc_comments = comments_data.get(
-                    "output_bcnc_comments", False
-                )
+            config.output.comments.enabled = comments_data.get("enabled", True)
+            config.output.comments.symbol = comments_data.get("symbol", "(")
+            config.output.comments.include_operation_labels = comments_data.get(
+                "include_operation_labels", False
+            )
+            config.output.comments.include_blank_lines = comments_data.get(
+                "include_blank_lines", True
+            )
+            config.output.comments.output_bcnc_comments = comments_data.get(
+                "output_bcnc_comments", False
+            )
 
             # Formatting options
             formatting_data = output_data.get("formatting", {})
-            # Handle backward compatibility for old flat structure
-            if "line_numbers" in output_data and not formatting_data:
-                # Old structure: line_numbers was at top level
-                config.output.formatting.line_numbers = output_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = output_data.get(
-                    "line_number_start", 100
-                )
-                config.output.formatting.line_number_prefix = output_data.get(
-                    "line_number_prefix", "N"
-                )
-                config.output.formatting.line_increment = output_data.get("line_increment", 10)
-                config.output.formatting.command_space = output_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = output_data.get(
-                    "end_of_line_chars", "\n"
-                )
-            else:
-                # New nested structure
-                config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = formatting_data.get(
-                    "line_number_start", 100
-                )
-                config.output.formatting.line_number_prefix = formatting_data.get(
-                    "line_number_prefix", "N"
-                )
-                config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
-                config.output.formatting.command_space = formatting_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = formatting_data.get(
-                    "end_of_line_chars", "\n"
-                )
+            config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
+            config.output.formatting.line_number_start = formatting_data.get(
+                "line_number_start", 100
+            )
+            config.output.formatting.line_number_prefix = formatting_data.get(
+                "line_number_prefix", "N"
+            )
+            config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
+            config.output.formatting.command_space = formatting_data.get("command_space", " ")
+            config.output.formatting.end_of_line_chars = formatting_data.get(
+                "end_of_line_chars", "\n"
+            )
 
             # Precision options
             precision_data = output_data.get("precision", {})
-            # Handle backward compatibility for old flat structure
-            if "axis_precision" in output_data and not precision_data:
-                # Old structure: axis_precision was at top level
-                config.output.precision.axis = output_data.get("axis_precision", 3)
-                config.output.precision.feed = output_data.get("feed_precision", 3)
-                config.output.precision.spindle = output_data.get("spindle_precision", 0)
-            else:
-                # New nested structure
-                config.output.precision.axis = precision_data.get("axis", 3)
-                config.output.precision.feed = precision_data.get("feed", 3)
-                config.output.precision.spindle = precision_data.get("spindle", 0)
+            config.output.precision.axis = precision_data.get("axis", 3)
+            config.output.precision.feed = precision_data.get("feed", 3)
+            config.output.precision.spindle = precision_data.get("spindle", 0)
 
             # Duplicate options
             duplicates_data = output_data.get("duplicates", {})
-            # Handle backward compatibility for old flat structure
-            if "output_duplicate_parameters" in output_data and not duplicates_data:
-                # Old structure: output_duplicate_parameters was at top level
-                config.output.duplicates.commands = output_data.get(
-                    "output_duplicate_commands", True
-                )
-                config.output.duplicates.parameters = output_data.get(
-                    "output_duplicate_parameters", True
-                )
-            else:
-                # New nested structure
-                config.output.duplicates.commands = duplicates_data.get("commands", True)
-                config.output.duplicates.parameters = duplicates_data.get("parameters", True)
-
-            # Handle legacy output_comments field (for backward compatibility)
-            if "output_comments" in output_data and "comments" not in output_data:
-                # Old structure: output_comments was a boolean
-                config.output.comments.enabled = output_data.get("output_comments", True)
+            config.output.duplicates.commands = duplicates_data.get("commands", True)
+            config.output.duplicates.parameters = duplicates_data.get("parameters", True)
 
         # Load processing options
         processing_data = data.get("processing", {})
         if processing_data:
             config.processing.early_tool_prep = processing_data.get("early_tool_prep", False)
+            config.processing.assert_tool_prep = processing_data.get("assert_tool_prep", False)
+            config.processing.tool_change_format = ToolChangeFormat(
+                processing_data.get("tool_change_format", ToolChangeFormat.M6_T.value)
+            )
             config.processing.filter_inefficient_moves = processing_data.get(
                 "filter_inefficient_moves", False
             )
             config.processing.split_arcs = processing_data.get("split_arcs", False)
-            config.processing.tool_change = processing_data.get("tool_change", True)
             config.processing.translate_drill_cycles = processing_data.get(
                 "translate_drill_cycles", False
             )
@@ -1802,6 +1640,11 @@ class Machine:
             )
             return_to = processing_data.get("return_to", None)
             config.processing.return_to = tuple(return_to) if return_to is not None else None
+
+        written = config.to_dict()["machine"]["axes"]
+        for name, axis in {**config.linear_axes, **config.rotary_axes}.items():
+            axis.unknown_keys = list(_unknown_keys(axes[name], written[name]))
+        config.unknown_keys = list(_unknown_keys(data, config.to_dict()))
 
         return config
 

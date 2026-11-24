@@ -1,25 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2023 Ondsel
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <cmath>
 #include <vector>
@@ -144,8 +142,6 @@ void BomObject::generateBOM()
 {
     saveCustomColumnData();
     clearAll();
-    obj_list.clear();
-    obj_mirrored_list.clear();
     size_t row = 0;
     size_t col = 0;
 
@@ -179,7 +175,13 @@ void BomObject::addObjectChildrenToBom(
     int quantityColIndex = getColumnIndex("Quantity");
     bool hasQuantityCol = hasQuantityColumn();
 
-    size_t siblingsInitialRow = row;
+    struct SiblingBomEntry
+    {
+        App::DocumentObject* object;
+        bool isMirrored;
+        size_t row;
+    };
+    std::vector<SiblingBomEntry> siblings;
 
     if (index != "") {
         index = index + ".";
@@ -212,21 +214,20 @@ void BomObject::addObjectChildrenToBom(
             continue;
         }
 
-        if (hasQuantityCol && row != siblingsInitialRow) {
+        if (hasQuantityCol) {
             // Check if the object is not already in (case of links). And if so just increment.
             // Note: an object can be used in several parts. In which case we do no want to blindly
             // increment.
             // We also check if the Mirror state matches. Mirrored parts should not group with
             // non-mirrored parts.
             bool found = false;
-            for (size_t i = siblingsInitialRow; i <= row; ++i) {
-                size_t idInList = i - 1;  // -1 for the header
-                if (idInList < obj_list.size() && child == obj_list[idInList]
-                    && idInList < obj_mirrored_list.size()
-                    && isMirrored == obj_mirrored_list[idInList]) {
-
-                    int qty = std::stoi(getText(i, quantityColIndex)) + 1;
-                    setCell(App::CellAddress(i, quantityColIndex), std::to_string(qty).c_str());
+            for (auto& sibling : siblings) {
+                if (child == sibling.object && isMirrored == sibling.isMirrored) {
+                    int qty = std::stoi(getText(sibling.row, quantityColIndex)) + 1;
+                    setCell(
+                        App::CellAddress(sibling.row, quantityColIndex),
+                        std::to_string(qty).c_str()
+                    );
                     found = true;
                     break;
                 }
@@ -239,7 +240,9 @@ void BomObject::addObjectChildrenToBom(
         std::string sub_index = index + std::to_string(sub_i);
         ++sub_i;
 
-        addObjectToBom(child, row, sub_index, isMirrored);
+        size_t childRow = row;
+        addObjectToBom(child, childRow, sub_index, isMirrored);
+        siblings.push_back({child, isMirrored, childRow});
         ++row;
 
         if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
@@ -256,14 +259,14 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
     // We multiply scales to handle nested mirroring (e.g., Mirrored LinkElement inside Mirrored
     // LinkGroup = Normal).
     double accumulatedScale = 1.0;
-    if (auto element = static_cast<App::LinkElement*>(obj)) {
+    if (auto* element = freecad_cast<App::LinkElement*>(obj)) {
         accumulatedScale *= element->Scale.getValue();
 
-        if (auto group = element->getLinkGroup()) {
+        if (auto* group = element->getLinkGroup()) {
             accumulatedScale *= group->Scale.getValue();
         }
     }
-    else if (auto link = static_cast<App::Link*>(obj)) {
+    else if (auto* link = freecad_cast<App::Link*>(obj)) {
         accumulatedScale *= link->Scale.getValue();
     }
     return accumulatedScale < 0.0;
@@ -271,8 +274,6 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
 
 void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string index, bool isMirrored)
 {
-    obj_list.push_back(obj);
-    obj_mirrored_list.push_back(isMirrored);
     size_t col = 0;
     for (auto& columnName : columnsNames.getValues()) {
         if (columnName == "Index") {

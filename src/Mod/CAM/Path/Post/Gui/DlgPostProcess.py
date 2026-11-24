@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2026 sliptonic
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
 #                                                                              #
@@ -35,6 +36,7 @@ import Path.Preferences as PathPref
 from Path.Main.Gui.Editor import CodeEditor
 from PySide import QtCore, QtGui
 import os
+from datetime import datetime
 
 translate = FreeCAD.Qt.translate
 
@@ -1365,6 +1367,8 @@ class PostProcessDialog:
                 with open(save_path, "w", encoding="utf-8") as f:
                     f.write(gcode)
                 written.append(save_path)
+                self.job.LastPostProcessOutput = save_path
+                self.job.LastPostProcessDate = datetime.now().strftime("%X %x")
                 FreeCAD.Console.PrintMessage(f"File written to {save_path}\n")
             except Exception as e:
                 errors.append(f"{os.path.basename(fname)}: {e}")

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Test for FreeCAD issue https://github.com/FreeCAD/FreeCAD/issues/21516
 # Reading ViewObject.VisualLayerList from Python used to raise

@@ -46,6 +46,7 @@ class Path(Persistence):
     def setFromGCode(self, gcode: str, /) -> None:
         """sets the contents of the path from a gcode string"""
 
+    @constmethod
     def getClearedArea(self, diameter: float, zmax: float, bbox: BoundBox, /) -> Area:
         """Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox."""
 

@@ -33,6 +33,7 @@
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 
 #include <xercesc/util/BinInputStream.hpp>
+#include <xercesc/util/SecurityManager.hpp>
 #include <xercesc/util/TransService.hpp>
 
 #include "BlobNodeImpl.h"
@@ -310,6 +311,15 @@ void E57XmlParser::init()
    xmlReader->setFeature( XMLUni::fgXercesSchema, true );
    xmlReader->setFeature( XMLUni::fgXercesSchemaFullChecking, true );
    xmlReader->setFeature( XMLUni::fgSAX2CoreNameSpacePrefixes, true );
+
+   // prevent external DTD
+   xmlReader->setFeature( XMLUni::fgXercesDisableDefaultEntityResolution, true );
+   xmlReader->setFeature( XMLUni::fgXercesLoadExternalDTD, false );
+
+   // Cap entity expansion. With no SecurityManager installed Xerces skipw the check entirely,
+   static SecurityManager sSecurityManager;
+   sSecurityManager.setEntityExpansionLimit( 0 );
+   xmlReader->setProperty( XMLUni::fgXercesSecurityManager, &sSecurityManager );
 
    xmlReader->setContentHandler( this );
    xmlReader->setErrorHandler( this );

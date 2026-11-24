@@ -151,7 +151,16 @@ namespace e57
       }
 
       // Prototypes and codecs must match ???
+      // These can be null since they are set after construction.
+      if ( !prototype_ || !cvi->prototype_ )
+      {
+         return ( false );
+      }
       if ( !prototype_->isTypeEquivalent( cvi->prototype_ ) )
+      {
+         return ( false );
+      }
+      if ( !codecs_ || !cvi->codecs_ )
       {
          return ( false );
       }

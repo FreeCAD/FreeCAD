@@ -348,7 +348,8 @@ def create_children(
         result.extend(create_child(obj, child))
     assign_groups(children)
     # TEST: mark new objects to recompute
-    QtCore.QTimer.singleShot(0, lambda: recompute([get_object(c) for c in children]))
+    objs = [get_object(c) for c in children]
+    QtCore.QTimer.singleShot(0, lambda: recompute(objs))
     return result
 
 
@@ -1435,7 +1436,7 @@ def get_ifctype(obj):
     if hasattr(obj, "IfcType") and obj.IfcType != "Undefined":
         return "Ifc" + obj.IfcType.replace(" ", "")
     dtype = Draft.getType(obj)
-    if dtype in ["App::Part", "Part::Compound", "Array"]:
+    if dtype in ["App::Part", "Array"]:
         return "IfcElementAssembly"
     if dtype in ["App::DocumentObjectGroup"]:
         return "IfcGroup"
@@ -1804,7 +1805,10 @@ def recompute(children):
     doc = None
     for c in children:
         if c:
-            c.touch()
+            try:
+                c.touch()
+            except ReferenceError:
+                continue
             doc = c.Document
     if doc:
         doc.recompute()

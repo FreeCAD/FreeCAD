@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2009 Juergen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QContextMenuEvent>
 #include <QMenu>
@@ -450,76 +447,88 @@ public:
 
     Sketcher::ConstraintType constraintType() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
-        return sketch->Constraints[ConstraintNbr]->Type;
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->Type;
+        }
+
+        return Sketcher::ConstraintType::None;
     }
 
     bool isEnforceable() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
 
-        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
-
-        switch (constraint->Type) {
-            case Sketcher::None:
-            case Sketcher::NumConstraintTypes:
-                assert(false);
-                return false;
-            case Sketcher::Horizontal:
-            case Sketcher::Vertical:
-            case Sketcher::Coincident:
-            case Sketcher::Block:
-            case Sketcher::PointOnObject:
-            case Sketcher::Parallel:
-            case Sketcher::Perpendicular:
-            case Sketcher::Tangent:
-            case Sketcher::Equal:
-            case Sketcher::Symmetric:
-            case Sketcher::Group:
-            case Sketcher::Text:
-                return true;
-            case Sketcher::Distance:
-            case Sketcher::DistanceX:
-            case Sketcher::DistanceY:
-            case Sketcher::Radius:
-            case Sketcher::Diameter:
-            case Sketcher::Weight:
-            case Sketcher::Angle:
-            case Sketcher::SnellsLaw:
-                return (constraint->First >= 0 || constraint->Second >= 0
-                        || constraint->Third >= 0);
-            case Sketcher::InternalAlignment:
-                return true;
+            switch (constraint->Type) {
+                case Sketcher::None:
+                case Sketcher::NumConstraintTypes:
+                    assert(false);
+                    return false;
+                case Sketcher::Horizontal:
+                case Sketcher::Vertical:
+                case Sketcher::Coincident:
+                case Sketcher::Block:
+                case Sketcher::PointOnObject:
+                case Sketcher::Parallel:
+                case Sketcher::Perpendicular:
+                case Sketcher::Tangent:
+                case Sketcher::Equal:
+                case Sketcher::Symmetric:
+                case Sketcher::Group:
+                case Sketcher::Text:
+                    return true;
+                case Sketcher::Distance:
+                case Sketcher::DistanceX:
+                case Sketcher::DistanceY:
+                case Sketcher::Radius:
+                case Sketcher::Diameter:
+                case Sketcher::Weight:
+                case Sketcher::Angle:
+                case Sketcher::SnellsLaw:
+                    return (constraint->First >= 0 ||
+                            constraint->Second >= 0 ||
+                            constraint->Third >= 0);
+                case Sketcher::InternalAlignment:
+                    return true;
+            }
         }
         return false;
     }
 
     bool isDimensional() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return (sketch->Constraints[ConstraintNbr])->isDimensional();
+        }
 
-        return (sketch->Constraints[ConstraintNbr])->isDimensional();
+        return false;
     }
 
     bool isDriving() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isDriving;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isDriving;
+        return false;
     }
 
     bool isInVirtualSpace() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
+        return false;
     }
 
     bool isActive() const
     {
-        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+        if (ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize()) {
+            return sketch->Constraints[ConstraintNbr]->isActive;
+        }
 
-        return sketch->Constraints[ConstraintNbr]->isActive;
+        return false;
     }
 
     void updateVirtualSpaceStatus()

@@ -208,22 +208,20 @@ def spiral(
         stepover_dist = tool_diameter
 
     # Calculate adjusted stepover to guarantee center coverage
-    starting_inset = tool_radius - stepover_dist
+    initial_offset = stepover_dist - tool_radius
     limiting_half = min(primary_length, step_length) / 2.0
-    total_radial_distance = limiting_half - tool_radius - starting_inset
+    total_radial_distance = limiting_half - tool_radius - initial_offset
 
-    if total_radial_distance <= 0:
+    if Path.Geom.isGreaterEqual(0, total_radial_distance):
+        number_of_intervals = 0
         actual_stepover = stepover_dist
     else:
         number_of_intervals = math.ceil(total_radial_distance / stepover_dist)
         actual_stepover = total_radial_distance / number_of_intervals
 
     Path.Log.debug(
-        f"Spiral: adjusted stepover {stepover_dist:.4f} → {actual_stepover:.4f} mm, intervals={number_of_intervals if total_radial_distance > 0 else 0}"
+        f"Spiral: adjusted stepover {stepover_dist:.4f} → {actual_stepover:.4f} mm, intervals={number_of_intervals}"
     )
-
-    # Standard initial_offset (preserves first engagement exactly)
-    initial_offset = -tool_radius + stepover_dist
 
     z = polygon.BoundBox.ZMin
 
@@ -294,7 +292,7 @@ def spiral(
         t0n = min_t + next_offset
         t1n = max_t - next_offset
 
-        if s0n < s1n and t0n < t1n:
+        if k < number_of_intervals and s0n < s1n and t0n < t1n:
             # Determine which edge we are on for the 4th side and compute intersection
             # the transition point on that edge
             if clockwise:

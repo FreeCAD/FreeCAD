@@ -123,7 +123,7 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
     def test_spindle_wait_uses_s(self):
         """Spindle wait (G4 after M3) should use S parameter for Marlin."""
         # Enable spindle wait on the toolhead
-        self.post._machine.toolheads[0].spindle_wait = 3.0
+        self.post._machine.toolheads[0].toolhead_wait = 3.0
 
         self.profile_op.Path = Path.Path(
             [

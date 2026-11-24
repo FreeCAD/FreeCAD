@@ -599,17 +599,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         p1 = FreeCAD.Vector(holes[i]["x"], holes[i]["y"], 0)
         p2 = Path.Geom.xy(self.startPoint(obj))
 
+        def neighborHole(step):
+            """the next hole along the list, past the other steps of this one"""
+            spots = (FreeCAD.Vector(h["x"], h["y"], 0) for h in holes[i::step])
+            return next((p for p in spots if not Path.Geom.pointsCoincide(p, p1)), None)
+
         if obj.StartAt == "Inside":
-            if i < len(holes) - 1:
-                # orient each hole (except last) to next hole
-                p2 = FreeCAD.Vector(holes[i + 1]["x"], holes[i + 1]["y"], 0)
-            elif len(holes) > 1:
-                # orient last hole to previous hole
-                p2 = FreeCAD.Vector(holes[i - 1]["x"], holes[i - 1]["y"], 0)
+            # orient each hole (except last) to next hole, the last one to previous hole
+            p2 = neighborHole(1) or neighborHole(-1) or p2
         else:  # Outside
-            if i:
-                # orient each hole (except first) to previous hole
-                p2 = FreeCAD.Vector(holes[i - 1]["x"], holes[i - 1]["y"], 0)
+            # orient each hole (except first) to previous hole
+            p2 = neighborHole(-1) or p2
         dirAngleRad = Path.Geom.getAngle(p2 - p1)
 
         if math.isnan(dirAngleRad):
@@ -674,7 +674,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         obj.Direction = _caclulatePathDirection(obj)
 
-        # a step over a smaller one stops at its own floor, or at the Final Depth when that is higher
+        if obj.OverrideProfileDiameter.Value:
+            # every hole is cut at one diameter, so the steps of a stepped hole are one hole again
+            holes = [
+                h
+                for i, h in enumerate(holes)
+                if not any(
+                    Path.Geom.pointsCoincide((h["x"], h["y"]), (g["x"], g["y"])) for g in holes[:i]
+                )
+            ]
+
+        # a step over a smaller one, or outside on a larger one, stops at its floor or Final Depth
         for hole in holes:
             hole["final"] = obj.FinalDepth.Value
             at = (hole["x"], hole["y"])
@@ -683,7 +693,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 for h in holes
                 if h is not hole and Path.Geom.pointsCoincide((h["x"], h["y"]), at)
             ]
-            if steps and min(steps) < hole["d"]:
+            if any(s < hole["d"] if obj.Side == "Inside" else s > hole["d"] for s in steps):
                 hole["final"] = max(hole["final"], hole["bottom"])
 
         args = {
@@ -943,6 +953,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def overrideArcFeed(self, commandlist, tooldiameter, horizFeedTC, vertFeedTC, profileSide):
         source = PathLanguage.Maneuver.FromPath(Path.Path(commandlist)).instr
+        k = 10  # max feed multiplier (feed * 0.1 < new feed < feed * 10)
         for i, instr in enumerate(source):
             if instr.isMove() and instr.isArc():
                 vertCutterMoveLength = instr.positionBegin().z - instr.positionEnd().z
@@ -953,7 +964,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         instr.arcRadius() + tooldiameter / 2
                     )
                 else:
-                    horizCutterMoveLength = instr.arcAngle() * (
+                    horizCutterMoveLength = instr.arcAngle() * abs(
                         instr.arcRadius() - tooldiameter / 2
                     )
 
@@ -962,8 +973,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
                 # Calculate needed horizontal feed
                 factorH = abs(math.cos(angle))
-                # Do not increase feed by more than x10
-                factorH = max(factorH, 0.1)
+                factorH = max(factorH, 1 / k)
                 pathFeedH = horizFeedTC / factorH
 
                 # circular tool paths correction
@@ -976,12 +986,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     # external circular tool path
                     majorDiameter = 2 * instr.arcRadius() - tooldiameter
                     factorHoriz = (majorDiameter + tooldiameter) / majorDiameter
+                factorHoriz = min(max(factorHoriz, 1 / k), k)
                 pathFeedH *= factorHoriz
 
                 # Calculate needed vertical feed
                 factorV = abs(math.sin(angle))
-                # Do not increase feed by more than x10
-                factorV = max(factorV, 0.1)
+                factorV = max(factorV, 1 / k)
                 pathFeedV = vertFeedTC / factorV
 
                 # use minimal value from calculated vertical and horizontal feeds

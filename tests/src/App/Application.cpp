@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <gtest/gtest.h>
+#include <Base/CrashReporter/Writer.h>
 #define FC_OS_MACOSX 1
 #include "App/ProgramOptionsUtilities.h"
 
@@ -20,6 +21,11 @@ protected:
         tests::initApplication();
     }
 };
+
+TEST_F(ApplicationTest, crashReporterInstalled)
+{
+    EXPECT_FALSE(Base::CrashReporter::Writer::crashReportFilePath().empty());
+}
 
 TEST_F(ApplicationTest, fCustomSyntaxLookup)
 {

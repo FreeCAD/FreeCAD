@@ -1,27 +1,23 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2002 Jürgen Riegel
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License (LGPL)   *
- *   as published by the Free Software Foundation; either version 2 of     *
- *   the License, or (at your option) any later version.                   *
- *   for detail see the LICENCE text file.                                 *
- *                                                                         *
- *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
@@ -2133,6 +2129,7 @@ void initExceptions()
 
 void Application::init(int argc, char ** argv)
 {
+    const bool isPythonModule = Py_IsInitialized() != 0;
     try {
         // Establish the initial Base snapshot before application or GUI preferences can override it.
         Base::publishNumericLocaleContext(
@@ -2140,7 +2137,12 @@ void Application::init(int argc, char ** argv)
         );
 
         Base::SystemHandler::installNewHandler();
-        Base::SystemHandler::installSegfaultHandler();
+        if (!isPythonModule) {
+            Base::SystemHandler::installSegfaultHandler();
+        }
+        else {
+            Base::SystemHandler::installExceptionTranslator();
+        }
 
         initTypes();
 
@@ -2148,7 +2150,9 @@ void Application::init(int argc, char ** argv)
 
         // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
         // things that might crash...
-        initCrashReporter();
+        // An external Python interpreter owns its process-wide signal handlers,
+        // but can still inspect reports from previous runs.
+        initCrashReporter(!isPythonModule);
 
         initApplication();
         initExceptions();
@@ -3029,13 +3033,15 @@ void Application::SaveEnv(const char* s)
     }
 }
 
-void Application::initCrashReporter()
+void Application::initCrashReporter(bool installHandlers)
 {
     // Make sure anything that escapes doesn't abort startup: this is non-fatal
     try {
         const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
-        Base::CrashReporter::Writer::prewarm();
-        Base::CrashReporter::Writer::install(crashReportsDirectory);
+        if (installHandlers) {
+            Base::CrashReporter::Writer::prewarm();
+            Base::CrashReporter::Writer::install(crashReportsDirectory);
+        }
         Base::CrashReporter::Manager::scan(
             crashReportsDirectory,
             {},

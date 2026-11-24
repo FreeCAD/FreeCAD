@@ -273,9 +273,9 @@ void NodeImpl::set( const ustring &pathName, NodeImplSharedPtr ni, bool autoPath
 void NodeImpl::set( const StringList & /*fields*/, unsigned /*level*/, NodeImplSharedPtr /*ni*/,
                     bool /*autoPathCreate*/ )
 {
-   // If get here, then tried to call set(fields...) on NodeImpl that wasn't a  StructureNodeImpl,
+   // If get here, then tried to call set(fields...) on NodeImpl that wasn't a StructureNodeImpl,
    // so that's an error
-   throw E57_EXCEPTION1( ErrorBadPathName ); //???
+   throw E57_EXCEPTION2( ErrorInternal, "Trying to set a path name on a non-structured node" );
 }
 
 void NodeImpl::checkBuffers( const std::vector<SourceDestBuffer> &sdbufs,
@@ -407,7 +407,7 @@ bool NodeImpl::_verifyPathNameAbsolute( const ustring &inPathName )
    // If not an absolute path name, have error
    if ( isRelative )
    {
-      throw E57_EXCEPTION2( ErrorBadPathName,
+      throw E57_EXCEPTION2( ErrorPathNameMalformed,
                             "this->pathName=" + this->pathName() + " pathName=" + inPathName );
    }
 

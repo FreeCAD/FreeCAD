@@ -358,10 +358,10 @@ class HeidenhainPost(PostProcessor):
         """Carry the spindle speed of the M3/M4 following an M6 onto the M6.
 
         TOOL CALL takes the spindle speed, so the tool change needs to know it
-        before the spindle command is converted.  With tool changes suppressed
-        the M6 becomes a comment and the M3 alone sets the speed.
+        before the spindle command is converted.  With the NO_TOOL_CHANGE tool
+        change format the M6 becomes a comment and the M3 alone sets the speed.
         """
-        if not self.values.get("TOOL_CHANGE", True):
+        if self._tool_change_format() == Constants.ToolChangeFormat.NO_TOOL_CHANGE:
             return
         for section_name, sublist in postables:
             for item in sublist:
@@ -860,6 +860,12 @@ class HeidenhainPost(PostProcessor):
         return f"CYCL DEF 9.0 DWELL TIME\nCYCL DEF 9.1 DWELL {value}"
 
     def _convert_tool_change(self, command: Path.Command) -> str:
+        suppressed = Constants.ToolChangeFormat.NO_TOOL_CHANGE.value
+        if command.Annotations.get(Constants.ANNOT_TOOL_CHANGE_FORMAT) == suppressed:
+            return self._format_tool_change(command, suppressed)
+
+        # The M6 keeps T<current tool> whatever the format, so this is the tool to call
+        # (not the NEXT tool that the M6_T_EARLY_PREP format writes on the M6 line).
         params = command.Parameters
         if "T" not in params:
             raise self._error("Tool change requires T", command)

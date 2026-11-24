@@ -25,6 +25,7 @@
 
 
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <gp.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pnt.hxx>
 
@@ -60,7 +61,7 @@ Line::Line()
     this->setAttacher(new AttachEngineLine);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a
     // dependency of Sketcher on the PartDesign module
-    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp::Origin(), gp::DZ()));
     if (!builder.IsDone()) {
         return;
     }
