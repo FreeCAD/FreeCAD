@@ -253,7 +253,9 @@ class ViewProviderExplodedView:
             if assembly and ref and placement:
                 asm_global_plc = assembly.getGlobalPlacement()
                 if asm_global_plc != App.Placement():
-                    placement = asm_global_plc.inverse() * UtilsAssembly.getJcsGlobalPlc(placement, ref)
+                    placement = asm_global_plc.inverse() * UtilsAssembly.getJcsGlobalPlc(
+                        placement, ref
+                    )
                     ref = None
             self.movePositionMarker.whichChild = coin.SO_SWITCH_ALL
             self.movePositionMarker.set_marker_placement(placement, ref)
@@ -490,7 +492,9 @@ def explodedMoves(viewObj, com, size):
         for i, obj in enumerate(objs):
             current = finals.get(obj, obj.Placement)
             local = starts[i] if i < len(starts) else App.Placement()
-            final, points = chainAfterMovements((current * local).Base, current, transforms, obj, com, size)
+            final, points = chainAfterMovements(
+                (current * local).Base, current, transforms, obj, com, size
+            )
             finals[obj] = final
             positions.extend(list(pair) for pair in zip(points, points[1:]))
         drawn.append((owner, positions))
@@ -1316,7 +1320,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if move is None:
             return
         group = self._ownerOf(move) or move
-        self.selectedTransform = move if move is not group and hasattr(move, "MovementTransform") else None
+        self.selectedTransform = (
+            move if move is not group and hasattr(move, "MovementTransform") else None
+        )
         owner = group if hasattr(group, "References") else move
         _objs, refs = moveObjectsAndReferences(owner)
         self.blockSetDragger = True
@@ -1565,7 +1571,11 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if not pending:
             return
         objs, _refs = moveObjectsAndReferences(group)
-        starts = [App.Placement(item) for item in getattr(group, "LineStarts", [])] if hasattr(group, "LineStarts") else []
+        starts = (
+            [App.Placement(item) for item in getattr(group, "LineStarts", [])]
+            if hasattr(group, "LineStarts")
+            else []
+        )
         while len(starts) < len(objs):
             starts.append(App.Placement())
         for i, obj in enumerate(objs):
@@ -1588,13 +1598,19 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 "App::PropertyPlacement",
                 "DraggerStart",
                 "Exploded Move",
-                QT_TRANSLATE_NOOP("App::Property", "Dragger placement relative to the first moved part"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Dragger placement relative to the first moved part"
+                ),
                 locked=True,
             )
         group.DraggerStart = self._selectedPartPlacement().inverse() * self.initialDraggerPlc
 
     def _placeGroupDragger(self):
-        group = self.movePositionMove if hasattr(getattr(self, "movePositionMove", None), "References") else None
+        group = (
+            self.movePositionMove
+            if hasattr(getattr(self, "movePositionMove", None), "References")
+            else None
+        )
         if group is None or not self.selectedObjs:
             return
 
@@ -1622,7 +1638,11 @@ class TaskAssemblyCreateView(QtCore.QObject):
         type_index = 1 if self.radialExplosion else 0
         self.radialExplosion = False
         self._dragStartTransform = None
-        if type_index == 0 and self.selectedTransform is not None and hasattr(self.selectedTransform, "MovementTransform"):
+        if (
+            type_index == 0
+            and self.selectedTransform is not None
+            and hasattr(self.selectedTransform, "MovementTransform")
+        ):
             self.currentStep = self.selectedTransform
             self._dragStartTransform = App.Placement(self.currentStep.MovementTransform)
             return
@@ -1706,9 +1726,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if translation > draggerTranslationTolerance(self.initialDraggerPlc, draggerPlc):
             delta = App.Placement(draggerPlc.Base - self.initialDraggerPlc.Base, App.Rotation())
         elif move.MoveType != "Radial" and delta.Rotation.Angle > Precision.angular():
-            delta.Base = (
+            delta.Base = self.initialDraggerPlc.Base - delta.Rotation.multVec(
                 self.initialDraggerPlc.Base
-                - delta.Rotation.multVec(self.initialDraggerPlc.Base)
             )
 
         self._applyDragDelta(move, delta)
@@ -1865,7 +1884,10 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 self.viewObj.ViewObject.Proxy.showMovePositionMarker(False)
             self.setDragger()
             return False
-        if self._deleteWatched(watched) and event.type() in (QtCore.QEvent.KeyPress, QtCore.QEvent.ShortcutOverride):
+        if self._deleteWatched(watched) and event.type() in (
+            QtCore.QEvent.KeyPress,
+            QtCore.QEvent.ShortcutOverride,
+        ):
             if event.key() == QtCore.Qt.Key_Delete:
                 if event.type() == QtCore.QEvent.ShortcutOverride:
                     event.accept()
@@ -1890,7 +1912,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if owner is not None:
             if self.selectingFeature:
                 self.endSelectionMode()
-            self.selectedTransform = rootObj if rootObj is not owner and hasattr(rootObj, "MovementTransform") else None
+            self.selectedTransform = (
+                rootObj if rootObj is not owner and hasattr(rootObj, "MovementTransform") else None
+            )
             self.movePositionMove = owner
             self._refreshMoves(rootObj)
             self.enableDragger(bool(self.selectedObjs))
