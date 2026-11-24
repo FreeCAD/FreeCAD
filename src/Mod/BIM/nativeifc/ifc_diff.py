@@ -44,13 +44,13 @@ def get_diff(proj):
         # cannot use open() here as it gives different encoding
         # than ifcopenshell and diff does not work
         f = ifcopenshell.open(proj.IfcFilePath)
-        old = f.wrapped_data.to_string().split("\n")
+        old = f.to_string().split("\n")
     if not old:
         return ""
     ifcfile = ifc_tools.get_ifcfile(proj)
     if not ifcfile:
         return ""
-    new = ifcfile.wrapped_data.to_string().split("\n")
+    new = ifcfile.to_string().split("\n")
     # diff = difflib.HtmlDiff().make_file(old,new) # UGLY
     res = [l for l in difflib.unified_diff(old, new, lineterm="")]
     res = [l for l in res if l.startswith("+") or l.startswith("-")]
