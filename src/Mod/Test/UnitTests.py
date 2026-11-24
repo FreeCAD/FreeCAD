@@ -177,9 +177,9 @@ class UnitBasicCases(unittest.TestCase):
 
     def testTrigonometric(self):
         # tu=FreeCAD.Units.translateUnit
-        self.assertTrue(compare(tu("sin(pi)"), math.sin(math.pi)))
-        self.assertTrue(compare(tu("cos(pi)"), math.cos(math.pi)))
-        self.assertTrue(compare(tu("tan(pi)"), math.tan(math.pi)))
+        self.assertTrue(compare(tu("sin(180)"), math.sin(math.pi)))
+        self.assertTrue(compare(tu("cos(180)"), math.cos(math.pi)))
+        self.assertTrue(compare(tu("tan(180)"), math.tan(math.pi)))
 
     def testQuantity(self):
         length = FreeCAD.Units.Quantity(1, "m")

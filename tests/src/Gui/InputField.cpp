@@ -7,14 +7,17 @@
 #include <QSignalSpy>
 #include <QTest>
 
+#include <Base/UnitsApi.h>
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Property.h>
-#include <Base/UnitsApi.h>
 
-#include "Gui/InputField.h"
+#include <Gui/Application.h>
+
+#include <Gui/InputField.h>
 #include <src/LocaleTestHelpers.h>
 #include <src/App/InitApplication.h>
 
@@ -30,7 +33,11 @@ public:
         , document {App::GetApplication().newDocument(documentName.c_str(), "testUser")}
         , object {document->addObject("App::VarSet", "VarSet")}
         , property {object->addDynamicProperty("App::PropertyFloat", "Value", "Test")}
-    {}
+        , propertyToRead {object->addDynamicProperty("App::PropertyFloat", "ValueToRead", "Test")}
+    {
+        auto* p = freecad_cast<App::PropertyFloat*>(propertyToRead);
+        p->setValue(123.0);
+    }
 
     ~ScopedExpressionOwner()
     {
@@ -42,11 +49,23 @@ public:
         return App::ObjectIdentifier(*property);
     }
 
+    double getValue() const
+    {
+        auto* propFloat = freecad_cast<App::PropertyFloat*>(property);
+        return propFloat->getValue();
+    }
+
+    void recompute()
+    {
+        document->recompute();
+    }
+
 private:
     std::string documentName;
     App::Document* document;
     App::DocumentObject* object;
     App::Property* property;
+    App::Property* propertyToRead;
 };
 
 class TestInputField: public Gui::InputField
@@ -92,6 +111,10 @@ public:
     testInputField()
     {
         tests::initApplication();
+        if (!Gui::Application::Instance) {
+            new Gui::Application(/*GUIenabled=*/false);
+        }
+        Base::Console().setDefaultLogLevel(FC_LOGLEVEL_DEFAULT);
     }
 
 private Q_SLOTS:
@@ -345,10 +368,16 @@ private Q_SLOTS:
         TestInputField input;
         input.bind(owner.getPath());
         input.setUnit(Base::Unit::Length);
-        input.setText(QStringLiteral("2 mm"));
+        // Read a variable to make sure that the input_field#VarSet.Value
+        // property has an expression associated with it.  Inputs to
+        // InputFields that can make use of the Quantity grammar will use that
+        // and will not create an expression.  Inputs that require the
+        // Expression parser and refer to other variables will be associated
+        // with the property as an expression.
+        input.setText(QStringLiteral("input_field#VarSet.ValueToRead + 2 mm"));
 
         QVERIFY(input.hasValidInput());
-        QCOMPARE(input.rawValue(), 2.0);
+        QCOMPARE(input.rawValue(), 125.0);
         const auto previousExpression = QString::fromStdString(input.expressionString());
         QVERIFY(!previousExpression.isEmpty());
 
@@ -357,8 +386,49 @@ private Q_SLOTS:
         input.setText(QStringLiteral("str(1)"));
 
         QVERIFY(!input.hasValidInput());
-        QCOMPARE(input.rawValue(), 2.0);
+        QCOMPARE(input.rawValue(), 125.0);
         QCOMPARE(QString::fromStdString(input.expressionString()), previousExpression);
+    }
+
+    void test_LeaveExpressionHanging()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+        ScopedExpressionOwner owner;
+
+        TestInputField input;
+        input.bind(owner.getPath());
+        input.setUnit(Base::Unit::Length);
+        // Read a variable to make sure that the input_field#VarSet.Value
+        // property has an expression associated with it.  Inputs to
+        // InputFields that can make use of the Quantity grammar will use that
+        // and will not create an expression.  Inputs that require the
+        // Expression parser and refer to other variables will be associated
+        // with the property as an expression.
+        input.setText(QStringLiteral("input_field#VarSet.ValueToRead + 2 mm"));
+        input.apply();
+        owner.recompute();
+
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 125.0);
+        const auto previousExpression = QString::fromStdString(input.expressionString());
+        QVERIFY(!previousExpression.isEmpty());
+        QCOMPARE(owner.getValue(), 125.0);
+
+        // Set a value that uses the quantity parser instead of the expression
+        // parser. The expression should have been removed and not participate
+        // any longer.
+        input.setText("2 mm");
+        input.apply();
+        owner.recompute();
+
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 2.0);
+        QCOMPARE(owner.getValue(), 2.0);
     }
 
     void test_ReturnPressedOnlyFollowsValidCommit()  // NOLINT
