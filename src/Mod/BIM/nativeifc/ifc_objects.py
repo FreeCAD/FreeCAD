@@ -294,7 +294,7 @@ class ifc_object:
             return
         if not getattr(self, "old_schema", None):
             return
-        if schema != ifcfile.wrapped_data.schema_name():
+        if schema != ifcfile.schema_identifier:
             # set obj.Proxy.silent = True to disable the schema change warning
             if obj.ViewObject and not getattr(self, "silent", False):
                 if not obj.ViewObject.Proxy.schema_warning():

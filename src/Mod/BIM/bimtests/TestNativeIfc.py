@@ -155,7 +155,7 @@ class TestNativeIfc(TestArchBase.TestArchBase):
 
     def assertClassEnumMatchesFamily(self, obj, root_name):
         ifcfile = ifc_tools.get_ifcfile(obj)
-        schema_name = ifcfile.wrapped_data.schema_name()
+        schema_name = ifcfile.schema_identifier
         expected = get_schema_descendant_names(schema_name, root_name)
         actual = sorted(obj.getEnumerationsOfProperty("Class"))
         self.assertEqual(actual, expected)
