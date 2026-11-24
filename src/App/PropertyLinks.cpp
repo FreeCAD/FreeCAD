@@ -4212,7 +4212,7 @@ void PropertyXLink::Save(Base::Writer& writer) const
         writer.Stream() << writer.ind() << "<XLink name=\"" << _pcLink->getExportName();
     }
     else {
-        const char* path = getDocumentPath();
+        const char* path = filePath.c_str();
         std::string _path;
         if (exporting) {
             // Here means we are exporting the owner but not exporting the
