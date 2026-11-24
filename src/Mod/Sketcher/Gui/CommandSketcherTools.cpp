@@ -1209,7 +1209,7 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
     sWhatsThis = "Sketcher_Symmetry";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Symmetry";
-    sAccel = "Z, S";
+    sAccel = "Z, S, A, K";
     eType = ForEdit;
 }
 
@@ -2551,7 +2551,7 @@ CmdSketcherScale::CmdSketcherScale()
     sWhatsThis = "Sketcher_Scale";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Scale";
-    sAccel = "Z, P, S";
+    sAccel = "Z, D";
     eType = ForEdit;
 }
 
