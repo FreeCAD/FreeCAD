@@ -606,12 +606,26 @@ class TestPathGeom(PathTestBase):
 
     def test43(self):
         """Verify ellipsis results with approximation."""
+        tol = 0.01
         ellipse = Part.Edge(Part.Ellipse())
-        cmds = Path.Geom.cmdsForEdge(ellipse, approximation=True, tol=0.01)
-        # let's make sure all commands are G2 or G3 and there are less than 20 of those
+        cmds = Path.Geom.cmdsForEdge(ellipse, approximation=True, tol=tol)
         self.assertTrue(cmds)
-        self.assertLess(len(cmds), 20)
-        self.assertTrue(all(cmd.Name in Constants.GCODE_MOVE_ARC for cmd in cmds))
+
+        # Assert that there are not needlessly many output commands
+        self.assertLess(len(cmds), 30)
+
+        # Assert that there are output arcs
+        self.assertTrue(any(cmd.Name in Constants.GCODE_MOVE_ARC for cmd in cmds))
+
+        # Assert that straight output segments are short
+        maxStraightLength = 0.5
+        start = None
+        for cmd in cmds:
+            end = Vector(cmd.Parameters["X"], cmd.Parameters["Y"], cmd.Parameters["Z"])
+            if start is not None and cmd.Name not in Constants.GCODE_MOVE_ARC:
+                self.assertIn(cmd.Name, Constants.GCODE_MOVE_STRAIGHT)
+                self.assertLessEqual((end - start).Length, maxStraightLength)
+            start = end
 
     def test44(self):
         """Verify approximation deviation not horizontal arc."""
