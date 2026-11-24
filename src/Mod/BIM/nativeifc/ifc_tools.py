@@ -180,8 +180,26 @@ def setup_project(proj, filename, shapemode, silent):
     # bug in FreeCAD - to avoid a crash, pre-populate the enum with one value
     proj.Schema = [ifcfile.schema_identifier]
     proj.Schema = ifcfile.schema_identifier
-    proj.Schema = ifcopenshell.ifcopenshell_wrapper.schema_names()
+    proj.Schema = get_schema_names()
     return ifcfile, project, full
+
+
+def get_schema_names():
+    """Returns the names of the IFC schemas supported by the installed IfcOpenShell"""
+
+    try:
+        return ifcopenshell.ifcopenshell_wrapper.schema_names()
+    except RuntimeError:
+        # schema_names() fails in the conda-forge build of IfcOpenShell 0.9.0post1 while
+        # loading a single schema still works, so probe the schemas FreeCAD knows about
+        names = []
+        for name in ("IFC2X3", "IFC4", "IFC4X1", "IFC4X3_ADD2"):
+            try:
+                ifcopenshell.ifcopenshell_wrapper.schema_by_name(name)
+            except RuntimeError:
+                continue
+            names.append(name)
+        return names
 
 
 def create_ifcfile():

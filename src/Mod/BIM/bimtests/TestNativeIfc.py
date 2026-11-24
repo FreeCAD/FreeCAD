@@ -24,6 +24,7 @@
 import os
 import tempfile
 import unittest
+from unittest import mock
 
 import FreeCAD
 import Arch
@@ -252,6 +253,20 @@ class TestNativeIfc(TestArchBase.TestArchBase):
         fco = len(self.document.Objects)
         print(self.document.Objects)
         self.assertTrue(fco == 1 - SDU, "CreateDocument failed")
+
+    def test07b_SchemaNamesFallback(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 07b: Listing schemas without schema_names()...")
+        wrapper = ifcopenshell.ifcopenshell_wrapper
+        with mock.patch.object(wrapper, "schema_names", side_effect=RuntimeError("load failed")):
+            names = ifc_tools.get_schema_names()
+            ifc_tools.create_document(self.document, silent=True)
+        for name in ("IFC2X3", "IFC4", "IFC4X3_ADD2"):
+            self.assertIn(name, names)
+        for name in names:
+            wrapper.schema_by_name(name)
+        project = self.document if SINGLEDOC else self.document.Objects[0]
+        self.assertEqual(sorted(project.getEnumerationsOfProperty("Schema")), sorted(names))
+        self.assertEqual(project.Schema, ifc_tools.get_ifcfile(project).schema_identifier)
 
     def test08_ChangeIFCSchema(self):
         FreeCAD.Console.PrintMessage("NativeIFC 08: Changing IFC schema...")
