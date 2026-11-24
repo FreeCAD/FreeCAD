@@ -565,10 +565,11 @@ void Toolpath::Save(Writer& writer) const
 
 void Toolpath::SaveDocFile(Base::Writer& writer) const
 {
-    if (toGCode().empty()) {
+    const std::string gcode = toGCode();
+    if (gcode.empty()) {
         return;
     }
-    writer.Stream() << toGCode();
+    writer.Stream() << gcode;
 }
 
 void Toolpath::Restore(XMLReader& reader)
