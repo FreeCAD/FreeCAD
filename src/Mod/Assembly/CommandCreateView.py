@@ -526,14 +526,6 @@ class ExplodedViewStep:
         evStep.MoveType = ExplodedViewStepTypes  # sets the list
         evStep.MoveType = ExplodedViewStepTypes[type_index]  # set the initial value
 
-    def onDocumentRestored(self, evStep):
-        if not hasattr(evStep, "Group"):
-            evStep.addExtension("App::GroupExtensionPython")
-        self.createProperties(evStep)
-
-    def unsetupObject(self, obj):
-        obj.removeObjectsFromDocument()
-
     def createProperties(self, evStep):
         if not hasattr(evStep, "References"):
             evStep.addProperty(
@@ -699,6 +691,238 @@ class ExplodedViewSelGate:
                 return True
 
         return False
+
+
+# Legacy exploded-view migration
+
+
+def _restoreExplodedView(self, view):
+    migrateExplodedView(view)
+
+
+def _restoreExplodedMove(self, step):
+    self.createProperties(step)
+
+
+def _removeExplodedMoveChildren(self, obj):
+    if not hasattr(obj, "Group"):
+        return
+    obj.removeObjectsFromDocument()
+
+
+def _legacyMarkers(move):
+    return any(hasattr(move, name) for name in ("Parts", "ObjNames", "MoveAlign", "MovePosition"))
+
+
+def _isContainer(move):
+    """A group of child moves. A flat legacy move has no children."""
+    if childMoves(move):
+        return True
+    if not hasattr(move, "Group") or _legacyMarkers(move):
+        return False
+    transform = getattr(move, "MovementTransform", None)
+    return transform is None or placementIsIdentity(transform)
+
+
+def _alignMode(move):
+    mode = getattr(move, "MoveAlign", "")
+    if mode in ("Origin", "Center", "Reference"):
+        return mode
+    if UtilsAssembly.isRefValid(getattr(move, "MovePosition", None), 1):
+        return "Reference"
+    return "Origin"
+
+
+def _validBox(box):
+    return box is not None and box.isValid()
+
+
+def _centerWorld(obj, ref):
+    shape = getattr(obj, "Shape", None)
+    box = None if shape is None or shape.isNull() else shape.BoundBox
+    if not _validBox(box):
+        view = getattr(obj, "ViewObject", None)
+        box = view.getBoundingBox() if view is not None else None
+    if not _validBox(box):
+        return UtilsAssembly.getGlobalPlacement(ref, obj).Base
+    local = obj.Placement.inverse() * App.Placement(box.Center, App.Rotation())
+    return (UtilsAssembly.getGlobalPlacement(ref, obj) * local).Base
+
+
+def _elementSub(sub):
+    name = sub.rsplit(".", 1)[-1] if sub else ""
+    return name.startswith(("Face", "Edge", "Vertex"))
+
+
+def _worldOf(move, obj, ref, mode):
+    if mode == "Center":
+        return _centerWorld(obj, ref)
+    position = getattr(move, "MovePosition", None)
+    if not UtilsAssembly.isRefValid(position, 1) or UtilsAssembly.getObject(position) is not obj:
+        return None
+    if not _elementSub(position[1][0]):
+        return _centerWorld(obj, ref)
+    return UtilsAssembly.getGlobalPlacement(position) * UtilsAssembly.findPlacement(position)
+
+
+def _partRefs(references):
+    return moveObjectsAndReferences(type("_Refs", (), {"References": references})())
+
+
+def _lineStarts(move, references):
+    mode = _alignMode(move)
+    if mode == "Origin":
+        return []
+    starts = []
+    touched = False
+    for obj, ref in zip(*_partRefs(references)):
+        world = _worldOf(move, obj, ref, mode)
+        if world is None:
+            starts.append(App.Placement())
+            continue
+        part_plc = UtilsAssembly.getGlobalPlacement(ref, obj)
+        local = (
+            App.Placement(part_plc.inverse().multVec(world), App.Rotation())
+            if isinstance(world, App.Vector)
+            else part_plc.inverse() * world
+        )
+        touched = touched or not placementIsIdentity(local)
+        starts.append(local)
+    return starts if touched else []
+
+
+def _writeStarts(group, starts):
+    if not starts:
+        return
+    if not hasattr(group, "LineStarts"):
+        group.addProperty(
+            "App::PropertyPlacementList",
+            "LineStarts",
+            "Exploded Move",
+            QT_TRANSLATE_NOOP("App::Property", "Line start relative to each moved part"),
+            locked=True,
+        )
+    group.LineStarts = starts
+    if hasattr(group, "DraggerStart"):
+        return
+    group.addProperty(
+        "App::PropertyPlacement",
+        "DraggerStart",
+        "Exploded Move",
+        QT_TRANSLATE_NOOP("App::Property", "Dragger placement relative to the first moved part"),
+        locked=True,
+    )
+    group.DraggerStart = starts[0]
+
+
+def _storeLegacyStarts(group):
+    if hasattr(group, "LineStarts"):
+        return
+    _writeStarts(group, _lineStarts(group, getattr(group, "References", None)))
+
+
+def createMoveGroup(view, references, line_starts):
+    group = view.Document.addObject("App::FeaturePython", "Move")
+    ExplodedViewStep(group)
+    if App.GuiUp and getattr(group, "ViewObject", None):
+        ViewProviderExplodedViewStep(group.ViewObject)
+    group.References = references
+    _writeStarts(group, line_starts)
+    return group
+
+
+def _rootPath(obj, part):
+    if obj is None or part is None:
+        return None, ""
+    root, path = UtilsAssembly.getRootPath(obj, part)
+    if root is not None and path:
+        return root, path
+    for parent, parent_path in getattr(obj, "Parents", None) or []:
+        document = getattr(parent, "Document", None)
+        if document is not None and document.Name == part.Document.Name and parent_path:
+            return parent, parent_path
+    if obj is part:
+        return None, ""
+    return part, obj.Name + "."
+
+
+def _referenceBuckets(move):
+    current = getattr(move, "References", None)
+    if UtilsAssembly.isRefValid(current, 1):
+        return [current]
+    if not hasattr(move, "Parts"):
+        return []
+    found = {}
+    order = []
+    parts = list(move.Parts)
+    names = list(getattr(move, "ObjNames", []))
+    names.extend(part.Name for part in parts[len(names) :])
+    for name, part in zip(names, parts):
+        root, path = _rootPath(UtilsAssembly.getObjectInPart(name, part) or part, part)
+        if root is None or not path:
+            continue
+        bucket = found.get(root.Name)
+        if bucket is None:
+            bucket = [root, []]
+            found[root.Name] = bucket
+            order.append(root.Name)
+        if path not in bucket[1]:
+            bucket[1].append(path)
+    buckets = [found[name] for name in order]
+    if buckets:
+        move.References = buckets[0]
+    return buckets
+
+
+def _cloneTransform(view, move):
+    clone = view.Document.addObject("App::FeaturePython", move.Name)
+    ExplodedViewStep(clone, 1 if getattr(move, "MoveType", "Normal") == "Radial" else 0)
+    if App.GuiUp and getattr(clone, "ViewObject", None):
+        ViewProviderExplodedViewStep(clone.ViewObject)
+    clone.MovementTransform = App.Placement(move.MovementTransform)
+    return clone
+
+
+def migrateExplodedView(view):
+    if hasattr(view, "Moves"):
+        if not hasattr(view, "Group"):
+            view.addExtension("App::GroupExtensionPython")
+        view.Group = list(view.Moves)
+        view.removeProperty("Moves")
+    if not hasattr(view, "Group"):
+        return
+
+    rebuilt = []
+    adopted = []
+    for move in list(view.Group):
+        if not isinstance(getattr(move, "Proxy", None), ExplodedViewStep):
+            rebuilt.append(move)
+            continue
+        if _isContainer(move):
+            _storeLegacyStarts(move)
+            rebuilt.append(move)
+            continue
+        buckets = _referenceBuckets(move)
+        if not buckets:
+            rebuilt.append(move)
+            continue
+        for index, references in enumerate(buckets):
+            child = move if index == 0 else _cloneTransform(view, move)
+            group = createMoveGroup(view, references, _lineStarts(move, references))
+            if hasattr(move, "Visibility"):
+                group.Visibility = move.Visibility
+            rebuilt.append(group)
+            adopted.append((group, child))
+    if not adopted:
+        return
+    view.Group = rebuilt
+    for group, child in adopted:
+        group.Group = [child]
+
+
+ExplodedView.onDocumentRestored = _restoreExplodedView
+ExplodedViewStep.onDocumentRestored = _restoreExplodedMove
+ExplodedViewStep.unsetupObject = _removeExplodedMoveChildren
 
 
 ######### Create Exploded View Task ###########
