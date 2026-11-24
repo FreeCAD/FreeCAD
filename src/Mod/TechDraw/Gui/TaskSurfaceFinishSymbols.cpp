@@ -289,11 +289,15 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     proxyAddition->setPos(-110, -85);
     proxyAddition->setZValue(-2);
     // QComboBox showing RA values
-    cbRA = new(QComboBox);
-    cbRA->resize(90, 20);
-    for (const std::string& nextValue : raValues)
-        cbRA->addItem(QString::fromStdString(nextValue));
-    cbRA->setToolTip(QObject::tr("Average roughness"));
+cbRA = new(QComboBox);
+cbRA->setEditable(true);
+cbRA->setInsertPolicy(QComboBox::NoInsert);
+cbRA->resize(90, 20);
+
+for (const std::string& nextValue : raValues)
+    cbRA->addItem(QString::fromStdString(nextValue));
+
+cbRA->setToolTip(QObject::tr("Average roughness"));
     proxyRA = symbolScene->addWidget(cbRA);
     proxyRA->setPos(2, -113);
     // QLineEdit showing sampling length value
