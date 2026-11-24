@@ -852,7 +852,11 @@ void Command::_runCommand(const char* file, int line, DoCmd_Type eType, const ch
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
     }
     else {
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+        Gui::MacroManager* macroManager = Gui::Application::Instance->macroManager();
+        if (macroManager) {
+            // in certain testing conditions, there may not be a macromanager
+            macroManager->addLine(MacroManager::App, sCmd);
+        }
     }
 
     try {
