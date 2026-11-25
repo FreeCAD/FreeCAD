@@ -623,12 +623,41 @@ void Toolpath::RestoreDocFile(Base::Reader& reader)
     // one command on each line.
     std::istringstream text(data);
     std::string line;
+    int unreadable = 0;
     while (std::getline(text, line)) {
-        if (!line.empty()) {
-            Command cmd;
-            cmd.setFromGCode(line);
-            addCommandNoRecalc(cmd);
+        if (line.empty()) {
+            continue;
         }
+        Command cmd;
+        try {
+            cmd.setFromGCode(line);
+        }
+        catch (const Base::Exception&) {
+            // One line that cannot be read must not discard the full Toolpath.
+            // Keep the line as a comment, so that the loss is visible in the
+            // Toolpath and in the output of a post-processor.
+            ++unreadable;
+            std::string shown = line;
+            for (char& c : shown) {
+                if (c == '(') {
+                    c = '[';
+                }
+                else if (c == ')') {
+                    c = ']';
+                }
+            }
+            cmd = Command();
+            cmd.Name = "(unreadable line: " + shown + ")";
+        }
+        addCommandNoRecalc(cmd);
+    }
+    if (unreadable > 0) {
+        Base::Console().error(
+            "%s: %d line(s) of the stored toolpath are not valid G-code and are kept as "
+            "comments. Recompute the operation.\n",
+            reader.getFileName().c_str(),
+            unreadable
+        );
     }
     recalculate();  // Only once, after all commands are loaded
 }

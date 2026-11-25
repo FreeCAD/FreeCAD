@@ -412,3 +412,42 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertEqual(c1.Parameters["Y"], 5.0)
         self.assertEqual(c1.Annotations["retract"], 15.5)
         self.assertEqual(c1.Annotations["angle"], 30.25)
+
+    def test30(self):
+        """A "; " inside a comment is part of the comment (issue #34607)."""
+        for text in (
+            "(a comment; with a semicolon)",
+            "(Tool: 6mm; 2 flute)",
+            "(a;b)",
+            "(one; two; three)",
+        ):
+            c = Path.Command(text)
+            self.assertEqual(c.Name, text)
+            self.assertEqual(c.Parameters, {})
+            self.assertEqual(c.Annotations, {})
+            self.assertEqual(c.toGCode(), text)
+
+    def test31(self):
+        """Annotations after a comment with a "; " are still read."""
+        c = Path.Command("(a comment; with a semicolon)")
+        c.Annotations = {"note": "kept", "value": 2.5}
+        text = c.toGCode()
+        back = Path.Command()
+        back.setFromGCode(text)
+        self.assertEqual(back.Name, "(a comment; with a semicolon)")
+        self.assertEqual(back.Annotations, {"note": "kept", "value": 2.5})
+
+    def test32(self):
+        """Annotations of a motion command are read as before."""
+        c = Path.Command()
+        c.setFromGCode("G1 X1.5 Y2 F100; type:'linking' weight:0.25")
+        self.assertEqual(c.Name, "G1")
+        self.assertEqual(c.Parameters, {"X": 1.5, "Y": 2.0, "F": 100.0})
+        self.assertEqual(c.Annotations, {"type": "linking", "weight": 0.25})
+
+    def test33(self):
+        """A Toolpath made from G-code text keeps a comment with a "; "."""
+        path = Path.Path("(a comment; with a semicolon)\nG0 X1 Y2\nG1 X5 F100\n")
+        self.assertEqual(
+            [c.Name for c in path.Commands], ["(a comment; with a semicolon)", "G0", "G1"]
+        )

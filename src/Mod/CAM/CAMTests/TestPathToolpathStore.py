@@ -154,3 +154,30 @@ class TestPathToolpathStore(PathTestBase):
         self.assertEqual(len(commands), len(lines))
         self.assertEqual(commands[0].toGCode(), Path.Command(lines[0]).toGCode())
         self.assertEqual(commands[-1].toGCode(), Path.Command(lines[-1]).toGCode())
+
+    def test11(self):
+        """A text line that is not valid G-code does not discard the other commands."""
+        _, fileName = self._saveAndOpen(Path.Path([Path.Command("G0", {"X": 1})]))
+        # Make a document in the form of before the binary store, with one bad line.
+        oldForm = os.path.join(self.dir, "old.FCStd")
+        with zipfile.ZipFile(fileName) as source, zipfile.ZipFile(oldForm, "w") as target:
+            for item in source.infolist():
+                if item.filename == "Stored.ncb":
+                    continue
+                content = source.read(item.filename)
+                if item.filename == "Document.xml":
+                    self.assertIn(b"Stored.ncb", content)
+                    content = content.replace(b"Stored.ncb", b"Stored.nc")
+                target.writestr(item, content)
+            target.writestr(
+                "Stored.nc",
+                "(first)\nta comment\nG0 X1.000000 Y2.000000\nG1 F100.000000 X5.000000\n",
+            )
+        doc = FreeCAD.openDocument(oldForm)
+        self.docs.append(doc.Name)
+        commands = doc.Stored.Path.Commands
+        self.assertEqual(
+            [c.Name for c in commands],
+            ["(first)", "(unreadable line: ta comment)", "G0", "G1"],
+        )
+        self.assertRoughly(commands[3].Parameters["X"], 5.0)
