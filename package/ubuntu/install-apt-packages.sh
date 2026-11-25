@@ -91,10 +91,14 @@ packages=(
   python3-pyside6.qtcore
   python3-pyside6.qtgui
   python3-pyside6.qtnetwork
+  python3-pyside6.qtpdf
+  python3-pyside6.qtprintsupport
   python3-pyside6.qtsvg
   python3-pyside6.qtsvgwidgets
+  python3-pyside6.qttest
   python3-pyside6.qtwidgets
   qt6-base-dev
+  qt6-image-formats-plugins
   qt6-l10n-tools
   qt6-tools-dev
   qt6-tools-dev-tools
