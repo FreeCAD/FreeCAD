@@ -106,6 +106,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
         obj.FinishingPasses = (0, 0, 999999, 1)
+        obj.HandleMultipleFeatures = "Individually"
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""

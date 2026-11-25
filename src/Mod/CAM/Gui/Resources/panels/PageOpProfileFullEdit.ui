@@ -58,30 +58,40 @@
        <widget class="QComboBox" name="sorting"/>
       </item>
       <item row="4" column="0">
+       <widget class="QLabel" name="handleMultipleFeaturesLabel">
+        <property name="text">
+         <string>Handle multiple features</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="handleMultipleFeatures"/>
+      </item>
+      <item row="5" column="0">
        <widget class="QLabel" name="extraOffsetLabel">
         <property name="text">
          <string>Radial stock to leave</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="Gui::QuantitySpinBox" name="extraOffset"/>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="thresholdLabel">
         <property name="text">
          <string>Retract threshold</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <widget class="Gui::QuantitySpinBox" name="threshold">
         <property name="minimum">
           <double>0</double>
         </property>
        </widget>
       </item>
-      <item row="5" column="2">
+      <item row="6" column="2">
        <widget class="QToolButton" name="thresholdToggle">
         <property name="toolTip">
          <string>Toggle retract threshold between 0 and tool diameter</string>
@@ -96,14 +106,14 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="numPassesLabel">
         <property name="text">
          <string>Number of passes</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="7" column="1">
        <widget class="Gui::IntSpinBox" name="numPasses">
          <property name="minimum">
            <number>1</number>
@@ -113,24 +123,24 @@
          </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="stepoverLabel">
         <property name="text">
          <string>Pass stepover</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="Gui::QuantitySpinBox" name="stepover"/>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="finishingPassedLabel">
         <property name="text">
          <string>Finishing passes</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="9" column="1">
        <widget class="Gui::IntSpinBox" name="finishingPasses">
         <property name="minimum">
          <number>0</number>
@@ -140,14 +150,14 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+      <item row="10" column="0">
        <widget class="QLabel" name="finishingOffsetLabel">
         <property name="text">
          <string>Finishing offset</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="10" column="1">
        <widget class="Gui::QuantitySpinBox" name="finishingOffset"/>
       </item>
      </layout>

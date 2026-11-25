@@ -56,17 +56,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def initPocketOp(self, obj):
         """initPocketOp(obj) ... setup receiver"""
-        if not hasattr(obj, "HandleMultipleFeatures"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "HandleMultipleFeatures",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Choose how to process multiple Base Geometry features.",
-                ),
-            )
-
         if not hasattr(obj, "AdaptivePocketStart"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -113,12 +102,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         'translated' is list of translated string literals
         """
 
-        enums = {
-            "HandleMultipleFeatures": [
-                (translate("CAM_Pocket", "Collectively"), "Collectively"),
-                (translate("CAM_Pocket", "Individually"), "Individually"),
-            ],
-        }
+        enums = {}
 
         if dataType == "raw":
             return enums

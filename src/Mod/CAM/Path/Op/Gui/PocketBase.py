@@ -76,6 +76,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         tuples.append(("clearingPattern", "ClearingPattern"))
         tuples.append(("startAt", "StartAt"))
         tuples.append(("sorting", "SortingMode"))
+        tuples.append(("handleMultipleFeatures", "HandleMultipleFeatures"))
         tuples.append(("angle", "Angle"))
         tuples.append(("stepOver", "StepOver"))
         tuples.append(("finishingPasses", "FinishingPasses"))
@@ -99,6 +100,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("clearingPattern", "ClearingPattern"),
             ("startAt", "StartAt"),
             ("sorting", "SortingMode"),
+            ("handleMultipleFeatures", "HandleMultipleFeatures"),
         ]
         enumTups = PathPocket.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
 
@@ -132,6 +134,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StartAt = str(self.form.startAt.currentData())
         if obj.SortingMode != str(self.form.sorting.currentData()):
             obj.SortingMode = str(self.form.sorting.currentData())
+        if obj.HandleMultipleFeatures != str(self.form.handleMultipleFeatures.currentData()):
+            obj.HandleMultipleFeatures = str(self.form.handleMultipleFeatures.currentData())
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
@@ -182,6 +186,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
         self.selectInComboBox(obj.SortingMode, self.form.sorting)
+        self.selectInComboBox(obj.HandleMultipleFeatures, self.form.handleMultipleFeatures)
 
         if FeatureFacing & self.pocketFeatures():
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
@@ -197,6 +202,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.clearingPattern.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)
         signals.append(self.form.sorting.currentIndexChanged)
+        signals.append(self.form.handleMultipleFeatures.currentIndexChanged)
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.finishingOffset.editingFinished)
         signals.append(self.form.finishingPasses.editingFinished)

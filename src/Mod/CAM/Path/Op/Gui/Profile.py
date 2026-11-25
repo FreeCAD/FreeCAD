@@ -62,6 +62,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         tuples.append(("direction", "Direction"))
         tuples.append(("startAt", "StartAt"))
         tuples.append(("sorting", "SortingMode"))
+        tuples.append(("handleMultipleFeatures", "HandleMultipleFeatures"))
         tuples.append(("extraOffset", "OffsetExtra"))
         tuples.append(("threshold", "RetractThreshold"))
         tuples.append(("numPasses", "NumPasses"))
@@ -95,6 +96,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("direction", "Direction"),
             ("startAt", "StartAt"),
             ("sorting", "SortingMode"),
+            ("handleMultipleFeatures", "HandleMultipleFeatures"),
         ]
         enumTups = PathProfile.ObjectProfile.areaOpPropertyEnumerations(dataType="raw")
 
@@ -117,6 +119,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StartAt = str(self.form.startAt.currentData())
         if obj.SortingMode != str(self.form.sorting.currentData()):
             obj.SortingMode = str(self.form.sorting.currentData())
+        if obj.HandleMultipleFeatures != str(self.form.handleMultipleFeatures.currentData()):
+            obj.HandleMultipleFeatures = str(self.form.handleMultipleFeatures.currentData())
 
         self.extraOffsetSpinBox.updateProperty()
         self.thresholdSpinBox.updateProperty()
@@ -150,6 +154,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Direction, self.form.direction)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
         self.selectInComboBox(obj.SortingMode, self.form.sorting)
+        self.selectInComboBox(obj.HandleMultipleFeatures, self.form.handleMultipleFeatures)
         self.form.numPasses.setValue(obj.NumPasses)
         self.form.finishingPasses.setValue(obj.FinishingPasses)
         self.form.finishingOneStepDown.setChecked(obj.FinishingOneStepDown)
@@ -167,6 +172,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)
         signals.append(self.form.sorting.currentIndexChanged)
+        signals.append(self.form.handleMultipleFeatures.currentIndexChanged)
+
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.finishingOffset.editingFinished)
         signals.append(self.form.threshold.editingFinished)
@@ -185,17 +192,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateData(self, obj, prop):
-        hasFace = any(s for _, subs in self.obj.Base for s in subs if s[:4] == "Face")
+        hasFace = any(s for _, subs in obj.Base for s in subs if s[:4] == "Face")
         self.form.processCircles.setEnabled(hasFace)
         self.form.processHoles.setEnabled(hasFace)
         self.form.processPerimeter.setEnabled(hasFace)
 
-        self.form.startAt.setEnabled(self.obj.NumPasses > 1)
-        self.form.stepover.setEnabled(self.obj.NumPasses > 1)
-        self.form.finishingOffset.setEnabled(self.obj.FinishingPasses)
-        self.form.finishingOneStepDown.setEnabled(self.obj.FinishingPasses)
-        self.form.useLongestEdge.setEnabled(not self.obj.UseStartPoint)
-        self.form.useLongestEdge.setEnabled(not self.obj.UseStartPoint)
+        self.form.startAt.setEnabled(obj.NumPasses > 1)
+        self.form.stepover.setEnabled(obj.NumPasses > 1)
+        self.form.finishingOffset.setEnabled(obj.FinishingPasses)
+        self.form.finishingOneStepDown.setEnabled(obj.FinishingPasses)
+        self.form.useLongestEdge.setEnabled(
+            not obj.UseStartPoint and obj.HandleMultipleFeatures == "Individually"
+        )
 
     def registerSignalHandlers(self, obj):
         self.form.setStartPoint.clicked.connect(self.setStartPoint)
