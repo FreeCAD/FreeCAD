@@ -687,6 +687,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeIcon.py
     CAMTests/TestPathToolLibrary.py
     CAMTests/TestPathToolLibrarySerializer.py
+    CAMTests/TestPathToolpathStore.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
