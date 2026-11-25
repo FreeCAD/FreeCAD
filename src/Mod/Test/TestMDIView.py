@@ -12,7 +12,7 @@ import unittest
 
 import FreeCAD
 import FreeCADGui
-from PySide6 import QtWidgets
+from PySide6 import QtCore, QtWidgets
 
 
 class PythonView:
@@ -38,9 +38,12 @@ class TestMDIView(unittest.TestCase):
 
     def test_python_view_type_id(self):
         main_window = FreeCADGui.getMainWindow()
-        view = main_window.addWindow(PythonView())
+        python_view = PythonView()
+        view = main_window.addWindow(python_view)
+        subwindow = python_view.widget().parentWidget().parentWidget()
 
         try:
             self.assertEqual(view.getTypeId(), "Gui::MDIViewPyWrap")
         finally:
             main_window.removeWindow(view)
+            QtCore.QCoreApplication.sendPostedEvents(subwindow, QtCore.QEvent.Type.DeferredDelete)
