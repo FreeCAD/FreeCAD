@@ -176,6 +176,7 @@ void Command::setFromGCode(const std::string& str)
 {
     Parameters.clear();
     Annotations.clear();
+    ToolAxis.reset();
 
     // Check for annotation comment and split the string
     std::string gcode_part = str;
@@ -360,6 +361,9 @@ Command Command::transform(const Base::Placement& other)
         c.Parameters[k] = v;
     }
     c.Annotations = Annotations;
+    if (ToolAxis) {
+        c.ToolAxis = other.getRotation().multVec(*ToolAxis);
+    }
     return c;
 }
 

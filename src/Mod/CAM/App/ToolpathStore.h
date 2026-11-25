@@ -44,14 +44,16 @@ namespace Path::ToolpathStore
  *   shape ids        one varint for each command
  *   parameter columns   varint n, then n x (varint key string id, column)
  *   annotation columns  varint n, then n x (varint key string id, column)
+ *   tool axis        1 byte: 0 = no command has a Tool Axis, 1 = three columns follow
+ *                    (X, Y, Z), each with one value for each command that has one
  *   string annotations  varint n, then n x (varint command index delta,
  *                                           varint key string id, varint value string id)
  *
  * A shape is the set of fields that a command has: its name, its parameter
- * letters and the keys of its numeric annotations. Commands with the same shape
- * share one shape record:
+ * letters, the keys of its numeric annotations, and if it has a Tool Axis. Commands with the same
+ * shape share one shape record:
  *
- *   shape            varint name string id, 1 byte flags (reserved, 0),
+ *   shape            varint name string id, 1 byte flags (bit 0: has a Tool Axis),
  *                    varint n + n x varint parameter key string id,
  *                    varint n + n x varint annotation key string id
  *

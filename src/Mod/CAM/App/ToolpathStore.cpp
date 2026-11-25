@@ -19,6 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -42,6 +43,8 @@ constexpr std::string_view Magic = "FCTP";
 constexpr double Scale = 1.0 / Resolution;
 // A value below this limit, multiplied by Scale, fits a 64-bit integer with margin.
 constexpr double QuantLimit = 1e12;
+
+constexpr std::uint8_t ShapeHasToolAxis = 0x01;
 
 enum class Encoding : std::uint8_t
 {
@@ -290,6 +293,7 @@ struct Column
 struct ResolvedShape
 {
     const std::string* name = nullptr;
+    bool hasToolAxis = false;
     std::vector<std::pair<const std::string*, Column*>> params;
     std::vector<std::pair<const std::string*, Column*>> annotations;
 };
@@ -312,6 +316,7 @@ std::string encode(const std::vector<Command>& commands)
     commandShape.reserve(commands.size());
     std::map<std::uint32_t, std::vector<double>> paramColumns;
     std::map<std::uint32_t, std::vector<double>> annotationColumns;
+    std::array<std::vector<double>, 3> toolAxisColumns;
 
     struct StringAnnotation
     {
@@ -326,6 +331,12 @@ std::string encode(const std::vector<Command>& commands)
         const Command& cmd = commands[i];
         shape.name = strings.id(cmd.Name);
         shape.flags = 0;
+        if (cmd.ToolAxis) {
+            shape.flags |= ShapeHasToolAxis;
+            toolAxisColumns[0].push_back(cmd.ToolAxis->x);
+            toolAxisColumns[1].push_back(cmd.ToolAxis->y);
+            toolAxisColumns[2].push_back(cmd.ToolAxis->z);
+        }
         shape.params.clear();
         shape.annotations.clear();
         for (const auto& [key, value] : cmd.Parameters) {
@@ -384,6 +395,14 @@ std::string encode(const std::vector<Command>& commands)
         w.column(values);
     }
 
+    const bool hasToolAxis = !toolAxisColumns[0].empty();
+    w.byte(hasToolAxis ? 1 : 0);
+    if (hasToolAxis) {
+        for (const auto& values : toolAxisColumns) {
+            w.column(values);
+        }
+    }
+
     w.varint(stringAnnotations.size());
     std::size_t prev = 0;
     for (const StringAnnotation& a : stringAnnotations) {
@@ -423,13 +442,15 @@ void decode(std::string_view data, std::vector<Command>& commands)
     struct RawShape
     {
         std::uint64_t name;
+        std::uint8_t flags;
         std::vector<std::uint64_t> params;
         std::vector<std::uint64_t> annotations;
     };
     std::vector<RawShape> rawShapes(r.count(4));
     for (RawShape& s : rawShapes) {
         s.name = r.varint();
-        if (r.byte() != 0) {
+        s.flags = r.byte();
+        if (s.flags & ~ShapeHasToolAxis) {
             fail("unknown shape flags");
         }
         s.params.resize(r.count());
@@ -468,6 +489,19 @@ void decode(std::string_view data, std::vector<Command>& commands)
     std::map<std::uint64_t, Column> paramColumns = readColumns();
     std::map<std::uint64_t, Column> annotationColumns = readColumns();
 
+    std::array<Column, 3> toolAxisColumns;
+    switch (r.byte()) {
+        case 0:
+            break;
+        case 1:
+            for (Column& column : toolAxisColumns) {
+                column.values = r.column();
+            }
+            break;
+        default:
+            fail("unknown tool axis flag");
+    }
+
     const auto columnOf = [](std::map<std::uint64_t, Column>& columns, std::uint64_t id) {
         const auto it = columns.find(id);
         if (it == columns.end()) {
@@ -478,6 +512,7 @@ void decode(std::string_view data, std::vector<Command>& commands)
     std::vector<ResolvedShape> shapes(rawShapes.size());
     for (std::size_t i = 0; i < rawShapes.size(); ++i) {
         shapes[i].name = stringAt(rawShapes[i].name);
+        shapes[i].hasToolAxis = (rawShapes[i].flags & ShapeHasToolAxis) != 0;
         for (std::uint64_t id : rawShapes[i].params) {
             shapes[i].params.emplace_back(stringAt(id), columnOf(paramColumns, id));
         }
@@ -496,6 +531,12 @@ void decode(std::string_view data, std::vector<Command>& commands)
         }
         for (const auto& [key, column] : shape.annotations) {
             cmd.Annotations.emplace_hint(cmd.Annotations.end(), *key, column->next());
+        }
+        if (shape.hasToolAxis) {
+            const double x = toolAxisColumns[0].next();
+            const double y = toolAxisColumns[1].next();
+            const double z = toolAxisColumns[2].next();
+            cmd.ToolAxis = Base::Vector3d(x, y, z);
         }
     }
 

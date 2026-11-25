@@ -616,6 +616,7 @@ SET(Tests_SRCS
     CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
+    CAMTests/TestPathCommandToolAxis.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py

@@ -135,6 +135,39 @@ TEST(ToolpathStoreTest, commentWithSemicolonComesBack)
     EXPECT_EQ(result[0].Name, "(a comment; with a semicolon)");
 }
 
+TEST(ToolpathStoreTest, toolAxisComesBack)
+{
+    std::vector<Command> commands {
+        Command("G0", {{"X", 0.0}, {"Z", 5.0}}),
+        Command("G1", {{"X", 1.0}, {"Z", 0.0}}),
+        Command("G1", {{"X", 2.0}, {"Z", 0.0}}),
+        Command("G1", {{"X", 3.0}, {"Z", 0.0}}),
+    };
+    commands[1].ToolAxis = Base::Vector3d(0.0, 0.0, 1.0);
+    commands[3].ToolAxis = Base::Vector3d(0.6, 0.0, 0.8);
+
+    const auto result = roundTrip(commands);
+    ASSERT_EQ(result.size(), commands.size());
+    EXPECT_FALSE(result[0].ToolAxis.has_value());
+    EXPECT_FALSE(result[2].ToolAxis.has_value());
+    ASSERT_TRUE(result[1].ToolAxis.has_value());
+    ASSERT_TRUE(result[3].ToolAxis.has_value());
+    EXPECT_NEAR(result[1].ToolAxis->z, 1.0, Store::Resolution);
+    EXPECT_NEAR(result[3].ToolAxis->x, 0.6, Store::Resolution);
+    EXPECT_NEAR(result[3].ToolAxis->y, 0.0, Store::Resolution);
+    EXPECT_NEAR(result[3].ToolAxis->z, 0.8, Store::Resolution);
+    // the parameters of a command with a Tool Axis are not affected
+    EXPECT_NEAR(result[3].Parameters.at("X"), 3.0, Store::Resolution);
+}
+
+TEST(ToolpathStoreTest, noToolAxisAddsOneByte)
+{
+    const auto commands = mixedCommands();
+    auto withAxis = commands;
+    withAxis[3].ToolAxis = Base::Vector3d(0.0, 0.0, 1.0);
+    EXPECT_LT(Store::encode(commands).size(), Store::encode(withAxis).size());
+}
+
 TEST(ToolpathStoreTest, damagedDataIsRefused)
 {
     const std::string data = Store::encode(mixedCommands());
