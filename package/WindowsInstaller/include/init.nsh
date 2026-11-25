@@ -31,28 +31,6 @@ Function PostMultiUserPageInit
   ${if} $OriginalCmdInstDir != ""
     StrCpy $INSTDIR $OriginalCmdInstDir
   ${endif}
-  # check if this FreeCAD version is already installed
-  ReadRegStr $0 SHCTX "${APP_UNINST_KEY}" "UninstallString"
-  ${if} $0 != ""
-   # check if the uninstaller was accidentally deleted
-   # if so, don't bother the user if they really want to install a new FreeCAD over an existing one
-   # because they won't have a chance to deny this
-
-   # remove quotes from uninstaller filename
-   ${TrimQuotes} $0 $0
-   # skip message box if uninstaller file is missing
-   IfFileExists $0 0 ContinueInstall
-
-   # installing over an existing installation of the same FreeCAD release is not necessary
-   # if the users does this, they most probably have a problem with FreeCAD that can better be solved
-   # by reinstalling FreeCAD
-   # for beta and other test releases over-installing can even cause errors
-   MessageBox MB_YESNOCANCEL "$(AlreadyInstalled)" /SD IDCANCEL IDYES ContinueInstall IDNO BackToMuiltUserPage
-   Quit
-   BackToMuiltUserPage:
-   Abort
-   ContinueInstall:
-  ${endif}
 
   # check if there is an existing FreeCAD installation of the same FreeCAD series
   # we usually don't release more than 10 versions so with 20 we are safe to check if a newer version is installed
@@ -152,10 +130,9 @@ Function .onInit
     Banner::destroy
   ${EndIf}
 
-  # if installer runs silent the post install mode and directory page routines have to be called here
+  # Silent installs skip the install mode page and its leave callback.
   ${If} ${Silent}
     Call PostMultiUserPageInit
-    Call ValidateInstallDir
   ${EndIf}
 
 FunctionEnd
