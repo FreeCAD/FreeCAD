@@ -36,6 +36,10 @@ SET(TestGui_SRCS
     ${Dialogs_SRCS}
     ${Resource_SRCS}
     AppTestGui.cpp
+    ComponentZoo.cpp
+    ComponentZoo.h
+    ComponentZooCases.cpp
+    ComponentZooCases.h
     PreCompiled.h
 )
 SET(TestGuiPy_SRCS
