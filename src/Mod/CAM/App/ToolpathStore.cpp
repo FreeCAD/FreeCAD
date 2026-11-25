@@ -307,7 +307,7 @@ bool isBinary(std::string_view data)
     return data.substr(0, Magic.size()) == Magic;
 }
 
-std::string encode(const std::vector<Command>& commands)
+std::string encode(const std::vector<Command>& commands, const AnnotationMap& annotations)
 {
     StringTable strings;
     std::map<Shape, std::uint32_t> shapeIds;
@@ -361,6 +361,14 @@ std::string encode(const std::vector<Command>& commands)
         commandShape.push_back(it->second);
     }
 
+    // Register the strings of the Toolpath annotations before the table is written.
+    for (const auto& [key, value] : annotations) {
+        strings.id(key);
+        if (const std::string* text = std::get_if<std::string>(&value)) {
+            strings.id(*text);
+        }
+    }
+
     Writer w(commands.size() * 12 + 64);
     w.bytes(Magic);
     w.byte(FormatVersion);
@@ -411,10 +419,23 @@ std::string encode(const std::vector<Command>& commands)
         w.varint(a.key);
         w.varint(a.value);
     }
+
+    w.varint(annotations.size());
+    for (const auto& [key, value] : annotations) {
+        w.varint(strings.id(key));
+        if (const std::string* text = std::get_if<std::string>(&value)) {
+            w.byte(0);
+            w.varint(strings.id(*text));
+        }
+        else {
+            w.byte(1);
+            w.real(std::get<double>(value));
+        }
+    }
     return std::move(w.out);
 }
 
-void decode(std::string_view data, std::vector<Command>& commands)
+void decode(std::string_view data, std::vector<Command>& commands, AnnotationMap& annotations)
 {
     if (!isBinary(data)) {
         fail("magic bytes not found");
@@ -552,7 +573,30 @@ void decode(std::string_view data, std::vector<Command>& commands)
         result[static_cast<std::size_t>(index)].Annotations[*key] = *value;
     }
 
+    AnnotationMap toolpathAnnotations;
+    const std::size_t annotationCount = r.count(3);
+    for (std::size_t i = 0; i < annotationCount; ++i) {
+        const std::string* key = stringAt(r.varint());
+        switch (r.byte()) {
+            case 0:
+                toolpathAnnotations[*key] = *stringAt(r.varint());
+                break;
+            case 1:
+                toolpathAnnotations[*key] = r.real();
+                break;
+            default:
+                fail("unknown annotation type");
+        }
+    }
+
     commands = std::move(result);
+    annotations = std::move(toolpathAnnotations);
+}
+
+void decode(std::string_view data, std::vector<Command>& commands)
+{
+    AnnotationMap ignored;
+    decode(data, commands, ignored);
 }
 
 }  // namespace Path::ToolpathStore

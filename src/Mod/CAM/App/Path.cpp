@@ -108,6 +108,7 @@ Toolpath::Toolpath()
 Toolpath::Toolpath(const Toolpath& otherPath)
     : vpcCommands(otherPath.vpcCommands)
     , center(otherPath.center)
+    , annotations(otherPath.annotations)
 {
     recalculate();
 }
@@ -122,6 +123,7 @@ Toolpath& Toolpath::operator=(const Toolpath& otherPath)
 
     vpcCommands = otherPath.vpcCommands;
     center = otherPath.center;
+    annotations = otherPath.annotations;
     recalculate();
     return *this;
 }
@@ -567,10 +569,10 @@ void Toolpath::Save(Writer& writer) const
 
 void Toolpath::SaveDocFile(Base::Writer& writer) const
 {
-    if (vpcCommands.empty()) {
+    if (vpcCommands.empty() && annotations.empty()) {
         return;
     }
-    const std::string data = ToolpathStore::encode(vpcCommands);
+    const std::string data = ToolpathStore::encode(vpcCommands, annotations);
     writer.Stream().write(data.data(), static_cast<std::streamsize>(data.size()));
 }
 
@@ -612,7 +614,7 @@ void Toolpath::RestoreDocFile(Base::Reader& reader)
     const std::string data = buffer.str();
 
     if (ToolpathStore::isBinary(data)) {
-        ToolpathStore::decode(data, vpcCommands);
+        ToolpathStore::decode(data, vpcCommands, annotations);
         recalculate();
         return;
     }

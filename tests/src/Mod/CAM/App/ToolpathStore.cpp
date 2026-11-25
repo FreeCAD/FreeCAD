@@ -168,6 +168,39 @@ TEST(ToolpathStoreTest, noToolAxisAddsOneByte)
     EXPECT_LT(Store::encode(commands).size(), Store::encode(withAxis).size());
 }
 
+TEST(ToolpathStoreTest, toolpathAnnotationsComeBack)
+{
+    const Path::AnnotationMap annotations {
+        {"strategy", std::string("waterline")},
+        {"ratio", 1.0 / 3.0},
+    };
+    std::vector<Command> commands;
+    Path::AnnotationMap result {{"old", std::string("value")}};
+    Store::decode(Store::encode(mixedCommands(), annotations), commands, result);
+    EXPECT_EQ(commands.size(), mixedCommands().size());
+    ASSERT_EQ(result.size(), 2U);
+    EXPECT_EQ(std::get<std::string>(result.at("strategy")), "waterline");
+    EXPECT_EQ(std::get<double>(result.at("ratio")), 1.0 / 3.0);
+
+    // annotations with no commands
+    Store::decode(Store::encode({}, annotations), commands, result);
+    EXPECT_TRUE(commands.empty());
+    EXPECT_EQ(result.size(), 2U);
+}
+
+TEST(ToolpathStoreTest, refusedDataChangesNothing)
+{
+    std::vector<Command> commands {Command("G0", {{"X", 1.0}})};
+    Path::AnnotationMap annotations {{"kept", std::string("yes")}};
+    const std::string data = Store::encode(mixedCommands(), {{"new", 1.0}});
+    EXPECT_THROW(
+        Store::decode(std::string_view(data).substr(0, data.size() - 1), commands, annotations),
+        Base::BadFormatError
+    );
+    EXPECT_EQ(commands.size(), 1U);
+    EXPECT_TRUE(annotations.contains("kept"));
+}
+
 TEST(ToolpathStoreTest, damagedDataIsRefused)
 {
     const std::string data = Store::encode(mixedCommands());

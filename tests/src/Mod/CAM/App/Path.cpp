@@ -195,4 +195,24 @@ TEST(PathTest, assign)
     EXPECT_NEAR(path.getLength(), 2.0 + std::numbers::pi / 2, 1e-12);
     EXPECT_NEAR(path2.getLength(), 2.0 + std::numbers::pi / 2, 1e-12);
 }
+
+TEST(PathTest, annotationsAreCopiedAndKeptByClear)
+{
+    Path::Toolpath path;
+    Path::Command cmd;
+    cmd.setFromGCode("G0 X2 Y0");
+    path.addCommand(cmd);
+    path.setAnnotation("strategy", std::string("test"));
+    path.setAnnotation("passes", 2.0);
+
+    Path::Toolpath copy(path);
+    Path::Toolpath assigned;
+    assigned = path;
+    EXPECT_EQ(copy.getAnnotations(), path.getAnnotations());
+    EXPECT_EQ(assigned.getAnnotations(), path.getAnnotations());
+
+    path.clear();
+    EXPECT_EQ(path.getSize(), 0U);
+    EXPECT_EQ(path.getAnnotations().size(), 2U);
+}
 // NOLINTEND(cppcoreguidelines-*,readability-*)

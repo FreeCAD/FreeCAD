@@ -35,6 +35,9 @@
 
 namespace Path
 {
+/// Annotations of a Command or of a Toolpath: a value is a string or a number.
+using AnnotationMap = std::map<std::string, std::variant<std::string, double>>;
+
 /** The representation of a cnc command in a path */
 class PathExport Command: public Base::Persistence
 {

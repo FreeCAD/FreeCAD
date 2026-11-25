@@ -249,6 +249,17 @@ PARAMETER_ORDER = "XYZABCUVWFSIJKTQRPDHL"
 # Use constants for keys, comment here for values/semantics
 # =============================================================================
 
+# Two levels:
+#   Path.Command.Annotations  information about one command
+#   Path.Path.Annotations     information about the toolpath as a whole (operation level).
+#                             An operation fills self.annotations in opExecute(). A post
+#                             reads postable.data["annotations"] (machine pipeline) or
+#                             obj.Path.Annotations (legacy pipeline).
+# A value is a string or a number at both levels.
+
+# For Path.Path (operation level)
+# No keys are defined yet. Define each new key here.
+
 # For Path.Command
 
 # To skip Processor.py from checking a Path.Command against Supported & Non-Conforming

@@ -67,6 +67,8 @@ class Postable:
         source:    Reference to the original object for traceability (read-only).
         data:      Extension dict. Standard keys:
                      "tool_controller" (Postable) - Present on operation items.
+                     "annotations" (dict) - Present on operation items: a copy of
+                       the operation-level annotations (Path.Path.Annotations).
                      "tool_number" (int/float) - Present on tool_controller items.
     """
 
@@ -198,8 +200,11 @@ def _wrap_op(op: Any) -> Postable:
 
     Data keys populated:
         "tool_controller" (Postable) - Present when the operation has a ToolController.
+        "annotations" (dict) - The operation-level annotations (op.Path.Annotations).
     """
-    data = {}  # WHATIF: = op.postable_annotations()
+    # The pipeline replaces `path` several times, so keep the operation-level
+    # annotations in `data`, where they stay for the life of the Postable.
+    data = {"annotations": dict(op.Path.Annotations) if op.Path else {}}
     raw_tc = PathUtil.toolControllerForOp(op)
     if raw_tc is not None:
         data["tool_controller"] = _wrap_tc(raw_tc)

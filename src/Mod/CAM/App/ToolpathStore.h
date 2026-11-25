@@ -48,6 +48,8 @@ namespace Path::ToolpathStore
  *                    (X, Y, Z), each with one value for each command that has one
  *   string annotations  varint n, then n x (varint command index delta,
  *                                           varint key string id, varint value string id)
+ *   toolpath annotations  varint n, then n x (varint key string id, 1 byte type,
+ *                         value): type 0 = varint value string id, type 1 = raw double
  *
  * A shape is the set of fields that a command has: its name, its parameter
  * letters, the keys of its numeric annotations, and if it has a Tool Axis. Commands with the same
@@ -79,12 +81,19 @@ constexpr double Resolution = 1e-6;
 /// Returns true if \a data starts with the magic bytes of the binary form.
 PathExport bool isBinary(std::string_view data);
 
-/// Returns the binary form of \a commands.
-PathExport std::string encode(const std::vector<Command>& commands);
+/// Returns the binary form of \a commands and of the Toolpath-level \a annotations.
+PathExport std::string encode(
+    const std::vector<Command>& commands,
+    const AnnotationMap& annotations = {}
+);
 
-/** Replaces \a commands with the content of \a data.
- * Throws Base::BadFormatError if \a data is not a valid binary form.
+/** Replaces \a commands and \a annotations with the content of \a data.
+ * Throws Base::BadFormatError if \a data is not a valid binary form; the two
+ * outputs are then not changed.
  */
+PathExport void decode(std::string_view data, std::vector<Command>& commands, AnnotationMap& annotations);
+
+/// As above, for a caller that does not use the Toolpath-level annotations.
 PathExport void decode(std::string_view data, std::vector<Command>& commands);
 
 }  // namespace Path::ToolpathStore

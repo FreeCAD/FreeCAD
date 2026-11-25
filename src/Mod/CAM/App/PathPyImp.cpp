@@ -122,6 +122,78 @@ void PathPy::setCenter(Py::Object obj)
     getToolpathPtr()->setCenter(Py::Vector(obj).toVector());
 }
 
+// Annotations attribute get/set
+
+namespace
+{
+void addAnnotationsFromDict(Path::Toolpath& path, PyObject* dict)
+{
+    // Convert all items first: a refused item must not leave the path half changed.
+    Path::AnnotationMap items;
+    PyObject* key = nullptr;
+    PyObject* value = nullptr;
+    Py_ssize_t pos = 0;
+    while (PyDict_Next(dict, &pos, &key, &value)) {
+        if (!PyUnicode_Check(key)) {
+            throw Py::TypeError("Annotation keys must be strings");
+        }
+        const std::string ckey = PyUnicode_AsUTF8(key);
+        if (PyUnicode_Check(value)) {
+            items[ckey] = std::string(PyUnicode_AsUTF8(value));
+        }
+        else if (PyFloat_Check(value)) {
+            items[ckey] = PyFloat_AsDouble(value);
+        }
+        else if (PyLong_Check(value)) {
+            items[ckey] = static_cast<double>(PyLong_AsLong(value));
+        }
+        else {
+            throw Py::TypeError("Annotation values must be strings or numbers");
+        }
+    }
+    for (const auto& [ckey, cvalue] : items) {
+        if (const std::string* text = std::get_if<std::string>(&cvalue)) {
+            path.setAnnotation(ckey, *text);
+        }
+        else {
+            path.setAnnotation(ckey, std::get<double>(cvalue));
+        }
+    }
+}
+}  // namespace
+
+Py::Dict PathPy::getAnnotations() const
+{
+    Py::Dict dict;
+    for (const auto& [key, value] : getToolpathPtr()->getAnnotations()) {
+        if (const std::string* text = std::get_if<std::string>(&value)) {
+            dict.setItem(key, Py::String(*text));
+        }
+        else {
+            dict.setItem(key, Py::Float(std::get<double>(value)));
+        }
+    }
+    return dict;
+}
+
+void PathPy::setAnnotations(Py::Dict arg)
+{
+    Path::Toolpath scratch;
+    addAnnotationsFromDict(scratch, arg.ptr());
+    getToolpathPtr()->setAnnotations(scratch.getAnnotations());
+}
+
+PyObject* PathPy::addAnnotations(PyObject* args)
+{
+    PyObject* dict = nullptr;
+    if (!PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
+        throw Py::TypeError("Argument must be a dictionary");
+    }
+    addAnnotationsFromDict(*getToolpathPtr(), dict);
+    Py_INCREF(this);
+    return this;
+}
+
 // read-only attributes
 
 Py::Float PathPy::getLength() const
