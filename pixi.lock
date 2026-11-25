@@ -132,7 +132,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/hdf5-1.14.6-nompi_h19486de_110.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/hicolor-icon-theme-0.17-ha770c72_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/icu-78.3-py310h44b86e0_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/ifcopenshell-0.9.0post1-py313hfd7c517_2.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/ifcopenshell-0.9.0post1-py313hfd7c517_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/imath-3.2.2-hde8ca8f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/intel-gmmlib-22.10.2-h7148c6a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/intel-media-driver-26.1.6-hecca717_0.conda
@@ -646,7 +646,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/hdf5-1.14.6-nompi_hf95b8e7_110.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/hicolor-icon-theme-0.17-h8af1aa0_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/icu-78.3-py311h3512406_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/ifcopenshell-0.9.0post1-py313h2635607_2.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/ifcopenshell-0.9.0post1-py313h2635607_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/imath-3.2.2-h92288e7_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/jasper-4.2.9-h8d4df48_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/jsoncpp-1.9.8-h45ce4d5_2.conda
@@ -3876,36 +3876,36 @@ packages:
     - icu >=78.3,<79.0a0
   size: 14459115
   timestamp: 1786545741408
-- conda: https://conda.anaconda.org/conda-forge/linux-64/ifcopenshell-0.9.0post1-py313hfd7c517_2.conda
-  sha256: c7d51c8b822c6cddad525b077779b003dd2682f5cf4369fad7be1fecb7ee46a2
-  md5: c16d1395ed1583bcb55d26459ae3af33
+- conda: https://conda.anaconda.org/conda-forge/linux-64/ifcopenshell-0.9.0post1-py313hfd7c517_3.conda
+  sha256: c3d695eb4d95e36f40e4469274f651b17644fb345d94af0adba8a77abee684dd
+  md5: b4cff461a107155b9c37d6f4b390a22f
   depends:
   - python
   - shapely
   - typing_extensions
   - occt >=8.0.2,<8.1.0a0
   - cgal-cpp >=6.2.1,<6.3.0a0
-  - libgcc >=15
-  - libstdcxx >=15
   - __glibc >=2.17,<3.0.a0
-  - mpfr >=4.2.2,<5.0a0
-  - zstd >=1.5.7,<1.6.0a0
+  - libstdcxx >=15
+  - libgcc >=15
   - occt >=8.0.2,<8.0.3.0a0
-  - libzlib >=1.3.2,<2.0a0
-  - gmp >=6.3.0,<7.0a0
-  - libboost >=1.90.0,<1.91.0a0
-  - rocksdb >=10.6.2,<10.7.0a0
   - libxml2
   - libxml2-16 >=2.15.4
   - python_abi 3.13.* *_cp313
+  - zstd >=1.5.7,<1.6.0a0
+  - rocksdb >=10.6.2,<10.7.0a0
+  - libboost >=1.90.0,<1.91.0a0
+  - libzlib >=1.3.2,<2.0a0
+  - mpfr >=4.2.2,<5.0a0
+  - gmp >=6.3.0,<7.0a0
   license: LGPL-3.0-or-later
   purls: []
   run_exports:
     weak:
     - ifcopenshell >=0.9.0post1,<0.9.0post2.0a0
     - rocksdb >=10.6.2,<10.7.0a0
-  size: 19733299
-  timestamp: 1795405577520
+  size: 19734242
+  timestamp: 1795580304646
 - conda: https://conda.anaconda.org/conda-forge/linux-64/imath-3.2.2-hde8ca8f_0.conda
   sha256: 43f30e6fd8cbe1fef59da760d1847c9ceff3fb69ceee7fd4a34538b0927959dd
   md5: c427448c6f3972c76e8a4474e0fe367b
@@ -10209,9 +10209,9 @@ packages:
     - icu >=78.3,<79.0a0
   size: 14688525
   timestamp: 1786545779464
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/ifcopenshell-0.9.0post1-py313h2635607_2.conda
-  sha256: a25ba2b0b6ad94170ce162346254cd3529bb2489a58357c6be1428314094aa2b
-  md5: ba0905bbf12cdcb13a33b77c88f7e973
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/ifcopenshell-0.9.0post1-py313h2635607_3.conda
+  sha256: af6fd2becfd21955537911717271efff0f73661f048a1e12a82598bbf88953a9
+  md5: 272139cddc7ab145524228fb47b6946b
   depends:
   - python
   - shapely
@@ -10220,24 +10220,24 @@ packages:
   - cgal-cpp >=6.2.1,<6.3.0a0
   - libgcc >=15
   - libstdcxx >=15
-  - rocksdb >=10.6.2,<10.7.0a0
-  - python_abi 3.13.* *_cp313
   - libzlib >=1.3.2,<2.0a0
-  - mpfr >=4.2.2,<5.0a0
-  - zstd >=1.5.7,<1.6.0a0
+  - libboost >=1.90.0,<1.91.0a0
   - occt >=8.0.2,<8.0.3.0a0
+  - gmp >=6.3.0,<7.0a0
+  - python_abi 3.13.* *_cp313
   - libxml2
   - libxml2-16 >=2.15.4
-  - gmp >=6.3.0,<7.0a0
-  - libboost >=1.90.0,<1.91.0a0
+  - rocksdb >=10.6.2,<10.7.0a0
+  - zstd >=1.5.7,<1.6.0a0
+  - mpfr >=4.2.2,<5.0a0
   license: LGPL-3.0-or-later
   purls: []
   run_exports:
     weak:
     - ifcopenshell >=0.9.0post1,<0.9.0post2.0a0
     - rocksdb >=10.6.2,<10.7.0a0
-  size: 19111306
-  timestamp: 1795405514273
+  size: 19112197
+  timestamp: 1795580203485
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/imath-3.2.2-h92288e7_0.conda
   sha256: fba00c8ef8bd59748515c34670c437905708228ee099f39fa2b1fed5693334b3
   md5: 46dd7d944946f14848357d193b94cd8b
@@ -18206,6 +18206,7 @@ packages:
   - gmp >=6.3.0,<7.0a0
   - zstd >=1.5.7,<1.6.0a0
   license: LGPL-3.0-or-later
+  license_family: LGPL
   purls: []
   run_exports:
     weak:
@@ -22764,6 +22765,7 @@ packages:
   - python_abi 3.13.* *_cp313
   - libzlib >=1.3.2,<2.0a0
   license: LGPL-3.0-or-later
+  license_family: LGPL
   purls: []
   run_exports:
     weak:
@@ -27481,6 +27483,7 @@ packages:
   - mpfr >=4.2.2,<5.0a0
   - python_abi 3.13.* *_cp313
   license: LGPL-3.0-or-later
+  license_family: LGPL
   purls: []
   run_exports:
     weak:
