@@ -3029,6 +3029,18 @@ void MainWindow::setWindowTitle(const QString& string)
     if (showVersion) {
         // set main window title with FreeCAD Version
         title = QString::fromStdString(App::Application::getNameWithVersion());
+
+        // development builds with an 8-digit revision can be distinguished this way
+        if (App::Application::isDevelopmentVersion()) {
+            static const QRegularExpression regex(
+                QStringLiteral("^([0-9]{8})(?: \\(Git shallow\\))?$")
+            );
+            const auto revision = QString::fromStdString(App::Application::Config()["BuildRevision"]);
+            const QRegularExpressionMatch match = regex.match(revision);
+            if (match.hasMatch()) {
+                title = QStringLiteral("%1 %2").arg(title, match.captured(1));
+            }
+        }
     }
     else {
         title = appname;
