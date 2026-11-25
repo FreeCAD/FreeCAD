@@ -440,7 +440,7 @@ def _quote_nsis(text):
 
 def _escape_nsis(text):
     return (
-        text.replace("$", "$$").replace('"', r'$\"').replace("\n", r"$\r$\n").replace("\t", r"$\t")
+        text.replace("$", "$$").replace('"', r"$\"").replace("\n", r"$\r$\n").replace("\t", r"$\t")
     )
 
 
@@ -464,7 +464,9 @@ def _merge_installer(path, source, translations):
     old = path.read_text(encoding="utf-8-sig")
     content = _NSIS_ENTRY.sub(replace, old)
     if updates:
-        entries = [f"${{LangFileString}} {key} {_quote_nsis(text)}" for key, text in updates.items()]
+        entries = [
+            f"${{LangFileString}} {key} {_quote_nsis(text)}" for key, text in updates.items()
+        ]
         content = content.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
     if content != old:
         path.write_text(content, encoding="utf-8", newline="\n")
