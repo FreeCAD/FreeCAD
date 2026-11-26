@@ -643,7 +643,7 @@ class _CommandStructure:
         QtCore.QObject.connect(self.modeb, QtCore.SIGNAL("toggled(bool)"), self.switchLH)
 
         # restore preset
-        stored = params.get_param_arch("StructurePreset")
+        stored = params.get_param_arch(self._paramPrefix() + "Preset")
         if stored:
             if stored.lower().startswith("precast_"):
                 self.valuec.setCurrentIndex(1)
@@ -762,7 +762,7 @@ class _CommandStructure:
             self.pSelect = [None]
             fpresets = [" "]
             self.vPresets.addItems(fpresets)
-            params.set_param_arch("StructurePreset", "")
+            params.set_param_arch(self._paramPrefix() + "Preset", "")
 
     def setPreset(self, i):
 
@@ -778,7 +778,7 @@ class _CommandStructure:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
-                params.set_param_arch("StructurePreset", self.Profile)
+                params.set_param_arch(self._paramPrefix() + "Preset", self.Profile)
             else:
                 # elt[4] is the profile's width (along its local X), elt[5] its
                 # height (along its local Y). A beam's profile height is its
@@ -802,7 +802,9 @@ class _CommandStructure:
                 self.setWidth(width)
                 self.Profile = elt
                 self.shape_kind = ShapeKind.PROFILE
-                params.set_param_arch("StructurePreset", ";".join([str(i) for i in self.Profile]))
+                params.set_param_arch(
+                    self._paramPrefix() + "Preset", ";".join([str(i) for i in self.Profile])
+                )
 
     def switchLH(self, beam_toggled):
 

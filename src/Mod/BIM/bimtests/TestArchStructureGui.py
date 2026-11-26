@@ -19,21 +19,21 @@
 #                                                                              #
 ################################################################################
 
-"""GUI tests for the interactive Structure command's preview tracker.
+"""GUI tests for the interactive Structure command.
 
-These tests drive _CommandStructure.update() itself (unlike TestArchStructure's
-placement-config tests, which recompute the anchor independently), so they
-exercise the same code path that produced two real preview/placement mismatches
-found through manual testing: a precast beam's preview was offset by half its
-cross-section, and a column's preview was centered on the cursor instead of
-based there.
+The preview tests drive _CommandStructure.update() directly, exercising the
+same code path as the interactive preview. The task panel tests exercise preset
+selection and restoration between commands.
 """
+
+from contextlib import ExitStack
 
 import FreeCAD as App
 import FreeCADGui
 from FreeCAD import Vector
 import WorkingPlane
 from draftguitools import gui_trackers as DraftTrackers
+from ArchPrecast import _DentsTaskPanel, _PrecastTaskPanel
 from ArchStructure import _CommandStructure, StructureMode, ShapeKind, InsertionPointCycler
 from bimtests import TestArchBaseGui
 
@@ -94,6 +94,47 @@ class TestArchStructureGui(TestArchBaseGui.TestArchBaseGui):
     def _tracker_position(self, cmd):
         pos = cmd.tracker.trans.translation.getValue()
         return Vector(pos[0], pos[1], pos[2])
+
+    def _open_taskbox(self, stack, mode):
+        cmd = self._make_command(mode, ShapeKind.PLAIN, 100.0, 100.0, 1000.0)
+        stack.callback(cmd.tracker.finalize)
+        cmd.Profile = None
+        cmd.precast = _PrecastTaskPanel()
+        cmd.dents = _DentsTaskPanel()
+        cmd.precast.Dents = cmd.dents
+        stack.callback(cmd.precast.form.close)
+        stack.callback(cmd.dents.form.close)
+        stack.callback(cmd.taskbox().close)
+        return cmd
+
+    def test_beam_and_column_remember_separate_presets(self):
+        self.printTestMessage("Beam and Column remember separate presets")
+        prefs = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        saved_presets = prefs.GetStrings()
+        with ExitStack() as stack:
+            for key in ("StructurePreset", "BeamPreset", "ColumnPreset"):
+                if key in saved_presets:
+                    stack.callback(prefs.SetString, key, prefs.GetString(key))
+                else:
+                    stack.callback(prefs.RemString, key)
+                prefs.RemString(key)
+
+            beam = self._open_taskbox(stack, StructureMode.BEAM)
+            beam.valuec.setCurrentIndex(1)
+            self.assertEqual(beam.Profile, "Precast_Beam")
+
+            column = self._open_taskbox(stack, StructureMode.COLUMN)
+            self.assertIsNone(column.Profile)
+            column.valuec.setCurrentIndex(1)
+            column.vPresets.setCurrentIndex(column.precast.PrecastTypes.index("Pillar"))
+            self.assertEqual(column.Profile, "Precast_Pillar")
+
+            self.assertEqual(self._open_taskbox(stack, StructureMode.BEAM).Profile, "Precast_Beam")
+            reopened_column = self._open_taskbox(stack, StructureMode.COLUMN)
+            self.assertEqual(reopened_column.Profile, "Precast_Pillar")
+            reopened_column.valuec.setCurrentIndex(0)
+            self.assertIsNone(self._open_taskbox(stack, StructureMode.COLUMN).Profile)
+            self.assertEqual(self._open_taskbox(stack, StructureMode.BEAM).Profile, "Precast_Beam")
 
     def test_precast_beam_preview_centers_on_cross_section(self):
         """A precast beam's preview must be centered on the picked line, not
