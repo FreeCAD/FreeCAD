@@ -63,9 +63,15 @@ class SCwriter:
         pass
 
     def handleStaticCurrentMaterial(self, bodies):
+        assigned = set()
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
-            refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
+            refs = (
+                obj.References[0][1]
+                if obj.References
+                else [name for name in self.write.getAllBodies() if name not in assigned]
+            )
+            assigned.update(refs)
             for name in (n for n in refs if n in bodies):
                 self.write.material(name, "Name", m["Name"])
                 if "ElectricalConductivity" in m:
