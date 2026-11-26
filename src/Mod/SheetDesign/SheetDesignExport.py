@@ -56,12 +56,24 @@ LAYERS = {
 DEFLECTION = 0.01
 
 
+def bend_numbers(flat, count=None):
+    """The number of each bend in the bend sequence. The property BendOrder gives it, if it has
+    each number from 1 one time. If not, the numbers are 1, 2, 3."""
+    if count is None:
+        count = len(getattr(flat, "BendAngles", []))
+    order = [int(value) for value in getattr(flat, "BendOrder", [])]
+    if sorted(order) == list(range(1, count + 1)):
+        return order
+    return list(range(1, count + 1))
+
+
 class Bend:
-    def __init__(self, edge, angle, radius):
+    def __init__(self, edge, angle, radius, number=0):
         self.start = edge.Vertexes[0].Point
         self.end = edge.Vertexes[-1].Point
         self.angle = angle
         self.radius = radius
+        self.number = number
 
     @property
     def layer(self):
@@ -69,7 +81,8 @@ class Bend:
 
     def text(self, degree="°"):
         direction = "UP" if self.angle >= 0 else "DOWN"
-        return f"{direction} {abs(self.angle):g}{degree} R{self.radius:g}"
+        number = f"{self.number} " if self.number else ""
+        return f"{number}{direction} {abs(self.angle):g}{degree} R{self.radius:g}"
 
     def text_position(self, height):
         """The start point and the rotation of the text, beside the middle of the line."""
@@ -100,6 +113,7 @@ class Layout:
         angles = list(getattr(flat, "BendAngles", []))
         radii = list(getattr(flat, "BendRadii", []))
         self.bends = []
+        numbers = bend_numbers(flat, len(angles))
         self.forms = []
         lines = []
         for part in parts[1:]:
@@ -112,7 +126,7 @@ class Layout:
             edge = line.transformed(to_xy, True)
             angle = angles[index] if index < len(angles) else 0.0
             radius = radii[index] if index < len(radii) else 0.0
-            self.bends.append(Bend(edge, angle, radius))
+            self.bends.append(Bend(edge, angle, radius, numbers[index] if index < len(numbers) else 0))
         self.box = face.BoundBox
 
     def wires(self):

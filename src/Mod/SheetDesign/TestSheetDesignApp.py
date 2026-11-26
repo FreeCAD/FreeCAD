@@ -1499,7 +1499,7 @@ class TestSheetDesign(unittest.TestCase):
         self.assertEqual(by_layer["BEND_DOWN"], ["LINE"])
         self.assertEqual(sorted(by_layer["BEND_TEXT"]), ["TEXT", "TEXT"])
         texts = sorted(values["1"] for kind, _layer, values in entities if kind == "TEXT")
-        self.assertEqual(texts, ["DOWN 45%%d R1", "UP 90%%d R1"])
+        self.assertEqual(texts, ["1 UP 90%%d R1", "2 DOWN 45%%d R1"])
         # The bend layers have the dashed line type.
         self.assertIn("BEND_UP\n70\n0\n62\n3\n6\nDASHED", text)
         self.assertIn("OUTLINE\n70\n0\n62\n7\n6\nCONTINUOUS", text)
@@ -1558,7 +1558,7 @@ class TestSheetDesign(unittest.TestCase):
         self.assertIn("stroke-dasharray", groups["BEND_UP"].toxml())
         self.assertNotIn("stroke-dasharray", groups["OUTLINE"].toxml())
         labels = sorted(node.firstChild.data for node in document.getElementsByTagName("text"))
-        self.assertEqual(labels, ["DOWN 45° R1", "UP 90° R1"])
+        self.assertEqual(labels, ["1 UP 90° R1", "2 DOWN 45° R1"])
         # The size of the drawing is the size of the flat pattern, with a margin, in mm.
         svg = document.documentElement
         box = flat.Shape.BoundBox
@@ -2281,3 +2281,74 @@ class TestSheetDesign(unittest.TestCase):
         flange = self.add_feature("Flange", "Flange", Edge=self.corner_edges(base), Profile=self.add_shape(shape, "Shape"))
         self.assertFalse(flange.isValid())
         self.assertIn("only one edge", flange.getStatusString())
+
+    # ------------------------------------------------------------- drawing (step 26)
+
+    def test_bend_order_gives_the_numbers(self):
+        import SheetDesignExport
+
+        flat = self.part_for_export()
+        self.assertEqual(SheetDesignExport.bend_numbers(flat), [1, 2])
+        flat.BendOrder = [2, 1]
+        self.assertEqual(SheetDesignExport.bend_numbers(flat), [2, 1])
+        self.assertIn("2 UP 90%%d R1", SheetDesignExport.dxf_text(flat))
+        # A list that is not a sequence from 1 is not used.
+        flat.BendOrder = [1, 1]
+        self.assertEqual(SheetDesignExport.bend_numbers(flat), [1, 2])
+
+    def test_drawing_has_a_view_notes_and_a_table(self):
+        import SheetDesignDrawing
+
+        flat = self.part_for_export()
+        page, view, notes, table = SheetDesignDrawing.make_drawing(flat)
+        self.assertEqual({o.Name for o in page.Views}, {view.Name, notes.Name, table.Name})
+        # The view shows the outline with no bend lines. Its direction is the normal of the part.
+        self.assertEqual(len(view.Source[0].Shape.Edges), len(flat.Shape.Edges) - 2)
+        self.assertAlmostEqual(view.Direction.z, 1.0, places=6)
+        self.assertEqual(view.Scale, 1.0)
+        # The notes have one line and one number for each bend, on the position of the view.
+        self.assertEqual(notes.Symbol.count("<line"), 2)
+        self.assertEqual(notes.Symbol.count("<circle"), 2)
+        self.assertAlmostEqual(notes.X.Value, view.X.Value, places=6)
+        rows, layout = SheetDesignDrawing.table_rows(flat)
+        self.assertEqual(rows, [(1, "Up", "90°", "1"), (2, "Down", "45°", "1")])
+        self.assertIn(f"Flat size: {layout.box.XLength:.2f} x {layout.box.YLength:.2f} mm", table.Symbol)
+        self.assertIn("Thickness: 2 mm", table.Symbol)
+        self.assertIn("Scale of the view: 1:1", table.Symbol)
+
+    def test_drawing_follows_the_part(self):
+        import xml.dom.minidom
+
+        import SheetDesignDrawing
+
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        _page, view, notes, table = SheetDesignDrawing.make_drawing(flat)
+        self.assertEqual(notes.Symbol.count("<line"), 1)
+        first = notes.Symbol
+        second = self.add_flange(flange, V(0, 0, 0), V(0, self.WIDTH, 0), Length=15.0)
+        flat.Source = second
+        view.Source[0].Source = second
+        self.doc.recompute()
+        self.assertEqual(notes.Symbol.count("<line"), 2)
+        self.assertNotEqual(notes.Symbol, first)
+        self.assertEqual(len(SheetDesignDrawing.table_rows(flat)[0]), 2)
+        self.assertIn(">Down<", table.Symbol)
+        # The symbols are correct XML, and the bend line is at the paper position of the bend.
+        xml.dom.minidom.parseString(table.Symbol)
+        document = xml.dom.minidom.parseString(notes.Symbol)
+        line = document.getElementsByTagName("line")[0]
+        box = flat.Shape.BoundBox
+        expected = (self.LENGTH + self.allowance() / 2 - (box.XMin + box.XMax) / 2) * view.Scale
+        self.assertAlmostEqual(float(line.getAttribute("x1")), expected, places=3)
+
+    def test_drawing_selects_a_scale_for_a_large_part(self):
+        import SheetDesignDrawing
+
+        shape = self.add_feature("BaseShape", "Large", Rule=self.rule, Type="Tub", Length=900.0, Width=400.0, Height=80.0)
+        flat = self.add_flat(shape)
+        _page, view, _notes, _table = SheetDesignDrawing.make_drawing(flat)
+        self.assertLess(view.Scale, 1.0)
+        self.assertIn(f"Scale of the view: {SheetDesignDrawing.scale_text(view.Scale)}", _table.Symbol)
+        template = view.findParentPage().Template
+        self.assertLess(flat.Shape.BoundBox.XLength * view.Scale, template.Width.Value)

@@ -618,6 +618,27 @@ class CommandExport(_Command):
             SheetDesignExport.export(flat, path)
 
 
+class CommandDrawing(_Command):
+    name = "SheetDesign_Drawing"
+    menu = "Flat Pattern Drawing"
+    tip = "Makes a drawing page with the selected flat pattern, its bend notes, and its bend table"
+
+    def IsActive(self):
+        sel = FreeCADGui.Selection.getSelection()
+        return len(sel) == 1 and sel[0].isDerivedFrom("SheetDesign::FlatPattern")
+
+    def Activated(self):
+        import SheetDesignDrawing
+
+        flat = FreeCADGui.Selection.getSelection()[0]
+        doc = flat.Document
+        doc.openTransaction("Flat Pattern Drawing")
+        page = SheetDesignDrawing.make_drawing(flat)[0]
+        doc.commitTransaction()
+        if page.ViewObject is not None:
+            page.ViewObject.show()
+
+
 def register():
     commands = [
         CommandRule,
@@ -636,6 +657,7 @@ def register():
         CommandForm,
         CommandPerforation,
         CommandFlatPattern,
+        CommandDrawing,
         CommandExport,
     ]
     for command in commands:

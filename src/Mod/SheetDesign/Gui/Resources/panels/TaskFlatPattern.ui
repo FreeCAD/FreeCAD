@@ -42,11 +42,16 @@
       <item row="2" column="0" colspan="2">
        <widget class="QTableWidget" name="bendsTable">
         <property name="toolTip">
-         <string>The direction, the angle, and the radius of each bend</string>
+         <string>The bends. Change a number in the first column to set the bend sequence</string>
         </property>
         <property name="columnCount">
-         <number>3</number>
+         <number>4</number>
         </property>
+        <column>
+         <property name="text">
+          <string>Sequence</string>
+         </property>
+        </column>
         <column>
          <property name="text">
           <string>Direction</string>
@@ -65,12 +70,22 @@
        </widget>
       </item>
       <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="drawingButton">
+        <property name="text">
+         <string>Make Drawing</string>
+        </property>
+        <property name="toolTip">
+         <string>Makes a drawing page with the flat pattern, the bend notes, and the bend table</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
        <widget class="QPushButton" name="exportButton">
         <property name="text">
          <string>Export…</string>
         </property>
         <property name="toolTip">
-         <string>Exports the flat pattern to a DXF file</string>
+         <string>Exports the flat pattern to a DXF or an SVG file</string>
         </property>
        </widget>
       </item>

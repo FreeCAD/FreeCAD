@@ -1609,6 +1609,15 @@ FlatPattern::FlatPattern()
         "goes up. Negative: it goes down"
     );
     ADD_PROPERTY_TYPE(BendRadii, (0.0), "Sheet Design", output, "Inner radius of each bend");
+    ADD_PROPERTY_TYPE(
+        BendOrder,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "Number of each bend in the bend sequence, in the sequence of the bend lines. Empty: "
+        "the numbers 1, 2, 3"
+    );
+    BendOrder.setValues(std::vector<long>());
     BendAngles.setValues(std::vector<double>());
     BendRadii.setValues(std::vector<double>());
     Source.setScope(App::LinkScope::Global);

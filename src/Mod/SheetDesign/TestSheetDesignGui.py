@@ -243,8 +243,8 @@ class TestSheetDesignGui(unittest.TestCase):
         self.doc.recompute()
         table = self.open_panel(flat).form.bendsTable
         self.assertEqual(table.rowCount(), 2)
-        self.assertEqual([table.item(0, c).text() for c in range(3)], ["Up", "90 °", "1 mm"])
-        self.assertEqual([table.item(1, c).text() for c in range(3)], ["Down", "45 °", "1 mm"])
+        self.assertEqual([table.item(0, c).text() for c in range(4)], ["1", "Up", "90 °", "1 mm"])
+        self.assertEqual([table.item(1, c).text() for c in range(4)], ["2", "Down", "45 °", "1 mm"])
 
     # ----------------------------------------------------------------- Stage 4 features
 
@@ -420,3 +420,38 @@ class TestSheetDesignGui(unittest.TestCase):
         SheetDesignViewProviders.ACTIVE_PANEL.accept()
         FreeCADGui.Control.closeDialog()
         self.assertEqual(flange.Overlap.Value, 0.0)
+
+    # ------------------------------------------------------------------- drawing
+
+    def flat_with_two_bends(self):
+        down = self.add("SheetDesign::Flange", "Down")
+        down.Edge = (self.flange, [self.edge(V(0, 0, 0), V(0, 50, 0), self.flange.Shape)])
+        flat = self.add("SheetDesign::FlatPattern", "Flat")
+        flat.Source = down
+        self.doc.recompute()
+        return flat
+
+    def test_panel_sets_the_bend_sequence(self):
+        flat = self.flat_with_two_bends()
+        table = self.open_panel(flat).form.bendsTable
+        self.assertEqual([table.item(r, 0).text() for r in range(2)], ["1", "2"])
+        table.item(0, 0).setText("2")
+        self.assertEqual(list(flat.BendOrder), [2, 1])
+        self.assertEqual([table.item(r, 0).text() for r in range(2)], ["2", "1"])
+        # A number that is not in the sequence is not accepted.
+        table.item(0, 0).setText("7")
+        self.assertEqual(list(flat.BendOrder), [2, 1])
+        self.assertEqual(table.item(0, 0).text(), "2")
+
+    def test_drawing_command_makes_a_page(self):
+        flat = self.flat_with_two_bends()
+        FreeCADGui.activateWorkbench("SheetDesignWorkbench")
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(flat)
+        FreeCADGui.runCommand("SheetDesign_Drawing")
+        pages = [o for o in self.doc.Objects if o.isDerivedFrom("TechDraw::DrawPage")]
+        self.assertEqual(len(pages), 1)
+        self.assertEqual(len(pages[0].Views), 3)
+        notes = self.doc.getObject("BendNotes")
+        self.assertEqual(notes.Symbol.count("<circle"), 2)
+        self.assertEqual([o.Name for o in self.doc.Objects if not o.isValid()], [])

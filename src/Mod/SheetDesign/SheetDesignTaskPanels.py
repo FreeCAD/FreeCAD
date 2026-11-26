@@ -353,24 +353,65 @@ class TaskFlatPattern(TaskPanel):
 
     def setup(self):
         self.form.exportButton.clicked.connect(self.export)
+        self.form.drawingButton.clicked.connect(self.drawing)
+        self.form.bendsTable.itemChanged.connect(self.sequence_changed)
 
     def update(self):
         super().update()
         self.form.sourceLabel.setText(label_of(self.obj.Source))
         # The table of the bends: what the operator of the press brake must know.
+        import SheetDesignExport
+
         table = self.form.bendsTable
         angles, radii = list(self.obj.BendAngles), list(self.obj.BendRadii)
+        numbers = SheetDesignExport.bend_numbers(self.obj, len(angles))
+        table.blockSignals(True)
         table.setRowCount(len(angles))
         table.setHorizontalHeaderLabels(
-            [translate("SheetDesign", "Direction"), translate("SheetDesign", "Angle"), translate("SheetDesign", "Radius")]
+            [
+                translate("SheetDesign", "Sequence"),
+                translate("SheetDesign", "Direction"),
+                translate("SheetDesign", "Angle"),
+                translate("SheetDesign", "Radius"),
+            ]
         )
         table.horizontalHeader().setStretchLastSection(True)
         for row, (angle, radius) in enumerate(zip(angles, radii)):
             direction = translate("SheetDesign", "Up") if angle >= 0 else translate("SheetDesign", "Down")
-            for column, text in enumerate((direction, f"{abs(angle):g} °", f"{radius:g} mm")):
+            for column, text in enumerate((str(numbers[row]), direction, f"{abs(angle):g} °", f"{radius:g} mm")):
                 item = QtGui.QTableWidgetItem(text)
-                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+                if column > 0:
+                    item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
                 table.setItem(row, column, item)
+        table.blockSignals(False)
+
+    def sequence_changed(self, item):
+        """A number in the first column: put the bend at that place of the sequence."""
+        if item.column() != 0:
+            return
+        import SheetDesignExport
+
+        count = self.form.bendsTable.rowCount()
+        numbers = SheetDesignExport.bend_numbers(self.obj, count)
+        try:
+            wanted = int(item.text())
+        except ValueError:
+            wanted = 0
+        if 1 <= wanted <= count and wanted != numbers[item.row()]:
+            # The bend that had this number gets the old number of the changed bend.
+            other = numbers.index(wanted)
+            numbers[other], numbers[item.row()] = numbers[item.row()], wanted
+            self.obj.BendOrder = numbers
+            self.changed()
+        else:
+            self.update()
+
+    def drawing(self):
+        import SheetDesignDrawing
+
+        page = SheetDesignDrawing.make_drawing(self.obj)[0]
+        if page.ViewObject is not None:
+            page.ViewObject.show()
 
     def export(self):
         FreeCADGui.Selection.clearSelection()
