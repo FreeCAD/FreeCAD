@@ -5,7 +5,6 @@ from Base.Matrix import Matrix
 from Base.Placement import Placement
 from DepEdge import DepEdge
 from Document import Document as DocumentPy
-from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 from typing import Any, Final, Self, overload, Literal
@@ -353,7 +352,7 @@ class DocumentObject(ExtensionContainer):
         Return true to indicate the object having child elements
         """
 
-    def getParentGroup(self) -> DocumentObjectGroup | None:
+    def getParentGroup(self) -> DocumentObject | None:
         """
         Returns the group the object is in or None if it is not part of a group.
 
