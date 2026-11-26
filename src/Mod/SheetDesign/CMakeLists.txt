@@ -17,7 +17,13 @@ set(SheetDesign_Scripts
 )
 
 if(BUILD_GUI)
-    list (APPEND SheetDesign_Scripts InitGui.py SheetDesignCommands.py)
+    list (APPEND SheetDesign_Scripts
+        InitGui.py
+        SheetDesignCommands.py
+        SheetDesignTaskPanels.py
+        SheetDesignViewProviders.py
+        TestSheetDesignGui.py
+    )
 endif(BUILD_GUI)
 
 add_custom_target(SheetDesignScripts ALL

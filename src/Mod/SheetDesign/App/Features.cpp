@@ -341,6 +341,35 @@ std::shared_ptr<SheetModel> Feature::buildModel()
     throw Base::NotImplementedError("Sheet design: this feature has no model");
 }
 
+bool Feature::findEdge(const char* element, EdgeRef& ref)
+{
+    std::shared_ptr<const SheetModel> sheet = getModel();
+    // The model is in the coordinates of the shape without its placement.
+    TopoDS_Shape whole = Shape.getValue();
+    whole.Location(TopLoc_Location());
+    const TopoDS_Shape sub = Part::TopoShape(whole).getSubShape(element, true);
+    if (sub.IsNull()) {
+        return false;
+    }
+    bool found = false;
+    if (sub.ShapeType() == TopAbs_EDGE) {
+        found = sheet->findEdge(TopoDS::Edge(sub), ref);
+    }
+    else if (sub.ShapeType() == TopAbs_FACE) {
+        // A side face: use its edge on the top side if there is one.
+        for (TopExp_Explorer ex(sub, TopAbs_EDGE); ex.More(); ex.Next()) {
+            EdgeRef candidate;
+            if (sheet->findEdge(TopoDS::Edge(ex.Current()), candidate)) {
+                if (!found || candidate.top) {
+                    ref = candidate;
+                }
+                found = true;
+            }
+        }
+    }
+    return found;
+}
+
 gp_Trsf Feature::toLocal(const App::DocumentObject* object) const
 {
     // The placement of an object is in the coordinates of its container. The shape of a
@@ -698,28 +727,8 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     }
     auto result = std::make_shared<SheetModel>(*sourceModel(source));
 
-    // The model is in the coordinates of the source shape without its placement.
-    TopoDS_Shape whole = source->Shape.getValue();
-    whole.Location(TopLoc_Location());
-    const TopoDS_Shape sub = Part::TopoShape(whole).getSubShape(subs.front().c_str());
-
     EdgeRef ref;
-    bool found = false;
-    if (sub.ShapeType() == TopAbs_EDGE) {
-        found = result->findEdge(TopoDS::Edge(sub), ref);
-    }
-    else if (sub.ShapeType() == TopAbs_FACE) {
-        // A side face: use its edge on the top side if there is one.
-        for (TopExp_Explorer ex(sub, TopAbs_EDGE); ex.More(); ex.Next()) {
-            EdgeRef candidate;
-            if (result->findEdge(TopoDS::Edge(ex.Current()), candidate)) {
-                if (!found || candidate.top) {
-                    ref = candidate;
-                }
-                found = true;
-            }
-        }
-    }
+    const bool found = source->findEdge(subs.front().c_str(), ref);
     if (!found) {
         throw Base::ValueError("Sheet design: the selection is not a straight edge of a flat panel");
     }

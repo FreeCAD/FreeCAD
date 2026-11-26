@@ -60,8 +60,17 @@ public:
 
     const char* getViewProviderName() const override
     {
-        return "PartDesignGui::ViewProvider";
+        // The Python-capable view provider: the edit logic of the features is in Python.
+        return "PartDesignGui::ViewProviderPython";
     }
+
+    /**
+     * Find the boundary segment of a panel for an edge or a side face of the shape of this
+     * feature. A task panel uses this to test a selection.
+     *
+     * @return false if the element is not a straight edge of a flat panel.
+     */
+    bool findEdge(const char* element, EdgeRef& ref);
 
     /// The transformation from the coordinates of the container of an object into the
     /// coordinates of the container of this feature. A container is, for example, a Body.
@@ -210,7 +219,7 @@ public:
 
     const char* getViewProviderName() const override
     {
-        return "PartGui::ViewProviderPart";
+        return "PartGui::ViewProviderPython";
     }
 };
 

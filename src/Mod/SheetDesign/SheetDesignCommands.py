@@ -27,6 +27,8 @@ The commands only make document objects and set their links. All geometry is in 
 import FreeCAD
 import FreeCADGui
 
+import SheetDesignViewProviders
+
 translate = FreeCAD.Qt.translate
 
 
@@ -143,11 +145,19 @@ def _advance_flat_patterns(old, new):
             obj.Source = new
 
 
-def _finish(doc, hide=()):
+def _attach(obj):
+    """Give a new feature its view provider proxy, thus it has its icon and its task panel."""
+    return SheetDesignViewProviders.attach(obj)
+
+
+def _finish(doc, hide=(), edit=None):
+    """End a command. With edit, open the task panel of the new feature."""
     for obj in hide:
         obj.ViewObject.hide()
     doc.recompute()
     doc.commitTransaction()
+    if edit is not None:
+        SheetDesignViewProviders.edit(edit)
 
 
 class _Command:
@@ -194,7 +204,7 @@ class CommandBase(_Command):
         doc.openTransaction("Base Panel")
         body = _body_for(doc, profile)
         _adopt(body, profile)
-        obj = body.newObject("SheetDesign::BasePanel", "BasePanel")
+        obj = _attach(body.newObject("SheetDesign::BasePanel", "BasePanel"))
         obj.Rule = _find_rule(doc)
         obj.Profile = profile
         _finish(doc, hide=[profile])
@@ -225,11 +235,11 @@ class CommandRefold(_Command):
         body = _body_for(doc, profile, lines)
         _adopt(body, profile)
         _adopt(body, lines)
-        obj = body.newObject("SheetDesign::Refold", "Refold")
+        obj = _attach(body.newObject("SheetDesign::Refold", "Refold"))
         obj.Rule = _find_rule(doc)
         obj.Profile = profile
         obj.BendLines = lines
-        _finish(doc, hide=[profile, lines])
+        _finish(doc, hide=[profile, lines], edit=obj)
 
 
 def _has_closed_wire(obj):
@@ -258,10 +268,10 @@ class CommandUnfold(_Command):
         source, face = self._pick()
         doc = source.Document
         doc.openTransaction("Unfold")
-        obj = _body_for(doc, source).newObject("SheetDesign::Unfold", "Unfold")
+        obj = _attach(_body_for(doc, source).newObject("SheetDesign::Unfold", "Unfold"))
         obj.Rule = _find_rule(doc)
         obj.Face = (source, [face])
-        flat = doc.addObject("SheetDesign::FlatPattern", "FlatPattern")
+        flat = _attach(doc.addObject("SheetDesign::FlatPattern", "FlatPattern"))
         flat.Source = obj
         _finish(doc, hide=[source])
 
@@ -288,13 +298,15 @@ class CommandFlange(_Command):
             if name is None:
                 FreeCAD.Console.PrintWarning("Sheet design: an edge was not found after a flange\n")
                 continue
-            obj = _new_after(source, "SheetDesign::Flange", "Flange")
+            obj = _attach(_new_after(source, "SheetDesign::Flange", "Flange"))
             obj.Edge = (source, [name])
             _advance_flat_patterns(source, obj)
             source.ViewObject.hide()
             doc.recompute()
             source = obj
         doc.commitTransaction()
+        if _is_feature(source) and source.TypeId == "SheetDesign::Flange":
+            SheetDesignViewProviders.edit(source)
 
 
 def _element_name(shape, element):
@@ -336,12 +348,12 @@ class CommandCut(_Command):
         source, profile = self._pick()
         doc = source.Document
         doc.openTransaction(self.menu)
-        obj = _new_after(source, "SheetDesign::Cut", "Cut")
+        obj = _attach(_new_after(source, "SheetDesign::Cut", "Cut"))
         obj.Source = source
         obj.Profile = profile
         obj.Space = self.space
         _advance_flat_patterns(source, obj)
-        _finish(doc, hide=[source, profile])
+        _finish(doc, hide=[source, profile], edit=obj)
 
 
 class CommandCutFlat(CommandCut):
@@ -364,7 +376,7 @@ class CommandFlatPattern(_Command):
         source = FreeCADGui.Selection.getSelection()[0]
         doc = source.Document
         doc.openTransaction("Flat Pattern")
-        obj = doc.addObject("SheetDesign::FlatPattern", "FlatPattern")
+        obj = _attach(doc.addObject("SheetDesign::FlatPattern", "FlatPattern"))
         obj.Source = source
         _finish(doc)
 

@@ -1,0 +1,356 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
+"""Task panels of the SheetDesign module.
+
+A task panel is a .ui file in the compiled resource (Gui/Resources/panels) and a small class
+here. The base class connects each widget to the property of the feature that has the same
+name as the widget. Thus a new value needs only a property on the feature and a widget with
+that name in the .ui file.
+"""
+
+import FreeCAD
+import FreeCADGui
+from PySide import QtCore, QtGui
+
+translate = FreeCAD.Qt.translate
+
+
+def sentence_case(text):
+    """The text of a drop-down entry: "Material Outside" shows as "Material outside"."""
+    return text[:1] + text[1:].lower()
+
+
+def label_of(obj):
+    return obj.Label if obj is not None else ""
+
+
+class TaskPanel:
+    """Base class: loads the .ui file and connects the widgets to the properties."""
+
+    ui_file = ""
+    title = ""
+    icon = ""
+
+    def __init__(self, obj):
+        self.obj = obj
+        self.doc = obj.Document
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/" + self.ui_file)
+        self.form.setWindowTitle(translate("SheetDesign", self.title))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/" + self.icon + ".svg"))
+        self.bindings = []
+        self.enumerations = {}
+        self.doc.openTransaction(translate("SheetDesign", "Edit {}").format(self.title))
+        self.connect_properties()
+        self.setup()
+        self.update()
+
+    # ------------------------------------------------------------- widgets and properties
+
+    def widget(self, name):
+        return self.form.findChild(QtCore.QObject, name)
+
+    def connect_properties(self):
+        for name in self.obj.PropertiesList:
+            widget = self.widget(name)
+            if widget is None:
+                continue
+            kind = widget.metaObject().className()
+            if kind == "Gui::QuantitySpinBox":
+                self.connect_quantity(widget, name)
+            elif kind == "QComboBox":
+                self.connect_enumeration(widget, name)
+            elif kind == "QCheckBox":
+                self.connect_bool(widget, name)
+
+    def connect_quantity(self, widget, name):
+        # The binding gives the widget the expression editor of the property.
+        binding = FreeCADGui.ExpressionBinding(widget)
+        binding.bind(self.obj, name)
+        self.bindings.append(binding)
+        value = getattr(self.obj, name)
+        widget.setProperty("rawValue", getattr(value, "Value", value))
+        widget.valueChanged.connect(lambda _value, n=name, w=widget: self.quantity_changed(n, w))
+
+    def quantity_changed(self, name, widget):
+        if self.has_expression(name):
+            return  # The expression gives the value.
+        value = widget.property("rawValue")
+        current = getattr(self.obj, name)
+        if abs(getattr(current, "Value", current) - value) > 1e-9:
+            setattr(self.obj, name, value)
+            self.changed()
+
+    def has_expression(self, name):
+        return any(path == name for path, _expression in self.obj.ExpressionEngine)
+
+    def connect_enumeration(self, widget, name):
+        values = list(self.obj.getEnumerationsOfProperty(name))
+        self.enumerations[name] = values
+        widget.blockSignals(True)
+        widget.clear()
+        for value in values:
+            widget.addItem(translate("SheetDesign", sentence_case(value)))
+        widget.setCurrentIndex(values.index(getattr(self.obj, name)))
+        widget.blockSignals(False)
+        widget.currentIndexChanged.connect(lambda index, n=name: self.enumeration_changed(n, index))
+
+    def enumeration_changed(self, name, index):
+        setattr(self.obj, name, self.enumerations[name][index])
+        self.changed()
+
+    def connect_bool(self, widget, name):
+        widget.setChecked(bool(getattr(self.obj, name)))
+        widget.toggled.connect(lambda state, n=name: self.bool_changed(n, state))
+
+    def bool_changed(self, name, state):
+        setattr(self.obj, name, bool(state))
+        self.changed()
+
+    # ------------------------------------------------------------------- panel behavior
+
+    def setup(self):
+        """Connect the widgets that are not properties. For the subclasses."""
+
+    def update(self):
+        """Show the state of the feature. A subclass adds its own widgets."""
+        status = self.widget("statusLabel")
+        if status is None:
+            return
+        text = ""
+        if not self.obj.isValid():
+            text = self.obj.getStatusString()
+        elif getattr(self.obj, "Overlap", None) is not None and self.obj.Overlap.Value > 0:
+            text = translate(
+                "SheetDesign", "Panels of the folded part are in the same space ({:.1f} mm³)"
+            ).format(self.obj.Overlap.Value)
+        status.setText(text)
+        status.setStyleSheet("color: #cc0000;" if text else "")
+
+    def changed(self):
+        self.doc.recompute()
+        self.update()
+
+    # ----------------------------------------------------------- interface of the dialog
+
+    def getStandardButtons(self):
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+
+    def close(self):
+        """Stop all that the panel started. For the subclasses."""
+
+    def accept(self):
+        self.close()
+        self.doc.commitTransaction()
+        FreeCADGui.ActiveDocument.resetEdit()
+        self.doc.recompute()
+        return True
+
+    def reject(self):
+        self.close()
+        self.doc.abortTransaction()
+        FreeCADGui.ActiveDocument.resetEdit()
+        self.doc.recompute()
+        return True
+
+
+class EdgeGate:
+    """Lets the user select only an edge or a side face that can hold a flange."""
+
+    def __init__(self, source):
+        self.source = source
+
+    def allow(self, _doc, obj, sub):
+        import SheetDesign
+
+        if obj != self.source or not sub:
+            return False
+        return SheetDesign.edgeInfo(obj, sub.split(".")[-1]) is not None
+
+
+class TaskFlange(TaskPanel):
+    ui_file = "TaskFlange.ui"
+    title = "Flange"
+    icon = "SheetDesign_Flange"
+
+    def setup(self):
+        self.selecting = False
+        self.form.selectEdge.toggled.connect(self.select_edge)
+
+    def update(self):
+        super().update()
+        source, subs = self.obj.Edge if self.obj.Edge else (None, [])
+        self.form.edgeLabel.setText(f"{label_of(source)}.{subs[0]}" if source and subs else "")
+        profile = self.obj.Profile
+        self.form.profileLabel.setText(label_of(profile))
+        # A profile gives the length. The explicit relief types use the sizes of the flange.
+        for name in ("Length", "LengthType", "Miter1", "Miter2"):
+            self.widget(name).setEnabled(profile is None)
+        own_relief = self.obj.ReliefType in ("Rectangle", "Round")
+        self.form.ReliefWidth.setEnabled(own_relief)
+        self.form.ReliefDepth.setEnabled(own_relief)
+        self.form.MiterGap.setEnabled(bool(self.obj.AutoMiter))
+
+    def select_edge(self, active):
+        """Show the feature before the flange, and take the next edge that the user selects."""
+        source = self.obj.Edge[0] if self.obj.Edge else None
+        if source is None:
+            return
+        self.selecting = active
+        if active:
+            self.obj.ViewObject.hide()
+            source.ViewObject.show()
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelectionGate(EdgeGate(source))
+            FreeCADGui.Selection.addObserver(self)
+        else:
+            FreeCADGui.Selection.removeObserver(self)
+            FreeCADGui.Selection.removeSelectionGate()
+            source.ViewObject.hide()
+            self.obj.ViewObject.show()
+
+    def addSelection(self, _doc, obj_name, sub, _point):
+        """Selection observer: a valid edge was selected."""
+        source = self.obj.Edge[0]
+        if not self.selecting or obj_name != source.Name or not sub:
+            return
+        self.obj.Edge = (source, [sub.split(".")[-1]])
+        self.form.selectEdge.setChecked(False)
+        FreeCADGui.Selection.clearSelection()
+        self.changed()
+
+    def close(self):
+        if self.selecting:
+            self.form.selectEdge.setChecked(False)
+
+
+class TaskBasePanel(TaskPanel):
+    ui_file = "TaskBasePanel.ui"
+    title = "Base Panel"
+    icon = "SheetDesign_Base"
+
+    def update(self):
+        super().update()
+        self.form.profileLabel.setText(label_of(self.obj.Profile))
+        self.form.ruleLabel.setText(label_of(self.obj.Rule))
+
+
+class TaskCut(TaskPanel):
+    ui_file = "TaskCut.ui"
+    title = "Cut"
+    icon = "SheetDesign_Cut"
+
+    def update(self):
+        super().update()
+        self.form.profileLabel.setText(label_of(self.obj.Profile))
+
+
+class TaskRefold(TaskPanel):
+    ui_file = "TaskRefold.ui"
+    title = "Refold"
+    icon = "SheetDesign_Refold"
+
+    def setup(self):
+        """One row with an angle for each bend line."""
+        table = self.form.anglesTable
+        lines = len(self.obj.BendLines.Shape.Edges) if self.obj.BendLines else 0
+        angles = list(self.obj.Angles) or [90.0]
+        table.setRowCount(lines)
+        table.horizontalHeader().setStretchLastSection(True)
+        table.setHorizontalHeaderLabels([translate("SheetDesign", "Angle")])
+        self.spins = []
+        for row in range(lines):
+            spin = QtGui.QDoubleSpinBox()
+            spin.setRange(-180.0, 180.0)
+            spin.setDecimals(2)
+            spin.setSuffix(" °")
+            # A line with no value uses the last value of the list.
+            spin.setValue(angles[min(row, len(angles) - 1)])
+            spin.valueChanged.connect(self.angles_changed)
+            table.setCellWidget(row, 0, spin)
+            self.spins.append(spin)
+
+    def angles_changed(self, _value):
+        self.obj.Angles = [spin.value() for spin in self.spins]
+        self.changed()
+
+    def update(self):
+        super().update()
+        self.form.profileLabel.setText(label_of(self.obj.Profile))
+        self.form.linesLabel.setText(label_of(self.obj.BendLines))
+
+
+class TaskUnfold(TaskPanel):
+    ui_file = "TaskUnfold.ui"
+    title = "Unfold"
+    icon = "SheetDesign_Unfold"
+
+    def update(self):
+        super().update()
+        source, subs = self.obj.Face if self.obj.Face else (None, [])
+        self.form.faceLabel.setText(f"{label_of(source)}.{subs[0]}" if source and subs else "")
+        self.form.ruleLabel.setText(label_of(self.obj.Rule))
+        # The values that Unfold found in the solid.
+        thickness = ""
+        bends = ""
+        if self.obj.isValid():
+            names = self.obj.Shape.ElementReverseMap.values()
+            panels = {name.rsplit("_", 1)[0] for name in names if name.endswith(("_Top", "_Bottom"))}
+            bends = str(max(len(panels) - 1, 0))
+            box = self.obj.Shape.BoundBox
+            volume, area = self.obj.Shape.Volume, self.obj.Shape.Area
+            thickness = f"{2 * volume / area:.2f} mm" if area > 0 and box.isValid() else ""
+        self.form.thicknessLabel.setText(thickness)
+        self.form.bendsLabel.setText(bends)
+
+
+class TaskFlatPattern(TaskPanel):
+    ui_file = "TaskFlatPattern.ui"
+    title = "Flat Pattern"
+    icon = "SheetDesign_FlatPattern"
+
+    def setup(self):
+        self.form.exportButton.clicked.connect(self.export)
+
+    def update(self):
+        super().update()
+        self.form.sourceLabel.setText(label_of(self.obj.Source))
+
+    def export(self):
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(self.obj)
+        FreeCADGui.runCommand("SheetDesign_ExportDxf")
+
+
+PANELS = {
+    "SheetDesign::BasePanel": TaskBasePanel,
+    "SheetDesign::Flange": TaskFlange,
+    "SheetDesign::Cut": TaskCut,
+    "SheetDesign::Refold": TaskRefold,
+    "SheetDesign::Unfold": TaskUnfold,
+    "SheetDesign::FlatPattern": TaskFlatPattern,
+}
+
+
+def panel_for(obj):
+    """Return a new task panel for the feature, or None if the type has no panel."""
+    panel_class = PANELS.get(obj.TypeId)
+    return panel_class(obj) if panel_class else None

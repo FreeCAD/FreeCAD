@@ -20,6 +20,9 @@
  ******************************************************************************/
 
 #include <Base/Console.h>
+#include <Standard_Failure.hxx>
+
+#include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
 
 #include "Features.h"
@@ -33,7 +36,48 @@ public:
     Module()
         : Py::ExtensionModule<Module>("SheetDesign")
     {
+        add_varargs_method(
+            "edgeInfo",
+            &Module::edgeInfo,
+            "edgeInfo(feature, element) -> dict or None\n"
+            "Test an edge or a side face of a sheet design feature. If a flange is possible on\n"
+            "it, the result has the keys Panel (the name of the panel), Top (the edge is on the\n"
+            "top side), and Length. If not, the result is None."
+        );
         initialize("This module is the SheetDesign module.");  // register with Python
+    }
+
+private:
+    Py::Object edgeInfo(const Py::Tuple& args)
+    {
+        PyObject* object = nullptr;
+        const char* element = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "O!s", &(App::DocumentObjectPy::Type), &object, &element)) {
+            throw Py::Exception();
+        }
+        auto* feature = freecad_cast<SheetDesign::Feature*>(
+            static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr()
+        );
+        if (!feature) {
+            return Py::None();
+        }
+        try {
+            SheetDesign::EdgeRef ref;
+            if (!feature->findEdge(element, ref)) {
+                return Py::None();
+            }
+            Py::Dict info;
+            info.setItem("Panel", Py::String(feature->getModel()->panels[ref.panel].tag));
+            info.setItem("Top", Py::Boolean(ref.top));
+            info.setItem("Length", Py::Float(ref.a.Distance(ref.b)));
+            return info;
+        }
+        catch (const Base::Exception&) {
+            return Py::None();
+        }
+        catch (const Standard_Failure&) {
+            return Py::None();
+        }
     }
 };
 

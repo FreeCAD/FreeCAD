@@ -10,5 +10,11 @@
         <file>icons/SheetDesign_Refold.svg</file>
         <file>icons/SheetDesign_Rule.svg</file>
         <file>icons/SheetDesign_Unfold.svg</file>
+        <file>panels/TaskBasePanel.ui</file>
+        <file>panels/TaskCut.ui</file>
+        <file>panels/TaskFlange.ui</file>
+        <file>panels/TaskFlatPattern.ui</file>
+        <file>panels/TaskRefold.ui</file>
+        <file>panels/TaskUnfold.ui</file>
     </qresource>
 </RCC>

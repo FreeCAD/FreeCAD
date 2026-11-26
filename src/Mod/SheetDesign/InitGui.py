@@ -49,3 +49,5 @@ class SheetDesignWorkbench(Workbench):
 
 
 Gui.addWorkbench(SheetDesignWorkbench())
+
+FreeCAD.__unit_test__ += ["TestSheetDesignGui"]
