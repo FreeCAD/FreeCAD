@@ -98,7 +98,7 @@ class ifc_observer:
             schema = doc.Schema
             ifcfile = ifc_tools.get_ifcfile(doc)
             if ifcfile:
-                if schema != ifcfile.wrapped_data.schema_name():
+                if schema != ifcfile.schema_identifier:
                     # TODO display warming
                     ifcfile, migration_table = ifc_tools.migrate_schema(ifcfile, schema)
                     doc.Proxy.ifcfile = ifcfile
