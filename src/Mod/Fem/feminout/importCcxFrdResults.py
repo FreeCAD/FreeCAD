@@ -152,7 +152,8 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 step_time = result_set["time"]
                 if not math.isfinite(step_time):
                     step_time = 0
-                step_time = round(step_time, 2)
+                if result_analysis_type != "frequency":
+                    step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = "{}EigenMode_{}_Results".format(
                         result_name_prefix, eigenmode_number
