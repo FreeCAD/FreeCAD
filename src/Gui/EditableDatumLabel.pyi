@@ -28,6 +28,7 @@ class EditableDatumLabel(PyObjectBase):
     dimension and positioning workflows.
     """
 
+    @overload  # overload required, or else ubuntu build will fail
     def __init__(
         self,
         /,
