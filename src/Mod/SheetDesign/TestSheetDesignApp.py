@@ -1176,3 +1176,71 @@ class TestSheetDesign(unittest.TestCase):
         flange = self.add_end_flange(self.add_base(), Length=2.0, LengthType="Tangential")
         self.assertFalse(flange.isValid())
         self.assertIn("too small", flange.getStatusString())
+
+    # ------------------------------------------------------------------------------ relief
+
+    def relief_flange(self, **properties):
+        properties.setdefault("Gap1", 10.0)
+        properties.setdefault("Gap2", 10.0)
+        properties.setdefault("ReliefWidth", 2.0)
+        properties.setdefault("ReliefDepth", 3.0)
+        flange = self.add_end_flange(self.add_base(), **properties)
+        return flange, self.add_flat(flange)
+
+    def flange_area(self, gaps=20.0):
+        return self.LENGTH * self.WIDTH + (self.allowance() + 20.0) * (self.WIDTH - gaps)
+
+    def test_relief_rectangle(self):
+        flange, flat = self.relief_flange(ReliefType="Rectangle")
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * 2.0 * 3.0, places=5)
+        # The slots are beside the bend, in the gap.
+        box = flange.Shape.BoundBox
+        self.assertAlmostEqual(box.XMax, self.LENGTH + self.R + self.T, places=6)
+
+    def test_relief_round(self):
+        flange, flat = self.relief_flange(ReliefType="Round")
+        self.assertSolid(flange)
+        slot = 2.0 * (3.0 - 1.0) + math.pi * 1.0**2 / 2
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * slot, places=5)
+
+    def test_relief_none_is_the_default(self):
+        flange, flat = self.relief_flange()
+        self.assertEqual(flange.ReliefType, "None")
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area(), places=5)
+
+    def test_relief_only_at_an_end_with_a_gap(self):
+        flange, flat = self.relief_flange(ReliefType="Rectangle", Gap2=0.0)
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area(10.0) - 2.0 * 3.0, places=5)
+
+    def test_relief_width_is_not_larger_than_the_gap(self):
+        flange, flat = self.relief_flange(ReliefType="Rectangle", ReliefWidth=25.0)
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * 10.0 * 3.0, places=5)
+
+    def test_relief_with_material_inside(self):
+        """The bend line is inside the panel. The slot goes from its depth out to the edge."""
+        flange, flat = self.relief_flange(ReliefType="Rectangle", Position="Material Inside")
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        inside = self.R + self.T
+        notch = inside * (self.WIDTH - 20.0)
+        slots = 2 * 2.0 * (inside + 3.0)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - notch - slots, places=5)
+
+    def test_relief_with_a_size_of_zero_is_rejected(self):
+        flange, _flat = self.relief_flange(ReliefType="Rectangle", ReliefDepth=0.0)
+        self.assertFalse(flange.isValid())
+
+    def test_flange_after_a_relief(self):
+        """A later flange on the same panel keeps its edge."""
+        flange, _flat = self.relief_flange(ReliefType="Rectangle")
+        second = self.add_flange(flange, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=10.0)
+        self.assertSolid(second)
+        flange.ReliefDepth = 6.0
+        flange.ReliefType = "Round"
+        self.doc.recompute()
+        self.assertSolid(second)
+        self.assertAlmostEqual(second.Shape.BoundBox.XMin, -(self.R + self.T), places=6)

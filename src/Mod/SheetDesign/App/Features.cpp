@@ -70,6 +70,7 @@ const double tol = 1.0e-6;
 const App::PropertyAngle::Constraints angleRange = {0.0, 180.0, 1.0};
 const char* SpaceEnums[] = {"Folded", "Flat", nullptr};
 const char* PositionEnums[] = {"Material Outside", "Material Inside", "Thickness Outside", nullptr};
+const char* ReliefTypeEnums[] = {"None", "Rectangle", "Round", nullptr};
 const char* LengthTypeEnums[] = {"Leg", "Outer Sharp", "Inner Sharp", "Tangential", nullptr};
 
 /**
@@ -599,6 +600,28 @@ Flange::Flange()
         "from the plane that touches the outer side of the bend"
     );
     LengthType.setEnums(LengthTypeEnums);
+    ADD_PROPERTY_TYPE(
+        ReliefType,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "A cut into the panel at each end of the bend that has a gap. It prevents a tear"
+    );
+    ReliefType.setEnums(ReliefTypeEnums);
+    ADD_PROPERTY_TYPE(
+        ReliefWidth,
+        (1.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Width of the relief along the edge. It is not larger than the gap"
+    );
+    ADD_PROPERTY_TYPE(
+        ReliefDepth,
+        (1.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Depth of the relief, from the bend line into the panel"
+    );
 }
 
 std::shared_ptr<SheetModel> Flange::buildModel()
@@ -673,7 +696,21 @@ std::shared_ptr<SheetModel> Flange::buildModel()
             "Sheet design: the length is too small for this length type. The bend uses all of it"
         );
     }
-    result->addFlange(ref, leg, angle, up, Gap1.getValue(), Gap2.getValue(), shift, getNameInDocument());
+    Relief relief;
+    relief.type = static_cast<Relief::Type>(ReliefType.getValue());
+    relief.width = ReliefWidth.getValue();
+    relief.depth = ReliefDepth.getValue();
+    result->addFlange(
+        ref,
+        leg,
+        angle,
+        up,
+        Gap1.getValue(),
+        Gap2.getValue(),
+        shift,
+        getNameInDocument(),
+        relief
+    );
 
     return result;
 }

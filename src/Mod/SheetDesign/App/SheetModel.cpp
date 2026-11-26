@@ -78,6 +78,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <gp_Ax1.hxx>
+#include <gp_Circ.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Vec2d.hxx>
 
@@ -831,7 +832,8 @@ int SheetModel::addFlange(
     double gap1,
     double gap2,
     double offset,
-    const std::string& tag
+    const std::string& tag,
+    const Relief& relief
 )
 {
     if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
@@ -879,6 +881,69 @@ int SheetModel::addFlange(
         origins.push_back({tag + "_Offset2", ref.panel, b, b.Translated(n * offset)});
         a.Translate(n * offset);
         b.Translate(n * offset);
+    }
+
+    if (relief.type != Relief::None) {
+        if (relief.width <= tol || relief.depth <= tol) {
+            throw Base::ValueError(
+                "Sheet design: the width and the depth of a relief must be larger than zero"
+            );
+        }
+        // A relief is a slot in the gap beside the bend. It goes from the bend line into the
+        // parent panel by its depth. If the bend line is inside the panel, the slot also goes
+        // out to the edge of the panel.
+        Panel& parent = panels[ref.panel];
+        const double outer = std::max(0.0, -offset) + 1.0;
+        TopTools_ListOfShape slots;
+        for (int end = 0; end < 2; ++end) {
+            const double gap = end == 0 ? gap1 : gap2;
+            if (gap <= tol) {
+                continue;
+            }
+            // The slot starts at the end of the bend and goes away from the flange.
+            const gp_Pnt2d corner = end == 0 ? a : b;
+            const gp_Vec2d away = end == 0 ? -dir : dir;
+            const double width = std::min(relief.width, gap);
+            const gp_Pnt2d far = corner.Translated(away * width);
+            double flatDepth = relief.depth;
+            if (relief.type == Relief::Round) {
+                // A half circle is the inner end of the slot.
+                flatDepth = std::max(relief.depth - width / 2.0, 0.0);
+                const gp_Pnt2d center = corner.Translated(away * (width / 2.0) + n * -flatDepth);
+                BRepBuilderAPI_MakeEdge circle(gp_Circ(gp_Ax2(to3d(center), gp::DZ()), width / 2.0));
+                BRepBuilderAPI_MakeWire wire(circle.Edge());
+                slots.Append(
+                    BRepBuilderAPI_MakeFace(gp_Pln(gp::XOY()), wire.Wire(), Standard_True).Face()
+                );
+            }
+            slots.Append(makeFlatQuad(
+                corner.Translated(n * -flatDepth),
+                far.Translated(n * -flatDepth),
+                far.Translated(n * outer),
+                corner.Translated(n * outer)
+            ));
+        }
+        if (!slots.IsEmpty()) {
+            TopTools_ListOfShape parentList;
+            parentList.Append(parent.profile);
+            BRepAlgoAPI_Cut cutter;
+            cutter.SetArguments(parentList);
+            cutter.SetTools(slots);
+            cutter.Build();
+            if (!cutter.IsDone() || cutter.HasErrors()) {
+                throw Base::CADKernelError("Sheet design: cannot make the relief");
+            }
+            const std::vector<TopoDS_Face> faces = facesOf(cutter.Shape());
+            if (faces.size() != 1) {
+                throw Base::ValueError("Sheet design: the relief divides the panel");
+            }
+            parent.profile = faces.front();
+            parent.solid.Nullify();
+            int slotNumber = 0;
+            for (const TopoDS_Shape& slot : slots) {
+                addOrigins(slot, gp_Trsf(), tag + "_Relief" + std::to_string(++slotNumber) + "_E", ref.panel);
+            }
+        }
     }
 
     // An edge can hold only one bend.
@@ -952,7 +1017,6 @@ void SheetModel::connect(
     const TopoDS_Shape& strip
 )
 {
-    const double t = params.thickness;
     const double allowance = bendAllowance(angle, radius);
 
     Bend bend;

@@ -105,6 +105,20 @@ struct ElementNames
     std::vector<std::pair<int, std::string>> faces;
 };
 
+/// A relief: a cut into the parent panel at an end of a bend, where the flange has a gap.
+struct Relief
+{
+    enum Type
+    {
+        None = 0,
+        Rectangle = 1,
+        Round = 2
+    };
+    Type type {None};
+    double width {0.0};  ///< Along the bend line, into the gap.
+    double depth {0.0};  ///< From the bend line into the parent panel.
+};
+
 /// A reference to a straight segment on the boundary of a panel.
 struct EdgeRef
 {
@@ -180,6 +194,7 @@ public:
      * @param offset  Moves the bend line out of the parent panel before the bend. The parent
      *                panel becomes longer along the bend line. A negative value makes it
      *                shorter. Use one thickness for a flap that folds across a second flap.
+     * @param relief  A cut at each end of the bend that has a gap.
      */
     int addFlange(
         const EdgeRef& ref,
@@ -189,7 +204,8 @@ public:
         double gap1,
         double gap2,
         double offset = 0.0,
-        const std::string& tag = "Flange"
+        const std::string& tag = "Flange",
+        const Relief& relief = Relief()
     );
 
     /**

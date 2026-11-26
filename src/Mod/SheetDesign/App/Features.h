@@ -158,6 +158,9 @@ public:
     App::PropertyDistance Offset;
     App::PropertyEnumeration Position;
     App::PropertyEnumeration LengthType;
+    App::PropertyEnumeration ReliefType;
+    App::PropertyLength ReliefWidth;
+    App::PropertyLength ReliefDepth;
 
 protected:
     std::shared_ptr<SheetModel> buildModel() override;
