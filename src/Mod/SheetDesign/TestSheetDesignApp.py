@@ -243,10 +243,11 @@ class TestSheetDesign(unittest.TestCase):
             self.assertAlmostEqual(abs(cylinder.Surface.Axis.x), 1.0, places=6)
             self.assertAlmostEqual(cylinder.Surface.Center.z, self.T + self.R + height, places=6)
 
-    def test_cut_across_bend_is_rejected(self):
+    def test_cut_across_bend_in_folded_space_is_rejected(self):
+        """A profile on a panel has no clear position in the bend."""
         flange = self.add_end_flange(self.add_base())
         circle = Part.Face(Part.Wire(Part.makeCircle(3.0, V(self.LENGTH, 25, 0))))
-        cut = self.add_cut(flange, self.add_shape(circle, "Circle"), "Flat")
+        cut = self.add_cut(flange, self.add_shape(circle, "Circle"), "Folded")
         self.assertFalse(cut.isValid())
 
     def test_rule_change_updates_all_outputs(self):
@@ -722,3 +723,140 @@ class TestSheetDesign(unittest.TestCase):
         for feature in features:
             self.assertTrue(feature.isValid(), feature.Name + ": " + feature.getStatusString())
         self.assertEqual(self.referenced_names(features), before)
+
+    # ------------------------------------------------------------- bend zones of any shape
+
+    def rectangle(self, x0, y0, x1, y1):
+        return self.flat_rectangle_at(x0, y0, x1, y1)
+
+    def check_cut_across_bend(self, tool):
+        """With the K-factor 0.5, the volume of a cut is its area multiplied by the thickness."""
+        flange = self.add_end_flange(self.add_base())
+        cut = self.add_cut(flange, self.add_shape(tool, "Tool"), "Flat")
+        self.assertSolid(cut)
+        self.assertEqual(cut.Overlap.Value, 0.0)
+        flat = self.add_flat(cut)
+        face = flat.Shape.Faces[0]
+        self.assertAlmostEqual(self.add_flat(flange).Shape.Faces[0].Area - face.Area, tool.Area, places=5)
+        return flange, cut
+
+    def test_slot_across_bend(self):
+        x = self.LENGTH + self.allowance() / 2
+        flange, cut = self.check_cut_across_bend(self.rectangle(x - 6, 20, x + 6, 30))
+        self.assertAlmostEqual(flange.Shape.Volume - cut.Shape.Volume, 120.0 * self.T, places=4)
+        # The slot divides the bend into two solids, and the part is still one solid.
+        cylinders = [f for f in cut.Shape.Faces if f.Surface.TypeId == "Part::GeomCylinder"]
+        self.assertEqual(len(cylinders), 4)
+
+    def test_slot_inside_bend_zone(self):
+        x = self.LENGTH + self.allowance() / 2
+        quarter = self.allowance() / 4
+        flange, cut = self.check_cut_across_bend(self.rectangle(x - quarter, 20, x + quarter, 30))
+        removed = 2 * quarter * 10.0 * self.T
+        self.assertAlmostEqual(flange.Shape.Volume - cut.Shape.Volume, removed, places=4)
+
+    def test_skew_slot_across_bend(self):
+        x = self.LENGTH + self.allowance() / 2
+        tool = Part.Face(
+            Part.makePolygon(
+                [V(x - 8, 15, 0), V(x + 2, 15, 0), V(x + 8, 35, 0), V(x - 2, 35, 0), V(x - 8, 15, 0)]
+            )
+        )
+        flange, cut = self.check_cut_across_bend(tool)
+        self.assertAlmostEqual(flange.Shape.Volume - cut.Shape.Volume, tool.Area * self.T, places=3)
+
+    def test_round_hole_across_bend(self):
+        x = self.LENGTH + self.allowance() / 2
+        tool = Part.Face(Part.Wire(Part.makeCircle(4.0, V(x, 25, 0))))
+        flange, cut = self.check_cut_across_bend(tool)
+        # The standard volume of a shape with a free-form face is not accurate, thus use a
+        # wide limit here. The Overlap check above uses an accurate volume.
+        self.assertAlmostEqual(
+            flange.Shape.Volume - cut.Shape.Volume, tool.Area * self.T, delta=0.05 * tool.Area * self.T
+        )
+
+    def test_cut_that_removes_a_bend_is_rejected(self):
+        flange = self.add_end_flange(self.add_base())
+        x = self.LENGTH + self.allowance() / 2
+        cut = self.add_cut(
+            flange, self.add_shape(self.rectangle(x - 6, -5, x + 6, self.WIDTH + 5), "Tool"), "Flat"
+        )
+        self.assertFalse(cut.isValid())
+
+    def test_slot_across_bend_with_radius_zero(self):
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        base = self.add_base()
+        flange = self.add_flange(base, V(self.LENGTH, 0, 4), V(self.LENGTH, self.WIDTH, 4), Length=20.0)
+        x = self.LENGTH + 0.5 * 4.0 * math.pi / 4
+        cut = self.add_cut(flange, self.add_shape(self.rectangle(x - 6, 20, x + 6, 30), "Tool"), "Flat")
+        self.assertSolid(cut)
+        self.assertEqual(cut.Overlap.Value, 0.0)
+        self.assertAlmostEqual(flange.Shape.Volume - cut.Shape.Volume, 120.0 * 4.0, places=4)
+
+    def tapered_flap(self):
+        a = self.allowance()
+        faces = [
+            self.rectangle(0, 0, 200, 100),
+            Part.Face(
+                Part.makePolygon(
+                    [V(0, 100, 0), V(200, 100, 0), V(170, 100 + a + 50, 0), V(30, 100 + a + 50, 0), V(0, 100, 0)]
+                )
+            ),
+        ]
+        face = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+        return face, [Part.makeLine(V(0, 100 + a / 2, 0), V(200, 100 + a / 2, 0))]
+
+    def test_refold_flap_that_tapers_from_the_bend_line(self):
+        face, lines = self.tapered_flap()
+        folded = self.add_refold(face, lines, [90.0])
+        self.assertSolid(folded)
+        self.assertEqual(folded.Overlap.Value, 0.0)
+        self.assertAlmostEqual(folded.Shape.Volume, face.Area * self.T, places=3)
+        flat = self.add_flat(folded)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, face.Area, places=5)
+
+    def test_refold_tapered_flap_with_radius_zero(self):
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        face, lines = self.tapered_flap()
+        folded = self.add_refold(face, lines, [90.0])
+        self.assertSolid(folded)
+        self.assertEqual(folded.Overlap.Value, 0.0)
+
+    def test_refold_with_hole_on_the_bend_line(self):
+        allowance = self.allowance()
+        face = self.flat_rectangle(self.LENGTH + allowance + 20.0)
+        x = self.LENGTH + allowance / 2
+        face = face.cut(self.rectangle(x - 6, 20, x + 6, 30)).Faces[0]
+        folded = self.add_refold(face, [Part.makeLine(V(x, 0, 0), V(x, self.WIDTH, 0))], [90.0])
+        self.assertSolid(folded)
+        self.assertEqual(folded.Overlap.Value, 0.0)
+        self.assertAlmostEqual(folded.Shape.Volume, face.Area * self.T, places=4)
+
+    def test_unfold_of_part_with_cut_across_bend(self):
+        x = self.LENGTH + self.allowance() / 2
+        tools = Part.makeCompound(
+            [self.rectangle(x - 6, 20, x + 6, 30), self.rectangle(x - 8, -1, x + 8, 6)]
+        )
+        flange = self.add_end_flange(self.add_base())
+        cut = self.add_cut(flange, self.add_shape(tools, "Tools"), "Flat")
+        self.assertSolid(cut)
+        expected = self.add_flat(cut).Shape.Faces[0].Area
+        converted = self.add_unfold(cut.Shape.copy(), 1.0)
+        self.assertSolid(converted)
+        self.assertEqual(converted.Overlap.Value, 0.0)
+        self.assertAlmostEqual(converted.Shape.Volume, cut.Shape.Volume, places=3)
+        flat = self.add_flat(converted)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
+
+    def test_unfold_of_part_with_round_hole_across_bend(self):
+        x = self.LENGTH + self.allowance() / 2
+        tool = Part.Face(Part.Wire(Part.makeCircle(4.0, V(x, 25, 0))))
+        flange = self.add_end_flange(self.add_base())
+        cut = self.add_cut(flange, self.add_shape(tool, "Tool"), "Flat")
+        expected = self.add_flat(cut).Shape.Faces[0].Area
+        converted = self.add_unfold(cut.Shape.copy(), 1.0)
+        self.assertSolid(converted)
+        flat = self.add_flat(converted)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, delta=1e-3 * expected)

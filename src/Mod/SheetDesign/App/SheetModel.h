@@ -76,7 +76,8 @@ struct Bend
     bool up {true};      ///< True: the bend goes to the +z side of flat space.
     double radius {0.0};
     double allowance {0.0};  ///< Width of the strip in the flat pattern.
-    TopoDS_Face strip;       ///< The flat region of the bend.
+    TopoDS_Shape strip;      ///< The flat region of the bend: one face or more.
+    bool plain {true};       ///< The strip is the full rectangle from the bend line.
 };
 
 /**
@@ -250,7 +251,7 @@ private:
         double angle,
         bool up,
         double radius,
-        const TopoDS_Face& strip
+        const TopoDS_Shape& strip
     );
 };
 

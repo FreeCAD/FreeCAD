@@ -42,7 +42,25 @@
 #include <Bnd_Box.hxx>
 #include <GProp_GProps.hxx>
 #include <ShapeUpgrade_UnifySameDomain.hxx>
+#include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_Sewing.hxx>
+#include <BRepFill.hxx>
 #include <BRepLProp_SLProps.hxx>
+#include <BRepLib.hxx>
+#include <BRepTools.hxx>
+#include <BRepTools_WireExplorer.hxx>
+#include <Geom2dAdaptor_Curve.hxx>
+#include <Geom2dConvert.hxx>
+#include <Geom2d_BSplineCurve.hxx>
+#include <Geom2d_Line.hxx>
+#include <Geom2d_TrimmedCurve.hxx>
+#include <GeomAPI.hxx>
+#include <Geom_Curve.hxx>
+#include <Geom_CylindricalSurface.hxx>
+#include <Geom_Plane.hxx>
+#include <TopoDS_Shell.hxx>
+#include <TopoDS_Wire.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
@@ -142,8 +160,21 @@ bool boxesOverlap(const TopoDS_Shape& a, const TopoDS_Shape& b)
 
 double volumeOf(const TopoDS_Shape& shape)
 {
+    // The fixed integration is exact for planes and cylinders. A free-form face, for example
+    // the side of a round opening in a bend, needs the adaptive integration: the fixed one was
+    // wrong by 4 % on such a part.
+    bool freeForm = false;
+    for (TopExp_Explorer ex(shape, TopAbs_FACE); ex.More() && !freeForm; ex.Next()) {
+        const GeomAbs_SurfaceType type = BRepAdaptor_Surface(TopoDS::Face(ex.Current())).GetType();
+        freeForm = type != GeomAbs_Plane && type != GeomAbs_Cylinder;
+    }
     GProp_GProps props;
-    BRepGProp::VolumeProperties(shape, props);
+    if (freeForm) {
+        BRepGProp::VolumeProperties(shape, props, 1.0e-6);
+    }
+    else {
+        BRepGProp::VolumeProperties(shape, props);
+    }
     return props.Mass();
 }
 
@@ -179,6 +210,251 @@ std::vector<TopoDS_Face> facesOf(const TopoDS_Shape& shape)
         faces.push_back(TopoDS::Face(ex.Current()));
     }
     return faces;
+}
+
+/// The frame of a bend in the flat space of its parent panel.
+struct BendFrame
+{
+    gp_Pnt center;  ///< A point of the bend axis, at the start of the bend line.
+    gp_Dir axisDir;
+    gp_Vec2d along;     ///< Unit vector of the bend line.
+    gp_Vec2d across;    ///< Unit vector from the parent panel into the bend.
+    double sign {1.0};  ///< Direction of the bend line against the axis.
+
+    BendFrame(const Bend& bend, double t)
+        : center(to3d(bend.start, bend.up ? t + bend.radius : -bend.radius))
+        , axisDir(bend.normal.Y(), -bend.normal.X(), 0.0)
+        , along(bend.start, bend.end)
+        , across(bend.normal)
+    {
+        if (!bend.up) {
+            axisDir.Reverse();
+        }
+        along.Normalize();
+        sign = axisDir.X() * along.X() + axisDir.Y() * along.Y();
+    }
+};
+
+/// The solid of a bend with the full rectangle as its zone: an exact solid of revolution.
+TopoDS_Shape revolveBend(const Bend& bend, double t)
+{
+    const BendFrame frame(bend, t);
+    BRepBuilderAPI_MakePolygon
+        poly(to3d(bend.start), to3d(bend.end), to3d(bend.end, t), to3d(bend.start, t), Standard_True);
+    BRepBuilderAPI_MakeFace section(poly.Wire(), Standard_True);
+    BRepPrimAPI_MakeRevol revol(section.Face(), gp_Ax1(frame.center, frame.axisDir), bend.angle);
+    if (!revol.IsDone()) {
+        throw Base::CADKernelError("Sheet design: cannot make a bend");
+    }
+    return revol.Shape();
+}
+
+/// Make a face on a surface from wires. The first wire is the outer wire.
+TopoDS_Face faceOnSurface(const Handle(Geom_Surface) & surface, const std::vector<TopoDS_Wire>& wires)
+{
+    BRepBuilderAPI_MakeFace maker(surface, wires.front(), Standard_True);
+    if (!maker.IsDone()) {
+        throw Base::CADKernelError("Sheet design: cannot make a face of a bend");
+    }
+    for (std::size_t i = 1; i < wires.size(); ++i) {
+        // A face from the hole wire gives the wire the same turn direction as the outer wire.
+        BRepBuilderAPI_MakeFace hole(surface, wires[i], Standard_True);
+        if (!hole.IsDone()) {
+            throw Base::CADKernelError("Sheet design: cannot make an opening of a bend");
+        }
+        maker.Add(TopoDS::Wire(BRepTools::OuterWire(hole.Face()).Reversed()));
+    }
+    return maker.Face();
+}
+
+TopoDS_Face planarFace(const std::vector<TopoDS_Edge>& edges)
+{
+    BRepBuilderAPI_MakeWire wire;
+    for (const TopoDS_Edge& edge : edges) {
+        wire.Add(edge);
+    }
+    if (!wire.IsDone()) {
+        throw Base::CADKernelError("Sheet design: cannot make a side wire of a bend");
+    }
+    BRepBuilderAPI_MakeFace face(wire.Wire(), Standard_True);
+    if (!face.IsDone()) {
+        throw Base::CADKernelError("Sheet design: cannot make a side face of a bend");
+    }
+    return face.Face();
+}
+
+/**
+ * The solid of a bend with a zone of any shape.
+ *
+ * Each boundary curve of the zone becomes a curve on the inner and on the outer cylinder of the
+ * bend, with the same parameters on the two cylinders. A side face joins the two curves. With
+ * the radius zero there is no inner cylinder, and the side faces go to the bend axis.
+ */
+TopoDS_Shape wrapBendFace(const Bend& bend, const TopoDS_Face& zone, double t)
+{
+    const BendFrame frame(bend, t);
+    const double inner = bend.radius;
+    const double outer = bend.radius + t;
+    const bool hasInner = inner > 1.0e-7;
+    const double turn = bend.angle / bend.allowance;
+
+    // U is the angle from the start of the bend. V is the position along the axis.
+    const gp_Dir xDir = bend.up ? gp_Dir(0.0, 0.0, -1.0) : gp_Dir(0.0, 0.0, 1.0);
+    const gp_Ax3 system(frame.center, frame.axisDir, xDir);
+    Handle(Geom_CylindricalSurface) outerSurface = new Geom_CylindricalSurface(system, outer);
+    Handle(Geom_CylindricalSurface) innerSurface;
+    if (hasInner) {
+        innerSurface = new Geom_CylindricalSurface(system, inner);
+    }
+    auto toUV = [&](const gp_Pnt2d& p) {
+        const gp_Vec2d w(bend.start, p);
+        return gp_Pnt2d(w.Dot(frame.across) * turn, frame.sign * w.Dot(frame.along));
+    };
+    auto axisPoint = [&](double v) {
+        return frame.center.Translated(gp_Vec(frame.axisDir) * v);
+    };
+
+    std::vector<TopoDS_Wire> outerWires;
+    std::vector<TopoDS_Wire> innerWires;
+    BRepBuilderAPI_Sewing sewing(1.0e-5);
+
+    std::vector<TopoDS_Wire> zoneWires;
+    const TopoDS_Wire zoneOuter = BRepTools::OuterWire(zone);
+    zoneWires.push_back(zoneOuter);
+    for (TopExp_Explorer ex(zone, TopAbs_WIRE); ex.More(); ex.Next()) {
+        if (!ex.Current().IsSame(zoneOuter)) {
+            zoneWires.push_back(TopoDS::Wire(ex.Current()));
+        }
+    }
+
+    for (const TopoDS_Wire& zoneWire : zoneWires) {
+        BRepBuilderAPI_MakeWire outerWire;
+        BRepBuilderAPI_MakeWire innerWire;
+        for (BRepTools_WireExplorer ex(zoneWire, zone); ex.More(); ex.Next()) {
+            const TopoDS_Edge zoneEdge = ex.Current();
+            BRepAdaptor_Curve curve(zoneEdge);
+            const gp_Pnt first3 = curve.Value(curve.FirstParameter());
+            const gp_Pnt last3 = curve.Value(curve.LastParameter());
+            const gp_Pnt2d uv0 = toUV(gp_Pnt2d(first3.X(), first3.Y()));
+            const gp_Pnt2d uv1 = toUV(gp_Pnt2d(last3.X(), last3.Y()));
+            const bool line = curve.GetType() == GeomAbs_Line;
+
+            Handle(Geom2d_Curve) onSurface;
+            double firstParam = 0.0;
+            double lastParam = 0.0;
+            if (line) {
+                lastParam = uv0.Distance(uv1);
+                if (lastParam < 1.0e-9) {
+                    continue;
+                }
+                onSurface = new Geom2d_Line(uv0, gp_Dir2d(gp_Vec2d(uv0, uv1)));
+            }
+            else {
+                double f = 0.0;
+                double l = 0.0;
+                Handle(Geom_Curve) curve3d = BRep_Tool::Curve(zoneEdge, f, l);
+                Handle(Geom2d_Curve) flat2d = GeomAPI::To2d(curve3d, gp_Pln(gp::XOY()));
+                Handle(Geom2d_BSplineCurve)
+                    spline = Geom2dConvert::CurveToBSplineCurve(new Geom2d_TrimmedCurve(flat2d, f, l));
+                // The map from flat space to the cylinder parameters is affine, thus it is
+                // correct to move only the poles.
+                for (int i = 1; i <= spline->NbPoles(); ++i) {
+                    spline->SetPole(i, toUV(spline->Pole(i)));
+                }
+                onSurface = spline;
+                firstParam = spline->FirstParameter();
+                lastParam = spline->LastParameter();
+            }
+
+            TopoDS_Edge outerEdge
+                = BRepBuilderAPI_MakeEdge(onSurface, outerSurface, firstParam, lastParam).Edge();
+            BRepLib::BuildCurves3d(outerEdge);
+            outerWire.Add(outerEdge);
+            const gp_Pnt o0 = outerSurface->Value(uv0.X(), uv0.Y());
+            const gp_Pnt o1 = outerSurface->Value(uv1.X(), uv1.Y());
+
+            TopoDS_Edge innerEdge;
+            gp_Pnt i0 = axisPoint(uv0.Y());
+            gp_Pnt i1 = axisPoint(uv1.Y());
+            if (hasInner) {
+                innerEdge
+                    = BRepBuilderAPI_MakeEdge(onSurface, innerSurface, firstParam, lastParam).Edge();
+                BRepLib::BuildCurves3d(innerEdge);
+                innerWire.Add(innerEdge);
+                i0 = innerSurface->Value(uv0.X(), uv0.Y());
+                i1 = innerSurface->Value(uv1.X(), uv1.Y());
+            }
+
+            // The side face between the inner and the outer curve.
+            const bool alongAxis = line && std::fabs(uv0.X() - uv1.X()) < 1.0e-9;
+            const bool aroundAxis = line && std::fabs(uv0.Y() - uv1.Y()) < 1.0e-9;
+            if (alongAxis) {
+                BRepBuilderAPI_MakePolygon poly(o0, o1, i1, i0, Standard_True);
+                sewing.Add(BRepBuilderAPI_MakeFace(poly.Wire(), Standard_True).Face());
+            }
+            else if (aroundAxis) {
+                std::vector<TopoDS_Edge> edges {outerEdge, BRepBuilderAPI_MakeEdge(o1, i1).Edge()};
+                if (hasInner) {
+                    edges.push_back(innerEdge);
+                }
+                edges.push_back(BRepBuilderAPI_MakeEdge(i0, o0).Edge());
+                sewing.Add(planarFace(edges));
+            }
+            else if (hasInner) {
+                sewing.Add(BRepFill::Face(innerEdge, outerEdge));
+            }
+            else if (line) {
+                sewing.Add(BRepFill::Face(BRepBuilderAPI_MakeEdge(i0, i1).Edge(), outerEdge));
+            }
+            else {
+                throw Base::ValueError(
+                    "Sheet design: a curved edge across a bend with the radius zero is not "
+                    "available in this version"
+                );
+            }
+        }
+        if (!outerWire.IsDone() || (hasInner && !innerWire.IsDone())) {
+            throw Base::CADKernelError("Sheet design: cannot make the outline of a bend");
+        }
+        outerWires.push_back(outerWire.Wire());
+        if (hasInner) {
+            innerWires.push_back(innerWire.Wire());
+        }
+    }
+
+    sewing.Add(faceOnSurface(outerSurface, outerWires));
+    if (hasInner) {
+        sewing.Add(faceOnSurface(innerSurface, innerWires));
+    }
+    sewing.Perform();
+    TopoDS_Shell shell;
+    int shells = 0;
+    for (TopExp_Explorer ex(sewing.SewedShape(), TopAbs_SHELL); ex.More(); ex.Next()) {
+        shell = TopoDS::Shell(ex.Current());
+        ++shells;
+    }
+    if (shells != 1 || !BRep_Tool::IsClosed(shell)) {
+        throw Base::CADKernelError("Sheet design: the faces of a bend do not make a closed shell");
+    }
+    BRepBuilderAPI_MakeSolid solid(shell);
+    if (!solid.IsDone()) {
+        throw Base::CADKernelError("Sheet design: cannot make the solid of a bend");
+    }
+    return solid.Solid();
+}
+
+/// Put the faces of two zone shapes into one compound.
+TopoDS_Shape joinZones(const TopoDS_Shape& first, const TopoDS_Shape& second)
+{
+    BRep_Builder builder;
+    TopoDS_Compound both;
+    builder.MakeCompound(both);
+    for (const TopoDS_Shape& part : {first, second}) {
+        for (const TopoDS_Face& face : facesOf(part)) {
+            builder.Add(both, face);
+        }
+    }
+    return both;
 }
 
 TopoDS_Shape fuseAll(const std::vector<TopoDS_Shape>& shapes, bool glue = true)
@@ -592,7 +868,7 @@ void SheetModel::connect(
     double angle,
     bool up,
     double radius,
-    const TopoDS_Face& strip
+    const TopoDS_Shape& strip
 )
 {
     const double t = params.thickness;
@@ -608,9 +884,18 @@ void SheetModel::connect(
     bend.up = up;
     bend.radius = radius;
     bend.allowance = allowance;
-    bend.strip = strip.IsNull()
-        ? makeFlatQuad(start, end, end.Translated(normal * allowance), start.Translated(normal * allowance))
-        : strip;
+    bend.plain = strip.IsNull();
+    if (strip.IsNull()) {
+        bend.strip = makeFlatQuad(
+            start,
+            end,
+            end.Translated(normal * allowance),
+            start.Translated(normal * allowance)
+        );
+    }
+    else {
+        bend.strip = strip;
+    }
 
     // The child moves back by the bend allowance, then turns around the bend axis.
     gp_Dir axisDir(normal.Y(), -normal.X(), 0.0);  // normal x Z
@@ -661,18 +946,35 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag
             }
             used = true;
 
-            for (const Bend& bend : bends) {
+            for (Bend& bend : bends) {
                 const bool adjacent = bend.parentPanel == static_cast<int>(frame)
                     || bend.childPanel == static_cast<int>(frame);
                 if (!flat && !adjacent) {
                     continue;
                 }
-                if (boxesOverlap(local, bend.strip)
-                    && area(BRepAlgoAPI_Common(bend.strip, local).Shape()) > tol) {
+                if (!boxesOverlap(local, bend.strip)) {
+                    continue;
+                }
+                BRepAlgoAPI_Cut op(bend.strip, local);
+                if (!op.IsDone() || op.HasErrors()) {
+                    throw Base::CADKernelError("Sheet design: the cut operation failed");
+                }
+                if (!op.HasModified() && !op.HasDeleted()) {
+                    continue;
+                }
+                if (!flat) {
+                    // A profile on a panel is in the plane of that panel. In the bend it has
+                    // no clear position.
                     throw Base::ValueError(
-                        "Sheet design: a cut across a bend zone is not available in this version"
+                        "Sheet design: a cut across a bend zone must be in the flat space"
                     );
                 }
+                if (facesOf(op.Shape()).empty()) {
+                    throw Base::ValueError("Sheet design: the cut removes a full bend");
+                }
+                bend.strip = op.Shape();
+                bend.plain = false;
+                ++changed;
             }
 
             for (std::size_t i = 0; i < panels.size(); ++i) {
@@ -740,27 +1042,22 @@ TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine, double* overlap) con
     }
 
     for (const Bend& bend : bends) {
-        BRepBuilderAPI_MakePolygon poly(
-            to3d(bend.start),
-            to3d(bend.end),
-            to3d(bend.end, t),
-            to3d(bend.start, t),
-            Standard_True
-        );
-        BRepBuilderAPI_MakeFace section(poly.Wire(), Standard_True);
-        gp_Dir axisDir(bend.normal.Y(), -bend.normal.X(), 0.0);
-        if (!bend.up) {
-            axisDir.Reverse();
+        std::vector<TopoDS_Shape> raw;
+        if (bend.plain) {
+            raw.push_back(revolveBend(bend, t));
         }
-        const gp_Ax1 axis(to3d(bend.start, bend.up ? t + bend.radius : -bend.radius), axisDir);
-        BRepPrimAPI_MakeRevol revol(section.Face(), axis, bend.angle);
-        if (!revol.IsDone()) {
-            throw Base::CADKernelError("Sheet design: cannot make a bend");
+        else {
+            // A cut can divide the zone of a bend into parts. Each part gives one solid.
+            for (const TopoDS_Face& zone : facesOf(bend.strip)) {
+                raw.push_back(wrapBendFace(bend, zone, t));
+            }
         }
-        double bendVolume = 0.0;
-        const TopoDS_Shape solid = orientSolid(revol.Shape(), bendVolume);
-        partsVolume += bendVolume;
-        solids.push_back(solid.Moved(TopLoc_Location(panels[bend.parentPanel].folded)));
+        for (const TopoDS_Shape& part : raw) {
+            double bendVolume = 0.0;
+            const TopoDS_Shape solid = orientSolid(part, bendVolume);
+            partsVolume += bendVolume;
+            solids.push_back(solid.Moved(TopLoc_Location(panels[bend.parentPanel].folded)));
+        }
     }
 
     if (solids.size() == 1) {
@@ -813,7 +1110,9 @@ TopoDS_Shape SheetModel::makeFlat() const
         faces.push_back(panel.profile);
     }
     for (const Bend& bend : bends) {
-        faces.push_back(bend.strip);
+        for (const TopoDS_Face& zone : facesOf(bend.strip)) {
+            faces.push_back(zone);
+        }
     }
     if (faces.size() == 1) {
         return faces.front();
@@ -981,7 +1280,8 @@ SheetModel SheetModel::fromFlat(
         int plusPanel {-1};
         gp_Pnt2d minusA, minusB, plusA, plusB;
         std::size_t line {0};
-        TopoDS_Face strip;
+        TopoDS_Shape strip;
+        bool plain {true};
         bool used {false};
     };
     std::vector<Joint> joints;
@@ -990,55 +1290,95 @@ SheetModel SheetModel::fromFlat(
         const Band& band = bands[i];
         const TopoDS_Face& strip = zonePart.second;
         {
-            TopTools_IndexedMapOfShape vertices;
-            TopExp::MapShapes(strip, TopAbs_VERTEX, vertices);
-            std::vector<gp_Pnt2d> minus;
-            std::vector<gp_Pnt2d> plus;
-            for (int v = 1; v <= vertices.Extent(); ++v) {
-                const gp_Pnt p3 = BRep_Tool::Pnt(TopoDS::Vertex(vertices(v)));
+            // Find the edges of the zone on its two long sides. They join it to the panels.
+            struct Side
+            {
+                double low {0.0};
+                double high {0.0};
+                bool found {false};
+                gp_Pnt2d mid;
+            };
+            Side minus;
+            Side plus;
+            TopTools_IndexedMapOfShape zoneEdges;
+            TopExp::MapShapes(strip, TopAbs_EDGE, zoneEdges);
+            for (int e = 1; e <= zoneEdges.Extent(); ++e) {
+                BRepAdaptor_Curve curve(TopoDS::Edge(zoneEdges(e)));
+                if (curve.GetType() != GeomAbs_Line) {
+                    continue;
+                }
+                const gp_Pnt p3 = curve.Value(curve.FirstParameter());
+                const gp_Pnt q3 = curve.Value(curve.LastParameter());
                 const gp_Pnt2d p(p3.X(), p3.Y());
-                const double side = gp_Vec2d(band.origin, p).Dot(band.normal);
-                if (std::fabs(side + band.allowance / 2.0) < looseTol) {
-                    minus.push_back(p);
+                const gp_Pnt2d q(q3.X(), q3.Y());
+                const double sideP = gp_Vec2d(band.origin, p).Dot(band.normal);
+                const double sideQ = gp_Vec2d(band.origin, q).Dot(band.normal);
+                for (Side* side : {&minus, &plus}) {
+                    const double level = (side == &minus ? -0.5 : 0.5) * band.allowance;
+                    if (std::fabs(sideP - level) > looseTol || std::fabs(sideQ - level) > looseTol) {
+                        continue;
+                    }
+                    const double alongP = gp_Vec2d(band.origin, p).Dot(band.dir);
+                    const double alongQ = gp_Vec2d(band.origin, q).Dot(band.dir);
+                    if (!side->found) {
+                        side->mid = gp_Pnt2d((p.X() + q.X()) / 2.0, (p.Y() + q.Y()) / 2.0);
+                        side->low = std::min(alongP, alongQ);
+                        side->high = std::max(alongP, alongQ);
+                        side->found = true;
+                    }
+                    else {
+                        side->low = std::min({side->low, alongP, alongQ});
+                        side->high = std::max({side->high, alongP, alongQ});
+                    }
                 }
-                else if (std::fabs(side - band.allowance / 2.0) < looseTol) {
-                    plus.push_back(p);
-                }
             }
-            if (vertices.Extent() != 4 || minus.size() != 2 || plus.size() != 2) {
-                throw Base::ValueError(
-                    "Sheet design: a bend zone must be a rectangle without a cut in this version"
-                );
+            if (!minus.found || !plus.found) {
+                throw Base::ValueError("Sheet design: a bend line must have a panel on each side");
             }
-            // Put the plus points in the same sequence as the minus points.
-            const gp_Vec2d across = band.normal * band.allowance;
-            if (minus[0].Translated(across).Distance(plus[0]) > looseTol) {
-                std::swap(plus[0], plus[1]);
-            }
-            if (minus[0].Translated(across).Distance(plus[0]) > looseTol
-                || minus[1].Translated(across).Distance(plus[1]) > looseTol) {
-                throw Base::ValueError(
-                    "Sheet design: the outline must cross a bend zone at 90 degrees in this version"
-                );
-            }
+            auto pointAt = [&band](double along, double level) {
+                return band.origin.Translated(band.dir * along + band.normal * level);
+            };
             Joint joint;
             joint.line = i;
             joint.strip = strip;
-            joint.minusA = minus[0];
-            joint.minusB = minus[1];
-            joint.plusA = plus[0];
-            joint.plusB = plus[1];
+            joint.minusA = pointAt(minus.low, -band.allowance / 2.0);
+            joint.minusB = pointAt(minus.high, -band.allowance / 2.0);
+            joint.plusA = pointAt(plus.low, band.allowance / 2.0);
+            joint.plusB = pointAt(plus.high, band.allowance / 2.0);
+            // A full rectangle gives an exact solid of revolution.
+            joint.plain = zoneEdges.Extent() == 4 && std::fabs(minus.low - plus.low) < looseTol
+                && std::fabs(minus.high - plus.high) < looseTol;
             const double probe = 1.0e-4;
-            const gp_Pnt2d minusMid(
-                (minus[0].X() + minus[1].X()) / 2.0,
-                (minus[0].Y() + minus[1].Y()) / 2.0
-            );
-            joint.minusPanel = panelAt(minusMid.Translated(band.normal * -probe));
-            joint.plusPanel = panelAt(minusMid.Translated(band.normal * (band.allowance + probe)));
+            joint.minusPanel = panelAt(minus.mid.Translated(band.normal * -probe));
+            joint.plusPanel = panelAt(plus.mid.Translated(band.normal * probe));
             if (joint.minusPanel < 0 || joint.plusPanel < 0) {
                 throw Base::ValueError("Sheet design: a bend line must have a panel on each side");
             }
-            joints.push_back(joint);
+            // A cut on the bend line divides the zone. The parts between the same two panels
+            // make one bend.
+            bool merged = false;
+            for (Joint& other : joints) {
+                if (other.line != joint.line || other.minusPanel != joint.minusPanel
+                    || other.plusPanel != joint.plusPanel) {
+                    continue;
+                }
+                auto along = [&band](const gp_Pnt2d& p) {
+                    return gp_Vec2d(band.origin, p).Dot(band.dir);
+                };
+                other.minusA = along(joint.minusA) < along(other.minusA) ? joint.minusA
+                                                                         : other.minusA;
+                other.minusB = along(joint.minusB) > along(other.minusB) ? joint.minusB
+                                                                         : other.minusB;
+                other.plusA = along(joint.plusA) < along(other.plusA) ? joint.plusA : other.plusA;
+                other.plusB = along(joint.plusB) > along(other.plusB) ? joint.plusB : other.plusB;
+                other.strip = joinZones(other.strip, joint.strip);
+                other.plain = false;
+                merged = true;
+                break;
+            }
+            if (!merged) {
+                joints.push_back(joint);
+            }
         }
     }
 
@@ -1074,7 +1414,7 @@ SheetModel SheetModel::fromFlat(
                 lines[joint.line].angle,
                 lines[joint.line].up,
                 params.radius,
-                joint.strip
+                joint.plain ? TopoDS_Shape() : joint.strip
             );
             reached[child] = true;
             queue.push_back(child);
@@ -1197,6 +1537,7 @@ SheetModel SheetModel::fromSolid(
 
     TopTools_MapOfShape visited;
     visited.Add(rootFace);
+    std::vector<std::pair<TopoDS_Face, int>> panelFaces {{rootFace, 0}};
     std::deque<std::pair<int, TopoDS_Face>> queue;
     queue.emplace_back(0, rootFace);
 
@@ -1251,7 +1592,25 @@ SheetModel SheetModel::fromSolid(
             radius = std::max(radius, 0.0);
             const double angle = bendSurface.LastUParameter() - bendSurface.FirstUParameter();
 
-            // The panel after the bend is on the other straight edge of the cylinder.
+            // The position of the bend face in the parameters of its cylinder: U goes around
+            // the axis, V goes along it.
+            double pcFirst = 0.0;
+            double pcLast = 0.0;
+            Handle(Geom2d_Curve) onBend = BRep_Tool::CurveOnSurface(edge, bendFace, pcFirst, pcLast);
+            if (onBend.IsNull()) {
+                continue;
+            }
+            const gp_Pnt2d uvP = onBend->Value(curve.FirstParameter());
+            const gp_Pnt2d uvQ = onBend->Value(curve.LastParameter());
+            const double uFirst = bendSurface.FirstUParameter();
+            const double uLast = bendSurface.LastUParameter();
+            const bool forward = std::fabs(uvP.X() - uFirst) < std::fabs(uvP.X() - uLast);
+            const double uFar = forward ? uLast : uFirst;
+            if (std::fabs(uvQ.Y() - uvP.Y()) < tol) {
+                continue;
+            }
+
+            // The panel after the bend is on a straight edge at the far side of the cylinder.
             TopoDS_Face nextFace;
             int straightEdges = 0;
             int allEdges = 0;
@@ -1262,26 +1621,120 @@ SheetModel SheetModel::fromSolid(
                     continue;
                 }
                 ++straightEdges;
-                if (!bendEdge.IsSame(edge)) {
-                    nextFace = otherFace(bendEdge, bendFace);
+                double ef = 0.0;
+                double el = 0.0;
+                Handle(Geom2d_Curve) pc = BRep_Tool::CurveOnSurface(bendEdge, bendFace, ef, el);
+                if (pc.IsNull() || std::fabs(pc->Value(ef).X() - uFar) > looseTol
+                    || std::fabs(pc->Value(el).X() - uFar) > looseTol) {
+                    continue;
+                }
+                const TopoDS_Face candidate = otherFace(bendEdge, bendFace);
+                if (nextFace.IsNull() && !candidate.IsNull()
+                    && BRepAdaptor_Surface(candidate).GetType() == GeomAbs_Plane) {
+                    nextFace = candidate;
                 }
             }
-            if (allEdges != 4 || straightEdges != 2) {
+            visited.Add(bendFace);
+            if (nextFace.IsNull()) {
                 throw Base::ValueError(
-                    "Sheet design: a bend of the solid has a cut or is not a rectangle. "
+                    "Sheet design: a bend of the solid has no flat panel after it. "
                     "This is not available in this version"
                 );
             }
-            visited.Add(bendFace);
-            if (nextFace.IsNull() || visited.Contains(nextFace)) {
-                throw Base::ValueError("Sheet design: the panels of the solid make a closed loop");
+            const gp_Vec2d n = outwardNormal(model.panels[current].profile, a, b);
+
+            // A bend face with four edges is the full rectangle. Other faces are moved from the
+            // cylinder into flat space, edge by edge.
+            TopoDS_Face zone;
+            if (allEdges != 4 || straightEdges != 2) {
+                const double allowance = model.bendAllowance(angle, radius);
+                auto toFlatPoint = [&](const gp_Pnt2d& uv) {
+                    const double fraction = (uv.Y() - uvP.Y()) / (uvQ.Y() - uvP.Y());
+                    const double across = allowance * (forward ? uv.X() - uFirst : uLast - uv.X())
+                        / angle;
+                    return a.Translated(gp_Vec2d(a, b) * fraction + n * across);
+                };
+                Handle(Geom_Plane) flatPlane = new Geom_Plane(gp_Pln(gp::XOY()));
+                std::vector<TopoDS_Wire> wires;
+                const TopoDS_Wire bendOuter = BRepTools::OuterWire(bendFace);
+                std::vector<TopoDS_Wire> bendWires {bendOuter};
+                for (TopExp_Explorer wx(bendFace, TopAbs_WIRE); wx.More(); wx.Next()) {
+                    if (!wx.Current().IsSame(bendOuter)) {
+                        bendWires.push_back(TopoDS::Wire(wx.Current()));
+                    }
+                }
+                for (const TopoDS_Wire& bendWire : bendWires) {
+                    BRepBuilderAPI_MakeWire wire;
+                    for (BRepTools_WireExplorer wx(bendWire, bendFace); wx.More(); wx.Next()) {
+                        double ef = 0.0;
+                        double el = 0.0;
+                        Handle(Geom2d_Curve)
+                            pc = BRep_Tool::CurveOnSurface(wx.Current(), bendFace, ef, el);
+                        if (pc.IsNull()) {
+                            throw Base::CADKernelError(
+                                "Sheet design: an edge of a bend has no curve on its surface"
+                            );
+                        }
+                        if (Geom2dAdaptor_Curve(pc, ef, el).GetType() == GeomAbs_Line) {
+                            const gp_Pnt2d p0 = toFlatPoint(pc->Value(ef));
+                            const gp_Pnt2d p1 = toFlatPoint(pc->Value(el));
+                            if (p0.Distance(p1) > tol) {
+                                wire.Add(BRepBuilderAPI_MakeEdge(to3d(p0), to3d(p1)).Edge());
+                            }
+                            continue;
+                        }
+                        Handle(Geom2d_BSplineCurve) spline = Geom2dConvert::CurveToBSplineCurve(
+                            new Geom2d_TrimmedCurve(pc, ef, el)
+                        );
+                        for (int k = 1; k <= spline->NbPoles(); ++k) {
+                            spline->SetPole(k, toFlatPoint(spline->Pole(k)));
+                        }
+                        TopoDS_Edge flatEdge = BRepBuilderAPI_MakeEdge(spline, flatPlane).Edge();
+                        BRepLib::BuildCurves3d(flatEdge);
+                        wire.Add(flatEdge);
+                    }
+                    if (!wire.IsDone()) {
+                        throw Base::CADKernelError(
+                            "Sheet design: cannot move the outline of a bend into flat space"
+                        );
+                    }
+                    wires.push_back(wire.Wire());
+                }
+                zone = faceOnSurface(flatPlane, wires);
+            }
+            if (visited.Contains(nextFace)) {
+                // A cut can divide a bend into two cylinder faces between the same two panels.
+                // The second face is a further part of the zone of the same bend.
+                int other = -1;
+                for (const auto& known : panelFaces) {
+                    if (known.first.IsSame(nextFace)) {
+                        other = known.second;
+                    }
+                }
+                Bend* same = nullptr;
+                for (Bend& candidate : model.bends) {
+                    if (candidate.parentPanel == current && candidate.childPanel == other) {
+                        same = &candidate;
+                    }
+                }
+                if (!same) {
+                    throw Base::ValueError("Sheet design: the panels of the solid make a closed loop");
+                }
+                TopoDS_Shape part = zone;
+                if (zone.IsNull()) {
+                    const double allowance = model.bendAllowance(angle, radius);
+                    part = makeFlatQuad(a, b, b.Translated(n * allowance), a.Translated(n * allowance));
+                }
+                same->strip = joinZones(same->strip, part);
+                same->plain = false;
+                continue;
             }
 
             Panel child;
             model.panels.push_back(child);
             const int childIndex = static_cast<int>(model.panels.size()) - 1;
-            const gp_Vec2d n = outwardNormal(model.panels[current].profile, a, b);
-            model.connect(current, childIndex, a, b, n, angle, up, radius, TopoDS_Face());
+            panelFaces.emplace_back(nextFace, childIndex);
+            model.connect(current, childIndex, a, b, n, angle, up, radius, zone);
             const TopoDS_Face childProfile = toFlat(nextFace, model.panels[childIndex].folded);
             if (childProfile.IsNull()) {
                 throw Base::ValueError(
