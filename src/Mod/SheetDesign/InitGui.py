@@ -32,11 +32,12 @@ class SheetDesignWorkbench(Workbench):
     MenuText = "Sheet Design"
     ToolTip = "Design of folded sheet parts with a linked flat pattern"
     Icon = os.path.join(
-        FreeCAD.getHomePath(), "Mod", "SheetDesign", "Resources", "icons", "SheetDesignWorkbench.svg"
+        FreeCAD.getResourceDir(), "Mod", "SheetDesign", "Resources", "icons", "SheetDesignWorkbench.svg"
     )
 
     def Initialize(self):
         import SheetDesign  # noqa: F401  Registers the document object types.
+        import SheetDesignGui  # noqa: F401  Loads the icons and the task panel files.
         import SheetDesignCommands
 
         commands = SheetDesignCommands.register()

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource>
+        <file>icons/SheetDesignWorkbench.svg</file>
+        <file>icons/SheetDesign_Base.svg</file>
+        <file>icons/SheetDesign_Cut.svg</file>
+        <file>icons/SheetDesign_CutFlat.svg</file>
+        <file>icons/SheetDesign_ExportDxf.svg</file>
+        <file>icons/SheetDesign_Flange.svg</file>
+        <file>icons/SheetDesign_FlatPattern.svg</file>
+        <file>icons/SheetDesign_Refold.svg</file>
+        <file>icons/SheetDesign_Rule.svg</file>
+        <file>icons/SheetDesign_Unfold.svg</file>
+    </qresource>
+</RCC>
