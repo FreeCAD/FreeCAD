@@ -139,12 +139,19 @@ bool boxesOverlap(const TopoDS_Shape& a, const TopoDS_Shape& b)
     return !boxA.IsOut(boxB);
 }
 
-/// Make sure that a solid has its material on the inner side.
-TopoDS_Shape orientSolid(const TopoDS_Shape& solid)
+double volumeOf(const TopoDS_Shape& shape)
 {
     GProp_GProps props;
-    BRepGProp::VolumeProperties(solid, props);
-    return props.Mass() < 0.0 ? solid.Reversed() : solid;
+    BRepGProp::VolumeProperties(shape, props);
+    return props.Mass();
+}
+
+/// Make sure that a solid has its material on the inner side. Gives the volume of the solid.
+TopoDS_Shape orientSolid(const TopoDS_Shape& solid, double& volume)
+{
+    const double signedVolume = volumeOf(solid);
+    volume = std::fabs(signedVolume);
+    return signedVolume < 0.0 ? solid.Reversed() : solid;
 }
 
 /// The unit normal of the boundary segment a-b that points out of the face.
@@ -173,7 +180,7 @@ std::vector<TopoDS_Face> facesOf(const TopoDS_Shape& shape)
     return faces;
 }
 
-TopoDS_Shape fuseAll(const std::vector<TopoDS_Shape>& shapes)
+TopoDS_Shape fuseAll(const std::vector<TopoDS_Shape>& shapes, bool glue = true)
 {
     TopTools_ListOfShape arguments;
     TopTools_ListOfShape tools;
@@ -184,9 +191,11 @@ TopoDS_Shape fuseAll(const std::vector<TopoDS_Shape>& shapes)
     BRepAlgoAPI_Fuse op;
     op.SetArguments(arguments);
     op.SetTools(tools);
-    // The parts touch only on coincident faces or edges. The glue mode skips the general
-    // intersection of all faces.
-    op.SetGlue(BOPAlgo_GlueShift);
+    if (glue) {
+        // The parts touch only on coincident faces or edges. The glue mode skips the general
+        // intersection of all faces.
+        op.SetGlue(BOPAlgo_GlueShift);
+    }
     op.SetRunParallel(Standard_True);
     op.Build();
     if (!op.IsDone() || op.HasErrors()) {
@@ -286,7 +295,15 @@ bool SheetModel::findEdge(const TopoDS_Edge& foldedEdge, EdgeRef& ref) const
     return false;
 }
 
-int SheetModel::addFlange(const EdgeRef& ref, double length, double angle, bool up, double gap1, double gap2)
+int SheetModel::addFlange(
+    const EdgeRef& ref,
+    double length,
+    double angle,
+    bool up,
+    double gap1,
+    double gap2,
+    double offset
+)
 {
     if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
         throw Base::ValueError("Sheet metal: the edge reference is not valid");
@@ -306,10 +323,32 @@ int SheetModel::addFlange(const EdgeRef& ref, double length, double angle, bool 
         throw Base::ValueError("Sheet metal: the gaps are longer than the edge");
     }
     dir /= edgeLength;
-    const gp_Pnt2d a = ref.a.Translated(dir * gap1);
-    const gp_Pnt2d b = ref.b.Translated(dir * -gap2);
+    gp_Pnt2d a = ref.a.Translated(dir * gap1);
+    gp_Pnt2d b = ref.b.Translated(dir * -gap2);
 
     const gp_Vec2d n = outwardNormal(panels[ref.panel].profile, a, b);
+
+    if (std::fabs(offset) > tol) {
+        // Move the bend line: add a rectangle to the parent panel, or remove one from it.
+        Panel& parent = panels[ref.panel];
+        const TopoDS_Face patch
+            = makeFlatQuad(a, b, b.Translated(n * offset), a.Translated(n * offset));
+        TopoDS_Shape changed;
+        if (offset > 0.0) {
+            changed = unify(BRepAlgoAPI_Fuse(parent.profile, patch).Shape());
+        }
+        else {
+            changed = BRepAlgoAPI_Cut(parent.profile, patch).Shape();
+        }
+        const std::vector<TopoDS_Face> faces = facesOf(changed);
+        if (faces.size() != 1) {
+            throw Base::ValueError("Sheet metal: the offset of the bend divides the panel");
+        }
+        parent.profile = faces.front();
+        parent.solid.Nullify();
+        a.Translate(n * offset);
+        b.Translate(n * offset);
+    }
 
     // An edge can hold only one bend.
     for (const Bend& other : bends) {
@@ -466,17 +505,22 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
     return changed;
 }
 
-TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine) const
+TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine, double* overlap) const
 {
     const double t = params.thickness;
     std::vector<TopoDS_Shape> solids;
     solids.reserve(panels.size() + bends.size());
+    double partsVolume = 0.0;
+    if (overlap) {
+        *overlap = 0.0;
+    }
 
     for (const Panel& panel : panels) {
         if (panel.solid.IsNull()) {
             BRepPrimAPI_MakePrism prism(panel.profile, gp_Vec(0.0, 0.0, t));
-            panel.solid = orientSolid(prism.Shape());
+            panel.solid = orientSolid(prism.Shape(), panel.volume);
         }
+        partsVolume += panel.volume;
         solids.push_back(panel.solid.Moved(TopLoc_Location(panel.folded)));
     }
 
@@ -498,7 +542,9 @@ TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine) const
         if (!revol.IsDone()) {
             throw Base::CADKernelError("Sheet metal: cannot make a bend");
         }
-        const TopoDS_Shape solid = orientSolid(revol.Shape());
+        double bendVolume = 0.0;
+        const TopoDS_Shape solid = orientSolid(revol.Shape(), bendVolume);
+        partsVolume += bendVolume;
         solids.push_back(solid.Moved(TopLoc_Location(panels[bend.parentPanel].folded)));
     }
 
@@ -517,7 +563,30 @@ TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine) const
         }
         return compound;
     }
-    TopoDS_Shape result = fuseAll(solids);
+
+    // The glue mode is correct only if no two parts have material in the same space. The volume
+    // shows this: the fused solid then has the volume of all parts together.
+    const double limit = 1.0e-6 * partsVolume + 1.0e-3;
+    TopoDS_Shape result;
+    double difference = 0.0;
+    bool glued = true;
+    try {
+        result = fuseAll(solids, true);
+        difference = partsVolume - volumeOf(result);
+    }
+    catch (const Base::Exception&) {
+        glued = false;
+    }
+    catch (const Standard_Failure&) {
+        glued = false;
+    }
+    if (!glued || std::fabs(difference) > limit) {
+        result = fuseAll(solids, false);
+        difference = partsVolume - volumeOf(result);
+    }
+    if (overlap && difference > limit) {
+        *overlap = difference;
+    }
     return refine ? unify(result) : result;
 }
 
@@ -574,23 +643,27 @@ SheetModel SheetModel::fromFlat(
     struct Band
     {
         gp_Pnt2d origin;
+        gp_Vec2d dir;
         gp_Vec2d normal;
+        double length {0.0};
         double allowance {0.0};
         TopoDS_Face face;
     };
     std::vector<Band> bands;
-    TopTools_ListOfShape bandFaces;
     for (const BendLine& line : lines) {
         if (line.angle <= tol || line.angle > M_PI + tol) {
             throw Base::ValueError("Sheet metal: a bend angle must be between 0 and 180 degrees");
         }
         gp_Vec2d dir(line.a, line.b);
-        if (dir.Magnitude() < tol) {
+        const double lineLength = dir.Magnitude();
+        if (lineLength < tol) {
             throw Base::ValueError("Sheet metal: a bend line has no length");
         }
         dir.Normalize();
         Band band;
         band.origin = line.a;
+        band.dir = dir;
+        band.length = lineLength;
         band.normal = gp_Vec2d(-dir.Y(), dir.X());
         band.allowance = model.bendAllowance(line.angle);
         const gp_Vec2d half = band.normal * (band.allowance / 2.0);
@@ -602,8 +675,40 @@ SheetModel SheetModel::fromFlat(
             b.Translated(half),
             a.Translated(half)
         );
-        bandFaces.Append(band.face);
         bands.push_back(band);
+    }
+
+    // A score acts only on the parts of the profile that its line reaches. A part of the band
+    // that is apart from the line, for example behind a slot, stays flat.
+    std::vector<std::pair<std::size_t, TopoDS_Face>> zoneParts;
+    TopTools_ListOfShape zoneFaces;
+    for (std::size_t i = 0; i < bands.size(); ++i) {
+        const Band& band = bands[i];
+        BRepAlgoAPI_Common common(flatProfile, band.face);
+        if (!common.IsDone() || common.HasErrors()) {
+            throw Base::CADKernelError("Sheet metal: cannot make a bend zone");
+        }
+        bool reached = false;
+        for (const TopoDS_Face& part : facesOf(common.Shape())) {
+            double first = 0.0;
+            double last = 0.0;
+            bool started = false;
+            for (TopExp_Explorer vx(part, TopAbs_VERTEX); vx.More(); vx.Next()) {
+                const gp_Pnt p3 = BRep_Tool::Pnt(TopoDS::Vertex(vx.Current()));
+                const double along = gp_Vec2d(band.origin, gp_Pnt2d(p3.X(), p3.Y())).Dot(band.dir);
+                first = started ? std::min(first, along) : along;
+                last = started ? std::max(last, along) : along;
+                started = true;
+            }
+            if (started && std::min(last, band.length) - std::max(first, 0.0) > looseTol) {
+                zoneParts.emplace_back(i, part);
+                zoneFaces.Append(part);
+                reached = true;
+            }
+        }
+        if (!reached) {
+            throw Base::ValueError("Sheet metal: a bend line is not on the flat pattern");
+        }
     }
 
     // The panels are the parts of the profile that are not in a bend zone.
@@ -611,7 +716,7 @@ SheetModel SheetModel::fromFlat(
     profileList.Append(flatProfile);
     BRepAlgoAPI_Cut split;
     split.SetArguments(profileList);
-    split.SetTools(bandFaces);
+    split.SetTools(zoneFaces);
     split.Build();
     if (!split.IsDone() || split.HasErrors()) {
         throw Base::CADKernelError("Sheet metal: cannot divide the flat pattern");
@@ -659,17 +764,11 @@ SheetModel SheetModel::fromFlat(
         bool used {false};
     };
     std::vector<Joint> joints;
-    for (std::size_t i = 0; i < bands.size(); ++i) {
+    for (const auto& zonePart : zoneParts) {
+        const std::size_t i = zonePart.first;
         const Band& band = bands[i];
-        BRepAlgoAPI_Common common(flatProfile, band.face);
-        if (!common.IsDone() || common.HasErrors()) {
-            throw Base::CADKernelError("Sheet metal: cannot make a bend zone");
-        }
-        const std::vector<TopoDS_Face> strips = facesOf(common.Shape());
-        if (strips.empty()) {
-            throw Base::ValueError("Sheet metal: a bend line is not on the flat pattern");
-        }
-        for (const TopoDS_Face& strip : strips) {
+        const TopoDS_Face& strip = zonePart.second;
+        {
             TopTools_IndexedMapOfShape vertices;
             TopExp::MapShapes(strip, TopAbs_VERTEX, vertices);
             std::vector<gp_Pnt2d> minus;

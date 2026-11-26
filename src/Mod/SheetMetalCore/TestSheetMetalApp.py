@@ -519,3 +519,83 @@ class TestSheetMetal(unittest.TestCase):
         flat = self.add_flat(converted)
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
         self.assertEqual(len(flat.Shape.SubShapes), 4)
+
+    # ------------------------------------------------------------ layers: offset and overlap
+
+    def test_flange_offset_moves_the_bend(self):
+        flange = self.add_end_flange(self.add_base(), Offset=5.0)
+        self.assertSolid(flange)
+        thick = self.R + self.T
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, self.LENGTH + 5.0 + thick, places=6)
+        flat = self.add_flat(flange)
+        self.assertAlmostEqual(
+            flat.Shape.BoundBox.XLength, self.LENGTH + 5.0 + self.allowance() + 20.0, places=6
+        )
+        flange.Offset = -5.0
+        self.doc.recompute()
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, self.LENGTH - 5.0 + thick, places=6)
+        self.assertAlmostEqual(
+            flat.Shape.BoundBox.XLength, self.LENGTH - 5.0 + self.allowance() + 20.0, places=6
+        )
+
+    def test_overlap_is_zero_for_a_part_that_can_exist(self):
+        flange = self.add_end_flange(self.add_base())
+        self.assertEqual(flange.Overlap.Value, 0.0)
+
+    def test_overlap_reports_a_collision(self):
+        first = self.add_end_flange(self.add_base())
+        x = self.LENGTH + self.R + self.T
+        z = self.T + self.R + 20.0
+        # Back across the base, then down through the base.
+        inner = x - self.T
+        second = self.add_flange(first, V(inner, 0, z), V(inner, self.WIDTH, z), Length=30.0)
+        self.assertSolid(second)
+        self.assertEqual(second.Overlap.Value, 0.0)
+        x3 = x - self.T - self.R - 30.0
+        z3 = z + self.R
+        third = self.add_flange(second, V(x3, 0, z3), V(x3, self.WIDTH, z3), Length=40.0)
+        self.assertSolid(third)
+        self.assertGreater(third.Overlap.Value, 100.0)
+        # The solid is the correct union: its volume is smaller than the volume of the parts.
+        parts = second.Shape.Volume + (self.allowance() + 40.0) * self.WIDTH * self.T
+        self.assertAlmostEqual(third.Shape.Volume, parts - third.Overlap.Value, places=3)
+
+    def corner_with_two_flaps(self, offset):
+        """Two walls at 90 degrees, each with a flap that folds across the opening."""
+        a = self.allowance()
+        length, width, depth = 80.0, 60.0, 40.0
+        x2 = length + a
+        faces = [
+            self.flat_rectangle_at(0, 0, length, depth),
+            self.flat_rectangle_at(length, 0, x2, depth),
+            self.flat_rectangle_at(x2, 0, x2 + width, depth),
+            # The first wall is longer by the offset. Its flap is the outer flap.
+            self.flat_rectangle_at(0, depth, length, depth + offset + a + 30.0),
+            self.flat_rectangle_at(x2, depth, x2 + width, depth + a + 20.0),
+        ]
+        face = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+        lines = [
+            Part.makeLine(V(length + a / 2, 0, 0), V(length + a / 2, depth, 0)),
+            Part.makeLine(V(0, depth + offset + a / 2, 0), V(length, depth + offset + a / 2, 0)),
+            Part.makeLine(V(x2, depth + a / 2, 0), V(x2 + width, depth + a / 2, 0)),
+        ]
+        return self.add_from_flat(face, lines, [90.0])
+
+    def flat_rectangle_at(self, x0, y0, x1, y1):
+        return Part.Face(
+            Part.makePolygon([V(x0, y0, 0), V(x1, y0, 0), V(x1, y1, 0), V(x0, y1, 0), V(x0, y0, 0)])
+        )
+
+    def test_scores_on_one_line_give_flaps_in_the_same_layer(self):
+        folded = self.corner_with_two_flaps(0.0)
+        self.assertSolid(folded)
+        self.assertGreater(folded.Overlap.Value, 100.0)
+
+    def test_score_with_offset_acts_only_on_its_panel(self):
+        """The outer flap score is one thickness higher. It must not bend the other wall."""
+        folded = self.corner_with_two_flaps(self.T)
+        self.assertSolid(folded)
+        self.assertEqual(folded.Overlap.Value, 0.0)
+        flat = self.add_flat(folded)
+        self.assertEqual(len(flat.Shape.SubShapes), 4)  # The face and three bend lines.

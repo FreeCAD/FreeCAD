@@ -57,7 +57,8 @@ struct Panel
     TopoDS_Face profile;
     gp_Trsf folded;  ///< Maps flat space to the folded position.
     int parentBend {-1};
-    mutable TopoDS_Shape solid;  ///< Prism of the profile in flat space. Empty = not made.
+    mutable TopoDS_Shape solid;   ///< Prism of the profile in flat space. Empty = not made.
+    mutable double volume {0.0};  ///< Volume of the prism.
 };
 
 /// A cylindrical bend that joins the straight edge of a parent panel to a child panel.
@@ -142,7 +143,20 @@ public:
     bool findEdge(const TopoDS_Edge& foldedEdge, EdgeRef& ref) const;
 
     /// Add a bend and a rectangular child panel. Returns the index of the new bend.
-    int addFlange(const EdgeRef& ref, double length, double angle, bool up, double gap1, double gap2);
+    /**
+     * @param offset  Moves the bend line out of the parent panel before the bend. The parent
+     *                panel becomes longer along the bend line. A negative value makes it
+     *                shorter. Use one thickness for a flap that folds across a second flap.
+     */
+    int addFlange(
+        const EdgeRef& ref,
+        double length,
+        double angle,
+        bool up,
+        double gap1,
+        double gap2,
+        double offset = 0.0
+    );
 
     /**
      * Remove planar faces from the panels.
@@ -155,7 +169,11 @@ public:
     int cut(const TopoDS_Shape& faces, bool flat);
 
     /// The folded solid. With fuse = false, the result is a compound of solids.
-    TopoDS_Shape makeFolded(bool fuse, bool refine) const;
+    /**
+     * @param overlap  If given, receives the volume of material that two or more panels or
+     *                 bends have in the same space. Zero for a part that can exist.
+     */
+    TopoDS_Shape makeFolded(bool fuse, bool refine, double* overlap = nullptr) const;
 
     /// The flat pattern as one face in flat space.
     TopoDS_Shape makeFlat() const;

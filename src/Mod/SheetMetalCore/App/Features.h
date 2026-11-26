@@ -50,6 +50,7 @@ public:
     Feature();
 
     App::PropertyBool Refine;
+    App::PropertyVolume Overlap;
 
     App::DocumentObjectExecReturn* execute() override;
 
@@ -143,6 +144,7 @@ public:
     App::PropertyBool Reversed;
     App::PropertyLength Gap1;
     App::PropertyLength Gap2;
+    App::PropertyDistance Offset;
 
 protected:
     std::shared_ptr<SheetModel> buildModel() override;

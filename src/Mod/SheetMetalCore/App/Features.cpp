@@ -275,6 +275,14 @@ Feature::Feature()
         App::Prop_None,
         "Merge the faces of the folded solid that are on the same surface"
     );
+    ADD_PROPERTY_TYPE(
+        Overlap,
+        (0.0),
+        "Sheet Metal",
+        static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output),
+        "Volume of material that two or more panels have in the same space. "
+        "Zero for a part that can exist"
+    );
 }
 
 std::shared_ptr<SheetModel> Feature::buildModel()
@@ -305,7 +313,21 @@ App::DocumentObjectExecReturn* Feature::execute()
     try {
         std::shared_ptr<SheetModel> result = buildModel();
         model = result;
-        Shape.setValue(result->makeFolded(true, Refine.getValue()));
+        double overlap = 0.0;
+        const TopoDS_Shape folded = result->makeFolded(true, Refine.getValue(), &overlap);
+        if (!TopExp_Explorer(folded, TopAbs_SOLID).More()) {
+            throw Base::CADKernelError("Sheet metal: the model gives no solid");
+        }
+        Shape.setValue(folded);
+        Overlap.setValue(overlap);
+        if (overlap > 0.0) {
+            Base::Console().warning(
+                "Sheet metal: {}: {:.1f} mm^3 of material is in the same space as other material. "
+                "Panels of the folded part collide.\n",
+                getNameInDocument(),
+                overlap
+            );
+        }
     }
     catch (const Standard_Failure& e) {
         return failure(e.GetMessageString());
@@ -453,8 +475,8 @@ std::shared_ptr<SheetModel> FromSolid::buildModel()
     BRepGProp::VolumeProperties(result->makeFolded(false, false), made);
     if (std::fabs(source.Mass() - made.Mass()) > 1.0e-3 * std::fabs(source.Mass())) {
         Base::Console().warning(
-            "Sheet metal: %s: the volume of the model (%.3f) is different from the volume of the "
-            "solid (%.3f). The solid has geometry that this version cannot read.\n",
+            "Sheet metal: {}: the volume of the model ({:.3f}) is different from the volume of the "
+            "solid ({:.3f}). The solid has geometry that this version cannot read.\n",
             getNameInDocument(),
             made.Mass(),
             source.Mass()
@@ -476,6 +498,14 @@ Flange::Flange()
     ADD_PROPERTY_TYPE(Reversed, (false), "Sheet Metal", App::Prop_None, "Bend to the opposite side");
     ADD_PROPERTY_TYPE(Gap1, (0.0), "Sheet Metal", App::Prop_None, "Gap at the start of the edge");
     ADD_PROPERTY_TYPE(Gap2, (0.0), "Sheet Metal", App::Prop_None, "Gap at the end of the edge");
+    ADD_PROPERTY_TYPE(
+        Offset,
+        (0.0),
+        "Sheet Metal",
+        App::Prop_None,
+        "Moves the bend line out of the panel before the bend. Use one thickness for a flap "
+        "that folds across a second flap"
+    );
     Angle.setConstraints(&angleRange);
 }
 
@@ -521,7 +551,8 @@ std::shared_ptr<SheetModel> Flange::buildModel()
         Base::toRadians(Angle.getValue()),
         up,
         Gap1.getValue(),
-        Gap2.getValue()
+        Gap2.getValue(),
+        Offset.getValue()
     );
     return result;
 }
