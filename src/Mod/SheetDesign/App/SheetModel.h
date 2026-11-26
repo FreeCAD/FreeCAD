@@ -105,6 +105,16 @@ struct Bend
     gp_Pnt2d farEnd;
 };
 
+/// A formed region of a panel: a shape that a tool presses into the sheet.
+struct FormedRegion
+{
+    int panel {-1};
+    TopoDS_Face outline;  ///< The region in flat space. The flat pattern keeps its material.
+    TopoDS_Shape solid;   ///< The formed sheet, in flat space coordinates.
+    double volume {0.0};
+    std::string tag;
+};
+
 /**
  * The origin of a straight boundary segment: the feature and the role that made it.
  *
@@ -183,6 +193,7 @@ public:
     std::vector<Panel> panels;
     std::vector<Bend> bends;
     std::vector<Origin> origins;
+    std::vector<FormedRegion> forms;
 
     /// Make a model with one panel. The profile must be a planar face in the plane z = 0.
     static SheetModel makeBase(
@@ -258,6 +269,54 @@ public:
     /// Cut a circle or a square at each corner where two bends of one panel meet. The size is
     /// the diameter or the side. Returns the number of corners.
     int cornerRelief(bool square, double size, const std::string& tag);
+
+    /**
+     * Make a model from flat faces of a solid that is not a sheet. The first face is the root.
+     * Faces with a straight edge in common get a bend on that edge, as far as a tree from the
+     * root needs them. The other common edges are rips.
+     *
+     * @param inside  True: the sheet is in the solid, and the faces are its outer side.
+     * @param ripGap  The distance between two panels at a rip.
+     */
+    static SheetModel fromFaces(
+        const TopoDS_Shape& solid,
+        const std::vector<TopoDS_Face>& faces,
+        const SheetParams& params,
+        bool inside,
+        double ripGap,
+        const std::string& tag
+    );
+
+    /**
+     * Press a tool into a panel. The base face of the tool is on the panel. The formed sheet is
+     * a shell on the other faces of the tool; an open face gives an opening in that shell.
+     */
+    int addForm(
+        const TopoDS_Shape& tool,
+        const TopoDS_Face& baseFace,
+        const std::vector<TopoDS_Face>& openFaces,
+        const std::string& tag
+    );
+
+    /// The outlines of the formed regions in flat space.
+    std::vector<TopoDS_Wire> formOutlines() const;
+
+    /// The bend on a boundary segment of a panel, or -1.
+    int bendAt(const EdgeRef& ref) const;
+
+    /**
+     * Cut slots along bend lines, with tabs between them, for a bend made by hand.
+     *
+     * @param which  Indexes of the bends. Empty: all bends.
+     * @param width  The size of a slot across the bend. Zero: the width of the bend zone.
+     */
+    int perforate(
+        const std::vector<int>& which,
+        double cutLength,
+        double tabLength,
+        double width,
+        const std::string& tag
+    );
 
     /// The number of sharp folds that fromSolid replaced with a bend.
     int sharpFolds {0};

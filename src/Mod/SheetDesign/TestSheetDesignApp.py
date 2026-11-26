@@ -2011,3 +2011,183 @@ class TestSheetDesign(unittest.TestCase):
         flat = self.add_flat(unfold)
         length = (self.LENGTH - self.T) + self.K * self.T * math.pi / 2 + (30.0 - self.T)
         self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)
+
+    # ------------------------------------------------------------ convert a solid (step 20)
+
+    def add_convert(self, shape, normals, **properties):
+        """Convert the faces of a solid. Each face is given by its outer normal."""
+        source = self.add_shape(shape, "Block")
+        names = []
+        for normal in normals:
+            for index, face in enumerate(shape.Faces):
+                if face.Surface.TypeId == "Part::GeomPlane" and face.normalAt(0, 0).dot(normal) > 0.99:
+                    names.append(f"Face{index + 1}")
+        return self.add_feature("Convert", "Convert", Faces=(source, names), Rule=self.rule, **properties)
+
+    BOX = (100.0, 60.0, 30.0)
+    SIDES = [V(0, 0, -1), V(1, 0, 0), V(-1, 0, 0), V(0, 1, 0), V(0, -1, 0)]
+
+    def test_convert_a_box_to_a_tub(self):
+        length, width, height = self.BOX
+        convert = self.add_convert(Part.makeBox(length, width, height), self.SIDES)
+        self.assertSolid(convert)
+        self.assertEqual(convert.Overlap.Value, 0.0)
+        # The sheet is in the solid: the part has the outer sizes of the box.
+        box = convert.Shape.BoundBox
+        for got, expected in zip((box.XMin, box.YMin, box.ZMin, box.XMax, box.YMax, box.ZMax), (0, 0, 0, length, width, height)):
+            self.assertAlmostEqual(got, expected, places=6)
+        flat = self.add_flat(convert)
+        self.assertEqual(len(flat.Shape.Faces), 1)
+        self.assertEqual(len(flat.BendAngles), 4)
+        setback = self.R + self.T
+        self.assertAlmostEqual(
+            flat.Shape.BoundBox.XLength, (length - 2 * setback) + 2 * self.allowance() + 2 * (height - setback), places=6
+        )
+        self.assertAlmostEqual(
+            flat.Shape.BoundBox.YLength, (width - 2 * setback) + 2 * self.allowance() + 2 * (height - setback), places=6
+        )
+
+    def test_convert_with_a_cover(self):
+        convert = self.add_convert(Part.makeBox(*self.BOX), self.SIDES + [V(0, 0, 1)])
+        self.assertSolid(convert)
+        self.assertEqual(convert.Overlap.Value, 0.0)
+        self.assertEqual(len(self.add_flat(convert).BendAngles), 5)
+        self.assertAlmostEqual(convert.Shape.BoundBox.ZMax, self.BOX[2], places=6)
+
+    def test_convert_with_the_sheet_on_the_outer_side(self):
+        length, width, height = self.BOX
+        convert = self.add_convert(Part.makeBox(length, width, height), self.SIDES, Inside=False)
+        self.assertSolid(convert)
+        self.assertEqual(convert.Overlap.Value, 0.0)
+        box = convert.Shape.BoundBox
+        self.assertAlmostEqual(box.ZMin, -self.T, places=6)
+        self.assertAlmostEqual(box.XMax, length + self.T, places=6)
+
+    def test_convert_rip_gap(self):
+        tight = self.add_convert(Part.makeBox(*self.BOX), self.SIDES)
+        area = self.add_flat(tight).Shape.Faces[0].Area
+        tight.RipGap = 1.0
+        self.doc.recompute()
+        self.assertSolid(tight)
+        self.assertLess(self.add_flat(tight).Shape.Faces[0].Area, area)
+
+    def test_convert_needs_faces_with_a_common_edge(self):
+        convert = self.add_convert(Part.makeBox(*self.BOX), [V(0, 0, -1), V(0, 0, 1)])
+        self.assertFalse(convert.isValid())
+        self.assertIn("common", convert.getStatusString())
+
+    def test_flange_on_a_converted_part(self):
+        convert = self.add_convert(Part.makeBox(*self.BOX), self.SIDES)
+        length, width, height = self.BOX
+        edge = find_edge(convert.Shape, V(length, self.T, height), V(length, width - self.T, height))
+        flange = self.add_feature("Flange", "Lip", Edge=(convert, [edge]), Length=10.0)
+        self.assertSolid(flange)
+        self.assertEqual(len(self.add_flat(flange).BendAngles), 5)
+
+    # ----------------------------------------------------------------------- forming (step 21)
+
+    def add_form(self, source, tool, base_normal, open_normals=()):
+        obj = self.add_shape(tool, "Tool")
+        names = []
+        for normal in [base_normal] + list(open_normals):
+            for index, face in enumerate(tool.Faces):
+                if face.Surface.TypeId == "Part::GeomPlane" and face.normalAt(0, 0).dot(normal) > 0.99:
+                    names.append(f"Face{index + 1}")
+        return self.add_feature("Form", "Form", Source=source, Tool=(obj, names))
+
+    def test_form_adds_a_shell_of_the_tool(self):
+        base = self.add_base()
+        tool = Part.makeBox(30.0, 20.0, 5.0, V(35, 15, self.T))
+        form = self.add_form(base, tool, V(0, 0, -1))
+        self.assertSolid(form)
+        self.assertEqual(form.Overlap.Value, 0.0)
+        self.assertAlmostEqual(form.Shape.BoundBox.ZMax, self.T + 5.0 + self.T, places=5)
+        # The space of the tool is empty.
+        self.assertAlmostEqual(form.Shape.common(tool).Volume, 0.0, places=5)
+        # The flat pattern keeps the material, and has the outline as a mark.
+        flat = self.add_flat(form)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.LENGTH * self.WIDTH, places=6)
+        marks = [part for part in flat.Shape.SubShapes if part.ShapeType == "Compound"]
+        self.assertEqual(len(marks), 1)
+        self.assertAlmostEqual(marks[0].Wires[0].Length, 100.0, places=6)
+
+    def test_form_with_an_open_face_is_a_louver(self):
+        base = self.add_base()
+        tool = Part.makeBox(30.0, 20.0, 5.0, V(35, 15, self.T))
+        closed = self.add_form(base, tool, V(0, 0, -1))
+        louver = self.add_form(base, tool, V(0, 0, -1), [V(1, 0, 0)])
+        self.assertSolid(louver)
+        self.assertLess(louver.Shape.Volume, closed.Shape.Volume)
+
+    def test_form_on_the_bottom_side_and_on_a_flange(self):
+        flange = self.add_end_flange(self.add_base(), Length=40.0)
+        x = self.LENGTH + self.R + self.T
+        tool = Part.makeBox(4.0, 20.0, 15.0, V(x, 15, self.T + self.R + 10.0))
+        form = self.add_form(flange, tool, V(-1, 0, 0))
+        self.assertSolid(form)
+        self.assertEqual(form.Overlap.Value, 0.0)
+        self.assertAlmostEqual(form.Shape.BoundBox.XMax, x + 4.0 + self.T, places=5)
+
+    def test_two_forms_with_a_round_tool_give_no_false_overlap(self):
+        base = self.add_base()
+        dome = Part.makeSphere(40, V(30, 25, self.T - 34)).common(Part.makeBox(200, 200, 100, V(-50, -50, self.T)))
+        first = self.add_form(base, dome, V(0, 0, -1))
+        wedge = Part.Face(
+            Part.makePolygon([V(60, 10, self.T), V(80, 10, self.T), V(80, 10, self.T + 7), V(60, 10, self.T)])
+        ).extrude(V(0, 30, 0))
+        second = self.add_form(first, wedge, V(0, 0, -1), [V(1, 0, 0)])
+        self.assertSolid(second)
+        self.assertEqual(second.Overlap.Value, 0.0)
+
+    def test_form_outline_must_be_in_a_panel(self):
+        base = self.add_base()
+        tool = Part.makeBox(30.0, 20.0, 5.0, V(85, 15, self.T))
+        form = self.add_form(base, tool, V(0, 0, -1))
+        self.assertFalse(form.isValid())
+        self.assertIn("fully in it", form.getStatusString())
+
+    def test_export_has_a_layer_for_the_formed_regions(self):
+        import SheetDesignExport
+
+        base = self.add_base()
+        form = self.add_form(base, Part.makeBox(30.0, 20.0, 5.0, V(35, 15, self.T)), V(0, 0, -1))
+        entities = self.dxf_entities(SheetDesignExport.dxf_text(self.add_flat(form)))
+        self.assertEqual([kind for kind, layer, _v in entities if layer == "FORM"], ["LINE"] * 4)
+        self.assertEqual(len([1 for _k, layer, _v in entities if layer == "CUTOUT"]), 0)
+
+    # ------------------------------------------------------------------- perforation (step 22)
+
+    def test_perforation_cuts_slots_in_the_bend_zone(self):
+        flange = self.add_end_flange(self.add_base())
+        before = self.add_flat(flange).Shape.Faces[0].Area
+        perforation = self.add_feature("Perforation", "Perforation", Edges=(flange, []), CutLength=10.0, TabLength=4.0)
+        self.assertSolid(perforation)
+        self.assertEqual(perforation.Overlap.Value, 0.0)
+        # A bend line of 50 mm takes three cuts of 10 mm with tabs of 4 mm.
+        flat = self.add_flat(perforation)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, before - 3 * 10.0 * self.allowance(), places=5)
+        self.assertEqual(len(flat.Shape.Faces[0].Wires), 4)
+
+    def test_perforation_of_a_selected_bend(self):
+        first = self.add_end_flange(self.add_base())
+        part = self.add_flange(first, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=20.0)
+        edge = find_edge(part.Shape, V(self.LENGTH, 0, 0), V(self.LENGTH, self.WIDTH, 0))
+        one = self.add_feature("Perforation", "One", Edges=(part, [edge]), CutLength=10.0, TabLength=4.0)
+        both = self.add_feature("Perforation", "Both", Edges=(part, []), CutLength=10.0, TabLength=4.0)
+        self.assertSolid(one)
+        self.assertSolid(both)
+        self.assertEqual(len(self.add_flat(one).Shape.Faces[0].Wires), 4)
+        self.assertEqual(len(self.add_flat(both).Shape.Faces[0].Wires), 7)
+
+    def test_perforation_with_a_width(self):
+        flange = self.add_end_flange(self.add_base())
+        before = self.add_flat(flange).Shape.Faces[0].Area
+        perforation = self.add_feature("Perforation", "Perforation", Edges=(flange, []), CutLength=10.0, TabLength=4.0, Width=1.0)
+        self.assertSolid(perforation)
+        self.assertAlmostEqual(self.add_flat(perforation).Shape.Faces[0].Area, before - 30.0, places=5)
+
+    def test_perforation_needs_a_long_bend(self):
+        flange = self.add_end_flange(self.add_base())
+        perforation = self.add_feature("Perforation", "Perforation", Edges=(flange, []), CutLength=60.0)
+        self.assertFalse(perforation.isValid())
+        self.assertIn("long enough", perforation.getStatusString())

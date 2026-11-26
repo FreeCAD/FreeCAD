@@ -493,6 +493,86 @@ class CommandFold(CommandCut):
         _finish(doc, hide=[source, lines], edit=obj)
 
 
+class CommandConvert(_Command):
+    name = "SheetDesign_Convert"
+    menu = "Convert"
+    tip = "Makes a sheet part from the selected flat faces of a solid. The first face stays in its position"
+
+    def _pick(self):
+        sel = _selection()
+        if len(sel) != 1 or _is_feature(sel[0].Object):
+            return None
+        names = [name for name in sel[0].SubElementNames if name.startswith("Face")]
+        if not names or len(names) != len(sel[0].SubElementNames):
+            return None
+        return sel[0].Object, names
+
+    def IsActive(self):
+        return self._pick() is not None
+
+    def Activated(self):
+        source, faces = self._pick()
+        doc = source.Document
+        doc.openTransaction("Convert")
+        obj = _attach(_body_for(doc, source).newObject("SheetDesign::Convert", "Convert"))
+        obj.Rule = _find_rule(doc)
+        obj.Faces = (source, faces)
+        _finish(doc, hide=[source], edit=obj)
+
+
+class CommandForm(_Command):
+    name = "SheetDesign_Form"
+    menu = "Form"
+    tip = (
+        "Presses a tool solid into the selected sheet design feature. Select the feature, then "
+        "the base face of the tool. More faces of the tool give openings"
+    )
+
+    def _pick(self):
+        sel = _selection()
+        features = [s.Object for s in sel if _is_feature(s.Object)]
+        tools = [s for s in sel if not _is_feature(s.Object) and s.SubElementNames]
+        if len(sel) != 2 or len(features) != 1 or len(tools) != 1:
+            return None
+        names = list(tools[0].SubElementNames)
+        if not all(name.startswith("Face") for name in names):
+            return None
+        return features[0], tools[0].Object, names
+
+    def IsActive(self):
+        return self._pick() is not None
+
+    def Activated(self):
+        source, tool, faces = self._pick()
+        doc = source.Document
+        doc.openTransaction("Form")
+        obj = _attach(_new_after(source, "SheetDesign::Form", "Form"))
+        obj.Source = source
+        obj.Tool = (tool, faces)
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source, tool], edit=obj)
+
+
+class CommandPerforation(_Command):
+    name = "SheetDesign_Perforation"
+    menu = "Perforation"
+    tip = "Cuts slots along the bends of the selected feature. Select edges on bends to cut only those bends"
+
+    def IsActive(self):
+        sel = _selection()
+        return len(sel) == 1 and _is_feature(sel[0].Object)
+
+    def Activated(self):
+        sel = _selection()[0]
+        source = sel.Object
+        doc = source.Document
+        doc.openTransaction("Perforation")
+        obj = _attach(_new_after(source, "SheetDesign::Perforation", "Perforation"))
+        obj.Edges = (source, list(sel.SubElementNames))
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source], edit=obj)
+
+
 class CommandFlatPattern(_Command):
     name = "SheetDesign_FlatPattern"
     menu = "Flat Pattern"
@@ -558,6 +638,7 @@ def register():
         CommandBaseShape,
         CommandRefold,
         CommandUnfold,
+        CommandConvert,
         CommandFlange,
         CommandHem,
         CommandExtend,
@@ -565,6 +646,8 @@ def register():
         CommandCut,
         CommandCutFlat,
         CommandCornerRelief,
+        CommandForm,
+        CommandPerforation,
         CommandFlatPattern,
         CommandExport,
     ]

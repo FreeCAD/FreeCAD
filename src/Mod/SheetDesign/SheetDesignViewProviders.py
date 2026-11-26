@@ -28,6 +28,9 @@ icon and opens its task panel for an edit.
 import FreeCADGui
 
 ICONS = {
+    "SheetDesign::Convert": "SheetDesign_Convert",
+    "SheetDesign::Form": "SheetDesign_Form",
+    "SheetDesign::Perforation": "SheetDesign_Perforation",
     "SheetDesign::Extend": "SheetDesign_Extend",
     "SheetDesign::Fold": "SheetDesign_Fold",
     "SheetDesign::Hem": "SheetDesign_Hem",

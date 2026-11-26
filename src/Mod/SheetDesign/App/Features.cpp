@@ -1308,6 +1308,170 @@ std::shared_ptr<SheetModel> BaseShape::buildModel()
 
 // ------------------------------------------------------------------------------------------------
 
+PROPERTY_SOURCE(SheetDesign::Convert, SheetDesign::Feature)
+
+Convert::Convert()
+{
+    ADD_PROPERTY_TYPE(
+        Faces,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Flat faces of a solid that become panels. The first face stays in its position"
+    );
+    ADD_PROPERTY_TYPE(
+        Rule,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Object with the properties Thickness, BendRadius, and KFactor"
+    );
+    ADD_PROPERTY_TYPE(
+        Inside,
+        (true),
+        "Sheet Design",
+        App::Prop_None,
+        "The sheet is in the solid, thus the part has the outer sizes of the solid"
+    );
+    ADD_PROPERTY_TYPE(
+        RipGap,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Distance between two panels on an edge that has no bend"
+    );
+    Faces.setScope(App::LinkScope::Global);
+    Rule.setScope(App::LinkScope::Global);
+}
+
+std::shared_ptr<SheetModel> Convert::buildModel()
+{
+    const SheetParams params = readRule(Rule.getValue());
+    const std::vector<std::string>& subs = Faces.getSubValues();
+    if (!Faces.getValue() || subs.empty()) {
+        throw Base::ValueError("Sheet design: select the faces of the solid that become panels");
+    }
+    const TopoDS_Shape solid = profileShape(Faces.getValue(), toLocal(Faces.getValue()));
+    std::vector<TopoDS_Face> faces;
+    for (const std::string& name : subs) {
+        const TopoDS_Shape sub = Part::TopoShape(solid).getSubShape(name.c_str(), true);
+        if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
+            throw Base::ValueError("Sheet design: the selection must have only faces");
+        }
+        faces.push_back(TopoDS::Face(sub));
+    }
+    return std::make_shared<SheetModel>(
+        SheetModel::fromFaces(solid, faces, params, Inside.getValue(), RipGap.getValue(), getNameInDocument())
+    );
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::Form, SheetDesign::Feature)
+
+Form::Form()
+{
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Feature to form");
+    ADD_PROPERTY_TYPE(
+        Tool,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Solid of the forming tool. The first face is the base face on the sheet. More faces "
+        "give openings in the formed sheet"
+    );
+    Tool.setScope(App::LinkScope::Global);
+}
+
+std::shared_ptr<SheetModel> Form::buildModel()
+{
+    auto result = std::make_shared<SheetModel>(*sourceModel(Source.getValue()));
+    const std::vector<std::string>& subs = Tool.getSubValues();
+    if (!Tool.getValue() || subs.empty()) {
+        throw Base::ValueError("Sheet design: select the base face of the forming tool");
+    }
+    const TopoDS_Shape tool = profileShape(Tool.getValue(), toLocal(Tool.getValue()));
+    std::vector<TopoDS_Face> faces;
+    for (const std::string& name : subs) {
+        const TopoDS_Shape sub = Part::TopoShape(tool).getSubShape(name.c_str(), true);
+        if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
+            throw Base::ValueError(
+                "Sheet design: the selection on the forming tool must have only faces"
+            );
+        }
+        faces.push_back(TopoDS::Face(sub));
+    }
+    const std::vector<TopoDS_Face> open(faces.begin() + 1, faces.end());
+    result->addForm(tool, faces.front(), open, getNameInDocument());
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::Perforation, SheetDesign::Feature)
+
+Perforation::Perforation()
+{
+    ADD_PROPERTY_TYPE(
+        Edges,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Feature to cut, with edges on the bends to cut. With no edge, all bends are cut"
+    );
+    ADD_PROPERTY_TYPE(
+        CutLength,
+        (10.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Length of each cut along the bend line"
+    );
+    ADD_PROPERTY_TYPE(
+        TabLength,
+        (3.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Length of the material between two cuts"
+    );
+    ADD_PROPERTY_TYPE(
+        Width,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Size of each cut across the bend. Zero: the width of the bend zone"
+    );
+}
+
+std::shared_ptr<SheetModel> Perforation::buildModel()
+{
+    auto* source = freecad_cast<Feature*>(Edges.getValue());
+    auto result = std::make_shared<SheetModel>(*sourceModel(Edges.getValue()));
+    std::vector<int> bends;
+    for (const std::string& name : Edges.getSubValues()) {
+        EdgeRef ref;
+        const int bend = source->findEdge(name.c_str(), ref) ? result->bendAt(ref) : -1;
+        if (bend < 0) {
+            throw Base::ValueError("Sheet design: a selected edge is not on a bend");
+        }
+        if (std::find(bends.begin(), bends.end(), bend) == bends.end()) {
+            bends.push_back(bend);
+        }
+    }
+    result->perforate(
+        bends,
+        CutLength.getValue(),
+        TabLength.getValue(),
+        Width.getValue(),
+        getNameInDocument()
+    );
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
 PROPERTY_SOURCE(SheetDesign::FlatPattern, Part::Feature)
 
 FlatPattern::FlatPattern()
@@ -1361,6 +1525,16 @@ App::DocumentObjectExecReturn* FlatPattern::execute()
                     sheet->bendLineName(i)
                 );
             }
+        }
+        // The outlines of the formed regions: a marker for the export, not a cut.
+        const std::vector<TopoDS_Wire> outlines = sheet->formOutlines();
+        if (!outlines.empty()) {
+            TopoDS_Compound marks;
+            builder.MakeCompound(marks);
+            for (const TopoDS_Wire& outline : outlines) {
+                builder.Add(marks, outline.Moved(root));
+            }
+            builder.Add(compound, marks);
         }
         Shape.setValue(namedShape(compound, names, getID()));
         std::vector<double> angles;

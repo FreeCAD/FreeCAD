@@ -313,7 +313,71 @@ protected:
     std::shared_ptr<SheetModel> buildModel() override;
 };
 
-/// The flat pattern of a sheet design feature: one face and the bend center lines.
+/**
+ * A sheet part from the faces of a solid that is not a sheet, for example a box.
+ *
+ * The selected faces become panels. The first face is the root.
+ */
+class SheetDesignExport Convert: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Convert);
+
+public:
+    Convert();
+
+    App::PropertyLinkSub Faces;
+    App::PropertyLink Rule;
+    App::PropertyBool Inside;
+    App::PropertyLength RipGap;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+};
+
+/// A region of a panel that a tool presses out of the plane of the sheet.
+class SheetDesignExport Form: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Form);
+
+public:
+    Form();
+
+    App::PropertyLink Source;
+    /// The tool solid. The first face is its base face on the sheet. More faces are open.
+    App::PropertyLinkSub Tool;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Source.getValue();
+    }
+};
+
+/// Slots along bend lines with tabs between them, for a bend made by hand.
+class SheetDesignExport Perforation: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Perforation);
+
+public:
+    Perforation();
+
+    /// The source feature and edges on the bends. With no edge: all bends.
+    App::PropertyLinkSub Edges;
+    App::PropertyLength CutLength;
+    App::PropertyLength TabLength;
+    App::PropertyLength Width;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Edges.getValue();
+    }
+};
+
+/// The flat pattern of a sheet design feature: one face and the bend center lines. A compound
+/// with the outlines of the formed regions is the last part of the shape, if the part has one.
 class SheetDesignExport FlatPattern: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::FlatPattern);

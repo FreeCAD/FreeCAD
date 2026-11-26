@@ -29,6 +29,7 @@ openings, the bend lines, and the texts are apart.
     BEND_UP     center lines of the bends to the top side, as dashed lines
     BEND_DOWN   center lines of the bends to the bottom side, as dashed lines
     BEND_TEXT   the direction, the angle, and the radius of each bend
+    FORM        the outlines of the formed regions (a mark, not a cut)
 
 The DXF file has the format R12 with only LINE, ARC, CIRCLE, POLYLINE, and TEXT. All programs
 for cutters read this format.
@@ -39,6 +40,7 @@ import math
 import FreeCAD
 
 OUTLINE, CUTOUT, BEND_UP, BEND_DOWN, BEND_TEXT = "OUTLINE", "CUTOUT", "BEND_UP", "BEND_DOWN", "BEND_TEXT"
+FORM = "FORM"
 
 #: Layer: (DXF color number, SVG color, dashed).
 LAYERS = {
@@ -47,6 +49,7 @@ LAYERS = {
     BEND_UP: (3, "#00a000", True),
     BEND_DOWN: (6, "#c000c0", True),
     BEND_TEXT: (2, "#806000", False),
+    FORM: (1, "#d00000", False),
 }
 
 #: The largest distance between a curve and the straight segments that replace it.
@@ -97,7 +100,15 @@ class Layout:
         angles = list(getattr(flat, "BendAngles", []))
         radii = list(getattr(flat, "BendRadii", []))
         self.bends = []
-        for index, line in enumerate(parts[1:]):
+        self.forms = []
+        lines = []
+        for part in parts[1:]:
+            if part.ShapeType == "Edge":
+                lines.append(part)
+            else:
+                # The compound with the outlines of the formed regions.
+                self.forms += part.transformed(to_xy, True).Wires
+        for index, line in enumerate(lines):
             edge = line.transformed(to_xy, True)
             angle = angles[index] if index < len(angles) else 0.0
             radius = radii[index] if index < len(radii) else 0.0
@@ -108,6 +119,8 @@ class Layout:
         yield OUTLINE, self.outline
         for wire in self.cutouts:
             yield CUTOUT, wire
+        for wire in self.forms:
+            yield FORM, wire
 
     def text_height(self):
         return max(2.0, min(5.0, self.box.DiagonalLength / 60.0))

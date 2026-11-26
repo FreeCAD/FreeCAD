@@ -435,7 +435,45 @@ class TaskBaseShape(TaskPanel):
         self.form.FlangeWidth.setEnabled(self.obj.Type == "Hat")
 
 
+class TaskConvert(TaskPanel):
+    ui_file = "TaskConvert.ui"
+    title = "Convert"
+    icon = "SheetDesign_Convert"
+
+    def update(self):
+        super().update()
+        source, subs = self.obj.Faces if self.obj.Faces else (None, [])
+        text = translate("SheetDesign", "{} ({} faces)").format(label_of(source), len(subs))
+        self.form.facesLabel.setText(text if source else "")
+        self.form.ruleLabel.setText(label_of(self.obj.Rule))
+
+
+class TaskForm(TaskPanel):
+    ui_file = "TaskForm.ui"
+    title = "Form"
+    icon = "SheetDesign_Form"
+
+    def update(self):
+        super().update()
+        tool, subs = self.obj.Tool if self.obj.Tool else (None, [])
+        self.form.toolLabel.setText(f"{label_of(tool)} ({', '.join(subs)})" if tool else "")
+
+
+class TaskPerforation(TaskPanel):
+    ui_file = "TaskPerforation.ui"
+    title = "Perforation"
+    icon = "SheetDesign_Perforation"
+
+    def update(self):
+        super().update()
+        _source, subs = self.obj.Edges if self.obj.Edges else (None, [])
+        self.form.edgesLabel.setText(", ".join(subs) if subs else translate("SheetDesign", "All bends"))
+
+
 PANELS = {
+    "SheetDesign::Convert": TaskConvert,
+    "SheetDesign::Form": TaskForm,
+    "SheetDesign::Perforation": TaskPerforation,
     "SheetDesign::Extend": TaskExtend,
     "SheetDesign::Fold": TaskFold,
     "SheetDesign::Hem": TaskHem,

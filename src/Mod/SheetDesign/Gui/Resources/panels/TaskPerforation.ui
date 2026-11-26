@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskPerforation</class>
+ <widget class="QWidget" name="TaskPerforation">
+  <property name="windowTitle">
+   <string>Perforation</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Perforation</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_edgesLabel">
+        <property name="text">
+         <string>Bends</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="edgesLabel">
+        <property name="toolTip">
+         <string>The bends that get cuts</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_CutLength">
+        <property name="text">
+         <string>Cut length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="CutLength">
+        <property name="toolTip">
+         <string>The length of each cut along the bend line</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_TabLength">
+        <property name="text">
+         <string>Tab length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="TabLength">
+        <property name="toolTip">
+         <string>The length of the material between two cuts</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_Width">
+        <property name="text">
+         <string>Cut width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Width">
+        <property name="toolTip">
+         <string>The size of each cut across the bend. Zero uses the width of the bend zone</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="Refine">
+        <property name="text">
+         <string>Refine shape</string>
+        </property>
+        <property name="toolTip">
+         <string>Merges faces of the solid that are on the same surface</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

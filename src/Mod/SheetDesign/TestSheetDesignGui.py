@@ -348,3 +348,50 @@ class TestSheetDesignGui(unittest.TestCase):
         self.assertEqual(flat.Source, self.base)
         self.assertTrue(flat.isValid(), flat.getStatusString())
         self.assertTrue(self.base.ViewObject.Visibility)
+
+    # ----------------------------------------------------------------- Stage 5 features
+
+    def test_stage_5_features_have_panels(self):
+        block = self.doc.addObject("Part::Feature", "Block")
+        block.Shape = Part.makeBox(80, 50, 30, V(0, 100, 0))
+        faces = [f"Face{i + 1}" for i, f in enumerate(block.Shape.Faces) if f.normalAt(0, 0).z < 0.5]
+        faces.sort(key=lambda n: block.Shape.getElement(n).normalAt(0, 0).z)
+        convert = self.add("SheetDesign::Convert", "Convert")
+        convert.Faces = (block, faces)
+        convert.Rule = self.rule
+        tool = self.doc.addObject("Part::Feature", "Tool")
+        tool.Shape = Part.makeBox(30, 20, 5, V(35, 15, self.T))
+        base_face = [f"Face{i + 1}" for i, f in enumerate(tool.Shape.Faces) if f.normalAt(0, 0).z < -0.5]
+        form = self.add("SheetDesign::Form", "Form")
+        form.Source = self.base
+        form.Tool = (tool, base_face)
+        perforation = self.add("SheetDesign::Perforation", "Perforation")
+        perforation.Edges = (self.flange, [])
+        self.doc.recompute()
+        for obj in (convert, form, perforation):
+            self.assertTrue(obj.isValid(), obj.Name + ": " + obj.getStatusString())
+            panel = self.open_panel(obj)
+            self.assertIsNotNone(panel, obj.TypeId)
+            self.assertEqual(panel.form.statusLabel.text(), "", obj.TypeId)
+            self.close_panel(accept=False)
+        self.assertEqual(self.open_panel(perforation).form.edgesLabel.text(), "All bends")
+        self.close_panel(accept=False)
+
+    def test_convert_command(self):
+        block = self.doc.addObject("Part::Feature", "Block")
+        block.Shape = Part.makeBox(80, 50, 30, V(0, 100, 0))
+        self.doc.recompute()
+        FreeCADGui.activateWorkbench("SheetDesignWorkbench")
+        FreeCADGui.Selection.clearSelection()
+        names = [f"Face{i + 1}" for i, f in enumerate(block.Shape.Faces) if f.normalAt(0, 0).z < 0.5]
+        names.sort(key=lambda n: block.Shape.getElement(n).normalAt(0, 0).z)
+        for name in names:
+            FreeCADGui.Selection.addSelection(block, name)
+        FreeCADGui.runCommand("SheetDesign_Convert")
+        convert = self.doc.getObject("Convert")
+        self.assertIsNotNone(convert)
+        self.assertTrue(convert.isValid(), convert.getStatusString())
+        self.assertEqual(len(convert.Faces[1]), 5)
+        SheetDesignViewProviders.ACTIVE_PANEL.accept()
+        FreeCADGui.Control.closeDialog()
+        self.assertEqual(len(convert.Shape.Solids), 1)
