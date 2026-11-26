@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from App.GeoFeatureGroupExtension import GeoFeatureGroupExtension
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
 from Base.Placement import Placement
@@ -361,7 +360,7 @@ class DocumentObject(ExtensionContainer):
         Note that an object can only be in a single group, hence only a single return value.
         """
 
-    def getParentGeoFeatureGroup(self) -> GeoFeatureGroupExtension:
+    def getParentGeoFeatureGroup(self) -> DocumentObject | None:
         """
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object
         is in or None if it is not part of a group.
