@@ -56,7 +56,7 @@
 #include "Features.h"
 
 
-using namespace SheetMetalCore;
+using namespace SheetDesign;
 
 namespace
 {
@@ -68,7 +68,7 @@ const char* SpaceEnums[] = {"Folded", "Flat", nullptr};
 /**
  * Make one face from an outer wire and holes that are apart from each other.
  *
- * This is the usual profile of a sheet metal part. The general face maker of the Part module
+ * This is the usual profile of a sheet part. The general face maker of the Part module
  * needs much more time for a profile with many holes. Returns false if the wires do not have
  * this simple arrangement.
  */
@@ -138,7 +138,7 @@ std::vector<TopoDS_Face> collectFaces(const TopoDS_Shape& shape)
         wires.push_back(TopoDS::Wire(ex.Current()));
     }
     if (wires.empty()) {
-        throw Base::ValueError("Sheet metal: the profile has no closed wire");
+        throw Base::ValueError("Sheet design: the profile has no closed wire");
     }
     TopoDS_Face simple;
     if (makeSimpleFace(wires, simple)) {
@@ -159,14 +159,14 @@ std::vector<TopoDS_Face> collectFaces(const TopoDS_Shape& shape)
 TopoDS_Shape profileShape(App::DocumentObject* object)
 {
     if (!object) {
-        throw Base::ValueError("Sheet metal: no profile is set");
+        throw Base::ValueError("Sheet design: no profile is set");
     }
     TopoDS_Shape shape = Part::Feature::getShape(
         object,
         Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
     );
     if (shape.IsNull()) {
-        throw Base::ValueError("Sheet metal: the profile has no shape");
+        throw Base::ValueError("Sheet design: the profile has no shape");
     }
     return shape;
 }
@@ -200,7 +200,7 @@ double readRuleValue(const App::DocumentObject* rule, const char* name)
 {
     auto* property = freecad_cast<App::PropertyFloat*>(rule->getPropertyByName(name));
     if (!property) {
-        throw Base::ValueError(std::string("Sheet metal: the rule has no numeric property ") + name);
+        throw Base::ValueError(std::string("Sheet design: the rule has no numeric property ") + name);
     }
     return property->getValue();
 }
@@ -209,7 +209,7 @@ double readRuleValue(const App::DocumentObject* rule, const char* name)
 SheetParams readRule(const App::DocumentObject* rule)
 {
     if (!rule) {
-        throw Base::ValueError("Sheet metal: no rule is set");
+        throw Base::ValueError("Sheet design: no rule is set");
     }
     SheetParams params;
     params.thickness = readRuleValue(rule, "Thickness");
@@ -238,7 +238,7 @@ TopoDS_Face flatProfile(App::DocumentObject* object, gp_Trsf& placement)
     if (!found) {
         BRepLib_FindSurface finder(shape, tol, Standard_True);
         if (!finder.Found()) {
-            throw Base::ValueError("Sheet metal: the profile is not planar");
+            throw Base::ValueError("Sheet design: the profile is not planar");
         }
         const gp_Pln plane = Handle(Geom_Plane)::DownCast(finder.Surface())->Pln();
         const gp_Ax3 system(plane.Location(), plane.Axis().Direction(), plane.XAxis().Direction());
@@ -249,7 +249,7 @@ TopoDS_Face flatProfile(App::DocumentObject* object, gp_Trsf& placement)
     BRepBuilderAPI_Transform toFlat(shape, placement.Inverted(), Standard_True);
     const std::vector<TopoDS_Face> faces = collectFaces(toFlat.Shape());
     if (faces.size() != 1) {
-        throw Base::ValueError("Sheet metal: the profile must make one face");
+        throw Base::ValueError("Sheet design: the profile must make one face");
     }
     return faces.front();
 }
@@ -264,21 +264,21 @@ App::DocumentObjectExecReturn* failure(const char* message)
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::Feature, Part::Feature)
+PROPERTY_SOURCE(SheetDesign::Feature, Part::Feature)
 
 Feature::Feature()
 {
     ADD_PROPERTY_TYPE(
         Refine,
         (true),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Merge the faces of the folded solid that are on the same surface"
     );
     ADD_PROPERTY_TYPE(
         Overlap,
         (0.0),
-        "Sheet Metal",
+        "Sheet Design",
         static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output),
         "Volume of material that two or more panels have in the same space. "
         "Zero for a part that can exist"
@@ -287,7 +287,7 @@ Feature::Feature()
 
 std::shared_ptr<SheetModel> Feature::buildModel()
 {
-    throw Base::NotImplementedError("Sheet metal: this feature has no model");
+    throw Base::NotImplementedError("Sheet design: this feature has no model");
 }
 
 std::shared_ptr<const SheetModel> Feature::getModel()
@@ -302,7 +302,7 @@ std::shared_ptr<const SheetModel> Feature::sourceModel(App::DocumentObject* obje
 {
     auto* feature = freecad_cast<Feature*>(object);
     if (!feature) {
-        throw Base::ValueError("Sheet metal: the source is not a sheet metal feature");
+        throw Base::ValueError("Sheet design: the source is not a sheet design feature");
     }
     return feature->getModel();
 }
@@ -316,13 +316,13 @@ App::DocumentObjectExecReturn* Feature::execute()
         double overlap = 0.0;
         const TopoDS_Shape folded = result->makeFolded(true, Refine.getValue(), &overlap);
         if (!TopExp_Explorer(folded, TopAbs_SOLID).More()) {
-            throw Base::CADKernelError("Sheet metal: the model gives no solid");
+            throw Base::CADKernelError("Sheet design: the model gives no solid");
         }
         Shape.setValue(folded);
         Overlap.setValue(overlap);
         if (overlap > 0.0) {
             Base::Console().warning(
-                "Sheet metal: {}: {:.1f} mm^3 of material is in the same space as other material. "
+                "Sheet design: {}: {:.1f} mm^3 of material is in the same space as other material. "
                 "Panels of the folded part collide.\n",
                 getNameInDocument(),
                 overlap
@@ -341,15 +341,15 @@ App::DocumentObjectExecReturn* Feature::execute()
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::BasePanel, SheetMetalCore::Feature)
+PROPERTY_SOURCE(SheetDesign::BasePanel, SheetDesign::Feature)
 
 BasePanel::BasePanel()
 {
-    ADD_PROPERTY_TYPE(Profile, (nullptr), "Sheet Metal", App::Prop_None, "Closed planar profile");
+    ADD_PROPERTY_TYPE(Profile, (nullptr), "Sheet Design", App::Prop_None, "Closed planar profile");
     ADD_PROPERTY_TYPE(
         Rule,
         (nullptr),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Object with the properties Thickness, BendRadius, and KFactor"
     );
@@ -366,22 +366,22 @@ std::shared_ptr<SheetModel> BasePanel::buildModel()
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::FromFlat, SheetMetalCore::Feature)
+PROPERTY_SOURCE(SheetDesign::Refold, SheetDesign::Feature)
 
-FromFlat::FromFlat()
+Refold::Refold()
 {
-    ADD_PROPERTY_TYPE(Profile, (nullptr), "Sheet Metal", App::Prop_None, "Outline of the flat pattern");
+    ADD_PROPERTY_TYPE(Profile, (nullptr), "Sheet Design", App::Prop_None, "Outline of the flat pattern");
     ADD_PROPERTY_TYPE(
         BendLines,
         (nullptr),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Straight lines in the plane of the profile: the center lines of the bends"
     );
     ADD_PROPERTY_TYPE(
         Angles,
         (90.0),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Bend angle of each line in degrees. A negative value bends to the opposite side. "
         "A line without a value uses the last value"
@@ -389,13 +389,13 @@ FromFlat::FromFlat()
     ADD_PROPERTY_TYPE(
         Rule,
         (nullptr),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Object with the properties Thickness, BendRadius, and KFactor"
     );
 }
 
-std::shared_ptr<SheetModel> FromFlat::buildModel()
+std::shared_ptr<SheetModel> Refold::buildModel()
 {
     const SheetParams params = readRule(Rule.getValue());
     gp_Trsf placement;
@@ -415,7 +415,7 @@ std::shared_ptr<SheetModel> FromFlat::buildModel()
         if (curve.GetType() != GeomAbs_Line || std::fabs(p.Z()) > 1.0e-5
             || std::fabs(q.Z()) > 1.0e-5) {
             throw Base::ValueError(
-                "Sheet metal: a bend line must be a straight line in the plane of the profile"
+                "Sheet design: a bend line must be a straight line in the plane of the profile"
             );
         }
         double degrees = 90.0;
@@ -430,7 +430,7 @@ std::shared_ptr<SheetModel> FromFlat::buildModel()
         lines.push_back(line);
     }
     if (lines.empty()) {
-        throw Base::ValueError("Sheet metal: the bend line object has no line");
+        throw Base::ValueError("Sheet design: the bend line object has no line");
     }
     return std::make_shared<SheetModel>(SheetModel::fromFlat(face, lines, placement, params));
 }
@@ -438,32 +438,32 @@ std::shared_ptr<SheetModel> FromFlat::buildModel()
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::FromSolid, SheetMetalCore::Feature)
+PROPERTY_SOURCE(SheetDesign::Unfold, SheetDesign::Feature)
 
-FromSolid::FromSolid()
+Unfold::Unfold()
 {
-    ADD_PROPERTY_TYPE(Face, (nullptr), "Sheet Metal", App::Prop_None, "Flat face of the folded solid");
+    ADD_PROPERTY_TYPE(Face, (nullptr), "Sheet Design", App::Prop_None, "Flat face of the folded solid");
     ADD_PROPERTY_TYPE(
         Rule,
         (nullptr),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Object with the properties Thickness, BendRadius, and KFactor. "
         "The thickness comes from the solid"
     );
 }
 
-std::shared_ptr<SheetModel> FromSolid::buildModel()
+std::shared_ptr<SheetModel> Unfold::buildModel()
 {
     const SheetParams params = readRule(Rule.getValue());
     const std::vector<std::string>& subs = Face.getSubValues();
     if (!Face.getValue() || subs.size() != 1) {
-        throw Base::ValueError("Sheet metal: select one flat face of a solid");
+        throw Base::ValueError("Sheet design: select one flat face of a solid");
     }
     const TopoDS_Shape solid = profileShape(Face.getValue());
     const TopoDS_Shape sub = Part::TopoShape(solid).getSubShape(subs.front().c_str());
     if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
-        throw Base::ValueError("Sheet metal: select one flat face of a solid");
+        throw Base::ValueError("Sheet design: select one flat face of a solid");
     }
     auto result = std::make_shared<SheetModel>(SheetModel::fromSolid(solid, TopoDS::Face(sub), params));
 
@@ -475,7 +475,8 @@ std::shared_ptr<SheetModel> FromSolid::buildModel()
     BRepGProp::VolumeProperties(result->makeFolded(false, false), made);
     if (std::fabs(source.Mass() - made.Mass()) > 1.0e-3 * std::fabs(source.Mass())) {
         Base::Console().warning(
-            "Sheet metal: {}: the volume of the model ({:.3f}) is different from the volume of the "
+            "Sheet design: {}: the volume of the model ({:.3f}) is different from the volume of "
+            "the "
             "solid ({:.3f}). The solid has geometry that this version cannot read.\n",
             getNameInDocument(),
             made.Mass(),
@@ -488,20 +489,20 @@ std::shared_ptr<SheetModel> FromSolid::buildModel()
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::Flange, SheetMetalCore::Feature)
+PROPERTY_SOURCE(SheetDesign::Flange, SheetDesign::Feature)
 
 Flange::Flange()
 {
-    ADD_PROPERTY_TYPE(Edge, (nullptr), "Sheet Metal", App::Prop_None, "Straight edge for the bend");
-    ADD_PROPERTY_TYPE(Length, (10.0), "Sheet Metal", App::Prop_None, "Length of the flat flange");
-    ADD_PROPERTY_TYPE(Angle, (90.0), "Sheet Metal", App::Prop_None, "Bend angle");
-    ADD_PROPERTY_TYPE(Reversed, (false), "Sheet Metal", App::Prop_None, "Bend to the opposite side");
-    ADD_PROPERTY_TYPE(Gap1, (0.0), "Sheet Metal", App::Prop_None, "Gap at the start of the edge");
-    ADD_PROPERTY_TYPE(Gap2, (0.0), "Sheet Metal", App::Prop_None, "Gap at the end of the edge");
+    ADD_PROPERTY_TYPE(Edge, (nullptr), "Sheet Design", App::Prop_None, "Straight edge for the bend");
+    ADD_PROPERTY_TYPE(Length, (10.0), "Sheet Design", App::Prop_None, "Length of the flat flange");
+    ADD_PROPERTY_TYPE(Angle, (90.0), "Sheet Design", App::Prop_None, "Bend angle");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Sheet Design", App::Prop_None, "Bend to the opposite side");
+    ADD_PROPERTY_TYPE(Gap1, (0.0), "Sheet Design", App::Prop_None, "Gap at the start of the edge");
+    ADD_PROPERTY_TYPE(Gap2, (0.0), "Sheet Design", App::Prop_None, "Gap at the end of the edge");
     ADD_PROPERTY_TYPE(
         Offset,
         (0.0),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Moves the bend line out of the panel before the bend. Use one thickness for a flap "
         "that folds across a second flap"
@@ -514,7 +515,7 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     auto* source = freecad_cast<Feature*>(Edge.getValue());
     const std::vector<std::string>& subs = Edge.getSubValues();
     if (!source || subs.size() != 1) {
-        throw Base::ValueError("Sheet metal: select one edge of a sheet metal feature");
+        throw Base::ValueError("Sheet design: select one edge of a sheet design feature");
     }
     auto result = std::make_shared<SheetModel>(*sourceModel(source));
 
@@ -541,7 +542,7 @@ std::shared_ptr<SheetModel> Flange::buildModel()
         }
     }
     if (!found) {
-        throw Base::ValueError("Sheet metal: the selection is not a straight edge of a flat panel");
+        throw Base::ValueError("Sheet design: the selection is not a straight edge of a flat panel");
     }
 
     const bool up = ref.top != Reversed.getValue();
@@ -560,16 +561,16 @@ std::shared_ptr<SheetModel> Flange::buildModel()
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::Cut, SheetMetalCore::Feature)
+PROPERTY_SOURCE(SheetDesign::Cut, SheetDesign::Feature)
 
 Cut::Cut()
 {
-    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Metal", App::Prop_None, "Feature to cut");
-    ADD_PROPERTY_TYPE(Profile, (nullptr), "Sheet Metal", App::Prop_None, "Closed planar profile");
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Feature to cut");
+    ADD_PROPERTY_TYPE(Profile, (nullptr), "Sheet Design", App::Prop_None, "Closed planar profile");
     ADD_PROPERTY_TYPE(
         Space,
         (0L),
-        "Sheet Metal",
+        "Sheet Design",
         App::Prop_None,
         "Folded: the profile is on a panel. Flat: the profile is on the flat pattern"
     );
@@ -587,19 +588,19 @@ std::shared_ptr<SheetModel> Cut::buildModel()
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetMetalCore::FlatPattern, Part::Feature)
+PROPERTY_SOURCE(SheetDesign::FlatPattern, Part::Feature)
 
 FlatPattern::FlatPattern()
 {
-    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Metal", App::Prop_None, "Sheet metal feature");
-    ADD_PROPERTY_TYPE(BendLines, (true), "Sheet Metal", App::Prop_None, "Add the bend center lines");
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Sheet design feature");
+    ADD_PROPERTY_TYPE(BendLines, (true), "Sheet Design", App::Prop_None, "Add the bend center lines");
 }
 
 App::DocumentObjectExecReturn* FlatPattern::execute()
 {
-    auto* source = freecad_cast<SheetMetalCore::Feature*>(Source.getValue());
+    auto* source = freecad_cast<SheetDesign::Feature*>(Source.getValue());
     if (!source) {
-        return failure("Sheet metal: the source is not a sheet metal feature");
+        return failure("Sheet design: the source is not a sheet design feature");
     }
     try {
         std::shared_ptr<const SheetModel> sheet = source->getModel();

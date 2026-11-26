@@ -19,7 +19,7 @@
 #                                                                              #
 ################################################################################
 
-"""Tests of the SheetMetal module (proof of concept)."""
+"""Tests of the SheetDesign module."""
 
 import math
 import os
@@ -28,7 +28,7 @@ import unittest
 
 import FreeCAD
 import Part
-import SheetMetalCore  # noqa: F401  Registers the document object types.
+import SheetDesign  # noqa: F401  Registers the document object types.
 
 V = FreeCAD.Vector
 
@@ -46,7 +46,7 @@ def find_edge(shape, start, end):
     raise AssertionError(f"no edge between {start} and {end}")
 
 
-class TestSheetMetal(unittest.TestCase):
+class TestSheetDesign(unittest.TestCase):
     T = 2.0
     R = 1.0
     K = 0.5
@@ -54,7 +54,7 @@ class TestSheetMetal(unittest.TestCase):
     WIDTH = 50.0
 
     def setUp(self):
-        self.doc = FreeCAD.newDocument("SheetMetalTest")
+        self.doc = FreeCAD.newDocument("SheetDesignTest")
         self.rule = self.doc.addObject("App::VarSet", "Rule")
         self.rule.addProperty("App::PropertyLength", "Thickness", "Sheet")
         self.rule.addProperty("App::PropertyLength", "BendRadius", "Sheet")
@@ -80,14 +80,14 @@ class TestSheetMetal(unittest.TestCase):
         wire = Part.makePolygon(
             [V(0, 0, 0), V(self.LENGTH, 0, 0), V(self.LENGTH, self.WIDTH, 0), V(0, self.WIDTH, 0), V(0, 0, 0)]
         )
-        base = self.doc.addObject("SheetMetalCore::BasePanel", "Base")
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
         base.Profile = self.add_shape(wire)
         base.Rule = self.rule
         self.doc.recompute()
         return base
 
     def add_flange(self, source, start, end, **properties):
-        flange = self.doc.addObject("SheetMetalCore::Flange", "Flange")
+        flange = self.doc.addObject("SheetDesign::Flange", "Flange")
         flange.Edge = (source, [find_edge(source.Shape, start, end)])
         for name, value in properties.items():
             setattr(flange, name, value)
@@ -102,13 +102,13 @@ class TestSheetMetal(unittest.TestCase):
         )
 
     def add_flat(self, source):
-        flat = self.doc.addObject("SheetMetalCore::FlatPattern", "Flat")
+        flat = self.doc.addObject("SheetDesign::FlatPattern", "Flat")
         flat.Source = source
         self.doc.recompute()
         return flat
 
     def add_cut(self, source, profile, space):
-        cut = self.doc.addObject("SheetMetalCore::Cut", "Cut")
+        cut = self.doc.addObject("SheetDesign::Cut", "Cut")
         cut.Source = source
         cut.Profile = profile
         cut.Space = space
@@ -264,7 +264,7 @@ class TestSheetMetal(unittest.TestCase):
 
     def test_base_on_other_plane(self):
         wire = Part.makePolygon([V(0, 0, 0), V(0, 40, 0), V(0, 40, 30), V(0, 0, 30), V(0, 0, 0)])
-        base = self.doc.addObject("SheetMetalCore::BasePanel", "Base")
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
         base.Profile = self.add_shape(wire)
         base.Rule = self.rule
         self.doc.recompute()
@@ -288,13 +288,13 @@ class TestSheetMetal(unittest.TestCase):
         )
 
     def test_dxf_export(self):
-        import SheetMetalExport
+        import SheetDesignDxf
 
         flange = self.add_end_flange(self.add_base())
         flat = self.add_flat(flange)
         path = os.path.join(tempfile.mkdtemp(), "flat.dxf")
         count = len(self.doc.Objects)
-        SheetMetalExport.export_dxf(flat, path)
+        SheetDesignDxf.export_dxf(flat, path)
         self.assertEqual(len(self.doc.Objects), count)
         with open(path, encoding="utf-8", errors="replace") as handle:
             content = handle.read()
@@ -306,7 +306,7 @@ class TestSheetMetal(unittest.TestCase):
         holes = [Part.Wire(Part.makeCircle(2.0, V(10 + 10 * i, 20, 0))) for i in range(5)]
         # One hole has the opposite direction.
         holes[2] = Part.Wire(Part.makeCircle(2.0, V(30, 20, 0), V(0, 0, -1)))
-        base = self.doc.addObject("SheetMetalCore::BasePanel", "Base")
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
         base.Profile = self.add_shape(Part.makeCompound([outer] + holes))
         base.Rule = self.rule
         self.doc.recompute()
@@ -320,7 +320,7 @@ class TestSheetMetal(unittest.TestCase):
             Part.Wire(Part.makeCircle(20.0, V(0, 0, 0))),
             Part.Wire(Part.makeCircle(10.0, V(0, 0, 0))),
         ]
-        base = self.doc.addObject("SheetMetalCore::BasePanel", "Base")
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
         base.Profile = self.add_shape(Part.makeCompound(wires))
         base.Rule = self.rule
         self.doc.recompute()
@@ -346,8 +346,8 @@ class TestSheetMetal(unittest.TestCase):
 
     # ------------------------------------------------------- entry from a finished flat pattern
 
-    def add_from_flat(self, face, lines, angles):
-        obj = self.doc.addObject("SheetMetalCore::FromFlat", "FromFlat")
+    def add_refold(self, face, lines, angles):
+        obj = self.doc.addObject("SheetDesign::Refold", "Refold")
         obj.Profile = self.add_shape(face, "FlatProfile")
         obj.BendLines = self.add_shape(Part.makeCompound(lines), "BendLines")
         obj.Angles = angles
@@ -362,12 +362,12 @@ class TestSheetMetal(unittest.TestCase):
             )
         )
 
-    def test_from_flat_one_bend(self):
+    def test_refold_one_bend(self):
         allowance = self.allowance()
         face = self.flat_rectangle(self.LENGTH + allowance + 20.0)
         x = self.LENGTH + allowance / 2
         line = Part.makeLine(V(x, 10, 0), V(x, 40, 0))  # The line can be shorter than the part.
-        folded = self.add_from_flat(face, [line], [90.0])
+        folded = self.add_refold(face, [line], [90.0])
         self.assertSolid(folded)
         box = folded.Shape.BoundBox
         self.assertAlmostEqual(box.XMax, self.LENGTH + self.R + self.T, places=6)
@@ -377,15 +377,15 @@ class TestSheetMetal(unittest.TestCase):
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, face.Area, places=6)
         self.assertEqual(len(flat.Shape.Faces[0].Edges), 4)
 
-    def test_from_flat_negative_angle_bends_down(self):
+    def test_refold_negative_angle_bends_down(self):
         allowance = self.allowance()
         face = self.flat_rectangle(self.LENGTH + allowance + 20.0)
         x = self.LENGTH + allowance / 2
-        folded = self.add_from_flat(face, [Part.makeLine(V(x, 0, 0), V(x, 50, 0))], [-90.0])
+        folded = self.add_refold(face, [Part.makeLine(V(x, 0, 0), V(x, 50, 0))], [-90.0])
         self.assertSolid(folded)
         self.assertAlmostEqual(folded.Shape.BoundBox.ZMin, -(self.R + 20.0), places=6)
 
-    def test_from_flat_agrees_with_flanges(self):
+    def test_refold_agrees_with_flanges(self):
         """The flat pattern of a part with flanges gives the same part again."""
         first = self.add_end_flange(self.add_base(), Gap1=5.0, Gap2=5.0)
         second = self.add_flange(
@@ -395,7 +395,7 @@ class TestSheetMetal(unittest.TestCase):
         face = flat.Shape.Faces[0]
         lines = flat.Shape.SubShapes[1:]
         self.assertEqual(len(lines), 2)
-        folded = self.add_from_flat(face, lines, [90.0, 45.0])
+        folded = self.add_refold(face, lines, [90.0, 45.0])
         self.assertSolid(folded)
         self.assertAlmostEqual(folded.Shape.Volume, second.Shape.Volume, places=4)
         for name in ("XMin", "XMax", "YMin", "YMax", "ZMin", "ZMax"):
@@ -408,9 +408,9 @@ class TestSheetMetal(unittest.TestCase):
         more = self.add_flange(folded, V(x, 5, z), V(x, self.WIDTH - 5, z), Length=8.0)
         self.assertSolid(more)
 
-    def test_from_flat_line_off_the_part_is_rejected(self):
+    def test_refold_line_off_the_part_is_rejected(self):
         face = self.flat_rectangle(100.0)
-        folded = self.add_from_flat(face, [Part.makeLine(V(200, 0, 0), V(200, 50, 0))], [90.0])
+        folded = self.add_refold(face, [Part.makeLine(V(200, 0, 0), V(200, 50, 0))], [90.0])
         self.assertFalse(folded.isValid())
 
     # ----------------------------------------------------------------- entry from a folded solid
@@ -441,7 +441,7 @@ class TestSheetMetal(unittest.TestCase):
         self.assertEqual(len(solid.Solids), 1)
         return solid
 
-    def add_from_solid(self, shape, normal_z):
+    def add_unfold(self, shape, normal_z):
         source = self.add_shape(shape, "Solid")
         name = None
         best = 0.0
@@ -451,7 +451,7 @@ class TestSheetMetal(unittest.TestCase):
             if face.normalAt(0, 0).z * normal_z > 0.99 and face.Area > best:
                 best = face.Area
                 name = f"Face{index + 1}"
-        obj = self.doc.addObject("SheetMetalCore::FromSolid", "FromSolid")
+        obj = self.doc.addObject("SheetDesign::Unfold", "Unfold")
         obj.Face = (source, [name])
         obj.Rule = self.rule
         self.doc.recompute()
@@ -467,12 +467,12 @@ class TestSheetMetal(unittest.TestCase):
         self.assertEqual(len(face.Wires), 3)
         self.assertEqual(len(flat.Shape.SubShapes), 2)  # The face and one bend line.
 
-    def test_from_solid_made_with_part(self):
+    def test_unfold_made_with_part(self):
         shape = self.part_bracket()
-        converted = self.add_from_solid(shape, 1.0)
+        converted = self.add_unfold(shape, 1.0)
         self.check_bracket(converted, shape)
         # The hole of the wall is at the correct position in the flat pattern.
-        flat = [o for o in self.doc.Objects if o.TypeId == "SheetMetalCore::FlatPattern"][0]
+        flat = [o for o in self.doc.Objects if o.TypeId == "SheetDesign::FlatPattern"][0]
         face = flat.Shape.Faces[0]
         centers = sorted(
             w.Edges[0].Curve.Center.x for w in face.Wires if not w.isSame(face.OuterWire)
@@ -480,21 +480,21 @@ class TestSheetMetal(unittest.TestCase):
         self.assertAlmostEqual(centers[0], 50.0, places=5)
         self.assertAlmostEqual(centers[1], self.LENGTH + self.allowance() + 10.0, places=5)
 
-    def test_from_solid_root_on_other_side(self):
+    def test_unfold_root_on_other_side(self):
         shape = self.part_bracket()
-        converted = self.add_from_solid(shape, -1.0)
+        converted = self.add_unfold(shape, -1.0)
         self.check_bracket(converted, shape)
 
-    def test_from_solid_reads_thickness_and_radius(self):
+    def test_unfold_reads_thickness_and_radius(self):
         shape = self.part_bracket()
         self.rule.Thickness = 9.0  # The thickness of the rule is not used.
         self.rule.BendRadius = 7.0  # Only later bends use the radius of the rule.
-        converted = self.add_from_solid(shape, 1.0)
+        converted = self.add_unfold(shape, 1.0)
         self.check_bracket(converted, shape)
 
-    def test_from_solid_then_flange(self):
+    def test_unfold_then_flange(self):
         shape = self.part_bracket()
-        converted = self.add_from_solid(shape, 1.0)
+        converted = self.add_unfold(shape, 1.0)
         flange = self.add_flange(converted, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=12.0)
         self.assertSolid(flange)
         flat = self.add_flat(flange)
@@ -503,7 +503,7 @@ class TestSheetMetal(unittest.TestCase):
         ) * self.WIDTH - math.pi * (16.0 + 9.0)
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
 
-    def test_from_solid_of_flange_part(self):
+    def test_unfold_of_flange_part(self):
         """A part with three flanges, without its history, gives the same flat pattern."""
         first = self.add_end_flange(self.add_base(), Gap1=5.0, Gap2=5.0)
         second = self.add_flange(
@@ -513,7 +513,7 @@ class TestSheetMetal(unittest.TestCase):
         z = self.T + self.R + 20.0
         third = self.add_flange(second, V(x, 5, z), V(x, self.WIDTH - 5, z), Length=8.0)
         expected = self.add_flat(third).Shape.Faces[0].Area
-        converted = self.add_from_solid(third.Shape.copy(), 1.0)
+        converted = self.add_unfold(third.Shape.copy(), 1.0)
         self.assertSolid(converted)
         self.assertAlmostEqual(converted.Shape.Volume, third.Shape.Volume, places=4)
         flat = self.add_flat(converted)
@@ -580,7 +580,7 @@ class TestSheetMetal(unittest.TestCase):
             Part.makeLine(V(0, depth + offset + a / 2, 0), V(length, depth + offset + a / 2, 0)),
             Part.makeLine(V(x2, depth + a / 2, 0), V(x2 + width, depth + a / 2, 0)),
         ]
-        return self.add_from_flat(face, lines, [90.0])
+        return self.add_refold(face, lines, [90.0])
 
     def flat_rectangle_at(self, x0, y0, x1, y1):
         return Part.Face(

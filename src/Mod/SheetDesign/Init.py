@@ -19,25 +19,4 @@
 #                                                                              #
 ################################################################################
 
-"""Gui initialization of the SheetMetal module (proof of concept)."""
-
-
-class SheetMetalWorkbench(Workbench):
-    """Sheet metal workbench on the explicit sheet model."""
-
-    MenuText = "Sheet Metal (PoC)"
-    ToolTip = "Sheet metal design with a linked flat pattern"
-
-    def Initialize(self):
-        import SheetMetalCore  # noqa: F401  Registers the document object types.
-        import SheetMetalCommands
-
-        commands = SheetMetalCommands.register()
-        self.appendToolbar("Sheet Metal", commands)
-        self.appendMenu("Sheet Metal", commands)
-
-    def GetClassName(self):
-        return "Gui::PythonWorkbench"
-
-
-Gui.addWorkbench(SheetMetalWorkbench())
+FreeCAD.__unit_test__ += ["TestSheetDesignApp"]

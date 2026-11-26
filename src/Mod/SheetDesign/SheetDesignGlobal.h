@@ -19,54 +19,15 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+#include <FCGlobal.h>
 
-#include "Features.h"
+#pragma once
 
-
-namespace SheetMetalCore
-{
-class Module: public Py::ExtensionModule<Module>
-{
-public:
-    Module()
-        : Py::ExtensionModule<Module>("SheetMetalCore")
-    {
-        initialize("This module is the SheetMetalCore module.");  // register with Python
-    }
-};
-
-PyObject* initModule()
-{
-    return Base::Interpreter().addModule(new Module);
-}
-
-}  // namespace SheetMetalCore
-
-/* Python entry */
-PyMOD_INIT_FUNC(SheetMetalCore)
-{
-    try {
-        Base::Interpreter().runString("import Part");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
-
-    PyObject* mod = SheetMetalCore::initModule();
-    Base::Console().log("Loading SheetMetalCore module… done\n");
-
-    // clang-format off
-    SheetMetalCore::Feature     ::init();
-    SheetMetalCore::BasePanel   ::init();
-    SheetMetalCore::FromFlat    ::init();
-    SheetMetalCore::FromSolid   ::init();
-    SheetMetalCore::Flange      ::init();
-    SheetMetalCore::Cut         ::init();
-    SheetMetalCore::FlatPattern ::init();
-    // clang-format on
-
-    PyMOD_Return(mod);
-}
+// SheetDesign
+#ifndef SheetDesignExport
+# ifdef SheetDesign_EXPORTS
+#  define SheetDesignExport FREECAD_DECL_EXPORT
+# else
+#  define SheetDesignExport FREECAD_DECL_IMPORT
+# endif
+#endif

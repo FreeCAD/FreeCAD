@@ -109,9 +109,9 @@ if(BUILD_START)
     add_subdirectory(Start)
 endif(BUILD_START)
 
-if(BUILD_SHEETMETAL)
-  add_subdirectory(SheetMetalCore)
-endif(BUILD_SHEETMETAL)
+if(BUILD_SHEETDESIGN)
+  add_subdirectory(SheetDesign)
+endif(BUILD_SHEETDESIGN)
 
 if(BUILD_SURFACE)
   add_subdirectory(Surface)

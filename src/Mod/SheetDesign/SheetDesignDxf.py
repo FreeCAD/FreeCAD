@@ -19,7 +19,7 @@
 #                                                                              #
 ################################################################################
 
-"""File export of the SheetMetalCore module (proof of concept)."""
+"""File export of the SheetDesign module."""
 
 import FreeCAD
 import Part

@@ -63,7 +63,7 @@
 #include "SheetModel.h"
 
 
-using namespace SheetMetalCore;
+using namespace SheetDesign;
 
 namespace
 {
@@ -81,7 +81,7 @@ TopoDS_Face makeFlatQuad(const gp_Pnt2d& a, const gp_Pnt2d& b, const gp_Pnt2d& c
     BRepBuilderAPI_MakePolygon poly(to3d(a), to3d(b), to3d(c), to3d(d), Standard_True);
     BRepBuilderAPI_MakeFace mk(gp_Pln(gp::XOY()), poly.Wire(), Standard_True);
     if (!mk.IsDone()) {
-        throw Base::CADKernelError("Sheet metal: cannot make a flat face");
+        throw Base::CADKernelError("Sheet design: cannot make a flat face");
     }
     return mk.Face();
 }
@@ -166,7 +166,7 @@ gp_Vec2d outwardNormal(const TopoDS_Face& face, const gp_Pnt2d& a, const gp_Pnt2
         n.Reverse();
     }
     else if (!isInside(face, mid.Translated(n * -probe))) {
-        throw Base::ValueError("Sheet metal: the edge is not on the boundary of a panel");
+        throw Base::ValueError("Sheet design: the edge is not on the boundary of a panel");
     }
     return n;
 }
@@ -199,7 +199,7 @@ TopoDS_Shape fuseAll(const std::vector<TopoDS_Shape>& shapes, bool glue = true)
     op.SetRunParallel(Standard_True);
     op.Build();
     if (!op.IsDone() || op.HasErrors()) {
-        throw Base::CADKernelError("Sheet metal: the fuse operation failed");
+        throw Base::CADKernelError("Sheet design: the fuse operation failed");
     }
     return op.Shape();
 }
@@ -221,10 +221,10 @@ SheetModel SheetModel::makeBase(
 )
 {
     if (params.thickness <= tol) {
-        throw Base::ValueError("Sheet metal: the thickness must be larger than zero");
+        throw Base::ValueError("Sheet design: the thickness must be larger than zero");
     }
     if (params.radius < 0.0 || params.kFactor < 0.0 || params.kFactor > 1.0) {
-        throw Base::ValueError("Sheet metal: the bend radius or the K-factor is not valid");
+        throw Base::ValueError("Sheet design: the bend radius or the K-factor is not valid");
     }
     SheetModel model;
     model.params = params;
@@ -306,21 +306,21 @@ int SheetModel::addFlange(
 )
 {
     if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
-        throw Base::ValueError("Sheet metal: the edge reference is not valid");
+        throw Base::ValueError("Sheet design: the edge reference is not valid");
     }
     if (angle <= tol || angle > M_PI + tol) {
-        throw Base::ValueError("Sheet metal: the bend angle must be between 0 and 180 degrees");
+        throw Base::ValueError("Sheet design: the bend angle must be between 0 and 180 degrees");
     }
     if (length <= tol) {
-        throw Base::ValueError("Sheet metal: the flange length must be larger than zero");
+        throw Base::ValueError("Sheet design: the flange length must be larger than zero");
     }
     if (gap1 < 0.0 || gap2 < 0.0) {
-        throw Base::ValueError("Sheet metal: a gap cannot be negative");
+        throw Base::ValueError("Sheet design: a gap cannot be negative");
     }
     gp_Vec2d dir(ref.a, ref.b);
     const double edgeLength = dir.Magnitude();
     if (edgeLength - gap1 - gap2 <= tol) {
-        throw Base::ValueError("Sheet metal: the gaps are longer than the edge");
+        throw Base::ValueError("Sheet design: the gaps are longer than the edge");
     }
     dir /= edgeLength;
     gp_Pnt2d a = ref.a.Translated(dir * gap1);
@@ -342,7 +342,7 @@ int SheetModel::addFlange(
         }
         const std::vector<TopoDS_Face> faces = facesOf(changed);
         if (faces.size() != 1) {
-            throw Base::ValueError("Sheet metal: the offset of the bend divides the panel");
+            throw Base::ValueError("Sheet design: the offset of the bend divides the panel");
         }
         parent.profile = faces.front();
         parent.solid.Nullify();
@@ -353,12 +353,12 @@ int SheetModel::addFlange(
     // An edge can hold only one bend.
     for (const Bend& other : bends) {
         if (other.parentPanel == ref.panel && segmentsOverlap(a, b, other.start, other.end)) {
-            throw Base::ValueError("Sheet metal: the edge already has a bend");
+            throw Base::ValueError("Sheet design: the edge already has a bend");
         }
         if (other.childPanel == ref.panel) {
             const gp_Vec2d shift = gp_Vec2d(other.normal) * other.allowance;
             if (segmentsOverlap(a, b, other.start.Translated(shift), other.end.Translated(shift))) {
-                throw Base::ValueError("Sheet metal: the edge already has a bend");
+                throw Base::ValueError("Sheet design: the edge already has a bend");
             }
         }
     }
@@ -461,7 +461,7 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
                 if (boxesOverlap(local, bend.strip)
                     && area(BRepAlgoAPI_Common(bend.strip, local).Shape()) > tol) {
                     throw Base::ValueError(
-                        "Sheet metal: a cut across a bend zone is not available in this version"
+                        "Sheet design: a cut across a bend zone is not available in this version"
                     );
                 }
             }
@@ -476,7 +476,7 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
                 }
                 BRepAlgoAPI_Cut op(panel.profile, local);
                 if (!op.IsDone() || op.HasErrors()) {
-                    throw Base::CADKernelError("Sheet metal: the cut operation failed");
+                    throw Base::CADKernelError("Sheet design: the cut operation failed");
                 }
                 if (!op.HasModified() && !op.HasDeleted()) {
                     continue;
@@ -488,10 +488,10 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
                     ++count;
                 }
                 if (count == 0) {
-                    throw Base::ValueError("Sheet metal: the cut removes a full panel");
+                    throw Base::ValueError("Sheet design: the cut removes a full panel");
                 }
                 if (count > 1) {
-                    throw Base::ValueError("Sheet metal: the cut divides a panel into parts");
+                    throw Base::ValueError("Sheet design: the cut divides a panel into parts");
                 }
                 panel.profile = result;
                 panel.solid.Nullify();
@@ -499,7 +499,7 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
             }
         }
         if (!used) {
-            throw Base::ValueError("Sheet metal: the cut profile is not in the plane of a panel");
+            throw Base::ValueError("Sheet design: the cut profile is not in the plane of a panel");
         }
     }
     return changed;
@@ -540,7 +540,7 @@ TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine, double* overlap) con
         const gp_Ax1 axis(to3d(bend.start, bend.up ? t + bend.radius : -bend.radius), axisDir);
         BRepPrimAPI_MakeRevol revol(section.Face(), axis, bend.angle);
         if (!revol.IsDone()) {
-            throw Base::CADKernelError("Sheet metal: cannot make a bend");
+            throw Base::CADKernelError("Sheet design: cannot make a bend");
         }
         double bendVolume = 0.0;
         const TopoDS_Shape solid = orientSolid(revol.Shape(), bendVolume);
@@ -652,12 +652,12 @@ SheetModel SheetModel::fromFlat(
     std::vector<Band> bands;
     for (const BendLine& line : lines) {
         if (line.angle <= tol || line.angle > M_PI + tol) {
-            throw Base::ValueError("Sheet metal: a bend angle must be between 0 and 180 degrees");
+            throw Base::ValueError("Sheet design: a bend angle must be between 0 and 180 degrees");
         }
         gp_Vec2d dir(line.a, line.b);
         const double lineLength = dir.Magnitude();
         if (lineLength < tol) {
-            throw Base::ValueError("Sheet metal: a bend line has no length");
+            throw Base::ValueError("Sheet design: a bend line has no length");
         }
         dir.Normalize();
         Band band;
@@ -686,7 +686,7 @@ SheetModel SheetModel::fromFlat(
         const Band& band = bands[i];
         BRepAlgoAPI_Common common(flatProfile, band.face);
         if (!common.IsDone() || common.HasErrors()) {
-            throw Base::CADKernelError("Sheet metal: cannot make a bend zone");
+            throw Base::CADKernelError("Sheet design: cannot make a bend zone");
         }
         bool reached = false;
         for (const TopoDS_Face& part : facesOf(common.Shape())) {
@@ -707,7 +707,7 @@ SheetModel SheetModel::fromFlat(
             }
         }
         if (!reached) {
-            throw Base::ValueError("Sheet metal: a bend line is not on the flat pattern");
+            throw Base::ValueError("Sheet design: a bend line is not on the flat pattern");
         }
     }
 
@@ -719,11 +719,11 @@ SheetModel SheetModel::fromFlat(
     split.SetTools(zoneFaces);
     split.Build();
     if (!split.IsDone() || split.HasErrors()) {
-        throw Base::CADKernelError("Sheet metal: cannot divide the flat pattern");
+        throw Base::CADKernelError("Sheet design: cannot divide the flat pattern");
     }
     std::vector<TopoDS_Face> pieces = facesOf(split.Shape());
     if (pieces.size() < 2) {
-        throw Base::ValueError("Sheet metal: the bend lines do not divide the flat pattern");
+        throw Base::ValueError("Sheet design: the bend lines do not divide the flat pattern");
     }
     // The largest panel is the root panel.
     std::size_t largest = 0;
@@ -786,7 +786,7 @@ SheetModel SheetModel::fromFlat(
             }
             if (vertices.Extent() != 4 || minus.size() != 2 || plus.size() != 2) {
                 throw Base::ValueError(
-                    "Sheet metal: a bend zone must be a rectangle without a cut in this version"
+                    "Sheet design: a bend zone must be a rectangle without a cut in this version"
                 );
             }
             // Put the plus points in the same sequence as the minus points.
@@ -797,7 +797,7 @@ SheetModel SheetModel::fromFlat(
             if (minus[0].Translated(across).Distance(plus[0]) > looseTol
                 || minus[1].Translated(across).Distance(plus[1]) > looseTol) {
                 throw Base::ValueError(
-                    "Sheet metal: the outline must cross a bend zone at 90 degrees in this version"
+                    "Sheet design: the outline must cross a bend zone at 90 degrees in this version"
                 );
             }
             Joint joint;
@@ -815,7 +815,7 @@ SheetModel SheetModel::fromFlat(
             joint.minusPanel = panelAt(minusMid.Translated(band.normal * -probe));
             joint.plusPanel = panelAt(minusMid.Translated(band.normal * (band.allowance + probe)));
             if (joint.minusPanel < 0 || joint.plusPanel < 0) {
-                throw Base::ValueError("Sheet metal: a bend line must have a panel on each side");
+                throw Base::ValueError("Sheet design: a bend line must have a panel on each side");
             }
             joints.push_back(joint);
         }
@@ -836,7 +836,7 @@ SheetModel SheetModel::fromFlat(
             const bool fromMinus = joint.minusPanel == current;
             const int child = fromMinus ? joint.plusPanel : joint.minusPanel;
             if (reached[child]) {
-                throw Base::ValueError("Sheet metal: the bend lines make a closed loop of panels");
+                throw Base::ValueError("Sheet design: the bend lines make a closed loop of panels");
             }
             const Band& band = bands[joint.line];
             model.connect(
@@ -855,7 +855,9 @@ SheetModel SheetModel::fromFlat(
         }
     }
     if (std::find(reached.begin(), reached.end(), false) != reached.end()) {
-        throw Base::ValueError("Sheet metal: a part of the flat pattern has no bend to the root panel");
+        throw Base::ValueError(
+            "Sheet design: a part of the flat pattern has no bend to the root panel"
+        );
     }
     return model;
 }
@@ -896,7 +898,7 @@ SheetModel SheetModel::fromSolid(
     const double looseTol = 1.0e-5;
     BRepAdaptor_Surface rootSurface(rootFace);
     if (rootSurface.GetType() != GeomAbs_Plane) {
-        throw Base::ValueError("Sheet metal: select a flat face of the solid");
+        throw Base::ValueError("Sheet design: select a flat face of the solid");
     }
     const gp_Pln rootPlane = rootSurface.Plane();
     const gp_Dir normal = outerNormal(rootFace);
@@ -918,7 +920,7 @@ SheetModel SheetModel::fromSolid(
         }
     }
     if (thickness < 0.0) {
-        throw Base::ValueError("Sheet metal: cannot find the thickness of the solid");
+        throw Base::ValueError("Sheet design: cannot find the thickness of the solid");
     }
 
     // Flat space: the root face is on the top side (z = thickness), its normal is +z.
@@ -949,7 +951,7 @@ SheetModel SheetModel::fromSolid(
 
     const TopoDS_Face rootProfile = toFlat(rootFace, placement);
     if (rootProfile.IsNull()) {
-        throw Base::CADKernelError("Sheet metal: cannot move the root face into flat space");
+        throw Base::CADKernelError("Sheet design: cannot move the root face into flat space");
     }
     SheetModel model = makeBase(rootProfile, placement, sheet);
 
@@ -1039,13 +1041,13 @@ SheetModel SheetModel::fromSolid(
             }
             if (allEdges != 4 || straightEdges != 2) {
                 throw Base::ValueError(
-                    "Sheet metal: a bend of the solid has a cut or is not a rectangle. "
+                    "Sheet design: a bend of the solid has a cut or is not a rectangle. "
                     "This is not available in this version"
                 );
             }
             visited.Add(bendFace);
             if (nextFace.IsNull() || visited.Contains(nextFace)) {
-                throw Base::ValueError("Sheet metal: the panels of the solid make a closed loop");
+                throw Base::ValueError("Sheet design: the panels of the solid make a closed loop");
             }
 
             Panel child;
@@ -1056,7 +1058,7 @@ SheetModel SheetModel::fromSolid(
             const TopoDS_Face childProfile = toFlat(nextFace, model.panels[childIndex].folded);
             if (childProfile.IsNull()) {
                 throw Base::ValueError(
-                    "Sheet metal: a bend of the solid has no flat panel after it. "
+                    "Sheet design: a bend of the solid has no flat panel after it. "
                     "This is not available in this version"
                 );
             }

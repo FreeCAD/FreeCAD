@@ -28,12 +28,12 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/SheetMetalCore/SheetMetalCoreGlobal.h>
+#include <Mod/SheetDesign/SheetDesignGlobal.h>
 
 #include "SheetModel.h"
 
 
-namespace SheetMetalCore
+namespace SheetDesign
 {
 
 /**
@@ -42,9 +42,9 @@ namespace SheetMetalCore
  * Each feature holds the model that results from its operation. The shape of the feature is the
  * folded solid of that model.
  */
-class SheetMetalCoreExport Feature: public Part::Feature
+class SheetDesignExport Feature: public Part::Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Feature);
 
 public:
     Feature();
@@ -70,10 +70,10 @@ private:
     std::shared_ptr<const SheetModel> model;
 };
 
-/// The first panel of a sheet metal part, made from a closed planar profile.
-class SheetMetalCoreExport BasePanel: public Feature
+/// The first panel of a sheet part, made from a closed planar profile.
+class SheetDesignExport BasePanel: public Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::BasePanel);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::BasePanel);
 
 public:
     BasePanel();
@@ -91,16 +91,16 @@ protected:
 };
 
 /**
- * A sheet metal part from its finished flat pattern.
+ * A sheet part from its finished flat pattern.
  *
  * The bend lines are the center lines of the bend zones. They divide the profile into panels.
  */
-class SheetMetalCoreExport FromFlat: public Feature
+class SheetDesignExport Refold: public Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::FromFlat);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Refold);
 
 public:
-    FromFlat();
+    Refold();
 
     App::PropertyLink Profile;
     App::PropertyLink BendLines;
@@ -112,16 +112,16 @@ protected:
 };
 
 /**
- * A sheet metal part from a folded solid that a different tool made.
+ * A sheet part from a folded solid that a different tool made.
  *
  * The feature reads the panels and the bends from the faces of the solid.
  */
-class SheetMetalCoreExport FromSolid: public Feature
+class SheetDesignExport Unfold: public Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::FromSolid);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Unfold);
 
 public:
-    FromSolid();
+    Unfold();
 
     App::PropertyLinkSub Face;
     App::PropertyLink Rule;
@@ -131,9 +131,9 @@ protected:
 };
 
 /// A bend and a rectangular panel on a straight edge.
-class SheetMetalCoreExport Flange: public Feature
+class SheetDesignExport Flange: public Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::Flange);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Flange);
 
 public:
     Flange();
@@ -151,9 +151,9 @@ protected:
 };
 
 /// A cut through the sheet. The profile is in the plane of a panel or of the flat pattern.
-class SheetMetalCoreExport Cut: public Feature
+class SheetDesignExport Cut: public Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::Cut);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Cut);
 
 public:
     Cut();
@@ -166,10 +166,10 @@ protected:
     std::shared_ptr<SheetModel> buildModel() override;
 };
 
-/// The flat pattern of a sheet metal feature: one face and the bend center lines.
-class SheetMetalCoreExport FlatPattern: public Part::Feature
+/// The flat pattern of a sheet design feature: one face and the bend center lines.
+class SheetDesignExport FlatPattern: public Part::Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(SheetMetalCore::FlatPattern);
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::FlatPattern);
 
 public:
     FlatPattern();
@@ -185,4 +185,4 @@ public:
     }
 };
 
-}  // namespace SheetMetalCore
+}  // namespace SheetDesign

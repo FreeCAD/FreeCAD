@@ -19,4 +19,25 @@
 #                                                                              #
 ################################################################################
 
-FreeCAD.__unit_test__ += ["TestSheetMetalApp"]
+"""Gui initialization of the SheetDesign module."""
+
+
+class SheetDesignWorkbench(Workbench):
+    """Sheet Design workbench: folded sheet parts on an explicit sheet model."""
+
+    MenuText = "Sheet Design"
+    ToolTip = "Design of folded sheet parts with a linked flat pattern"
+
+    def Initialize(self):
+        import SheetDesign  # noqa: F401  Registers the document object types.
+        import SheetDesignCommands
+
+        commands = SheetDesignCommands.register()
+        self.appendToolbar("Sheet Design", commands)
+        self.appendMenu("Sheet Design", commands)
+
+    def GetClassName(self):
+        return "Gui::PythonWorkbench"
+
+
+Gui.addWorkbench(SheetDesignWorkbench())

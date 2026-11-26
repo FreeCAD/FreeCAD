@@ -31,10 +31,10 @@
 #include <gp_Trsf.hxx>
 #include <gp_Vec2d.hxx>
 
-#include <Mod/SheetMetalCore/SheetMetalCoreGlobal.h>
+#include <Mod/SheetDesign/SheetDesignGlobal.h>
 
 
-namespace SheetMetalCore
+namespace SheetDesign
 {
 
 /// The values that apply to the full sheet.
@@ -100,7 +100,7 @@ struct BendLine
  * The folded solid and the flat pattern are the two outputs of the same model. No operation
  * recognizes bends from a solid.
  */
-class SheetMetalCoreExport SheetModel
+class SheetDesignExport SheetModel
 {
 public:
     SheetParams params;
@@ -202,4 +202,4 @@ private:
     );
 };
 
-}  // namespace SheetMetalCore
+}  // namespace SheetDesign
