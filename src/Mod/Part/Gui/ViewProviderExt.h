@@ -210,6 +210,7 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
+    void deferVisualUpdate();
     void handleChangedPropertyName(
         Base::XMLReader& reader,
         const char* TypeName,
@@ -238,6 +239,10 @@ protected:
     bool faceHighlightActive = false;
 
 private:
+    bool ensureSelectionGeometry() const;
+    bool updateGeometry(const TopoDS_Shape& shape) const;
+    mutable bool updatingGeometry = false;
+    mutable bool geometryDirty = true;
     Gui::ViewProviderFaceTexture texture;
     // settings stuff
     int forceUpdateCount;
@@ -252,7 +257,7 @@ private:
     App::PropertyColorList _diffuseColor;
 
     // shape that was last rendered so if it does not change we don't re-render it without need
-    TopoDS_Shape lastRenderedShape;
+    mutable TopoDS_Shape lastRenderedShape;
 };
 
 }  // namespace PartGui
