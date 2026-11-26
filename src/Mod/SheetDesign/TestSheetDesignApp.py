@@ -1365,3 +1365,103 @@ class TestSheetDesign(unittest.TestCase):
         depth = self.allowance() + 20.0
         expected = self.LENGTH * self.WIDTH + depth * self.WIDTH + depth * self.LENGTH
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
+
+    # ------------------------------------------------------------------ flange from a sketch
+
+    def test_flange_with_a_shape_from_a_closed_profile(self):
+        """The profile is in the plane of the panel. Its side on the edge gives the bend line."""
+        outline = Part.Face(
+            Part.makePolygon(
+                [V(100, 10, 0), V(118, 18, 0), V(118, 32, 0), V(100, 40, 0), V(100, 10, 0)]
+            )
+        )
+        hole = Part.Face(Part.Wire(Part.makeCircle(3.0, V(109, 25, 0))))
+        profile = self.add_shape(outline.cut(hole), "Shape")
+        flange = self.add_end_flange(self.add_base(), Profile=profile)
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        # The flange is as high as the profile is deep.
+        self.assertAlmostEqual(flange.Shape.BoundBox.ZMax, self.T + self.R + 18.0, places=6)
+        flat = self.add_flat(flange)
+        face = flat.Shape.Faces[0]
+        expected = self.LENGTH * self.WIDTH + self.allowance() * 30.0 + outline.Area - hole.Area
+        self.assertAlmostEqual(face.Area, expected, places=5)
+        self.assertEqual(len(face.Wires), 2)
+        # The bend line is as long as the side of the profile on the edge.
+        line = flat.Shape.SubShapes[1]
+        self.assertAlmostEqual(line.Length, 30.0, places=6)
+
+    def test_flange_profile_that_is_not_on_the_edge_is_rejected(self):
+        outline = Part.Face(
+            Part.makePolygon([V(105, 10, 0), V(118, 10, 0), V(118, 40, 0), V(105, 40, 0), V(105, 10, 0)])
+        )
+        flange = self.add_end_flange(self.add_base(), Profile=self.add_shape(outline, "Shape"))
+        self.assertFalse(flange.isValid())
+        self.assertIn("on the selected edge", flange.getStatusString())
+
+    def test_contour_from_an_open_profile(self):
+        """A Z section: up by 90 degrees, then to the outer side by 90 degrees.
+
+        The line is the outline of the top side of the sheet with sharp corners.
+        """
+        t, r = self.T, self.R
+        section = Part.makePolygon([V(100, 25, t), V(100, 25, 22), V(115, 25, 22)])
+        flange = self.add_end_flange(self.add_base(), Profile=self.add_shape(section, "Section"))
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        box = flange.Shape.BoundBox
+        # The top side of the sheet is on the line.
+        self.assertAlmostEqual(box.ZMax, 22.0, places=6)
+        self.assertAlmostEqual(box.XMax, 115.0, places=6)
+        flat = self.add_flat(flange)
+        self.assertEqual(len(flat.Shape.SubShapes), 3)  # The face and two bend lines.
+        # First bend: the top side is the inner side. Second bend: it is the outer side.
+        leg1 = 20.0 - r - (r + t)
+        leg2 = 15.0 - (r + t)
+        length = (self.LENGTH - r) + self.allowance() + leg1 + self.allowance() + leg2
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)
+        # The inner face of the first panel is on the first segment of the line.
+        faces = [
+            f for f in flange.Shape.Faces
+            if f.Surface.TypeId == "Part::GeomPlane" and abs(f.CenterOfMass.x - 100.0) < 1e-6
+            and abs(abs(f.normalAt(0, 0).x) - 1.0) < 1e-6
+        ]
+        self.assertEqual(len(faces), 1)
+
+    def test_contour_from_the_bottom_side(self):
+        """A section that starts on the bottom side and goes down."""
+        section = Part.makePolygon([V(100, 25, 0), V(100, 25, -18)])
+        flange = self.add_end_flange(self.add_base(), Profile=self.add_shape(section, "Section"))
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flange.Shape.BoundBox.ZMin, -18.0, places=6)
+        # The bottom side is the inner side of this bend: the outer face is one thickness out.
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, 100.0 + self.T, places=6)
+
+    def test_contour_with_an_angle_that_is_not_90_degrees(self):
+        angle = math.radians(60.0)
+        end = V(100 + 20 * math.cos(angle), 25, self.T + 20 * math.sin(angle))
+        section = Part.makePolygon([V(100, 25, self.T), end])
+        flange = self.add_end_flange(self.add_base(), Profile=self.add_shape(section, "Section"))
+        self.assertSolid(flange)
+        flat = self.add_flat(flange)
+        corner = self.R * math.tan(angle / 2)
+        length = (self.LENGTH - corner) + self.allowance(60.0) + (20.0 - corner)
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)
+        # The end of the line is on the top side of the flange.
+        distance = min(v.Point.distanceToPoint(V(end.x, v.Point.y, end.z)) for v in flange.Shape.Vertexes)
+        self.assertAlmostEqual(distance, 0.0, places=6)
+
+    def test_contour_that_does_not_start_on_the_edge_is_rejected(self):
+        section = Part.makePolygon([V(103, 25, self.T), V(103, 25, 22)])
+        flange = self.add_end_flange(self.add_base(), Profile=self.add_shape(section, "Section"))
+        self.assertFalse(flange.isValid())
+        self.assertIn("must start on the selected edge", flange.getStatusString())
+
+    def test_contour_names_and_later_flange(self):
+        """Each panel of a contour has its own name, and a flange can follow."""
+        section = Part.makePolygon([V(100, 25, self.T), V(100, 25, 22), V(115, 25, 22)])
+        flange = self.add_end_flange(self.add_base(), Profile=self.add_shape(section, "Section"))
+        faces = self.names(flange, "Face")
+        self.assertTrue({f"{flange.Name}_Top", f"{flange.Name}_S2_Top"} <= faces)
+        more = self.add_flange(flange, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=10.0)
+        self.assertSolid(more)

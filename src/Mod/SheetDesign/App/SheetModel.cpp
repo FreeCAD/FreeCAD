@@ -857,6 +857,42 @@ int SheetModel::addFlange(
     dir /= edgeLength;
     gp_Pnt2d a = ref.a.Translated(dir * gap1);
     gp_Pnt2d b = ref.b.Translated(dir * -gap2);
+    if (!options.profile.IsNull()) {
+        // The outline of the flange gives the bend line: its part on the edge.
+        double low = 0.0;
+        double high = 0.0;
+        bool found = false;
+        for (TopExp_Explorer ex(options.profile, TopAbs_EDGE); ex.More(); ex.Next()) {
+            BRepAdaptor_Curve curve(TopoDS::Edge(ex.Current()));
+            if (curve.GetType() != GeomAbs_Line) {
+                continue;
+            }
+            const gp_Pnt p3 = curve.Value(curve.FirstParameter());
+            const gp_Pnt q3 = curve.Value(curve.LastParameter());
+            const gp_Vec2d toP(ref.a, gp_Pnt2d(p3.X(), p3.Y()));
+            const gp_Vec2d toQ(ref.a, gp_Pnt2d(q3.X(), q3.Y()));
+            if (std::fabs(toP.Crossed(dir)) > 1.0e-5 || std::fabs(toQ.Crossed(dir)) > 1.0e-5) {
+                continue;
+            }
+            const double first = std::min(toP.Dot(dir), toQ.Dot(dir));
+            const double last = std::max(toP.Dot(dir), toQ.Dot(dir));
+            low = found ? std::min(low, first) : first;
+            high = found ? std::max(high, last) : last;
+            found = true;
+        }
+        if (!found || high - low <= tol) {
+            throw Base::ValueError(
+                "Sheet design: the profile of the flange has no straight side on the selected edge"
+            );
+        }
+        if (low < -1.0e-5 || high > edgeLength + 1.0e-5) {
+            throw Base::ValueError(
+                "Sheet design: the profile of the flange is longer than the selected edge"
+            );
+        }
+        a = ref.a.Translated(dir * low);
+        b = ref.a.Translated(dir * high);
+    }
 
     const gp_Vec2d n = outwardNormal(panels[ref.panel].profile, a, b);
 
@@ -969,7 +1005,8 @@ int SheetModel::addFlange(
     // With a miter, each side of the flange is at an angle from the bend line.
     const double slope1 = std::tan(options.miter1);
     const double slope2 = std::tan(options.miter2);
-    const bool mitered = std::fabs(slope1) > 1.0e-9 || std::fabs(slope2) > 1.0e-9;
+    const bool mitered = options.profile.IsNull()
+        && (std::fabs(slope1) > 1.0e-9 || std::fabs(slope2) > 1.0e-9);
     auto corner = [&](bool second, double depth) {
         const gp_Pnt2d& base = second ? b : a;
         const double along = second ? -depth * slope2 : depth * slope1;
@@ -983,19 +1020,46 @@ int SheetModel::addFlange(
         throw Base::ValueError("Sheet design: the miter angles leave no width for the flange");
     }
     Panel child;
-    child.profile = makeFlatQuad(a1, b1, b2, a2);
     child.tag = tag;
+    TopoDS_Shape zone;
+    if (!options.profile.IsNull()) {
+        // Move the outline out of the panel by the offset and the bend allowance.
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(options.profile, props);
+        const gp_Pnt center = props.CentreOfMass();
+        const gp_Vec2d toCenter(ref.a, gp_Pnt2d(center.X(), center.Y()));
+        if (toCenter.Dot(n) <= 0.0) {
+            throw Base::ValueError(
+                "Sheet design: the profile of the flange must be on the outer side of the edge"
+            );
+        }
+        gp_Trsf move;
+        const gp_Vec2d shift = n * (offset + allowance);
+        move.SetTranslation(gp_Vec(shift.X(), shift.Y(), 0.0));
+        child.profile = TopoDS::Face(
+            BRepBuilderAPI_Transform(options.profile, move, Standard_True).Shape()
+        );
+    }
+    else {
+        child.profile = makeFlatQuad(a1, b1, b2, a2);
+        if (mitered) {
+            zone = makeFlatQuad(a, b, b1, a1);
+        }
+    }
     panels.push_back(child);
     const int childIndex = static_cast<int>(panels.size()) - 1;
-    origins.push_back({tag + "_End", childIndex, a2, b2});
-    origins.push_back({tag + "_Side1", childIndex, a1, a2});
-    origins.push_back({tag + "_Side2", childIndex, b1, b2});
-    TopoDS_Shape zone;
-    if (mitered) {
-        zone = makeFlatQuad(a, b, b1, a1);
+    if (options.profile.IsNull()) {
+        origins.push_back({tag + "_End", childIndex, a2, b2});
+        origins.push_back({tag + "_Side1", childIndex, a1, a2});
+        origins.push_back({tag + "_Side2", childIndex, b1, b2});
+    }
+    else {
+        addOrigins(panels[childIndex].profile, gp_Trsf(), tag + "_E", childIndex);
     }
     connect(ref.panel, childIndex, a, b, n, angle, up, params.radius, zone);
     const int bendIndex = static_cast<int>(bends.size()) - 1;
+    bends[bendIndex].farStart = a2;
+    bends[bendIndex].farEnd = b2;
 
     if (options.autoMiter) {
         // Two flanges on adjacent edges of one panel can overlap in the flat pattern, for
@@ -1096,6 +1160,123 @@ gp_Trsf SheetModel::afterBend(
     gp_Trsf translation;
     translation.SetTranslation(gp_Vec(-allowance * normal.X(), -allowance * normal.Y(), 0.0));
     return parent * rotation * translation;
+}
+
+int SheetModel::addContour(
+    const EdgeRef& ref,
+    const std::vector<gp_Pnt>& points,
+    const FlangeOptions& options,
+    const std::string& tag
+)
+{
+    if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
+        throw Base::ValueError("Sheet design: the edge reference is not valid");
+    }
+    if (points.size() < 2) {
+        throw Base::ValueError("Sheet design: the profile of the contour has no segment");
+    }
+    const double t = params.thickness;
+    const double r = params.radius;
+    const double loose = 1.0e-4;
+    gp_Vec2d dir(ref.a, ref.b);
+    dir.Normalize();
+    const gp_Vec2d n = outwardNormal(panels[ref.panel].profile, ref.a, ref.b);
+
+    // The section in the plane at 90 degrees to the edge: u goes out of the panel, z goes up.
+    struct SectionPoint
+    {
+        double along;
+        double u;
+        double z;
+    };
+    std::vector<SectionPoint> section;
+    for (const gp_Pnt& p : points) {
+        const gp_Vec2d w(ref.a, gp_Pnt2d(p.X(), p.Y()));
+        section.push_back({w.Dot(dir), w.Dot(n), p.Z()});
+    }
+    // The line starts at its end that is on the edge.
+    if (std::fabs(section.back().u) < std::fabs(section.front().u)) {
+        std::reverse(section.begin(), section.end());
+    }
+    for (const SectionPoint& p : section) {
+        if (std::fabs(p.along - section.front().along) > loose) {
+            throw Base::ValueError("Sheet design: the profile of the contour must be in a plane at 90 degrees to the edge");
+        }
+    }
+    const bool topSide = std::fabs(section.front().z - t) < loose;
+    const bool bottomSide = std::fabs(section.front().z) < loose;
+    if (std::fabs(section.front().u) > loose || (!topSide && !bottomSide)) {
+        throw Base::ValueError(
+            "Sheet design: the profile of the contour must start on the selected edge, on the top "
+            "or the bottom side of the panel"
+        );
+    }
+
+    // Each segment gives one bend and one panel. The line is the outline of one side of the
+    // sheet with sharp corners, thus each bend uses a part of the two segments at its corner.
+    struct Step
+    {
+        double length;
+        double turn;
+        double corner;
+    };
+    std::vector<Step> steps;
+    double direction = 0.0;
+    for (std::size_t i = 1; i < section.size(); ++i) {
+        const double du = section[i].u - section[i - 1].u;
+        const double dz = section[i].z - section[i - 1].z;
+        const double length = std::hypot(du, dz);
+        if (length < tol) {
+            throw Base::ValueError("Sheet design: a segment of the contour has no length");
+        }
+        const double next = std::atan2(dz, du);
+        double turn = next - direction;
+        while (turn > M_PI) {
+            turn -= 2.0 * M_PI;
+        }
+        while (turn <= -M_PI) {
+            turn += 2.0 * M_PI;
+        }
+        if (std::fabs(turn) < 1.0e-6) {
+            throw Base::ValueError("Sheet design: two segments of the contour are in one line");
+        }
+        // The side of the sheet that the line shows is the inner side of a bend to that side.
+        const bool inner = (turn > 0.0) == topSide;
+        steps.push_back({length, turn, (inner ? r : r + t) * std::tan(std::fabs(turn) / 2.0)});
+        direction = next;
+    }
+
+    int firstBend = -1;
+    EdgeRef edge = ref;
+    for (std::size_t i = 0; i < steps.size(); ++i) {
+        const double leg = steps[i].length - steps[i].corner
+            - (i + 1 < steps.size() ? steps[i + 1].corner : 0.0);
+        if (leg <= tol) {
+            throw Base::ValueError("Sheet design: a segment of the contour is too short for its bends");
+        }
+        FlangeOptions stepOptions;
+        std::string stepTag = tag;
+        if (i == 0) {
+            // The first corner is on the edge: the bend line is inside the panel.
+            stepOptions = options;
+            stepOptions.offset -= steps[i].corner;
+            stepOptions.profile.Nullify();
+        }
+        else {
+            stepOptions.autoMiter = false;
+            stepTag += "_S" + std::to_string(i + 1);
+        }
+        const int bend
+            = addFlange(edge, leg, std::fabs(steps[i].turn), steps[i].turn > 0.0, stepOptions, stepTag);
+        if (i == 0) {
+            firstBend = bend;
+        }
+        edge.panel = bends[bend].childPanel;
+        edge.a = bends[bend].farStart;
+        edge.b = bends[bend].farEnd;
+        edge.top = true;
+    }
+    return firstBend;
 }
 
 void SheetModel::connect(

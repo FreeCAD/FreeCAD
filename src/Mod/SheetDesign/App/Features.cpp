@@ -32,6 +32,8 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepTools.hxx>
+#include <BRepTools_WireExplorer.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <BRep_Tool.hxx>
 #include <Geom_Surface.hxx>
 #include <TopoDS_Wire.hxx>
@@ -581,6 +583,16 @@ PROPERTY_SOURCE(SheetDesign::Flange, SheetDesign::Feature)
 Flange::Flange()
 {
     ADD_PROPERTY_TYPE(Edge, (nullptr), "Sheet Design", App::Prop_None, "Straight edge for the bend");
+    ADD_PROPERTY_TYPE(
+        Profile,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Optional sketch. A closed outline in the plane of the panel, with one side on the edge, "
+        "gives the shape of the flange. An open line of segments in a plane at 90 degrees to the "
+        "edge gives one bend and one panel for each segment"
+    );
+    Profile.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Length, (10.0), "Sheet Design", App::Prop_None, "Length of the flat flange");
     ADD_PROPERTY_TYPE(Angle, (90.0), "Sheet Design", App::Prop_None, "Bend angle");
     ADD_PROPERTY_TYPE(Reversed, (false), "Sheet Design", App::Prop_None, "Bend to the opposite side");
@@ -760,7 +772,62 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     options.miter2 = Base::toRadians(Miter2.getValue());
     options.autoMiter = AutoMiter.getValue();
     options.miterGap = MiterGap.getValue();
-    result->addFlange(ref, leg, angle, up, options, getNameInDocument());
+    if (!Profile.getValue()) {
+        result->addFlange(ref, leg, angle, up, options, getNameInDocument());
+        return result;
+    }
+
+    // A sketch gives the flange. Move it into the flat space of the panel of the edge.
+    const TopoDS_Shape global = profileShape(Profile.getValue(), toLocal(Profile.getValue()));
+    BRepBuilderAPI_Transform toPanel(global, result->panels[ref.panel].folded.Inverted(), Standard_True);
+    const TopoDS_Shape local = toPanel.Shape();
+    TopExp_Explorer wires(local, TopAbs_WIRE);
+    const bool closed = TopExp_Explorer(local, TopAbs_FACE).More()
+        || (wires.More() && BRep_Tool::IsClosed(TopoDS::Wire(wires.Current())));
+    if (closed) {
+        // The shape of the flange: an outline in the plane of the panel.
+        const std::vector<TopoDS_Face> faces = collectFaces(local);
+        Bnd_Box box;
+        BRepBndLib::Add(local, box);
+        double xmin, ymin, zmin, xmax, ymax, zmax;
+        box.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+        if (faces.size() != 1 || zmax - zmin > 1.0e-4 || zmin < -1.0e-4 || zmax > t + 1.0e-4) {
+            throw Base::ValueError(
+                "Sheet design: the profile of the flange must be one closed outline in the plane "
+                "of "
+                "the panel"
+            );
+        }
+        gp_Trsf drop;
+        drop.SetTranslation(gp_Vec(0.0, 0.0, -(zmin + zmax) / 2.0));
+        options.profile = TopoDS::Face(
+            BRepBuilderAPI_Transform(faces.front(), drop, Standard_True).Shape()
+        );
+        result->addFlange(ref, leg, angle, up, options, getNameInDocument());
+        return result;
+    }
+    if (!wires.More()) {
+        throw Base::ValueError("Sheet design: the profile of the flange has no line");
+    }
+    // The section of a contour: the points of an open line, in their sequence.
+    std::vector<gp_Pnt> section;
+    TopoDS_Edge last;
+    for (BRepTools_WireExplorer ex(TopoDS::Wire(wires.Current())); ex.More(); ex.Next()) {
+        if (BRepAdaptor_Curve(ex.Current()).GetType() != GeomAbs_Line) {
+            throw Base::ValueError(
+                "Sheet design: the profile of a contour must have only straight segments"
+            );
+        }
+        section.push_back(BRep_Tool::Pnt(ex.CurrentVertex()));
+        last = ex.Current();
+    }
+    TopoDS_Vertex first;
+    TopoDS_Vertex second;
+    TopExp::Vertices(last, first, second);
+    const gp_Pnt end1 = BRep_Tool::Pnt(first);
+    const gp_Pnt end2 = BRep_Tool::Pnt(second);
+    section.push_back(end1.Distance(section.back()) > end2.Distance(section.back()) ? end1 : end2);
+    result->addContour(ref, section, options, getNameInDocument());
 
     return result;
 }

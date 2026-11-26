@@ -150,6 +150,7 @@ public:
     Flange();
 
     App::PropertyLinkSub Edge;
+    App::PropertyLink Profile;
     App::PropertyLength Length;
     App::PropertyAngle Angle;
     App::PropertyBool Reversed;

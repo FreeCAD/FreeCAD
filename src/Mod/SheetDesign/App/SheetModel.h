@@ -29,6 +29,7 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Dir2d.hxx>
+#include <gp_Pnt.hxx>
 #include <gp_Pnt2d.hxx>
 #include <gp_Trsf.hxx>
 #include <gp_Vec2d.hxx>
@@ -96,6 +97,8 @@ struct Bend
     /// The bend closes a loop of panels. Its two panels have their position from other bends,
     /// and the bend has no solid.
     bool closing {false};
+    gp_Pnt2d farStart;  ///< The far edge of a rectangular flange, for a further bend.
+    gp_Pnt2d farEnd;
 };
 
 /**
@@ -138,6 +141,9 @@ struct FlangeOptions
     /// overlap in the flat pattern.
     bool autoMiter {true};
     double miterGap {0.0};  ///< The distance between two flanges after an automatic miter.
+    /// The outline of the flange, as a face in flat space that touches the edge. The part of
+    /// the outline on the edge gives the bend line. Null: the flange is a rectangle.
+    TopoDS_Face profile;
 };
 
 /// A reference to a straight segment on the boundary of a panel.
@@ -242,6 +248,22 @@ public:
 
     /// The center lines of the bends in flat space.
     std::vector<TopoDS_Edge> bendLines() const;
+
+    /**
+     * Add a chain of bends and panels from the section of a contour.
+     *
+     * @param section  The points of an open line of straight segments, in the flat space of
+     *                 the panel of the edge. The line is in a plane at 90 degrees to the edge.
+     *                 It starts on the edge, on the top or the bottom side of the panel, and it
+     *                 is the outline of that side of the sheet with sharp corners.
+     * @return the index of the first new bend.
+     */
+    int addContour(
+        const EdgeRef& ref,
+        const std::vector<gp_Pnt>& section,
+        const FlangeOptions& options = FlangeOptions(),
+        const std::string& tag = "Flange"
+    );
 
     /// The tag of the origin of a boundary segment. Empty if the segment has no origin.
     std::string segmentTag(int panel, const gp_Pnt2d& a, const gp_Pnt2d& b) const;
