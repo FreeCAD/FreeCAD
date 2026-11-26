@@ -156,6 +156,8 @@ public:
     App::PropertyLength Gap1;
     App::PropertyLength Gap2;
     App::PropertyDistance Offset;
+    App::PropertyEnumeration Position;
+    App::PropertyEnumeration LengthType;
 
 protected:
     std::shared_ptr<SheetModel> buildModel() override;

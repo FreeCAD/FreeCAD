@@ -69,6 +69,8 @@ namespace
 const double tol = 1.0e-6;
 const App::PropertyAngle::Constraints angleRange = {0.0, 180.0, 1.0};
 const char* SpaceEnums[] = {"Folded", "Flat", nullptr};
+const char* PositionEnums[] = {"Material Outside", "Material Inside", "Thickness Outside", nullptr};
+const char* LengthTypeEnums[] = {"Leg", "Outer Sharp", "Inner Sharp", "Tangential", nullptr};
 
 /**
  * Make one face from an outer wire and holes that are apart from each other.
@@ -577,6 +579,26 @@ Flange::Flange()
         "that folds across a second flap"
     );
     Angle.setConstraints(&angleRange);
+    ADD_PROPERTY_TYPE(
+        Position,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "Where the flange is against the selected edge. Material Outside: the bend starts at "
+        "the edge. Material Inside: the outer face of the flange is at the edge. Thickness "
+        "Outside: the inner face of the flange is at the edge"
+    );
+    Position.setEnums(PositionEnums);
+    ADD_PROPERTY_TYPE(
+        LengthType,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "How Length is measured. Leg: the flat part of the flange. Outer Sharp, Inner Sharp: "
+        "from the point where the outer or the inner faces of the two panels meet. Tangential: "
+        "from the plane that touches the outer side of the bend"
+    );
+    LengthType.setEnums(LengthTypeEnums);
 }
 
 std::shared_ptr<SheetModel> Flange::buildModel()
@@ -620,16 +642,39 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     }
 
     const bool up = ref.top != Reversed.getValue();
-    result->addFlange(
-        ref,
-        Length.getValue(),
-        Base::toRadians(Angle.getValue()),
-        up,
-        Gap1.getValue(),
-        Gap2.getValue(),
-        Offset.getValue(),
-        getNameInDocument()
-    );
+    // The position moves the bend line against the edge. Offset adds to it.
+    const double t = result->params.thickness;
+    const double r = result->params.radius;
+    const double angle = Base::toRadians(Angle.getValue());
+    double shift = Offset.getValue();
+    if (Position.getValue() == 1) {
+        shift -= r + t;  // Material Inside
+    }
+    else if (Position.getValue() == 2) {
+        shift -= r;  // Thickness Outside
+    }
+    // The length types give the flat leg of the flange.
+    double leg = Length.getValue();
+    switch (LengthType.getValue()) {
+        case 1:  // Outer Sharp
+            leg -= (r + t) * std::tan(angle / 2.0);
+            break;
+        case 2:  // Inner Sharp
+            leg -= r * std::tan(angle / 2.0);
+            break;
+        case 3:  // Tangential
+            leg -= angle >= M_PI / 2.0 ? r + t : (r + t) * std::tan(angle / 2.0);
+            break;
+        default:
+            break;
+    }
+    if (leg <= 1.0e-6) {
+        throw Base::ValueError(
+            "Sheet design: the length is too small for this length type. The bend uses all of it"
+        );
+    }
+    result->addFlange(ref, leg, angle, up, Gap1.getValue(), Gap2.getValue(), shift, getNameInDocument());
+
     return result;
 }
 

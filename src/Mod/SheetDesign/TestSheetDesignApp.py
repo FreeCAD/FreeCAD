@@ -1091,3 +1091,88 @@ class TestSheetDesign(unittest.TestCase):
         _face, folded = self.web_corner([90.0, 90.0, 180.0, 180.0, 45.0])
         self.assertFalse(folded.isValid())
         self.assertIn("do not close", folded.getStatusString())
+
+    # ------------------------------------------------------- flange position and length types
+
+    def test_flange_position(self):
+        """Where the flange is against the selected edge, for a bend of 90 degrees."""
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        expected = {
+            "Material Outside": (self.LENGTH + self.R + self.T, self.LENGTH),
+            "Material Inside": (self.LENGTH, self.LENGTH - self.R - self.T),
+            "Thickness Outside": (self.LENGTH + self.T, self.LENGTH - self.R),
+        }
+        for position, (outer_face, bend_start) in expected.items():
+            with self.subTest(position=position):
+                flange.Position = position
+                self.doc.recompute()
+                self.assertSolid(flange)
+                self.assertEqual(flange.Overlap.Value, 0.0)
+                self.assertAlmostEqual(flange.Shape.BoundBox.XMax, outer_face, places=6)
+                self.assertAlmostEqual(
+                    flat.Shape.BoundBox.XLength, bend_start + self.allowance() + 20.0, places=6
+                )
+
+    def test_flange_position_adds_to_offset(self):
+        flange = self.add_end_flange(self.add_base(), Position="Material Inside", Offset=5.0)
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, self.LENGTH + 5.0, places=6)
+
+    def test_flange_position_inside_with_gaps(self):
+        """The bend line moves into the panel only where the flange is."""
+        flange = self.add_end_flange(self.add_base(), Position="Material Inside", Gap1=10.0, Gap2=10.0)
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, self.LENGTH, places=6)
+        flat = self.add_flat(flange)
+        notch = (self.R + self.T) * (self.WIDTH - 20.0)
+        expected = self.LENGTH * self.WIDTH - notch + (self.allowance() + 20.0) * (self.WIDTH - 20.0)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
+
+    def test_flange_length_types_at_90_degrees(self):
+        """The height of the flange above the bottom face of the base, for Length = 20."""
+        flange = self.add_end_flange(self.add_base())
+        expected = {
+            "Leg": self.T + self.R + 20.0,
+            "Outer Sharp": 20.0,
+            "Tangential": 20.0,
+            "Inner Sharp": 20.0 + self.T,
+        }
+        for length_type, height in expected.items():
+            with self.subTest(length_type=length_type):
+                flange.LengthType = length_type
+                self.doc.recompute()
+                self.assertSolid(flange)
+                self.assertAlmostEqual(flange.Shape.BoundBox.ZMax, height, places=6)
+
+    def test_flange_length_types_at_60_degrees(self):
+        flange = self.add_end_flange(self.add_base(), Angle=60.0)
+        flat = self.add_flat(flange)
+        half = math.tan(math.radians(30.0))
+        expected = {
+            "Leg": 20.0,
+            "Outer Sharp": 20.0 - (self.R + self.T) * half,
+            "Inner Sharp": 20.0 - self.R * half,
+            "Tangential": 20.0 - (self.R + self.T) * half,
+        }
+        for length_type, leg in expected.items():
+            with self.subTest(length_type=length_type):
+                flange.LengthType = length_type
+                self.doc.recompute()
+                self.assertSolid(flange)
+                self.assertAlmostEqual(
+                    flat.Shape.BoundBox.XLength, self.LENGTH + self.allowance(60.0) + leg, places=6
+                )
+        # Outer Sharp: the tip of the outer face is at the length from the outer sharp corner.
+        flange.LengthType = "Outer Sharp"
+        self.doc.recompute()
+        corner = V(self.LENGTH + (self.R + self.T) * half, 0, 0)
+        tip = corner + V(math.cos(math.radians(60.0)), 0, math.sin(math.radians(60.0))) * 20.0
+        distance = min(v.Point.distanceToPoint(V(tip.x, v.Point.y, tip.z)) for v in flange.Shape.Vertexes)
+        self.assertAlmostEqual(distance, 0.0, places=6)
+
+    def test_flange_length_too_small_for_its_type_is_rejected(self):
+        flange = self.add_end_flange(self.add_base(), Length=2.0, LengthType="Tangential")
+        self.assertFalse(flange.isValid())
+        self.assertIn("too small", flange.getStatusString())
