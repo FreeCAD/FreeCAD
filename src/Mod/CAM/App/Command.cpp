@@ -37,6 +37,26 @@
 using namespace Base;
 using namespace Path;
 
+namespace
+{
+std::size_t findAnnotationSeparator(const std::string& str)
+{
+    int depth = 0;
+    for (std::size_t i = 0; i + 1 < str.size(); ++i) {
+        if (str[i] == '(') {
+            ++depth;
+        }
+        else if (str[i] == ')' && depth > 0) {
+            --depth;
+        }
+        else if (depth == 0 && str[i] == ';' && str[i + 1] == ' ') {
+            return i;
+        }
+    }
+    return std::string::npos;
+}
+}  // namespace
+
 TYPESYSTEM_SOURCE(Path::Command, Base::Persistence)
 
 // Constructors & destructors
@@ -181,7 +201,7 @@ void Command::setFromGCode(const std::string& str)
     std::string gcode_part = str;
     std::string annotation_part;
 
-    auto comment_pos = str.find("; ");
+    auto comment_pos = findAnnotationSeparator(str);
     if (comment_pos != std::string::npos) {
         gcode_part = str.substr(0, comment_pos);
         annotation_part = str.substr(comment_pos + 1);  // length of "; "
