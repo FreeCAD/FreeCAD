@@ -179,6 +179,11 @@ class Heatwriter:
                         density = FreeCAD.Units.Quantity(mat.Material["Density"])
                         break
             volume = ref_feat.getSubObject(ref_sub_obj).Volume
+            if volume <= 0:
+                raise general_writer.WriteError(
+                    "Body heat source mode 'Total Power' needs a referenced body with a volume.\n"
+                    "For a 2D body, use the 'Dissipation Rate' mode instead."
+                )
             heatSource = (
                 (obj.TotalPower / (density * FreeCAD.Units.Quantity(volume, "mm^3")))
                 .getValueAs("W/kg")
