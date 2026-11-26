@@ -39,14 +39,19 @@
 #include <Bnd_Box.hxx>
 #include <Geom_Plane.hxx>
 #include <Standard_Failure.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Pln.hxx>
 
+#include <App/ElementMap.h>
 #include <App/GeoFeature.h>
+#include <App/IndexedName.h>
+#include <App/MappedName.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -254,6 +259,30 @@ TopoDS_Face flatProfile(App::DocumentObject* object, gp_Trsf& placement)
     return faces.front();
 }
 
+/// Make a Part shape with stable element names, thus links to its edges and faces can follow
+/// a change of the topology.
+Part::TopoShape namedShape(const TopoDS_Shape& shape, const ElementNames& names, long tag)
+{
+    Part::TopoShape result(tag);
+    result.setShape(shape);
+    result.resetElementMap(std::make_shared<Data::ElementMap>());
+    for (const auto& edge : names.edges) {
+        result.setElementName(
+            Data::IndexedName::fromConst("Edge", edge.first),
+            Data::MappedName(edge.second),
+            tag
+        );
+    }
+    for (const auto& face : names.faces) {
+        result.setElementName(
+            Data::IndexedName::fromConst("Face", face.first),
+            Data::MappedName(face.second),
+            tag
+        );
+    }
+    return result;
+}
+
 App::DocumentObjectExecReturn* failure(const char* message)
 {
     return new App::DocumentObjectExecReturn(message);
@@ -318,7 +347,7 @@ App::DocumentObjectExecReturn* Feature::execute()
         if (!TopExp_Explorer(folded, TopAbs_SOLID).More()) {
             throw Base::CADKernelError("Sheet design: the model gives no solid");
         }
-        Shape.setValue(folded);
+        Shape.setValue(namedShape(folded, result->nameFolded(folded), getID()));
         Overlap.setValue(overlap);
         if (overlap > 0.0) {
             Base::Console().warning(
@@ -360,7 +389,9 @@ std::shared_ptr<SheetModel> BasePanel::buildModel()
     const SheetParams params = readRule(Rule.getValue());
     gp_Trsf placement;
     const TopoDS_Face face = flatProfile(Profile.getValue(), placement);
-    return std::make_shared<SheetModel>(SheetModel::makeBase(face, placement, params));
+    return std::make_shared<SheetModel>(
+        SheetModel::makeBase(face, placement, params, getNameInDocument())
+    );
 }
 
 
@@ -432,7 +463,9 @@ std::shared_ptr<SheetModel> Refold::buildModel()
     if (lines.empty()) {
         throw Base::ValueError("Sheet design: the bend line object has no line");
     }
-    return std::make_shared<SheetModel>(SheetModel::fromFlat(face, lines, placement, params));
+    return std::make_shared<SheetModel>(
+        SheetModel::fromFlat(face, lines, placement, params, getNameInDocument())
+    );
 }
 
 
@@ -465,7 +498,9 @@ std::shared_ptr<SheetModel> Unfold::buildModel()
     if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
         throw Base::ValueError("Sheet design: select one flat face of a solid");
     }
-    auto result = std::make_shared<SheetModel>(SheetModel::fromSolid(solid, TopoDS::Face(sub), params));
+    auto result = std::make_shared<SheetModel>(
+        SheetModel::fromSolid(solid, TopoDS::Face(sub), params, getNameInDocument())
+    );
 
     // The model has only the panels and the bends that the function can read. A difference in
     // volume shows that the solid has more than that.
@@ -553,7 +588,8 @@ std::shared_ptr<SheetModel> Flange::buildModel()
         up,
         Gap1.getValue(),
         Gap2.getValue(),
-        Offset.getValue()
+        Offset.getValue(),
+        getNameInDocument()
     );
     return result;
 }
@@ -581,7 +617,7 @@ std::shared_ptr<SheetModel> Cut::buildModel()
 {
     auto result = std::make_shared<SheetModel>(*sourceModel(Source.getValue()));
     const std::vector<TopoDS_Face> faces = collectFaces(profileShape(Profile.getValue()));
-    result->cut(makeCompound(faces), Space.getValue() == 1);
+    result->cut(makeCompound(faces), Space.getValue() == 1, getNameInDocument());
     return result;
 }
 
@@ -610,13 +646,23 @@ App::DocumentObjectExecReturn* FlatPattern::execute()
         // Put the flat pattern in the plane of the root panel. The compound keeps an identity
         // location, because a Part feature replaces that location with its placement.
         const TopLoc_Location root(sheet->rootPlacement());
-        builder.Add(compound, sheet->makeFlat().Moved(root));
+        const TopoDS_Shape flat = sheet->makeFlat();
+        builder.Add(compound, flat.Moved(root));
+        // The edges of the face are the first edges of the compound, in the same sequence.
+        ElementNames names = sheet->nameFlat(flat);
+        TopTools_IndexedMapOfShape flatEdges;
+        TopExp::MapShapes(flat, TopAbs_EDGE, flatEdges);
         if (BendLines.getValue()) {
-            for (const TopoDS_Edge& line : sheet->bendLines()) {
-                builder.Add(compound, line.Moved(root));
+            const std::vector<TopoDS_Edge> lines = sheet->bendLines();
+            for (std::size_t i = 0; i < lines.size(); ++i) {
+                builder.Add(compound, lines[i].Moved(root));
+                names.edges.emplace_back(
+                    flatEdges.Extent() + static_cast<int>(i) + 1,
+                    sheet->bendLineName(i)
+                );
             }
         }
-        Shape.setValue(compound);
+        Shape.setValue(namedShape(compound, names, getID()));
     }
     catch (const Standard_Failure& e) {
         return failure(e.GetMessageString());

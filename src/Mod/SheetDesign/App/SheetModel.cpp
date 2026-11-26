@@ -20,6 +20,7 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <map>
 #include <cmath>
 
 #include <BOPAlgo_GlueEnum.hxx>
@@ -217,7 +218,8 @@ TopoDS_Shape unify(const TopoDS_Shape& shape)
 SheetModel SheetModel::makeBase(
     const TopoDS_Face& flatProfile,
     const gp_Trsf& placement,
-    const SheetParams& params
+    const SheetParams& params,
+    const std::string& tag
 )
 {
     if (params.thickness <= tol) {
@@ -231,8 +233,201 @@ SheetModel SheetModel::makeBase(
     Panel panel;
     panel.profile = flatProfile;
     panel.folded = placement;
+    panel.tag = tag;
     model.panels.push_back(panel);
+    model.addOrigins(flatProfile, gp_Trsf(), tag + "_E", 0);
     return model;
+}
+
+void SheetModel::addOrigins(
+    const TopoDS_Shape& shape,
+    const gp_Trsf& toFlat,
+    const std::string& prefix,
+    int panel
+)
+{
+    TopTools_IndexedMapOfShape edges;
+    TopExp::MapShapes(shape, TopAbs_EDGE, edges);
+    for (int i = 1; i <= edges.Extent(); ++i) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edges(i)));
+        if (curve.GetType() != GeomAbs_Line) {
+            continue;
+        }
+        const gp_Pnt p = curve.Value(curve.FirstParameter()).Transformed(toFlat);
+        const gp_Pnt q = curve.Value(curve.LastParameter()).Transformed(toFlat);
+        Origin origin;
+        origin.tag = prefix + std::to_string(i);
+        origin.panel = panel;
+        origin.a = gp_Pnt2d(p.X(), p.Y());
+        origin.b = gp_Pnt2d(q.X(), q.Y());
+        origins.push_back(origin);
+    }
+}
+
+std::string SheetModel::segmentTag(int panel, const gp_Pnt2d& a, const gp_Pnt2d& b) const
+{
+    const gp_Pnt2d mid((a.X() + b.X()) / 2.0, (a.Y() + b.Y()) / 2.0);
+    const double loose = 1.0e-5;
+    // A later origin replaces an earlier origin on the same line.
+    for (auto it = origins.rbegin(); it != origins.rend(); ++it) {
+        if (panel >= 0 && it->panel >= 0 && it->panel != panel) {
+            continue;
+        }
+        if (distanceToSegment(mid, it->a, it->b) > loose) {
+            continue;
+        }
+        gp_Vec2d dir(it->a, it->b);
+        if (dir.Magnitude() < tol) {
+            continue;
+        }
+        dir.Normalize();
+        if (std::fabs(dir.Crossed(gp_Vec2d(it->a, a))) < loose
+            && std::fabs(dir.Crossed(gp_Vec2d(it->a, b))) < loose) {
+            return it->tag;
+        }
+    }
+    return {};
+}
+
+std::string SheetModel::bendLineName(std::size_t bend) const
+{
+    return panels[bends[bend].childPanel].tag + "_BendLine";
+}
+
+namespace
+{
+
+/// Give each element its name. Elements with the same name get a number, in the sequence of
+/// their position, thus the names are unique.
+void assignNames(
+    std::map<std::string, std::vector<std::pair<std::pair<double, double>, int>>>& groups,
+    std::vector<std::pair<int, std::string>>& names
+)
+{
+    for (auto& group : groups) {
+        std::sort(group.second.begin(), group.second.end());
+        int count = 0;
+        for (const auto& item : group.second) {
+            ++count;
+            names.emplace_back(
+                item.second,
+                count == 1 ? group.first : group.first + "_" + std::to_string(count)
+            );
+        }
+    }
+    std::sort(names.begin(), names.end());
+}
+
+}  // namespace
+
+ElementNames SheetModel::nameFolded(const TopoDS_Shape& folded) const
+{
+    using Groups = std::map<std::string, std::vector<std::pair<std::pair<double, double>, int>>>;
+    ElementNames names;
+    const double t = params.thickness;
+
+    Groups edgeGroups;
+    TopTools_IndexedMapOfShape edges;
+    TopExp::MapShapes(folded, TopAbs_EDGE, edges);
+    for (int i = 1; i <= edges.Extent(); ++i) {
+        EdgeRef ref;
+        if (!findEdge(TopoDS::Edge(edges(i)), ref)) {
+            continue;
+        }
+        const std::string tag = segmentTag(ref.panel, ref.a, ref.b);
+        if (tag.empty()) {
+            continue;
+        }
+        edgeGroups[tag + (ref.top ? "_T" : "_B")].push_back(
+            {{ref.a.X() + ref.b.X(), ref.a.Y() + ref.b.Y()}, i}
+        );
+    }
+    assignNames(edgeGroups, names.edges);
+
+    Groups faceGroups;
+    TopTools_IndexedMapOfShape faces;
+    TopExp::MapShapes(folded, TopAbs_FACE, faces);
+    for (int i = 1; i <= faces.Extent(); ++i) {
+        const TopoDS_Face face = TopoDS::Face(faces(i));
+        BRepAdaptor_Surface surface(face);
+        if (surface.GetType() != GeomAbs_Plane) {
+            continue;
+        }
+        const gp_Pln plane = surface.Plane();
+        TopExp_Explorer vertex(face, TopAbs_VERTEX);
+        if (!vertex.More()) {
+            continue;
+        }
+        const gp_Pnt corner = BRep_Tool::Pnt(TopoDS::Vertex(vertex.Current()));
+        std::string name;
+        std::pair<double, double> position {0.0, 0.0};
+
+        // A top or bottom face of a panel.
+        for (const Panel& panel : panels) {
+            const gp_Trsf inverse = panel.folded.Inverted();
+            const gp_Dir normal = plane.Axis().Direction().Transformed(inverse);
+            if (std::fabs(normal.Z()) < 1.0 - 1.0e-9) {
+                continue;
+            }
+            const gp_Pnt p = corner.Transformed(inverse);
+            const bool bottom = std::fabs(p.Z()) < tol;
+            const bool top = std::fabs(p.Z() - t) < tol;
+            if (!bottom && !top) {
+                continue;
+            }
+            BRepClass_FaceClassifier cls(panel.profile, gp_Pnt(p.X(), p.Y(), 0.0), 1.0e-5);
+            if (cls.State() == TopAbs_OUT) {
+                continue;
+            }
+            name = panel.tag + (top ? "_Top" : "_Bottom");
+            position = {p.X(), p.Y()};
+            break;
+        }
+        // A side face: it has the top and the bottom edge of one boundary segment.
+        if (name.empty()) {
+            for (TopExp_Explorer ex(face, TopAbs_EDGE); ex.More(); ex.Next()) {
+                EdgeRef ref;
+                if (!findEdge(TopoDS::Edge(ex.Current()), ref)) {
+                    continue;
+                }
+                const std::string tag = segmentTag(ref.panel, ref.a, ref.b);
+                if (!tag.empty()) {
+                    name = tag + "_S";
+                    position = {ref.a.X() + ref.b.X(), ref.a.Y() + ref.b.Y()};
+                    break;
+                }
+            }
+        }
+        if (!name.empty()) {
+            faceGroups[name].push_back({position, i});
+        }
+    }
+    assignNames(faceGroups, names.faces);
+    return names;
+}
+
+ElementNames SheetModel::nameFlat(const TopoDS_Shape& flat) const
+{
+    std::map<std::string, std::vector<std::pair<std::pair<double, double>, int>>> groups;
+    ElementNames names;
+    TopTools_IndexedMapOfShape edges;
+    TopExp::MapShapes(flat, TopAbs_EDGE, edges);
+    for (int i = 1; i <= edges.Extent(); ++i) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edges(i)));
+        if (curve.GetType() != GeomAbs_Line) {
+            continue;
+        }
+        const gp_Pnt p = curve.Value(curve.FirstParameter());
+        const gp_Pnt q = curve.Value(curve.LastParameter());
+        const gp_Pnt2d a(p.X(), p.Y());
+        const gp_Pnt2d b(q.X(), q.Y());
+        const std::string tag = segmentTag(-1, a, b);
+        if (!tag.empty()) {
+            groups[tag + "_F"].push_back({{a.X() + b.X(), a.Y() + b.Y()}, i});
+        }
+    }
+    assignNames(groups, names.edges);
+    return names;
 }
 
 double SheetModel::bendAllowance(double angle) const
@@ -302,7 +497,8 @@ int SheetModel::addFlange(
     bool up,
     double gap1,
     double gap2,
-    double offset
+    double offset,
+    const std::string& tag
 )
 {
     if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
@@ -346,6 +542,8 @@ int SheetModel::addFlange(
         }
         parent.profile = faces.front();
         parent.solid.Nullify();
+        origins.push_back({tag + "_Offset1", ref.panel, a, a.Translated(n * offset)});
+        origins.push_back({tag + "_Offset2", ref.panel, b, b.Translated(n * offset)});
         a.Translate(n * offset);
         b.Translate(n * offset);
     }
@@ -371,8 +569,17 @@ int SheetModel::addFlange(
         b.Translated(n * (allowance + length)),
         a.Translated(n * (allowance + length))
     );
+    child.tag = tag;
     panels.push_back(child);
-    connect(ref.panel, static_cast<int>(panels.size()) - 1, a, b, n, angle, up, params.radius, TopoDS_Face());
+    const int childIndex = static_cast<int>(panels.size()) - 1;
+    const gp_Pnt2d a1 = a.Translated(n * allowance);
+    const gp_Pnt2d b1 = b.Translated(n * allowance);
+    const gp_Pnt2d a2 = a.Translated(n * (allowance + length));
+    const gp_Pnt2d b2 = b.Translated(n * (allowance + length));
+    origins.push_back({tag + "_End", childIndex, a2, b2});
+    origins.push_back({tag + "_Side1", childIndex, a1, a2});
+    origins.push_back({tag + "_Side2", childIndex, b1, b2});
+    connect(ref.panel, childIndex, a, b, n, angle, up, params.radius, TopoDS_Face());
     return static_cast<int>(bends.size()) - 1;
 }
 
@@ -421,13 +628,15 @@ void SheetModel::connect(
     bends.push_back(bend);
 }
 
-int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
+int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag)
 {
     const double t = params.thickness;
     int changed = 0;
 
+    int faceNumber = 0;
     for (TopExp_Explorer ex(faces, TopAbs_FACE); ex.More(); ex.Next()) {
         bool used = false;
+        ++faceNumber;
         // In flat mode the root panel gives the frame. In folded mode each panel is a candidate.
         const std::size_t frames = flat ? 1 : panels.size();
         for (std::size_t frame = 0; frame < frames; ++frame) {
@@ -495,6 +704,12 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat)
                 }
                 panel.profile = result;
                 panel.solid.Nullify();
+                addOrigins(
+                    ex.Current(),
+                    panels[frame].folded.Inverted(),
+                    tag + "_F" + std::to_string(faceNumber) + "_E",
+                    static_cast<int>(i)
+                );
                 ++changed;
             }
         }
@@ -626,10 +841,15 @@ SheetModel SheetModel::fromFlat(
     const TopoDS_Face& flatProfile,
     const std::vector<BendLine>& lines,
     const gp_Trsf& placement,
-    const SheetParams& params
+    const SheetParams& params,
+    const std::string& tag
 )
 {
-    SheetModel model = makeBase(flatProfile, placement, params);
+    SheetModel model = makeBase(flatProfile, placement, params, tag);
+    // The outline is the same for all panels of the divided profile.
+    for (Origin& origin : model.origins) {
+        origin.panel = -1;
+    }
     if (lines.empty()) {
         return model;
     }
@@ -741,6 +961,7 @@ SheetModel SheetModel::fromFlat(
         Panel panel;
         panel.profile = piece;
         panel.folded = placement;
+        panel.tag = tag + "_Root";
         model.panels.push_back(panel);
     }
 
@@ -823,6 +1044,7 @@ SheetModel SheetModel::fromFlat(
 
     // Go from the root panel through the joints and set the folded position of each panel.
     std::vector<bool> reached(model.panels.size(), false);
+    std::map<std::size_t, int> panelsOfLine;
     std::deque<int> queue {0};
     reached[0] = true;
     while (!queue.empty()) {
@@ -839,6 +1061,10 @@ SheetModel SheetModel::fromFlat(
                 throw Base::ValueError("Sheet design: the bend lines make a closed loop of panels");
             }
             const Band& band = bands[joint.line];
+            // The name of a panel comes from the bend line that joins it to the part.
+            const int ordinal = ++panelsOfLine[joint.line];
+            model.panels[child].tag = tag + "_L" + std::to_string(joint.line + 1)
+                + (ordinal > 1 ? "_" + std::to_string(ordinal) : std::string());
             model.connect(
                 current,
                 child,
@@ -892,7 +1118,8 @@ gp_Dir outerNormal(const TopoDS_Face& face)
 SheetModel SheetModel::fromSolid(
     const TopoDS_Shape& solid,
     const TopoDS_Face& rootFace,
-    const SheetParams& params
+    const SheetParams& params,
+    const std::string& tag
 )
 {
     const double looseTol = 1.0e-5;
@@ -953,7 +1180,7 @@ SheetModel SheetModel::fromSolid(
     if (rootProfile.IsNull()) {
         throw Base::CADKernelError("Sheet design: cannot move the root face into flat space");
     }
-    SheetModel model = makeBase(rootProfile, placement, sheet);
+    SheetModel model = makeBase(rootProfile, placement, sheet, tag + "_P1");
 
     TopTools_IndexedDataMapOfShapeListOfShape edgeFaces;
     TopExp::MapShapesAndAncestors(solid, TopAbs_EDGE, TopAbs_FACE, edgeFaces);
@@ -1063,6 +1290,8 @@ SheetModel SheetModel::fromSolid(
                 );
             }
             model.panels[childIndex].profile = childProfile;
+            model.panels[childIndex].tag = tag + "_P" + std::to_string(childIndex + 1);
+            model.addOrigins(childProfile, gp_Trsf(), model.panels[childIndex].tag + "_E", childIndex);
             visited.Add(nextFace);
             queue.emplace_back(childIndex, nextFace);
         }

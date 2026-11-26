@@ -599,3 +599,126 @@ class TestSheetDesign(unittest.TestCase):
         self.assertEqual(folded.Overlap.Value, 0.0)
         flat = self.add_flat(folded)
         self.assertEqual(len(flat.Shape.SubShapes), 4)  # The face and three bend lines.
+
+    # ------------------------------------------------------------------ stable element names
+
+    def names(self, obj, prefix):
+        return {v for k, v in obj.Shape.ElementReverseMap.items() if k.startswith(prefix)}
+
+    def test_base_panel_names(self):
+        base = self.add_base()
+        edges = self.names(base, "Edge")
+        self.assertEqual(
+            edges, {f"Base_E{i}_{side}" for i in range(1, 5) for side in ("T", "B")}
+        )
+        faces = self.names(base, "Face")
+        self.assertEqual(faces, {"Base_Top", "Base_Bottom"} | {f"Base_E{i}_S" for i in range(1, 5)})
+
+    def test_flange_names(self):
+        flange = self.add_end_flange(self.add_base())
+        name = flange.Name
+        edges = self.names(flange, "Edge")
+        for role in ("End", "Side1", "Side2"):
+            for side in ("T", "B"):
+                self.assertIn(f"{name}_{role}_{side}", edges)
+        faces = self.names(flange, "Face")
+        self.assertTrue({"Base_Top", "Base_Bottom", f"{name}_Top", f"{name}_Bottom"} <= faces)
+        # The names of the base panel stay the same after the flange.
+        self.assertTrue({"Base_E1_T", "Base_E3_T", "Base_E4_T"} <= edges)
+
+    def test_flat_pattern_names(self):
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        edges = self.names(flat, "Edge")
+        self.assertIn("Base_E1_F", edges)
+        self.assertIn(f"{flange.Name}_End_F", edges)
+        self.assertIn(f"{flange.Name}_BendLine", edges)
+        # The bend line name is on the bend line: the one edge that is not on the face.
+        reverse = {v: k for k, v in flat.Shape.ElementReverseMap.items()}
+        line = flat.Shape.getElement(reverse[f"{flange.Name}_BendLine"])
+        self.assertAlmostEqual(line.CenterOfMass.x, self.LENGTH + self.allowance() / 2, places=6)
+
+    def test_refold_and_unfold_names(self):
+        allowance = self.allowance()
+        face = self.flat_rectangle(self.LENGTH + allowance + 20.0)
+        x = self.LENGTH + allowance / 2
+        folded = self.add_refold(face, [Part.makeLine(V(x, 0, 0), V(x, 50, 0))], [90.0])
+        faces = self.names(folded, "Face")
+        self.assertTrue({f"{folded.Name}_Root_Top", f"{folded.Name}_L1_Top"} <= faces)
+        converted = self.add_unfold(self.part_bracket(), 1.0)
+        faces = self.names(converted, "Face")
+        self.assertTrue({f"{converted.Name}_P1_Top", f"{converted.Name}_P2_Top"} <= faces)
+
+    def box_from_flanges(self):
+        """A tube of four panels with a flap on each panel, as a chain of flanges."""
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        t, length, width, depth = 4.0, 300.0, 200.0, 150.0
+        wire = Part.makePolygon(
+            [V(0, 0, 0), V(length, 0, 0), V(length, depth, 0), V(0, depth, 0), V(0, 0, 0)]
+        )
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
+        base.Profile = self.add_shape(wire)
+        base.Rule = self.rule
+        self.doc.recompute()
+        top = t + width
+        steps = [
+            (V(length, 0, t), V(length, depth, t), width, 0.0),
+            (V(length, 0, top), V(length, depth, top), length, 0.0),
+            (V(0, 0, top), V(0, depth, top), width, 0.0),
+            (V(0, 0, t), V(length, 0, t), width / 2, t),  # Outer flap.
+            (V(0, 0, top), V(length, 0, top), width / 2, t),  # Outer flap.
+            (V(length, 0, t), V(length, 0, top), width / 2, 0.0),  # Inner flap.
+            (V(0, 0, t), V(0, 0, top), width / 2, 0.0),  # Inner flap.
+        ]
+        features = [base]
+        for start, end, flange_length, offset in steps:
+            features.append(
+                self.add_flange(features[-1], start, end, Length=flange_length, Offset=offset)
+            )
+        return features
+
+    def referenced_names(self, features):
+        return [
+            f.Edge[0].Shape.ElementReverseMap[f.Edge[1][0]]
+            for f in features
+            if f.TypeId == "SheetDesign::Flange"
+        ]
+
+    def test_references_follow_a_change_of_the_topology(self):
+        """An offset on an early flange adds edges. The later flanges must keep their edges."""
+        features = self.box_from_flanges()
+        last = features[-1]
+        self.assertSolid(last)
+        self.assertEqual(last.Overlap.Value, 0.0)
+        before = self.referenced_names(features)
+        indexes = [f.Edge[1][0] for f in features[1:]]
+
+        for flap in (features[4], features[5]):
+            flap.Offset = 0.0
+        self.doc.recompute()
+        for feature in features:
+            self.assertTrue(feature.isValid(), feature.Name + ": " + feature.getStatusString())
+        self.assertEqual(self.referenced_names(features), before)
+        # The test is of use only if the change moved the number of an edge that is in use.
+        self.assertNotEqual([f.Edge[1][0] for f in features[1:]], indexes)
+        # The flaps are now in one layer: two inner flaps, each across two outer flaps.
+        self.assertSolid(last)
+        self.assertAlmostEqual(last.Overlap.Value, 160000.0, places=1)
+        self.assertAlmostEqual(last.Shape.BoundBox.YLength, 150.0 + 4.0, places=6)
+
+    def test_references_follow_after_document_restore(self):
+        features = self.box_from_flanges()
+        names = [f.Name for f in features]
+        before = self.referenced_names(features)
+        path = os.path.join(tempfile.mkdtemp(), "box.FCStd")
+        self.doc.saveAs(path)
+        FreeCAD.closeDocument(self.doc.Name)
+        self.doc = FreeCAD.openDocument(path)
+        features = [self.doc.getObject(name) for name in names]
+        for flap in (features[4], features[5]):
+            flap.Offset = 0.0
+        self.doc.recompute()
+        for feature in features:
+            self.assertTrue(feature.isValid(), feature.Name + ": " + feature.getStatusString())
+        self.assertEqual(self.referenced_names(features), before)

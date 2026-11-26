@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
 #include <vector>
 
 #include <TopoDS_Edge.hxx>
@@ -59,6 +61,7 @@ struct Panel
     int parentBend {-1};
     mutable TopoDS_Shape solid;   ///< Prism of the profile in flat space. Empty = not made.
     mutable double volume {0.0};  ///< Volume of the prism.
+    std::string tag;              ///< Stable name of the panel, from the feature that made it.
 };
 
 /// A cylindrical bend that joins the straight edge of a parent panel to a child panel.
@@ -74,6 +77,28 @@ struct Bend
     double radius {0.0};
     double allowance {0.0};  ///< Width of the strip in the flat pattern.
     TopoDS_Face strip;       ///< The flat region of the bend.
+};
+
+/**
+ * The origin of a straight boundary segment: the feature and the role that made it.
+ *
+ * A panel profile changes when a later feature cuts it or adds to it, and the sequence of its
+ * edges then changes. The origin does not change, thus it gives a stable name for the edges
+ * of the folded solid and of the flat pattern.
+ */
+struct Origin
+{
+    std::string tag;
+    int panel {-1};  ///< -1: the origin applies to all panels.
+    gp_Pnt2d a;      ///< In flat space.
+    gp_Pnt2d b;
+};
+
+/// Stable names for elements of a shape: the index of the element (from 1) and its name.
+struct ElementNames
+{
+    std::vector<std::pair<int, std::string>> edges;
+    std::vector<std::pair<int, std::string>> faces;
 };
 
 /// A reference to a straight segment on the boundary of a panel.
@@ -106,12 +131,14 @@ public:
     SheetParams params;
     std::vector<Panel> panels;
     std::vector<Bend> bends;
+    std::vector<Origin> origins;
 
     /// Make a model with one panel. The profile must be a planar face in the plane z = 0.
     static SheetModel makeBase(
         const TopoDS_Face& flatProfile,
         const gp_Trsf& placement,
-        const SheetParams& params
+        const SheetParams& params,
+        const std::string& tag = "Base"
     );
 
     /**
@@ -123,7 +150,8 @@ public:
         const TopoDS_Face& flatProfile,
         const std::vector<BendLine>& lines,
         const gp_Trsf& placement,
-        const SheetParams& params
+        const SheetParams& params,
+        const std::string& tag = "Refold"
     );
 
     /**
@@ -136,7 +164,8 @@ public:
     static SheetModel fromSolid(
         const TopoDS_Shape& solid,
         const TopoDS_Face& rootFace,
-        const SheetParams& params
+        const SheetParams& params,
+        const std::string& tag = "Unfold"
     );
 
     /// Find the panel boundary segment that agrees with a straight edge of the folded solid.
@@ -155,7 +184,8 @@ public:
         bool up,
         double gap1,
         double gap2,
-        double offset = 0.0
+        double offset = 0.0,
+        const std::string& tag = "Flange"
     );
 
     /**
@@ -166,7 +196,7 @@ public:
      *               False: each face cuts the panels that are in the same plane.
      * @return the number of panels that changed.
      */
-    int cut(const TopoDS_Shape& faces, bool flat);
+    int cut(const TopoDS_Shape& faces, bool flat, const std::string& tag = "Cut");
 
     /// The folded solid. With fuse = false, the result is a compound of solids.
     /**
@@ -181,6 +211,24 @@ public:
     /// The center lines of the bends in flat space.
     std::vector<TopoDS_Edge> bendLines() const;
 
+    /// The tag of the origin of a boundary segment. Empty if the segment has no origin.
+    std::string segmentTag(int panel, const gp_Pnt2d& a, const gp_Pnt2d& b) const;
+
+    /**
+     * Stable names for the straight edges and the flat faces of the folded solid.
+     *
+     * An edge on the top or bottom side of a panel gets the tag of its boundary segment with
+     * "_T" or "_B". A top or bottom face gets the tag of its panel. A side face gets the tag of
+     * its segment with "_S".
+     */
+    ElementNames nameFolded(const TopoDS_Shape& folded) const;
+
+    /// Stable names for the straight edges of the flat pattern face: the segment tag with "_F".
+    ElementNames nameFlat(const TopoDS_Shape& flat) const;
+
+    /// The stable name of the center line of a bend in the flat pattern.
+    std::string bendLineName(std::size_t bend) const;
+
     /// The placement of the flat pattern (the folded position of the root panel).
     gp_Trsf rootPlacement() const;
 
@@ -188,6 +236,10 @@ public:
     double bendAllowance(double angle, double radius) const;
 
 private:
+    /// Record an origin for each straight edge of a shape. The transformation moves the shape
+    /// into flat space. The tag of an edge is the prefix and the index of the edge.
+    void addOrigins(const TopoDS_Shape& shape, const gp_Trsf& toFlat, const std::string& prefix, int panel);
+
     /// Add a bend between two panels and set the folded position of the child panel.
     void connect(
         int parent,
