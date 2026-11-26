@@ -90,7 +90,8 @@ private:
     std::shared_ptr<const SheetModel> model;
 };
 
-/// The first panel of a sheet part, made from a closed planar profile.
+/// The first panel of a sheet part, made from a closed planar profile. An open profile of
+/// straight segments gives a part with one bend at each corner of the profile.
 class SheetDesignExport BasePanel: public Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::BasePanel);
@@ -99,6 +100,9 @@ public:
     BasePanel();
 
     App::PropertyLink Profile;
+    /// For an open profile: the size of the part at 90 degrees to the plane of the profile.
+    App::PropertyLength Width;
+    App::PropertyBool Symmetric;
 
     /**
      * The object with the values for the full part, usually an App::VarSet. It must have the
@@ -202,6 +206,111 @@ protected:
     {
         return Source.getValue();
     }
+};
+
+/// Moves a straight edge of a panel, or adds the outline of a sketch to a panel.
+class SheetDesignExport Extend: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Extend);
+
+public:
+    Extend();
+
+    /// The source feature and the edge to move. With a profile, the edge is not necessary.
+    App::PropertyLinkSub Edge;
+    App::PropertyLink Profile;
+    App::PropertyDistance Length;
+    App::PropertyLength Gap1;
+    App::PropertyLength Gap2;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Edge.getValue();
+    }
+};
+
+/// A bend on a line across a panel. The flat pattern does not change.
+class SheetDesignExport Fold: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Fold);
+
+public:
+    Fold();
+
+    App::PropertyLink Source;
+    App::PropertyLink BendLines;
+    App::PropertyAngle Angle;
+    App::PropertyBool Reversed;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Source.getValue();
+    }
+};
+
+/// A hem: the edge of the sheet folded back on the sheet.
+class SheetDesignExport Hem: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Hem);
+
+public:
+    Hem();
+
+    App::PropertyLinkSub Edge;
+    App::PropertyEnumeration Type;
+    App::PropertyLength Length;
+    App::PropertyLength Gap;
+    App::PropertyBool Reversed;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Edge.getValue();
+    }
+};
+
+/// A cut at each corner where two bends of one panel meet.
+class SheetDesignExport CornerRelief: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::CornerRelief);
+
+public:
+    CornerRelief();
+
+    App::PropertyLink Source;
+    App::PropertyEnumeration Type;
+    App::PropertyLength Size;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Source.getValue();
+    }
+};
+
+/// A complete base part from sizes: a plate, an angle, a channel, a tub, a hat, or a box.
+class SheetDesignExport BaseShape: public Feature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::BaseShape);
+
+public:
+    BaseShape();
+
+    App::PropertyEnumeration Type;
+    App::PropertyLength Length;
+    App::PropertyLength Width;
+    App::PropertyLength Height;
+    App::PropertyLength FlangeWidth;
+    App::PropertyLink Rule;
+
+protected:
+    std::shared_ptr<SheetModel> buildModel() override;
 };
 
 /// The flat pattern of a sheet design feature: one face and the bend center lines.

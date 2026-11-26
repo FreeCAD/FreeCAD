@@ -179,9 +179,11 @@ def _finish(doc, hide=(), edit=None):
     for obj in hide:
         obj.ViewObject.hide()
     doc.recompute()
-    doc.commitTransaction()
-    if edit is not None:
-        SheetDesignViewProviders.edit(edit)
+    if edit is None:
+        doc.commitTransaction()
+    else:
+        # The task panel takes the open transaction: Cancel removes the new feature.
+        SheetDesignViewProviders.edit(edit, created=True, hidden=hide)
 
 
 class _Command:
@@ -216,7 +218,7 @@ class CommandRule(_Command):
 class CommandBase(_Command):
     name = "SheetDesign_Base"
     menu = "Base Panel"
-    tip = "Makes the first panel from the selected closed sketch"
+    tip = "Makes the first panel from the selected closed sketch, or a part from an open sketch of its section"
 
     def IsActive(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -231,7 +233,8 @@ class CommandBase(_Command):
         obj = _attach(body.newObject("SheetDesign::BasePanel", "BasePanel"))
         obj.Rule = _find_rule(doc)
         obj.Profile = profile
-        _finish(doc, hide=[profile])
+        is_open = not _has_closed_wire(profile)
+        _finish(doc, hide=[profile], edit=obj if is_open else None)
 
 
 class CommandRefold(_Command):
@@ -328,9 +331,10 @@ class CommandFlange(_Command):
             source.ViewObject.hide()
             doc.recompute()
             source = obj
-        doc.commitTransaction()
         if _is_feature(source) and source.TypeId == "SheetDesign::Flange":
-            SheetDesignViewProviders.edit(source)
+            SheetDesignViewProviders.edit(source, created=True, hidden=[sel.Object])
+        else:
+            doc.commitTransaction()
 
 
 def _element_name(shape, element):
@@ -387,6 +391,108 @@ class CommandCutFlat(CommandCut):
     space = "Flat"
 
 
+class CommandBaseShape(_Command):
+    name = "SheetDesign_BaseShape"
+    menu = "Base Shape"
+    tip = "Makes a plate, an angle, a channel, a tub, a hat, or a box from sizes"
+
+    def Activated(self):
+        doc = FreeCAD.ActiveDocument
+        doc.openTransaction("Base Shape")
+        body = _body_for(doc)
+        obj = _attach(body.newObject("SheetDesign::BaseShape", "BaseShape"))
+        obj.Rule = _find_rule(doc)
+        obj.Type = "Channel"
+        _finish(doc, edit=obj)
+
+
+class _EdgeCommand(_Command):
+    """A command that adds one feature on each selected edge of a sheet design feature."""
+
+    type_name = ""
+
+    def IsActive(self):
+        sel = _selection()
+        return len(sel) == 1 and _is_feature(sel[0].Object) and len(sel[0].SubElementNames) >= 1
+
+    def Activated(self):
+        sel = _selection()[0]
+        source = sel.Object
+        doc = source.Document
+        doc.openTransaction(self.menu)
+        edges = [source.Shape.getElement(name) for name in sel.SubElementNames]
+        obj = None
+        for edge in edges:
+            name = _element_name(source.Shape, edge)
+            if name is None:
+                FreeCAD.Console.PrintWarning("Sheet design: an edge was not found after a feature\n")
+                continue
+            obj = _attach(_new_after(source, "SheetDesign::" + self.type_name, self.type_name))
+            obj.Edge = (source, [name])
+            _advance_flat_patterns(source, obj)
+            source.ViewObject.hide()
+            doc.recompute()
+            source = obj
+        if obj is not None:
+            SheetDesignViewProviders.edit(obj, created=True, hidden=[sel.Object])
+        else:
+            doc.commitTransaction()
+
+
+class CommandHem(_EdgeCommand):
+    name = "SheetDesign_Hem"
+    menu = "Hem"
+    tip = "Folds the selected straight edge back on the sheet"
+    type_name = "Hem"
+
+
+class CommandExtend(_Command):
+    name = "SheetDesign_Extend"
+    menu = "Extend"
+    tip = "Moves the selected straight edge out, or adds the selected closed sketch to the panel that it touches"
+
+    def _pick(self):
+        sel = _selection()
+        features = [s for s in sel if _is_feature(s.Object)]
+        others = [s.Object for s in sel if not _is_feature(s.Object) and hasattr(s.Object, "Shape")]
+        if len(features) != 1 or len(others) > 1 or len(sel) != 1 + len(others):
+            return None
+        names = list(features[0].SubElementNames)
+        if not others and len(names) != 1:
+            return None
+        return features[0].Object, names[:1], others[0] if others else None
+
+    def IsActive(self):
+        return self._pick() is not None
+
+    def Activated(self):
+        source, names, profile = self._pick()
+        doc = source.Document
+        doc.openTransaction("Extend")
+        obj = _attach(_new_after(source, "SheetDesign::Extend", "Extend"))
+        obj.Edge = (source, [] if profile is not None else names)
+        if profile is not None:
+            obj.Profile = profile
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source] + ([profile] if profile is not None else []), edit=obj)
+
+
+class CommandFold(CommandCut):
+    name = "SheetDesign_Fold"
+    menu = "Fold"
+    tip = "Bends the selected sheet design feature on the lines of the selected sketch"
+
+    def Activated(self):
+        source, lines = self._pick()
+        doc = source.Document
+        doc.openTransaction("Fold")
+        obj = _attach(_new_after(source, "SheetDesign::Fold", "Fold"))
+        obj.Source = source
+        obj.BendLines = lines
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source, lines], edit=obj)
+
+
 class CommandFlatPattern(_Command):
     name = "SheetDesign_FlatPattern"
     menu = "Flat Pattern"
@@ -403,6 +509,21 @@ class CommandFlatPattern(_Command):
         obj = _attach(doc.addObject("SheetDesign::FlatPattern", "FlatPattern"))
         obj.Source = source
         _finish(doc)
+
+
+class CommandCornerRelief(CommandFlatPattern):
+    name = "SheetDesign_CornerRelief"
+    menu = "Corner Relief"
+    tip = "Cuts an opening at each corner where two bends of one panel meet"
+
+    def Activated(self):
+        source = FreeCADGui.Selection.getSelection()[0]
+        doc = source.Document
+        doc.openTransaction("Corner Relief")
+        obj = _attach(_new_after(source, "SheetDesign::CornerRelief", "CornerRelief"))
+        obj.Source = source
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source], edit=obj)
 
 
 class CommandExport(_Command):
@@ -434,11 +555,16 @@ def register():
     commands = [
         CommandRule,
         CommandBase,
+        CommandBaseShape,
         CommandRefold,
         CommandUnfold,
         CommandFlange,
+        CommandHem,
+        CommandExtend,
+        CommandFold,
         CommandCut,
         CommandCutFlat,
+        CommandCornerRelief,
         CommandFlatPattern,
         CommandExport,
     ]

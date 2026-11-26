@@ -39,7 +39,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="Space">
         <property name="toolTip">
-         <string>Folded: the sketch is on a panel. Flat: the sketch is on the flat pattern</string>
+         <string>Folded: the sketch is on a panel. Flat: the sketch is on the flat pattern. Wrapped: the sketch is on a panel and goes on into the bends beside it</string>
         </property>
        </widget>
       </item>

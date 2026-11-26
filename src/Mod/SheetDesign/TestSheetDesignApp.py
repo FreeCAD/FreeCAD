@@ -1684,3 +1684,330 @@ class TestSheetDesign(unittest.TestCase):
         allowance = (self.R + 0.38 * self.T) * math.pi / 2
         expected = (self.LENGTH + allowance + 20.0) * self.WIDTH - math.pi * (16.0 + 9.0)
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
+
+    # ------------------------------------------------------------------------------- extend
+
+    def add_feature(self, kind, name, **properties):
+        obj = self.doc.addObject("SheetDesign::" + kind, name)
+        for key, value in properties.items():
+            setattr(obj, key, value)
+        self.doc.recompute()
+        return obj
+
+    def end_edge(self, source, top=True):
+        z = self.T if top else 0.0
+        return (source, [find_edge(source.Shape, V(self.LENGTH, 0, z), V(self.LENGTH, self.WIDTH, z))])
+
+    def quad(self, points):
+        return Part.Face(Part.makePolygon(points + [points[0]]))
+
+    def test_extend_moves_an_edge(self):
+        base = self.add_base()
+        extend = self.add_feature("Extend", "Extend", Edge=self.end_edge(base), Length=15.0)
+        self.assertSolid(extend)
+        self.assertAlmostEqual(extend.Shape.Volume, (self.LENGTH + 15.0) * self.WIDTH * self.T, places=6)
+        extend.Length = -10.0
+        self.doc.recompute()
+        self.assertAlmostEqual(extend.Shape.BoundBox.XMax, self.LENGTH - 10.0, places=6)
+        extend.Length = 15.0
+        extend.Gap1 = 5.0
+        extend.Gap2 = 10.0
+        self.doc.recompute()
+        expected = self.LENGTH * self.WIDTH + 15.0 * (self.WIDTH - 15.0)
+        self.assertAlmostEqual(self.add_flat(extend).Shape.Faces[0].Area, expected, places=6)
+
+    def test_flange_on_an_extended_edge(self):
+        extend = self.add_feature("Extend", "Extend", Edge=self.end_edge(self.add_base()), Length=15.0)
+        x = self.LENGTH + 15.0
+        flange = self.add_flange(extend, V(x, 0, self.T), V(x, self.WIDTH, self.T), Length=20.0)
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, x + self.R + self.T, places=6)
+
+    def test_extend_of_an_edge_with_a_bend_is_rejected(self):
+        flange = self.add_end_flange(self.add_base())
+        extend = self.add_feature("Extend", "Extend", Edge=self.end_edge(flange, top=False), Length=5.0)
+        self.assertFalse(extend.isValid())
+        self.assertIn("has a bend", extend.getStatusString())
+
+    def test_extend_by_a_profile(self):
+        base = self.add_base()
+        tab = self.quad([V(100, 10, 0), V(120, 10, 0), V(120, 30, 0), V(100, 30, 0)])
+        extend = self.add_feature("Extend", "Extend", Edge=(base, []), Profile=self.add_shape(tab, "Tab"))
+        self.assertSolid(extend)
+        self.assertAlmostEqual(extend.Shape.Volume, (self.LENGTH * self.WIDTH + 400.0) * self.T, places=6)
+
+    def test_extend_by_a_profile_on_a_folded_panel(self):
+        flange = self.add_end_flange(self.add_base())
+        x = self.LENGTH + self.R + self.T
+        top = self.T + self.R + 20.0
+        tab = self.quad([V(x, 10, top), V(x, 30, top), V(x, 30, top + 10), V(x, 10, top + 10)])
+        extend = self.add_feature("Extend", "Extend", Edge=(flange, []), Profile=self.add_shape(tab, "Tab"))
+        self.assertSolid(extend)
+        self.assertAlmostEqual(extend.Shape.Volume, flange.Shape.Volume + 200.0 * self.T, places=5)
+        self.assertAlmostEqual(extend.Shape.BoundBox.ZMax, top + 10.0, places=6)
+
+    def test_extend_profile_that_does_not_touch_is_rejected(self):
+        base = self.add_base()
+        tab = self.quad([V(110, 10, 0), V(120, 10, 0), V(120, 30, 0), V(110, 30, 0)])
+        extend = self.add_feature("Extend", "Extend", Edge=(base, []), Profile=self.add_shape(tab, "Tab"))
+        self.assertFalse(extend.isValid())
+
+    # --------------------------------------------------------------------------------- fold
+
+    def bend_line(self, x, z=None):
+        z = self.T if z is None else z
+        return self.add_shape(Part.makeLine(V(x, 0, z), V(x, self.WIDTH, z)), "Line")
+
+    def test_fold_divides_a_panel(self):
+        base = self.add_base()
+        fold = self.add_feature("Fold", "Fold", Source=base, BendLines=self.bend_line(60.0))
+        self.assertSolid(fold)
+        half = self.allowance() / 2
+        box = fold.Shape.BoundBox
+        self.assertAlmostEqual(box.XMax, 60.0 - half + self.R + self.T, places=6)
+        self.assertAlmostEqual(box.ZMax, self.T + self.R + 40.0 - half, places=6)
+        # The flat pattern is the same as before the fold.
+        flat = self.add_flat(fold)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.LENGTH * self.WIDTH, places=6)
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.LENGTH, places=6)
+        self.assertEqual([round(a, 6) for a in flat.BendAngles], [90.0])
+        fold.Reversed = True
+        self.doc.recompute()
+        self.assertAlmostEqual(fold.Shape.BoundBox.ZMin, -(self.R + 40.0 - half), places=6)
+
+    def test_fold_moves_the_features_after_the_line(self):
+        flange = self.add_end_flange(self.add_base())
+        before = self.add_flat(flange).Shape.Faces[0].Area
+        fold = self.add_feature("Fold", "Fold", Source=flange, BendLines=self.bend_line(60.0))
+        self.assertSolid(fold)
+        self.assertEqual(fold.Overlap.Value, 0.0)
+        half = self.allowance() / 2
+        # The flange is now on the top end of the folded part and points back.
+        self.assertAlmostEqual(fold.Shape.BoundBox.ZMax, self.T + self.R + 40.0 - half + self.R + self.T, places=6)
+        self.assertAlmostEqual(self.add_flat(fold).Shape.Faces[0].Area, before, places=6)
+
+    def test_fold_on_a_flange_panel(self):
+        flange = self.add_end_flange(self.add_base(), Length=40.0)
+        x = self.LENGTH + self.R + self.T
+        z = self.T + self.R + 20.0
+        line = self.add_shape(Part.makeLine(V(x, 0, z), V(x, self.WIDTH, z)), "Line")
+        fold = self.add_feature("Fold", "Fold", Source=flange, BendLines=line, Angle=45.0)
+        self.assertSolid(fold)
+        self.assertEqual(fold.Overlap.Value, 0.0)
+        flat = self.add_flat(fold)
+        self.assertEqual(len(flat.BendAngles), 2)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.add_flat(flange).Shape.Faces[0].Area, places=6)
+
+    def test_fold_through_a_hole(self):
+        base = self.add_base()
+        hole = Part.Face(Part.Wire(Part.makeCircle(5.0, V(60, 25, 0))))
+        cut = self.add_cut(base, self.add_shape(hole, "Hole"), "Flat")
+        fold = self.add_feature("Fold", "Fold", Source=cut, BendLines=self.bend_line(60.0))
+        self.assertSolid(fold)
+        self.assertEqual(fold.Overlap.Value, 0.0)
+        expected = self.LENGTH * self.WIDTH - math.pi * 25.0
+        self.assertAlmostEqual(self.add_flat(fold).Shape.Faces[0].Area, expected, places=5)
+
+    def test_fold_line_off_the_part_is_rejected(self):
+        base = self.add_base()
+        fold = self.add_feature("Fold", "Fold", Source=base, BendLines=self.bend_line(60.0, z=10.0))
+        self.assertFalse(fold.isValid())
+        self.assertIn("not on a panel", fold.getStatusString())
+
+    # ------------------------------------------------------------- base from an open profile
+
+    def add_open_base(self, points, **properties):
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
+        base.Profile = self.add_shape(Part.makePolygon(points), "Section")
+        base.Rule = self.rule
+        base.Width = self.WIDTH
+        for key, value in properties.items():
+            setattr(base, key, value)
+        self.doc.recompute()
+        return base
+
+    def test_base_from_an_open_profile(self):
+        base = self.add_open_base([V(0, 0, 0), V(60, 0, 0), V(60, 40, 0)])
+        self.assertSolid(base)
+        box = base.Shape.BoundBox
+        # The line is one side of the sheet. The material is on its outer side.
+        self.assertAlmostEqual(box.XMin, 0.0, places=6)
+        self.assertAlmostEqual(box.XMax, 60.0 + self.T, places=6)
+        self.assertAlmostEqual(box.YMin, -self.T, places=6)
+        self.assertAlmostEqual(box.YMax, 40.0, places=6)
+        self.assertAlmostEqual(box.ZMin, 0.0, places=6)
+        self.assertAlmostEqual(box.ZMax, self.WIDTH, places=6)
+        flat = self.add_flat(base)
+        length = (60.0 - self.R) + self.allowance() + (40.0 - self.R)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, length * self.WIDTH, places=6)
+        base.Symmetric = True
+        self.doc.recompute()
+        self.assertAlmostEqual(base.Shape.BoundBox.ZMin, -self.WIDTH / 2, places=6)
+
+    def test_base_from_an_open_profile_with_more_segments(self):
+        base = self.add_open_base([V(0, 30, 0), V(0, 0, 0), V(60, 0, 0), V(60, 30, 0), V(80, 30, 0)])
+        self.assertSolid(base)
+        self.assertEqual(base.Overlap.Value, 0.0)
+        self.assertEqual(len(self.add_flat(base).BendAngles), 3)
+
+    def test_base_from_one_segment(self):
+        base = self.add_open_base([V(0, 0, 0), V(60, 0, 0)])
+        self.assertSolid(base)
+        self.assertAlmostEqual(base.Shape.Volume, 60.0 * self.WIDTH * self.T, places=6)
+
+    def test_base_shapes(self):
+        bends = {"Plate": 0, "Angle": 1, "Channel": 2, "Tub": 4, "Hat": 4, "Box": 5}
+        for kind, count in bends.items():
+            shape = self.add_feature("BaseShape", "Shape" + kind, Rule=self.rule, Type=kind)
+            self.assertSolid(shape)
+            self.assertEqual(shape.Overlap.Value, 0.0, kind)
+            self.assertEqual(len(self.add_flat(shape).BendAngles), count, kind)
+        tub = self.doc.getObject("ShapeTub")
+        box = tub.Shape.BoundBox
+        self.assertAlmostEqual(box.XMin, -(self.R + self.T), places=6)
+        self.assertAlmostEqual(box.XMax, 100.0 + self.R + self.T, places=6)
+        self.assertAlmostEqual(box.ZMax, self.T + self.R + 30.0, places=6)
+        hat = self.doc.getObject("ShapeHat")
+        self.assertAlmostEqual(hat.Shape.BoundBox.XMax, 100.0 + 2 * self.R + self.T + 15.0, places=6)
+
+    # ---------------------------------------------------------------------------------- hem
+
+    def add_hem(self, **properties):
+        base = self.add_base()
+        return self.add_feature("Hem", "Hem", Edge=self.end_edge(base), **properties)
+
+    def test_flat_hem(self):
+        hem = self.add_hem(Type="Flat", Length=8.0)
+        self.assertSolid(hem)
+        self.assertEqual(hem.Overlap.Value, 0.0)
+        box = hem.Shape.BoundBox
+        self.assertAlmostEqual(box.ZMax, 2 * self.T, places=6)
+        self.assertAlmostEqual(box.XMax, self.LENGTH + self.T, places=6)
+        flat = self.add_flat(hem)
+        length = self.LENGTH + self.K * self.T * math.pi + 8.0
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)
+        self.assertEqual([round(a, 6) for a in flat.BendAngles], [180.0])
+        self.assertEqual(list(flat.BendRadii), [0.0])
+
+    def test_open_hem(self):
+        hem = self.add_hem(Type="Open", Length=8.0, Gap=3.0)
+        self.assertSolid(hem)
+        self.assertEqual(hem.Overlap.Value, 0.0)
+        box = hem.Shape.BoundBox
+        self.assertAlmostEqual(box.ZMax, 2 * self.T + 3.0, places=6)
+        self.assertAlmostEqual(box.XMax, self.LENGTH + 1.5 + self.T, places=6)
+        hem.Reversed = True
+        self.doc.recompute()
+        self.assertAlmostEqual(hem.Shape.BoundBox.ZMin, -(self.T + 3.0), places=6)
+
+    def test_teardrop_hem(self):
+        hem = self.add_hem(Type="Teardrop", Length=8.0, Gap=3.0)
+        self.assertSolid(hem)
+        self.assertEqual(hem.Overlap.Value, 0.0)
+        angle = self.add_flat(hem).BendAngles[0]
+        self.assertAlmostEqual(angle, 180.0 + math.degrees(math.asin(1.5 / 8.0)), places=6)
+
+    def test_rolled_hem(self):
+        hem = self.add_hem(Type="Rolled", Gap=6.0)
+        self.assertSolid(hem)
+        self.assertEqual(hem.Overlap.Value, 0.0)
+        flat = self.add_flat(hem)
+        self.assertAlmostEqual(flat.BendAngles[0], 270.0, places=6)
+        self.assertAlmostEqual(flat.BendRadii[0], 3.0, places=6)
+        box = hem.Shape.BoundBox
+        self.assertAlmostEqual(box.XMax, self.LENGTH + 3.0 + self.T, places=6)
+        self.assertAlmostEqual(box.ZMax, 2 * self.T + 6.0, places=6)
+
+    # ------------------------------------------------------------------------ corner relief
+
+    def corner_part(self):
+        base = self.add_base()
+        first = self.add_end_flange(base)
+        return self.add_flange(first, V(0, self.WIDTH, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0)
+
+    def test_corner_relief_circle(self):
+        part = self.corner_part()
+        before = self.add_flat(part).Shape.Faces[0].Area
+        relief = self.add_feature("CornerRelief", "Relief", Source=part, Type="Circle", Size=4.0)
+        self.assertSolid(relief)
+        self.assertEqual(relief.Overlap.Value, 0.0)
+        # The circle is on the corner of the bottom panel: three quarters of it are in material.
+        self.assertAlmostEqual(self.add_flat(relief).Shape.Faces[0].Area, before - 3.0 * math.pi, places=5)
+
+    def test_corner_relief_square(self):
+        part = self.corner_part()
+        before = self.add_flat(part).Shape.Faces[0].Area
+        relief = self.add_feature("CornerRelief", "Relief", Source=part, Type="Square", Size=4.0)
+        self.assertSolid(relief)
+        self.assertAlmostEqual(self.add_flat(relief).Shape.Faces[0].Area, before - 12.0, places=5)
+
+    def test_corner_relief_needs_a_corner(self):
+        relief = self.add_feature("CornerRelief", "Relief", Source=self.add_end_flange(self.add_base()))
+        self.assertFalse(relief.isValid())
+        self.assertIn("no corner", relief.getStatusString())
+
+    def test_corner_relief_tells_the_size_that_reaches_the_corner(self):
+        base = self.add_base()
+        first = self.add_end_flange(base, Gap2=6.0)
+        part = self.add_flange(first, V(0, self.WIDTH, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0)
+        relief = self.add_feature("CornerRelief", "Relief", Source=part, Size=4.0)
+        self.assertFalse(relief.isValid())
+        self.assertIn("size of 6 mm", relief.getStatusString())
+        relief.Size = 6.0
+        self.doc.recompute()
+        self.assertSolid(relief)
+
+    # -------------------------------------------------------------------------- wrapped cut
+
+    def test_wrapped_cut_goes_into_the_bend(self):
+        flange = self.add_end_flange(self.add_base())
+        x = self.LENGTH + self.R + self.T
+        low = self.T + self.R
+        slot = self.quad([V(x, 20, low - 2), V(x, 30, low - 2), V(x, 30, low + 10), V(x, 20, low + 10)])
+        profile = self.add_shape(slot, "Slot")
+        folded = self.add_cut(flange, profile, "Folded")
+        self.assertFalse(folded.isValid())
+        wrapped = self.add_cut(flange, profile, "Wrapped")
+        self.assertSolid(wrapped)
+        self.assertEqual(wrapped.Overlap.Value, 0.0)
+        before = self.add_flat(flange).Shape.Faces[0].Area
+        self.assertAlmostEqual(self.add_flat(wrapped).Shape.Faces[0].Area, before - 120.0, places=5)
+
+    # ---------------------------------------------------------------- unfold of sharp folds
+
+    def sharp_bracket(self, height=30.0):
+        base = Part.makeBox(self.LENGTH, self.WIDTH, self.T)
+        wall = Part.makeBox(self.T, self.WIDTH, height, V(self.LENGTH - self.T, 0, 0))
+        return base.fuse(wall).removeSplitter()
+
+    def test_unfold_of_a_sharp_fold_from_the_inner_side(self):
+        unfold = self.add_unfold(self.sharp_bracket(), 1.0)
+        self.assertSolid(unfold)
+        box = unfold.Shape.BoundBox
+        # The bend is tangent to the faces of the solid, thus the outer sizes are the same.
+        self.assertAlmostEqual(box.XMax, self.LENGTH, places=6)
+        self.assertAlmostEqual(box.ZMax, 30.0, places=6)
+        flat = self.add_flat(unfold)
+        self.assertEqual([round(a, 6) for a in flat.BendAngles], [90.0])
+        self.assertEqual([round(r, 6) for r in flat.BendRadii], [self.R])
+        length = (self.LENGTH - self.T - self.R) + self.allowance() + (30.0 - self.T - self.R)
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)
+
+    def test_unfold_of_a_sharp_fold_from_the_outer_side(self):
+        unfold = self.add_unfold(self.sharp_bracket(), -1.0)
+        self.assertSolid(unfold)
+        box = unfold.Shape.BoundBox
+        self.assertAlmostEqual(box.XMax, self.LENGTH, places=6)
+        self.assertAlmostEqual(box.ZMax, 30.0, places=6)
+        flat = self.add_flat(unfold)
+        self.assertEqual(len(flat.BendAngles), 1)
+        length = (self.LENGTH - self.T - self.R) + self.allowance() + (30.0 - self.T - self.R)
+        self.assertAlmostEqual(max(flat.Shape.BoundBox.XLength, flat.Shape.BoundBox.YLength), length, places=6)
+
+    def test_unfold_of_a_sharp_fold_with_radius_zero(self):
+        self.rule.BendRadius = 0.0
+        unfold = self.add_unfold(self.sharp_bracket(), 1.0)
+        self.assertSolid(unfold)
+        flat = self.add_flat(unfold)
+        length = (self.LENGTH - self.T) + self.K * self.T * math.pi / 2 + (30.0 - self.T)
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)

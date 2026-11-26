@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskHem</class>
+ <widget class="QWidget" name="TaskHem">
+  <property name="windowTitle">
+   <string>Hem</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Hem</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_edgeLabel">
+        <property name="text">
+         <string>Edge</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="edgeLabel">
+        <property name="toolTip">
+         <string>The edge of the hem</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_Type">
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="Type">
+        <property name="toolTip">
+         <string>Flat: on the sheet. Open: parallel to the sheet. Teardrop: the end comes back to the sheet. Rolled: a curl</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_Length">
+        <property name="text">
+         <string>Length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Length">
+        <property name="toolTip">
+         <string>The length of the flat part of the hem</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_Gap">
+        <property name="text">
+         <string>Gap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Gap">
+        <property name="toolTip">
+         <string>The distance between the sheet and the hem at the bend. For a rolled hem, the inner diameter</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="Reversed">
+        <property name="text">
+         <string>Reverse direction</string>
+        </property>
+        <property name="toolTip">
+         <string>Folds the hem to the opposite side</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QCheckBox" name="Refine">
+        <property name="text">
+         <string>Refine shape</string>
+        </property>
+        <property name="toolTip">
+         <string>Merges faces of the solid that are on the same surface</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

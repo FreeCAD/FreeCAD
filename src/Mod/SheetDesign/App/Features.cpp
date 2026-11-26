@@ -30,6 +30,7 @@
 #include <GProp_GProps.hxx>
 #include <BRepLib_FindSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepTools.hxx>
 #include <BRepTools_WireExplorer.hxx>
@@ -70,7 +71,10 @@ namespace
 
 const double tol = 1.0e-6;
 const App::PropertyAngle::Constraints angleRange = {0.0, 180.0, 1.0};
-const char* SpaceEnums[] = {"Folded", "Flat", nullptr};
+const char* SpaceEnums[] = {"Folded", "Flat", "Wrapped", nullptr};
+const char* HemEnums[] = {"Flat", "Open", "Teardrop", "Rolled", nullptr};
+const char* CornerEnums[] = {"Circle", "Square", nullptr};
+const char* BaseShapeEnums[] = {"Plate", "Angle", "Channel", "Tub", "Hat", "Box", nullptr};
 const char* PositionEnums[] = {"Material Outside", "Material Inside", "Thickness Outside", nullptr};
 const char* ReliefTypeEnums[] = {"Rule", "None", "Rectangle", "Round", nullptr};
 const App::PropertyAngle::Constraints miterRange = {-80.0, 80.0, 1.0};
@@ -257,6 +261,32 @@ void readKFactorTable(const App::DocumentObject* rule, SheetParams& params, bool
             throw Base::ValueError("Sheet design: a value of the K-factor table is not valid");
         }
     }
+}
+
+/// The points of an open wire of straight segments, in their sequence.
+std::vector<gp_Pnt> sectionPoints(const TopoDS_Wire& wire)
+{
+    std::vector<gp_Pnt> section;
+    TopoDS_Edge last;
+    for (BRepTools_WireExplorer ex(wire); ex.More(); ex.Next()) {
+        if (BRepAdaptor_Curve(ex.Current()).GetType() != GeomAbs_Line) {
+            throw Base::ValueError(
+                "Sheet design: the profile of a contour must have only straight segments"
+            );
+        }
+        section.push_back(BRep_Tool::Pnt(ex.CurrentVertex()));
+        last = ex.Current();
+    }
+    if (last.IsNull()) {
+        throw Base::ValueError("Sheet design: the profile of a contour has no segment");
+    }
+    TopoDS_Vertex first;
+    TopoDS_Vertex second;
+    TopExp::Vertices(last, first, second);
+    const gp_Pnt end1 = BRep_Tool::Pnt(first);
+    const gp_Pnt end2 = BRep_Tool::Pnt(second);
+    section.push_back(end1.Distance(section.back()) > end2.Distance(section.back()) ? end1 : end2);
+    return section;
 }
 
 /// Read the sheet values from the rule object. The usual rule object is an App::VarSet.
@@ -493,6 +523,20 @@ BasePanel::BasePanel()
         App::Prop_None,
         "Object with the properties Thickness, BendRadius, and KFactor"
     );
+    ADD_PROPERTY_TYPE(
+        Width,
+        (50.0),
+        "Sheet Design",
+        App::Prop_None,
+        "For an open profile: the size of the part at 90 degrees to the plane of the profile"
+    );
+    ADD_PROPERTY_TYPE(
+        Symmetric,
+        (false),
+        "Sheet Design",
+        App::Prop_None,
+        "For an open profile: the plane of the profile is in the middle of the width"
+    );
     Profile.setScope(App::LinkScope::Global);
     Rule.setScope(App::LinkScope::Global);
 }
@@ -500,6 +544,68 @@ BasePanel::BasePanel()
 std::shared_ptr<SheetModel> BasePanel::buildModel()
 {
     const SheetParams params = readRule(Rule.getValue());
+    const TopoDS_Shape raw = profileShape(Profile.getValue(), toLocal(Profile.getValue()));
+    TopExp_Explorer wires(raw, TopAbs_WIRE);
+    if (!TopExp_Explorer(raw, TopAbs_FACE).More() && wires.More()
+        && !BRep_Tool::IsClosed(TopoDS::Wire(wires.Current()))) {
+        // An open profile is the section of the part: one side of the sheet, with sharp corners.
+        const std::vector<gp_Pnt> points = sectionPoints(TopoDS::Wire(wires.Current()));
+        const double width = Width.getValue();
+        if (width <= 1.0e-6) {
+            throw Base::ValueError("Sheet design: an open profile needs a width larger than zero");
+        }
+        gp_Vec across;
+        if (auto* geo = freecad_cast<App::GeoFeature*>(Profile.getValue())) {
+            Base::Vector3d z;
+            geo->Placement.getValue().getRotation().multVec(Base::Vector3d(0, 0, 1), z);
+            across = gp_Vec(z.x, z.y, z.z).Transformed(toLocal(Profile.getValue()));
+        }
+        gp_Vec first(points[0], points[1]);
+        const double firstLength = first.Magnitude();
+        first.Normalize();
+        if (across.Magnitude() < 0.5 || std::fabs(across.Dot(first)) > 1.0e-6) {
+            throw Base::ValueError(
+                "Sheet design: an open profile must be in the XY plane of its object"
+            );
+        }
+        across.Normalize();
+        const gp_Pnt origin = points[0].Translated(
+            across * (Symmetric.getValue() ? -width / 2.0 : 0.0)
+        );
+        const gp_Dir up(first.Crossed(across));
+        gp_Trsf placement;
+        placement.SetTransformation(gp_Ax3(origin, up, gp_Dir(first)));
+        const gp_Trsf toFlat = placement;
+        placement.Invert();
+        BRepBuilderAPI_MakePolygon outline(
+            gp_Pnt(0, 0, 0),
+            gp_Pnt(firstLength, 0, 0),
+            gp_Pnt(firstLength, width, 0),
+            gp_Pnt(0, width, 0),
+            Standard_True
+        );
+        const TopoDS_Face face
+            = BRepBuilderAPI_MakeFace(gp_Pln(gp::XOY()), outline.Wire(), Standard_True).Face();
+        auto result = std::make_shared<SheetModel>(
+            SheetModel::makeBase(face, placement, params, getNameInDocument())
+        );
+        if (points.size() > 2) {
+            EdgeRef ref;
+            ref.panel = 0;
+            ref.a = gp_Pnt2d(firstLength, 0.0);
+            ref.b = gp_Pnt2d(firstLength, width);
+            std::vector<gp_Pnt> section;
+            for (std::size_t i = 1; i < points.size(); ++i) {
+                gp_Pnt p = points[i].Transformed(toFlat);
+                p.SetY(0.0);
+                section.push_back(p);
+            }
+            FlangeOptions options;
+            options.autoMiter = false;
+            result->addContour(ref, section, options, std::string(getNameInDocument()) + "_C");
+        }
+        return result;
+    }
     gp_Trsf placement;
     const TopoDS_Face face = flatProfile(Profile.getValue(), placement, toLocal(Profile.getValue()));
     return std::make_shared<SheetModel>(
@@ -632,7 +738,9 @@ std::shared_ptr<SheetModel> Unfold::buildModel()
     GProp_GProps made;
     BRepGProp::VolumeProperties(solid, source);
     BRepGProp::VolumeProperties(result->makeFolded(false, false), made);
-    if (std::fabs(source.Mass() - made.Mass()) > 1.0e-3 * std::fabs(source.Mass())) {
+    // A sharp fold gets a bend with a radius, thus the volume is then different on purpose.
+    if (result->sharpFolds == 0
+        && std::fabs(source.Mass() - made.Mass()) > 1.0e-3 * std::fabs(source.Mass())) {
         Base::Console().warning(
             "Sheet design: {}: the volume of the model ({:.3f}) is different from the volume of "
             "the "
@@ -859,24 +967,7 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     if (!wires.More()) {
         throw Base::ValueError("Sheet design: the profile of the flange has no line");
     }
-    // The section of a contour: the points of an open line, in their sequence.
-    std::vector<gp_Pnt> section;
-    TopoDS_Edge last;
-    for (BRepTools_WireExplorer ex(TopoDS::Wire(wires.Current())); ex.More(); ex.Next()) {
-        if (BRepAdaptor_Curve(ex.Current()).GetType() != GeomAbs_Line) {
-            throw Base::ValueError(
-                "Sheet design: the profile of a contour must have only straight segments"
-            );
-        }
-        section.push_back(BRep_Tool::Pnt(ex.CurrentVertex()));
-        last = ex.Current();
-    }
-    TopoDS_Vertex first;
-    TopoDS_Vertex second;
-    TopExp::Vertices(last, first, second);
-    const gp_Pnt end1 = BRep_Tool::Pnt(first);
-    const gp_Pnt end2 = BRep_Tool::Pnt(second);
-    section.push_back(end1.Distance(section.back()) > end2.Distance(section.back()) ? end1 : end2);
+    const std::vector<gp_Pnt> section = sectionPoints(TopoDS::Wire(wires.Current()));
     result->addContour(ref, section, options, getNameInDocument());
 
     return result;
@@ -896,7 +987,8 @@ Cut::Cut()
         (0L),
         "Sheet Design",
         App::Prop_None,
-        "Folded: the profile is on a panel. Flat: the profile is on the flat pattern"
+        "Folded: the profile is on a panel. Flat: the profile is on the flat pattern. Wrapped: "
+        "the profile is on a panel and goes on into the bends and panels beside it"
     );
     Space.setEnums(SpaceEnums);
     Profile.setScope(App::LinkScope::Global);
@@ -908,7 +1000,308 @@ std::shared_ptr<SheetModel> Cut::buildModel()
     const std::vector<TopoDS_Face> faces = collectFaces(
         profileShape(Profile.getValue(), toLocal(Profile.getValue()))
     );
-    result->cut(makeCompound(faces), Space.getValue() == 1, getNameInDocument());
+    result->cut(makeCompound(faces), Space.getValue() == 1, getNameInDocument(), Space.getValue() == 2);
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::Extend, SheetDesign::Feature)
+
+Extend::Extend()
+{
+    ADD_PROPERTY_TYPE(Edge, (nullptr), "Sheet Design", App::Prop_None, "Straight edge of a panel");
+    ADD_PROPERTY_TYPE(
+        Profile,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Optional closed outline in the plane of a panel. It is added to the panel that it touches"
+    );
+    ADD_PROPERTY_TYPE(
+        Length,
+        (10.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Distance that the edge moves out. A negative value moves it in"
+    );
+    ADD_PROPERTY_TYPE(Gap1, (0.0), "Sheet Design", App::Prop_None, "Gap at the start of the edge");
+    ADD_PROPERTY_TYPE(Gap2, (0.0), "Sheet Design", App::Prop_None, "Gap at the end of the edge");
+    Profile.setScope(App::LinkScope::Global);
+}
+
+std::shared_ptr<SheetModel> Extend::buildModel()
+{
+    auto* source = freecad_cast<Feature*>(Edge.getValue());
+    auto result = std::make_shared<SheetModel>(*sourceModel(Edge.getValue()));
+    if (Profile.getValue()) {
+        const std::vector<TopoDS_Face> faces = collectFaces(
+            profileShape(Profile.getValue(), toLocal(Profile.getValue()))
+        );
+        if (faces.empty()) {
+            throw Base::ValueError("Sheet design: the profile of the extension has no closed outline");
+        }
+        result->extendBy(makeCompound(faces), getNameInDocument());
+        return result;
+    }
+    const std::vector<std::string>& subs = Edge.getSubValues();
+    EdgeRef ref;
+    if (subs.size() != 1 || !source->findEdge(subs.front().c_str(), ref)) {
+        throw Base::ValueError("Sheet design: the selection is not a straight edge of a flat panel");
+    }
+    result->extend(ref, Length.getValue(), Gap1.getValue(), Gap2.getValue(), getNameInDocument());
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::Fold, SheetDesign::Feature)
+
+Fold::Fold()
+{
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Feature to fold");
+    ADD_PROPERTY_TYPE(
+        BendLines,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Straight lines on panels. Each line is the center line of a bend"
+    );
+    ADD_PROPERTY_TYPE(Angle, (90.0), "Sheet Design", App::Prop_None, "Bend angle");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Sheet Design", App::Prop_None, "Bend to the bottom side");
+    Angle.setConstraints(&angleRange);
+    BendLines.setScope(App::LinkScope::Global);
+}
+
+std::shared_ptr<SheetModel> Fold::buildModel()
+{
+    auto result = std::make_shared<SheetModel>(*sourceModel(Source.getValue()));
+    const TopoDS_Shape shape = profileShape(BendLines.getValue(), toLocal(BendLines.getValue()));
+    // Move all lines into flat space first. A fold moves panels, but not the flat space.
+    std::vector<std::pair<gp_Pnt2d, gp_Pnt2d>> lines;
+    TopTools_IndexedMapOfShape edges;
+    TopExp::MapShapes(shape, TopAbs_EDGE, edges);
+    for (int i = 1; i <= edges.Extent(); ++i) {
+        BRepAdaptor_Curve curve(TopoDS::Edge(edges(i)));
+        if (curve.GetType() != GeomAbs_Line) {
+            throw Base::ValueError("Sheet design: a bend line must be straight");
+        }
+        gp_Pnt2d a;
+        gp_Pnt2d b;
+        if (
+            !result->toFlat(curve.Value(curve.FirstParameter()), curve.Value(curve.LastParameter()), a, b)
+        ) {
+            throw Base::ValueError("Sheet design: a bend line is not on a panel");
+        }
+        lines.emplace_back(a, b);
+    }
+    if (lines.empty()) {
+        throw Base::ValueError("Sheet design: the fold has no bend line");
+    }
+    int number = 0;
+    for (const auto& line : lines) {
+        const std::string tag = std::string(getNameInDocument())
+            + (++number > 1 ? "_L" + std::to_string(number) : std::string());
+        result->fold(line.first, line.second, Base::toRadians(Angle.getValue()), !Reversed.getValue(), tag);
+    }
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::Hem, SheetDesign::Feature)
+
+Hem::Hem()
+{
+    ADD_PROPERTY_TYPE(Edge, (nullptr), "Sheet Design", App::Prop_None, "Straight edge of a panel");
+    ADD_PROPERTY_TYPE(
+        Type,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "Flat: the hem is on the sheet. Open: the hem is parallel to the sheet with a gap. "
+        "Teardrop: the end of the hem comes back to the sheet. Rolled: a curl with no flat part"
+    );
+    ADD_PROPERTY_TYPE(Length, (8.0), "Sheet Design", App::Prop_None, "Length of the flat part of the hem");
+    ADD_PROPERTY_TYPE(
+        Gap,
+        (2.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Distance between the sheet and the hem at the bend. For a rolled hem, the inner diameter"
+    );
+    ADD_PROPERTY_TYPE(Reversed, (false), "Sheet Design", App::Prop_None, "Fold to the opposite side");
+    Type.setEnums(HemEnums);
+}
+
+std::shared_ptr<SheetModel> Hem::buildModel()
+{
+    const std::vector<std::string>& subs = Edge.getSubValues();
+    auto* source = freecad_cast<Feature*>(Edge.getValue());
+    auto result = std::make_shared<SheetModel>(*sourceModel(Edge.getValue()));
+    EdgeRef ref;
+    if (subs.size() != 1 || !source->findEdge(subs.front().c_str(), ref)) {
+        throw Base::ValueError("Sheet design: the selection is not a straight edge of a flat panel");
+    }
+    const long type = Type.getValue();
+    const double gap = Gap.getValue();
+    double length = Length.getValue();
+    if (type != 0 && gap <= 1.0e-6) {
+        throw Base::ValueError("Sheet design: the gap of this hem type must be larger than zero");
+    }
+    FlangeOptions options;
+    options.autoMiter = false;
+    options.anyAngle = true;
+    options.radius = type == 0 ? 0.0 : gap / 2.0;
+    double angle = M_PI;
+    if (type == 2) {
+        // Teardrop: the end of the hem comes down to the middle of the gap.
+        if (length <= 1.0e-6) {
+            throw Base::ValueError("Sheet design: the length of the hem must be larger than zero");
+        }
+        angle += std::asin(std::min(1.0, gap / (2.0 * length)));
+    }
+    else if (type == 3) {
+        // Rolled: three quarters of a circle. The model needs a panel after each bend, thus the
+        // curl ends with a very short flat part.
+        angle = 1.5 * M_PI;
+        length = result->params.thickness / 100.0;
+    }
+    result->addFlange(ref, length, angle, ref.top != Reversed.getValue(), options, getNameInDocument());
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::CornerRelief, SheetDesign::Feature)
+
+CornerRelief::CornerRelief()
+{
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Feature to cut");
+    ADD_PROPERTY_TYPE(Type, (0L), "Sheet Design", App::Prop_None, "Shape of the relief");
+    ADD_PROPERTY_TYPE(
+        Size,
+        (4.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Diameter of the circle or side of the square. A corner gets a relief if the two bends "
+        "end not farther than this from the point where their bend lines meet"
+    );
+    Type.setEnums(CornerEnums);
+}
+
+std::shared_ptr<SheetModel> CornerRelief::buildModel()
+{
+    auto result = std::make_shared<SheetModel>(*sourceModel(Source.getValue()));
+    result->cornerRelief(Type.getValue() == 1, Size.getValue(), getNameInDocument());
+    return result;
+}
+
+
+// ------------------------------------------------------------------------------------------------
+
+PROPERTY_SOURCE(SheetDesign::BaseShape, SheetDesign::Feature)
+
+BaseShape::BaseShape()
+{
+    ADD_PROPERTY_TYPE(
+        Type,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "Plate: one panel. Angle: one wall. Channel: two walls. Tub: four walls. Hat: a channel "
+        "with a flange on each wall. Box: a tub with a cover"
+    );
+    ADD_PROPERTY_TYPE(Length, (100.0), "Sheet Design", App::Prop_None, "Length of the bottom panel");
+    ADD_PROPERTY_TYPE(Width, (60.0), "Sheet Design", App::Prop_None, "Width of the bottom panel");
+    ADD_PROPERTY_TYPE(Height, (30.0), "Sheet Design", App::Prop_None, "Flat length of each wall");
+    ADD_PROPERTY_TYPE(
+        FlangeWidth,
+        (15.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Flat length of each flange of a hat"
+    );
+    ADD_PROPERTY_TYPE(
+        Rule,
+        (nullptr),
+        "Sheet Design",
+        App::Prop_None,
+        "Object with the properties Thickness, BendRadius, and KFactor"
+    );
+    Type.setEnums(BaseShapeEnums);
+    Rule.setScope(App::LinkScope::Global);
+}
+
+std::shared_ptr<SheetModel> BaseShape::buildModel()
+{
+    const SheetParams params = readRule(Rule.getValue());
+    const double length = Length.getValue();
+    const double width = Width.getValue();
+    if (length <= 1.0e-6 || width <= 1.0e-6) {
+        throw Base::ValueError("Sheet design: the length and the width must be larger than zero");
+    }
+    const std::string name = getNameInDocument();
+    const gp_Pnt2d corners[4]
+        = {gp_Pnt2d(0, 0), gp_Pnt2d(length, 0), gp_Pnt2d(length, width), gp_Pnt2d(0, width)};
+    BRepBuilderAPI_MakePolygon outline;
+    for (const gp_Pnt2d& corner : corners) {
+        outline.Add(gp_Pnt(corner.X(), corner.Y(), 0.0));
+    }
+    outline.Close();
+    const TopoDS_Face face
+        = BRepBuilderAPI_MakeFace(gp_Pln(gp::XOY()), outline.Wire(), Standard_True).Face();
+    auto result = std::make_shared<SheetModel>(SheetModel::makeBase(face, gp_Trsf(), params, name));
+
+    // The walls, in this sequence: the two short sides, then the two long sides.
+    const long type = Type.getValue();
+    const int sides[4] = {1, 3, 0, 2};
+    const int wallCount = type == 0 ? 0 : type == 1 ? 1 : (type == 2 || type == 4) ? 2 : 4;
+    FlangeOptions options;
+    options.autoMiter = false;
+    std::vector<int> walls;
+    for (int i = 0; i < wallCount; ++i) {
+        EdgeRef ref;
+        ref.panel = 0;
+        ref.a = corners[sides[i]];
+        ref.b = corners[(sides[i] + 1) % 4];
+        ref.top = true;
+        walls.push_back(result->addFlange(
+            ref,
+            Height.getValue(),
+            M_PI / 2.0,
+            true,
+            options,
+            name + "_Wall" + std::to_string(i + 1)
+        ));
+    }
+    auto farEdge = [&](int bend) {
+        EdgeRef ref;
+        ref.panel = result->bends[bend].childPanel;
+        ref.a = result->bends[bend].farStart;
+        ref.b = result->bends[bend].farEnd;
+        ref.top = true;
+        return ref;
+    };
+    if (type == 4) {
+        for (std::size_t i = 0; i < walls.size(); ++i) {
+            result->addFlange(
+                farEdge(walls[i]),
+                FlangeWidth.getValue(),
+                M_PI / 2.0,
+                false,
+                options,
+                name + "_Flange" + std::to_string(i + 1)
+            );
+        }
+    }
+    else if (type == 5) {
+        result->addFlange(farEdge(walls[0]), length, M_PI / 2.0, true, options, name + "_Cover");
+    }
     return result;
 }
 

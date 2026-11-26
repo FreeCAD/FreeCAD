@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <map>
 #include <cmath>
+#include <sstream>
 
 #include <BOPAlgo_GlueEnum.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -854,9 +855,10 @@ int SheetModel::addFlange(
     if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
         throw Base::ValueError("Sheet design: the edge reference is not valid");
     }
-    if (angle <= tol || angle > M_PI + tol) {
+    if (angle <= tol || angle > (options.anyAngle ? 2.0 * M_PI - 0.05 : M_PI + tol)) {
         throw Base::ValueError("Sheet design: the bend angle must be between 0 and 180 degrees");
     }
+    const double radius = options.radius >= 0.0 ? options.radius : params.radius;
     if (length <= tol) {
         throw Base::ValueError("Sheet design: the flange length must be larger than zero");
     }
@@ -1015,7 +1017,7 @@ int SheetModel::addFlange(
         }
     }
 
-    const double allowance = bendAllowance(angle);
+    const double allowance = bendAllowance(angle, radius);
     // With a miter, each side of the flange is at an angle from the bend line.
     const double slope1 = std::tan(options.miter1);
     const double slope2 = std::tan(options.miter2);
@@ -1070,7 +1072,7 @@ int SheetModel::addFlange(
     else {
         addOrigins(panels[childIndex].profile, gp_Trsf(), tag + "_E", childIndex);
     }
-    connect(ref.panel, childIndex, a, b, n, angle, up, params.radius, zone);
+    connect(ref.panel, childIndex, a, b, n, angle, up, radius, zone);
     const int bendIndex = static_cast<int>(bends.size()) - 1;
     bends[bendIndex].farStart = a2;
     bends[bendIndex].farEnd = b2;
@@ -1336,8 +1338,10 @@ void SheetModel::connect(
     bends.push_back(bend);
 }
 
-int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag)
+int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag, bool wrapped)
 {
+    // A wrapped cut is on one panel, and it goes on into the bends and panels beside it.
+    const bool across = flat || wrapped;
     const double t = params.thickness;
     int changed = 0;
 
@@ -1367,12 +1371,17 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag
                 drop.SetTranslation(gp_Vec(0.0, 0.0, -z));
                 local = BRepBuilderAPI_Transform(local, drop, Standard_True).Shape();
             }
+            if (wrapped && !flat
+                && (!boxesOverlap(local, panels[frame].profile)
+                    || area(BRepAlgoAPI_Common(panels[frame].profile, local).Shape()) <= 1.0e-6)) {
+                continue;
+            }
             used = true;
 
             for (Bend& bend : bends) {
                 const bool adjacent = bend.parentPanel == static_cast<int>(frame)
                     || bend.childPanel == static_cast<int>(frame);
-                if (!flat && !adjacent) {
+                if (!across && !adjacent) {
                     continue;
                 }
                 if (!boxesOverlap(local, bend.strip)) {
@@ -1385,7 +1394,7 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag
                 if (!op.HasModified() && !op.HasDeleted()) {
                     continue;
                 }
-                if (!flat) {
+                if (!across) {
                     // A profile on a panel is in the plane of that panel. In the bend it has
                     // no clear position.
                     throw Base::ValueError(
@@ -1401,7 +1410,7 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag
             }
 
             for (std::size_t i = 0; i < panels.size(); ++i) {
-                if (!flat && i != frame) {
+                if (!across && i != frame) {
                     continue;
                 }
                 Panel& panel = panels[i];
@@ -1437,12 +1446,422 @@ int SheetModel::cut(const TopoDS_Shape& faces, bool flat, const std::string& tag
                 );
                 ++changed;
             }
+            if (wrapped && !flat) {
+                break;
+            }
         }
         if (!used) {
             throw Base::ValueError("Sheet design: the cut profile is not in the plane of a panel");
         }
     }
     return changed;
+}
+
+namespace
+{
+
+/// True if a point of a line is in a face. The middle of the line can be in an opening, thus
+/// the function looks at more points.
+bool lineOnFace(const TopoDS_Face& face, const gp_Pnt2d& a, const gp_Pnt2d& b)
+{
+    for (int i = 1; i < 16; ++i) {
+        const double f = i / 16.0;
+        if (isInside(face, gp_Pnt2d(a.X() + (b.X() - a.X()) * f, a.Y() + (b.Y() - a.Y()) * f))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+}  // namespace
+
+bool SheetModel::overlapsOthers(int panel, const TopoDS_Shape& patch) const
+{
+    for (std::size_t i = 0; i < panels.size(); ++i) {
+        if (static_cast<int>(i) == panel || !boxesOverlap(patch, panels[i].profile)) {
+            continue;
+        }
+        if (area(BRepAlgoAPI_Common(panels[i].profile, patch).Shape()) > 1.0e-6) {
+            return true;
+        }
+    }
+    for (const Bend& bend : bends) {
+        if (boxesOverlap(patch, bend.strip)
+            && area(BRepAlgoAPI_Common(bend.strip, patch).Shape()) > 1.0e-6) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void SheetModel::extend(const EdgeRef& ref, double length, double gap1, double gap2, const std::string& tag)
+{
+    if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
+        throw Base::ValueError("Sheet design: the edge reference is not valid");
+    }
+    if (std::fabs(length) <= tol) {
+        throw Base::ValueError("Sheet design: the length of the extension cannot be zero");
+    }
+    if (gap1 < 0.0 || gap2 < 0.0) {
+        throw Base::ValueError("Sheet design: a gap cannot be negative");
+    }
+    gp_Vec2d dir(ref.a, ref.b);
+    const double edgeLength = dir.Magnitude();
+    if (edgeLength - gap1 - gap2 <= tol) {
+        throw Base::ValueError("Sheet design: the gaps are longer than the edge");
+    }
+    dir /= edgeLength;
+    const gp_Pnt2d a = ref.a.Translated(dir * gap1);
+    const gp_Pnt2d b = ref.b.Translated(dir * -gap2);
+    const gp_Vec2d n = outwardNormal(panels[ref.panel].profile, a, b);
+    const gp_Pnt2d a2 = a.Translated(n * length);
+    const gp_Pnt2d b2 = b.Translated(n * length);
+    const TopoDS_Face patch = makeFlatQuad(a, b, b2, a2);
+
+    // The edge cannot have a bend: the bend would lose its panel, or the material would be in
+    // the zone of the bend.
+    for (const Bend& bend : bends) {
+        const gp_Vec2d shift = gp_Vec2d(bend.normal) * bend.allowance;
+        if ((bend.parentPanel == ref.panel && segmentsOverlap(a, b, bend.start, bend.end))
+            || (bend.childPanel == ref.panel
+                && segmentsOverlap(a, b, bend.start.Translated(shift), bend.end.Translated(shift)))) {
+            throw Base::ValueError("Sheet design: the edge has a bend and cannot move");
+        }
+    }
+    Panel& panel = panels[ref.panel];
+    TopoDS_Shape changed;
+    if (length > 0.0) {
+        if (overlapsOthers(ref.panel, patch)) {
+            throw Base::ValueError(
+                "Sheet design: the extension is in the space of other material in the flat pattern"
+            );
+        }
+        changed = unify(BRepAlgoAPI_Fuse(panel.profile, patch).Shape());
+    }
+    else {
+        changed = BRepAlgoAPI_Cut(panel.profile, patch).Shape();
+    }
+    const std::vector<TopoDS_Face> faces = facesOf(changed);
+    if (faces.size() != 1) {
+        throw Base::ValueError("Sheet design: the extension removes the panel or divides it");
+    }
+    panel.profile = faces.front();
+    panel.solid.Nullify();
+    origins.push_back({tag + "_End", ref.panel, a2, b2});
+    origins.push_back({tag + "_Side1", ref.panel, a, a2});
+    origins.push_back({tag + "_Side2", ref.panel, b, b2});
+}
+
+int SheetModel::extendBy(const TopoDS_Shape& faces, const std::string& tag)
+{
+    const double t = params.thickness;
+    int faceNumber = 0;
+    for (TopExp_Explorer ex(faces, TopAbs_FACE); ex.More(); ex.Next()) {
+        ++faceNumber;
+        bool used = false;
+        for (std::size_t frame = 0; frame < panels.size() && !used; ++frame) {
+            BRepBuilderAPI_Transform toFlat(ex.Current(), panels[frame].folded.Inverted(), Standard_True);
+            TopoDS_Shape local = toFlat.Shape();
+            BRepAdaptor_Surface surface(TopoDS::Face(local));
+            if (surface.GetType() != GeomAbs_Plane) {
+                continue;
+            }
+            const gp_Pln plane = surface.Plane();
+            const double z = plane.Location().Z();
+            if (std::fabs(plane.Axis().Direction().Z()) < 1.0 - 1.0e-9 || z < -tol || z > t + tol) {
+                continue;
+            }
+            if (std::fabs(z) > tol) {
+                gp_Trsf drop;
+                drop.SetTranslation(gp_Vec(0.0, 0.0, -z));
+                local = BRepBuilderAPI_Transform(local, drop, Standard_True).Shape();
+            }
+            // Make the face again on the flat plane. A face that looks down does not join.
+            {
+                const TopoDS_Face source = TopoDS::Face(local);
+                const TopoDS_Wire outer = BRepTools::OuterWire(source);
+                std::vector<TopoDS_Wire> wires {outer};
+                for (TopExp_Explorer wx(source, TopAbs_WIRE); wx.More(); wx.Next()) {
+                    if (!wx.Current().IsSame(outer)) {
+                        wires.push_back(TopoDS::Wire(wx.Current()));
+                    }
+                }
+                Handle(Geom_Plane) flatPlane = new Geom_Plane(gp_Pln(gp::XOY()));
+                local = faceOnSurface(flatPlane, wires);
+            }
+            Panel& panel = panels[frame];
+            const std::vector<TopoDS_Face> result = facesOf(
+                unify(BRepAlgoAPI_Fuse(panel.profile, local).Shape())
+            );
+            if (result.size() != 1 || area(result.front()) <= area(panel.profile) + 1.0e-6) {
+                continue;
+            }
+            const TopoDS_Shape added = BRepAlgoAPI_Cut(local, panel.profile).Shape();
+            if (overlapsOthers(static_cast<int>(frame), added)) {
+                throw Base::ValueError(
+                    "Sheet design: the extension is in the space of other material in the flat "
+                    "pattern"
+                );
+            }
+            panel.profile = result.front();
+            panel.solid.Nullify();
+            addOrigins(
+                local,
+                gp_Trsf(),
+                tag + "_F" + std::to_string(faceNumber) + "_E",
+                static_cast<int>(frame)
+            );
+            used = true;
+        }
+        if (!used) {
+            throw Base::ValueError(
+                "Sheet design: the profile of the extension must be in the plane of a panel and "
+                "must touch that panel"
+            );
+        }
+    }
+    return faceNumber;
+}
+
+bool SheetModel::toFlat(const gp_Pnt& p, const gp_Pnt& q, gp_Pnt2d& a, gp_Pnt2d& b) const
+{
+    const double loose = 1.0e-4;
+    for (const Panel& panel : panels) {
+        const gp_Trsf inverse = panel.folded.Inverted();
+        const gp_Pnt p1 = p.Transformed(inverse);
+        const gp_Pnt q1 = q.Transformed(inverse);
+        if (p1.Z() < -loose || p1.Z() > params.thickness + loose || q1.Z() < -loose
+            || q1.Z() > params.thickness + loose || std::fabs(p1.Z() - q1.Z()) > loose) {
+            continue;
+        }
+        a = gp_Pnt2d(p1.X(), p1.Y());
+        b = gp_Pnt2d(q1.X(), q1.Y());
+        if (lineOnFace(panel.profile, a, b)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void SheetModel::place(int panel)
+{
+    for (const Bend& bend : bends) {
+        if (bend.closing || bend.parentPanel != panel) {
+            continue;
+        }
+        panels[bend.childPanel].folded = afterBend(
+            panels[panel].folded,
+            bend.start,
+            gp_Vec2d(bend.normal),
+            bend.angle,
+            bend.up,
+            bend.radius
+        );
+        place(bend.childPanel);
+    }
+}
+
+int SheetModel::fold(const gp_Pnt2d& a, const gp_Pnt2d& b, double angle, bool up, const std::string& tag)
+{
+    if (angle <= tol || angle > M_PI + tol) {
+        throw Base::ValueError("Sheet design: the bend angle must be between 0 and 180 degrees");
+    }
+    gp_Vec2d dir(a, b);
+    if (dir.Magnitude() <= tol) {
+        throw Base::ValueError("Sheet design: the bend line has no length");
+    }
+    dir.Normalize();
+    const gp_Vec2d m(-dir.Y(), dir.X());
+    int index = -1;
+    for (std::size_t i = 0; i < panels.size(); ++i) {
+        if (lineOnFace(panels[i].profile, a, b)) {
+            index = static_cast<int>(i);
+            break;
+        }
+    }
+    if (index < 0) {
+        throw Base::ValueError("Sheet design: the bend line is not on a panel");
+    }
+    const double allowance = bendAllowance(angle);
+    if (allowance <= 1.0e-6) {
+        throw Base::ValueError("Sheet design: a fold needs a bend allowance larger than zero");
+    }
+
+    // The zone of the bend is a band with the line in its middle. The flat pattern stays the same.
+    const double big = 1.0e4;
+    const double half = allowance / 2.0;
+    const TopoDS_Face band = makeFlatQuad(
+        a.Translated(dir * -big + m * -half),
+        a.Translated(dir * big + m * -half),
+        a.Translated(dir * big + m * half),
+        a.Translated(dir * -big + m * half)
+    );
+    const TopoDS_Face whole = panels[index].profile;
+    const std::vector<TopoDS_Face> pieces = facesOf(BRepAlgoAPI_Cut(whole, band).Shape());
+    const TopoDS_Shape strip = BRepAlgoAPI_Common(whole, band).Shape();
+    const std::vector<TopoDS_Face> zones = facesOf(strip);
+    if (pieces.size() != 2 || zones.empty()) {
+        throw Base::ValueError("Sheet design: the bend line must divide its panel into two parts");
+    }
+    auto sideOf = [&](const TopoDS_Shape& shape) {
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(shape, props);
+        const gp_Pnt c = props.CentreOfMass();
+        return gp_Vec2d(a, gp_Pnt2d(c.X(), c.Y())).Dot(m);
+    };
+    if (sideOf(pieces[0]) * sideOf(pieces[1]) >= 0.0) {
+        throw Base::ValueError("Sheet design: the bend line must divide its panel into two parts");
+    }
+
+    // The part that stays: the part with the bend to the parent. For the root, the larger part.
+    int keep = area(pieces[0]) >= area(pieces[1]) ? 0 : 1;
+    if (panels[index].parentBend >= 0) {
+        const Bend& parent = bends[panels[index].parentBend];
+        const gp_Vec2d pn(parent.normal);
+        const gp_Pnt2d probe = gp_Pnt2d(
+                                   (parent.start.X() + parent.end.X()) / 2.0,
+                                   (parent.start.Y() + parent.end.Y()) / 2.0
+        )
+                                   .Translated(pn * (parent.allowance + 1.0e-3));
+        if (isInside(pieces[0], probe)) {
+            keep = 0;
+        }
+        else if (isInside(pieces[1], probe)) {
+            keep = 1;
+        }
+        else {
+            throw Base::ValueError("Sheet design: the bend line goes through a different bend");
+        }
+    }
+    const gp_Vec2d n = sideOf(pieces[keep]) > 0.0 ? -m : m;  // From the part that stays.
+
+    // The bend line of the model is the edge of the band on the side that stays.
+    double low = 0.0;
+    double high = 0.0;
+    bool first = true;
+    for (TopExp_Explorer ex(strip, TopAbs_VERTEX); ex.More(); ex.Next()) {
+        const gp_Pnt v = BRep_Tool::Pnt(TopoDS::Vertex(ex.Current()));
+        const double along = gp_Vec2d(a, gp_Pnt2d(v.X(), v.Y())).Dot(dir);
+        low = first ? along : std::min(low, along);
+        high = first ? along : std::max(high, along);
+        first = false;
+    }
+    const gp_Pnt2d start = a.Translated(dir * low + n * -half);
+    const gp_Pnt2d end = a.Translated(dir * high + n * -half);
+    const bool plain = zones.size() == 1
+        && std::fabs(area(strip) - allowance * (high - low)) < 1.0e-6;
+
+    panels[index].profile = pieces[keep];
+    panels[index].solid.Nullify();
+    Panel child;
+    child.profile = pieces[1 - keep];
+    child.tag = tag;
+    panels.push_back(child);
+    const int childIndex = static_cast<int>(panels.size()) - 1;
+    const int bendIndex = static_cast<int>(bends.size());
+
+    // Bends and origins on the far side go with the new panel.
+    auto isFar = [&](const gp_Pnt2d& p, const gp_Pnt2d& q) {
+        const gp_Pnt2d c((p.X() + q.X()) / 2.0, (p.Y() + q.Y()) / 2.0);
+        return gp_Vec2d(a, c).Dot(n) > 0.0;
+    };
+    for (Bend& bend : bends) {
+        if (bend.parentPanel == index && isFar(bend.start, bend.end)) {
+            bend.parentPanel = childIndex;
+        }
+        if (bend.closing && bend.childPanel == index) {
+            const gp_Vec2d shift = gp_Vec2d(bend.normal) * bend.allowance;
+            if (isFar(bend.start.Translated(shift), bend.end.Translated(shift))) {
+                bend.childPanel = childIndex;
+            }
+        }
+    }
+    for (Origin& origin : origins) {
+        if (origin.panel == index && isFar(origin.a, origin.b)) {
+            origin.panel = childIndex;
+        }
+    }
+    connect(index, childIndex, start, end, n, angle, up, params.radius, plain ? TopoDS_Shape() : strip);
+    place(childIndex);
+    return bendIndex;
+}
+
+int SheetModel::cornerRelief(bool square, double size, const std::string& tag)
+{
+    if (size <= tol) {
+        throw Base::ValueError("Sheet design: the size of a corner relief must be larger than zero");
+    }
+    BRep_Builder builder;
+    TopoDS_Compound tools;
+    builder.MakeCompound(tools);
+    int count = 0;
+    double nearest = -1.0;  // The smallest size that reaches a corner.
+    for (std::size_t i = 0; i < bends.size(); ++i) {
+        for (std::size_t j = i + 1; j < bends.size(); ++j) {
+            const Bend& one = bends[i];
+            const Bend& two = bends[j];
+            if (one.closing || two.closing || one.parentPanel != two.parentPanel) {
+                continue;
+            }
+            gp_Vec2d d1(one.start, one.end);
+            gp_Vec2d d2(two.start, two.end);
+            d1.Normalize();
+            d2.Normalize();
+            const double sine = d1.Crossed(d2);
+            if (std::fabs(sine) < 1.0e-6) {
+                continue;
+            }
+            // The corner: the point where the two bend lines meet.
+            const double along = gp_Vec2d(one.start, two.start).Crossed(d2) / sine;
+            const gp_Pnt2d meet = one.start.Translated(d1 * along);
+            const double reach = size + 1.0e-6;
+            const double distance = std::max(
+                std::min(meet.Distance(one.start), meet.Distance(one.end)),
+                std::min(meet.Distance(two.start), meet.Distance(two.end))
+            );
+            if (distance > reach) {
+                nearest = nearest < 0.0 ? distance : std::min(nearest, distance);
+                continue;
+            }
+            TopoDS_Face tool;
+            if (square) {
+                const gp_Vec2d p1(-d1.Y(), d1.X());
+                const double h = size / 2.0;
+                tool = makeFlatQuad(
+                    meet.Translated(d1 * -h + p1 * -h),
+                    meet.Translated(d1 * h + p1 * -h),
+                    meet.Translated(d1 * h + p1 * h),
+                    meet.Translated(d1 * -h + p1 * h)
+                );
+            }
+            else {
+                BRepBuilderAPI_MakeEdge circle(gp_Circ(gp_Ax2(to3d(meet), gp::DZ()), size / 2.0));
+                BRepBuilderAPI_MakeWire wire(circle.Edge());
+                tool = BRepBuilderAPI_MakeFace(gp_Pln(gp::XOY()), wire.Wire(), Standard_True).Face();
+            }
+            builder.Add(
+                tools,
+                BRepBuilderAPI_Transform(tool, panels.front().folded, Standard_True).Shape()
+            );
+            ++count;
+        }
+    }
+    if (count == 0 && nearest >= 0.0) {
+        // The bends end before the corner, for example because of a gap of a flange.
+        std::ostringstream text;
+        text.precision(4);
+        text << "Sheet design: the relief does not reach a corner. The nearest corner needs a "
+             << "size of " << std::ceil(nearest * 100.0) / 100.0 << " mm or more";
+        throw Base::ValueError(text.str());
+    }
+    if (count == 0) {
+        throw Base::ValueError(
+            "Sheet design: the part has no corner. A corner is where two bends on adjacent edges "
+            "of one panel meet"
+        );
+    }
+    cut(tools, true, tag);
+    return count;
 }
 
 TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine, double* overlap) const
@@ -2203,6 +2622,90 @@ SheetModel SheetModel::fromSolid(
                 continue;
             }
             BRepAdaptor_Surface bendSurface(bendFace);
+            if (bendSurface.GetType() == GeomAbs_Plane) {
+                // A sharp fold: two faces of the top side meet on a line with no cylinder. The
+                // model gets a bend with the radius of the rule, tangent to the two faces.
+                const gp_Dir other = outerNormal(bendFace).Transformed(inverse);
+                const double cosine = other.Z();
+                if (std::fabs(cosine) > 1.0 - 1.0e-9) {
+                    continue;
+                }
+                const gp_Pnt p = curve.Value(curve.FirstParameter()).Transformed(inverse);
+                const gp_Pnt q = curve.Value(curve.LastParameter()).Transformed(inverse);
+                const gp_Pnt2d a(p.X(), p.Y());
+                const gp_Pnt2d b(q.X(), q.Y());
+                const gp_Vec2d n = outwardNormal(model.panels[current].profile, a, b);
+                const bool up = other.X() * n.X() + other.Y() * n.Y() < 0.0;
+                // A side face of the sheet can look the same as a fold. A face of a panel has
+                // a parallel face at the distance of the thickness behind it.
+                bool hasBack = false;
+                const gp_Dir faceNormal = outerNormal(bendFace);
+                const gp_Pnt facePoint = BRepAdaptor_Surface(bendFace).Plane().Location();
+                for (TopExp_Explorer fx(solid, TopAbs_FACE); fx.More() && !hasBack; fx.Next()) {
+                    const TopoDS_Face back = TopoDS::Face(fx.Current());
+                    BRepAdaptor_Surface backSurface(back);
+                    if (backSurface.GetType() != GeomAbs_Plane
+                        || outerNormal(back).Dot(faceNormal) > -1.0 + 1.0e-9) {
+                        continue;
+                    }
+                    const double distance
+                        = gp_Vec(backSurface.Plane().Location(), facePoint).Dot(faceNormal);
+                    hasBack = std::fabs(distance - thickness) < looseTol;
+                }
+                if (!hasBack) {
+                    continue;
+                }
+                const double angle = std::acos(cosine);
+                const double radius = sheet.radius;
+                const double setback = (up ? radius : radius + thickness) * std::tan(angle / 2.0);
+                auto trim = [](const TopoDS_Face& profile, const TopoDS_Face& tool) {
+                    const std::vector<TopoDS_Face> parts = facesOf(
+                        BRepAlgoAPI_Cut(profile, tool).Shape()
+                    );
+                    if (parts.size() != 1) {
+                        throw Base::ValueError(
+                            "Sheet design: a panel of the solid is too small for the bend radius "
+                            "at a sharp fold"
+                        );
+                    }
+                    return parts.front();
+                };
+                const gp_Pnt2d a2 = a.Translated(n * -setback);
+                const gp_Pnt2d b2 = b.Translated(n * -setback);
+                if (setback > looseTol) {
+                    model.panels[current].profile
+                        = trim(model.panels[current].profile, makeFlatQuad(a, b, b2, a2));
+                    model.panels[current].solid.Nullify();
+                }
+                Panel child;
+                model.panels.push_back(child);
+                const int childIndex = static_cast<int>(model.panels.size()) - 1;
+                model.connect(current, childIndex, a2, b2, n, angle, up, radius, TopoDS_Shape());
+                TopoDS_Face childProfile = toFlat(bendFace, model.panels[childIndex].folded);
+                if (childProfile.IsNull()) {
+                    throw Base::ValueError("Sheet design: cannot read a sharp fold of the solid");
+                }
+                if (setback > looseTol) {
+                    const double allowance = model.bends.back().allowance;
+                    childProfile = trim(
+                        childProfile,
+                        makeFlatQuad(
+                            a2.Translated(n * (allowance - setback - 1.0)),
+                            b2.Translated(n * (allowance - setback - 1.0)),
+                            b2.Translated(n * allowance),
+                            a2.Translated(n * allowance)
+                        )
+                    );
+                }
+                model.panels[childIndex].profile = childProfile;
+                model.panels[childIndex].tag = tag + "_P" + std::to_string(childIndex + 1);
+                model.addOrigins(childProfile, gp_Trsf(), model.panels[childIndex].tag + "_E", childIndex);
+                ++model.sharpFolds;
+                visited.Add(bendFace);
+                panelFaces.emplace_back(bendFace, childIndex);
+                queue.emplace_back(childIndex, bendFace);
+                continue;
+            }
             if (bendSurface.GetType() != GeomAbs_Cylinder) {
                 continue;
             }

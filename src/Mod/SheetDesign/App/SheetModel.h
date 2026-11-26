@@ -148,6 +148,8 @@ struct FlangeOptions
     /// The outline of the flange, as a face in flat space that touches the edge. The part of
     /// the outline on the edge gives the bend line. Null: the flange is a rectangle.
     TopoDS_Face profile;
+    double radius {-1.0};   ///< The inner radius of the bend. Negative: the radius of the rule.
+    bool anyAngle {false};  ///< Permit a bend of more than 180 degrees, for a hem.
 };
 
 /// A reference to a straight segment on the boundary of a panel.
@@ -238,7 +240,27 @@ public:
      *               False: each face cuts the panels that are in the same plane.
      * @return the number of panels that changed.
      */
-    int cut(const TopoDS_Shape& faces, bool flat, const std::string& tag = "Cut");
+    int cut(const TopoDS_Shape& faces, bool flat, const std::string& tag = "Cut", bool wrapped = false);
+
+    /// Move a straight edge of a panel out by a length. A negative length moves it in.
+    void extend(const EdgeRef& ref, double length, double gap1, double gap2, const std::string& tag);
+
+    /// Add faces to the panels that they touch. Each face is in the plane of a folded panel.
+    int extendBy(const TopoDS_Shape& faces, const std::string& tag);
+
+    /// Move a line on a folded panel into flat space. Returns false if no panel holds it.
+    bool toFlat(const gp_Pnt& p, const gp_Pnt& q, gp_Pnt2d& a, gp_Pnt2d& b) const;
+
+    /// Divide a panel on a line in flat space and put a bend there. The line is the center line
+    /// of the bend zone, thus the flat pattern does not change. Returns the index of the bend.
+    int fold(const gp_Pnt2d& a, const gp_Pnt2d& b, double angle, bool up, const std::string& tag);
+
+    /// Cut a circle or a square at each corner where two bends of one panel meet. The size is
+    /// the diameter or the side. Returns the number of corners.
+    int cornerRelief(bool square, double size, const std::string& tag);
+
+    /// The number of sharp folds that fromSolid replaced with a bend.
+    int sharpFolds {0};
 
     /// The folded solid. With fuse = false, the result is a compound of solids.
     /**
@@ -300,6 +322,12 @@ private:
     /// Record an origin for each straight edge of a shape. The transformation moves the shape
     /// into flat space. The tag of an edge is the prefix and the index of the edge.
     void addOrigins(const TopoDS_Shape& shape, const gp_Trsf& toFlat, const std::string& prefix, int panel);
+
+    /// True if a face in flat space is in the space of a different panel or of a bend zone.
+    bool overlapsOthers(int panel, const TopoDS_Shape& patch) const;
+
+    /// Set the folded position of all panels after a panel again.
+    void place(int panel);
 
     /// The folded position of a panel after a bend, from the position of the panel before it.
     gp_Trsf afterBend(

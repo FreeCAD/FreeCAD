@@ -33,6 +33,8 @@ from PySide import QtCore, QtGui
 
 translate = FreeCAD.Qt.translate
 
+import SheetDesignViewProviders
+
 
 def sentence_case(text):
     """The text of a drop-down entry: "Material Outside" shows as "Material outside"."""
@@ -58,7 +60,11 @@ class TaskPanel:
         self.form.setWindowIcon(QtGui.QIcon(":/icons/" + self.icon + ".svg"))
         self.bindings = []
         self.enumerations = {}
-        self.doc.openTransaction(translate("SheetDesign", "Edit {}").format(self.title))
+        # A new feature comes with the open transaction of its command. Cancel then removes it.
+        self.hidden = SheetDesignViewProviders.PENDING.pop(obj.Name, None)
+        self.created = self.hidden is not None
+        if not self.created:
+            self.doc.openTransaction(translate("SheetDesign", "Edit {}").format(self.title))
         self.connect_properties()
         self.setup()
         self.update()
@@ -166,8 +172,18 @@ class TaskPanel:
 
     def reject(self):
         self.close()
-        self.doc.abortTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
+        if self.created:
+            # The abort removes the feature. The end of the edit mode before the abort would
+            # commit the transaction.
+            self.doc.abortTransaction()
+            FreeCADGui.ActiveDocument.resetEdit()
+            for name in self.hidden:
+                item = self.doc.getObject(name)
+                if item is not None and item.ViewObject is not None:
+                    item.ViewObject.show()
+        else:
+            self.doc.abortTransaction()
+            FreeCADGui.ActiveDocument.resetEdit()
         self.doc.recompute()
         return True
 
@@ -251,6 +267,11 @@ class TaskBasePanel(TaskPanel):
         super().update()
         self.form.profileLabel.setText(label_of(self.obj.Profile))
         self.form.ruleLabel.setText(label_of(self.obj.Rule))
+        # The width is for an open profile: the section of the part.
+        profile = self.obj.Profile
+        is_open = bool(profile and not profile.Shape.Faces and not any(w.isClosed() for w in profile.Shape.Wires))
+        self.form.Width.setEnabled(is_open)
+        self.form.Symmetric.setEnabled(is_open)
 
 
 class TaskCut(TaskPanel):
@@ -354,7 +375,72 @@ class TaskFlatPattern(TaskPanel):
         FreeCADGui.runCommand("SheetDesign_ExportDxf")
 
 
+def edge_text(link):
+    source, subs = link if link else (None, [])
+    return f"{label_of(source)}.{subs[0]}" if source and subs else label_of(source)
+
+
+class TaskExtend(TaskPanel):
+    ui_file = "TaskExtend.ui"
+    title = "Extend"
+    icon = "SheetDesign_Extend"
+
+    def update(self):
+        super().update()
+        profile = self.obj.Profile
+        self.form.edgeLabel.setText(edge_text(self.obj.Edge))
+        self.form.profileLabel.setText(label_of(profile))
+        # A profile gives the added material. The length and the gaps are for an edge.
+        for name in ("Length", "Gap1", "Gap2"):
+            self.widget(name).setEnabled(profile is None)
+
+
+class TaskFold(TaskPanel):
+    ui_file = "TaskFold.ui"
+    title = "Fold"
+    icon = "SheetDesign_Fold"
+
+    def update(self):
+        super().update()
+        self.form.linesLabel.setText(label_of(self.obj.BendLines))
+
+
+class TaskHem(TaskPanel):
+    ui_file = "TaskHem.ui"
+    title = "Hem"
+    icon = "SheetDesign_Hem"
+
+    def update(self):
+        super().update()
+        self.form.edgeLabel.setText(edge_text(self.obj.Edge))
+        self.form.Gap.setEnabled(self.obj.Type != "Flat")
+        self.form.Length.setEnabled(self.obj.Type != "Rolled")
+
+
+class TaskCornerRelief(TaskPanel):
+    ui_file = "TaskCornerRelief.ui"
+    title = "Corner Relief"
+    icon = "SheetDesign_CornerRelief"
+
+
+class TaskBaseShape(TaskPanel):
+    ui_file = "TaskBaseShape.ui"
+    title = "Base Shape"
+    icon = "SheetDesign_BaseShape"
+
+    def update(self):
+        super().update()
+        self.form.ruleLabel.setText(label_of(self.obj.Rule))
+        self.form.Height.setEnabled(self.obj.Type != "Plate")
+        self.form.FlangeWidth.setEnabled(self.obj.Type == "Hat")
+
+
 PANELS = {
+    "SheetDesign::Extend": TaskExtend,
+    "SheetDesign::Fold": TaskFold,
+    "SheetDesign::Hem": TaskHem,
+    "SheetDesign::CornerRelief": TaskCornerRelief,
+    "SheetDesign::BaseShape": TaskBaseShape,
     "SheetDesign::BasePanel": TaskBasePanel,
     "SheetDesign::Flange": TaskFlange,
     "SheetDesign::Cut": TaskCut,

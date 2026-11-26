@@ -245,3 +245,106 @@ class TestSheetDesignGui(unittest.TestCase):
         self.assertEqual(table.rowCount(), 2)
         self.assertEqual([table.item(0, c).text() for c in range(3)], ["Up", "90 °", "1 mm"])
         self.assertEqual([table.item(1, c).text() for c in range(3)], ["Down", "45 °", "1 mm"])
+
+    # ----------------------------------------------------------------- Stage 4 features
+
+    def test_stage_4_features_have_panels(self):
+        line = self.doc.addObject("Part::Feature", "Line")
+        line.Shape = Part.makeLine(V(60, 0, self.T), V(60, 50, self.T))
+        top = [self.edge(V(0, 0, self.T), V(0, 50, self.T))]
+        extend = self.add("SheetDesign::Extend", "Extend")
+        extend.Edge = (self.base, top)
+        fold = self.add("SheetDesign::Fold", "Fold")
+        fold.Source = self.base
+        fold.BendLines = line
+        hem = self.add("SheetDesign::Hem", "Hem")
+        hem.Edge = (self.base, top)
+        shape = self.add("SheetDesign::BaseShape", "Shape")
+        shape.Rule = self.rule
+        shape.Type = "Tub"
+        self.doc.recompute()
+        relief = self.add("SheetDesign::CornerRelief", "Relief")
+        relief.Source = shape
+        self.doc.recompute()
+        for obj in (extend, fold, hem, shape, relief):
+            self.assertTrue(obj.isValid(), obj.Name + ": " + obj.getStatusString())
+            panel = self.open_panel(obj)
+            self.assertIsNotNone(panel, obj.TypeId)
+            self.assertEqual(panel.form.statusLabel.text(), "", obj.TypeId)
+            self.assertTrue(obj.ViewObject.Icon.isNull() is False, obj.TypeId)
+            self.close_panel(accept=False)
+
+    def test_hem_panel_enables_the_values_of_the_type(self):
+        hem = self.add("SheetDesign::Hem", "Hem")
+        hem.Edge = (self.base, [self.edge(V(0, 0, self.T), V(0, 50, self.T))])
+        self.doc.recompute()
+        form = self.open_panel(hem).form
+        self.assertFalse(form.Gap.isEnabled())
+        form.Type.setCurrentIndex(form.Type.findText("Rolled"))
+        self.assertTrue(form.Gap.isEnabled())
+        self.assertFalse(form.Length.isEnabled())
+        self.assertEqual(hem.Type, "Rolled")
+        self.assertTrue(hem.isValid(), hem.getStatusString())
+
+    def test_base_shape_panel_changes_the_type(self):
+        shape = self.add("SheetDesign::BaseShape", "Shape")
+        shape.Rule = self.rule
+        self.doc.recompute()
+        form = self.open_panel(shape).form
+        self.assertFalse(form.FlangeWidth.isEnabled())
+        form.Type.setCurrentIndex(form.Type.findText("Hat"))
+        self.assertTrue(form.FlangeWidth.isEnabled())
+        self.assertEqual(shape.Type, "Hat")
+        self.assertEqual(len(shape.Shape.Solids), 1)
+
+    # -------------------------------------------------------- cancel of a new feature
+
+    def test_cancel_of_a_new_feature_removes_it(self):
+        """The command leaves its transaction open, and the panel takes it."""
+        flat = self.add("SheetDesign::FlatPattern", "Flat")
+        flat.Source = self.flange
+        self.doc.recompute()
+        FreeCADGui.activateWorkbench("SheetDesignWorkbench")
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(self.flange)
+        # The part has one bend, thus the corner relief has an error.
+        FreeCADGui.runCommand("SheetDesign_CornerRelief")
+        relief = self.doc.getObject("CornerRelief")
+        self.assertIsNotNone(relief)
+        self.assertFalse(relief.isValid())
+        self.assertEqual(flat.Source, relief)
+        self.assertTrue(FreeCADGui.Control.activeDialog())
+        SheetDesignViewProviders.ACTIVE_PANEL.reject()  # The Cancel button.
+        FreeCADGui.Control.closeDialog()
+        self.assertIsNone(self.doc.getObject("CornerRelief"))
+        self.assertEqual(flat.Source, self.flange)
+        self.assertTrue(flat.isValid(), flat.getStatusString())
+        self.assertTrue(self.flange.ViewObject.Visibility)
+        self.assertEqual([o.Name for o in self.doc.Objects if not o.isValid()], [])
+
+    def test_ok_of_a_new_feature_keeps_it_in_one_undo_step(self):
+        FreeCADGui.activateWorkbench("SheetDesignWorkbench")
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(self.base, self.edge(V(0, 0, self.T), V(0, 50, self.T)))
+        FreeCADGui.runCommand("SheetDesign_Hem")
+        hem = self.doc.getObject("Hem")
+        self.assertIsNotNone(hem)
+        dialog_panel = SheetDesignViewProviders.ACTIVE_PANEL
+        self.assertIsNotNone(dialog_panel)
+        dialog_panel.accept()
+        FreeCADGui.Control.closeDialog()
+        self.assertIsNotNone(self.doc.getObject("Hem"))
+        self.assertTrue(hem.isValid(), hem.getStatusString())
+        self.doc.undo()
+        self.assertIsNone(self.doc.getObject("Hem"))
+
+    def test_delete_puts_the_flat_pattern_back(self):
+        flat = self.add("SheetDesign::FlatPattern", "Flat")
+        flat.Source = self.flange
+        self.doc.recompute()
+        self.flange.ViewObject.Proxy.onDelete(self.flange.ViewObject, [])
+        self.doc.removeObject(self.flange.Name)
+        self.doc.recompute()
+        self.assertEqual(flat.Source, self.base)
+        self.assertTrue(flat.isValid(), flat.getStatusString())
+        self.assertTrue(self.base.ViewObject.Visibility)
