@@ -1,0 +1,346 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
+"""Commands of the SheetMetal module (proof of concept).
+
+The commands only make document objects and set their links. All geometry is in the C++ module.
+"""
+
+import FreeCAD
+import FreeCADGui
+
+translate = FreeCAD.Qt.translate
+
+
+def _selection():
+    return FreeCADGui.Selection.getSelectionEx()
+
+
+def _is_feature(obj):
+    return obj is not None and obj.isDerivedFrom("SheetMetalCore::Feature")
+
+
+RULE_PROPERTIES = ("Thickness", "BendRadius", "KFactor")
+
+
+def make_rule(doc):
+    """Add a variable set with the values that apply to a full sheet metal part."""
+    rule = doc.addObject("App::VarSet", "SheetRule")
+    rule.addProperty(
+        "App::PropertyLength", "Thickness", "Sheet", translate("SheetMetal", "Thickness of the sheet")
+    )
+    rule.addProperty(
+        "App::PropertyLength",
+        "BendRadius",
+        "Sheet",
+        translate("SheetMetal", "Inner radius of the bends"),
+    )
+    rule.addProperty(
+        "App::PropertyFloat",
+        "KFactor",
+        "Sheet",
+        translate(
+            "SheetMetal",
+            "Position of the neutral axis as a fraction of the thickness, from the inner surface",
+        ),
+    )
+    rule.Thickness = 1.0
+    rule.BendRadius = 1.0
+    rule.KFactor = 0.5
+    return rule
+
+
+def _is_rule(obj):
+    return all(hasattr(obj, name) for name in RULE_PROPERTIES)
+
+
+def _find_rule(doc):
+    """Return the first rule of the document. Make one if the document has none."""
+    for obj in doc.Objects:
+        if obj.isDerivedFrom("App::VarSet") and _is_rule(obj):
+            return obj
+    return make_rule(doc)
+
+
+def _advance_flat_patterns(old, new):
+    """Make the flat patterns of the old feature follow the new feature."""
+    for obj in old.Document.Objects:
+        if obj.isDerivedFrom("SheetMetalCore::FlatPattern") and obj.Source == old:
+            obj.Source = new
+
+
+def _finish(doc, hide=()):
+    for obj in hide:
+        obj.ViewObject.hide()
+    doc.recompute()
+    doc.commitTransaction()
+
+
+class _Command:
+    name = ""
+    menu = ""
+    tip = ""
+
+    def GetResources(self):
+        return {
+            "MenuText": translate("SheetMetal", self.menu),
+            "ToolTip": translate("SheetMetal", self.tip),
+        }
+
+    def IsActive(self):
+        return FreeCAD.ActiveDocument is not None
+
+
+class CommandRule(_Command):
+    name = "SheetMetal_Rule"
+    menu = "Sheet Rule"
+    tip = "Adds a variable set with the thickness, the bend radius, and the K-factor"
+
+    def Activated(self):
+        doc = FreeCAD.ActiveDocument
+        doc.openTransaction("Sheet Rule")
+        make_rule(doc)
+        _finish(doc)
+
+
+class CommandBase(_Command):
+    name = "SheetMetal_Base"
+    menu = "Base Panel"
+    tip = "Makes the first panel from the selected closed sketch"
+
+    def IsActive(self):
+        sel = FreeCADGui.Selection.getSelection()
+        return len(sel) == 1 and hasattr(sel[0], "Shape") and not _is_feature(sel[0])
+
+    def Activated(self):
+        profile = FreeCADGui.Selection.getSelection()[0]
+        doc = profile.Document
+        doc.openTransaction("Base Panel")
+        obj = doc.addObject("SheetMetalCore::BasePanel", "BasePanel")
+        obj.Rule = _find_rule(doc)
+        obj.Profile = profile
+        _finish(doc, hide=[profile])
+
+
+class CommandFromFlat(_Command):
+    name = "SheetMetal_FromFlat"
+    menu = "Fold Flat Pattern"
+    tip = "Makes a folded part from a selected flat outline and a selected sketch of bend lines"
+
+    def _pick(self):
+        sel = [obj for obj in FreeCADGui.Selection.getSelection() if hasattr(obj, "Shape")]
+        if len(sel) != 2 or any(_is_feature(obj) for obj in sel):
+            return None
+        closed = [obj for obj in sel if _has_closed_wire(obj)]
+        if len(closed) != 1:
+            return None
+        lines = sel[1] if sel[0] is closed[0] else sel[0]
+        return closed[0], lines
+
+    def IsActive(self):
+        return self._pick() is not None
+
+    def Activated(self):
+        profile, lines = self._pick()
+        doc = profile.Document
+        doc.openTransaction("Fold Flat Pattern")
+        obj = doc.addObject("SheetMetalCore::FromFlat", "FoldedFlat")
+        obj.Rule = _find_rule(doc)
+        obj.Profile = profile
+        obj.BendLines = lines
+        _finish(doc, hide=[profile, lines])
+
+
+def _has_closed_wire(obj):
+    shape = obj.Shape
+    return bool(shape.Faces) or any(wire.isClosed() for wire in shape.Wires)
+
+
+class CommandFromSolid(_Command):
+    name = "SheetMetal_FromSolid"
+    menu = "Convert Solid"
+    tip = "Makes a sheet metal part from a folded solid. Select one flat face of the solid"
+
+    def _pick(self):
+        sel = _selection()
+        if len(sel) != 1 or _is_feature(sel[0].Object) or len(sel[0].SubElementNames) != 1:
+            return None
+        name = sel[0].SubElementNames[0]
+        if not name.startswith("Face"):
+            return None
+        return sel[0].Object, name
+
+    def IsActive(self):
+        return self._pick() is not None
+
+    def Activated(self):
+        source, face = self._pick()
+        doc = source.Document
+        doc.openTransaction("Convert Solid")
+        obj = doc.addObject("SheetMetalCore::FromSolid", "ConvertedSolid")
+        obj.Rule = _find_rule(doc)
+        obj.Face = (source, [face])
+        _finish(doc, hide=[source])
+
+
+class CommandFlange(_Command):
+    name = "SheetMetal_Flange"
+    menu = "Flange"
+    tip = "Adds a bend and a panel on the selected straight edge"
+
+    def IsActive(self):
+        sel = _selection()
+        return len(sel) == 1 and _is_feature(sel[0].Object) and len(sel[0].SubElementNames) >= 1
+
+    def Activated(self):
+        sel = _selection()[0]
+        source = sel.Object
+        doc = source.Document
+        doc.openTransaction("Flange")
+        # The element names refer to the first source. Thus recompute after each flange and map
+        # the next edge to the new shape by its position.
+        edges = [source.Shape.getElement(name) for name in sel.SubElementNames]
+        for edge in edges:
+            name = _element_name(source.Shape, edge)
+            if name is None:
+                FreeCAD.Console.PrintWarning("Sheet metal: an edge was not found after a flange\n")
+                continue
+            obj = doc.addObject("SheetMetalCore::Flange", "Flange")
+            obj.Edge = (source, [name])
+            _advance_flat_patterns(source, obj)
+            source.ViewObject.hide()
+            doc.recompute()
+            source = obj
+        doc.commitTransaction()
+
+
+def _element_name(shape, element):
+    """Find the name of the edge or face of the shape that has the same geometry."""
+    if element.ShapeType == "Edge":
+        candidates, prefix = shape.Edges, "Edge"
+    else:
+        candidates, prefix = shape.Faces, "Face"
+    center = element.CenterOfMass
+    for index, candidate in enumerate(candidates):
+        if (
+            candidate.CenterOfMass.distanceToPoint(center) < 1e-6
+            and abs(candidate.Length - element.Length) < 1e-6
+        ):
+            return f"{prefix}{index + 1}"
+    return None
+
+
+class CommandCut(_Command):
+    name = "SheetMetal_Cut"
+    menu = "Cut"
+    tip = "Cuts the selected sketch through the selected sheet metal feature"
+    space = "Folded"
+
+    def _pick(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) != 2:
+            return None
+        features = [obj for obj in sel if _is_feature(obj)]
+        others = [obj for obj in sel if not _is_feature(obj) and hasattr(obj, "Shape")]
+        if len(features) != 1 or len(others) != 1:
+            return None
+        return features[0], others[0]
+
+    def IsActive(self):
+        return self._pick() is not None
+
+    def Activated(self):
+        source, profile = self._pick()
+        doc = source.Document
+        doc.openTransaction(self.menu)
+        obj = doc.addObject("SheetMetalCore::Cut", "Cut")
+        obj.Source = source
+        obj.Profile = profile
+        obj.Space = self.space
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source, profile])
+
+
+class CommandCutFlat(CommandCut):
+    name = "SheetMetal_CutFlat"
+    menu = "Cut in Flat Pattern"
+    tip = "Cuts the selected sketch through the flat pattern of the selected feature"
+    space = "Flat"
+
+
+class CommandFlatPattern(_Command):
+    name = "SheetMetal_FlatPattern"
+    menu = "Flat Pattern"
+    tip = "Adds the flat pattern of the selected sheet metal feature"
+
+    def IsActive(self):
+        sel = FreeCADGui.Selection.getSelection()
+        return len(sel) == 1 and _is_feature(sel[0])
+
+    def Activated(self):
+        source = FreeCADGui.Selection.getSelection()[0]
+        doc = source.Document
+        doc.openTransaction("Flat Pattern")
+        obj = doc.addObject("SheetMetalCore::FlatPattern", "FlatPattern")
+        obj.Source = source
+        _finish(doc)
+
+
+class CommandExportDxf(_Command):
+    name = "SheetMetal_ExportDxf"
+    menu = "Export Flat Pattern…"
+    tip = "Exports the selected flat pattern to a DXF file"
+
+    def IsActive(self):
+        sel = FreeCADGui.Selection.getSelection()
+        return len(sel) == 1 and sel[0].isDerivedFrom("SheetMetalCore::FlatPattern")
+
+    def Activated(self):
+        from PySide import QtGui
+
+        flat = FreeCADGui.Selection.getSelection()[0]
+        path, _filter = QtGui.QFileDialog.getSaveFileName(
+            FreeCADGui.getMainWindow(),
+            translate("SheetMetal", "Export Flat Pattern"),
+            flat.Label + ".dxf",
+            "DXF (*.dxf)",
+        )
+        if path:
+            import SheetMetalExport
+
+            SheetMetalExport.export_dxf(flat, path)
+
+
+def register():
+    commands = [
+        CommandRule,
+        CommandBase,
+        CommandFromFlat,
+        CommandFromSolid,
+        CommandFlange,
+        CommandCut,
+        CommandCutFlat,
+        CommandFlatPattern,
+        CommandExportDxf,
+    ]
+    for command in commands:
+        FreeCADGui.addCommand(command.name, command())
+    return [command.name for command in commands]
