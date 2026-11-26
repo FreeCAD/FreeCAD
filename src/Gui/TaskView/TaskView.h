@@ -201,6 +201,7 @@ protected:
     void clicked(QAbstractButton* button, App::Document* doc);
 
 private:
+    void handleAcceptOrReject(App::Document* doc, bool acceptDialog);
     void triggerMinimumSizeHint();
     void adjustMinimumSizeHint();
     void saveCurrentWidth();

@@ -996,37 +996,22 @@ void TaskView::removeTaskWatcher(TaskInfo& taskInfo)
 
 void TaskView::accept(App::Document* doc)
 {
-    QPointer<TaskDialog> taskDialog = dialog(doc);
-    if (!taskDialog) {
-        Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
-        return;
-    }
-    if (taskDialog->property("taskview_accept_or_reject").toBool()) {
-        return;
-    }
-
-    bool success;
-    {
-        auto clearAcceptOrReject = qScopeGuard([&taskDialog]() {
-            if (taskDialog) {
-                taskDialog->setProperty("taskview_accept_or_reject", QVariant());
-            }
-        });
-        // Defer closeDialog() until the active dialog's accept() returns.
-        taskDialog->setProperty("taskview_accept_or_reject", true);
-        success = taskDialog->accept();
-    }
-    if (taskDialog && taskDialog == dialog(doc)
-        && (success || taskDialog->property("taskview_remove_dialog").isValid())) {
-        removeDialog(doc);
-    }
+    handleAcceptOrReject(doc, true);
 }
 
 void TaskView::reject(App::Document* doc)
 {
+    handleAcceptOrReject(doc, false);
+}
+
+void TaskView::handleAcceptOrReject(App::Document* doc, bool acceptDialog)
+{
     QPointer<TaskDialog> taskDialog = dialog(doc);
     if (!taskDialog) {
-        Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
+        Base::Console().warning(
+            "ActiveDialog was null in call to TaskView::{}()\n",
+            acceptDialog ? "accept" : "reject"
+        );
         return;
     }
     if (taskDialog->property("taskview_accept_or_reject").toBool()) {
@@ -1040,9 +1025,9 @@ void TaskView::reject(App::Document* doc)
                 taskDialog->setProperty("taskview_accept_or_reject", QVariant());
             }
         });
-        // Defer closeDialog() until the active dialog's reject() returns.
+        // Defer closeDialog() until the active dialog's accept or reject handler returns.
         taskDialog->setProperty("taskview_accept_or_reject", true);
-        success = taskDialog->reject();
+        success = acceptDialog ? taskDialog->accept() : taskDialog->reject();
     }
     if (taskDialog && taskDialog == dialog(doc)
         && (success || taskDialog->property("taskview_remove_dialog").isValid())) {
