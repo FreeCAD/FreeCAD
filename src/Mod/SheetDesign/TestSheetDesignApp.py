@@ -860,3 +860,149 @@ class TestSheetDesign(unittest.TestCase):
         self.assertSolid(converted)
         flat = self.add_flat(converted)
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, delta=1e-3 * expected)
+
+    # ---------------------------------------------------------------------- PartDesign Body
+
+    def body_with_base(self):
+        import Sketcher
+
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        corners = [(0, 0), (self.LENGTH, 0), (self.LENGTH, self.WIDTH), (0, self.WIDTH)]
+        for i in range(4):
+            sketch.addGeometry(Part.LineSegment(V(*corners[i], 0), V(*corners[(i + 1) % 4], 0)))
+        for i in range(4):
+            sketch.addConstraint(Sketcher.Constraint("Coincident", i, 2, (i + 1) % 4, 1))
+        base = body.newObject("SheetDesign::BasePanel", "Base")
+        base.Profile = sketch
+        base.Rule = self.rule
+        self.doc.recompute()
+        return body, base
+
+    def body_flange(self, body, source, start, end, **properties):
+        flange = body.newObject("SheetDesign::Flange", "Flange")
+        flange.Edge = (source, [find_edge(source.Shape, start, end)])
+        for name, value in properties.items():
+            setattr(flange, name, value)
+        self.doc.recompute()
+        return flange
+
+    def test_features_in_a_body(self):
+        body, base = self.body_with_base()
+        self.assertSolid(base)
+        self.assertEqual(body.Tip, base)
+        flange = self.body_flange(
+            body, base, V(self.LENGTH, 0, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0
+        )
+        self.assertSolid(flange)
+        self.assertEqual(body.Tip, flange)
+        self.assertEqual(flange.BaseFeature, base)
+        self.assertTrue(body.isValid(), body.getStatusString())
+        self.assertAlmostEqual(body.Shape.Volume, flange.Shape.Volume, places=6)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+
+    def test_flat_pattern_of_a_part_in_a_body(self):
+        body, base = self.body_with_base()
+        flange = self.body_flange(
+            body, base, V(self.LENGTH, 0, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0
+        )
+        flat = self.add_flat(flange)
+        self.assertTrue(flat.isValid(), flat.getStatusString())
+        self.assertAlmostEqual(flat.Shape.BoundBox.XMin, 0.0, places=6)
+        # The flat pattern is in the coordinates of the body. It stays valid after a move.
+        body.Placement = FreeCAD.Placement(V(500, 0, 30), FreeCAD.Rotation())
+        flange.Length = 25.0
+        self.doc.recompute()
+        self.assertTrue(flat.isValid(), flat.getStatusString())
+        self.assertAlmostEqual(
+            flat.Shape.BoundBox.XLength, self.LENGTH + self.allowance() + 25.0, places=6
+        )
+
+    def test_profile_outside_a_moved_body(self):
+        """A profile at document level is in global coordinates. The body can be at any place."""
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        body.Placement = FreeCAD.Placement(V(0, 0, 100), FreeCAD.Rotation())
+        wire = Part.makePolygon([V(0, 0, 0), V(40, 0, 0), V(40, 30, 0), V(0, 30, 0), V(0, 0, 0)])
+        base = body.newObject("SheetDesign::BasePanel", "Base")
+        base.Profile = self.add_shape(wire)
+        base.Rule = self.rule
+        self.doc.recompute()
+        self.assertSolid(base)
+        # In global coordinates the part is at the place of its profile.
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMin, 0.0, places=6)
+
+    def pocket_after(self, body):
+        sketch = body.newObject("Sketcher::SketchObject", "PocketSketch")
+        sketch.addGeometry(Part.Circle(V(40, 25, 0), V(0, 0, 1), 6))
+        pocket = body.newObject("PartDesign::Pocket", "Pocket")
+        pocket.Profile = sketch
+        pocket.Type = "ThroughAll"
+        pocket.Midplane = True
+        self.doc.recompute()
+        return pocket
+
+    def test_partdesign_feature_after_a_sheet_feature(self):
+        body, base = self.body_with_base()
+        flange = self.body_flange(
+            body, base, V(self.LENGTH, 0, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0
+        )
+        pocket = self.pocket_after(body)
+        self.assertTrue(pocket.isValid(), pocket.getStatusString())
+        self.assertAlmostEqual(
+            flange.Shape.Volume - pocket.Shape.Volume, math.pi * 36.0 * self.T, places=4
+        )
+        self.assertEqual(body.Tip, pocket)
+
+    def test_sheet_feature_after_a_partdesign_feature_needs_unfold(self):
+        body, base = self.body_with_base()
+        flange = self.body_flange(
+            body, base, V(self.LENGTH, 0, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0
+        )
+        pocket = self.pocket_after(body)
+        # A flange cannot continue the pocket: the pocket has a solid, but no sheet model.
+        refused = self.body_flange(
+            body, pocket, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=10.0
+        )
+        self.assertFalse(refused.isValid())
+        self.assertIn("Unfold", refused.getStatusString())
+        self.doc.removeObject(refused.Name)
+
+        # Unfold reads the solid of the pocket and gives a model again.
+        top = None
+        for index, face in enumerate(pocket.Shape.Faces):
+            if face.Surface.TypeId == "Part::GeomPlane" and face.normalAt(0, 0).z > 0.99:
+                if abs(face.CenterOfMass.z - self.T) < 1e-6:
+                    top = f"Face{index + 1}"
+        unfold = body.newObject("SheetDesign::Unfold", "Unfold")
+        unfold.Face = (pocket, [top])
+        unfold.Rule = self.rule
+        self.doc.recompute()
+        self.assertSolid(unfold)
+        self.assertEqual(body.Tip, unfold)
+        self.assertAlmostEqual(unfold.Shape.Volume, pocket.Shape.Volume, places=4)
+        flat = self.add_flat(unfold)
+        face = flat.Shape.Faces[0]
+        self.assertEqual(len(face.Wires), 2)
+        expected = (self.LENGTH + self.allowance() + 20.0) * self.WIDTH - math.pi * 36.0
+        self.assertAlmostEqual(face.Area, expected, places=5)
+        # A flange can follow again.
+        more = self.body_flange(body, unfold, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=10.0)
+        self.assertSolid(more)
+
+    def test_suppressed_feature_gives_the_model_before_it(self):
+        body, base = self.body_with_base()
+        first = self.body_flange(
+            body, base, V(self.LENGTH, 0, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0
+        )
+        second = self.body_flange(
+            body, first, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=10.0
+        )
+        both = second.Shape.Volume
+        first.Suppressed = True
+        self.doc.recompute()
+        self.assertSolid(second)
+        expected = (self.LENGTH + self.allowance() + 10.0) * self.WIDTH * self.T
+        self.assertAlmostEqual(second.Shape.Volume, expected, places=4)
+        first.Suppressed = False
+        self.doc.recompute()
+        self.assertAlmostEqual(second.Shape.Volume, both, places=6)

@@ -28,6 +28,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/SheetDesign/SheetDesignGlobal.h>
 
 #include "SheetModel.h"
@@ -42,7 +43,7 @@ namespace SheetDesign
  * Each feature holds the model that results from its operation. The shape of the feature is the
  * folded solid of that model.
  */
-class SheetDesignExport Feature: public Part::Feature
+class SheetDesignExport Feature: public PartDesign::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Feature);
 
@@ -59,11 +60,21 @@ public:
 
     const char* getViewProviderName() const override
     {
-        return "PartGui::ViewProviderPart";
+        return "PartDesignGui::ViewProvider";
     }
+
+    /// The transformation from the coordinates of the container of an object into the
+    /// coordinates of the container of this feature. A container is, for example, a Body.
+    gp_Trsf toLocal(const App::DocumentObject* object) const;
 
 protected:
     virtual std::shared_ptr<SheetModel> buildModel();
+
+    /// The sheet design feature that this feature continues. Null for an Entry.
+    virtual App::DocumentObject* modelSource() const
+    {
+        return nullptr;
+    }
     static std::shared_ptr<const SheetModel> sourceModel(App::DocumentObject* object);
 
 private:
@@ -148,6 +159,10 @@ public:
 
 protected:
     std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Edge.getValue();
+    }
 };
 
 /// A cut through the sheet. The profile is in the plane of a panel or of the flat pattern.
@@ -164,6 +179,10 @@ public:
 
 protected:
     std::shared_ptr<SheetModel> buildModel() override;
+    App::DocumentObject* modelSource() const override
+    {
+        return Source.getValue();
+    }
 };
 
 /// The flat pattern of a sheet design feature: one face and the bend center lines.

@@ -161,7 +161,7 @@ std::vector<TopoDS_Face> collectFaces(const TopoDS_Shape& shape)
     return faces;
 }
 
-TopoDS_Shape profileShape(App::DocumentObject* object)
+TopoDS_Shape profileShape(App::DocumentObject* object, const gp_Trsf& toLocal)
 {
     if (!object) {
         throw Base::ValueError("Sheet design: no profile is set");
@@ -173,6 +173,8 @@ TopoDS_Shape profileShape(App::DocumentObject* object)
     if (shape.IsNull()) {
         throw Base::ValueError("Sheet design: the profile has no shape");
     }
+    // The shape is in the coordinates of its container. Move it into those of the feature.
+    shape.Move(TopLoc_Location(toLocal));
     return shape;
 }
 
@@ -228,9 +230,9 @@ SheetParams readRule(const App::DocumentObject* rule)
  *
  * @param placement  Receives the transformation from flat space to the position of the profile.
  */
-TopoDS_Face flatProfile(App::DocumentObject* object, gp_Trsf& placement)
+TopoDS_Face flatProfile(App::DocumentObject* object, gp_Trsf& placement, const gp_Trsf& toLocal)
 {
-    const TopoDS_Shape shape = profileShape(object);
+    const TopoDS_Shape shape = profileShape(object, toLocal);
 
     // Use the placement of the profile object if the profile is in its XY plane. This keeps the
     // flat coordinates equal to the sketch coordinates.
@@ -293,7 +295,7 @@ App::DocumentObjectExecReturn* failure(const char* message)
 
 // ------------------------------------------------------------------------------------------------
 
-PROPERTY_SOURCE(SheetDesign::Feature, Part::Feature)
+PROPERTY_SOURCE(SheetDesign::Feature, PartDesign::Feature)
 
 Feature::Feature()
 {
@@ -319,8 +321,24 @@ std::shared_ptr<SheetModel> Feature::buildModel()
     throw Base::NotImplementedError("Sheet design: this feature has no model");
 }
 
+gp_Trsf Feature::toLocal(const App::DocumentObject* object) const
+{
+    // The placement of an object is in the coordinates of its container. The shape of a
+    // profile in a different container must go through global coordinates.
+    auto containerOf = [](const App::DocumentObject* item) {
+        auto* geo = freecad_cast<const App::GeoFeature*>(item);
+        return geo ? geo->globalPlacement() * geo->Placement.getValue().inverse() : Base::Placement();
+    };
+    const Base::Placement relative = containerOf(this).inverse() * containerOf(object);
+    return Part::TopoShape::convert(relative.toMatrix());
+}
+
 std::shared_ptr<const SheetModel> Feature::getModel()
 {
+    // A suppressed feature gives the model of the feature before it.
+    if (Suppressed.getValue() && modelSource()) {
+        return sourceModel(modelSource());
+    }
     if (!model) {
         model = buildModel();
     }
@@ -331,7 +349,10 @@ std::shared_ptr<const SheetModel> Feature::sourceModel(App::DocumentObject* obje
 {
     auto* feature = freecad_cast<Feature*>(object);
     if (!feature) {
-        throw Base::ValueError("Sheet design: the source is not a sheet design feature");
+        throw Base::ValueError(
+            "Sheet design: the source is not a sheet design feature. Use Unfold to continue from "
+            "the solid of a different feature"
+        );
     }
     return feature->getModel();
 }
@@ -382,13 +403,15 @@ BasePanel::BasePanel()
         App::Prop_None,
         "Object with the properties Thickness, BendRadius, and KFactor"
     );
+    Profile.setScope(App::LinkScope::Global);
+    Rule.setScope(App::LinkScope::Global);
 }
 
 std::shared_ptr<SheetModel> BasePanel::buildModel()
 {
     const SheetParams params = readRule(Rule.getValue());
     gp_Trsf placement;
-    const TopoDS_Face face = flatProfile(Profile.getValue(), placement);
+    const TopoDS_Face face = flatProfile(Profile.getValue(), placement, toLocal(Profile.getValue()));
     return std::make_shared<SheetModel>(
         SheetModel::makeBase(face, placement, params, getNameInDocument())
     );
@@ -424,16 +447,19 @@ Refold::Refold()
         App::Prop_None,
         "Object with the properties Thickness, BendRadius, and KFactor"
     );
+    Profile.setScope(App::LinkScope::Global);
+    BendLines.setScope(App::LinkScope::Global);
+    Rule.setScope(App::LinkScope::Global);
 }
 
 std::shared_ptr<SheetModel> Refold::buildModel()
 {
     const SheetParams params = readRule(Rule.getValue());
     gp_Trsf placement;
-    const TopoDS_Face face = flatProfile(Profile.getValue(), placement);
+    const TopoDS_Face face = flatProfile(Profile.getValue(), placement, toLocal(Profile.getValue()));
 
     BRepBuilderAPI_Transform toFlat(
-        profileShape(BendLines.getValue()),
+        profileShape(BendLines.getValue(), toLocal(BendLines.getValue())),
         placement.Inverted(),
         Standard_True
     );
@@ -484,6 +510,8 @@ Unfold::Unfold()
         "Object with the properties Thickness, BendRadius, and KFactor. "
         "The thickness comes from the solid"
     );
+    Face.setScope(App::LinkScope::Global);
+    Rule.setScope(App::LinkScope::Global);
 }
 
 std::shared_ptr<SheetModel> Unfold::buildModel()
@@ -493,7 +521,7 @@ std::shared_ptr<SheetModel> Unfold::buildModel()
     if (!Face.getValue() || subs.size() != 1) {
         throw Base::ValueError("Sheet design: select one flat face of a solid");
     }
-    const TopoDS_Shape solid = profileShape(Face.getValue());
+    const TopoDS_Shape solid = profileShape(Face.getValue(), toLocal(Face.getValue()));
     const TopoDS_Shape sub = Part::TopoShape(solid).getSubShape(subs.front().c_str());
     if (sub.IsNull() || sub.ShapeType() != TopAbs_FACE) {
         throw Base::ValueError("Sheet design: select one flat face of a solid");
@@ -547,9 +575,14 @@ Flange::Flange()
 
 std::shared_ptr<SheetModel> Flange::buildModel()
 {
-    auto* source = freecad_cast<Feature*>(Edge.getValue());
     const std::vector<std::string>& subs = Edge.getSubValues();
-    if (!source || subs.size() != 1) {
+    if (!Edge.getValue() || subs.size() != 1) {
+        throw Base::ValueError("Sheet design: select one edge of a sheet design feature");
+    }
+    // This gives the error for a source that has a solid but no sheet model.
+    sourceModel(Edge.getValue());
+    auto* source = freecad_cast<Feature*>(Edge.getValue());
+    if (!source) {
         throw Base::ValueError("Sheet design: select one edge of a sheet design feature");
     }
     auto result = std::make_shared<SheetModel>(*sourceModel(source));
@@ -611,12 +644,15 @@ Cut::Cut()
         "Folded: the profile is on a panel. Flat: the profile is on the flat pattern"
     );
     Space.setEnums(SpaceEnums);
+    Profile.setScope(App::LinkScope::Global);
 }
 
 std::shared_ptr<SheetModel> Cut::buildModel()
 {
     auto result = std::make_shared<SheetModel>(*sourceModel(Source.getValue()));
-    const std::vector<TopoDS_Face> faces = collectFaces(profileShape(Profile.getValue()));
+    const std::vector<TopoDS_Face> faces = collectFaces(
+        profileShape(Profile.getValue(), toLocal(Profile.getValue()))
+    );
     result->cut(makeCompound(faces), Space.getValue() == 1, getNameInDocument());
     return result;
 }
@@ -630,6 +666,7 @@ FlatPattern::FlatPattern()
 {
     ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Sheet design feature");
     ADD_PROPERTY_TYPE(BendLines, (true), "Sheet Design", App::Prop_None, "Add the bend center lines");
+    Source.setScope(App::LinkScope::Global);
 }
 
 App::DocumentObjectExecReturn* FlatPattern::execute()
@@ -645,6 +682,9 @@ App::DocumentObjectExecReturn* FlatPattern::execute()
         builder.MakeCompound(compound);
         // Put the flat pattern in the plane of the root panel. The compound keeps an identity
         // location, because a Part feature replaces that location with its placement.
+        // The model is in the coordinates of the container of its feature, for example its
+        // Body. The flat pattern uses the same coordinates. It does not follow a later move of
+        // the Body, because a move of a Body does not recompute its features.
         const TopLoc_Location root(sheet->rootPlacement());
         const TopoDS_Shape flat = sheet->makeFlat();
         builder.Add(compound, flat.Moved(root));

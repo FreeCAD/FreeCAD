@@ -76,6 +76,42 @@ def _is_rule(obj):
     return all(hasattr(obj, name) for name in RULE_PROPERTIES)
 
 
+def _body_of(obj):
+    """Return the PartDesign Body that holds the object, or None."""
+    parent = obj.getParentGeoFeatureGroup() if hasattr(obj, "getParentGeoFeatureGroup") else None
+    if parent is not None and parent.isDerivedFrom("PartDesign::Body"):
+        return parent
+    return None
+
+
+def _body_for(doc, *objects):
+    """Return the Body for a new feature: that of an input, the active Body, or a new Body."""
+    for obj in objects:
+        body = _body_of(obj)
+        if body is not None:
+            return body
+    view = FreeCADGui.ActiveDocument.ActiveView if FreeCADGui.ActiveDocument else None
+    body = view.getActiveObject("pdbody") if hasattr(view, "getActiveObject") else None
+    if body is not None and body.Document == doc:
+        return body
+    return doc.addObject("PartDesign::Body", "Body")
+
+
+def _adopt(body, obj):
+    """Put a sketch that has no Body into the Body, thus the part is in one container."""
+    if _body_of(obj) is None and obj.isDerivedFrom("Part::Part2DObject"):
+        if obj.getParentGeoFeatureGroup() is None:
+            body.addObject(obj)
+
+
+def _new_after(source, type_name, name):
+    """Add a feature to the Body of its source. A source with no Body gives a plain object."""
+    body = _body_of(source)
+    if body is None:
+        return source.Document.addObject(type_name, name)
+    return body.newObject(type_name, name)
+
+
 def _find_rule(doc):
     """Return the first rule of the document. Make one if the document has none."""
     for obj in doc.Objects:
@@ -139,7 +175,9 @@ class CommandBase(_Command):
         profile = FreeCADGui.Selection.getSelection()[0]
         doc = profile.Document
         doc.openTransaction("Base Panel")
-        obj = doc.addObject("SheetDesign::BasePanel", "BasePanel")
+        body = _body_for(doc, profile)
+        _adopt(body, profile)
+        obj = body.newObject("SheetDesign::BasePanel", "BasePanel")
         obj.Rule = _find_rule(doc)
         obj.Profile = profile
         _finish(doc, hide=[profile])
@@ -167,7 +205,10 @@ class CommandRefold(_Command):
         profile, lines = self._pick()
         doc = profile.Document
         doc.openTransaction("Refold")
-        obj = doc.addObject("SheetDesign::Refold", "Refold")
+        body = _body_for(doc, profile, lines)
+        _adopt(body, profile)
+        _adopt(body, lines)
+        obj = body.newObject("SheetDesign::Refold", "Refold")
         obj.Rule = _find_rule(doc)
         obj.Profile = profile
         obj.BendLines = lines
@@ -200,7 +241,7 @@ class CommandUnfold(_Command):
         source, face = self._pick()
         doc = source.Document
         doc.openTransaction("Unfold")
-        obj = doc.addObject("SheetDesign::Unfold", "Unfold")
+        obj = _body_for(doc, source).newObject("SheetDesign::Unfold", "Unfold")
         obj.Rule = _find_rule(doc)
         obj.Face = (source, [face])
         flat = doc.addObject("SheetDesign::FlatPattern", "FlatPattern")
@@ -230,7 +271,7 @@ class CommandFlange(_Command):
             if name is None:
                 FreeCAD.Console.PrintWarning("Sheet design: an edge was not found after a flange\n")
                 continue
-            obj = doc.addObject("SheetDesign::Flange", "Flange")
+            obj = _new_after(source, "SheetDesign::Flange", "Flange")
             obj.Edge = (source, [name])
             _advance_flat_patterns(source, obj)
             source.ViewObject.hide()
@@ -278,7 +319,7 @@ class CommandCut(_Command):
         source, profile = self._pick()
         doc = source.Document
         doc.openTransaction(self.menu)
-        obj = doc.addObject("SheetDesign::Cut", "Cut")
+        obj = _new_after(source, "SheetDesign::Cut", "Cut")
         obj.Source = source
         obj.Profile = profile
         obj.Space = self.space

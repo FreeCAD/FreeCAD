@@ -49,6 +49,8 @@ PyMOD_INIT_FUNC(SheetDesign)
 {
     try {
         Base::Interpreter().runString("import Part");
+        // The features are PartDesign features, thus a PartDesign Body accepts them.
+        Base::Interpreter().runString("import _PartDesign");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
