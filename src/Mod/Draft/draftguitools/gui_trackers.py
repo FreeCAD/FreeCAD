@@ -1147,7 +1147,6 @@ class gridTracker(Tracker):
 
     def __init__(self, doc_name=None):
         self.doc_name = doc_name
-        col, red, green, blue, gtrans = self.getGridColors()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
@@ -1155,14 +1154,13 @@ class gridTracker(Tracker):
 
         # small squares
         self.mat1 = coin.SoMaterial()
-        self.mat1.transparency.setValue(0.8 * (1 - gtrans))
-        self.mat1.diffuseColor.setValue(col)
         self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
         self.lines1 = coin.SoLineSet()  # small squares
 
         # texts
         texts = coin.SoSeparator()
+        self._text_material = coin.SoMaterial()
         t1 = coin.SoSeparator()
         self.textpos1 = coin.SoTransform()
         self.text1 = coin.SoAsciiText()
@@ -1176,34 +1174,25 @@ class gridTracker(Tracker):
         t1.addChild(self.text1)
         t2.addChild(self.textpos2)
         t2.addChild(self.text2)
+        texts.addChild(self._text_material)
         texts.addChild(self.font)
         texts.addChild(t1)
         texts.addChild(t2)
 
         # big squares
         self.mat2 = coin.SoMaterial()
-        self.mat2.transparency.setValue(0.2 * (1 - gtrans))
-        self.mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
         self.lines2 = coin.SoLineSet()  # big squares
 
         # human figure
-        mat_human = coin.SoMaterial()
-        mat_human.transparency.setValue(0.3 * (1 - gtrans))
-        mat_human.diffuseColor.setValue(col)
+        self._human_material = coin.SoMaterial()
         self.coords_human = coin.SoCoordinate3()
         self.human = coin.SoLineSet()
 
         # axes
-        self.mat3 = coin.SoMaterial()
-        self.mat3.transparency.setValue(gtrans)
-        self.mat3.diffuseColor.setValues([col, red, green, blue])
+        self._axis_materials = (coin.SoMaterial(), coin.SoMaterial())
+        self._axis_color_indices = (0, 0)
         self.coords3 = coin.SoCoordinate3()
-        self.lines3 = coin.SoIndexedLineSet()  # axes
-        self.lines3.coordIndex.setValues(0, 5, [0, 1, -1, 2, 3])
-        self.lines3.materialIndex.setValues(0, 2, [0, 0])
-        mbind3 = coin.SoMaterialBinding()
-        mbind3.value = coin.SoMaterialBinding.PER_PART_INDEXED
 
         self.pts = []
         s = coin.SoType.fromName("SoSkipBoundingGroup").createInstance()
@@ -1215,13 +1204,19 @@ class gridTracker(Tracker):
         s.addChild(self.mat2)
         s.addChild(self.coords2)
         s.addChild(self.lines2)
-        s.addChild(mat_human)
+        s.addChild(self._human_material)
         s.addChild(self.coords_human)
         s.addChild(self.human)
-        s.addChild(mbind3)
-        s.addChild(self.mat3)
-        s.addChild(self.coords3)
-        s.addChild(self.lines3)
+        # Separate materials preserve the axis colors during transparent rendering.
+        for index, material in enumerate(self._axis_materials):
+            axis = coin.SoSeparator()
+            line = coin.SoLineSet()
+            line.startIndex.setValue(2 * index)
+            line.numVertices.setValue(2)
+            axis.addChild(material)
+            axis.addChild(self.coords3)
+            axis.addChild(line)
+            s.addChild(axis)
         s.addChild(texts)
 
         super().__init__(children=[s], name="gridTracker")
@@ -1231,6 +1226,7 @@ class gridTracker(Tracker):
 
     def update(self):
         """Redraw the grid."""
+        self._update_grid_materials()
         # Resize the grid to make sure it fits
         # an exact pair number of main lines
         if self.space == 0:
@@ -1277,14 +1273,11 @@ class gridTracker(Tracker):
         if pts != self.pts:
             idx = []
             midx = []
-            # aidx = []
             cidx = []
             for p in range(0, len(pts), 2):
                 idx.append(2)
             for mp in range(0, len(mpts), 2):
                 midx.append(2)
-            # for ap in range(0, len(apts), 2):
-            #    aidx.append(2)
             for cp in range(0, len(cpts), 2):
                 cidx.append(2)
 
@@ -1320,20 +1313,34 @@ class gridTracker(Tracker):
 
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
-            # self.lines3.numVertices.deleteValues(0)
             self.coords1.point.setValues(pts)
             self.lines1.numVertices.setValues(idx)
             self.coords2.point.setValues(mpts)
             self.lines2.numVertices.setValues(midx)
             self.coords3.point.setValues(apts)
-            # self.lines3.numVertices.setValues(aidx)
             self.pts = pts
 
-        # update the grid colors
+    def _update_grid_materials(self):
         col, red, green, blue, gtrans = self.getGridColors()
         self.mat1.diffuseColor.setValue(col)
         self.mat2.diffuseColor.setValue(col)
-        self.mat3.diffuseColor.setValues([col, red, green, blue])
+        self._human_material.diffuseColor.setValue(col)
+        self._text_material.diffuseColor.setValue(col)
+        self._axis_colors = (col, red, green, blue)
+        self._update_axis_colors()
+
+        # Fade each material from its default transparency to fully transparent.
+        opacity = 1 - gtrans
+        self.mat1.transparency.setValue(1 - 0.2 * opacity)
+        self.mat2.transparency.setValue(1 - 0.8 * opacity)
+        self._human_material.transparency.setValue(1 - 0.7 * opacity)
+        self._text_material.transparency.setValue(gtrans)
+        for material in self._axis_materials:
+            material.transparency.setValue(gtrans)
+
+    def _update_axis_colors(self):
+        for material, index in zip(self._axis_materials, self._axis_color_indices):
+            material.diffuseColor.setValue(self._axis_colors[index])
 
     def getGridColors(self):
         """Returns grid colors stored in the preferences"""
@@ -1481,7 +1488,8 @@ class gridTracker(Tracker):
                 cols[1] = 2
             elif round(wp.v.getAngle(FreeCAD.Vector(0, 0, 1)), 2) in (0, 3.14):
                 cols[1] = 3
-        self.lines3.materialIndex.setValues(0, 2, cols)
+        self._axis_color_indices = cols
+        self._update_axis_colors()
 
     def setSize(self, size):
         """Set size of the lines and update."""
