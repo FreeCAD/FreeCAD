@@ -963,7 +963,10 @@ def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
 def _equation_creator(creator, base_solver, doc, name):
     eq = creator.create(doc, name)
     if base_solver:
-        eq.Priority = 255 - len(base_solver.Group)
+        # The creator's priority encodes solver dependencies; same-priority
+        # equations already keep their creation order in the sif writer.
+        if eq.Priority == 0:
+            eq.Priority = 255 - len(base_solver.Group)
         base_solver.addObject(eq)
     return eq
 
