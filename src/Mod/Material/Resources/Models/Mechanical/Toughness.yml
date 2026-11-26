@@ -38,8 +38,17 @@ Model:
       Charpy impact test is a high strain rate test which determines
       the amount of energy absorbed by a material during fracture.
       Category: Fracture Mechanics, Material testing.
+  NotchConcentration:
+    DisplayName: "Notch Concentration Factor (Kₜ)"
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Notch_tensile_strength'
+    Description: >
+      Notch Tensile Strength (NTS) theoretical stress multiplier Kₜ
+      is a [unitless] ratio between a notch, edge, crack, or holed
+      geometry versus a uniform polished part.
   NotchTensileStrength:
-    DisplayName: "Notch Tensile Strength"
+    DisplayName: "Notch Tensile Strength (NTS)"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Notch_tensile_strength'

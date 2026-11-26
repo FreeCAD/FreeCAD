@@ -4,7 +4,7 @@ General:
   UUID: "a014c57e-72e8-4fd2-99bd-a7583026a2b1"
   Name: "Copper-706"
   Author: "Joe Da Silva"
-  License: "LGPL-2.0-or-later"
+  License: "LGPL-2.1-or-later"
   SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
   ReferenceSource: "144-8-mechanical.pdf"
   Tags:
@@ -57,6 +57,7 @@ Models:
   Toughness:
     UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
     ImpactCharpy: "155 J"
+    NotchConcentration: "5.0"
     NotchTensileStrength: "448 MPa"
   IsotropicLinearElasticArrays:
     UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
@@ -77,8 +78,8 @@ Models:
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:
-      - [["295 K", "155 J", "448 MPa"],
-         ["195 K", "153 J", "504 MPa"],
-         ["76 K",  "160 J", "601 MPa"],
-         ["20 K",  "157 J", "667 MPa"],
-         ["4 K",   "",      "689 MPa"]]
+      - [["295 K", "155 J", "448 MPa", "5.0"],
+         ["195 K", "153 J", "504 MPa", "5.0"],
+         ["76 K",  "160 J", "601 MPa", "5.0"],
+         ["20 K",  "157 J", "667 MPa", "5.0"],
+         ["4 K",   "",      "689 MPa", "5.0"]]

@@ -45,7 +45,7 @@ Model:
           the amount of energy absorbed by a material during fracture.
           Category: Fracture Mechanics, Material testing.
       NotchTensileStrength:
-        DisplayName: "Notch Tensile Strength"
+        DisplayName: "Notch Tensile Strength (NTS)"
         Type: 'Quantity'
         Units: 'kPa'
         URL: 'https://en.wikipedia.org/wiki/Notch_tensile_strength'
@@ -53,3 +53,12 @@ Model:
           Notch Tensile strength (NTS) of a material is the value given
           by performing a Standard Tensile Strength Test using a notched
           specimen of the material.
+      NotchConcentration:
+        DisplayName: "Notch Concentration Factor (Kₜ)"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Notch_tensile_strength'
+        Description: >
+          Notch Tensile Strength (NTS) theoretical stress multiplier Kₜ
+          is a [unitless] ratio between a notch, edge, crack, or holed
+          geometry versus a uniform polished part.

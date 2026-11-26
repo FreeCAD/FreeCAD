@@ -4,7 +4,7 @@ General:
   UUID: "e626d02d-48b6-4d2f-a960-1cc7a9b11656"
   Name: "Copper-122a"
   Author: "Joe Da Silva"
-  License: "LGPL-2.0-or-later"
+  License: "LGPL-2.1-or-later"
   SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
   ReferenceSource: "144-8-mechanical.pdf"
   Tags:
@@ -59,6 +59,7 @@ Models:
   Toughness:
     UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
     ImpactCharpy: "150 J"
+    NotchConcentration: "5.0"
     NotchTensileStrength: "299 MPa"
   IsotropicLinearElasticArrays:
     UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
@@ -79,8 +80,8 @@ Models:
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:
-      - [["295 K", "150 J", "299 MPa"],
-         ["195 K", "152 J", "347 MPa"],
-         ["76 K",  "152 J", "430 MPa"],
-         ["20 K",  "160 J", "496 MPa"],
-         ["4 K",   "",      "515 MPa"]]
+      - [["295 K", "150 J", "299 MPa", "5.0"],
+         ["195 K", "152 J", "347 MPa", "5.0"],
+         ["76 K",  "152 J", "430 MPa", "5.0"],
+         ["20 K",  "160 J", "496 MPa", "5.0"],
+         ["4 K",   "",      "515 MPa", "5.0"]]
