@@ -68,6 +68,7 @@ if debug:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
 def trim_trailing_zeros(value: str) -> str:
     """Remove insignificant trailing zeros while keeping one decimal place."""
     if "." not in value:
@@ -79,6 +80,7 @@ def trim_trailing_zeros(value: str) -> str:
         value += ".0"
 
     return value
+
 
 def _sanitize_comment(string) -> str:
     """shared sanitizer"""

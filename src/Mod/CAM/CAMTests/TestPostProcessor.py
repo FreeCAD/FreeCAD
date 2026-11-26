@@ -1384,6 +1384,7 @@ class TestAddSpindleHelper(unittest.TestCase):
         self.assertEqual(toolhead.max_rpm, 24000)
         self.assertEqual(toolhead.min_rpm, 6000)
 
+
 class TestTrimTrailingZeros(unittest.TestCase):
     """Tests for optional trimming of trailing zeros in formatted values."""
 
@@ -1400,10 +1401,7 @@ class TestTrimTrailingZeros(unittest.TestCase):
 
     def test_preference_is_disabled_by_default(self):
         schema = PostProcessor.get_common_property_schema()
-        prop = next(
-            item for item in schema
-            if item["name"] == "trim_trailing_zeros"
-        )
+        prop = next(item for item in schema if item["name"] == "trim_trailing_zeros")
 
         self.assertFalse(prop["default"])
 
