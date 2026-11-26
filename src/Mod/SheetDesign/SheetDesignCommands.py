@@ -80,9 +80,33 @@ def make_rule(doc):
         "Sheet",
         translate("SheetDesign", "Depth of the relief, from the bend line into the panel"),
     )
+    rule.addProperty(
+        "App::PropertyEnumeration",
+        "KFactorStandard",
+        "Sheet",
+        translate("SheetDesign", "Convention of the K-factor. A DIN value is two times the ANSI value"),
+    )
+    rule.addProperty(
+        "App::PropertyFloatList",
+        "KFactorRatios",
+        "Sheet",
+        translate(
+            "SheetDesign",
+            "Optional K-factor table: the ratios of bend radius to thickness. A bend uses the "
+            "first ratio that is not smaller than its own ratio",
+        ),
+    )
+    rule.addProperty(
+        "App::PropertyFloatList",
+        "KFactorValues",
+        "Sheet",
+        translate("SheetDesign", "Optional K-factor table: the K-factor for each ratio"),
+    )
     rule.Thickness = 1.0
     rule.BendRadius = 1.0
     rule.KFactor = 0.5
+    rule.KFactorStandard = ["ANSI", "DIN"]
+    rule.KFactorStandard = "ANSI"
     rule.ReliefType = ["None", "Rectangle", "Round"]
     rule.ReliefType = "None"
     rule.ReliefWidth = 1.0
@@ -381,10 +405,10 @@ class CommandFlatPattern(_Command):
         _finish(doc)
 
 
-class CommandExportDxf(_Command):
+class CommandExport(_Command):
     name = "SheetDesign_ExportDxf"
     menu = "Export Flat Pattern…"
-    tip = "Exports the selected flat pattern to a DXF file"
+    tip = "Exports the selected flat pattern to a DXF or an SVG file with layers"
 
     def IsActive(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -398,12 +422,12 @@ class CommandExportDxf(_Command):
             FreeCADGui.getMainWindow(),
             translate("SheetDesign", "Export Flat Pattern"),
             flat.Label + ".dxf",
-            "DXF (*.dxf)",
+            "DXF (*.dxf);;SVG (*.svg)",
         )
         if path:
-            import SheetDesignDxf
+            import SheetDesignExport
 
-            SheetDesignDxf.export_dxf(flat, path)
+            SheetDesignExport.export(flat, path)
 
 
 def register():
@@ -416,7 +440,7 @@ def register():
         CommandCut,
         CommandCutFlat,
         CommandFlatPattern,
-        CommandExportDxf,
+        CommandExport,
     ]
     for command in commands:
         FreeCADGui.addCommand(command.name, command())

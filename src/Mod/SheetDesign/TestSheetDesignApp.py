@@ -288,20 +288,6 @@ class TestSheetDesign(unittest.TestCase):
             flat.Shape.BoundBox.XLength, self.LENGTH + self.allowance() + 20.0, places=6
         )
 
-    def test_dxf_export(self):
-        import SheetDesignDxf
-
-        flange = self.add_end_flange(self.add_base())
-        flat = self.add_flat(flange)
-        path = os.path.join(tempfile.mkdtemp(), "flat.dxf")
-        count = len(self.doc.Objects)
-        SheetDesignDxf.export_dxf(flat, path)
-        self.assertEqual(len(self.doc.Objects), count)
-        with open(path, encoding="utf-8", errors="replace") as handle:
-            content = handle.read()
-        self.assertIn("ENTITIES", content)
-        self.assertGreaterEqual(content.count("\nLINE"), 5)
-
     def test_profile_with_holes(self):
         outer = Part.makePolygon([V(0, 0, 0), V(60, 0, 0), V(60, 40, 0), V(0, 40, 0), V(0, 0, 0)])
         holes = [Part.Wire(Part.makeCircle(2.0, V(10 + 10 * i, 20, 0))) for i in range(5)]
@@ -1465,3 +1451,236 @@ class TestSheetDesign(unittest.TestCase):
         self.assertTrue({f"{flange.Name}_Top", f"{flange.Name}_S2_Top"} <= faces)
         more = self.add_flange(flange, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=10.0)
         self.assertSolid(more)
+
+    # ----------------------------------------------------------- bend data and file export
+
+    def part_for_export(self):
+        """A base with a hole, one flange up and one flange down."""
+        base = self.add_base()
+        up = self.add_end_flange(base)
+        down = self.add_flange(up, V(0, 0, 0), V(0, self.WIDTH, 0), Length=15.0, Angle=45.0)
+        hole = Part.Face(Part.Wire(Part.makeCircle(5.0, V(50, 25, 0))))
+        cut = self.add_cut(down, self.add_shape(hole, "Hole"), "Flat")
+        return self.add_flat(cut)
+
+    def dxf_entities(self, text):
+        """Return (type, layer, values) for each entity of a DXF text."""
+        lines = text.splitlines()
+        pairs = [(lines[i].strip(), lines[i + 1].strip()) for i in range(0, len(lines) - 1, 2)]
+        start = pairs.index(("2", "ENTITIES"))
+        entities = []
+        for code, value in pairs[start + 1 :]:
+            if code == "0":
+                entities.append([value, None, {}])
+            elif code == "8":
+                entities[-1][1] = value
+            else:
+                entities[-1][2][code] = value
+        return [tuple(entity) for entity in entities if entity[0] not in ("ENDSEC", "EOF")]
+
+    def test_flat_pattern_gives_the_bend_data(self):
+        flat = self.part_for_export()
+        self.assertEqual([round(a, 6) for a in flat.BendAngles], [90.0, -45.0])
+        self.assertEqual([round(r, 6) for r in flat.BendRadii], [self.R, self.R])
+
+    def test_dxf_has_a_layer_for_each_kind_of_line(self):
+        import SheetDesignExport
+
+        flat = self.part_for_export()
+        text = SheetDesignExport.dxf_text(flat)
+        entities = self.dxf_entities(text)
+        by_layer = {}
+        for kind, layer, _values in entities:
+            by_layer.setdefault(layer, []).append(kind)
+        # The outline is four lines. The hole is one circle. Each bend is one line.
+        self.assertEqual(sorted(by_layer["OUTLINE"]), ["LINE"] * 4)
+        self.assertEqual(by_layer["CUTOUT"], ["CIRCLE"])
+        self.assertEqual(by_layer["BEND_UP"], ["LINE"])
+        self.assertEqual(by_layer["BEND_DOWN"], ["LINE"])
+        self.assertEqual(sorted(by_layer["BEND_TEXT"]), ["TEXT", "TEXT"])
+        texts = sorted(values["1"] for kind, _layer, values in entities if kind == "TEXT")
+        self.assertEqual(texts, ["DOWN 45%%d R1", "UP 90%%d R1"])
+        # The bend layers have the dashed line type.
+        self.assertIn("BEND_UP\n70\n0\n62\n3\n6\nDASHED", text)
+        self.assertIn("OUTLINE\n70\n0\n62\n7\n6\nCONTINUOUS", text)
+        # The file is in the XY plane and starts at the left end of the down flange.
+        xs = [float(v["10"]) for kind, layer, v in entities if layer == "OUTLINE"]
+        self.assertAlmostEqual(min(xs), -(self.allowance(45.0) + 15.0), places=5)
+
+    def test_dxf_without_labels(self):
+        import SheetDesignExport
+
+        text = SheetDesignExport.dxf_text(self.part_for_export(), labels=False)
+        self.assertNotIn("TEXT", [kind for kind, _layer, _values in self.dxf_entities(text)])
+
+    def test_dxf_arcs_and_curves(self):
+        import SheetDesignExport
+
+        outline = [
+            Part.makeLine(V(0, 0, 0), V(80, 0, 0)),
+            Part.Arc(V(80, 0, 0), V(80 + 20 * math.sin(math.pi / 4), 20 - 20 * math.cos(math.pi / 4), 0), V(100, 20, 0)).toShape(),
+            Part.makeLine(V(100, 20, 0), V(100, 50, 0)),
+            Part.makeLine(V(100, 50, 0), V(0, 50, 0)),
+            Part.makeLine(V(0, 50, 0), V(0, 0, 0)),
+        ]
+        ellipse = Part.Wire(Part.Ellipse(V(40, 25, 0), 12.0, 6.0).toShape())
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
+        base.Profile = self.add_shape(Part.makeCompound([Part.Wire(outline), ellipse]))
+        base.Rule = self.rule
+        self.doc.recompute()
+        self.assertSolid(base)
+        entities = self.dxf_entities(SheetDesignExport.dxf_text(self.add_flat(base)))
+        arcs = [values for kind, layer, values in entities if kind == "ARC"]
+        self.assertEqual(len(arcs), 1)
+        # The arc is a quarter with its center at (80, 20).
+        self.assertAlmostEqual(float(arcs[0]["10"]), 80.0, places=5)
+        self.assertAlmostEqual(float(arcs[0]["40"]), 20.0, places=5)
+        swept = (float(arcs[0]["51"]) - float(arcs[0]["50"])) % 360.0
+        self.assertAlmostEqual(swept, 90.0, places=4)
+        # An ellipse has no DXF R12 entity: it is a polyline on the layer of the openings.
+        kinds = [kind for kind, layer, _values in entities if layer == "CUTOUT"]
+        self.assertEqual(kinds[0], "POLYLINE")
+        self.assertGreater(kinds.count("VERTEX"), 20)
+
+    def test_svg_has_the_same_layers(self):
+        import xml.dom.minidom
+
+        import SheetDesignExport
+
+        flat = self.part_for_export()
+        text = SheetDesignExport.svg_text(flat)
+        document = xml.dom.minidom.parseString(text)
+        groups = {g.getAttribute("id"): g for g in document.getElementsByTagName("g")}
+        self.assertEqual(sorted(groups), ["BEND_DOWN", "BEND_TEXT", "BEND_UP", "CUTOUT", "OUTLINE"])
+        self.assertEqual(len(groups["OUTLINE"].getElementsByTagName("path")), 1)
+        self.assertEqual(len(groups["CUTOUT"].getElementsByTagName("path")), 1)
+        self.assertEqual(len(groups["BEND_UP"].getElementsByTagName("line")), 1)
+        self.assertIn("stroke-dasharray", groups["BEND_UP"].toxml())
+        self.assertNotIn("stroke-dasharray", groups["OUTLINE"].toxml())
+        labels = sorted(node.firstChild.data for node in document.getElementsByTagName("text"))
+        self.assertEqual(labels, ["DOWN 45° R1", "UP 90° R1"])
+        # The size of the drawing is the size of the flat pattern, with a margin, in mm.
+        svg = document.documentElement
+        box = flat.Shape.BoundBox
+        self.assertAlmostEqual(float(svg.getAttribute("width")[:-2]), box.XLength + 10.0, places=2)
+        self.assertTrue(svg.getAttribute("width").endswith("mm"))
+
+    def test_svg_arc_turns_in_the_direction_of_the_part(self):
+        import re
+
+        import SheetDesignExport
+
+        outline = [
+            Part.makeLine(V(0, 0, 0), V(80, 0, 0)),
+            Part.Arc(V(80, 0, 0), V(80 + 20 * math.sin(math.pi / 4), 20 - 20 * math.cos(math.pi / 4), 0), V(100, 20, 0)).toShape(),
+            Part.makeLine(V(100, 20, 0), V(100, 50, 0)),
+            Part.makeLine(V(100, 50, 0), V(0, 50, 0)),
+            Part.makeLine(V(0, 50, 0), V(0, 0, 0)),
+        ]
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
+        base.Profile = self.add_shape(Part.Wire(outline))
+        base.Rule = self.rule
+        self.doc.recompute()
+        text = SheetDesignExport.svg_text(self.add_flat(base))
+        found = re.search(r"([-\d.]+) ([-\d.]+) A [\d.]+ [\d.]+ 0 (\d) (\d) ([-\d.]+) ([-\d.]+)", text)
+        self.assertIsNotNone(found)
+        x0, y0, large, sweep, x1, y1 = (float(v) for v in found.groups())
+        # Back to the coordinates of the part: Y up, with the margin of 5 mm.
+        y0, y1 = 55.0 - y0, 55.0 - y1
+        # The center of the corner is (80, 20). The direction of travel around it:
+        turn = (x0 - 80.0) * (y1 - 20.0) - (y0 - 20.0) * (x1 - 80.0)
+        self.assertEqual(large, 0)
+        self.assertEqual(sweep, 0 if turn > 0 else 1)
+
+    def test_export_selects_the_format_by_the_file_name(self):
+        import SheetDesignExport
+
+        flat = self.part_for_export()
+        folder = tempfile.mkdtemp()
+        count = len(self.doc.Objects)
+        SheetDesignExport.export(flat, os.path.join(folder, "part.dxf"))
+        SheetDesignExport.export(flat, os.path.join(folder, "part.SVG"))
+        self.assertEqual(len(self.doc.Objects), count)
+        with open(os.path.join(folder, "part.dxf"), encoding="utf-8") as handle:
+            self.assertTrue(handle.read().endswith("EOF\n"))
+        with open(os.path.join(folder, "part.SVG"), encoding="utf-8") as handle:
+            self.assertIn("<svg", handle.read())
+        with self.assertRaises(ValueError):
+            SheetDesignExport.export(flat, os.path.join(folder, "part.pdf"))
+
+    # --------------------------------------------------------------------- K-factor table
+
+    def add_k_table(self, rows=((1, 0.38), (3, 0.43), (99, 0.5)), standard=None):
+        """Put a K-factor table on the rule."""
+        self.rule.addProperty("App::PropertyFloatList", "KFactorRatios", "Sheet")
+        self.rule.addProperty("App::PropertyFloatList", "KFactorValues", "Sheet")
+        self.rule.KFactorRatios = [float(ratio) for ratio, _factor in rows]
+        self.rule.KFactorValues = [float(factor) for _ratio, factor in rows]
+        if standard:
+            self.rule.addProperty("App::PropertyEnumeration", "KFactorStandard", "Sheet")
+            self.rule.KFactorStandard = ["ANSI", "DIN"]
+            self.rule.KFactorStandard = standard
+
+    def flat_length(self, factor, radius=None):
+        radius = self.R if radius is None else radius
+        return self.LENGTH + (radius + factor * self.T) * math.pi / 2 + 20.0
+
+    def test_k_factor_table_by_the_ratio_of_radius_to_thickness(self):
+        """The same values as the test of the SheetMetal addon: 1 -> 0.38, 3 -> 0.43, 99 -> 0.5."""
+        self.add_k_table()
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        # Radius 1, thickness 2: the ratio is 0.5, thus the row of the ratio 1.
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(0.38), places=6)
+        # Radius 5: the ratio is 2.5, thus the row of the ratio 3.
+        self.rule.BendRadius = 5.0
+        self.doc.recompute()
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(0.43, 5.0), places=6)
+        # Radius 8: the ratio is 4, thus the row of the ratio 99.
+        self.rule.BendRadius = 8.0
+        self.doc.recompute()
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(0.5, 8.0), places=6)
+
+    def test_k_factor_table_change_updates_the_part(self):
+        self.add_k_table()
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        self.rule.KFactorValues = [0.30, 0.43, 0.5]
+        self.doc.recompute()
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(0.30), places=6)
+
+    def test_k_factor_table_in_the_din_convention(self):
+        self.add_k_table(rows=((1, 0.76), (99, 1.0)), standard="DIN")
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(0.38), places=6)
+
+    def test_single_k_factor_in_the_din_convention(self):
+        self.rule.addProperty("App::PropertyEnumeration", "KFactorStandard", "Sheet")
+        self.rule.KFactorStandard = ["ANSI", "DIN"]
+        self.rule.KFactorStandard = "DIN"
+        self.rule.KFactor = 0.8
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(0.4), places=6)
+
+    def test_k_factor_table_with_unequal_lists_is_rejected(self):
+        self.add_k_table()
+        self.rule.KFactorValues = [0.38, 0.43]
+        base = self.add_base()
+        self.assertFalse(base.isValid())
+        self.assertIn("K-factor table", base.getStatusString())
+
+    def test_empty_k_factor_table_uses_the_single_value(self):
+        self.add_k_table(rows=())
+        flat = self.add_flat(self.add_end_flange(self.add_base()))
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, self.flat_length(self.K), places=6)
+
+    def test_unfold_uses_the_k_factor_table_for_each_bend(self):
+        """Unfold reads the radius of each bend, and each bend gets its own row."""
+        self.add_k_table()
+        converted = self.add_unfold(self.part_bracket(), 1.0)
+        flat = self.add_flat(converted)
+        allowance = (self.R + 0.38 * self.T) * math.pi / 2
+        expected = (self.LENGTH + allowance + 20.0) * self.WIDTH - math.pi * (16.0 + 9.0)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)

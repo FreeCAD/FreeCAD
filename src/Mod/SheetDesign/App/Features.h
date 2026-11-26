@@ -214,6 +214,10 @@ public:
 
     App::PropertyLink Source;
     App::PropertyBool BendLines;
+    /// The bends, in the sequence of the bend lines of the shape. A positive angle is a bend
+    /// to the top side of the root panel (up), a negative angle is a bend down.
+    App::PropertyFloatList BendAngles;
+    App::PropertyFloatList BendRadii;
 
     App::DocumentObjectExecReturn* execute() override;
 

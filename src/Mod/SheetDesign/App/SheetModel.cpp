@@ -771,7 +771,21 @@ double SheetModel::bendAllowance(double angle) const
 
 double SheetModel::bendAllowance(double angle, double radius) const
 {
-    return (radius + params.kFactor * params.thickness) * angle;
+    return (radius + kFactorFor(radius) * params.thickness) * angle;
+}
+
+double SheetModel::kFactorFor(double radius) const
+{
+    if (params.kTable.empty()) {
+        return params.kFactor;
+    }
+    const double ratio = radius / params.thickness;
+    for (const auto& row : params.kTable) {
+        if (ratio <= row.first + 1.0e-9) {
+            return row.second;
+        }
+    }
+    return params.kTable.back().second;
 }
 
 gp_Trsf SheetModel::rootPlacement() const

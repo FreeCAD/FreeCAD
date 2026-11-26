@@ -333,6 +333,20 @@ class TaskFlatPattern(TaskPanel):
     def update(self):
         super().update()
         self.form.sourceLabel.setText(label_of(self.obj.Source))
+        # The table of the bends: what the operator of the press brake must know.
+        table = self.form.bendsTable
+        angles, radii = list(self.obj.BendAngles), list(self.obj.BendRadii)
+        table.setRowCount(len(angles))
+        table.setHorizontalHeaderLabels(
+            [translate("SheetDesign", "Direction"), translate("SheetDesign", "Angle"), translate("SheetDesign", "Radius")]
+        )
+        table.horizontalHeader().setStretchLastSection(True)
+        for row, (angle, radius) in enumerate(zip(angles, radii)):
+            direction = translate("SheetDesign", "Up") if angle >= 0 else translate("SheetDesign", "Down")
+            for column, text in enumerate((direction, f"{abs(angle):g} °", f"{radius:g} mm")):
+                item = QtGui.QTableWidgetItem(text)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+                table.setItem(row, column, item)
 
     def export(self):
         FreeCADGui.Selection.clearSelection()

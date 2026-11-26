@@ -40,6 +40,31 @@
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
+       <widget class="QTableWidget" name="bendsTable">
+        <property name="toolTip">
+         <string>The direction, the angle, and the radius of each bend</string>
+        </property>
+        <property name="columnCount">
+         <number>3</number>
+        </property>
+        <column>
+         <property name="text">
+          <string>Direction</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Angle</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Radius</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="exportButton">
         <property name="text">
          <string>Export…</string>

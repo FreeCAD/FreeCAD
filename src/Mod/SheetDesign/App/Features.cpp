@@ -218,6 +218,47 @@ double readRuleValue(const App::DocumentObject* rule, const char* name)
     return property->getValue();
 }
 
+/// Read an optional text or choice from a property of the rule object. Empty if not there.
+std::string ruleText(const App::DocumentObject* rule, const char* name)
+{
+    App::Property* property = rule->getPropertyByName(name);
+    if (auto* choice = freecad_cast<App::PropertyEnumeration*>(property)) {
+        return choice->isValid() ? choice->getValueAsString() : "";
+    }
+    if (auto* text = freecad_cast<App::PropertyString*>(property)) {
+        return text->getValue();
+    }
+    return {};
+}
+
+/**
+ * Read the optional K-factor table of the rule: the list properties KFactorRatios (bend radius /
+ * thickness) and KFactorValues (the K-factor for each ratio). Empty lists mean no table.
+ */
+void readKFactorTable(const App::DocumentObject* rule, SheetParams& params, bool din)
+{
+    auto* ratios = freecad_cast<App::PropertyFloatList*>(rule->getPropertyByName("KFactorRatios"));
+    auto* values = freecad_cast<App::PropertyFloatList*>(rule->getPropertyByName("KFactorValues"));
+    const std::size_t ratioCount = ratios ? ratios->getValues().size() : 0;
+    const std::size_t valueCount = values ? values->getValues().size() : 0;
+    if (ratioCount != valueCount) {
+        throw Base::ValueError(
+            "Sheet design: the K-factor table of the rule must have the same number of ratios "
+            "and values"
+        );
+    }
+    for (std::size_t index = 0; index < ratioCount; ++index) {
+        const double factor = values->getValues()[index];
+        params.kTable.emplace_back(ratios->getValues()[index], din ? factor / 2.0 : factor);
+    }
+    std::sort(params.kTable.begin(), params.kTable.end());
+    for (const auto& entry : params.kTable) {
+        if (entry.first < 0.0 || entry.second < 0.0 || entry.second > 1.0) {
+            throw Base::ValueError("Sheet design: a value of the K-factor table is not valid");
+        }
+    }
+}
+
 /// Read the sheet values from the rule object. The usual rule object is an App::VarSet.
 SheetParams readRule(const App::DocumentObject* rule)
 {
@@ -228,15 +269,15 @@ SheetParams readRule(const App::DocumentObject* rule)
     params.thickness = readRuleValue(rule, "Thickness");
     params.radius = readRuleValue(rule, "BendRadius");
     params.kFactor = readRuleValue(rule, "KFactor");
+    // A K-factor in the DIN convention is two times the value in the ANSI convention.
+    const bool din = ruleText(rule, "KFactorStandard") == "DIN";
+    if (din) {
+        params.kFactor /= 2.0;
+    }
+    readKFactorTable(rule, params, din);
 
     // The relief is optional in the rule. It applies to each flange that does not give its own.
-    std::string type;
-    if (auto* choice = freecad_cast<App::PropertyEnumeration*>(rule->getPropertyByName("ReliefType"))) {
-        type = choice->isValid() ? choice->getValueAsString() : "";
-    }
-    else if (auto* text = freecad_cast<App::PropertyString*>(rule->getPropertyByName("ReliefType"))) {
-        type = text->getValue();
-    }
+    const std::string type = ruleText(rule, "ReliefType");
     if (type == "Rectangle" || type == "Round") {
         params.relief.type = type == "Round" ? Relief::Round : Relief::Rectangle;
         params.relief.width = readRuleValue(rule, "ReliefWidth");
@@ -880,6 +921,18 @@ FlatPattern::FlatPattern()
 {
     ADD_PROPERTY_TYPE(Source, (nullptr), "Sheet Design", App::Prop_None, "Sheet design feature");
     ADD_PROPERTY_TYPE(BendLines, (true), "Sheet Design", App::Prop_None, "Add the bend center lines");
+    const auto output = static_cast<App::PropertyType>(App::Prop_ReadOnly | App::Prop_Output);
+    ADD_PROPERTY_TYPE(
+        BendAngles,
+        (0.0),
+        "Sheet Design",
+        output,
+        "Angle of each bend in degrees, in the sequence of the bend lines. Positive: the bend "
+        "goes up. Negative: it goes down"
+    );
+    ADD_PROPERTY_TYPE(BendRadii, (0.0), "Sheet Design", output, "Inner radius of each bend");
+    BendAngles.setValues(std::vector<double>());
+    BendRadii.setValues(std::vector<double>());
     Source.setScope(App::LinkScope::Global);
 }
 
@@ -917,6 +970,14 @@ App::DocumentObjectExecReturn* FlatPattern::execute()
             }
         }
         Shape.setValue(namedShape(compound, names, getID()));
+        std::vector<double> angles;
+        std::vector<double> radii;
+        for (const Bend& bend : sheet->bends) {
+            angles.push_back((bend.up ? 1.0 : -1.0) * Base::toDegrees(bend.angle));
+            radii.push_back(bend.radius);
+        }
+        BendAngles.setValues(angles);
+        BendRadii.setValues(radii);
     }
     catch (const Standard_Failure& e) {
         return failure(e.GetMessageString());

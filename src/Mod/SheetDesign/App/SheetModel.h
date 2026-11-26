@@ -61,6 +61,10 @@ struct SheetParams
     double radius {1.0};   ///< Inner bend radius.
     double kFactor {0.5};  ///< ANSI K-factor: neutral axis position from the inner surface.
     Relief relief;         ///< The relief for a flange that does not give its own.
+    /// Optional table of K-factors: pairs of (bend radius / thickness, ANSI K-factor), in the
+    /// sequence of the ratio. A bend uses the first row with a ratio that is not smaller than
+    /// its own ratio. With no table, all bends use kFactor.
+    std::vector<std::pair<double, double>> kTable;
 };
 
 /**
@@ -288,6 +292,9 @@ public:
 
     double bendAllowance(double angle) const;
     double bendAllowance(double angle, double radius) const;
+
+    /// The K-factor for a bend with this inner radius, from the table or the single value.
+    double kFactorFor(double radius) const;
 
 private:
     /// Record an origin for each straight edge of a shape. The transformation moves the shape

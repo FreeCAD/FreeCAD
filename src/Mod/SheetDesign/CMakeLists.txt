@@ -11,7 +11,7 @@ endif(BUILD_GUI)
 set(SheetDesign_Scripts
     Init.py
     SheetDesignBoxStyles.py
-    SheetDesignDxf.py
+    SheetDesignExport.py
     TestSheetDesignApp.py
     TestSheetDesignBoxStyles.py
 )

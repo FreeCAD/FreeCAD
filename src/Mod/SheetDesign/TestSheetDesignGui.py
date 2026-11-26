@@ -74,8 +74,8 @@ class TestSheetDesignGui(unittest.TestCase):
     def add(self, type_name, name):
         return SheetDesignViewProviders.attach(self.doc.addObject(type_name, name))
 
-    def edge(self, start, end):
-        for index, edge in enumerate(self.base.Shape.Edges):
+    def edge(self, start, end, shape=None):
+        for index, edge in enumerate((shape or self.base.Shape).Edges):
             if len(edge.Vertexes) != 2:
                 continue
             p, q = edge.Vertexes[0].Point, edge.Vertexes[1].Point
@@ -233,3 +233,15 @@ class TestSheetDesignGui(unittest.TestCase):
         self.assertEqual(info["Panel"], "Base")
         self.assertTrue(info["Top"])
         self.assertAlmostEqual(info["Length"], 100.0)
+
+    def test_flat_pattern_panel_lists_the_bends(self):
+        down = self.add("SheetDesign::Flange", "Down")
+        down.Edge = (self.flange, [self.edge(V(0, 0, 0), V(0, 50, 0), self.flange.Shape)])
+        down.Angle = 45.0
+        flat = self.add("SheetDesign::FlatPattern", "Flat")
+        flat.Source = down
+        self.doc.recompute()
+        table = self.open_panel(flat).form.bendsTable
+        self.assertEqual(table.rowCount(), 2)
+        self.assertEqual([table.item(0, c).text() for c in range(3)], ["Up", "90 °", "1 mm"])
+        self.assertEqual([table.item(1, c).text() for c in range(3)], ["Down", "45 °", "1 mm"])
