@@ -7,8 +7,10 @@ add_subdirectory(App)
 
 set(SheetDesign_Scripts
     Init.py
+    SheetDesignBoxStyles.py
     SheetDesignDxf.py
     TestSheetDesignApp.py
+    TestSheetDesignBoxStyles.py
 )
 
 if(BUILD_GUI)

@@ -19,4 +19,4 @@
 #                                                                              #
 ################################################################################
 
-FreeCAD.__unit_test__ += ["TestSheetDesignApp"]
+FreeCAD.__unit_test__ += ["TestSheetDesignApp", "TestSheetDesignBoxStyles"]
