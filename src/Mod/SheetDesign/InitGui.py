@@ -21,12 +21,19 @@
 
 """Gui initialization of the SheetDesign module."""
 
+import os
+
+import FreeCAD
+
 
 class SheetDesignWorkbench(Workbench):
     """Sheet Design workbench: folded sheet parts on an explicit sheet model."""
 
     MenuText = "Sheet Design"
     ToolTip = "Design of folded sheet parts with a linked flat pattern"
+    Icon = os.path.join(
+        FreeCAD.getHomePath(), "Mod", "SheetDesign", "Resources", "icons", "SheetDesignWorkbench.svg"
+    )
 
     def Initialize(self):
         import SheetDesign  # noqa: F401  Registers the document object types.

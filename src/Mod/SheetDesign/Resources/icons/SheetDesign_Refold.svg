@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64px"
+   height="64px"
+   viewBox="0 0 64 64"
+   id="SheetDesign_Refold"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bcd3ee"/><stop offset="1" stop-color="#729fcf"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#729fcf"/><stop offset="1" stop-color="#3465a4"/></linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3465a4"/><stop offset="1" stop-color="#204a87"/></linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ae234"/><stop offset="1" stop-color="#4e9a06"/></linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ef2929"/><stop offset="1" stop-color="#a40000"/></linearGradient>
+    <linearGradient id="yellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fce94f"/><stop offset="1" stop-color="#c4a000"/></linearGradient>
+  </defs>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>SheetDesign_Refold</dc:title>
+        <dc:date>2026-11-26</dc:date>
+        <dc:creator><cc:Agent><dc:title>[sliptonic]</dc:title></cc:Agent></dc:creator>
+        <dc:publisher><cc:Agent><dc:title>FreeCAD</dc:title></cc:Agent></dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/SheetDesign/Resources/icons/SheetDesign_Refold.svg</dc:identifier>
+        <dc:rights><cc:Agent><dc:title>FreeCAD LGPL2+</dc:title></cc:Agent></dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g stroke-linejoin="round" stroke-linecap="round">
+    <polygon points="33,46 60,46 60,54 33,54" fill="#bcd3ee" fill-opacity="0.45" stroke="#3465a4" stroke-width="1.6" stroke-dasharray="3,2.5"/>
+    <polygon points="5,46 25,46 25,10 33,10 33,54 5,54" fill="url(#wall)" stroke="#0b1521" stroke-width="2" />
+    <polygon points="7,48 27,48 27,12 31,12 31,52 7,52" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.55"/>
+    <path d="M 57,39 C 57,27 52,19 44,16" fill="none" stroke="#302b00" stroke-width="7" />
+    <path d="M 57,39 C 57,27 52,19 44,16" fill="none" stroke="#fce94f" stroke-width="3.5" />
+    <polygon points="47,10 47,23 37,15" fill="url(#yellow)" stroke="#302b00" stroke-width="2" />
+  </g>
+</svg>

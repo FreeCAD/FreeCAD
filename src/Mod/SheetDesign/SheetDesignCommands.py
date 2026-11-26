@@ -24,10 +24,14 @@
 The commands only make document objects and set their links. All geometry is in the C++ module.
 """
 
+import os
+
 import FreeCAD
 import FreeCADGui
 
 translate = FreeCAD.Qt.translate
+
+ICON_DIR = os.path.join(os.path.dirname(__file__), "Resources", "icons")
 
 
 def _selection():
@@ -101,6 +105,7 @@ class _Command:
 
     def GetResources(self):
         return {
+            "Pixmap": os.path.join(ICON_DIR, self.name + ".svg"),
             "MenuText": translate("SheetDesign", self.menu),
             "ToolTip": translate("SheetDesign", self.tip),
         }
