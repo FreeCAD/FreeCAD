@@ -15,14 +15,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_edgeLabel">
         <property name="text">
-         <string>Edge</string>
+         <string>Edges</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="edgeLabel">
         <property name="toolTip">
-         <string>The edge of the panel that holds the bend</string>
+         <string>The edges of the panel that hold the bends</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -123,6 +123,33 @@
         </property>
         <property name="unit">
          <string>deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="UseRuleRadius">
+        <property name="text">
+         <string>Bend radius of the sheet rule</string>
+        </property>
+        <property name="toolTip">
+         <string>Uses the bend radius of the sheet rule for this flange</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_Radius">
+        <property name="text">
+         <string>Bend radius</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Radius">
+        <property name="toolTip">
+         <string>The bend radius of this flange</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
         </property>
        </widget>
       </item>
@@ -270,15 +297,89 @@
         </property>
        </widget>
       </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_Extend1">
+        <property name="text">
+         <string>Extension at start</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Extend1">
+        <property name="toolTip">
+         <string>Makes the panel of the flange wider than its bend at the start of the edge</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_Extend2">
+        <property name="text">
+         <string>Extension at end</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Extend2">
+        <property name="toolTip">
+         <string>Makes the panel of the flange wider than its bend at the end of the edge</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="group4">
      <property name="title">
-      <string>Relief</string>
+      <string>Corners</string>
      </property>
      <layout class="QFormLayout" name="layout4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_CornerType">
+        <property name="text">
+         <string>Corner type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="CornerType">
+        <property name="toolTip">
+         <string>The corner between two flanges of this feature on adjacent edges, for bends of 90 degrees</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_CornerGap">
+        <property name="text">
+         <string>Corner gap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="CornerGap">
+        <property name="toolTip">
+         <string>The gap between the two flanges of a closed corner</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group5">
+     <property name="title">
+      <string>Relief</string>
+     </property>
+     <layout class="QFormLayout" name="layout5">
       <item row="0" column="0">
        <widget class="QLabel" name="label_ReliefType">
         <property name="text">

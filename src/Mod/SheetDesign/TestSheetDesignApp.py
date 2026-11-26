@@ -2191,3 +2191,93 @@ class TestSheetDesign(unittest.TestCase):
         perforation = self.add_feature("Perforation", "Perforation", Edges=(flange, []), CutLength=60.0)
         self.assertFalse(perforation.isValid())
         self.assertIn("long enough", perforation.getStatusString())
+
+    # ----------------------------------------------------- flange on several edges (step 24)
+
+    def corner_edges(self, source):
+        return (
+            source,
+            [
+                find_edge(source.Shape, V(self.LENGTH, 0, self.T), V(self.LENGTH, self.WIDTH, self.T)),
+                find_edge(source.Shape, V(0, self.WIDTH, self.T), V(self.LENGTH, self.WIDTH, self.T)),
+            ],
+        )
+
+    def walls_area(self):
+        return self.LENGTH * self.WIDTH + (self.allowance() + 20.0) * (self.LENGTH + self.WIDTH)
+
+    def test_flange_on_several_edges(self):
+        base = self.add_base()
+        flange = self.add_feature("Flange", "Flange", Edge=self.corner_edges(base), Length=20.0)
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        flat = self.add_flat(flange)
+        self.assertEqual(len(flat.BendAngles), 2)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.walls_area(), places=6)
+        box = flange.Shape.BoundBox
+        self.assertAlmostEqual(box.XMax, self.LENGTH + self.R + self.T, places=6)
+        self.assertAlmostEqual(box.YMax, self.WIDTH + self.R + self.T, places=6)
+
+    def test_closed_corner_types(self):
+        base = self.add_base()
+        flange = self.add_feature("Flange", "Flange", Edge=self.corner_edges(base), Length=20.0)
+        outer = self.R + self.T
+        # The panel of each flange becomes wider by these sizes at the corner.
+        cases = {"Open": 0.0, "Butt": 2 * (outer - self.T), "Overlap": outer + (outer - self.T), "Underlap": outer + (outer - self.T)}
+        flat = self.add_flat(flange)
+        for kind, added in cases.items():
+            flange.CornerType = kind
+            self.doc.recompute()
+            self.assertSolid(flange)
+            self.assertEqual(flange.Overlap.Value, 0.0, kind)
+            self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.walls_area() + 20.0 * added, places=5, msg=kind)
+        # Overlap: the first flange covers the end of the second.
+        flange.CornerType = "Overlap"
+        self.doc.recompute()
+        wall = [f for f in flange.Shape.Faces if abs(f.normalAt(0, 0).x - 1.0) < 1e-6 and f.Area > 500.0]
+        self.assertAlmostEqual(max(f.BoundBox.YMax for f in wall), self.WIDTH + outer, places=6)
+        flange.CornerGap = 0.5
+        self.doc.recompute()
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        self.assertAlmostEqual(
+            flat.Shape.Faces[0].Area, self.walls_area() + 20.0 * (outer + outer - self.T - 0.5), places=5
+        )
+
+    def test_closed_corners_of_a_tub(self):
+        base = self.add_base()
+        t, length, width = self.T, self.LENGTH, self.WIDTH
+        edges = [
+            find_edge(base.Shape, V(length, 0, t), V(length, width, t)),
+            find_edge(base.Shape, V(0, width, t), V(length, width, t)),
+            find_edge(base.Shape, V(0, 0, t), V(0, width, t)),
+            find_edge(base.Shape, V(0, 0, t), V(length, 0, t)),
+        ]
+        tub = self.add_feature("Flange", "Tub", Edge=(base, edges), Length=20.0, CornerType="Overlap", CornerGap=0.2)
+        self.assertSolid(tub)
+        self.assertEqual(tub.Overlap.Value, 0.0)
+        flat = self.add_flat(tub)
+        self.assertEqual(len(flat.Shape.Faces), 1)
+        self.assertEqual(len(flat.BendAngles), 4)
+
+    def test_flange_extension(self):
+        flange = self.add_end_flange(self.add_base(), Extend2=5.0)
+        self.assertSolid(flange)
+        expected = self.LENGTH * self.WIDTH + self.allowance() * self.WIDTH + 20.0 * (self.WIDTH + 5.0)
+        self.assertAlmostEqual(self.add_flat(flange).Shape.Faces[0].Area, expected, places=6)
+        self.assertAlmostEqual(flange.Shape.BoundBox.YMax, self.WIDTH + 5.0, places=6)
+
+    def test_flange_with_its_own_radius(self):
+        flange = self.add_end_flange(self.add_base(), UseRuleRadius=False, Radius=3.0)
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flange.Shape.BoundBox.XMax, self.LENGTH + 3.0 + self.T, places=6)
+        flat = self.add_flat(flange)
+        self.assertEqual([round(r, 6) for r in flat.BendRadii], [3.0])
+        length = self.LENGTH + (3.0 + self.K * self.T) * math.pi / 2 + 20.0
+        self.assertAlmostEqual(flat.Shape.BoundBox.XLength, length, places=6)
+
+    def test_profile_with_several_edges_is_rejected(self):
+        base = self.add_base()
+        shape = self.quad([V(100, 10, self.T), V(120, 10, self.T), V(120, 30, self.T), V(100, 30, self.T)])
+        flange = self.add_feature("Flange", "Flange", Edge=self.corner_edges(base), Profile=self.add_shape(shape, "Shape"))
+        self.assertFalse(flange.isValid())
+        self.assertIn("only one edge", flange.getStatusString())

@@ -154,7 +154,8 @@ protected:
     std::shared_ptr<SheetModel> buildModel() override;
 };
 
-/// A bend and a rectangular panel on a straight edge.
+/// A bend and a panel on each selected straight edge. Flanges on adjacent edges can get a
+/// closed corner.
 class SheetDesignExport Flange: public Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SheetDesign::Flange);
@@ -175,6 +176,12 @@ public:
     App::PropertyEnumeration ReliefType;
     App::PropertyLength ReliefWidth;
     App::PropertyLength ReliefDepth;
+    App::PropertyEnumeration CornerType;
+    App::PropertyLength CornerGap;
+    App::PropertyDistance Extend1;
+    App::PropertyDistance Extend2;
+    App::PropertyBool UseRuleRadius;
+    App::PropertyLength Radius;
     App::PropertyAngle Miter1;
     App::PropertyAngle Miter2;
     App::PropertyBool AutoMiter;

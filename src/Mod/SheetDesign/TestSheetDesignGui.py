@@ -395,3 +395,28 @@ class TestSheetDesignGui(unittest.TestCase):
         SheetDesignViewProviders.ACTIVE_PANEL.accept()
         FreeCADGui.Control.closeDialog()
         self.assertEqual(len(convert.Shape.Solids), 1)
+
+    # ------------------------------------------------------ flange on several edges
+
+    def test_flange_command_makes_one_feature_for_all_edges(self):
+        FreeCADGui.activateWorkbench("SheetDesignWorkbench")
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(self.base, self.edge(V(0, 0, self.T), V(0, 50, self.T)))
+        FreeCADGui.Selection.addSelection(self.base, self.edge(V(0, 0, self.T), V(100, 0, self.T)))
+        count = len(self.doc.Objects)
+        FreeCADGui.runCommand("SheetDesign_Flange")
+        self.assertEqual(len(self.doc.Objects), count + 1)
+        flange = self.doc.ActiveObject
+        self.assertEqual(len(flange.Edge[1]), 2)
+        self.assertTrue(flange.isValid(), flange.getStatusString())
+        form = SheetDesignViewProviders.ACTIVE_PANEL.form
+        self.assertTrue(form.CornerType.isEnabled())
+        self.assertFalse(form.CornerGap.isEnabled())
+        self.assertFalse(form.Radius.isEnabled())
+        form.CornerType.setCurrentIndex(form.CornerType.findText("Overlap"))
+        self.assertEqual(flange.CornerType, "Overlap")
+        self.assertTrue(form.CornerGap.isEnabled())
+        self.assertEqual(form.statusLabel.text(), "")
+        SheetDesignViewProviders.ACTIVE_PANEL.accept()
+        FreeCADGui.Control.closeDialog()
+        self.assertEqual(flange.Overlap.Value, 0.0)

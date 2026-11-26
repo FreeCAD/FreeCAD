@@ -23,6 +23,7 @@
 #include <string>
 
 #include <algorithm>
+#include <array>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBndLib.hxx>
@@ -78,6 +79,7 @@ const char* BaseShapeEnums[] = {"Plate", "Angle", "Channel", "Tub", "Hat", "Box"
 const char* PositionEnums[] = {"Material Outside", "Material Inside", "Thickness Outside", nullptr};
 const char* ReliefTypeEnums[] = {"Rule", "None", "Rectangle", "Round", nullptr};
 const App::PropertyAngle::Constraints miterRange = {-80.0, 80.0, 1.0};
+const char* CornerTypeEnums[] = {"Open", "Butt", "Overlap", "Underlap", nullptr};
 const char* LengthTypeEnums[] = {"Leg", "Outer Sharp", "Inner Sharp", "Tangential", nullptr};
 
 /**
@@ -806,6 +808,51 @@ Flange::Flange()
     );
     LengthType.setEnums(LengthTypeEnums);
     ADD_PROPERTY_TYPE(
+        CornerType,
+        (0L),
+        "Sheet Design",
+        App::Prop_None,
+        "The corner between two flanges of this feature on adjacent edges, for bends of 90 "
+        "degrees. Open: no change. Butt: the two flanges meet at their inner edges. Overlap: the "
+        "first flange covers the end of the second. Underlap: the second covers the first"
+    );
+    CornerType.setEnums(CornerTypeEnums);
+    ADD_PROPERTY_TYPE(
+        CornerGap,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Gap between the two flanges of a closed corner"
+    );
+    ADD_PROPERTY_TYPE(
+        Extend1,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Makes the panel of the flange wider than its bend at the start of the edge"
+    );
+    ADD_PROPERTY_TYPE(
+        Extend2,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Makes the panel of the flange wider than its bend at the end of the edge"
+    );
+    ADD_PROPERTY_TYPE(
+        UseRuleRadius,
+        (true),
+        "Sheet Design",
+        App::Prop_None,
+        "Use the bend radius of the sheet rule"
+    );
+    ADD_PROPERTY_TYPE(
+        Radius,
+        (1.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Bend radius of this flange, if the rule radius is not used"
+    );
+    ADD_PROPERTY_TYPE(
         ReliefType,
         (0L),
         "Sheet Design",
@@ -865,8 +912,11 @@ Flange::Flange()
 std::shared_ptr<SheetModel> Flange::buildModel()
 {
     const std::vector<std::string>& subs = Edge.getSubValues();
-    if (!Edge.getValue() || subs.size() != 1) {
+    if (!Edge.getValue() || subs.empty()) {
         throw Base::ValueError("Sheet design: select one edge of a sheet design feature");
+    }
+    if (subs.size() > 1 && Profile.getValue()) {
+        throw Base::ValueError("Sheet design: a flange with a profile can have only one edge");
     }
     // This gives the error for a source that has a solid but no sheet model.
     sourceModel(Edge.getValue());
@@ -876,16 +926,23 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     }
     auto result = std::make_shared<SheetModel>(*sourceModel(source));
 
-    EdgeRef ref;
-    const bool found = source->findEdge(subs.front().c_str(), ref);
-    if (!found) {
-        throw Base::ValueError("Sheet design: the selection is not a straight edge of a flat panel");
+    // All edges refer to the source. The flat space does not change when a flange is added.
+    std::vector<EdgeRef> refs;
+    for (const std::string& name : subs) {
+        EdgeRef found;
+        if (!source->findEdge(name.c_str(), found)) {
+            throw Base::ValueError(
+                "Sheet design: the selection is not a straight edge of a flat panel"
+            );
+        }
+        refs.push_back(found);
     }
+    const EdgeRef& ref = refs.front();
 
     const bool up = ref.top != Reversed.getValue();
     // The position moves the bend line against the edge. Offset adds to it.
     const double t = result->params.thickness;
-    const double r = result->params.radius;
+    const double r = UseRuleRadius.getValue() ? result->params.radius : Radius.getValue();
     const double angle = Base::toRadians(Angle.getValue());
     double shift = Offset.getValue();
     if (Position.getValue() == 1) {
@@ -930,8 +987,72 @@ std::shared_ptr<SheetModel> Flange::buildModel()
     options.miter2 = Base::toRadians(Miter2.getValue());
     options.autoMiter = AutoMiter.getValue();
     options.miterGap = MiterGap.getValue();
+    options.extend1 = Extend1.getValue();
+    options.extend2 = Extend2.getValue();
+    if (!UseRuleRadius.getValue()) {
+        options.radius = r;
+    }
     if (!Profile.getValue()) {
-        result->addFlange(ref, leg, angle, up, options, getNameInDocument());
+        // A closed corner: the panels of two flanges on adjacent edges become wider, until they
+        // meet. The distance from an edge to the outer side of its flange gives the sizes.
+        std::vector<std::array<double, 2>> closure(refs.size(), {0.0, 0.0});
+        const double outer = shift + r + t;
+        const long corner = CornerType.getValue();
+        if (corner != 0 && std::fabs(angle - M_PI / 2.0) < 1.0e-6 && outer > 1.0e-6) {
+            const double gap = CornerGap.getValue();
+            for (std::size_t i = 0; i < refs.size(); ++i) {
+                for (std::size_t j = i + 1; j < refs.size(); ++j) {
+                    if (refs[i].panel != refs[j].panel) {
+                        continue;
+                    }
+                    for (int endI = 0; endI < 2; ++endI) {
+                        for (int endJ = 0; endJ < 2; ++endJ) {
+                            const gp_Pnt2d& pointI = endI == 0 ? refs[i].a : refs[i].b;
+                            const gp_Pnt2d& pointJ = endJ == 0 ? refs[j].a : refs[j].b;
+                            if (pointI.Distance(pointJ) > 1.0e-6) {
+                                continue;
+                            }
+                            // The direction of each edge to the corner, and on from it.
+                            gp_Vec2d onI(endI == 0 ? refs[i].b : refs[i].a, pointI);
+                            gp_Vec2d onJ(endJ == 0 ? refs[j].b : refs[j].a, pointJ);
+                            onI.Normalize();
+                            onJ.Normalize();
+                            // An outer corner of 90 degrees: each edge goes on in the direction
+                            // out of the other edge.
+                            if (onI.Dot(result->edgeNormal(refs[j])) < 1.0 - 1.0e-6
+                                || onJ.Dot(result->edgeNormal(refs[i])) < 1.0 - 1.0e-6) {
+                                continue;
+                            }
+                            const double gapI = endI == 0 ? options.gap1 : options.gap2;
+                            const double gapJ = endJ == 0 ? options.gap1 : options.gap2;
+                            if (gapI > 1.0e-9 || gapJ > 1.0e-9) {
+                                continue;
+                            }
+                            double first = outer - t - gap / 2.0;  // Butt
+                            double second = first;
+                            if (corner == 2) {  // Overlap
+                                first = outer;
+                                second = outer - t - gap;
+                            }
+                            else if (corner == 3) {  // Underlap
+                                first = outer - t - gap;
+                                second = outer;
+                            }
+                            closure[i][endI] = first;
+                            closure[j][endJ] = second;
+                        }
+                    }
+                }
+            }
+        }
+        for (std::size_t i = 0; i < refs.size(); ++i) {
+            FlangeOptions own = options;
+            own.extend1 += closure[i][0];
+            own.extend2 += closure[i][1];
+            const std::string tag = std::string(getNameInDocument())
+                + (i > 0 ? "_" + std::to_string(i + 1) : std::string());
+            result->addFlange(refs[i], leg, angle, refs[i].top != Reversed.getValue(), own, tag);
+        }
         return result;
     }
 

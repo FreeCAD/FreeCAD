@@ -214,8 +214,11 @@ class TaskFlange(TaskPanel):
     def update(self):
         super().update()
         source, subs = self.obj.Edge if self.obj.Edge else (None, [])
-        self.form.edgeLabel.setText(f"{label_of(source)}.{subs[0]}" if source and subs else "")
+        self.form.edgeLabel.setText(f"{label_of(source)}: {', '.join(subs)}" if source and subs else "")
         profile = self.obj.Profile
+        self.form.Radius.setEnabled(not self.obj.UseRuleRadius)
+        self.form.CornerType.setEnabled(len(subs) > 1)
+        self.form.CornerGap.setEnabled(len(subs) > 1 and self.obj.CornerType != "Open")
         self.form.profileLabel.setText(label_of(profile))
         # A profile gives the length. The explicit relief types use the sizes of the flange.
         for name in ("Length", "LengthType", "Miter1", "Miter2"):

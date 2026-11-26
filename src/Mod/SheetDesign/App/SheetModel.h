@@ -160,6 +160,10 @@ struct FlangeOptions
     TopoDS_Face profile;
     double radius {-1.0};   ///< The inner radius of the bend. Negative: the radius of the rule.
     bool anyAngle {false};  ///< Permit a bend of more than 180 degrees, for a hem.
+    /// Makes the panel of the flange wider than its bend, at the start and at the end of the
+    /// edge. A closed corner uses this.
+    double extend1 {0.0};
+    double extend2 {0.0};
 };
 
 /// A reference to a straight segment on the boundary of a panel.
@@ -300,6 +304,9 @@ public:
 
     /// The outlines of the formed regions in flat space.
     std::vector<TopoDS_Wire> formOutlines() const;
+
+    /// The unit normal of a boundary segment that points out of its panel.
+    gp_Vec2d edgeNormal(const EdgeRef& ref) const;
 
     /// The bend on a boundary segment of a panel, or -1.
     int bendAt(const EdgeRef& ref) const;

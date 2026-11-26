@@ -306,7 +306,7 @@ class CommandUnfold(_Command):
 class CommandFlange(_Command):
     name = "SheetDesign_Flange"
     menu = "Flange"
-    tip = "Adds a bend and a panel on the selected straight edge"
+    tip = "Adds a bend and a panel on each selected straight edge. Adjacent edges can get a closed corner"
 
     def IsActive(self):
         sel = _selection()
@@ -317,24 +317,11 @@ class CommandFlange(_Command):
         source = sel.Object
         doc = source.Document
         doc.openTransaction("Flange")
-        # The element names refer to the first source. Thus recompute after each flange and map
-        # the next edge to the new shape by its position.
-        edges = [source.Shape.getElement(name) for name in sel.SubElementNames]
-        for edge in edges:
-            name = _element_name(source.Shape, edge)
-            if name is None:
-                FreeCAD.Console.PrintWarning("Sheet design: an edge was not found after a flange\n")
-                continue
-            obj = _attach(_new_after(source, "SheetDesign::Flange", "Flange"))
-            obj.Edge = (source, [name])
-            _advance_flat_patterns(source, obj)
-            source.ViewObject.hide()
-            doc.recompute()
-            source = obj
-        if _is_feature(source) and source.TypeId == "SheetDesign::Flange":
-            SheetDesignViewProviders.edit(source, created=True, hidden=[sel.Object])
-        else:
-            doc.commitTransaction()
+        # One feature holds all selected edges.
+        obj = _attach(_new_after(source, "SheetDesign::Flange", "Flange"))
+        obj.Edge = (source, list(sel.SubElementNames))
+        _advance_flat_patterns(source, obj)
+        _finish(doc, hide=[source], edit=obj)
 
 
 def _element_name(shape, element):

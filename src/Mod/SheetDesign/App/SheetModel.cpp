@@ -1037,12 +1037,17 @@ int SheetModel::addFlange(
         const double along = second ? -depth * slope2 : depth * slope1;
         return base.Translated(n * depth + dir * along);
     };
-    const gp_Pnt2d a1 = corner(false, allowance);
-    const gp_Pnt2d b1 = corner(true, allowance);
-    const gp_Pnt2d a2 = corner(false, allowance + length);
-    const gp_Pnt2d b2 = corner(true, allowance + length);
+    const gp_Pnt2d zoneA = corner(false, allowance);
+    const gp_Pnt2d zoneB = corner(true, allowance);
+    // The panel of the flange can be wider than the bend.
+    const gp_Pnt2d a1 = zoneA.Translated(dir * -options.extend1);
+    const gp_Pnt2d b1 = zoneB.Translated(dir * options.extend2);
+    const gp_Pnt2d a2 = corner(false, allowance + length).Translated(dir * -options.extend1);
+    const gp_Pnt2d b2 = corner(true, allowance + length).Translated(dir * options.extend2);
     if (gp_Vec2d(a2, b2).Dot(dir) <= tol || gp_Vec2d(a1, b1).Dot(dir) <= tol) {
-        throw Base::ValueError("Sheet design: the miter angles leave no width for the flange");
+        throw Base::ValueError(
+            "Sheet design: the miter angles or the extensions leave no width for the flange"
+        );
     }
     Panel child;
     child.tag = tag;
@@ -1068,7 +1073,7 @@ int SheetModel::addFlange(
     else {
         child.profile = makeFlatQuad(a1, b1, b2, a2);
         if (mitered) {
-            zone = makeFlatQuad(a, b, b1, a1);
+            zone = makeFlatQuad(a, b, zoneB, zoneA);
         }
     }
     panels.push_back(child);
@@ -3087,6 +3092,11 @@ std::vector<TopoDS_Wire> SheetModel::formOutlines() const
         wires.push_back(BRepTools::OuterWire(form.outline));
     }
     return wires;
+}
+
+gp_Vec2d SheetModel::edgeNormal(const EdgeRef& ref) const
+{
+    return outwardNormal(panels.at(ref.panel).profile, ref.a, ref.b);
 }
 
 int SheetModel::bendAt(const EdgeRef& ref) const
