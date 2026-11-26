@@ -899,9 +899,7 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
     else if (handle->GetBool("EditHide", false)) {
         setAutoMode(AutoMode::EditHide);
     }
-    else if (
-        legacyEditShow || handle->GetBool("TaskShow", getDockArea() == Qt::RightDockWidgetArea)
-    ) {
+    else if (legacyEditShow || handle->GetBool("TaskShow", getDockArea() == Qt::RightDockWidgetArea)) {
         setAutoMode(AutoMode::TaskShow);
     }
     else {
