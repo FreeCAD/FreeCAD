@@ -465,6 +465,7 @@ std::shared_ptr<SheetModel> Refold::buildModel()
     );
     const std::vector<double>& angles = Angles.getValues();
     std::vector<BendLine> lines;
+    std::size_t lineNumber = 0;
     for (TopExp_Explorer ex(toFlat.Shape(), TopAbs_EDGE); ex.More(); ex.Next()) {
         BRepAdaptor_Curve curve(TopoDS::Edge(ex.Current()));
         const gp_Pnt p = curve.Value(curve.FirstParameter());
@@ -477,7 +478,12 @@ std::shared_ptr<SheetModel> Refold::buildModel()
         }
         double degrees = 90.0;
         if (!angles.empty()) {
-            degrees = angles[std::min(lines.size(), angles.size() - 1)];
+            degrees = angles[std::min(lineNumber, angles.size() - 1)];
+        }
+        ++lineNumber;
+        if (std::fabs(degrees) < 1.0e-9) {
+            // A score with the angle zero is flat in this state of the part.
+            continue;
         }
         BendLine line;
         line.a = gp_Pnt2d(p.X(), p.Y());

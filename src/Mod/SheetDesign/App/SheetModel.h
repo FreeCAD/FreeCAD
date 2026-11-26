@@ -78,6 +78,9 @@ struct Bend
     double allowance {0.0};  ///< Width of the strip in the flat pattern.
     TopoDS_Shape strip;      ///< The flat region of the bend: one face or more.
     bool plain {true};       ///< The strip is the full rectangle from the bend line.
+    /// The bend closes a loop of panels. Its two panels have their position from other bends,
+    /// and the bend has no solid.
+    bool closing {false};
 };
 
 /**
@@ -240,6 +243,16 @@ private:
     /// Record an origin for each straight edge of a shape. The transformation moves the shape
     /// into flat space. The tag of an edge is the prefix and the index of the edge.
     void addOrigins(const TopoDS_Shape& shape, const gp_Trsf& toFlat, const std::string& prefix, int panel);
+
+    /// The folded position of a panel after a bend, from the position of the panel before it.
+    gp_Trsf afterBend(
+        const gp_Trsf& parent,
+        const gp_Pnt2d& start,
+        const gp_Vec2d& normal,
+        double angle,
+        bool up,
+        double radius
+    ) const;
 
     /// Add a bend between two panels and set the folded position of the child panel.
     void connect(

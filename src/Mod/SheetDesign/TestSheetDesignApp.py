@@ -1006,3 +1006,88 @@ class TestSheetDesign(unittest.TestCase):
         first.Suppressed = False
         self.doc.recompute()
         self.assertAlmostEqual(second.Shape.Volume, both, places=6)
+
+    # ------------------------------------------------- radius zero, and folds that close a loop
+
+    def board(self):
+        """Corrugated board: thickness 4 mm, the radius of a score is zero."""
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        return 0.5 * 4.0 * math.pi / 2
+
+    def test_refold_round_flap_with_radius_zero(self):
+        """Box style 0427: the arcs of the flap start on the score."""
+        a = self.board()
+        arc1 = Part.Arc(
+            V(200, 100, 0), V(200 - 40 * (1 - math.cos(math.pi / 4)), 100 + 40 * math.sin(math.pi / 4), 0), V(160, 140, 0)
+        ).toShape()
+        arc2 = Part.Arc(
+            V(40, 140, 0), V(40 * (1 - math.cos(math.pi / 4)), 100 + 40 * math.sin(math.pi / 4), 0), V(0, 100, 0)
+        ).toShape()
+        flap = Part.Face(
+            Part.Wire(
+                [Part.makeLine(V(0, 100, 0), V(200, 100, 0)), arc1, Part.makeLine(V(160, 140, 0), V(40, 140, 0)), arc2]
+            )
+        )
+        face = self.rectangle(0, 0, 200, 100).fuse(flap).removeSplitter().Faces[0]
+        folded = self.add_refold(face, [Part.makeLine(V(0, 100 + a / 2, 0), V(200, 100 + a / 2, 0))], [90.0])
+        self.assertSolid(folded)
+        self.assertEqual(folded.Overlap.Value, 0.0)
+        self.assertAlmostEqual(self.add_flat(folded).Shape.Faces[0].Area, face.Area, places=5)
+
+    def test_round_hole_in_a_bend_with_radius_zero_is_rejected(self):
+        a = self.board()
+        base = self.add_base()
+        flange = self.add_flange(base, V(self.LENGTH, 0, 4), V(self.LENGTH, self.WIDTH, 4), Length=20.0)
+        tool = Part.Face(Part.Wire(Part.makeCircle(1.0, V(self.LENGTH + a / 2, 25, 0))))
+        cut = self.add_cut(flange, self.add_shape(tool, "Tool"), "Flat")
+        self.assertFalse(cut.isValid())
+        self.assertIn("radius zero", cut.getStatusString())
+
+    def test_refold_line_with_angle_zero_stays_flat(self):
+        allowance = self.allowance()
+        face = self.flat_rectangle(self.LENGTH + allowance + 20.0)
+        x = self.LENGTH + allowance / 2
+        lines = [Part.makeLine(V(50, 0, 0), V(50, self.WIDTH, 0)), Part.makeLine(V(x, 0, 0), V(x, self.WIDTH, 0))]
+        folded = self.add_refold(face, lines, [0.0, 90.0])
+        self.assertSolid(folded)
+        self.assertAlmostEqual(folded.Shape.BoundBox.ZMax, self.T + self.R + 20.0, places=6)
+        self.assertEqual(len(self.add_flat(folded).Shape.SubShapes), 2)  # The face and one bend line.
+
+    def web_corner(self, angles):
+        """A tray with two walls and a corner web. The web folds flat on wall 1 in two layers.
+
+        Wall 2 is shorter by two thicknesses, thus the two layers of the web have their space.
+        """
+        a = self.board()
+        t, length, width, depth = 4.0, 120.0, 80.0, 40.0
+        face = self.rectangle(0, 0, length + a + depth, width + a + depth)
+        face = face.cut(self.rectangle(length - 2 * t, width, length + a, width + a)).Faces[0]
+        x5 = length - 2 * t + a / 2
+        lines = [
+            Part.makeLine(V(length + a / 2, 0, 0), V(length + a / 2, width, 0)),  # Bottom, wall 1.
+            Part.makeLine(V(0, width + a / 2, 0), V(length - 2 * t, width + a / 2, 0)),  # Wall 2.
+            Part.makeLine(V(length + a, width + a, 0), V(length + a + depth, width + a, 0)),  # Web.
+            Part.makeLine(V(length + a, width + 2 * a, 0), V(length + depth - a, width + depth, 0)),
+            Part.makeLine(V(x5, width + a, 0), V(x5, width + a + depth, 0)),  # Web to wall 2.
+        ]
+        return face, self.add_refold(face, lines, angles)
+
+    def test_refold_corner_web_closes_a_loop_of_panels(self):
+        """Box styles 0226 and 0760: two walls and the two halves of a web meet at a corner."""
+        face, folded = self.web_corner([90.0, 90.0, 180.0, 180.0, 90.0])
+        self.assertSolid(folded)
+        self.assertEqual(folded.Overlap.Value, 0.0)
+        box = folded.Shape.BoundBox
+        self.assertAlmostEqual(box.XLength, 120.0 + 4.0, places=4)
+        self.assertAlmostEqual(box.ZLength, 40.0 + 4.0, places=4)
+        # The web is inside the tray: nothing is outside wall 2.
+        self.assertLess(box.YLength, 80.0 + 4.0 + 0.5)
+        flat = self.add_flat(folded)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, face.Area, places=5)
+        self.assertEqual(len(flat.Shape.SubShapes), 6)  # The face and five bend lines.
+
+    def test_refold_corner_web_with_wrong_angle_is_rejected(self):
+        _face, folded = self.web_corner([90.0, 90.0, 180.0, 180.0, 45.0])
+        self.assertFalse(folded.isValid())
+        self.assertIn("do not close", folded.getStatusString())

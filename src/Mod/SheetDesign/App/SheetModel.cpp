@@ -56,7 +56,11 @@
 #include <Geom2d_Line.hxx>
 #include <Geom2d_TrimmedCurve.hxx>
 #include <GeomAPI.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <Geom_Curve.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColStd_Array1OfReal.hxx>
+#include <TColgp_Array1OfPnt.hxx>
 #include <Geom_CylindricalSurface.hxx>
 #include <Geom_Plane.hxx>
 #include <TopoDS_Shell.hxx>
@@ -407,10 +411,58 @@ TopoDS_Shape wrapBendFace(const Bend& bend, const TopoDS_Face& zone, double t)
                 sewing.Add(BRepFill::Face(BRepBuilderAPI_MakeEdge(i0, i1).Edge(), outerEdge));
             }
             else {
-                throw Base::ValueError(
-                    "Sheet design: a curved edge across a bend with the radius zero is not "
-                    "available in this version"
-                );
+                // With the radius zero the side face goes from the curve on the outer cylinder
+                // to the bend axis. The axis curve has the same parameters as the outer curve,
+                // thus each line of the side face points to the axis.
+                Handle(Geom2d_BSplineCurve) uv = Handle(Geom2d_BSplineCurve)::DownCast(onSurface);
+                bool rising = false;
+                bool falling = false;
+                double previous = uv->Value(firstParam).Y();
+                const int samples = 64;
+                for (int k = 1; k <= samples; ++k) {
+                    const double v = uv->Value(firstParam + (lastParam - firstParam) * k / samples).Y();
+                    rising = rising || v > previous + 1.0e-9;
+                    falling = falling || v < previous - 1.0e-9;
+                    previous = v;
+                }
+                if (rising && falling) {
+                    // The side face would go along the axis in two directions. The solid then
+                    // touches itself on the axis.
+                    throw Base::ValueError(
+                        "Sheet design: with the bend radius zero, a curved edge in a bend zone "
+                        "must go in one direction along the bend line. An opening inside the "
+                        "zone is not available"
+                    );
+                }
+                if (!rising && !falling) {
+                    sewing.Add(planarFace(
+                        {outerEdge,
+                         BRepBuilderAPI_MakeEdge(o1, i1).Edge(),
+                         BRepBuilderAPI_MakeEdge(i0, o0).Edge()}
+                    ));
+                }
+                else {
+                    const int count = uv->NbPoles();
+                    TColgp_Array1OfPnt poles(1, count);
+                    TColStd_Array1OfReal weights(1, count);
+                    for (int k = 1; k <= count; ++k) {
+                        poles(k) = axisPoint(uv->Pole(k).Y());
+                        weights(k) = uv->Weight(k);
+                    }
+                    TColStd_Array1OfReal knots(1, uv->NbKnots());
+                    TColStd_Array1OfInteger mults(1, uv->NbKnots());
+                    uv->Knots(knots);
+                    uv->Multiplicities(mults);
+                    Handle(Geom_BSplineCurve) axisCurve = new Geom_BSplineCurve(
+                        poles,
+                        weights,
+                        knots,
+                        mults,
+                        uv->Degree(),
+                        uv->IsPeriodic()
+                    );
+                    sewing.Add(BRepFill::Face(BRepBuilderAPI_MakeEdge(axisCurve).Edge(), outerEdge));
+                }
             }
         }
         if (!outerWire.IsDone() || (hasInner && !innerWire.IsDone())) {
@@ -567,7 +619,12 @@ std::string SheetModel::segmentTag(int panel, const gp_Pnt2d& a, const gp_Pnt2d&
 
 std::string SheetModel::bendLineName(std::size_t bend) const
 {
-    return panels[bends[bend].childPanel].tag + "_BendLine";
+    const Bend& item = bends[bend];
+    if (item.closing) {
+        // The two panels have their names from other bends.
+        return panels[item.parentPanel].tag + "_to_" + panels[item.childPanel].tag + "_BendLine";
+    }
+    return panels[item.childPanel].tag + "_BendLine";
 }
 
 namespace
@@ -859,6 +916,30 @@ int SheetModel::addFlange(
     return static_cast<int>(bends.size()) - 1;
 }
 
+gp_Trsf SheetModel::afterBend(
+    const gp_Trsf& parent,
+    const gp_Pnt2d& start,
+    const gp_Vec2d& normal,
+    double angle,
+    bool up,
+    double radius
+) const
+{
+    // The child moves back by the bend allowance, then turns around the bend axis.
+    const double t = params.thickness;
+    const double allowance = bendAllowance(angle, radius);
+    gp_Dir axisDir(normal.Y(), -normal.X(), 0.0);  // normal x Z
+    if (!up) {
+        axisDir.Reverse();
+    }
+    const gp_Ax1 axis(to3d(start, up ? t + radius : -radius), axisDir);
+    gp_Trsf rotation;
+    rotation.SetRotation(axis, angle);
+    gp_Trsf translation;
+    translation.SetTranslation(gp_Vec(-allowance * normal.X(), -allowance * normal.Y(), 0.0));
+    return parent * rotation * translation;
+}
+
 void SheetModel::connect(
     int parent,
     int child,
@@ -897,17 +978,7 @@ void SheetModel::connect(
         bend.strip = strip;
     }
 
-    // The child moves back by the bend allowance, then turns around the bend axis.
-    gp_Dir axisDir(normal.Y(), -normal.X(), 0.0);  // normal x Z
-    if (!up) {
-        axisDir.Reverse();
-    }
-    const gp_Ax1 axis(to3d(start, up ? t + radius : -radius), axisDir);
-    gp_Trsf rotation;
-    rotation.SetRotation(axis, angle);
-    gp_Trsf translation;
-    translation.SetTranslation(gp_Vec(-allowance * normal.X(), -allowance * normal.Y(), 0.0));
-    panels[child].folded = panels[parent].folded * rotation * translation;
+    panels[child].folded = afterBend(panels[parent].folded, start, normal, angle, up, radius);
     panels[child].parentBend = static_cast<int>(bends.size());
     panels[child].solid.Nullify();
     bends.push_back(bend);
@@ -1042,6 +1113,9 @@ TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine, double* overlap) con
     }
 
     for (const Bend& bend : bends) {
+        if (bend.closing) {
+            continue;
+        }
         std::vector<TopoDS_Shape> raw;
         if (bend.plain) {
             raw.push_back(revolveBend(bend, t));
@@ -1185,30 +1259,175 @@ SheetModel SheetModel::fromFlat(
         band.length = lineLength;
         band.normal = gp_Vec2d(-dir.Y(), dir.X());
         band.allowance = model.bendAllowance(line.angle);
+        bands.push_back(band);
+    }
+    // Where bend lines meet at a point, their zones must not overlap. A line goes through the
+    // point if it does not end there, or if a second line continues it on the same axis.
+    //   - A line that goes through stops the zones of the other lines at its own zone.
+    //   - Two lines that go through get a relief opening where their zones cross. The sheet
+    //     cannot fold there.
+    //   - A line that only ends at the point, for example the diagonal of a corner web, stops
+    //     at its end. Its zone gets what the lines that go through leave.
+    // At an end with no other line, a band goes on, thus a short line bends its full region.
+    double widestBand = 0.0;
+    for (const Band& other : bands) {
+        widestBand = std::max(widestBand, other.allowance);
+    }
+    const double snap = 1.5 * widestBand + looseTol;
+    auto endNear = [snap](const Band& item, const gp_Pnt2d& point) {
+        const gp_Pnt2d last = item.origin.Translated(item.dir * item.length);
+        return std::min(point.Distance(item.origin), point.Distance(last)) <= snap;
+    };
+    // The largest allowance of a line and of the lines that continue it at the point.
+    // Zero: no line continues it.
+    auto partnerAllowance = [&](std::size_t j, const gp_Pnt2d& point) {
+        const Band& item = bands[j];
+        double largest = 0.0;
+        for (std::size_t m = 0; m < bands.size(); ++m) {
+            const Band& partner = bands[m];
+            if (m == j || !endNear(partner, point)) {
+                continue;
+            }
+            const bool parallel = std::fabs(item.dir.Crossed(partner.dir)) < 1.0e-6;
+            const bool sameAxis = std::fabs(gp_Vec2d(item.origin, partner.origin).Crossed(item.dir))
+                < 1.0e-4;
+            if (parallel && sameAxis) {
+                largest = std::max({largest, partner.allowance, item.allowance});
+            }
+        }
+        return largest;
+    };
+    // The allowance of a line that goes through the point. Zero: it does not go through.
+    auto throughAllowance = [&](std::size_t j, const gp_Pnt2d& point) {
+        const Band& item = bands[j];
+        const gp_Vec2d to(item.origin, point);
+        if (std::fabs(to.Crossed(item.dir)) > snap) {
+            return 0.0;
+        }
+        const double along = to.Dot(item.dir);
+        if (along > snap && along < item.length - snap) {
+            return item.allowance;  // The point is in the middle of the line.
+        }
+        return endNear(item, point) ? partnerAllowance(j, point) : 0.0;
+    };
+
+    TopTools_ListOfShape reliefs;
+    std::vector<bool> goesThrough(bands.size(), false);
+    for (std::size_t i = 0; i < bands.size(); ++i) {
+        Band& band = bands[i];
+        const gp_Vec2d& dir = band.dir;
+        double low = -reach;
+        double high = band.length + reach;
+        const gp_Pnt2d ends[2] = {band.origin, band.origin.Translated(dir * band.length)};
+        for (int e = 0; e < 2; ++e) {
+            const double myAllowance = partnerAllowance(i, ends[e]);
+            goesThrough[i] = goesThrough[i] || myAllowance > 0.0;
+            bool meets = false;
+            for (std::size_t j = 0; j < bands.size(); ++j) {
+                const Band& other = bands[j];
+                const double sine = dir.Crossed(other.dir);
+                if (j == i || std::fabs(sine) < 1.0e-6) {
+                    continue;
+                }
+                meets = meets || endNear(other, ends[e]);
+                const double otherAllowance = throughAllowance(j, ends[e]);
+                if (otherAllowance <= 0.0 || myAllowance <= 0.0) {
+                    continue;
+                }
+                // Two lines that go through: stop at the zone of the other, and make a relief.
+                const double mine = gp_Vec2d(band.origin, other.origin).Crossed(other.dir) / sine;
+                const double alongMe = otherAllowance / 2.0 / std::fabs(sine);
+                const double alongOther = myAllowance / 2.0 / std::fabs(sine);
+                if (e == 0) {
+                    low = std::max(low, mine + alongMe);
+                }
+                else {
+                    high = std::min(high, mine - alongMe);
+                }
+                const gp_Pnt2d cross = band.origin.Translated(dir * mine);
+                reliefs.Append(makeFlatQuad(
+                    cross.Translated(dir * -alongMe + other.dir * -alongOther),
+                    cross.Translated(dir * alongMe + other.dir * -alongOther),
+                    cross.Translated(dir * alongMe + other.dir * alongOther),
+                    cross.Translated(dir * -alongMe + other.dir * alongOther)
+                ));
+            }
+            if (meets && myAllowance <= 0.0) {
+                // The line ends at a point with other lines: its zone ends with it.
+                if (e == 0) {
+                    low = 0.0;
+                }
+                else {
+                    high = band.length;
+                }
+            }
+        }
+        if (high - low < tol) {
+            throw Base::ValueError(
+                "Sheet design: a bend line is too short between two other bend lines"
+            );
+        }
         const gp_Vec2d half = band.normal * (band.allowance / 2.0);
-        const gp_Pnt2d a = line.a.Translated(dir * -reach);
-        const gp_Pnt2d b = line.b.Translated(dir * reach);
+        const gp_Pnt2d a = band.origin.Translated(dir * low);
+        const gp_Pnt2d b = band.origin.Translated(dir * high);
         band.face = makeFlatQuad(
             a.Translated(-half),
             b.Translated(-half),
             b.Translated(half),
             a.Translated(half)
         );
-        bands.push_back(band);
+    }
+
+    // The sheet without the relief openings.
+    TopoDS_Shape sheet = flatProfile;
+    if (!reliefs.IsEmpty()) {
+        TopTools_ListOfShape sheetList;
+        sheetList.Append(flatProfile);
+        BRepAlgoAPI_Cut relieve;
+        relieve.SetArguments(sheetList);
+        relieve.SetTools(reliefs);
+        relieve.Build();
+        if (!relieve.IsDone() || relieve.HasErrors()) {
+            throw Base::CADKernelError("Sheet design: cannot make the relief openings");
+        }
+        sheet = relieve.Shape();
+    }
+    // Lines that go through a point get their zones first.
+    std::vector<std::size_t> order;
+    for (int pass = 0; pass < 2; ++pass) {
+        for (std::size_t i = 0; i < bands.size(); ++i) {
+            if (goesThrough[i] == (pass == 0)) {
+                order.push_back(i);
+            }
+        }
     }
 
     // A score acts only on the parts of the profile that its line reaches. A part of the band
     // that is apart from the line, for example behind a slot, stays flat.
     std::vector<std::pair<std::size_t, TopoDS_Face>> zoneParts;
     TopTools_ListOfShape zoneFaces;
-    for (std::size_t i = 0; i < bands.size(); ++i) {
+    for (const std::size_t i : order) {
         const Band& band = bands[i];
-        BRepAlgoAPI_Common common(flatProfile, band.face);
+        BRepAlgoAPI_Common common(sheet, band.face);
         if (!common.IsDone() || common.HasErrors()) {
             throw Base::CADKernelError("Sheet design: cannot make a bend zone");
         }
+        // A zone does not take a region that an earlier zone has.
+        TopoDS_Shape free = common.Shape();
+        if (!zoneFaces.IsEmpty() && !facesOf(free).empty()) {
+            TopTools_ListOfShape freeList;
+            freeList.Append(free);
+            BRepAlgoAPI_Cut rest;
+            rest.SetArguments(freeList);
+            rest.SetTools(zoneFaces);
+            rest.Build();
+            if (!rest.IsDone() || rest.HasErrors()) {
+                throw Base::CADKernelError("Sheet design: cannot make a bend zone");
+            }
+            free = rest.Shape();
+        }
         bool reached = false;
-        for (const TopoDS_Face& part : facesOf(common.Shape())) {
+        for (const TopoDS_Face& part : facesOf(free)) {
             double first = 0.0;
             double last = 0.0;
             bool started = false;
@@ -1232,7 +1451,7 @@ SheetModel SheetModel::fromFlat(
 
     // The panels are the parts of the profile that are not in a bend zone.
     TopTools_ListOfShape profileList;
-    profileList.Append(flatProfile);
+    profileList.Append(sheet);
     BRepAlgoAPI_Cut split;
     split.SetArguments(profileList);
     split.SetTools(zoneFaces);
@@ -1244,6 +1463,28 @@ SheetModel SheetModel::fromFlat(
     if (pieces.size() < 2) {
         throw Base::ValueError("Sheet design: the bend lines do not divide the flat pattern");
     }
+    // Where bend lines meet, a small part of the profile is between the ends of their zones.
+    // The sheet cannot fold there. Remove such a part: it is a relief opening at the corner.
+    double widest = 0.0;
+    for (const Band& band : bands) {
+        widest = std::max(widest, band.allowance);
+    }
+    pieces.erase(
+        std::remove_if(
+            pieces.begin(),
+            pieces.end(),
+            [widest](const TopoDS_Face& piece) {
+                Bnd_Box pieceBox;
+                BRepBndLib::Add(piece, pieceBox);
+                return std::sqrt(pieceBox.SquareExtent()) < 2.5 * widest;
+            }
+        ),
+        pieces.end()
+    );
+    if (pieces.size() < 2) {
+        throw Base::ValueError("Sheet design: the bend lines do not divide the flat pattern");
+    }
+
     // The largest panel is the root panel.
     std::size_t largest = 0;
     double largestArea = 0.0;
@@ -1397,10 +1638,62 @@ SheetModel SheetModel::fromFlat(
             joint.used = true;
             const bool fromMinus = joint.minusPanel == current;
             const int child = fromMinus ? joint.plusPanel : joint.minusPanel;
-            if (reached[child]) {
-                throw Base::ValueError("Sheet design: the bend lines make a closed loop of panels");
-            }
             const Band& band = bands[joint.line];
+            if (reached[child]) {
+                // The two panels have their position from other bends. This bend closes a loop
+                // of panels, for example a corner with a web. The angles must agree: the
+                // position that this bend gives must be the position that the panel has.
+                const gp_Pnt2d start = fromMinus ? joint.minusA : joint.plusA;
+                const gp_Vec2d normal = fromMinus ? band.normal : -band.normal;
+                const gp_Trsf expected = model.afterBend(
+                    model.panels[current].folded,
+                    start,
+                    normal,
+                    lines[joint.line].angle,
+                    lines[joint.line].up,
+                    params.radius
+                );
+                const gp_Trsf error = expected.Inverted() * model.panels[child].folded;
+                gp_XYZ axis;
+                double turn = 0.0;
+                error.GetRotation(axis, turn);
+                // The middle of the bend line is the reference for the position.
+                const gp_Pnt2d mid2(
+                    (joint.minusA.X() + joint.plusB.X()) / 2.0,
+                    (joint.minusA.Y() + joint.plusB.Y()) / 2.0
+                );
+                const gp_Pnt mid = to3d(mid2);
+                const double shift = mid.Transformed(expected).Distance(
+                    mid.Transformed(model.panels[child].folded)
+                );
+                // A fold of 180 degrees puts panels in layers, thus the position can differ by
+                // some thicknesses.
+                const double limit = 4.0 * params.thickness + 2.0 * band.allowance + 1.0e-6;
+                if (std::fabs(turn) > 1.0e-4 || shift > limit) {
+                    throw Base::ValueError(
+                        "Sheet design: the folds around a corner do not close. The angles of the "
+                        "bend lines do not agree (bend line "
+                        + std::to_string(joint.line + 1) + ": angle error "
+                        + std::to_string(turn * 180.0 / M_PI) + " degrees, position error "
+                        + std::to_string(shift) + " mm)"
+                    );
+                }
+                Bend closing;
+                closing.parentPanel = current;
+                closing.childPanel = child;
+                closing.start = start;
+                closing.end = fromMinus ? joint.minusB : joint.plusB;
+                closing.normal = gp_Dir2d(normal);
+                closing.angle = lines[joint.line].angle;
+                closing.up = lines[joint.line].up;
+                closing.radius = params.radius;
+                closing.allowance = band.allowance;
+                closing.strip = joint.strip;
+                closing.plain = joint.plain;
+                closing.closing = true;
+                model.bends.push_back(closing);
+                continue;
+            }
             // The name of a panel comes from the bend line that joins it to the part.
             const int ordinal = ++panelsOfLine[joint.line];
             model.panels[child].tag = tag + "_L" + std::to_string(joint.line + 1)
