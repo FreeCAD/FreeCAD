@@ -139,7 +139,6 @@ class Placement(PyObjectBase):
     def rotate(
         self, /, center: Vector, axis: Vector, angle: float, *, comp: bool = False
     ) -> None: ...
-
     def rotate(self, /, *args: Any, **kwargs: Any) -> None:
         """
         Rotate the current placement around center and axis with the given angle.

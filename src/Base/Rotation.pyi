@@ -261,7 +261,6 @@ class Rotation(PyObjectBase):
     @overload
     @constmethod
     def toEulerAngles(self, seq: _Seq, /) -> tuple[float, float, float]: ...
-
     @constmethod
     def toEulerAngles(self, seq: _Seq = ..., /) -> list[str] | tuple[float, float, float]:
         """

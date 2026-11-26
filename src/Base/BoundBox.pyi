@@ -144,7 +144,6 @@ class BoundBox(PyObjectBase):
     def add(self, minMax: tuple[float, float, float], /) -> None: ...
     @overload
     def add(self, x: float, y: float, z: float, /) -> None: ...
-
     def add(self, /, *args: Any) -> None:
         """
         Increase the maximum values or decrease the minimum values of this BoundBox by
@@ -185,7 +184,6 @@ class BoundBox(PyObjectBase):
     @overload
     @constmethod
     def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
-
     @constmethod
     def closestPoint(self, /, *args: Any) -> Vector:
         """
@@ -205,7 +203,6 @@ class BoundBox(PyObjectBase):
     def intersect(self, boundBox2: BoundBox, /) -> bool: ...
     @overload
     def intersect(self, base: Vector, dir: Vector, /) -> bool: ...
-
     def intersect(self, /, *args: Any) -> bool:
         """
         Checks if the given object intersects with this bounding box. That can be
@@ -257,7 +254,6 @@ class BoundBox(PyObjectBase):
     def move(self, displacement: tuple[float, float, float], /) -> None: ...
     @overload
     def move(self, x: float, y: float, z: float, /) -> None: ...
-
     def move(self, /, *args: Any) -> None:
         """
         Move the bounding box by the given values.
@@ -278,7 +274,6 @@ class BoundBox(PyObjectBase):
     def scale(self, factor: tuple[float, float, float], /) -> None: ...
     @overload
     def scale(self, x: float, y: float, z: float, /) -> None: ...
-
     def scale(self, /, *args: Any) -> None:
         """
         Scale the bounding box by the given values.
@@ -317,7 +312,6 @@ class BoundBox(PyObjectBase):
     def isInside(self, object: BoundBox, /) -> bool: ...
     @overload
     def isInside(self, x: float, y: float, z: float, /) -> bool: ...
-
     def isInside(self, /, *args: Any) -> bool:
         """
         Check if a point or a bounding box is inside this bounding box.
