@@ -80,6 +80,7 @@ class TestBoxStyles(unittest.TestCase):
             "0201 Regular Slotted Container",
             "0203 Full Overlap Slotted Container",
             "0215 Snap Bottom Container with Tuck Top",
+            "0226 Bellows Style Top and Bottom Container",
             "0301 Full Telescope Design Style Container",
             "0427 Roll End Tray with Locking Cover",
             "0760 Self-Erecting Six Corner Tray",
@@ -92,4 +93,4 @@ class TestBoxStyles(unittest.TestCase):
         styles = SheetDesignBoxStyles.STYLES
         missing = sorted(name for name, function in styles.items() if function is None)
         self.assertEqual(len(styles), 56)
-        self.assertEqual(missing, ["0226 Bellows Style Top and Bottom Container"])
+        self.assertEqual(missing, [])

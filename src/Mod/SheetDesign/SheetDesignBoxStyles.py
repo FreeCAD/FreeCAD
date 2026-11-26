@@ -322,6 +322,72 @@ def style_0225(t, L, W, D):
     return _rsc(t, L, W, D, bottom, None)
 
 
+def style_0226(t, L, W, D):
+    """A bellows top and bottom: the flaps of all four panels are one band with no slot.
+
+    Each flap of an end panel has two diagonal scores. Its center triangle folds in from the end
+    wall. Its two side triangles fold flat under the flaps of the long panels, thus they are
+    hidden when the box is closed. At each corner, the long wall, the end wall, the long flap,
+    the side triangle, and the center triangle make a closed loop of panels.
+
+    The end walls are lower by two thicknesses at the top and at the bottom. This gives the
+    space for the two layers of triangles below the long flaps. The corner at the
+    manufacturer's joint has no side triangle.
+    """
+    blank = Blank(t)
+    a = blank.allowance(90.0)
+    half = W / 2
+    spans = []
+    x = 0.0
+    for width in (L, W, L, W):
+        spans.append((x, x + width))
+        x += width + a
+    right = spans[-1][1]
+    blank.faces.append(
+        Part.Face(
+            Part.makePolygon(
+                [V(0, -half, 0), V(right, -half, 0), V(right, D + half, 0), V(0, D + half, 0), V(0, -half, 0)]
+            )
+        )
+    )
+    # The scores between the walls. They stop below the layers of the triangles.
+    for x0, x1 in spans[:-1]:
+        blank.score(V(x1 + a / 2, 2 * t, 0), V(x1 + a / 2, D - 2 * t, 0), 90.0)
+
+    def corner(edge, toward, base, up, joint=False):
+        """One corner. edge: the X of the end of the long panel. toward: +1 if the end panel
+        is at a larger X. base: the Y of the top or the bottom of the long walls. up: +1 for
+        the top flaps, -1 for the bottom flaps."""
+
+        def at(u, v):
+            return V(edge + toward * u, base + up * v, 0)
+
+        if joint:
+            # No side triangle at the manufacturer's joint: the flap ends on its diagonal.
+            cut = [at(2 * a, a), at(a + half, half + 1), at(-1, half + 1), at(-1, a)]
+            blank.holes.append(Part.Face(Part.makePolygon(cut + [cut[0]])))
+            return
+        p, q = at(0, -2 * t), at(a, a)
+        blank.slot(min(p.x, q.x), min(p.y, q.y), max(p.x, q.x), max(p.y, q.y))  # Relief.
+        blank.score(at(a, a), at(a, half), 180.0)  # Long flap to side triangle.
+        blank.score(at(2 * a, a), at(a + half, half), 180.0)  # Side to center triangle.
+
+    for base, up in ((D, 1), (0.0, -1)):
+        for index, (x0, x1) in enumerate(spans):
+            if index % 2 == 0:
+                # A long panel: the score of its flap, and a corner at each end.
+                blank.score(V(x0, base + up * a / 2, 0), V(x1, base + up * a / 2, 0), 90.0)
+                corner(x1, 1, base, up)
+                if index > 0:
+                    corner(x0, -1, base, up)
+            else:
+                # An end panel: the score of its center triangle, two thicknesses lower.
+                y = base + up * (-2 * t + a / 2)
+                blank.score(V(x0, y, 0), V(x1, y, 0), 90.0)
+        corner(right + a, -1, base, up, joint=True)
+    return [blank.piece("box")]
+
+
 def style_0228(t, L, W, D):
     """An RSC with a divider: a fifth panel inside the first, and a sixth across the box."""
     flaps = [(W / 2, 1), (W / 2, 0), (W / 2, 1), (W / 2 - t, 0), None, None]
@@ -742,7 +808,7 @@ STYLES = {
     "0215 Snap Bottom Container with Tuck Top": style_0215,
     "0216 Snap Bottom Container with RSC Top": style_0216,
     "0225 Full Bottom File Box": style_0225,
-    "0226 Bellows Style Top and Bottom Container": None,
+    "0226 Bellows Style Top and Bottom Container": style_0226,
     "0228 Integral Divider Container": style_0228,
     "0301 Trays, Design Style": style_0301,
     "0301 Full Telescope Design Style Container": style_0301_ftd,
