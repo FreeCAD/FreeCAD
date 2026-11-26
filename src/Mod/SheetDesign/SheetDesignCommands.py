@@ -66,9 +66,28 @@ def make_rule(doc):
             "Position of the neutral axis as a fraction of the thickness, from the inner surface",
         ),
     )
+    rule.addProperty(
+        "App::PropertyEnumeration",
+        "ReliefType",
+        "Sheet",
+        translate("SheetDesign", "Relief for a flange that is narrower than its edge"),
+    )
+    rule.addProperty(
+        "App::PropertyLength", "ReliefWidth", "Sheet", translate("SheetDesign", "Width of the relief")
+    )
+    rule.addProperty(
+        "App::PropertyLength",
+        "ReliefDepth",
+        "Sheet",
+        translate("SheetDesign", "Depth of the relief, from the bend line into the panel"),
+    )
     rule.Thickness = 1.0
     rule.BendRadius = 1.0
     rule.KFactor = 0.5
+    rule.ReliefType = ["None", "Rectangle", "Round"]
+    rule.ReliefType = "None"
+    rule.ReliefWidth = 1.0
+    rule.ReliefDepth = 1.0
     return rule
 
 

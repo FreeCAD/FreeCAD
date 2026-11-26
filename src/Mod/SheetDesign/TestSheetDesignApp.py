@@ -1205,10 +1205,42 @@ class TestSheetDesign(unittest.TestCase):
         slot = 2.0 * (3.0 - 1.0) + math.pi * 1.0**2 / 2
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * slot, places=5)
 
-    def test_relief_none_is_the_default(self):
+    def test_relief_comes_from_the_rule_by_default(self):
+        """A rule with no relief values gives no relief."""
         flange, flat = self.relief_flange()
-        self.assertEqual(flange.ReliefType, "None")
+        self.assertEqual(flange.ReliefType, "Rule")
         self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area(), places=5)
+
+    def add_rule_relief(self, relief_type, width, depth):
+        self.rule.addProperty("App::PropertyEnumeration", "ReliefType", "Sheet")
+        self.rule.addProperty("App::PropertyLength", "ReliefWidth", "Sheet")
+        self.rule.addProperty("App::PropertyLength", "ReliefDepth", "Sheet")
+        self.rule.ReliefType = ["None", "Rectangle", "Round"]
+        self.rule.ReliefType = relief_type
+        self.rule.ReliefWidth = width
+        self.rule.ReliefDepth = depth
+
+    def test_relief_of_the_rule_applies_to_each_flange(self):
+        self.add_rule_relief("Rectangle", 1.5, 4.0)
+        # The values of the flange are not used with the type Rule.
+        flange, flat = self.relief_flange(ReliefWidth=9.0, ReliefDepth=9.0)
+        self.assertSolid(flange)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * 1.5 * 4.0, places=5)
+        # A change of the rule changes the part.
+        self.rule.ReliefDepth = 6.0
+        self.doc.recompute()
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * 1.5 * 6.0, places=5)
+        self.rule.ReliefType = "None"
+        self.doc.recompute()
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area(), places=5)
+
+    def test_flange_can_replace_the_relief_of_the_rule(self):
+        self.add_rule_relief("Rectangle", 1.5, 4.0)
+        flange, flat = self.relief_flange(ReliefType="None")
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area(), places=5)
+        flange.ReliefType = "Rectangle"
+        self.doc.recompute()
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, self.flange_area() - 2 * 2.0 * 3.0, places=5)
 
     def test_relief_only_at_an_end_with_a_gap(self):
         flange, flat = self.relief_flange(ReliefType="Rectangle", Gap2=0.0)
@@ -1244,3 +1276,92 @@ class TestSheetDesign(unittest.TestCase):
         self.doc.recompute()
         self.assertSolid(second)
         self.assertAlmostEqual(second.Shape.BoundBox.XMin, -(self.R + self.T), places=6)
+
+    # ------------------------------------------------------------------------------- miter
+
+    def test_miter_makes_the_flange_narrower(self):
+        flange = self.add_end_flange(self.add_base(), Length=10.0, Miter1=45.0, Miter2=45.0)
+        self.assertSolid(flange)
+        self.assertEqual(flange.Overlap.Value, 0.0)
+        flat = self.add_flat(flange)
+        depth = self.allowance() + 10.0
+        # The sides start at the bend line: the width at the depth u is WIDTH - 2 u.
+        expected = self.LENGTH * self.WIDTH + depth * self.WIDTH - depth**2
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
+        # The far end of the flange is shorter than the edge.
+        top = self.T + self.R + 10.0
+        ends = [v.Point.y for v in flange.Shape.Vertexes if abs(v.Point.z - top) < 1e-6]
+        self.assertAlmostEqual(max(ends) - min(ends), self.WIDTH - 2 * depth, places=5)
+
+    def test_miter_on_one_side(self):
+        flange = self.add_end_flange(self.add_base(), Length=10.0, Miter2=30.0)
+        self.assertSolid(flange)
+        flat = self.add_flat(flange)
+        depth = self.allowance() + 10.0
+        expected = self.LENGTH * self.WIDTH + depth * self.WIDTH - depth**2 * math.tan(math.radians(30)) / 2
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)
+
+    def test_miter_that_leaves_no_width_is_rejected(self):
+        flange = self.add_end_flange(self.add_base(), Length=30.0, Miter1=45.0, Miter2=45.0)
+        self.assertFalse(flange.isValid())
+
+    def two_flanges_at_inner_corner(self, **properties):
+        """An L-shaped panel with a flange on each of the two edges of its inner corner.
+
+        In the flat pattern the two flanges go into the same region.
+        """
+        wire = Part.makePolygon(
+            [V(0, 0, 0), V(100, 0, 0), V(100, 30, 0), V(60, 30, 0), V(60, 50, 0), V(0, 50, 0), V(0, 0, 0)]
+        )
+        base = self.doc.addObject("SheetDesign::BasePanel", "Base")
+        base.Profile = self.add_shape(wire)
+        base.Rule = self.rule
+        self.doc.recompute()
+        first = self.add_flange(base, V(60, 30, self.T), V(100, 30, self.T), Length=10.0)
+        # The first bend divides the top edge of the second side. The bottom edge is one
+        # edge, thus use it, and turn the flange to the top side.
+        second = self.add_flange(
+            first, V(60, 30, 0), V(60, 50, 0), Length=10.0, Reversed=True, **properties
+        )
+        return first, second
+
+    def test_automatic_miter_of_two_flanges_at_an_inner_corner(self):
+        first, second = self.two_flanges_at_inner_corner()
+        self.assertSolid(second)
+        self.assertEqual(second.Overlap.Value, 0.0)
+        flat = self.add_flat(second)
+        self.assertEqual(len(flat.Shape.Faces), 1)
+        depth = self.allowance() + 10.0
+        panel = 100 * 30 + 60 * 20
+        # Each flange loses the half of the square that the two had together.
+        expected = panel + (40 * depth - depth**2 / 2) + (20 * depth - depth**2 / 2)
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=4)
+        self.assertEqual(len(flat.Shape.SubShapes), 3)  # The face and two bend lines.
+
+    def test_automatic_miter_can_be_set_to_off(self):
+        _first, second = self.two_flanges_at_inner_corner(AutoMiter=False)
+        self.assertTrue(second.isValid(), second.getStatusString())
+        # The two flanges are in the same space at the corner.
+        self.assertGreater(second.Overlap.Value, 0.0)
+
+    def test_miter_gap(self):
+        _first, second = self.two_flanges_at_inner_corner()
+        flat = self.add_flat(second)
+        closed = flat.Shape.Faces[0].Area
+        second.MiterGap = 1.0
+        self.doc.recompute()
+        self.assertSolid(second)
+        self.assertEqual(second.Overlap.Value, 0.0)
+        # The gap is a band of 1 mm along the seam of the two flanges.
+        seam = (self.allowance() + 10.0) * math.sqrt(2)
+        self.assertAlmostEqual(closed - flat.Shape.Faces[0].Area, seam * 1.0, delta=1.0)
+
+    def test_no_miter_for_flanges_that_do_not_overlap(self):
+        """Two flanges at an outer corner are apart in the flat pattern. They stay rectangles."""
+        first = self.add_end_flange(self.add_base())
+        second = self.add_flange(first, V(0, self.WIDTH, self.T), V(self.LENGTH, self.WIDTH, self.T), Length=20.0)
+        self.assertSolid(second)
+        flat = self.add_flat(second)
+        depth = self.allowance() + 20.0
+        expected = self.LENGTH * self.WIDTH + depth * self.WIDTH + depth * self.LENGTH
+        self.assertAlmostEqual(flat.Shape.Faces[0].Area, expected, places=5)

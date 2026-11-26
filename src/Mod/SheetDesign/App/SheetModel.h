@@ -39,12 +39,27 @@
 namespace SheetDesign
 {
 
+/// A relief: a cut into the parent panel at an end of a bend, where the flange has a gap.
+struct Relief
+{
+    enum Type
+    {
+        None = 0,
+        Rectangle = 1,
+        Round = 2
+    };
+    Type type {None};
+    double width {0.0};  ///< Along the bend line, into the gap.
+    double depth {0.0};  ///< From the bend line into the parent panel.
+};
+
 /// The values that apply to the full sheet.
 struct SheetParams
 {
     double thickness {1.0};
     double radius {1.0};   ///< Inner bend radius.
     double kFactor {0.5};  ///< ANSI K-factor: neutral axis position from the inner surface.
+    Relief relief;         ///< The relief for a flange that does not give its own.
 };
 
 /**
@@ -105,18 +120,24 @@ struct ElementNames
     std::vector<std::pair<int, std::string>> faces;
 };
 
-/// A relief: a cut into the parent panel at an end of a bend, where the flange has a gap.
-struct Relief
+/// The values of a flange that are not its length, its angle, or its direction.
+struct FlangeOptions
 {
-    enum Type
-    {
-        None = 0,
-        Rectangle = 1,
-        Round = 2
-    };
-    Type type {None};
-    double width {0.0};  ///< Along the bend line, into the gap.
-    double depth {0.0};  ///< From the bend line into the parent panel.
+    double gap1 {0.0};  ///< From the start of the edge to the start of the flange.
+    double gap2 {0.0};
+    /// Moves the bend line out of the parent panel before the bend. The parent panel becomes
+    /// longer along the bend line. A negative value makes it shorter. Use one thickness for a
+    /// flap that folds across a second flap.
+    double offset {0.0};
+    Relief relief;  ///< A cut at each end of the bend that has a gap.
+    /// The angle of each side of the flange, in radians. A positive value makes the flange
+    /// narrower to its far end. The side starts at the bend line.
+    double miter1 {0.0};
+    double miter2 {0.0};
+    /// Cut this flange and a flange on an adjacent edge on the line between them, if the two
+    /// overlap in the flat pattern.
+    bool autoMiter {true};
+    double miterGap {0.0};  ///< The distance between two flanges after an automatic miter.
 };
 
 /// A reference to a straight segment on the boundary of a panel.
@@ -189,23 +210,14 @@ public:
     /// Find the panel boundary segment that agrees with a straight edge of the folded solid.
     bool findEdge(const TopoDS_Edge& foldedEdge, EdgeRef& ref) const;
 
-    /// Add a bend and a rectangular child panel. Returns the index of the new bend.
-    /**
-     * @param offset  Moves the bend line out of the parent panel before the bend. The parent
-     *                panel becomes longer along the bend line. A negative value makes it
-     *                shorter. Use one thickness for a flap that folds across a second flap.
-     * @param relief  A cut at each end of the bend that has a gap.
-     */
+    /// Add a bend and a child panel on a straight edge. Returns the index of the new bend.
     int addFlange(
         const EdgeRef& ref,
         double length,
         double angle,
         bool up,
-        double gap1,
-        double gap2,
-        double offset = 0.0,
-        const std::string& tag = "Flange",
-        const Relief& relief = Relief()
+        const FlangeOptions& options = FlangeOptions(),
+        const std::string& tag = "Flange"
     );
 
     /**

@@ -70,7 +70,8 @@ const double tol = 1.0e-6;
 const App::PropertyAngle::Constraints angleRange = {0.0, 180.0, 1.0};
 const char* SpaceEnums[] = {"Folded", "Flat", nullptr};
 const char* PositionEnums[] = {"Material Outside", "Material Inside", "Thickness Outside", nullptr};
-const char* ReliefTypeEnums[] = {"None", "Rectangle", "Round", nullptr};
+const char* ReliefTypeEnums[] = {"Rule", "None", "Rectangle", "Round", nullptr};
+const App::PropertyAngle::Constraints miterRange = {-80.0, 80.0, 1.0};
 const char* LengthTypeEnums[] = {"Leg", "Outer Sharp", "Inner Sharp", "Tangential", nullptr};
 
 /**
@@ -225,6 +226,20 @@ SheetParams readRule(const App::DocumentObject* rule)
     params.thickness = readRuleValue(rule, "Thickness");
     params.radius = readRuleValue(rule, "BendRadius");
     params.kFactor = readRuleValue(rule, "KFactor");
+
+    // The relief is optional in the rule. It applies to each flange that does not give its own.
+    std::string type;
+    if (auto* choice = freecad_cast<App::PropertyEnumeration*>(rule->getPropertyByName("ReliefType"))) {
+        type = choice->isValid() ? choice->getValueAsString() : "";
+    }
+    else if (auto* text = freecad_cast<App::PropertyString*>(rule->getPropertyByName("ReliefType"))) {
+        type = text->getValue();
+    }
+    if (type == "Rectangle" || type == "Round") {
+        params.relief.type = type == "Round" ? Relief::Round : Relief::Rectangle;
+        params.relief.width = readRuleValue(rule, "ReliefWidth");
+        params.relief.depth = readRuleValue(rule, "ReliefDepth");
+    }
     return params;
 }
 
@@ -605,7 +620,8 @@ Flange::Flange()
         (0L),
         "Sheet Design",
         App::Prop_None,
-        "A cut into the panel at each end of the bend that has a gap. It prevents a tear"
+        "A cut into the panel at each end of the bend that has a gap. It prevents a tear. "
+        "Rule: the relief of the sheet rule"
     );
     ReliefType.setEnums(ReliefTypeEnums);
     ADD_PROPERTY_TYPE(
@@ -621,6 +637,38 @@ Flange::Flange()
         "Sheet Design",
         App::Prop_None,
         "Depth of the relief, from the bend line into the panel"
+    );
+    ADD_PROPERTY_TYPE(
+        Miter1,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Angle of the side of the flange at the start of the edge. A positive value makes the "
+        "flange narrower to its far end"
+    );
+    Miter1.setConstraints(&miterRange);
+    ADD_PROPERTY_TYPE(
+        Miter2,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Angle of the side of the flange at the end of the edge"
+    );
+    Miter2.setConstraints(&miterRange);
+    ADD_PROPERTY_TYPE(
+        AutoMiter,
+        (true),
+        "Sheet Design",
+        App::Prop_None,
+        "Cut this flange and a flange on an adjacent edge on the line between them, if the "
+        "two overlap in the flat pattern"
+    );
+    ADD_PROPERTY_TYPE(
+        MiterGap,
+        (0.0),
+        "Sheet Design",
+        App::Prop_None,
+        "Distance between two flanges after an automatic miter"
     );
 }
 
@@ -696,21 +744,23 @@ std::shared_ptr<SheetModel> Flange::buildModel()
             "Sheet design: the length is too small for this length type. The bend uses all of it"
         );
     }
-    Relief relief;
-    relief.type = static_cast<Relief::Type>(ReliefType.getValue());
-    relief.width = ReliefWidth.getValue();
-    relief.depth = ReliefDepth.getValue();
-    result->addFlange(
-        ref,
-        leg,
-        angle,
-        up,
-        Gap1.getValue(),
-        Gap2.getValue(),
-        shift,
-        getNameInDocument(),
-        relief
-    );
+    FlangeOptions options;
+    options.gap1 = Gap1.getValue();
+    options.gap2 = Gap2.getValue();
+    options.offset = shift;
+    if (ReliefType.getValue() == 0) {
+        options.relief = result->params.relief;  // The relief of the sheet rule.
+    }
+    else {
+        options.relief.type = static_cast<Relief::Type>(ReliefType.getValue() - 1);
+        options.relief.width = ReliefWidth.getValue();
+        options.relief.depth = ReliefDepth.getValue();
+    }
+    options.miter1 = Base::toRadians(Miter1.getValue());
+    options.miter2 = Base::toRadians(Miter2.getValue());
+    options.autoMiter = AutoMiter.getValue();
+    options.miterGap = MiterGap.getValue();
+    result->addFlange(ref, leg, angle, up, options, getNameInDocument());
 
     return result;
 }

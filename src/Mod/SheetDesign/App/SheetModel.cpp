@@ -829,13 +829,14 @@ int SheetModel::addFlange(
     double length,
     double angle,
     bool up,
-    double gap1,
-    double gap2,
-    double offset,
-    const std::string& tag,
-    const Relief& relief
+    const FlangeOptions& options,
+    const std::string& tag
 )
 {
+    const double gap1 = options.gap1;
+    const double gap2 = options.gap2;
+    const double offset = options.offset;
+    const Relief& relief = options.relief;
     if (ref.panel < 0 || ref.panel >= static_cast<int>(panels.size())) {
         throw Base::ValueError("Sheet design: the edge reference is not valid");
     }
@@ -941,7 +942,12 @@ int SheetModel::addFlange(
             parent.solid.Nullify();
             int slotNumber = 0;
             for (const TopoDS_Shape& slot : slots) {
-                addOrigins(slot, gp_Trsf(), tag + "_Relief" + std::to_string(++slotNumber) + "_E", ref.panel);
+                addOrigins(
+                    slot,
+                    gp_Trsf(),
+                    tag + "_Relief" + std::to_string(++slotNumber) + "_E",
+                    ref.panel
+                );
             }
         }
     }
@@ -960,25 +966,112 @@ int SheetModel::addFlange(
     }
 
     const double allowance = bendAllowance(angle);
+    // With a miter, each side of the flange is at an angle from the bend line.
+    const double slope1 = std::tan(options.miter1);
+    const double slope2 = std::tan(options.miter2);
+    const bool mitered = std::fabs(slope1) > 1.0e-9 || std::fabs(slope2) > 1.0e-9;
+    auto corner = [&](bool second, double depth) {
+        const gp_Pnt2d& base = second ? b : a;
+        const double along = second ? -depth * slope2 : depth * slope1;
+        return base.Translated(n * depth + dir * along);
+    };
+    const gp_Pnt2d a1 = corner(false, allowance);
+    const gp_Pnt2d b1 = corner(true, allowance);
+    const gp_Pnt2d a2 = corner(false, allowance + length);
+    const gp_Pnt2d b2 = corner(true, allowance + length);
+    if (gp_Vec2d(a2, b2).Dot(dir) <= tol || gp_Vec2d(a1, b1).Dot(dir) <= tol) {
+        throw Base::ValueError("Sheet design: the miter angles leave no width for the flange");
+    }
     Panel child;
-    child.profile = makeFlatQuad(
-        a.Translated(n * allowance),
-        b.Translated(n * allowance),
-        b.Translated(n * (allowance + length)),
-        a.Translated(n * (allowance + length))
-    );
+    child.profile = makeFlatQuad(a1, b1, b2, a2);
     child.tag = tag;
     panels.push_back(child);
     const int childIndex = static_cast<int>(panels.size()) - 1;
-    const gp_Pnt2d a1 = a.Translated(n * allowance);
-    const gp_Pnt2d b1 = b.Translated(n * allowance);
-    const gp_Pnt2d a2 = a.Translated(n * (allowance + length));
-    const gp_Pnt2d b2 = b.Translated(n * (allowance + length));
     origins.push_back({tag + "_End", childIndex, a2, b2});
     origins.push_back({tag + "_Side1", childIndex, a1, a2});
     origins.push_back({tag + "_Side2", childIndex, b1, b2});
-    connect(ref.panel, childIndex, a, b, n, angle, up, params.radius, TopoDS_Face());
-    return static_cast<int>(bends.size()) - 1;
+    TopoDS_Shape zone;
+    if (mitered) {
+        zone = makeFlatQuad(a, b, b1, a1);
+    }
+    connect(ref.panel, childIndex, a, b, n, angle, up, params.radius, zone);
+    const int bendIndex = static_cast<int>(bends.size()) - 1;
+
+    if (options.autoMiter) {
+        // Two flanges on adjacent edges of one panel can overlap in the flat pattern, for
+        // example with the bend lines inside the panel, or at an inner corner. Cut the two on
+        // the line through the point where their bend lines meet, in the middle between them.
+        const double big = 1.0e4;
+        auto cutShape = [](const TopoDS_Shape& shape, const TopoDS_Face& tool) {
+            BRepAlgoAPI_Cut op(shape, tool);
+            if (!op.IsDone() || op.HasErrors()) {
+                throw Base::CADKernelError("Sheet design: cannot make the miter");
+            }
+            return op.Shape();
+        };
+        auto regionOf = [this](const Bend& bend) {
+            return joinZones(bend.strip, panels[bend.childPanel].profile);
+        };
+        for (int index = 0; index < bendIndex; ++index) {
+            Bend& other = bends[index];
+            if (other.closing || other.parentPanel != ref.panel) {
+                continue;
+            }
+            gp_Vec2d otherDir(other.start, other.end);
+            otherDir.Normalize();
+            const double sine = dir.Crossed(otherDir);
+            if (std::fabs(sine) < 1.0e-6) {
+                continue;
+            }
+            const TopoDS_Shape mine = regionOf(bends[bendIndex]);
+            const TopoDS_Shape theirs = regionOf(other);
+            if (!boxesOverlap(mine, theirs) || area(BRepAlgoAPI_Common(mine, theirs).Shape()) <= tol) {
+                continue;
+            }
+            // The point where the two bend lines meet, and the direction between the flanges.
+            const double along = gp_Vec2d(a, other.start).Crossed(otherDir) / sine;
+            const gp_Pnt2d meet = a.Translated(dir * along);
+            gp_Vec2d between = n + gp_Vec2d(other.normal);
+            if (between.Magnitude() < 1.0e-6) {
+                continue;
+            }
+            between.Normalize();
+            const gp_Vec2d left(-between.Y(), between.X());
+            const gp_Pnt2d myMid((a.X() + b.X()) / 2.0, (a.Y() + b.Y()) / 2.0);
+            const double mySide = gp_Vec2d(meet, myMid).Dot(left) > 0.0 ? 1.0 : -1.0;
+            // The part of the plane to remove from one flange: the side of the other flange,
+            // and half of the gap on its own side.
+            auto halfPlane = [&](double side) {
+                const gp_Pnt2d origin = meet.Translated(left * (-side * options.miterGap / 2.0));
+                return makeFlatQuad(
+                    origin.Translated(between * -big),
+                    origin.Translated(between * big),
+                    origin.Translated(between * big + left * (side * big)),
+                    origin.Translated(between * -big + left * (side * big))
+                );
+            };
+            auto trim = [&](Bend& bend, double side) {
+                const TopoDS_Face tool = halfPlane(-side);
+                const std::vector<TopoDS_Face> profile = facesOf(
+                    cutShape(panels[bend.childPanel].profile, tool)
+                );
+                const TopoDS_Shape strip = cutShape(bend.strip, tool);
+                if (profile.size() != 1 || facesOf(strip).empty()) {
+                    throw Base::ValueError("Sheet design: the miter removes a flange or divides it");
+                }
+                panels[bend.childPanel].profile = profile.front();
+                panels[bend.childPanel].solid.Nullify();
+                bend.strip = strip;
+                bend.plain = false;
+            };
+            trim(bends[bendIndex], mySide);
+            trim(other, -mySide);
+            const gp_Pnt2d seamEnd = meet.Translated(between * big);
+            origins.push_back({tag + "_Miter", childIndex, meet, seamEnd});
+            origins.push_back({tag + "_Miter", other.childPanel, meet, seamEnd});
+        }
+    }
+    return bendIndex;
 }
 
 gp_Trsf SheetModel::afterBend(

@@ -161,6 +161,10 @@ public:
     App::PropertyEnumeration ReliefType;
     App::PropertyLength ReliefWidth;
     App::PropertyLength ReliefDepth;
+    App::PropertyAngle Miter1;
+    App::PropertyAngle Miter2;
+    App::PropertyBool AutoMiter;
+    App::PropertyLength MiterGap;
 
 protected:
     std::shared_ptr<SheetModel> buildModel() override;
