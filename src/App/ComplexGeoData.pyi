@@ -124,7 +124,6 @@ class ComplexGeoData(Persistence):
         self, name: str, return_id: Literal[True] = False, /,
     ) -> tuple[str, list[int]]: ...
 
-    @overload
     @constmethod
     def getElementIndexedName(
         self, name: str, return_id: bool = False, /,
@@ -145,7 +144,6 @@ class ComplexGeoData(Persistence):
         self, name: str, return_id: Literal[True] = False, /,
     ) -> tuple[str, list[int]]: ...
 
-    @overload
     @constmethod
     def getElementMappedName(
         self, name: str, return_id: bool = False, /,

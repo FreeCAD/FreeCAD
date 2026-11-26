@@ -22,7 +22,7 @@ class StringHasher(BaseClass):
     def getID(self, txt: str, base64: bool = False, /) -> StringID: ...
     @overload
     def getID(self, id: int, index: int = 0, /) -> StringID | None: ...
-    @overload
+
     def getID(self, arg: str | int, base64: bool = False, /) -> StringID | None:
         """
         If the input is text, return a StringID object that is unique within this hasher. This

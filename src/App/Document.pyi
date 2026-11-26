@@ -163,7 +163,9 @@ class Document(PropertyContainer):
     def exportGraphviz(self, /) -> str: ...
 
     @overload
-    def exportGraphviz(self, path: str = ..., /) -> None:
+    def exportGraphviz(self, path: str = ..., /) -> None: ...
+
+    def exportGraphviz(self, path: str = ..., /) -> str | None:
         """
         Export the dependencies of the objects as graph.
 
@@ -285,7 +287,6 @@ class Document(PropertyContainer):
         return_all: Literal[True] = True,
     ) -> DocumentObject | tuple[DocumentObject, ...]: ...
 
-    @overload
     def copyObject(
         self,
         /,

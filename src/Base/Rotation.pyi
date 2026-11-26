@@ -253,14 +253,17 @@ class Rotation(PyObjectBase):
 
     @overload
     @constmethod
-    def toEulerAngles(self) -> list[str]:
+    def toEulerAngles(self, /) -> list[str]:
         """
         Returns all possible values of `seq`.
         """
 
     @overload
     @constmethod
-    def toEulerAngles(self, seq: _Seq, /) -> tuple[float, float, float]:
+    def toEulerAngles(self, seq: _Seq, /) -> tuple[float, float, float]: ...
+
+    @constmethod
+    def toEulerAngles(self, seq: _Seq = ..., /) -> list[str] | tuple[float, float, float]:
         """
         Get the Euler angles in a given sequence for this rotation.
 

@@ -251,7 +251,6 @@ class DocumentObject(ExtensionContainer):
         self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Matrix, ...] | None: ...
 
-    @overload
     def getSubObject(
         self,
         /,
@@ -315,7 +314,6 @@ class DocumentObject(ExtensionContainer):
         self, /, *, recursive: bool = True, matrix: Matrix = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Any, Matrix]: ...
 
-    @overload
     def getLinkedObject(
         self,
         /,

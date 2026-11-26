@@ -154,7 +154,7 @@ class Matrix(PyObjectBase):
     def move(self, vector: Vector | tuple[float, float, float], /) -> None: ...
     @overload
     def move(self, x: float, y: float, z: float, /) -> None: ...
-    @overload
+
     def move(self, /, *args: Any) -> None:
         """
         Move the matrix along a vector, equivalent to left multiply the matrix
@@ -175,7 +175,7 @@ class Matrix(PyObjectBase):
     def scale(self, x: float, y: float, z: float, /) -> None: ...
     @overload
     def scale(self, factor: float, /) -> None: ...
-    @overload
+
     def scale(self, /, *args: Any) -> None:
         """
         Scale the first three rows of the matrix.
@@ -329,7 +329,7 @@ class Matrix(PyObjectBase):
     @overload
     @constmethod
     def multiply(self, vector: Vector, /) -> Vector: ...
-    @overload
+
     @constmethod
     def multiply(self, obj: Matrix | Vector, /) -> Matrix | Vector:
         """

@@ -20,7 +20,7 @@ class PropertyContainer(Persistence):
     def getPropertyByName(self, name: str, checkOwner: Literal[0, 1] = 0, /) -> Any: ...
     @overload
     def getPropertyByName(self, name: str, checkOwner: Literal[2] = 0, /) -> tuple[PropertyContainer, Any]: ...
-    @overload
+
     def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> Any | tuple[PropertyContainer, Any]:
         """
         Returns the value of a named property. Note that the returned property may not
