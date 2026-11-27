@@ -12,6 +12,8 @@ SET(SheetDesign_SRCS
   PreCompiled.h
   Features.cpp
   Features.h
+  FoldSolver.cpp
+  FoldSolver.h
   SheetModel.cpp
   SheetModel.h
 )
@@ -33,6 +35,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+target_include_directories(SheetDesign SYSTEM PRIVATE ${EIGEN3_INCLUDE_DIR})
 
 target_link_directories(SheetDesign PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(SheetDesign ${SheetDesign_LIBS})

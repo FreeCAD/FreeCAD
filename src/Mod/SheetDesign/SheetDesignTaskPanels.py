@@ -433,7 +433,9 @@ class TaskFlatPattern(TaskPanel):
             self.source_was_visible = source.ViewObject.Visibility
             source.ViewObject.hide()
         self.preview.show(shape, source)
-        self.form.foldLabel.setText(translate("SheetDesign", "Fold state: {} %").format(value))
+        text = translate("SheetDesign", "Fold state: {} %").format(value)
+        note = SheetDesignFold.message(self.obj)
+        self.form.foldLabel.setText(text + (". " + translate("SheetDesign", note) if note else ""))
 
     def fold_measured(self):
         """The slider stopped: measure the overlap of this state."""
@@ -441,6 +443,10 @@ class TaskFlatPattern(TaskPanel):
 
         value = self.form.foldSlider.value()
         if value >= 100 or self.obj.Source is None:
+            return
+        if SheetDesignFold.motion(self.obj) is not None:
+            # The solver moves thin panels. The thick panels of a coupled fold touch on the
+            # way, thus an overlap value has no meaning before the end.
             return
         state, in_sequence = self.fold_state()
         _shape, overlap = SheetDesignFold.shape(self.obj, state, in_sequence, True)
@@ -451,6 +457,12 @@ class TaskFlatPattern(TaskPanel):
     def fold_check(self):
         import SheetDesignFold
 
+        if SheetDesignFold.motion(self.obj) is not None:
+            self.form.foldLabel.setText(
+                translate("SheetDesign", "A part with coupled folds has no overlap check on the way. ")
+                + translate("SheetDesign", SheetDesignFold.message(self.obj))
+            )
+            return
         worst, where = SheetDesignFold.worst_overlap(self.obj, 20, self.form.foldSequence.isChecked())
         if worst > 0.0:
             text = translate("SheetDesign", "Largest overlap in the fold: {:.1f} mm³ at {:.0f} %").format(

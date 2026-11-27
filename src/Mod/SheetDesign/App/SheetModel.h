@@ -27,6 +27,7 @@
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS_Wire.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Dir2d.hxx>
 #include <gp_Pnt.hxx>

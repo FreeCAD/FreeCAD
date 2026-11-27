@@ -29,6 +29,7 @@
 #include <Mod/Part/App/TopoShapePy.h>
 
 #include "Features.h"
+#include "FoldSolver.h"
 
 
 namespace SheetDesign
@@ -46,6 +47,17 @@ public:
             "Test an edge or a side face of a sheet design feature. If a flange is possible on\n"
             "it, the result has the keys Panel (the name of the panel), Top (the edge is on the\n"
             "top side), and Length. If not, the result is None."
+        );
+        add_varargs_method(
+            "foldPath",
+            &Module::foldPath,
+            "foldPath(feature, scores, order, steps=12) -> dict\n"
+            "The motion of a part from flat to folded, score by score. A part with coupled folds\n"
+            "has loops of panels: the solver moves one score and finds the angles of the other\n"
+            "bends that keep each loop closed.\n"
+            "scores: for each score, the indexes of its bends. order: the number of each score\n"
+            "in the fold sequence. The result has States (for each step, the angle of each bend\n"
+            "in radians), Drivers, Mismatch (mm), EndError (radians), Complete, Notes, Loops."
         );
         add_varargs_method(
             "modelInfo",
@@ -74,6 +86,78 @@ public:
     }
 
 private:
+    Py::Object foldPath(const Py::Tuple& args)
+    {
+        PyObject* object = nullptr;
+        PyObject* scoreList = nullptr;
+        PyObject* orderList = nullptr;
+        int steps = 12;
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!OO|i",
+                &(App::DocumentObjectPy::Type),
+                &object,
+                &scoreList,
+                &orderList,
+                &steps
+            )) {
+            throw Py::Exception();
+        }
+        auto* feature = freecad_cast<SheetDesign::Feature*>(
+            static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr()
+        );
+        if (!feature) {
+            throw Py::TypeError("The object is not a sheet design feature");
+        }
+        std::vector<std::vector<int>> scores;
+        for (const Py::Object& group : Py::Sequence(scoreList)) {
+            std::vector<int> bends;
+            for (const Py::Object& item : Py::Sequence(group)) {
+                bends.push_back(static_cast<int>(static_cast<long>(Py::Long(item))));
+            }
+            scores.push_back(bends);
+        }
+        std::vector<int> order;
+        for (const Py::Object& item : Py::Sequence(orderList)) {
+            order.push_back(static_cast<int>(static_cast<long>(Py::Long(item))));
+        }
+        try {
+            SheetDesign::FoldSolver solver(*feature->getModel(), scores, order);
+            const SheetDesign::FoldPath path = solver.solve(steps);
+            Py::Dict result;
+            Py::List states;
+            for (const std::vector<double>& state : path.states) {
+                Py::List angles;
+                for (double angle : state) {
+                    angles.append(Py::Float(angle));
+                }
+                states.append(angles);
+            }
+            Py::List drivers;
+            for (int driver : path.drivers) {
+                drivers.append(Py::Long(static_cast<long>(driver)));
+            }
+            Py::List notes;
+            for (const std::string& note : path.notes) {
+                notes.append(Py::String(note));
+            }
+            result.setItem("States", states);
+            result.setItem("Drivers", drivers);
+            result.setItem("Notes", notes);
+            result.setItem("Mismatch", Py::Float(path.mismatch));
+            result.setItem("EndError", Py::Float(path.endError));
+            result.setItem("Complete", Py::Boolean(path.complete));
+            result.setItem("Loops", Py::Boolean(solver.hasLoops()));
+            return result;
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        catch (const Standard_Failure& e) {
+            throw Py::RuntimeError(e.GetMessageString());
+        }
+    }
+
     Py::Object modelInfo(const Py::Tuple& args)
     {
         PyObject* object = nullptr;

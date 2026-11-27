@@ -548,3 +548,22 @@ class TestSheetDesignGui(unittest.TestCase):
         self.assertEqual(sorted(set(order)), list(range(1, 17)))
         self.assertEqual(table.item(0, 0).text(), "3")
         self.assertEqual(table.item(2, 0).text(), "1")
+
+    def test_fold_slider_uses_the_solver_for_coupled_folds(self):
+        import SheetDesignBoxStyles
+        import SheetDesignFold
+
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        piece = SheetDesignBoxStyles.STYLES["0226 Bellows Style Top and Bottom Container"](4.0, 300.0, 200.0, 150.0)[0]
+        box = SheetDesignViewProviders.attach(SheetDesignBoxStyles.fold(self.doc, self.rule, piece, "Bellows"))
+        flat = self.add("SheetDesign::FlatPattern", "BoxFlat")
+        flat.Source = box
+        self.doc.recompute()
+        panel = self.open_panel(flat)
+        panel.form.foldSlider.setValue(60)
+        self.assertIn("Coupled folds", panel.form.foldLabel.text())
+        preview = self.doc.getObject("FoldPreview")
+        self.assertTrue(preview.Shape.isValid())
+        self.assertGreater(preview.Shape.Volume, 0.9 * box.Shape.Volume)
+        self.assertTrue(SheetDesignFold.motion(flat).complete)

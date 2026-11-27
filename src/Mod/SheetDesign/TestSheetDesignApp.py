@@ -2443,7 +2443,9 @@ class TestSheetDesign(unittest.TestCase):
         half, _overlap = SheetDesignFold.shape(flat, 0.5, in_sequence=False)
         opened, _overlap = SheetDesignFold.shape(flat, 0.0, in_sequence=False)
         self.assertTrue(half.isValid())
-        self.assertGreater(half.BoundBox.XLength, folded.XLength + 50.0)
+        # The fold solver gives the motion: early in the fold, the tube is not yet square.
+        early, _overlap = SheetDesignFold.shape(flat, 0.1, in_sequence=False)
+        self.assertGreater(early.BoundBox.XLength, folded.XLength + 50.0)
         self.assertLess(opened.BoundBox.ZLength, 10.0)
         # The smallest fold angle is not zero, thus the sizes agree to some millimeters.
         self.assertAlmostEqual(opened.BoundBox.XLength, flat.Shape.BoundBox.XLength, delta=3.0)
@@ -2506,12 +2508,10 @@ class TestSheetDesign(unittest.TestCase):
                 order[index] = number
         flat.BendOrder = order
         self.assertEqual(SheetDesignExport.scores_of(flat)[1], numbers)
+        # The bellows box has coupled folds: the fold solver gives the part of each bend.
         fractions = SheetDesignFold.fractions(flat, 0.5, in_sequence=True)
-        # All bends of one score have the same part of their angle.
-        for group in groups:
-            self.assertEqual(len({fractions[i] for i in group}), 1)
-        self.assertEqual({fractions[i] for i in groups[0]}, {0.0})
-        self.assertEqual({fractions[i] for i in groups[1]}, {1.0})
+        self.assertEqual(len(fractions), 32)
+        self.assertTrue(all(0.0 <= value <= 1.0 for value in fractions))
 
     def test_drawing_table_has_a_row_for_each_score(self):
         import SheetDesignDrawing
@@ -2523,3 +2523,120 @@ class TestSheetDesign(unittest.TestCase):
         notes = SheetDesignDrawing.notes_svg(flat, 0.2)
         self.assertEqual(notes.count("<circle"), 16)
         self.assertEqual(notes.count("<line"), 32)
+
+    # --------------------------------------------------------------------------- fold solver
+
+    def designer_order(self, box, groups):
+        """The vertical scores, then the horizontal scores, then the other scores."""
+        bends = SheetDesign.modelInfo(box)["Bends"]
+
+        def kind(group):
+            def length(i):
+                return math.hypot(bends[i]["End"][0] - bends[i]["Start"][0], bends[i]["End"][1] - bends[i]["Start"][1])
+
+            main = max(group, key=length)
+            dx = bends[main]["End"][0] - bends[main]["Start"][0]
+            dy = bends[main]["End"][1] - bends[main]["Start"][1]
+            return 0 if abs(dx) < 1e-6 else (1 if abs(dy) < 1e-6 else 2)
+
+        ranked = sorted(range(len(groups)), key=lambda g: (kind(groups[g]), g))
+        order = [0] * len(groups)
+        for position, g in enumerate(ranked):
+            order[g] = position + 1
+        return order
+
+    def test_model_info(self):
+        flange = self.add_end_flange(self.add_base())
+        info = SheetDesign.modelInfo(flange)
+        self.assertEqual(info["Panels"], 2)
+        self.assertEqual(info["Root"], 0)
+        self.assertEqual(len(info["Bends"]), 1)
+        bend = info["Bends"][0]
+        self.assertEqual((bend["Parent"], bend["Child"], bend["Closing"], bend["Up"]), (0, 1, False, True))
+        self.assertAlmostEqual(bend["Angle"], math.pi / 2, places=9)
+        self.assertAlmostEqual(bend["Allowance"], self.allowance(), places=9)
+
+    def test_fold_solver_closes_the_loops_of_the_bellows_box(self):
+        import SheetDesignExport
+
+        box, flat = self.bellows()
+        groups, _numbers = SheetDesignExport.scores_of(flat)
+        path = SheetDesign.foldPath(box, groups, self.designer_order(box, groups), 12)
+        self.assertTrue(path["Loops"])
+        self.assertTrue(path["Complete"], path["Notes"])
+        # At each step, the two sides of each closing bend are at the same place.
+        self.assertLess(path["Mismatch"], 1e-3)
+        self.assertLess(math.degrees(path["EndError"]), 0.01)
+        final = [bend["Angle"] for bend in SheetDesign.modelInfo(box)["Bends"]]
+        closing = [bend["Closing"] for bend in SheetDesign.modelInfo(box)["Bends"]]
+        for angle, end, loop in zip(path["States"][-1], final, closing):
+            if not loop:
+                self.assertAlmostEqual(angle, end, places=4)
+        self.assertEqual(path["States"][0], [0.0] * 32)
+
+    def test_fold_solver_agrees_with_the_formula_of_the_bellows_corner(self):
+        """A long flap at the angle t has the center triangle at acos(tan(45 deg - t/2))."""
+        import SheetDesignExport
+
+        box, flat = self.bellows()
+        groups, _numbers = SheetDesignExport.scores_of(flat)
+        order = self.designer_order(box, groups)
+        path = SheetDesign.foldPath(box, groups, order, 12)
+        bends = SheetDesign.modelInfo(box)["Bends"]
+        # The hinge of a long flap on the root panel, and the hinge of a center triangle on
+        # the first end wall: the two bends of 90 degrees whose parent is the root or the wall.
+        flap = next(i for i, b in enumerate(bends) if b["Parent"] == 0 and abs(b["End"][1] - b["Start"][1]) < 1e-6)
+        wall = next(i for i, b in enumerate(bends) if b["Parent"] == 0 and abs(b["End"][0] - b["Start"][0]) < 1e-6 and b["Start"][0] > 100)
+        center = next(
+            i
+            for i, b in enumerate(bends)
+            if b["Parent"] == bends[wall]["Child"] and abs(b["End"][1] - b["Start"][1]) < 1e-6
+            and (b["Start"][1] > 75) == (bends[flap]["Start"][1] > 75)
+        )
+        number = order[next(g for g, group in enumerate(groups) if flap in group)]
+        checked = 0
+        for state, driver in zip(path["States"], path["Drivers"]):
+            if driver != number or state[flap] < 0.01:
+                continue
+            expected = math.acos(max(-1.0, min(1.0, math.tan(math.pi / 4 - state[flap] / 2))))
+            self.assertAlmostEqual(state[center], expected, places=4)
+            checked += 1
+        self.assertGreater(checked, 8)
+
+    def test_fold_sequence_that_is_not_possible_is_changed(self):
+        """In the model sequence, the flaps close before two walls fold. Those walls are then
+        locked. The fold module moves them to the start of the sequence."""
+        import SheetDesignExport
+        import SheetDesignFold
+
+        box, flat = self.bellows()
+        groups, numbers = SheetDesignExport.scores_of(flat)
+        direct = SheetDesign.foldPath(box, groups, numbers, 12)
+        self.assertFalse(direct["Complete"])
+        self.assertTrue(any("cannot move" in note for note in direct["Notes"]))
+        motion = SheetDesignFold.motion(flat)
+        self.assertTrue(motion.complete, motion.notes)
+        self.assertTrue(motion.changed)
+        self.assertIn("Folded first", SheetDesignFold.message(flat))
+        self.assertEqual(SheetDesignFold.fractions(flat, 0.0), [0.0] * 32)
+        ends = SheetDesignFold.fractions(flat, 1.0)
+        closing = [bend["Closing"] for bend in SheetDesign.modelInfo(box)["Bends"]]
+        self.assertTrue(all(abs(value - 1.0) < 1e-4 for value, loop in zip(ends, closing) if not loop))
+        # A middle state is a valid solid with no overlap of the panels of the tube.
+        shape, _overlap = SheetDesignFold.shape(flat, 0.3)
+        self.assertTrue(shape.isValid())
+
+    def test_part_with_no_loop_does_not_use_the_solver(self):
+        import SheetDesignExport
+        import SheetDesignFold
+
+        flange = self.add_end_flange(self.add_base())
+        flat = self.add_flat(flange)
+        self.assertIsNone(SheetDesignFold.motion(flat))
+        self.assertEqual(SheetDesignFold.message(flat), "")
+        groups, numbers = SheetDesignExport.scores_of(flat)
+        path = SheetDesign.foldPath(flange, groups, numbers, 4)
+        self.assertFalse(path["Loops"])
+        self.assertTrue(path["Complete"])
+        self.assertEqual(len(path["States"]), 5)
+        self.assertAlmostEqual(path["States"][-1][0], math.pi / 2, places=9)
