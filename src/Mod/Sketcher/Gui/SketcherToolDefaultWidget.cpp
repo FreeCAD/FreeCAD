@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QEvent>
 #include <QLineEdit>
+#include <QTimer>
 
 #include "ui_SketcherToolDefaultWidget.h"
 #include <Gui/Application.h>
@@ -66,10 +67,12 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
     ui->parameterFour->installEventFilter(this);
     ui->parameterFive->installEventFilter(this);
     ui->parameterSix->installEventFilter(this);
-
     ui->lineEdit1->installEventFilter(this);
     ui->lineEdit2->installEventFilter(this);
-
+    ui->checkBoxTS1->installEventFilter(this);
+    ui->checkBoxTS2->installEventFilter(this);
+    ui->checkBoxTS3->installEventFilter(this);
+    ui->checkBoxTS4->installEventFilter(this);
     reset();
 }
 
@@ -189,6 +192,17 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
             for (int i = 0; i < nLineEdit; i++) {
                 if (object == getLineEdit(i)) {
                     signalParameterTabOrEnterPressed(i);
+                    return true;
+                }
+            }
+        }
+
+        if (ke->key() == Qt::Key_Tab) {
+            for (int i = 0; i < nCheckbox; i++) {
+                if (object == getCheckBox(i) && getCheckBox(i)->isVisible()) {
+                    QTimer::singleShot(0, this, [this, i]() {
+                        signalParameterTabOrEnterPressed(nParameters + i);
+                    });
                     return true;
                 }
             }
@@ -591,6 +605,21 @@ void SketcherToolDefaultWidget::updateVisualValue(int parameterindex, double val
     }
 
     THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
+bool SketcherToolDefaultWidget::isCheckboxVisible(int checkboxindex)
+{
+    if (checkboxindex >= 0 && checkboxindex < nCheckbox) {
+        return getCheckBox(checkboxindex)->isVisible();
+    }
+    return false;
+}
+
+void SketcherToolDefaultWidget::setCheckboxFocus(int checkboxindex)
+{
+    if (checkboxindex >= 0 && checkboxindex < nCheckbox) {
+        getCheckBox(checkboxindex)->setFocus(Qt::TabFocusReason);
+    }
 }
 
 // checkbox functions
