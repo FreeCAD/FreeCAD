@@ -33,12 +33,17 @@
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
 
+namespace Gui
+{
+class QuantitySpinBox;
+}
+
 namespace MatGui
 {
 
 using Base::Color;
 
-class BaseDelegate: public QStyledItemDelegate
+class MatGuiExport BaseDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
@@ -71,6 +76,7 @@ protected:
 
     QString getStringValue(const QModelIndex& index) const;
     Color parseColor(const QString& color) const;
+    void setQuantityValue(Gui::QuantitySpinBox* input, const QVariant& item) const;
 
     void paintQuantity(QPainter* painter,
                        const QStyleOptionViewItem& option,
