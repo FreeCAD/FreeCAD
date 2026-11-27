@@ -55,6 +55,7 @@ Branding::Branding()
     filter.push_back("SplashInfoColor");
     filter.push_back("SplashInfoFont");
     filter.push_back("SplashInfoPosition");
+    filter.push_back("SplashMessageAreaPercent");
     filter.push_back("SplashWarningColor");
 
     filter.push_back("StartWorkbench");

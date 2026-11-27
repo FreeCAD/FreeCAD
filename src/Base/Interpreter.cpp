@@ -717,6 +717,10 @@ int InterpreterSingleton::cleanup(void (*func)())
 
 void InterpreterSingleton::finalize()
 {
+    // Python is not initialized when another instance handles the command line
+    if (!Py_IsInitialized()) {
+        return;
+    }
     try {
         PyEval_RestoreThread(this->_global);
         cleanupModules();
