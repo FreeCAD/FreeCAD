@@ -61,6 +61,8 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfHyperbola.h
     DrawSketchHandlerArcOfParabola.h
     DrawSketchHandlerArcSlot.h
+    DrawSketchHandlerCreateBlock.h
+    DrawSketchHandlerBlock.h
     DrawSketchHandlerText.h
     DrawSketchHandlerBSpline.h
     DrawSketchHandlerPoint.h
@@ -103,6 +105,8 @@ SET(SketcherGui_SRCS
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h
     SketcherToolDefaultWidget.ui
+    SketcherBlockWidget.cpp
+    SketcherBlockWidget.h
     SketcherToolDefaultWidget.cpp
     SketcherToolDefaultWidget.h
     TaskSketcherTool.cpp

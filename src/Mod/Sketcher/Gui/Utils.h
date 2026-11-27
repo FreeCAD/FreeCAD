@@ -27,6 +27,8 @@
 #include <Gui/Tree.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
+#include <QMap>
+#include <QString>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
@@ -188,6 +190,8 @@ bool isSketchInEdit(Gui::Document* doc);
 bool isCommandActive(Gui::Document* doc);
 bool isCommandNeedingConstraintActive(Gui::Document* doc);
 bool isCommandNeedingGeometryActive(Gui::Document* doc);
+/// True when at least two distinct edges of the sketch in edit are selected.
+bool isCreateBlockActive(Gui::Document* doc);
 bool isCommandNeedingBSplineActive(Gui::Document* doc);
 
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc);
@@ -233,6 +237,15 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 
 // Model TreeWidget helpers
 Gui::TreeWidget* findModelTreeWidget();
+
+std::vector<std::unique_ptr<Part::Geometry>> readBlockGeometry(
+    const std::string& filename,
+    bool* fixedSize = nullptr,
+    Base::Vector3d* sourceHandle = nullptr
+);
+int selectedBlockConstraint(Gui::Document* doc);
+void editFileBlock(ViewProviderSketch* view, int constraintId);
+void reloadFileGroup(ViewProviderSketch* view, int constraintId);
 
 }  // namespace SketcherGui
 
