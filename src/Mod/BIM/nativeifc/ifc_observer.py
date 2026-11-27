@@ -62,10 +62,7 @@ class ifc_observer:
         from PySide import QtCore  # lazy loading
 
         self.docname = doc.Name
-        # delay execution to not get caught under the wait sursor
-        # that occurs when the saveAs file dialog is shown
-        # TODO find a more solid way
-        QtCore.QTimer.singleShot(100, self.save)
+        self.save()
 
     def slotDeletedObject(self, obj):
         """Deletes the corresponding object in the IFC document"""
@@ -188,7 +185,10 @@ class ifc_observer:
                 import FreeCADGui
 
                 dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogExport.ui")
+                FreeCADGui.suspendWaitCursor()
                 result = dlg.exec_()
+                FreeCADGui.resumeWaitCursor()
+
                 if not result:
                     return
                 ask = dlg.checkAskBeforeSaving.isChecked()
@@ -201,6 +201,8 @@ class ifc_observer:
                     else:
                         ifc_viewproviders.get_filepath(project)
                         ifc_tools.save(project)
+                project.recompute()
+                project.purgeTouched()
 
     def convert(self):
         """Converts an object to IFC"""
