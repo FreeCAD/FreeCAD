@@ -280,9 +280,8 @@ main() {
         echo
         echo "Troubleshooting:"
         echo "  1. Ensure you're using Unix Makefiles generator: cmake -G 'Unix Makefiles'"
-        echo "  2. Check that FREECAD_CREATE_MAC_APP=ON in cmake configuration"
-        echo "  3. Run 'make install' to build and install FreeCAD with QuickLook extensions"
-        echo "  4. If FreeCAD crashes, try removing quarantine attributes or ad-hoc signing"
+        echo "  2. Run 'make install' to build and install FreeCAD with QuickLook extensions"
+        echo "  3. If FreeCAD crashes, try removing quarantine attributes or ad-hoc signing"
         return 1
     fi
 }
