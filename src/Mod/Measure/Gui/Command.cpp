@@ -51,6 +51,7 @@ StdCmdMeasure::StdCmdMeasure()
     sWhatsThis = "Std_Measure";
     sStatusTip = QT_TR_NOOP("Measures a feature");
     sPixmap = "umf-measurement";
+    sAccel = "Ctrl+Alt+M";
 }
 
 void StdCmdMeasure::activated(int iMsg)
