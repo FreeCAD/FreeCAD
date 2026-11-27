@@ -22,7 +22,9 @@
 
 #pragma once
 
+#include <array>
 #include <cmath>
+#include <cstddef>
 
 #include <QApplication>
 
@@ -283,7 +285,7 @@ private:
                     center = onSketchPos;
                 }
 
-                seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+                updateAutoConstraints(0, onSketchPos);
             } break;
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::Diagonal) {
@@ -369,7 +371,7 @@ private:
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
 
-                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.0, 0.0));
+                updateAutoConstraints(1, onSketchPos);
             } break;
             case SelectMode::SeekThird: {
                 if (constructionMethod() == ConstructionMethod::Diagonal
@@ -459,7 +461,7 @@ private:
 
                 if ((constructionMethod() == ConstructionMethod::ThreePoints
                      || constructionMethod() == ConstructionMethod::CenterAnd3Points)) {
-                    seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.0, 0.0));
+                    updateAutoConstraints(2, onSketchPos);
                 }
             } break;
             case SelectMode::SeekFourth: {
@@ -732,6 +734,7 @@ private:
 
         sugConstraints[0].clear();
         sugConstraints[1].clear();
+        sugConstraints[2].clear();
     }
 
     std::string getToolName() const override
@@ -885,10 +888,22 @@ private:
         thickness = 0.;
         lengthSign = 0;
         widthSign = 0;
+        skipAutoConstraint.fill(false);
         toolWidgetManager.resetControls();
     }
 
 private:
+    void updateAutoConstraints(std::size_t index, Base::Vector2d onSketchPos)
+    {
+        if (skipAutoConstraint[index]) {
+            sugConstraints[index].clear();
+            renderSuggestConstraintsCursor(sugConstraints[index]);
+        }
+        else {
+            seekAndRenderAutoConstraint(sugConstraints[index], onSketchPos, Base::Vector2d(0.0, 0.0));
+        }
+    }
+
     Base::Vector2d center, corner1, corner2, corner3, corner4, frameCorner1, frameCorner2,
         frameCorner3, frameCorner4, corner2Initial;
     Base::Vector3d center1, center2, center3, center4;
@@ -900,6 +915,9 @@ private:
     // Sign tracking for OVP lock fix (issue #23459)
     // These store the direction sign when OVP is first set to prevent sign flipping
     int lengthSign, widthSign;
+
+    // Suppress auto-constraints when a stage's point is fully defined by On-View Parameters
+    std::array<bool, 3> skipAutoConstraint {false, false, false};
 
     void createShape(bool onlyeditoutline) override
     {
@@ -2300,8 +2318,13 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             if (onViewParameters[OnViewParameter::Second]->isSet) {
                 onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
             }
+
+            handler->skipAutoConstraint[0] = onViewParameters[OnViewParameter::First]->isSet
+                && onViewParameters[OnViewParameter::Second]->isSet;
         } break;
         case SelectMode::SeekSecond: {
+            handler->skipAutoConstraint[1] = false;
+
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
@@ -2384,8 +2407,13 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                 }
             }
+
+            handler->skipAutoConstraint[1] = onViewParameters[OnViewParameter::Third]->isSet
+                && onViewParameters[OnViewParameter::Fourth]->isSet;
         } break;
         case SelectMode::SeekThird: {
+            handler->skipAutoConstraint[2] = false;
+
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (handler->roundCorners) {
@@ -2494,6 +2522,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     onSketchPos.x = handler->corner1.x + cos(angle) * width;
                     onSketchPos.y = handler->corner1.y + sin(angle) * width;
                 }
+            }
+
+            if (handler->constructionMethod() == ConstructionMethod::ThreePoints
+                || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
+                handler->skipAutoConstraint[2] = onViewParameters[OnViewParameter::Fifth]->isSet
+                    && onViewParameters[OnViewParameter::Sixth]->isSet;
             }
         } break;
         case SelectMode::SeekFourth: {
@@ -2851,6 +2885,7 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
             if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
                 && onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
 
+                handler->sugConstraints[0].clear();
                 handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
@@ -2861,6 +2896,8 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
                 if (!handler->canGoToNextMode()) {
                     return;
                 }
+
+                handler->sugConstraints[1].clear();
 
                 if (handler->roundCorners || handler->makeFrame
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints
@@ -2896,6 +2933,9 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
             else {
                 if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
                     && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
+
+                    handler->sugConstraints[2].clear();
+
                     if (handler->roundCorners || handler->makeFrame) {
                         handler->setNextState(SelectMode::SeekFourth);
                     }
