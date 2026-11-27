@@ -39,7 +39,9 @@
 #include <FCConfig.h>
 
 #include <App/Application.h>
+#include <App/ApplicationDirectories.h>
 #include <App/Document.h>
+#include <Base/FileInfo.h>
 
 #include "GraphvizView.h"
 #include "GraphicsViewZoom.h"
@@ -57,7 +59,7 @@ enum class GraphvizView::ProcessType : uint8_t
 enum class GraphvizView::PathType : uint8_t
 {
     Stored,     // Read from properties
-    AppPath,    // The dir containing the running executable
+    AppPath,    // The directory containing bundled helpers
     Default,    // Read via PATH environmnet variable
     Selection,  // Select path with file dialog
 };
@@ -215,6 +217,10 @@ QString GraphvizView::getDirPath()
         pathType = PathType::AppPath;
     }
     if (pathType == PathType::AppPath) {
+        const auto resources = App::ApplicationDirectories::findBundleResources();
+        if (!resources.empty()) {
+            return QString::fromStdString(Base::FileInfo::pathToString(resources / "bin"));
+        }
         return QCoreApplication::applicationDirPath();
     }
     if (pathType == PathType::Default) {
