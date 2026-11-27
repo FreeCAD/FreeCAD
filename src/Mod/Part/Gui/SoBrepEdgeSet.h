@@ -25,6 +25,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/fields/SoMFInt32.h>
+#include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <memory>
@@ -34,6 +35,7 @@
 
 
 class SoCoordinateElement;
+class SoSeparator;
 
 namespace PartGui
 {
@@ -78,6 +80,10 @@ public:
      */
     int lineIndexFromEdge(int edge) const;
 
+    /// Optional stipple pattern per topological edge; an empty array inherits the draw style.
+    SoMFInt32 linePatterns;
+    /// Optional screen width per edge; missing/nonpositive entries inherit the draw style.
+    SoMFFloat lineWidths;
     SoMFInt32 highlightCoordIndex;
     SoMFInt32 selectionCoordIndex;
     SoSFColor highlightColor;
@@ -86,6 +92,7 @@ public:
 protected:
     ~SoBrepEdgeSet() override;
     void GLRender(SoGLRenderAction* action) override;
+    void notify(SoNotList* list) override;
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
     SoDetail* createLineSegmentDetail(
@@ -101,6 +108,10 @@ private:
     struct SelContext;
     using SelContextPtr = std::shared_ptr<SelContext>;
 
+    void renderBase(SoGLRenderAction* action);
+    void clearPatternCache();
+    bool patternsDirty {true};
+    std::vector<SoSeparator*> patternCache;
     void renderHighlight(SoGLRenderAction* action, SelContextPtr);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;

@@ -89,7 +89,8 @@ SketchSolveStatus SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     //
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     lastDoF = solvedSketch.setUpSketch(
-        getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount());
+        getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount(),
+        getUnconstrainedGeometry(), getLockedGeometry());
 
     // At this point we have the solver information about conflicting/redundant/over-constrained,
     // but the sketch is NOT solved. Some examples: Redundant: a vertical line, a horizontal line
@@ -322,7 +323,9 @@ int SketchObject::getActive(int ConstrId, bool& isactive)
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
 
-    isactive = vals[ConstrId]->isActive;
+    const auto* constraint = vals[ConstrId];
+    isactive = constraint->isActive
+        && (constraint->Type == Group || constraint->Type == Text || constraintUsesLayers(constraint));
 
     return 0;
 }
@@ -336,6 +339,11 @@ bool SketchObject::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) 
 
     if (cstr->Type == Group || cstr->Type == Text) {
         return true;
+    }
+
+    // Layer suppression is reversible and must preserve the user's explicit active state.
+    if (!constraintUsesLayers(cstr)) {
+        return false;
     }
 
     // If the constraint is not deactivated, it could still constraint something in a group
@@ -770,7 +778,8 @@ int SketchObject::setVisibility(int ConstrId, bool isVisible)
 int SketchObject::setUpSketch()
 {
     lastDoF = solvedSketch.setUpSketch(
-        getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount());
+        getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount(),
+        getUnconstrainedGeometry(), getLockedGeometry());
 
     retrieveSolverDiagnostics();
 
@@ -793,7 +802,8 @@ int SketchObject::diagnoseAdditionalConstraints(
     std::ranges::copy(additionalconstraints, back_inserter(allconstraints));
 
     lastDoF =
-        solvedSketch.setUpSketch(getCompleteGeometry(), allconstraints, getExternalGeometryCount());
+        solvedSketch.setUpSketch(getCompleteGeometry(), allconstraints, getExternalGeometryCount(),
+            getUnconstrainedGeometry(), getLockedGeometry());
 
     retrieveSolverDiagnostics();
 
@@ -859,9 +869,12 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
 
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
 
+    // Layer suppression is applied by the solver, not here: managed operations
+    // (trim, split, fillet, ...) rebuild existing constraints through this
+    // function and must not lose those that are merely suppressed.
     std::vector<Constraint*> newVals(vals);
     newVals.insert(newVals.end(), ConstraintList.begin(), ConstraintList.end());
-    for (std::size_t i = newVals.size() - ConstraintList.size(); i < newVals.size(); i++) {
+    for (std::size_t i = vals.size(); i < newVals.size(); i++) {
         Constraint* cnew = newVals[i]->clone();
         newVals[i] = cnew;
 

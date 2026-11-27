@@ -19,6 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <limits>
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -47,6 +48,120 @@
 
 
 using namespace Sketcher;
+
+PyObject* SketchObjectPy::addLayer(PyObject* args)
+{
+    const char* name;
+    if (!PyArg_ParseTuple(args, "s", &name)) {
+        return nullptr;
+    }
+    try {
+        return PyLong_FromLong(getSketchObjectPtr()->addLayer(name));
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SketchObjectPy::renameLayer(PyObject* args)
+{
+    int id;
+    const char* name;
+    if (!PyArg_ParseTuple(args, "is", &id, &name)) {
+        return nullptr;
+    }
+    try {
+        getSketchObjectPtr()->renameLayer(id, name);
+        Py_RETURN_NONE;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SketchObjectPy::removeLayer(PyObject* args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id)) {
+        return nullptr;
+    }
+    try {
+        getSketchObjectPtr()->removeLayer(id);
+        Py_RETURN_NONE;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SketchObjectPy::setActiveLayer(PyObject* args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id)) {
+        return nullptr;
+    }
+    try {
+        getSketchObjectPtr()->setActiveLayer(id);
+        Py_RETURN_NONE;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SketchObjectPy::getGeometryLayer(PyObject* args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id)) {
+        return nullptr;
+    }
+    try {
+        return PyLong_FromLong(getSketchObjectPtr()->getGeometryLayer(id));
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SketchObjectPy::setGeometryLayer(PyObject* args)
+{
+    PyObject* input;
+    int layer;
+    if (!PyArg_ParseTuple(args, "Oi", &input, &layer)) {
+        return nullptr;
+    }
+    PyObject* sequence = PySequence_Fast(input, "Expected a sequence of geometry IDs");
+    if (!sequence) {
+        return nullptr;
+    }
+    std::vector<int> ids;
+    for (Py_ssize_t i = 0; i < PySequence_Fast_GET_SIZE(sequence); ++i) {
+        const long id = PyLong_AsLong(PySequence_Fast_GET_ITEM(sequence, i));
+        if (PyErr_Occurred() || id < std::numeric_limits<int>::min()
+            || id > std::numeric_limits<int>::max()) {
+            Py_DECREF(sequence);
+            if (!PyErr_Occurred()) {
+                PyErr_SetString(PyExc_OverflowError, "Geometry ID out of range");
+            }
+            return nullptr;
+        }
+        ids.push_back(static_cast<int>(id));
+    }
+    Py_DECREF(sequence);
+    try {
+        getSketchObjectPtr()->setGeometryLayer(ids, layer);
+        Py_RETURN_NONE;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
 
 // returns a string which represents the object e.g. when printed in python
 std::string SketchObjectPy::representation() const
@@ -377,6 +492,9 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
             PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
             return nullptr;
         }
+        if (!this->getSketchObjectPtr()->constraintAcceptedByLayers(constr)) {
+            return Py::new_reference_to(Py::Long(-1));
+        }
         int ret = this->getSketchObjectPtr()->addConstraint(constr);
         // this solve is necessary because:
         // 1. The addition of constraint is part of a command addition
@@ -425,12 +543,21 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
                 return nullptr;
             }
         }
-        int ret = getSketchObjectPtr()->addConstraints(values) + 1;
+        std::vector<Constraint*> accepted;
+        for (auto* constraint : values) {
+            if (getSketchObjectPtr()->constraintAcceptedByLayers(constraint)) {
+                accepted.push_back(constraint);
+            }
+        }
+        int nextId = getSketchObjectPtr()->Constraints.getSize();
+        if (!accepted.empty()) {
+            getSketchObjectPtr()->addConstraints(accepted);
+        }
         std::size_t numCon = values.size();
         Py::Tuple tuple(numCon);
         for (std::size_t i = 0; i < numCon; ++i) {
-            int conId = ret - int(numCon - i);
-            tuple.setItem(i, Py::Long(conId));
+            const bool added = getSketchObjectPtr()->constraintAcceptedByLayers(values[i]);
+            tuple.setItem(i, Py::Long(added ? nextId++ : -1));
         }
         return Py::new_reference_to(tuple);
     }

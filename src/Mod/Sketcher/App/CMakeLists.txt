@@ -71,6 +71,8 @@ SET(Features_SRCS
     SketchObject.cpp
     SketchObject.h
     SketchObjectGeometry.cpp
+    LayerDefaults.h
+    SketchObjectLayers.cpp
     SketchObjectExternal.cpp
     SketchObjectConstraints.cpp
     SketchObjectOperations.cpp

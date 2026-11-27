@@ -22,6 +22,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QCheckBox>
+#include <QSignalBlocker>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -108,6 +109,7 @@ void TaskSketcherMessages::createSettingsButtonActions()
 
     sketchView->getSketchObject()->noRecomputes = !state;
 
+    // One widget action for all the plain settings: a second one would space them apart.
     auto* autoUpdateAction = new QWidgetAction(this);
     auto* containerWidget = new QWidget();
     auto* layout = new QGridLayout(containerWidget);
@@ -115,6 +117,12 @@ void TaskSketcherMessages::createSettingsButtonActions()
     checkbox->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
     checkbox->setChecked(state);
     layout->addWidget(checkbox, 0, 0, 1, 2);
+
+    auto* layersCheckbox = new QCheckBox(tr("Show layers"));
+    layersCheckbox->setObjectName(QStringLiteral("showSketchLayersCheckbox"));
+    layersCheckbox->setToolTip(tr("Shows the Layers task panel and the layer of each element"));
+    layersCheckbox->setChecked(hGrp->GetBool("ShowLayers", false));
+    layout->addWidget(layersCheckbox, 1, 0, 1, 2);
     containerWidget->setLayout(layout);
     autoUpdateAction->setDefaultWidget(containerWidget);
 
@@ -124,6 +132,9 @@ void TaskSketcherMessages::createSettingsButtonActions()
         hGrp->SetBool("AutoRecompute", checked);
         sketchView->getSketchObject()->noRecomputes = !checked;
     });
+    connect(layersCheckbox, &QCheckBox::toggled, this, [hGrp](bool checked) {
+        hGrp->SetBool("ShowLayers", checked);
+    });
 
     auto* gridAction = new GridSpaceAction(this);
     auto* snapAction = new SnapSpaceAction(this);
@@ -131,6 +142,11 @@ void TaskSketcherMessages::createSettingsButtonActions()
 
     QMenu* myMenu = new QMenu(this);
     myMenu->addAction(autoUpdateAction);
+    connect(myMenu, &QMenu::aboutToShow, this, [layersCheckbox, hGrp]() {
+        // Another place may have changed the setting since the menu was built.
+        QSignalBlocker block(layersCheckbox);
+        layersCheckbox->setChecked(hGrp->GetBool("ShowLayers", false));
+    });
     myMenu->addSeparator();
     myMenu->addAction(gridAction);
     myMenu->addSeparator();
