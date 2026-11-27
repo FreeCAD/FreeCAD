@@ -152,6 +152,9 @@ public:
     bool getRenderProjectedBBox() const;
     void setRenderProjectedBBox(bool);
 
+    bool getShowHiddenSelection() const;
+    void setShowHiddenSelection(bool);
+
 private:
     void setup();
 };
