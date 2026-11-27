@@ -334,6 +334,7 @@ public:
     {
         return "Gui::PropertyEditor::PropertyIntegerConstraintItem";
     }
+    void setValue(long lValue);
     void setPyObject(PyObject* py) override;
 
     void Save(Base::Writer& writer) const override;
@@ -702,6 +703,7 @@ public:
         return "Gui::PropertyEditor::PropertyFloatConstraintItem";
     }
 
+    void setValue(double lValue);
     void setPyObject(PyObject* py) override;
 
     void Save(Base::Writer& writer) const override;
