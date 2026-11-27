@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64px"
+   height="64px"
+   viewBox="0 0 64 64"
+   id="svg2985"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Arch_HandrailPosts</dc:title>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/BIM/Resources/icons/Arch_HandrailPosts.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <path
+       id="band0"
+       style="fill:#888a85;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 11.00,49.60 L 53.00,38.40 L 53.00,45.40 L 11.00,56.60 Z" />
+    <path
+       id="pickets0"
+       style="fill:#888a85;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 17.40,25.89 L 21.40,24.83 L 21.40,46.83 L 17.40,47.89 Z" />
+    <path
+       id="pickets1"
+       style="fill:#888a85;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 25.80,23.65 L 29.80,22.59 L 29.80,44.59 L 25.80,45.65 Z" />
+    <path
+       id="pickets2"
+       style="fill:#888a85;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 34.20,21.41 L 38.20,20.35 L 38.20,42.35 L 34.20,43.41 Z" />
+    <path
+       id="pickets3"
+       style="fill:#888a85;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 42.60,19.17 L 46.60,18.11 L 46.60,40.11 L 42.60,41.17 Z" />
+    <path
+       id="rail0"
+       style="fill:#888a85;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 11.00,21.60 L 53.00,10.40 L 53.00,16.40 L 11.00,27.60 Z" />
+    <path
+       id="posts0"
+       style="fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 3.00,16.67 L 11.00,16.67 L 11.00,60.67 L 3.00,60.67 Z" />
+    <path
+       id="posts1"
+       style="fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M 53.00,3.33 L 61.00,3.33 L 61.00,47.33 L 53.00,47.33 Z" />
+  </g>
+</svg>
