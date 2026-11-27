@@ -52,6 +52,7 @@
 
 #include "CommandSketcherTools.h"
 #include "DrawSketchHandler.h"
+#include "SketchAnnotations.h"
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -367,8 +368,24 @@ void CmdSketcherCut::activated(int iMsg)
         ReleaseHandler(doc);
         auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
+        // The clipboard holds geometry and constraints only: selected cosmetics are not
+        // copied, so they must not be deleted either.
+        const auto selection =
+            Gui::Selection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
+        std::vector<std::string> subNames;
+        if (selection.size() == 1) {
+            for (const auto& name : selection[0].getSubNames()) {
+                if (annotationIdFromSubName(name) == Sketcher::Annotation::NoId) {
+                    subNames.push_back(name);
+                }
+            }
+        }
+
         openCommand(QT_TRANSLATE_NOOP("Command", "Cut in Sketcher"));
-        vp->deleteSelected();
+        // An empty list would delete the whole sketch.
+        if (!subNames.empty()) {
+            vp->onDelete(subNames);
+        }
         commitCommand();
     }
 }

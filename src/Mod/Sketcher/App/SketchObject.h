@@ -35,6 +35,7 @@
 #include "GeoEnum.h"
 #include "GeoList.h"
 #include "GeometryFacade.h"
+#include "Annotation.h"
 #include "Sketch.h"
 
 #include "SketchGeometryExtension.h"
@@ -94,6 +95,19 @@ public:
      0 refers to sketch axes and external geometry.  posId is a PointPos enum, documented in
      Constraint.h.
     */
+    PropertyAnnotationList Annotations;
+    App::PropertyInteger NextAnnotationId;
+    /// Returns nullptr when the ID is unknown; prefer this wherever a stale
+    /// subelement name or a queued event may outlive the annotation.
+    const Annotation* findAnnotation(Annotation::Id id) const;
+    const Annotation& getAnnotation(Annotation::Id id) const;
+    Annotation::Id addAnnotation(Annotation annotation);
+    void updateAnnotation(Annotation::Id id, Annotation annotation);
+    void delAnnotations(const std::vector<Annotation::Id>& ids);
+    Part::TopoShape annotationFace(const Annotation& annotation) const;
+    std::vector<Base::Vector3d> annotationStrokes(const Annotation& annotation) const;
+    /// Filled parts (triangles, three points each), such as a filled leader arrowhead.
+    std::vector<Base::Vector3d> annotationFills(const Annotation& annotation) const;
     Part::PropertyGeometryList Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App::PropertyLinkSubList ExternalGeometry;

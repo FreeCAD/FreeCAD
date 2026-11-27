@@ -33,6 +33,17 @@ class DrawViewAnnotationTest(unittest.TestCase):
 
         self.assertTrue("Up-to-date" in anno.State)
 
+    def testFindParentPage(self):
+        """Parent-page lookup safely represents a new or detached view."""
+        annotation = FreeCAD.ActiveDocument.addObject(
+            "TechDraw::DrawViewAnnotation", "ParentPageAnnotation"
+        )
+        self.assertIsNone(annotation.findParentPage())
+        self.page.addView(annotation)
+        self.assertEqual(annotation.findParentPage(), self.page)
+        self.page.removeView(annotation)
+        self.assertIsNone(annotation.findParentPage())
+
 
 if __name__ == "__main__":
     unittest.main()

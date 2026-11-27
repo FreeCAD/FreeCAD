@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg3542"
+   version="1.1"
+   width="64"
+   height="64"
+   sodipodi:docname="Sketcher_CosmeticHatch.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#50505000"
+     bordercolor="#eeeeeeff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050ff"
+     inkscape:zoom="7.1428833"
+     inkscape:cx="7.4199728"
+     inkscape:cy="35.34987"
+     inkscape:window-width="3840"
+     inkscape:window-height="1511"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3542" />
+  <title
+     id="title1">TechDraw_Hatch</title>
+  <metadata
+     id="metadata3552">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>TechDraw_Hatch</dc:title>
+        <dc:date>2016-01-14</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/TechDraw_Hatch.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3544">
+    <linearGradient
+       id="linearGradient3807">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3809" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3811" />
+    </linearGradient>
+    <pattern
+       id="cross"
+       patternUnits="userSpaceOnUse"
+       x="0"
+       y="0"
+       width=".1"
+       height=".1">
+      <g
+         style="fill:none; stroke:#000000; stroke-width:.005"
+         id="g3382">
+        <path
+           d="M0,0 l.12,.12"
+           id="path3384" />
+        <path
+           d="M.12,0 l-.12,.12"
+           id="path3386" />
+      </g>
+    </pattern>
+    <linearGradient
+       xlink:href="#linearGradient3807"
+       id="linearGradient3813"
+       x1="44"
+       y1="59"
+       x2="37"
+       y2="10"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <path
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3813);fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     d="M 34.758056,6.0000004 V 33.883669 H 6.0000005 V 58 H 58.000001 V 6.0000004 Z"
+     id="rect4151" />
+  <path
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     d="M 36.48276,7.8324472 V 35.586208 L 7.7931042,35.546864 V 56.206898 H 56.206898 V 7.7931038 Z"
+     id="rect4151-7" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 57.961002,6.1484924 34.862392,29.487273"
+     id="path2998" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 44.961002,6.1484924 34.549282,16.616823"
+     id="path3000" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 18.961002,58.148492 39,-39"
+     id="path3002" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 57.961002,32.148492 -26,26"
+     id="path3008" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 57.961002,45.148492 -13,13"
+     id="path3010" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 33.983172,34.000835 23.97783,24.147657"
+     id="path3683" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 34.642092,21.942809 23.31891,23.205683"
+     id="path3685" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 34.791522,8.8091837 57.961002,32.148492"
+     id="path3687" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 44.961002,6.1484924 13,12.9999996"
+     id="path3689" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 20.623102,33.980431 24.3379,24.168061"
+     id="path3691" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 7.8857512,34.186469 31.961002,58.148492"
+     id="path3693" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 5.9609912,45.148492 13.0000108,13"
+     id="path3695" />
+  <path
+     style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 17.618152,33.887614 5.9609912,45.148492"
+     id="path3000-3" />
+  <path
+     style="display:inline;fill:none;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 29.940252,34.249296 5.9609912,58.148492"
+     id="path2998-6" />
+</svg>
