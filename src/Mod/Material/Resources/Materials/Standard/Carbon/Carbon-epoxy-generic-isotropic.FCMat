@@ -1,0 +1,29 @@
+﻿---
+# File created by FreeCAD 1.1.0 Revision: 39279 (Git)
+General:
+  UUID: "4bff06c1-effe-431e-929e-5689fcab35e3"
+  Name: "Carbon-epoxy generic isotropic"
+  Author: "Tim Swait"
+  License: "CC-BY-4.0"
+  Description: "These are values for a randomly orientated, chopped carbon fibre epoxy moulding compound with 55% fibre volume fraction. The properties are near isotropic."
+  SourceURL: "https://www.lyondellbasell.com/globalassets/products-technology/advanced-polymer-solutions/technical-data-sheets/quantum-engineered-structural-composites/lytex-4149-tds_11.25.19.pdf"
+  ReferenceSource: "Quantum Lytex 4149 datasheet"
+Models:
+  Linear Elastic:
+    UUID: "7b561d1d-fb9b-44f6-9da9-56a4f74d7536"
+    CompressiveStrength: "255.00 MPa"
+    Density: "1550.00 kg/m^3"
+    PoissonRatio: "0.33"
+    Stiffness: "0.00 "
+    UltimateTensileStrength: "255.00 MPa"
+    YieldStrength: "255.00 MPa"
+    YoungsModulus: "34.50 GPa"
+AppearanceModels:
+  Basic Rendering:
+    UUID: "f006c7e4-35b7-43d5-bbf9-c5d572309e6e"
+    AmbientColor: "(0.0941176,0.0941176,0.0941176,1)"
+    DiffuseColor: "(0.0509804,0.054902,0.0588235,1)"
+    EmissiveColor: "(0,0,0,1)"
+    Shininess: "0.95"
+    SpecularColor: "(0.266667,0.266667,0.266667,1)"
+    Transparency: "0"
