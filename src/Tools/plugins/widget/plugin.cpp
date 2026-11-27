@@ -1689,6 +1689,83 @@ public:
 };
 
 /* XPM */
+static const char* tagwidget_pixmap[] = {
+    "22 22 3 1",
+    " 	c None",
+    ".	c #000000",
+    "+	c #FFFF00",
+    "                      ",
+    "                      ",
+    "                      ",
+    "                      ",
+    "                      ",
+    " ................     ",
+    " .++++++++++++++.     ",
+    " .++++++++++++++..    ",
+    " .+++++++++++++++..   ",
+    " .++++++++++++.+++..  ",
+    " .+++++++++++...+++.  ",
+    " .++++++++++++.+++..  ",
+    " .++++++++++++++++.   ",
+    " .+++++++++++++++..   ",
+    " .++++++++++++++..    ",
+    " .++++++++++++++.     ",
+    " ................     ",
+    "                      ",
+    "                      ",
+    "                      ",
+    "                      ",
+    "                      "
+};
+
+class TagWidgetPlugin: public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    TagWidgetPlugin()
+    {}
+    QWidget* createWidget(QWidget* parent)
+    {
+        return new Gui::TagWidget(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Display Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon(QPixmap(tagwidget_pixmap));
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/TagWidget.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Tag Widget");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Scroll area for creating and displaying descriptive tags.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::TagWidget\" name=\"tagWidget\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::TagWidget");
+    }
+};
+
+/* XPM */
 /*
 static char *listbox_pixmap[]={
 "22 22 6 1",
@@ -1753,5 +1830,6 @@ QList<QDesignerCustomWidgetInterface*> CustomWidgetPlugin::customWidgets() const
     cw.append(new PrefFontBoxPlugin);
     cw.append(new PrefUnitSpinBoxPlugin);
     cw.append(new PrefQuantitySpinBoxPlugin);
+    cw.append(new TagWidgetPlugin);
     return cw;
 }
