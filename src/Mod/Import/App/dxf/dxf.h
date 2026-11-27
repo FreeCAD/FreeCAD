@@ -194,6 +194,18 @@ struct DxfImportStats
     int totalEntitiesCreated = 0;
 };
 
+// Statistics reporting structure for the exporter
+struct DxfExportStats
+{
+    double exportTimeSeconds = 0.0;
+    std::string dxfVersion;
+    std::map<std::string, int> entityCounts;
+    std::map<std::string, std::vector<std::string>> skippedObjects;
+    int layerCount = 0;
+    int blockCount = 0;
+    int totalObjectsProcessed = 0;
+};
+
 
 // "using" for enums is not supported by all platforms
 // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
@@ -279,6 +291,7 @@ private:
     std::ostringstream* m_ssBlkRecord;
     std::ostringstream* m_ssEntity;
     std::ostringstream* m_ssLayer;
+    std::ostringstream* m_ssDimstyle;
 
 protected:
     static Base::Vector3d toVector3d(const double* coordinatesXYZ)
@@ -334,18 +347,24 @@ protected:
     int m_blockHandle;
     int m_blkRecordHandle;
     bool m_polyOverride;
+    std::string m_layerName;
+    int m_currentColor;
 
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
     std::string m_saveBlockRecordTableHandle;
     std::string m_saveBlkRecordHandle;
     std::string m_currentBlock;
+    std::string m_currentDimBlockName;
+    int m_dimBlockCounter = 0;
     std::string m_dataDir;
-    std::string m_layerName;
     std::vector<std::string> m_layerList;
     std::vector<std::string> m_blockList;
     std::vector<std::string> m_blkRecordList;
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
+
+protected:
+    DxfExportStats m_stats;
 
 public:
     explicit CDxfWrite(const char* filepath);
@@ -361,6 +380,14 @@ public:
     bool Failed() const
     {
         return m_fail;
+    }
+    void setExportTime(double seconds)
+    {
+        m_stats.exportTimeSeconds = seconds;
+    }
+    void setTotalObjectsProcessed(int count)
+    {
+        m_stats.totalObjectsProcessed = count;
     }
     //    void setOptions(void);
     //    bool isVersionValid(int vers);
@@ -411,7 +438,8 @@ public:
         const double* extLine1,
         const double* extLine2,
         const char* dimText,
-        int type
+        int type,
+        double fontSize
     );
     void writeLinearDimBlock(
         const double* textMidPoint,
@@ -419,7 +447,8 @@ public:
         const double* extLine1,
         const double* extLine2,
         const char* dimText,
-        int type
+        int type,
+        double fontSize
     );
     void writeAngularDim(
         const double* textMidPoint,
@@ -474,10 +503,25 @@ public:
     void writeObjectsSection();
     void writeClassesSection();
 
+    void writeBlock(const std::string& blockName, const double basePoint[3]);
+    void writeEndBlock(const std::string& blockName);
+    void writeInsert(
+        const std::string& blockName,
+        const double insertionPoint[3],
+        double scale,
+        double rotation
+    );
+    void writePolyFace(const std::vector<point3D>& vertices, const std::vector<std::vector<int>>& faces);
     void makeLayerTable();
     void makeBlockRecordTableHead();
     void makeBlockRecordTableBody();
     void makeBlockSectionHead();
+    void makeDimstyleTable();
+    void assignDimBlockName();
+    void setColor(int aci)
+    {
+        m_currentColor = aci;
+    }
 };
 
 // derive a class from this and implement it's virtual functions

@@ -86,4 +86,25 @@ def fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
     return True
 
 
+def dxf_group_pairs(path):
+    """Return the (group code, value) pairs of a DXF file."""
+    with open(path, "rb") as f:
+        lines = f.read().decode("latin-1").replace("\r\n", "\n").split("\n")
+    return [(lines[i].strip(), lines[i + 1]) for i in range(0, len(lines) - 1, 2)]
+
+
+def export_dxf(objects, path):
+    """Export objects with the C++ DXF exporter, restoring the preference afterwards."""
+    import FreeCAD as App
+    import importDXF
+
+    hGrp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    was_legacy_exporter = hGrp.GetBool("dxfUseLegacyExporter", False)
+    hGrp.SetBool("dxfUseLegacyExporter", False)
+    try:
+        importDXF.export(objects, path)
+    finally:
+        hGrp.SetBool("dxfUseLegacyExporter", was_legacy_exporter)
+
+
 ## @}
