@@ -49,10 +49,20 @@ class PartExport FaceMakerBuildFace: public FaceMakerPublic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
+    /// Whether the result also holds the input edges, split at intersections, that bound no face.
+    /// Only this maker's own build honours Keep: subclasses and the makers built for nested
+    /// compounds return faces only.
+    enum class LooseEdgePolicy
+    {
+        Drop,
+        Keep
+    };
+
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
 
     void setPlane(const gp_Pln& plane) override;
+    void setLooseEdgePolicy(LooseEdgePolicy policy);
 
 protected:
     void Build_Essence() override;
@@ -70,6 +80,12 @@ protected:
 
     gp_Pln myPlane;
     bool planeSupplied = false;
+
+private:
+    /// Under LooseEdgePolicy::Keep, adds to the result each of `edges` that no result face uses.
+    void appendLooseEdges(const TopTools_ListOfShape& edges);
+
+    LooseEdgePolicy myLooseEdgePolicy = LooseEdgePolicy::Drop;
 };
 
 }  // namespace Part
