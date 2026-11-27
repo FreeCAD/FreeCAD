@@ -74,6 +74,7 @@ SET(Draft_tests
     drafttests/test_lines_gui.py
     drafttests/test_manual_input_gui.py
     drafttests/test_modification.py
+    drafttests/test_node_edit_session_gui.py
     drafttests/test_trimex_gui.py
     drafttests/test_oca.py
     drafttests/test_pivy.py
@@ -281,6 +282,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_edit_part_objects.py
     draftguitools/gui_edit_sketcher_objects.py
     draftguitools/gui_edit.py
+    draftguitools/gui_node_edit_session.py
     draftguitools/gui_togglemodes.py
     draftguitools/gui_groups.py
     draftguitools/gui_grid.py
