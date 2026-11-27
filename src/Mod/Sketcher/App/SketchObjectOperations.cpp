@@ -38,6 +38,62 @@
 using namespace Sketcher;
 using namespace Base;
 
+namespace
+{
+// Group and Text constraints reference any number of geometries (the handle first, then the
+// members). Their copy is only valid when every one of them was copied, otherwise a member would
+// belong to two groups. Returns nullptr when the constraint cannot be copied.
+Constraint* copyGroupConstraint(const Constraint& constr, const std::map<int, int>& geoIdMap)
+{
+    std::unique_ptr<Constraint> constNew(constr.copy());
+    for (int i = 0; constr.hasElement(i); ++i) {
+        const int geoId = constr.getGeoId(i);
+        if (geoId == GeoEnum::GeoUndef) {
+            continue;
+        }
+        auto it = geoIdMap.find(geoId);
+        if (it == geoIdMap.end()) {
+            return nullptr;
+        }
+        constNew->setGeoId(i, it->second);
+    }
+    return constNew.release();
+}
+
+bool isGroupConstraint(const Constraint* constr)
+{
+    return constr->Type == Sketcher::Group || constr->Type == Sketcher::Text;
+}
+
+// Splitting or trimming a geometry must keep the Group/Text constraints it belongs to, otherwise
+// the whole group would be ungrouped. The extra pieces join the group when the split geometry
+// was one of its members (a split handle keeps its first piece as handle).
+void addPiecesToGroups(SketchObject& sketch, int geoId, const std::vector<int>& newIds)
+{
+    const std::vector<Constraint*>& constraints = sketch.Constraints.getValues();
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        const Constraint* constr = constraints[i];
+        if (!isGroupConstraint(constr)) {
+            continue;
+        }
+        bool isMember = false;
+        for (int j = 1; constr->hasElement(j); ++j) {
+            isMember |= constr->getGeoId(j) == geoId;
+        }
+        if (!isMember) {
+            continue;
+        }
+        std::unique_ptr<Constraint> grown(constr->clone());
+        for (int newId : newIds) {
+            if (newId != geoId) {
+                grown->addElement(GeoElementId(newId));
+            }
+        }
+        sketch.Constraints.set1Value(static_cast<int>(i), grown.get());
+    }
+}
+}  // namespace
+
 SketchSolveStatus SketchObject::moveGeometries(
     const std::vector<GeoElementId>& geoEltIds,
     const Base::Vector3d& toPoint,
@@ -998,6 +1054,10 @@ SketchSolveStatus SketchObject::trim(int GeoId, const Base::Vector3d& point, boo
     std::vector<int> idsOfOldConstraints;
     std::set<int, std::greater<>> geoIdsToBeDeleted;
     getConstraintIndices(GeoId, idsOfOldConstraints);
+    // groups are kept, see addPiecesToGroups
+    std::erase_if(idsOfOldConstraints, [&allConstraints](const auto& i) {
+        return isGroupConstraint(allConstraints[i]);
+    });
     // remove the constraints that we want to manually transfer
     // We could transfer beforehand but in case of exception that transfer is permanent
     if (!isOriginalCurveClosed) {
@@ -1094,6 +1154,7 @@ SketchSolveStatus SketchObject::trim(int GeoId, const Base::Vector3d& point, boo
     for (auto newId : newIds) {
         setConstruction(newId, isOriginalCurveConstruction);
     }
+    addPiecesToGroups(*this, GeoId, newIds);
 
     for (auto& deletedGeoId : geoIdsToBeDeleted) {
         for (auto& cons : newConstraints) {
@@ -1194,7 +1255,8 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
 
     std::erase_if(idsOfOldConstraints, [&GeoId, &allConstraints](const auto& i) {
-        return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
+        return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none)
+            || isGroupConstraint(allConstraints[i]);  // groups are kept, see addPiecesToGroups
     });
 
     std::vector<const Part::Geometry*> newGeosConst(newGeos.begin(), newGeos.end());
@@ -1268,6 +1330,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
     delConstraints(std::move(idsOfOldConstraints), DeleteOption::NoSolve);
     replaceGeometries({GeoId}, newGeos);
+    addPiecesToGroups(*this, GeoId, newIds);
     addConstraints(newConstraints);
 
     if (noRecomputes) {
@@ -1520,6 +1583,16 @@ int SketchObject::addSymmetric(
             auto firstIt = geoIdMap.find(constr->getElement(0).GeoId);
 
             if (firstIt == geoIdMap.end()) {
+                continue;
+            }
+
+            // A group is copied whole or not at all, with or without symmetry constraints:
+            // its members follow the handle and are not driven by the solver.
+            if (constr->Type == Sketcher::Group || constr->Type == Sketcher::Text) {
+                if (Constraint* constNew = copyGroupConstraint(*constr, geoIdMap)) {
+                    constNew->Name = "";
+                    newconstrVals.push_back(constNew);
+                }
                 continue;
             }
 
@@ -2517,6 +2590,13 @@ int SketchObject::addCopy(
 
         // handle geometry constraints
         for (const auto& constr : constrvals) {
+            if (constr->Type == Sketcher::Group || constr->Type == Sketcher::Text) {
+                if (Constraint* constNew = copyGroupConstraint(*constr, geoIdMap)) {
+                    newconstrVals.push_back(constNew);
+                }
+                continue;
+            }
+
             auto fit = geoIdMap.find(constr->First);
 
             if (fit == geoIdMap.end()) {

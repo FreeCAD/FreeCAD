@@ -150,9 +150,10 @@ public:
      */
     bool isInGroup(int geoId, bool includeHandle = true) const;
     bool isGroupHandle(int geoId) const;
+    /// All descendants, including handles and members of nested groups.
     std::set<int> getGroupGeometries(int handleGeoId) const;
     /*!
-     \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
+     \brief Returns the outermost active group handle, or geoId if it is not grouped.
      \param geoId - the geometry id in the sketch
      */
     int getGroupHandleIfInGroup(int geoId);
@@ -222,8 +223,17 @@ public:
      * If updating the Geometry property as a consequence of a (successful) solve() is not wanted,
      * updategeometry=false, prevents the update. This allows one to update the solve status (e.g.
      * dof), without updating the geometry (i.e. make it move to fulfil the constraints).
+     *
+     * Geometry is never deleted, so GeoIds stay valid: the handle of a deleted Group/Text
+     * constraint remains as ordinary geometry (see getGroupHandlesOfConstraints()).
      */
     int delConstraints(std::vector<int> ConstrIds, DeleteOptions options = DeleteOption::UpdateGeometry);
+    /** Returns the sorted GeoIds of the handles that only the Group/Text constraints in
+     * \a ConstrIds use. Deleting those constraints leaves these handles without a purpose: a
+     * caller that ungroups asks for them before deleting anything, then deletes them together
+     * with its other geometry, after the constraints.
+     */
+    std::vector<int> getGroupHandlesOfConstraints(const std::vector<int>& ConstrIds) const;
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident = true);
     int delConstraintOnPoint(int VertexId, bool onlyCoincident = true);
     /// Deletes all constraints referencing an external geometry
