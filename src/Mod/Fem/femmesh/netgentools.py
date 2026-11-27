@@ -119,7 +119,10 @@ class NetgenTools(ObjectTools):
     def compute(self):
         env = QProcessEnvironment.systemEnvironment()
         self.process.setProcessEnvironment(env)
-        self.process.start(self._get_python_exe(), ["-X", "utf8", "-E", self.model_file])
+        self.process.start(
+            self._get_python_exe(),
+            ["-X", "utf8", "-E", *self._bytecode_args(), self.model_file],
+        )
 
         return self.process
 
@@ -419,6 +422,13 @@ run_netgen(**{kwds})
         return path
 
     @staticmethod
+    def _bytecode_args():
+        # -E ignores PYTHONPYCACHEPREFIX
+        if sys.pycache_prefix:
+            return ["-X", f"pycache_prefix={sys.pycache_prefix}"]
+        return []
+
+    @staticmethod
     def version():
         script = """
 try:
@@ -428,7 +438,7 @@ except:
     pass
 """
         p = QProcess()
-        p.start(NetgenTools._get_python_exe(), ["-E", "-c", script])
+        p.start(NetgenTools._get_python_exe(), ["-E", *NetgenTools._bytecode_args(), "-c", script])
         p.waitForFinished()
         info = p.readAll().data().decode()
 
