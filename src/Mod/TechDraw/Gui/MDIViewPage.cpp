@@ -64,6 +64,8 @@
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewBreak.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -73,6 +75,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
+#include "QGIBreakLine.h"
 #include "QGIDatumLabel.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
@@ -975,6 +978,17 @@ void MDIViewPage::clearSceneSelection()
 void MDIViewPage::selectQGIView(App::DocumentObject *obj, bool isSelected,
                                 const std::vector<std::string> &subNames)
 {
+    if (obj && obj->isDerivedFrom<TechDraw::DrawViewBreak>()) {
+        for (QGraphicsItem* item : m_scene->items()) {
+            auto* breakLine = dynamic_cast<QGIBreakLine*>(item);
+            if (breakLine && breakLine->getBreakObject() == obj) {
+                breakLine->setSelected(isSelected);
+                breakLine->update();
+                return;
+            }
+        }
+    }
+
     QGIView* view = m_scene->findQViewForDocObj(obj);
     if (view) {
         view->setGroupSelection(isSelected, subNames);
@@ -996,7 +1010,8 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<Gui::SelectionObject> selObjs = Gui::Selection().getSelectionEx(msg.pDocName);
             for (auto &so : selObjs) {
                 App::DocumentObject *docObj = so.getObject();
-                if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
+                if (docObj->isDerivedFrom<TechDraw::DrawView>()
+                    || docObj->isDerivedFrom<TechDraw::DrawViewBreak>()) {
                     selectQGIView(docObj, true, so.getSubNames());
                 }
             }
@@ -1004,7 +1019,8 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection) {
         App::DocumentObject *docObj = msg.Object.getSubObject();
-        if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
+        if (docObj->isDerivedFrom<TechDraw::DrawView>()
+            || docObj->isDerivedFrom<TechDraw::DrawViewBreak>()) {
             bool isSelected = msg.Type != Gui::SelectionChanges::RmvSelection;
             selectQGIView(docObj, isSelected, std::vector(1, std::string(msg.pSubName ? msg.pSubName : "")));
         }
@@ -1129,6 +1145,15 @@ void MDIViewPage::setTreeToSceneSelect()
     Gui::Selection().clearSelection();
 
     for (auto* scene : m_orderedSceneSelection) {
+        if (auto* breakLine = dynamic_cast<QGIBreakLine*>(scene)) {
+            auto* breakObject = breakLine->getBreakObject();
+            if (breakObject && !breakObject->isRemoving()) {
+                Gui::Selection().addSelection(breakObject->getDocument()->getName(),
+                                              breakObject->getNameInDocument());
+            }
+            continue;
+        }
+
         auto* itemView = dynamic_cast<QGIView*>(scene);
         if (!itemView) {
             auto* parent = dynamic_cast<QGIView*>(scene->parentItem());
@@ -1198,6 +1223,18 @@ std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
 // adds scene to core selection if it's not in already.
 void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
 {
+    if (auto* breakLine = dynamic_cast<QGIBreakLine*>(sn)) {
+        auto* breakObject = breakLine->getBreakObject();
+        if (breakObject && !breakObject->isRemoving()
+            && !Gui::Selection().isSelected(breakObject)) {
+            Gui::Selection().addSelection(breakObject->getDocument()->getName(),
+                                          breakObject->getNameInDocument());
+            showStatusMsg(breakObject->getDocument()->getName(),
+                          breakObject->getNameInDocument(), "");
+        }
+        return;
+    }
+
     auto* itemView = dynamic_cast<QGIView*>(sn);
     if (!itemView) {
         auto* parent = dynamic_cast<QGIView*>(sn->parentItem());
@@ -1257,6 +1294,16 @@ void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelec
     if (treeSelection.getSubNames().empty()) {
         bool matchFound{false};
         for (auto& sceneItem : sceneSelectedItems) {
+            if (auto* breakLine = dynamic_cast<QGIBreakLine*>(sceneItem)) {
+                auto* breakObject = breakLine->getBreakObject();
+                if (breakObject && selDocName == breakObject->getDocument()->getName()
+                    && selObj == breakObject) {
+                    matchFound = true;
+                    break;
+                }
+                continue;
+            }
+
             auto* itemView = dynamic_cast<QGIView*>(sceneItem);
             if (!itemView) {
                 continue;

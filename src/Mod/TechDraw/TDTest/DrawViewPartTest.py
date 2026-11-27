@@ -5,6 +5,7 @@
 
 
 import FreeCAD
+import time
 import unittest
 from .TechDrawTestUtilities import createPageWithSVGTemplate
 from PySide import QtCore
@@ -110,6 +111,43 @@ class DrawViewPartTest(unittest.TestCase):
             view.removeCenterLine,
             lambda: view.CenterLines,
         )
+
+    def testBreakDocumentObject(self):
+        """A view owns editable, suppressible break document objects."""
+        view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewPart", "BreakableView")
+        self.page.addView(view)
+        view.Source = [FreeCAD.ActiveDocument.Box]
+
+        view_break = FreeCAD.ActiveDocument.addObject(
+            "TechDraw::DrawViewBreak", "ViewBreak"
+        )
+        view_break.StartPoint = FreeCAD.Vector(3.0, 0.0, 0.0)
+        view_break.EndPoint = FreeCAD.Vector(7.0, 0.0, 0.0)
+        view_break.Direction = FreeCAD.Vector(1.0, 0.0, 0.0)
+        view_break.Gap = 1.0
+        view_break.BreakType = "ZigZag"
+        view.Breaks = [view_break]
+        FreeCAD.ActiveDocument.recompute()
+
+        self.assertEqual(view.Breaks, [view_break])
+        self.assertTrue(view_break.hasExtension("App::SuppressibleExtension"))
+        self.assertFalse(view_break.Suppressed)
+        # the projection runs in a separate thread
+        deadline = time.monotonic() + 10.0
+        while not view.getVisibleEdges() and time.monotonic() < deadline:
+            loop = QtCore.QEventLoop()
+            QtCore.QTimer.singleShot(20, loop.quit)
+            loop.exec_()
+        self.assertTrue(view.getVisibleEdges())
+
+        view_break.Suppressed = True
+        self.assertIn("Touched", view.State)
+        FreeCAD.ActiveDocument.recompute()
+        self.assertEqual(view.Breaks, [view_break])
+
+        FreeCAD.ActiveDocument.removeObject(view_break.Name)
+        FreeCAD.ActiveDocument.recompute()
+        self.assertEqual(view.Breaks, [])
 
 if __name__ == "__main__":
     unittest.main()

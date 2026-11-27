@@ -116,6 +116,7 @@ public:
 
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
+    bool supportsViewBreaks() const override { return false; }
     const char* getViewProviderName() const override
     {
         return "TechDrawGui::ViewProviderViewSection";
