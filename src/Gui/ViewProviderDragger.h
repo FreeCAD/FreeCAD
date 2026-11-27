@@ -127,6 +127,10 @@ protected:
 
     bool forwardToLink();
 
+    /// Creates the transform dragger and hooks up its callbacks, without showing any dialog.
+    /// Subclasses that show their own task dialog in setEdit() can use it to get the dragger.
+    void createTransformDragger();
+
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.

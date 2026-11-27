@@ -202,6 +202,17 @@ bool ViewProviderDragger::setEdit(int ModNum)
         return true;
     }
 
+    createTransformDragger();
+
+    Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
+
+    updateDraggerPosition();
+
+    return true;
+}
+
+void ViewProviderDragger::createTransformDragger()
+{
     assert(!transformDragger);
 
     transformDragger = new SoTransformDragger();
@@ -215,12 +226,6 @@ bool ViewProviderDragger::setEdit(int ModNum)
     transformDragger->addStartCallback(dragStartCallback, this);
     transformDragger->addFinishCallback(dragFinishCallback, this);
     transformDragger->addMotionCallback(dragMotionCallback, this);
-
-    Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
-
-    updateDraggerPosition();
-
-    return true;
 }
 
 void ViewProviderDragger::unsetEdit(int ModNum)
