@@ -93,7 +93,7 @@ class Draft_Hyperlink:
 
                 for text in o.Object.Text:
                     hyperlinks = re.findall(
-                        r"((\w:[\\/]|%\w+%|\\\\\w+|/\w+|\w{3,5}://)[\w\\/: ]+\.[\S]+)", text
+                        r"((\w:[\\/]|%\w+%|\\\\\w+|/\w+|\w{3,5}://)[\w\\/: -]+\.[\S]+)", text
                     )
 
                     for hyperlink in hyperlinks:
