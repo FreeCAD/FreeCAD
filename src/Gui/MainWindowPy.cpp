@@ -54,6 +54,7 @@ void MainWindowPy::init_type()
     add_varargs_method("getActiveWindow", &MainWindowPy::getActiveWindow, "getActiveWindow()");
     add_varargs_method("addWindow", &MainWindowPy::addWindow, "addWindow(MDIView)");
     add_varargs_method("removeWindow", &MainWindowPy::removeWindow, "removeWindow(MDIView)");
+    add_varargs_method("menuBar", &MainWindowPy::menuBar, "menuBar() -> QMenuBar");
     add_varargs_method("showHint", &MainWindowPy::showHint, "showHint(hint)");
     add_varargs_method("hideHint", &MainWindowPy::hideHint, "hideHint()");
     add_keyword_method(
@@ -99,6 +100,8 @@ Py::Object MainWindowPy::createWrapper(MainWindow* mw)
     }
 
     // copy attributes
+    // menuBar replaces the one of QMainWindow, which is not virtual: in the custom title bar
+    // mode, QMainWindow::menuBar() would create a menu bar that replaces the title bar.
     static constexpr std::initializer_list<const char*> attr = {
         "getWindows",
         "getWindowsOfType",
@@ -106,6 +109,7 @@ Py::Object MainWindowPy::createWrapper(MainWindow* mw)
         "getActiveWindow",
         "addWindow",
         "removeWindow",
+        "menuBar",
         "showHint",
         "hideHint",
         "addStatusBarItem",
@@ -237,6 +241,22 @@ Py::Object MainWindowPy::removeWindow(const Py::Tuple& args)
     Py::ExtensionObject<MDIViewPy> mdi(args[0].callMemberFunction("cast_to_base"));
     if (_mw) {
         _mw->removeWindow(mdi.extensionObject()->getMDIViewPtr());
+    }
+    return Py::None();
+}
+
+Py::Object MainWindowPy::menuBar(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    if (_mw) {
+        PythonWrapper wrap;
+        if (!wrap.loadWidgetsModule()) {
+            throw Py::RuntimeError("Failed to load Python wrapper for Qt");
+        }
+        return wrap.fromQWidget(_mw->menuBar(), "QMenuBar");
     }
     return Py::None();
 }

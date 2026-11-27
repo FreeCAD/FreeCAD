@@ -84,6 +84,12 @@ void DlgSettingsUI::saveSettings()
 
     // TaskWatcher
     ui->showTaskWatcherCheckBox->onSave();
+
+    // Others
+    if (property("CustomTitleBar").toBool() != ui->customTitleBarCheckBox->isChecked()) {
+        requireRestart();
+    }
+    ui->customTitleBarCheckBox->onSave();
 }
 
 void DlgSettingsUI::loadSettings()
@@ -113,6 +119,10 @@ void DlgSettingsUI::loadSettings()
 
     // TaskWatcher
     ui->showTaskWatcherCheckBox->onRestore();
+
+    // Others
+    ui->customTitleBarCheckBox->onRestore();
+    setProperty("CustomTitleBar", ui->customTitleBarCheckBox->isChecked());
 
     loadStyleSheet();
 }

@@ -46,11 +46,13 @@
 #include <QRegularExpressionMatch>
 #include <QScreen>
 #include <QSettings>
+#include <QSvgWidget>
 #include <QSignalMapper>
 #include <QStatusBar>
 #include <QThread>
 #include <QTimer>
 #include <QToolBar>
+#include <QToolButton>
 #include <QUrlQuery>
 #include <QWhatsThis>
 #include <QWindow>
@@ -83,6 +85,8 @@
 #include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
+
+#include <customtitlebarkit/MenuIntegration.h>
 
 #include "MainWindow.h"
 #include "Action.h"
@@ -347,23 +351,93 @@ struct MainWindowP
     std::string hiddenDockWindows;
     fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
+    QPointer<QPushButton> logoButton;     // application button of the custom title bar
+    QPointer<QToolButton> menuPinButton;  // pins the folded menu bar of the custom title bar
     bool _restoring = false;
     QTime _showNormal;
     void restoreWindowState(const QByteArray&);
 };
+
+/// The application button of the custom title bar shows the icon of the window
+static void setTitleBarLogo(QPushButton* button, const QIcon& windowIcon)
+{
+    button->setIcon(windowIcon.isNull() ? BitmapFactory().iconFromTheme("freecad") : windowIcon);
+}
+
+/// The tool tip of the pin button of the custom title bar says what a click does
+static void updateMenuPinToolTip(QToolButton* button)
+{
+    button->setToolTip(
+        button->isChecked() ? MainWindow::tr("Folds the menu bar behind the application button")
+                            : MainWindow::tr("Keeps the menu bar shown in the title bar")
+    );
+}
 
 }  // namespace Gui
 
 /* TRANSLATOR Gui::MainWindow */
 
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
-    : QMainWindow(parent, f /*WDestructiveClose*/)
+    : CustomTitleBarWindow(
+          App::GetApplication()
+                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+                  ->GetBool("CustomTitleBar", false)
+              ? Mode::Custom
+              : Mode::Native,
+          parent,
+          f
+      )
 {
     d = new MainWindowP;
     d->splashscreen = nullptr;
     d->activeView = nullptr;
     d->whatsthis = false;
     d->assistant = new Assistant();
+
+    if (isCustomTitleBar()) {
+        if (!property("backend").toString().startsWith("mac")) {
+            auto* logoBtn = new QPushButton(this);
+            logoBtn->setObjectName(QStringLiteral("titleBarLogoBtn"));
+            // Like a native title bar, it shows the window icon, which follows the branding
+            setTitleBarLogo(logoBtn, windowIcon());
+            d->logoButton = logoBtn;
+            logoBtn->setIconSize(QSize(24, 24));
+            logoBtn->setFixedSize(35, 35);
+            logoBtn->setFlat(true);
+            logoBtn->setCursor(Qt::PointingHandCursor);
+
+            // Shown after the last menu: pins the menu bar in the title bar, or folds it again.
+            // Style sheets give the icons of their theme with qproperty-icon (off and on).
+            auto hMainWindow = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/MainWindow"
+            );
+            auto* pinBtn = new QToolButton(this);
+            pinBtn->setObjectName(QStringLiteral("titleBarPinBtn"));
+            QIcon pinIcon(QStringLiteral(":/icons/titlebar-menu-pin-black.svg"));
+            pinIcon.addFile(
+                QStringLiteral(":/icons/titlebar-menu-unpin-black.svg"),
+                QSize(),
+                QIcon::Normal,
+                QIcon::On
+            );
+            pinBtn->setIcon(pinIcon);
+            pinBtn->setIconSize(QSize(16, 16));
+            pinBtn->setAutoRaise(true);
+            pinBtn->setFocusPolicy(Qt::NoFocus);
+            pinBtn->setCheckable(true);
+            pinBtn->setChecked(hMainWindow->GetBool("CustomTitleBarMenuPinned", false));
+            updateMenuPinToolTip(pinBtn);
+            connect(pinBtn, &QToolButton::toggled, this, [pinBtn, hMainWindow](bool pinned) {
+                hMainWindow->SetBool("CustomTitleBarMenuPinned", pinned);
+                updateMenuPinToolTip(pinBtn);
+            });
+            d->menuPinButton = pinBtn;
+
+            auto* menuIntegration = new FoldableMenuIntegration(logoBtn, this);
+            menuIntegration->setPinButton(pinBtn);
+            setMenuIntegration(menuIntegration);
+        }
+    }
 
     // 1. Force Qt to switch to OpenGL mode, this prevents delay and flickering of the window
     // after opening project and prevent issues with double initialization of the window.
@@ -1256,6 +1330,11 @@ bool MainWindow::event(QEvent* e)
             }
         }
     }
+    else if (e->type() == QEvent::WindowIconChange) {
+        if (d->logoButton) {
+            setTitleBarLogo(d->logoButton.data(), windowIcon());
+        }
+    }
     else if (e->type() == Spaceball::ButtonEvent::ButtonEventType) {
         auto buttonEvent = dynamic_cast<Spaceball::ButtonEvent*>(e);
         if (!buttonEvent) {
@@ -1310,7 +1389,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
     }
-    return QMainWindow::event(e);
+    return CustomTitleBarWindow::event(e);
 }
 
 bool MainWindow::eventFilter(QObject* o, QEvent* e)
@@ -1398,7 +1477,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
         }
     }
 
-    return QMainWindow::eventFilter(o, e);
+    return CustomTitleBarWindow::eventFilter(o, e);
 }
 
 void MainWindow::addWindow(MDIView* view)
@@ -1686,6 +1765,11 @@ void MainWindow::onToolBarMenuAboutToShow()
     menu->addSeparator();
 
     Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
+    if (ToolBarManager::getInstance()->hasTitleToolBarLock()) {
+        Application::Instance->commandManager()
+            .getCommandByName("Std_DlgToggleTitleToolBarLock")
+            ->addTo(menu);
+    }
 }
 
 void MainWindow::populateToolBarMenu(QMenu* menu)
@@ -1693,8 +1777,11 @@ void MainWindow::populateToolBarMenu(QMenu* menu)
     QList<QToolBar*> toolbars = this->findChildren<QToolBar*>();
     for (const auto& toolbar : toolbars) {
         if (auto parent = toolbar->parentWidget()) {
+            // Toolbars docked in the menu bar or the custom title bar live in a
+            // ToolBarAreaWidget; ask its owner instead of guessing from the parent chain.
             if (parent == this || parent == statusBar() || parent->parentWidget() == statusBar()
-                || parent->parentWidget() == menuBar()) {
+                || parent->parentWidget() == menuBar()
+                || ToolBarManager::getInstance()->toolBarAreaWidget(toolbar)) {
                 QAction* action = toolbar->toggleViewAction();
                 action->setToolTip(tr("Toggles this toolbar"));
                 action->setStatusTip(tr("Toggles this toolbar"));
@@ -1817,13 +1904,13 @@ void MainWindow::closeEvent(QCloseEvent* e)
 void MainWindow::showEvent(QShowEvent* e)
 {
     std::clog << "Show main window" << std::endl;
-    QMainWindow::showEvent(e);
+    CustomTitleBarWindow::showEvent(e);
 }
 
 void MainWindow::hideEvent(QHideEvent* e)
 {
     std::clog << "Hide main window" << std::endl;
-    QMainWindow::hideEvent(e);
+    CustomTitleBarWindow::hideEvent(e);
 }
 
 void MainWindow::processMessages(const QList<QString>& msg)
@@ -2322,7 +2409,7 @@ void MainWindow::dropEvent(QDropEvent* e)
         loadUrls(App::GetApplication().getActiveDocument(), data->urls());
     }
     else {
-        QMainWindow::dropEvent(e);
+        CustomTitleBarWindow::dropEvent(e);
     }
 }
 
@@ -2649,6 +2736,9 @@ void MainWindow::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         d->sizeLabel->setText(tr("Dimension"));
+        if (d->menuPinButton) {
+            updateMenuPinToolTip(d->menuPinButton.data());
+        }
 
         CommandManager& rclMan = Application::Instance->commandManager();
         std::vector<Command*> cmd = rclMan.getAllCommands();
@@ -2679,7 +2769,7 @@ void MainWindow::changeEvent(QEvent* e)
         }
     }
     else {
-        QMainWindow::changeEvent(e);
+        CustomTitleBarWindow::changeEvent(e);
     }
 }
 
@@ -3042,7 +3132,7 @@ void MainWindow::setWindowTitle(const QString& string)
         title = QStringLiteral("[*] %1 - %2").arg(string, title);
     }
 
-    QMainWindow::setWindowTitle(title);
+    CustomTitleBarWindow::setWindowTitle(title);
 }
 
 // ----------------------------------------------------------
