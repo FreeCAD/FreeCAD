@@ -38,6 +38,7 @@
 #endif
 
 #include "FileInfo.h"
+#include "Console.h"
 #include "Exception.h"
 #include "TimeInfo.h"
 #include "Tools.h"
@@ -74,6 +75,30 @@ std::wstring ConvertToWideString(const std::string& string)
 FileInfo::FileInfo(std::string fileName)
 {
     setFile(std::move(fileName));
+}
+
+FileInfo FileInfo::forLongPath(std::string name)
+{
+    FileInfo result(std::move(name));
+#ifdef FC_OS_WIN32
+    const auto path = stringToPath(result.FileName);
+    if (path.native().size() >= MAX_PATH - 12 && path.is_absolute()) {
+        auto native = fs::path(path).make_preferred().wstring();
+        if (!native.starts_with(L"\\\\?\\") && !native.starts_with(L"\\\\.\\")) {
+            // Extended paths bypass Win32's normal separator and dot resolution.
+            native = path.lexically_normal().make_preferred().wstring();
+            if (native.starts_with(L"\\\\")) {
+                native = L"\\\\?\\UNC\\" + native.substr(2);
+            }
+            else {
+                native = L"\\\\?\\" + native;
+            }
+        }
+        // Keep native separators for the extended namespace.
+        result.FileName = pathToString(fs::path(native));
+    }
+#endif
+    return result;
 }
 
 const std::string& FileInfo::getTempPath()
@@ -494,8 +519,13 @@ bool FileInfo::renameFile(const char* NewName)
         FileName = NewName;
         return true;
     }
-    catch (const fs::filesystem_error& e) {
-        std::clog << "Error in renameFile: " << e.what() << '\n';
+    catch (const fs::filesystem_error& error) {
+        Base::Console().warning("rename failed from '{}' to '{}' ({} error {}): {}\n",
+                                FileName,
+                                NewName,
+                                error.code().category().name(),
+                                error.code().value(),
+                                error.code().message());
         return false;
     }
 }
@@ -528,13 +558,14 @@ bool FileInfo::createDirectories() const
 {
     try {
         fs::path path(stringToPath(FileName));
-        if (fs::exists(path)) {
-            return true;
-        }
-
-        return fs::create_directories(path);
+        return fs::create_directories(path) || fs::is_directory(path);
     }
-    catch (const fs::filesystem_error&) {
+    catch (const fs::filesystem_error& error) {
+        Base::Console().warning("create_directories failed for '{}' ({} error {}): {}\n",
+                                FileName,
+                                error.code().category().name(),
+                                error.code().value(),
+                                error.code().message());
         return false;
     }
 }

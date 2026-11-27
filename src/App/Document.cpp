@@ -871,12 +871,12 @@ void Document::onChanged(const Property* prop)
         std::string new_dir =
             getTransientDirectoryName(this->Uid.getValueStr(), this->FileName.getStrValue());
         std::string old_dir = this->TransientDir.getStrValue();
-        Base::FileInfo TransDirNew(new_dir);
-        Base::FileInfo TransDirOld(old_dir);
+        auto TransDirNew = Base::FileInfo::forLongPath(new_dir);
+        auto TransDirOld = Base::FileInfo::forLongPath(old_dir);
         // this directory should not exist
         if (!TransDirNew.exists()) {
             if (TransDirOld.exists()) {
-                if (!TransDirOld.renameFile(new_dir.c_str())) {
+                if (!TransDirOld.renameFile(TransDirNew.filePath().c_str())) {
                     Base::Console().warning("Failed to rename '{}' to '{}'\n",
                                             old_dir,
                                             new_dir);
@@ -1079,7 +1079,7 @@ Document::~Document()
 
     // remove Transient directory
     try {
-        const Base::FileInfo TransDir(TransientDir.getValue());
+        const auto TransDir = Base::FileInfo::forLongPath(TransientDir.getValue());
         TransDir.deleteDirectoryRecursive();
     }
     catch (const Base::Exception& e) {
@@ -2155,6 +2155,7 @@ void Document::restore(const char* filename,
     Base::FlagToggler<> flag(globalIsRestoring, false);
 
     setStatus(Document::PartialDoc, false);
+    setStatus(Document::PartialRestore, false);
 
     d->clearRecomputeLog();
     d->objectLabelManager.clear();
@@ -2217,7 +2218,8 @@ void Document::restore(const char* filename,
 
     DocumentP::checkStringHasher(reader);
 
-    if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
+    if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)
+        || testStatus(Document::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
         Base::Console().error("There were errors while loading the file. Some data might have been "
                               "modified or not recovered at all. Look above for more specific "

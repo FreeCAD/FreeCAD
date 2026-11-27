@@ -1963,9 +1963,64 @@ class DocumentFileIncludeCases(unittest.TestCase):
             self.assertEqual(file.read(), payload)
         self.assertEqual(obj.File.split("/")[-1], "BinaryPayload.bin")
 
+    def testIncludedFileRestoreUsesOwnedDirectory(self):
+        payload = b"FileIncluded\x00restore\xff"
+        # Leave room for the OS component limit while forcing the complete
+        # destination beyond MAX_PATH under a normal Windows temp root.
+        filename = "included-" + "x" * 190 + ".bin"
+        with tempfile.TemporaryDirectory() as fixture:
+            saved = os.path.join(fixture, "source.FCStd")
+            document = os.path.join(fixture, "FileIncludeTests.FCStd")
+            self.Doc.addObject("App::DocumentObjectFileIncluded", "LongPayload")
+            self.Doc.saveAs(saved)
+            FreeCAD.closeDocument("FileIncludeTests")
+
+            # Add the payload directly to the archive to exercise extraction
+            # independently of assigning a file to a property.
+            with zipfile.ZipFile(saved) as original, zipfile.ZipFile(document, "w") as archive:
+                for name in original.namelist():
+                    data = original.read(name)
+                    if name == "Document.xml":
+                        reference = b'<FileIncluded file=""/>'
+                        self.assertIn(reference, data)
+                        data = data.replace(
+                            reference, f'<FileIncluded file="{filename}"/>'.encode("ascii")
+                        )
+                    archive.writestr(name, data)
+                archive.writestr(filename, payload)
+
+            self.Doc = FreeCAD.open(document)
+            restored = self.Doc.getObject("LongPayload").File
+            transient = self.Doc.TransientDir
+            self.assertTrue(os.path.isabs(transient))
+            self.assertEqual(
+                os.path.normcase(os.path.normpath(os.path.dirname(restored))),
+                os.path.normcase(os.path.normpath(transient)),
+            )
+            self.assertEqual(os.path.basename(restored), filename)
+            # The Python filesystem call inherits the executable's Win32
+            # manifest policy. Give this independent read an explicit path.
+            read_path = restored
+            if os.name == "nt":
+                native = os.path.abspath(restored)
+                read_path = (
+                    "\\\\?\\UNC\\" + native[2:] if native.startswith("\\\\") else "\\\\?\\" + native
+                )
+            with open(read_path, "rb") as stream:
+                self.assertEqual(stream.read(), payload)
+            copied = os.path.join(fixture, "RoundTrip.FCStd")
+            self.Doc.saveAs(copied)
+            with zipfile.ZipFile(copied) as archive:
+                self.assertEqual(archive.read(filename), payload)
+            renamed = self.Doc.TransientDir
+            FreeCAD.closeDocument(self.Doc.Name)
+            self.assertFalse(os.path.exists(os.path.dirname(read_path)))
+            self.assertFalse(os.path.exists(renamed))
+
     def tearDown(self):
         # closing doc
-        FreeCAD.closeDocument("FileIncludeTests")
+        if "FileIncludeTests" in FreeCAD.listDocuments():
+            FreeCAD.closeDocument("FileIncludeTests")
 
 
 class DocumentPropertyCases(unittest.TestCase):

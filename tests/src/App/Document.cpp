@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <QTemporaryDir>
 #include <cstdio>
 #include <fstream>
 
@@ -131,7 +132,23 @@ TEST_F(DocumentTest, importObjectsRestoresSourceStringHasher)
     // Assert
     EXPECT_GT(restoredStringCount, 0);
     connection.disconnect();
-    std::remove(savedPath.c_str());
+    stream.close();
+    EXPECT_EQ(std::remove(savedPath.c_str()), 0);
+}
+
+TEST_F(DocumentTest, successfulRestoreClearsPreviousPartialRestore)
+{
+    QTemporaryDir directory;
+    ASSERT_TRUE(directory.isValid());
+    const auto path = directory.filePath(QStringLiteral("Restore.FCStd")).toUtf8();
+    ASSERT_NE(doc()->addObject("App::DocumentObjectFileIncluded", "Attachment"), nullptr);
+    ASSERT_TRUE(doc()->saveAs(path.constData()));
+    doc()->setStatus(App::Document::PartialRestore, true);
+
+    ASSERT_NO_THROW(doc()->restore());
+
+    EXPECT_NE(doc()->getObject("Attachment"), nullptr);
+    EXPECT_FALSE(doc()->testStatus(App::Document::PartialRestore));
 }
 
 // NOLINTEND(readability-magic-numbers)

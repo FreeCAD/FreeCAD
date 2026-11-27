@@ -421,7 +421,7 @@ std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
 
 void Base::XMLReader::readBinFile(const char* filename)
 {
-    Base::FileInfo fi(filename);
+    const auto fi = Base::FileInfo::forLongPath(filename);
     Base::ofstream to(fi, std::ios::out | std::ios::binary);
     if (!to) {
         throw Base::FileException("XMLReader::readBinFile() Could not open file!");

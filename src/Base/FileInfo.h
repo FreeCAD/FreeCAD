@@ -67,6 +67,8 @@ public:
     explicit FileInfo(const char* fileName = "")
         : FileInfo(std::string {fileName})
     {}
+    /// Prepare a managed absolute path for native I/O. Keep the original name for display.
+    static FileInfo forLongPath(std::string name);
     /// Set a new file name
     void setFile(std::string name);
     /// Set a new file name

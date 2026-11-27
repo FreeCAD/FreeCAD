@@ -81,7 +81,7 @@ PropertyFileIncluded::~PropertyFileIncluded()
 {
     // clean up
     if (!_cValue.empty()) {
-        Base::FileInfo file(_cValue.c_str());
+        auto file = Base::FileInfo::forLongPath(_cValue);
         file.setPermissions(Base::FileInfo::ReadWrite);
         file.deleteFile();
     }
@@ -383,9 +383,9 @@ void PropertyFileIncluded::Save(Base::Writer& writer) const
 {
     // when saving a document under a new file name the transient directory
     // name changes and thus the stored file name doesn't work any more.
-    if (!_cValue.empty() && !Base::FileInfo(_cValue).exists()) {
+    if (!_cValue.empty() && !Base::FileInfo::forLongPath(_cValue).exists()) {
         Base::FileInfo fi(getDocTransientPath() + "/" + _BaseFileName);
-        if (fi.exists()) {
+        if (Base::FileInfo::forLongPath(fi.filePath()).exists()) {
             _cValue = fi.filePath();
         }
     }
@@ -430,11 +430,19 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
                 throw Base::FileException(
                     "PropertyFileIncluded::Restore(): rejected unsafe embedded file name");
             }
+            const auto transientPath = getDocTransientPath();
+            if (!Base::FileInfo::stringToPath(transientPath).is_absolute()
+                || !Base::FileInfo::forLongPath(transientPath).isDir()) {
+                reader.setPartialRestore(true);
+                reader.clearPartialRestoreProperty();
+                throw Base::FileSystemError(
+                    "Cannot restore an embedded file without a document transient directory");
+            }
             // initiate a file read
             reader.addFile(file.c_str(), this);
             // is in the document transient path
             aboutToSetValue();
-            _cValue = getDocTransientPath() + "/" + file;
+            _cValue = transientPath + "/" + file;
             _BaseFileName = file;
             hasSetValue();
         }
@@ -447,14 +455,22 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
                 throw Base::FileException(
                     "PropertyFileIncluded::Restore(): rejected unsafe embedded file name");
             }
+            const auto transientPath = getDocTransientPath();
+            if (!Base::FileInfo::stringToPath(transientPath).is_absolute()
+                || !Base::FileInfo::forLongPath(transientPath).isDir()) {
+                reader.setPartialRestore(true);
+                reader.clearPartialRestoreProperty();
+                throw Base::FileSystemError(
+                    "Cannot restore an embedded file without a document transient directory");
+            }
             // is in the document transient path
             aboutToSetValue();
-            _cValue = getDocTransientPath() + "/" + file;
+            _cValue = transientPath + "/" + file;
             reader.readBinFile(_cValue.c_str());
             reader.readEndElement("FileIncluded");
             _BaseFileName = file;
             // set read-only after restoring the file
-            Base::FileInfo fi(_cValue.c_str());
+            auto fi = Base::FileInfo::forLongPath(_cValue);
             fi.setPermissions(Base::FileInfo::ReadOnly);
             hasSetValue();
         }
@@ -469,7 +485,7 @@ void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
         return;
     }
 
-    Base::ifstream from(Base::FileInfo(_cValue), std::ios::in | std::ios::binary);
+    Base::ifstream from(Base::FileInfo::forLongPath(_cValue), std::ios::in | std::ios::binary);
     if (!from) {
         std::stringstream str;
         str << "PropertyFileIncluded::SaveDocFile(): "
@@ -503,13 +519,34 @@ void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
 
 void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 {
-    Base::FileInfo fi(_cValue.c_str());
+    auto fi = Base::FileInfo::forLongPath(_cValue);
     if (fi.exists() && !fi.isWritable()) {
         // This happens when an object is being restored and tries to reference the
         // same file of another object (e.g. for copy&paste of objects inside the same document).
         return;
     }
-    Base::ofstream to(fi, std::ios::out | std::ios::binary);
+    Base::ofstream to;
+    bool opened = false;
+    bool complete = false;
+    const Base::ScopeGuard discardFailedRestore([&] {
+        if (!complete) {
+            if (to.is_open()) {
+                to.close();
+            }
+            if (opened) {
+                fi.deleteFile();
+            }
+            _cValue.clear();
+            _BaseFileName.clear();
+            if (auto* owner = dynamic_cast<App::DocumentObject*>(getContainer())) {
+                if (auto* document = owner->getDocument()) {
+                    document->setStatus(App::Document::PartialRestore, true);
+                }
+            }
+        }
+    });
+    to.open(fi, std::ios::out | std::ios::binary);
+    opened = to.is_open();
     if (!to) {
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
@@ -549,6 +586,7 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 
     // set read-only after restoring the file
     fi.setPermissions(Base::FileInfo::ReadOnly);
+    complete = true;
     hasSetValue();
 }
 

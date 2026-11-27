@@ -188,7 +188,7 @@ void Writer::insertAsciiFile(const char* FileName)
 
 void Writer::insertBinFile(const char* FileName)
 {
-    Base::FileInfo fi(FileName);
+    const auto fi = Base::FileInfo::forLongPath(FileName);
     Base::ifstream from(fi, std::ios::in | std::ios::binary | std::ios::ate);
     if (!from) {
         throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
