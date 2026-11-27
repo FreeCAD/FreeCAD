@@ -86,10 +86,7 @@ class ObjectDressup:
             "App::PropertyAngle",
             "MinRotaryMove",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Minimum rotary movement in degrees"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Minimum rotary movement in degrees"),
         )
 
         obj.AxisMap = ("X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C")
@@ -164,7 +161,6 @@ class ObjectDressup:
             )
             obj.Centre = FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
 
-
     def execute(self, obj):
 
         inAxis = obj.AxisMap[0]
@@ -228,15 +224,10 @@ class ObjectDressup:
                     current_pos[axis] = input_params[axis]
 
             # Calculate original movement vector
-            delta = {
-                axis: current_pos[axis] - last_input_pos[axis]
-                for axis in ("X", "Y", "Z")
-            }
+            delta = {axis: current_pos[axis] - last_input_pos[axis] for axis in ("X", "Y", "Z")}
 
             # Original movement distance
-            move_length = math.sqrt(
-                sum(value ** 2 for value in delta.values())
-            )
+            move_length = math.sqrt(sum(value**2 for value in delta.values()))
 
             # Start with original command parameters
             newparams = dict(input_params)
@@ -249,9 +240,7 @@ class ObjectDressup:
             if remapvar is not None:
 
                 # Convert the absolute input position to rotary degrees
-                target_rotary = math.degrees(
-                    direction * remapvar / radius
-                )
+                target_rotary = math.degrees(direction * remapvar / radius)
 
                 if cmd.Name == "G0":
 
@@ -308,7 +297,6 @@ class ObjectDressup:
         path = Path.Path(newcommandlist)
         path.Center = obj.Centre
         obj.Path = path
-
 
 
 class TaskPanel(SimpleEditPanel):
