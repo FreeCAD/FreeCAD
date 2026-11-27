@@ -25,6 +25,8 @@ set(Assembly_Scripts
     CommandCreateAssembly.py
     CommandCreateBom.py
     CommandInsertLink.py
+    CommandInsertFastener.py
+    FastenerLinkObject.py
     CommandInsertNewPart.py
     CommandSolveAssembly.py
     CommandCreateJoint.py
@@ -59,6 +61,7 @@ SET(AssemblyScripts_SRCS
 SET(AssemblyTests_SRCS
     AssemblyTests/__init__.py
     AssemblyTests/TestCore.py
+    AssemblyTests/TestFastenerLink.py
     AssemblyTests/TestCommandCreateView.py
     AssemblyTests/TestCommandInsertLink.py
     AssemblyTests/TestSimulationExport.py

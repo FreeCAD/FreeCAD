@@ -60,7 +60,9 @@ class AssemblyWorkbench(Workbench):
         import AssemblyGui
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
+
         import CommandCreateAssembly
+        import CommandInsertFastener
         import CommandInsertLink
         import CommandInsertNewPart
         import CommandCreateJoint
@@ -84,6 +86,7 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateAssembly",
             "Assembly_Insert",
             "Part_LinkArrays",
+            "Assembly_InsertFastener",
             "Assembly_SolveAssembly",
             "Assembly_CreateView",
             "Assembly_CreateSnapshot",
@@ -212,7 +215,11 @@ class AssemblyWorkbench(Workbench):
 
             def __init__(self):
                 super().__init__()
-                self.commands = ["Assembly_Insert"]
+                self.commands = [
+                    "Assembly_InsertNewPart",
+                    "Assembly_InsertLink",
+                    "Assembly_InsertFastener",
+                ]
                 self.title = translate("Assembly", "Insert")
 
             def shouldShow(self):
