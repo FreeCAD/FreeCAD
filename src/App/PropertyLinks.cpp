@@ -273,7 +273,7 @@ PropertyLinkBase::getElementReferences(DocumentObject* feature)
     return it->second;
 }
 
-/// Given a feature and a property, see if the feature contains a reference to the property.
+// Given a feature and a property, see if the feature contains a reference to the property.
 static bool propertyIsRegistered(DocumentObject* feature, PropertyLinkBase* property)
 {
     const auto it = _ElementRefMap.find(feature);
@@ -325,7 +325,7 @@ void PropertyLinkBase::updateAllElementReferences(const std::vector<App::Documen
         for (auto prop : props) {
             // Check to see if the property is no longer registered (because the code below can
             // remove them and we're working off a snapshot from before that). See #29673.
-            if (!propertyIsRegistered(feature, prop)) {
+            if (!propertyIsRegistered(feature, prop) || !prop->getContainer()) {
                 continue;
             }
             if (prop->getContainer()) {
