@@ -27,6 +27,7 @@ __title__ = "Open files FEM Gui unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+import importlib.util
 import tempfile
 import unittest
 from os.path import join
@@ -62,6 +63,10 @@ material solid and material fluid obj: name != proxy type
 """
 
 
+@unittest.skipUnless(
+    importlib.util.find_spec("vtkmodules") is not None,
+    "VTK Python bindings are not available",
+)
 class TestObjectOpen(unittest.TestCase):
     fcc_print("import TestObjectOpen")
 

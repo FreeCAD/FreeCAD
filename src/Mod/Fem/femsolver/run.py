@@ -52,9 +52,6 @@ import FreeCAD as App
 from . import settings
 from . import signal
 from . import task
-from femsolver.elmer import elmertools
-from femsolver.calculix import calculixtools
-from femsolver.z88 import z88tools
 from femtools import femutils
 from femtools import membertools
 from femtools.errors import DirectoryDoesNotExistError
@@ -113,10 +110,16 @@ def run_fem_solver(solver, working_dir=None, blocking=False):
 
     match solver.Proxy.Type:
         case "Fem::SolverElmer":
+            from femsolver.elmer import elmertools
+
             tool = elmertools.ElmerTools(solver)
         case "Fem::SolverCalculiX":
+            from femsolver.calculix import calculixtools
+
             tool = calculixtools.CalculiXTools(solver)
         case "Fem::SolverZ88":
+            from femsolver.z88 import z88tools
+
             tool = z88tools.Z88Tools(solver)
 
     if tool is not None:

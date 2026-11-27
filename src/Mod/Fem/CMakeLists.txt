@@ -385,6 +385,11 @@ SET(FemTests_SRCS
     femtest/test_information.md
 )
 
+SET(FemTestsFunction_SRCS
+    femtest/function_tests/__init__.py
+    femtest/function_tests/test_support_utils.py
+)
+
 SET(FemTestsApp_SRCS
     femtest/app/__init__.py
     femtest/app/support_utils.py
@@ -622,6 +627,7 @@ SET(FemAllScripts
     ${FemSolverMystran_SRCS}
     ${FemSolverZ88_SRCS}
     ${FemTests_SRCS}
+    ${FemTestsFunction_SRCS}
     ${FemTestsApp_SRCS}
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
@@ -662,6 +668,7 @@ INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
 INSTALL(FILES ${FemSolverMystran_SRCS} DESTINATION Mod/Fem/femsolver/mystran)
 INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
+INSTALL(FILES ${FemTestsFunction_SRCS} DESTINATION Mod/Fem/femtest/function_tests)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
