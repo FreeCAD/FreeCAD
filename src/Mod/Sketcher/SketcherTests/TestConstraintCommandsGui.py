@@ -153,6 +153,91 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                     Gui.runCommand("Sketcher_ConstrainDistance" + axis)
                     self.assert_distance(axis, 70, driving=True)
 
+    def add_external_source(self):
+        source = self.doc.addObject("Part::Feature", "ExternalLine")
+        source.Shape = Part.makeLine(App.Vector(-20, -25, 0), App.Vector(-10, -15, 0))
+        self.doc.recompute()
+        self.doc.clearUndos()
+        return source
+
+    def pick_external(self, source, name):
+        Gui.Selection.addSelection(self.doc.Name, source.Name, name)
+        self.flush_gui()
+
+    def external_count(self):
+        return sum(len(names) for _, names in self.sketch.ExternalGeometry)
+
+    def test_cancelling_removes_picked_external_geometry(self):
+        source = self.add_external_source()
+        cancels = {
+            "escape": lambda: self.key_click(self.viewport, QtCore.Qt.Key_Escape),
+            "right click": lambda: self.right_click(self.viewport, self.viewport.rect().center()),
+            "blank click": lambda: self.click_world(App.Vector(40, -20, 0)),
+        }
+        for name in ("DistanceX", "Coincident", "Horizontal", "Symmetric"):
+            for cancel, action in cancels.items():
+                with self.subTest(command=name, cancel=cancel):
+                    Gui.Selection.clearSelection()
+                    Gui.runCommand("Sketcher_Constrain" + name)
+                    self.pick_external(source, "Vertex1")
+                    self.assertEqual(self.external_count(), 1)
+                    action()
+                    self.assertEqual(self.external_count(), 0)
+                    self.assertEqual(self.doc.UndoCount, 0)
+
+    def test_cancelling_removes_refused_external_geometry(self):
+        notifications = App.ParamGet("User parameter:BaseApp/Preferences/NotificationArea")
+        saved = notifications.GetBool("NonIntrusiveNotificationsEnabled", True)
+        notifications.SetBool("NonIntrusiveNotificationsEnabled", True)
+        try:
+            source = self.add_external_source()
+            Gui.Selection.clearSelection()
+            Gui.runCommand("Sketcher_ConstrainCoincident")
+            self.pick_external(source, "Vertex1")
+            self.pick_external(source, "Vertex2")
+            self.assertEqual(self.external_count(), 2)
+            self.assertEqual(self.sketch.ConstraintCount, 0)
+            self.key_click(self.viewport, QtCore.Qt.Key_Escape)
+            self.assertEqual(self.external_count(), 0)
+            self.assertEqual(self.doc.UndoCount, 0)
+        finally:
+            notifications.SetBool("NonIntrusiveNotificationsEnabled", saved)
+
+    def test_constraint_keeps_picked_external_geometry(self):
+        source = self.add_external_source()
+        Gui.Selection.clearSelection()
+        Gui.runCommand("Sketcher_ConstrainDistanceX")
+        self.pick_external(source, "Vertex1")
+        self.click_world(App.Vector(50, 45, 0))
+        self.assertEqual(self.sketch.ConstraintCount, 1)
+        self.assertEqual(self.external_count(), 1)
+        self.pick_external(source, "Vertex2")
+        self.assertEqual(self.external_count(), 2)
+        self.key_click(self.viewport, QtCore.Qt.Key_Escape)
+        self.assertEqual(self.sketch.ConstraintCount, 1)
+        self.assertEqual(self.external_count(), 1)
+        self.assertEqual(self.doc.UndoCount, 2)
+        self.doc.undo()
+        self.assertEqual(self.sketch.ConstraintCount, 0)
+        self.assertEqual(self.external_count(), 1)
+        self.doc.undo()
+        self.assertEqual(self.external_count(), 0)
+
+    def test_switching_command_drops_picked_external_geometry(self):
+        source = self.add_external_source()
+        for first in ("DistanceX", "Coincident"):
+            for second in ("Horizontal", "DistanceY", "Coincident", "Distance", "Parallel"):
+                with self.subTest(first=first, second=second):
+                    Gui.Selection.clearSelection()
+                    Gui.runCommand("Sketcher_Constrain" + first)
+                    self.pick_external(source, "Vertex1")
+                    self.assertEqual(self.external_count(), 1)
+                    Gui.runCommand("Sketcher_Constrain" + second)
+                    self.flush_gui()
+                    self.assertEqual(self.external_count(), 0)
+                    self.assertEqual(self.sketch.ConstraintCount, 0)
+                    self.key_click(self.viewport, QtCore.Qt.Key_Escape)
+
     def test_radial_dimensions(self):
         circle = Part.Circle(App.Vector(0, 0, 0), App.Vector(0, 0, 1), 10)
         self.sketch.addGeometry(circle, False)
