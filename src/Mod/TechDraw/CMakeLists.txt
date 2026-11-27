@@ -35,6 +35,7 @@ set(TechDraw_ToolsScripts
     TechDrawTools/TaskAddOffsetVertex.py
     TechDrawTools/TDToolsUtil.py
     TechDrawTools/TDToolsMovers.py
+    TechDrawTools/iso286_tables.py
 )
 
 set(TechDraw_ToolsGui
