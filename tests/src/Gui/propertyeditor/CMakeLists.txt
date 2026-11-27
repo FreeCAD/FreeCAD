@@ -1,2 +1,3 @@
 setup_qt_test(PropertyItem)
 setup_qt_test(PropertyEditorFocus)
+setup_qt_test(PropertyEditorAccessibility)
