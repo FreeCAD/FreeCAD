@@ -46,6 +46,7 @@
 
 #include <CXX/Extensions.hxx>
 #include <list>
+#include <memory>
 #include <string>
 #include "Exception.h"
 
@@ -395,7 +396,7 @@ public:
 
 protected:
     // singleton
-    static InterpreterSingleton* _pcSingleton;
+    static std::unique_ptr<InterpreterSingleton> _pcSingleton;
 
 private:
     std::string _cDebugFileName;
