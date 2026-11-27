@@ -269,6 +269,11 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
     else if (auto* link = freecad_cast<App::Link*>(obj)) {
         accumulatedScale *= link->Scale.getValue();
     }
+    else if (auto* asmLink = freecad_cast<AssemblyLink*>(obj)) {
+        // An assembly link is not a link extension: it is mirrored by a negative Scale,
+        // which it applies to its components (see AssemblyLink::synchronizeComponents).
+        accumulatedScale *= asmLink->Scale.getValue();
+    }
     return accumulatedScale < 0.0;
 }
 
