@@ -50,6 +50,8 @@ private Q_SLOTS:
 private:
     void changeEvent(QEvent* e) override;
     void findShapes();
+    int selectType();
+    void setEnable();
 
 private:
     class Private;
