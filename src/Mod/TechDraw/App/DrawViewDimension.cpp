@@ -247,6 +247,11 @@ DrawViewDimension::DrawViewDimension()
 
     ADD_PROPERTY_TYPE(ShowUnits, (Preferences::showUnits()), "Format", App::Prop_None,
                                           "Show or hide the units.");
+    ADD_PROPERTY_TYPE(UnitSystemOverride, (UNIT_OVERRIDE_NONE), "Format", App::Prop_None,
+                                          "Unit system to use for this dimension instead of the global setting");
+    std::vector<std::string> unitSystemNames { "None" };
+    unitSystemNames.append_range(Base::UnitsApi::getNames());
+    UnitSystemOverride.setEnums(unitSystemNames);
     measurement = new Measure::Measurement();
     // TODO: should have better initial datumLabel position than (0, 0) in the DVP?? something
     // closer to the object being measured?
@@ -2173,6 +2178,16 @@ bool DrawViewDimension::hasOverUnderTolerance() const
 bool DrawViewDimension::showUnits() const
 {
     return ShowUnits.getValue();
+}
+
+long DrawViewDimension::getUnitSystemOverride() const
+{
+    return UnitSystemOverride.getValue();
+}
+
+const char* DrawViewDimension::getUnitSystemOverrideName() const
+{
+    return UnitSystemOverride.getValueAsString();
 }
 
 bool DrawViewDimension::useDecimals() const

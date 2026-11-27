@@ -160,6 +160,7 @@ public:
     std::string getUserString() const;
     /// transfer to user preferred unit/potence
     std::string getUserString(double& factor, std::string& unitString) const;
+    std::string getUserString(UnitsSchema*) const;
     std::string getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const;
     std::string getSafeUserString() const;
 
