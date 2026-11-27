@@ -4,6 +4,7 @@
 #include <gmock/gmock.h>
 
 #include <cmath>
+#include <cstdio>
 
 #include "Base/Quantity.h"
 #include "Base/NumericFormatting.h"
@@ -212,6 +213,129 @@ TEST_F(ExpressionParserTest, isTokenAConstant)
         EXPECT_FALSE(isTokenAConstant(nonConstant))
             << "\"" << nonConstant << "\" evaluated as a constant";
     }
+}
+
+TEST_F(ExpressionParserTest, isTokenAUnit)
+{
+    for (const auto* name : {"N", "mm", "ft", "in"}) {
+        EXPECT_TRUE(isTokenAUnit(name)) << name;
+    }
+    for (const auto* name : {"Count", "N_", ".N", "VarSet.N"}) {
+        EXPECT_FALSE(isTokenAUnit(name)) << name;
+    }
+}
+
+TEST_F(ExpressionParserTest, unitNamedPropertiesRequireADot)
+{
+    auto* varSet = this_doc()->addObject("App::VarSet", "VarSet");
+    for (const auto* name : {"N", "mm", "ft"}) {
+        SCOPED_TRACE(name);
+        auto* property = freecad_cast<App::PropertyFloat*>(
+            varSet->addDynamicProperty("App::PropertyFloat", name)
+        );
+        ASSERT_NE(property, nullptr);
+        property->setValue(7.0);
+
+        const std::string local = std::string(".") + name;
+        const auto expression = parse(varSet, local.c_str());
+        EXPECT_THAT(expression->getValueAsAny(), IsDouble(7.0));
+        EXPECT_EQ(expression->toString(), local);
+        EXPECT_EQ(expression->toString(true), local);
+        EXPECT_THAT(parse(varSet, expression->toString(true).c_str())->getValueAsAny(), IsDouble(7.0));
+
+        for (const auto& prefix : {std::string("VarSet."), doc_name() + "#VarSet."}) {
+            const auto qualified = prefix + name;
+            const auto reference = parse(this_obj(), qualified.c_str());
+            EXPECT_THAT(reference->getValueAsAny(), IsDouble(7.0));
+            EXPECT_THAT(
+                parse(this_obj(), reference->toString(true).c_str())->getValueAsAny(),
+                IsDouble(7.0)
+            );
+        }
+
+        // A property must not shadow the unit, even on its own VarSet.
+        EXPECT_THROW(parse(varSet, name), Expression::Exception);
+        EXPECT_EQ(parseUnit(varSet, name)->getQuantity(), Base::Quantity::parse(name));
+        const auto quantity = std::string("10 ") + name;
+        EXPECT_EQ(
+            App::any_cast<Base::Quantity>(parse(varSet, quantity.c_str())->getValueAsAny()),
+            Base::Quantity::parse(quantity)
+        );
+
+        property->setValue(9.0);
+        EXPECT_THAT(expression->getValueAsAny(), IsDouble(9.0));
+
+        // Programmatically created paths must retain the dot as well.
+        EXPECT_EQ(App::ObjectIdentifier(*property).toString(), local);
+        EXPECT_EQ(App::ObjectIdentifier(varSet, std::string(name)).toPersistentString(), local);
+    }
+}
+
+TEST_F(ExpressionParserTest, unitNamedPropertyComponents)
+{
+    for (const auto* path : {
+             ".N.mm",
+             "VarSet.N.mm",
+             ".<<Child.>>.N",
+             "VarSet.<<Child.>>.N",
+             "OtherDoc#VarSet.<<Child.>>.N",
+         }) {
+        SCOPED_TRACE(path);
+        EXPECT_NO_THROW(App::ObjectIdentifier::parse(this_obj(), path));
+    }
+    EXPECT_NO_THROW(parse(this_obj(), "VarSet.Values[0].N"));
+}
+
+TEST_F(ExpressionParserTest, unitNamedPropertyDependenciesSurviveRestore)
+{
+    auto* varSet = this_doc()->addObject("App::VarSet", "VarSet");
+    auto* source = freecad_cast<App::PropertyFloat*>(
+        varSet->addDynamicProperty("App::PropertyFloat", "N")
+    );
+    auto* local = freecad_cast<App::PropertyFloat*>(
+        varSet->addDynamicProperty("App::PropertyFloat", "LocalResult")
+    );
+    auto* unitTarget = freecad_cast<App::PropertyFloat*>(
+        varSet->addDynamicProperty("App::PropertyFloat", "mm")
+    );
+    auto* remote = freecad_cast<App::PropertyFloat*>(
+        this_obj()->addDynamicProperty("App::PropertyFloat", "RemoteResult")
+    );
+    ASSERT_NE(source, nullptr);
+    ASSERT_NE(local, nullptr);
+    ASSERT_NE(unitTarget, nullptr);
+    ASSERT_NE(remote, nullptr);
+    source->setValue(3.0);
+    varSet->setExpression(App::ObjectIdentifier(*local), parse(varSet, ".N * 2"));
+    varSet->setExpression(App::ObjectIdentifier(*unitTarget), parse(varSet, ".N * 4"));
+    this_obj()->setExpression(App::ObjectIdentifier(*remote), parse(this_obj(), "VarSet.N * 3"));
+    this_doc()->recompute();
+    EXPECT_DOUBLE_EQ(local->getValue(), 6.0);
+    EXPECT_DOUBLE_EQ(unitTarget->getValue(), 12.0);
+    EXPECT_DOUBLE_EQ(remote->getValue(), 9.0);
+
+    source->setValue(5.0);
+    this_doc()->recompute();
+    EXPECT_DOUBLE_EQ(local->getValue(), 10.0);
+    EXPECT_DOUBLE_EQ(remote->getValue(), 15.0);
+
+    const auto fileName = App::Application::getTempFileName();
+    ASSERT_TRUE(this_doc()->saveAs(fileName.c_str()));
+    const std::string savedPath = this_doc()->getFileName();
+    this_doc()->restore(savedPath.c_str());
+    std::remove(savedPath.c_str());
+
+    varSet = this_doc()->getObject("VarSet");
+    auto* sketch = this_doc()->getObject("Sketch");
+    ASSERT_NE(varSet, nullptr);
+    ASSERT_NE(sketch, nullptr);
+    source = freecad_cast<App::PropertyFloat*>(varSet->getPropertyByName("N"));
+    ASSERT_NE(source, nullptr);
+    source->setValue(7.0);
+    this_doc()->recompute();
+    EXPECT_THAT(parse(varSet, "LocalResult")->getValueAsAny(), IsDouble(14.0));
+    EXPECT_THAT(parse(varSet, ".mm")->getValueAsAny(), IsDouble(28.0));
+    EXPECT_THAT(parse(sketch, "RemoteResult")->getValueAsAny(), IsDouble(21.0));
 }
 
 TEST_F(ExpressionParserTest, simpleExpressionsParse)
