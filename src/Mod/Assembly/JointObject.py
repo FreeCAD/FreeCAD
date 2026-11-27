@@ -1712,7 +1712,11 @@ class MakeJointSelGate:
                 if parent.isDerivedFrom("App::LocalCoordinateSystem"):
                     datum = parent
 
-            if self.assembly.hasObject(datum) and hasattr(datum, "MapMode"):
+            if (
+                datum.Document == self.assembly.Document
+                and self.assembly.hasObject(datum)
+                and hasattr(datum, "MapMode")
+            ):
                 # accept only datum that are not attached
                 return datum.MapMode == "Deactivated"
 
