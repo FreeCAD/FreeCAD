@@ -26,3 +26,5 @@ import StartMigrator
 
 migrator = StartMigrator.StartMigrator2024()
 migrator.run_migration()
+
+FreeCAD.__unit_test__ += ["TestStartGui"]

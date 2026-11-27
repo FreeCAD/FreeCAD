@@ -484,8 +484,10 @@ void StartView::onMdiSubWindowActivated(QMdiSubWindow* subWindow)
 {
     // check if start view is activated subwindow if yes, then enable updates
     // so we can once again receive paint events
-    bool isOurWindow = subWindow && subWindow->isAncestorOf(this);
-    setListViewUpdatesEnabled(isOurWindow);
+    if (!subWindow) {
+        return;
+    }
+    setListViewUpdatesEnabled(subWindow->isAncestorOf(this));
 }
 
 void StartView::setListViewUpdatesEnabled(bool enabled)
