@@ -2319,6 +2319,65 @@ public:
     }
 };
 
+// Returns the last non-hidden child of parent, or nullptr if there is none.
+QTreeWidgetItem* lastVisibleChild(QTreeWidgetItem* parent)
+{
+    for (int i = parent->childCount() - 1; i >= 0; --i) {
+        QTreeWidgetItem* child = parent->child(i);
+        if (!child->isHidden()) {
+            return child;
+        }
+    }
+    return nullptr;
+}
+
+// Returns the bottom-most row shown in the tree, descending into expanded
+// items, or nullptr if the tree is empty.
+QTreeWidgetItem* lastVisibleItem(const QTreeWidget* tree)
+{
+    QTreeWidgetItem* item = lastVisibleChild(tree->invisibleRootItem());
+    while (item && item->isExpanded()) {
+        QTreeWidgetItem* child = lastVisibleChild(item);
+        if (!child) {
+            break;
+        }
+        item = child;
+    }
+    return item;
+}
+
+// Handles drops into the empty area below the last row. Returns the root-level
+// object that ends the tree, so the drop can be treated as "just below it", but
+// only if every dragged (selected) object belongs to that same document.
+// Otherwise returns nullptr, which keeps the old behaviour of rejecting the drop.
+QTreeWidgetItem* endOfTreeDropTarget(const QTreeWidget* tree, const QPoint& pos)
+{
+    auto* last = lastVisibleItem(tree);
+    if (!last || pos.y() <= tree->visualItemRect(last).bottom()) {
+        return nullptr;
+    }
+
+    // Climb from the bottom-most row up to its root-level ancestor.
+    while (last->parent() && last->parent()->type() != TreeWidget::DocumentType) {
+        last = last->parent();
+    }
+
+    // The last row is a document itself (collapsed or empty): nothing to drop after.
+    if (last->type() != TreeWidget::ObjectType) {
+        return nullptr;
+    }
+
+    const DocumentItem* targetDoc = static_cast<DocumentObjectItem*>(last)->getOwnerDocument();
+    const auto selected = tree->selectedItems();
+    const bool sameDocument = !selected.isEmpty()
+        && std::all_of(selected.begin(), selected.end(), [targetDoc](QTreeWidgetItem* item) {
+               return item->type() == TreeWidget::ObjectType
+                   && static_cast<DocumentObjectItem*>(item)->getOwnerDocument() == targetDoc;
+           });
+
+    return sameDocument ? last : nullptr;
+}
+
 QPoint getPos(QEvent* event)
 {
     if (auto* dragMoveEvent = dynamic_cast<QDragMoveEvent*>(event)) {
@@ -2492,6 +2551,15 @@ TreeWidget::TargetItemInfo TreeWidget::getTargetInfo(QEvent* ev)
     }
 
     targetInfo.targetItem = itemAt(pos);
+
+    // Dropping into the empty area below the last row means "move to the end of
+    // the document"; treat it as a drop just below the last root-level object.
+    bool belowLastItem = false;
+    if (!targetInfo.targetItem) {
+        targetInfo.targetItem = endOfTreeDropTarget(this, pos);
+        belowLastItem = targetInfo.targetItem != nullptr;
+    }
+
     // not dropped onto an item or one of the source items is also the destination item
     if (!targetInfo.targetItem || targetInfo.targetItem->isSelected()) {
         return {};
@@ -2508,6 +2576,12 @@ TreeWidget::TargetItemInfo TreeWidget::getTargetInfo(QEvent* ev)
     }
     else {
         return {};
+    }
+
+    if (belowLastItem) {
+        targetInfo.inBottomHalf = true;
+        targetInfo.inThresholdZone = true;
+        return targetInfo;
     }
 
     // Calculate the position of the mouse relative to the item's rectangle
