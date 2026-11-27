@@ -221,14 +221,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             # This function is however triggered again from update_label.
             if (
                 getattr(vobj, "Justification", "") == "Center"
-                and obj.StraightDistance != 0.0
-                and obj.StraightDirection != "Custom"
+                and obj.StraightDirection == "Vertical"
+                and hasattr(vobj, "TextAlignment")
             ):
-                if obj.StraightDirection != "Vertical":
-                    obj.StraightDirection = "Vertical"
-                if not hasattr(vobj, "TextAlignment"):
-                    pass
-                elif obj.StraightDistance > 0.0 and vobj.TextAlignment != "Top":
+                if obj.StraightDistance > 0.0 and vobj.TextAlignment != "Top":
                     vobj.TextAlignment = "Top"
                 elif obj.StraightDistance < 0.0 and vobj.TextAlignment != "Bottom":
                     vobj.TextAlignment = "Bottom"
@@ -363,15 +359,13 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         else:
             self.text_wld.justification = coin.SoAsciiText.CENTER
             self.text_scr.justification = coin.SoText2.CENTER
-            if obj.StraightDistance != 0.0 and obj.StraightDirection != "Custom":
-                if obj.StraightDirection != "Vertical":
-                    obj.StraightDirection = "Vertical"
+            if obj.StraightDirection == "Vertical":
                 if (obj.StraightDistance < 0.0 and vobj.TextAlignment == "Top") or (
                     obj.StraightDistance > 0.0 and vobj.TextAlignment == "Bottom"
                 ):
                     obj.StraightDistance = -obj.StraightDistance
-                obj.recompute()
-                obj.purgeTouched()
+                    obj.recompute()
+                    obj.purgeTouched()
 
         if vobj.DisplayMode == "Screen":
             self.textpos.translation.setValue(obj.Placement.Base)
@@ -397,6 +391,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             v = App.Vector(margin, 0, 0)
         elif vobj.Justification == "Right":
             v = App.Vector(-margin, 0, 0)
+        elif obj.StraightDirection == "Horizontal" and obj.StraightDistance != 0.0:
+            # Attach the horizontal leader to the side of the centered text.
+            offset = box[0] / 2 + margin
+            v = App.Vector(-offset if obj.StraightDistance > 0.0 else offset, 0, 0)
         else:
             v = App.Vector(0, 0, 0)
 

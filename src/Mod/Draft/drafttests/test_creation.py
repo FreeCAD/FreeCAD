@@ -337,6 +337,37 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         obj.CustomText = ["Foo"]
         self.assertEqual(list(obj.Text), ["Foo"], "'{}' failed".format(operation))
 
+    def test_centered_label_keeps_horizontal_leader(self):
+        if not App.GuiUp:
+            self.skipTest("Label justification requires a view provider")
+
+        label = Draft.make_label(direction="Horizontal", distance=-10)
+        self.doc.recompute()
+        label.ViewObject.Justification = "Center"
+        self.doc.recompute()
+        self.assertEqual(label.StraightDirection, "Horizontal")
+
+        label.StraightDirection = "Vertical"
+        self.doc.recompute()
+        label.StraightDirection = "Horizontal"
+        self.doc.recompute()
+        self.assertEqual(label.ViewObject.Justification, "Center")
+        self.assertEqual(label.StraightDirection, "Horizontal")
+        self.assertEqual(label.Points[1] - label.Points[0], Vector(-10, 0, 0))
+
+        label.ViewObject.DisplayMode = "World"
+        label.ViewObject.Frame = "Rectangle"
+        proxy = label.ViewObject.Proxy
+        for distance in (-10, 10):
+            with self.subTest(distance=distance):
+                label.StraightDistance = distance
+                self.doc.recompute()
+                self.assertEqual(label.ViewObject.Justification, "Center")
+                # The leader touches the left or right edge of the frame.
+                corner = 0 if distance < 0 else 1
+                edge_x = proxy.fcoords.point[corner][0] + proxy.textpos.translation.getValue()[0]
+                self.assertAlmostEqual(edge_x, label.Points[0].x, places=5)
+
     def test_layer(self):
         """Create a layer, and add a rectangle to it."""
         operation = "Draft Layer"
