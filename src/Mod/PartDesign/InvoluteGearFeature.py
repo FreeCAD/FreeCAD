@@ -179,6 +179,11 @@ class _InvoluteGear:
         generator_func = (
             involute.CreateExternalGear if obj.ExternalGear else involute.CreateInternalGear
         )
+
+        # Prevent cases when Module equals zero
+        if obj.Modules.Value <= 0.0:
+            return
+
         generator_func(
             w,
             obj.Modules.Value,
@@ -236,6 +241,7 @@ class _InvoluteGearTaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(str(pathlib.Path(__file__).with_suffix(".ui")))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_InternalExternalGear.svg"))
         self.assignToolTipsFromPropertyDocs()
+        self.globalFitView = True
 
         def assignValue(property_name, fitView=False):
             """Returns a function that takes a single value and assigns it to the given property"""
@@ -243,7 +249,7 @@ class _InvoluteGearTaskPanel:
             def assigner(value):
                 setattr(self.obj, property_name, value)
                 self.obj.Proxy.execute(self.obj)
-                if fitView:
+                if self.globalFitView and fitView:
                     FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
             return assigner
@@ -257,17 +263,16 @@ class _InvoluteGearTaskPanel:
 
             return transformingAssigner
 
+        self.form.checkBox_GlobalFitView.toggled.connect(
+            lambda checked: setattr(self, "globalFitView", checked)
+        )
         self.form.Quantity_Modules.valueChanged.connect(assignValue("Modules", fitView=True))
         self.form.Quantity_PressureAngle.valueChanged.connect(assignValue("PressureAngle"))
         self.form.spinBox_NumberOfTeeth.valueChanged.connect(
             assignValue("NumberOfTeeth", fitView=True)
         )
-        self.form.comboBox_HighPrecision.currentIndexChanged.connect(
-            assignIndexAsBool("HighPrecision")
-        )
-        self.form.comboBox_ExternalGear.currentIndexChanged.connect(
-            assignIndexAsBool("ExternalGear")
-        )
+        self.form.checkBox_HighPrecision.toggled.connect(assignValue("HighPrecision"))
+        self.form.checkBox_ExternalGear.toggled.connect(assignValue("ExternalGear"))
         self.form.doubleSpinBox_Addendum.valueChanged.connect(assignValue("AddendumCoefficient"))
         self.form.doubleSpinBox_Dedendum.valueChanged.connect(assignValue("DedendumCoefficient"))
         self.form.doubleSpinBox_RootFillet.valueChanged.connect(
@@ -294,8 +299,6 @@ class _InvoluteGearTaskPanel:
         assign("Modules", self.form.Quantity_Modules, self.form.label_Modules)
         assign("PressureAngle", self.form.Quantity_PressureAngle, self.form.label_PressureAngle)
         assign("NumberOfTeeth", self.form.spinBox_NumberOfTeeth, self.form.label_NumberOfTeeth)
-        assign("HighPrecision", self.form.comboBox_HighPrecision, self.form.label_HighPrecision)
-        assign("ExternalGear", self.form.comboBox_ExternalGear, self.form.label_ExternalGear)
         assign("AddendumCoefficient", self.form.doubleSpinBox_Addendum, self.form.label_Addendum)
         assign("DedendumCoefficient", self.form.doubleSpinBox_Dedendum, self.form.label_Dedendum)
         assign(
@@ -313,15 +316,12 @@ class _InvoluteGearTaskPanel:
 
     def transferTo(self):
         "Transfer from the dialog to the object"
+        self.globalFitView = self.form.checkBox_GlobalFitView.isChecked()
         self.obj.NumberOfTeeth = self.form.spinBox_NumberOfTeeth.value()
         self.obj.Modules = self.form.Quantity_Modules.text()
         self.obj.PressureAngle = self.form.Quantity_PressureAngle.text()
-        self.obj.HighPrecision = (
-            True if self.form.comboBox_HighPrecision.currentIndex() == 0 else False
-        )
-        self.obj.ExternalGear = (
-            True if self.form.comboBox_ExternalGear.currentIndex() == 0 else False
-        )
+        self.obj.HighPrecision = self.form.checkBox_HighPrecision.isChecked()
+        self.obj.ExternalGear = self.form.checkBox_ExternalGear.isChecked()
         self.obj.AddendumCoefficient = self.form.doubleSpinBox_Addendum.value()
         self.obj.DedendumCoefficient = self.form.doubleSpinBox_Dedendum.value()
         self.obj.RootFilletCoefficient = self.form.doubleSpinBox_RootFillet.value()
@@ -329,11 +329,12 @@ class _InvoluteGearTaskPanel:
 
     def transferFrom(self):
         "Transfer from the object to the dialog"
+        self.form.checkBox_GlobalFitView.setChecked(self.globalFitView)
         self.form.spinBox_NumberOfTeeth.setValue(self.obj.NumberOfTeeth)
         self.form.Quantity_Modules.setText(self.obj.Modules.UserString)
         self.form.Quantity_PressureAngle.setText(self.obj.PressureAngle.UserString)
-        self.form.comboBox_HighPrecision.setCurrentIndex(0 if self.obj.HighPrecision else 1)
-        self.form.comboBox_ExternalGear.setCurrentIndex(0 if self.obj.ExternalGear else 1)
+        self.form.checkBox_HighPrecision.setChecked(self.obj.HighPrecision)
+        self.form.checkBox_ExternalGear.setChecked(self.obj.ExternalGear)
         self.form.doubleSpinBox_Addendum.setValue(self.obj.AddendumCoefficient)
         self.form.doubleSpinBox_Dedendum.setValue(self.obj.DedendumCoefficient)
         self.form.doubleSpinBox_RootFillet.setValue(self.obj.RootFilletCoefficient)
