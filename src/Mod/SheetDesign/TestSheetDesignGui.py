@@ -455,3 +455,26 @@ class TestSheetDesignGui(unittest.TestCase):
         notes = self.doc.getObject("BendNotes")
         self.assertEqual(notes.Symbol.count("<circle"), 2)
         self.assertEqual([o.Name for o in self.doc.Objects if not o.isValid()], [])
+
+    def test_proxy_module_loads_the_resource_library(self):
+        """A document can open when a different workbench is active."""
+        import subprocess
+        import sys
+
+        code = (
+            "import FreeCAD, FreeCADGui, sys\n"
+            "import SheetDesignViewProviders, SheetDesignTaskPanels\n"
+            "from PySide import QtCore\n"
+            "ok = QtCore.QFile.exists(':/panels/TaskFlange.ui') and QtCore.QFile.exists(':/icons/SheetDesign_Flange.svg')\n"
+            "open(sys.argv[-1], 'w').write('yes' if ok else 'no')\n"
+            "import os; os._exit(0)\n"
+        )
+        folder = tempfile.mkdtemp()
+        script = os.path.join(folder, "load_check.py")
+        result = os.path.join(folder, "result.txt")
+        with open(script, "w", encoding="utf-8") as handle:
+            handle.write(code.replace("sys.argv[-1]", repr(result)))
+        binary = os.path.join(FreeCAD.getHomePath(), "bin", "FreeCAD")
+        subprocess.run([binary, script], timeout=120, check=False)
+        with open(result, encoding="utf-8") as handle:
+            self.assertEqual(handle.read(), "yes")

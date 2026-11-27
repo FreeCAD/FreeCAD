@@ -29,6 +29,10 @@ that name in the .ui file.
 
 import FreeCAD
 import FreeCADGui
+
+# The icons and the .ui files are in the resource of this library. A document can open when
+# a different workbench is active, thus this module loads the library itself.
+import SheetDesignGui  # noqa: F401
 from PySide import QtCore, QtGui
 
 translate = FreeCAD.Qt.translate

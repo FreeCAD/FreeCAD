@@ -27,6 +27,10 @@ icon and opens its task panel for an edit.
 
 import FreeCADGui
 
+# The icons and the .ui files are in the resource of this library. A document can open when
+# a different workbench is active, thus this module loads the library itself.
+import SheetDesignGui  # noqa: F401
+
 ICONS = {
     "SheetDesign::Convert": "SheetDesign_Convert",
     "SheetDesign::Form": "SheetDesign_Form",
