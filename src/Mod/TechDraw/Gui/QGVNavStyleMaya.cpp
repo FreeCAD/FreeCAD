@@ -65,11 +65,6 @@ void QGVNavStyleMaya::handleMousePressEvent(QMouseEvent *event)
 
 void QGVNavStyleMaya::handleMouseMoveEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     //pan mode alt + MMB + mouse movement
     if (QGuiApplication::mouseButtons() & Qt::MiddleButton &&
         QApplication::keyboardModifiers().testFlag(Qt::AltModifier)) {
@@ -95,10 +90,6 @@ void QGVNavStyleMaya::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleMaya::handleMouseReleaseEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (event->button() == Qt::MiddleButton) {
         //pan mode ALT + MMB
         if (panningActive) {
