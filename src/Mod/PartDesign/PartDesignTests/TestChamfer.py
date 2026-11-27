@@ -24,6 +24,7 @@
 import unittest
 
 import FreeCAD
+import Part
 import TestSketcherApp
 
 
@@ -98,6 +99,48 @@ class TestChamfer(unittest.TestCase):
         self.assertTrue(chamfer.isValid())
         self.assertAlmostEqual(body.Shape.BoundBox.XMax, 12)
         self.assertGreater(body.Shape.Volume, original_volume)
+
+    def _create_blade_on_hub(self):
+        def bezier(points):
+            curve = Part.BezierCurve()
+            curve.setPoles([FreeCAD.Vector(x, y, 0) for x, y in points])
+            return curve.toShape()
+
+        a, b, c, d = (8.5, 1.25), (50.9, 19.4), (53.1, 18.1), (8.5, -1.25)
+        profile = Part.Wire(
+            [
+                bezier([a, (25.6, 1.0), (41.3, 3.7), b]),
+                Part.makeLine(FreeCAD.Vector(*b, 0), FreeCAD.Vector(*c, 0)),
+                bezier([c, (42.9, 1.6), (26.6, -1.5), d]),
+                Part.makeLine(FreeCAD.Vector(*d, 0), FreeCAD.Vector(*a, 0)),
+            ]
+        )
+        blade = Part.Face(profile).extrude(FreeCAD.Vector(0, 0, 16))
+        hub = Part.makeCylinder(9, 22, FreeCAD.Vector(0, 0, -7))
+        shape = self.Doc.addObject("Part::Feature", "Shape")
+        shape.Shape = hub.fuse(blade).Solids[0]
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = shape
+        self.Doc.recompute()
+        base = body.Group[0]
+        root = FreeCAD.BoundBox(8.4, 1.2, 14.9, 8.6, 1.3, 16.1)
+        for index, edge in enumerate(base.Shape.Edges):
+            if root.isInside(edge.BoundBox):
+                return body, base, "Edge" + str(index + 1)
+        self.skipTest("Test model did not contain the blade root edge")
+
+    def _tolerances(self, shape):
+        return [element.Tolerance for element in shape.Edges + shape.Vertexes]
+
+    def testInvalidChamferKeepsBaseTolerances(self):
+        body, base, edge = self._create_blade_on_hub()
+        tolerances = self._tolerances(base.Shape)
+        chamfer = body.newObject("PartDesign::Chamfer", "Chamfer")
+        chamfer.Base = (base, [edge])
+        chamfer.Size = 0.5
+        self.Doc.recompute()
+        self.assertTrue(chamfer.isValid())
+        self.assertEqual(self._tolerances(base.Shape), tolerances)
 
     def tearDown(self):
         # closing doc
