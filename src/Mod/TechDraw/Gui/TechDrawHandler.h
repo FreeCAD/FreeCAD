@@ -24,7 +24,12 @@
 
 #pragma once
 
+#include <QKeyEvent>
+#include <QMouseEvent>
+
 #include <Gui/ToolHandler.h>
+
+#include <Mod/TechDraw/App/DrawPage.h>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -43,6 +48,8 @@ public:
     void deactivate() override;
 
     void quit() override;
+    
+    std::list<Gui::InputHint> getToolHints() const override;
 
     virtual void mouseMoveEvent(QMouseEvent* event) = 0;
     virtual void mousePressEvent(QMouseEvent* event) { Q_UNUSED(event) };
