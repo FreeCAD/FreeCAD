@@ -50,6 +50,45 @@ class TestShapeBinder(unittest.TestCase):
         self.assertIn("Box", self.ShapeBinder.OutList[0].Label)
         self.assertIn("Body001", self.ShapeBinder.InList[0].Label)
 
+    def testTraceSupportNotTouchedByPlacementExpression(self):
+        varSet = self.Doc.addObject("App::VarSet", "VarSet")
+        varSet.addProperty("App::PropertyFloat", "Val")
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Placement = FreeCAD.Placement(FreeCAD.Vector(5, -7, 3), FreeCAD.Rotation(30, 20, 10))
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.setExpression(".Placement.Rotation.Angle", "VarSet.Val * 3")
+        body.setExpression(".Placement.Base.x", "VarSet.Val * 2")
+        self.Doc.recompute()
+        binder = body.newObject("PartDesign::ShapeBinder", "ShapeBinder")
+        binder.Support = [(box, "Face6")]
+        binder.TraceSupport = True
+        self.Doc.recompute()
+        for val in range(2, 12):
+            varSet.Val = val
+            self.Doc.recompute()
+            self.assertNotIn("Touched", binder.State)
+            face = binder.Shape.Faces[0].copy()
+            face.Placement = body.Placement.multiply(face.Placement)
+            self.assertLess((face.CenterOfMass - box.Shape.Faces[5].CenterOfMass).Length, 1e-6)
+
+    def testTraceSupportFollowsSmallRotation(self):
+        support = self.Doc.addObject("PartDesign::Body", "Support")
+        box = support.newObject("PartDesign::AdditiveBox", "Box")
+        box.Length = box.Width = box.Height = 1000
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Doc.recompute()
+        binder = body.newObject("PartDesign::ShapeBinder", "ShapeBinder")
+        binder.Support = [(box, "Face6")]
+        binder.TraceSupport = True
+        self.Doc.recompute()
+        body.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 1e-5)
+        )
+        self.Doc.recompute()
+        face = binder.Shape.Faces[0].copy()
+        face.Placement = body.Placement.multiply(face.Placement)
+        self.assertLess((face.CenterOfMass - box.Shape.Faces[5].CenterOfMass).Length, 1e-6)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestShapeBinder")
