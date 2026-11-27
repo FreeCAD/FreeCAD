@@ -349,6 +349,14 @@ void ViewProviderBody::updateData(const App::Property* prop)
         }
     }
 
+    // Through displays the child meshes. Defer the Body's own mesh.
+    if ((prop == &body->Shape || prop == &body->_GroupTouched) && DisplayModeBody.getValue() == 0
+        && !isUpdateForced()) {
+        deferVisualUpdate();
+        Gui::ViewProviderGeometryObject::updateData(prop);
+        return;
+    }
+
     PartGui::ViewProviderPart::updateData(prop);
 }
 
@@ -381,6 +389,10 @@ void ViewProviderBody::onChanged(const App::Property* prop)
             else {
                 Base::Console().message("Set override mode: {}\n", getOverrideMode());
                 setDisplayMaskMode(getOverrideMode().c_str());
+            }
+            // A bounding-box query can traverse the Tip mesh even while the Body is hidden.
+            if (!Visibility.getValue() && VisualTouched) {
+                updateVisual();
             }
         }
 

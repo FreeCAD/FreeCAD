@@ -309,22 +309,10 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // The lower limit of the deviation has been increased to avoid
     // to freeze the GUI
     // https://forum.freecad.org/viewtopic.php?f=3&t=24912&p=195613
-    if (prop == &Deviation) {
-        lastRenderedShape = {};
+    if (prop == &Deviation || prop == &AngularDeflection) {
+        deferVisualUpdate();
         if (isUpdateForced() || Visibility.getValue()) {
             updateVisual();
-        }
-        else {
-            VisualTouched = true;
-        }
-    }
-    if (prop == &AngularDeflection) {
-        lastRenderedShape = {};
-        if (isUpdateForced() || Visibility.getValue()) {
-            updateVisual();
-        }
-        else {
-            VisualTouched = true;
         }
     }
     if (prop == &LineWidth) {
@@ -567,6 +555,12 @@ std::vector<std::string> ViewProviderPartExt::getDisplayModes() const
     return StrList;
 }
 
+bool ViewProviderPartExt::ensureSelectionGeometry() const
+{
+    // Coin may request an index from inside a mesh update.
+    return !updatingGeometry && (!geometryDirty || updateGeometry(getRenderedShape().getShape()));
+}
+
 std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 {
     std::stringstream str;
@@ -583,14 +577,14 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
             // SoBrepEdgeSet stores the topological edge in partIndex; fall back to
             // translating the line index for details built elsewhere.
             int edge = line_detail->getPartIndex();
-            if (edge < 1 && lineset) {
+            if (edge < 1 && lineset && ensureSelectionGeometry()) {
                 edge = lineset->edgeIndexFromLine(line_detail->getLineIndex());
             }
             if (edge >= 1) {
                 str << "Edge" << edge;
             }
         }
-        else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+        else if (detail->getTypeId() == SoPointDetail::getClassTypeId() && ensureSelectionGeometry()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
             int vertex = point_detail->getCoordinateIndex() - nodeset->startIndex.getValue() + 1;
             str << "Vertex" << vertex;
@@ -613,7 +607,7 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         detail->setPartIndex(index - 1);
         return detail;
     }
-    else if (element == "Edge") {
+    else if (element == "Edge" && ensureSelectionGeometry()) {
         // Inverse of the mapping used in getElement(). An edge that produced no
         // polyline has nothing to highlight, so report no detail rather than
         // guessing a line index that belongs to a different edge.
@@ -626,7 +620,7 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         detail->setPartIndex(index);
         return detail;
     }
-    else if (element == "Vertex") {
+    else if (element == "Vertex" && ensureSelectionGeometry()) {
         SoPointDetail* detail = new SoPointDetail();
         static_cast<SoPointDetail*>(detail)->setCoordinateIndex(
             index + nodeset->startIndex.getValue() - 1
@@ -750,6 +744,9 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
     else if (size == 1) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         setCoinAppearance(materials[0]);
+    }
+    else if (!VisualTouched && faceset->partIndex.getNum() > pcShapeMaterial->diffuseColor.getNum()) {
+        pcFaceBind->value = SoMaterialBinding::OVERALL;
     }
 }
 
@@ -975,13 +972,7 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
             updateVisual();
         }
         else {
-            VisualTouched = true;
-        }
-
-        if (!VisualTouched) {
-            if (this->faceset->partIndex.getNum() > this->pcShapeMaterial->diffuseColor.getNum()) {
-                this->pcFaceBind->value = SoMaterialBinding::OVERALL;
-            }
+            deferVisualUpdate();
         }
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
@@ -1491,29 +1482,21 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
-    TopoDS_Shape shape = getRenderedShape().getShape();
-
-    if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
-        // shape unchanged so do not rebuild geometry
-        // but still re-apply materials in case colors changed
-        Gui::SoHighlightElementAction haction;
-        haction.apply(this->faceset);
-        haction.apply(this->lineset);
-        haction.apply(this->nodeset);
-        setHighlightedFaces(ShapeAppearance.getValues());
-        setHighlightedEdges(LineColorArray.getValues());
-        setHighlightedPoints(PointColorArray.getValue());
+    if (updatingGeometry) {
+        deferVisualUpdate();
         return;
     }
+    TopoDS_Shape shape = getRenderedShape().getShape();
 
-    Gui::SoUpdateVBOAction action;
-    action.apply(this->faceset);
+    if (VisualTouched || geometryDirty || !lastRenderedShape.IsPartner(shape)) {
+        Gui::SoUpdateVBOAction action;
+        action.apply(this->faceset);
 
-    // Clear selection
-    Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
-    saction.apply(this->faceset);
-    saction.apply(this->lineset);
-    saction.apply(this->nodeset);
+        Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
+        saction.apply(this->faceset);
+        saction.apply(this->lineset);
+        saction.apply(this->nodeset);
+    }
 
     // Clear highlighting
     Gui::SoHighlightElementAction haction;
@@ -1521,6 +1504,32 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
+    VisualTouched = !updateGeometry(shape);
+    if (VisualTouched) {
+        return;
+    }
+
+    // The material has to be checked again
+    setHighlightedFaces(ShapeAppearance.getValues());
+    setHighlightedEdges(LineColorArray.getValues());
+    setHighlightedPoints(PointColorArray.getValue());
+}
+
+void ViewProviderPartExt::deferVisualUpdate()
+{
+    geometryDirty = true;
+    VisualTouched = true;
+}
+
+bool ViewProviderPartExt::updateGeometry(const TopoDS_Shape& shape) const
+{
+    if (!geometryDirty && lastRenderedShape.IsPartner(shape)) {
+        return true;
+    }
+
+    Base::StateLocker updating(updatingGeometry);
+    // A Coin notification can invalidate the mesh again while its fields are being written.
+    geometryDirty = false;
     try {
         setupCoinGeometry(
             shape,
@@ -1535,8 +1544,7 @@ void ViewProviderPartExt::updateVisual()
         );
 
         lastRenderedShape = shape;
-
-        VisualTouched = false;
+        return !geometryDirty;
     }
     catch (const Standard_Failure& e) {
         FC_ERR(
@@ -1548,19 +1556,15 @@ void ViewProviderPartExt::updateVisual()
         FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
     }
 
-    // The material has to be checked again
-    setHighlightedFaces(ShapeAppearance.getValues());
-    setHighlightedEdges(LineColorArray.getValues());
-    setHighlightedPoints(PointColorArray.getValue());
+    geometryDirty = true;
+    return false;
 }
 
 void ViewProviderPartExt::forceUpdate(bool enable)
 {
     if (enable) {
-        if (++forceUpdateCount == 1) {
-            if (!isShow() && VisualTouched) {
-                updateVisual();
-            }
+        if (++forceUpdateCount == 1 && VisualTouched) {
+            updateVisual();
         }
     }
     else if (forceUpdateCount) {

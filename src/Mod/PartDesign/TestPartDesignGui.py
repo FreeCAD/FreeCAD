@@ -33,6 +33,7 @@ import PartDesign
 import PartDesignGui
 import tempfile
 
+from pivy import coin
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication
 
@@ -275,6 +276,60 @@ class PartDesignGuiTestCases(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("SketchGuiTest")
+
+
+class TestBodyMesh(unittest.TestCase):
+    def setUp(self):
+        self.doc = App.newDocument("PartDesignBodyMesh")
+        self.addCleanup(App.closeDocument, self.doc.Name)
+        self.body = self.doc.addObject("PartDesign::Body", "Body")
+        self.cylinder = self.body.newObject("PartDesign::AdditiveCylinder", "Cylinder")
+        self.view = self.body.ViewObject
+        self.view.DisplayModeBody = "Tip"
+        self.doc.recompute()
+
+    def setAngle(self, angle):
+        self.cylinder.Angle = angle
+        self.doc.recompute()
+
+    def testThroughDefersMeshAndResolvesNewEdge(self):
+        new_edge = f"Edge{len(self.body.Shape.Edges) + 1}"
+        self.view.DisplayModeBody = "Through"
+        children = self.view.RootNode.getChildren()
+        coords = next(node for node in children if isinstance(node, coin.SoCoordinate3))
+        revision = coords.getNodeId()
+        for angle in (270, 180):
+            self.setAngle(angle)
+        self.assertEqual(coords.getNodeId(), revision)
+
+        self.view.Visibility = False
+        self.assertIsNotNone(self.view.getDetailPath(new_edge, coin.SoPath()))
+        revision = coords.getNodeId()
+        self.assertIsNotNone(self.view.getDetailPath("Vertex1", coin.SoPath()))
+        self.assertEqual(coords.getNodeId(), revision)
+
+    def testTipAndLinkRefreshFaceBinding(self):
+        self.view.DiffuseColor = [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
+        search = coin.SoSearchAction()
+        search.setName("FaceBind")
+        search.apply(self.view.RootNode)
+        binding = search.getPath().getTail().value
+        self.assertEqual(binding.getValue(), coin.SoMaterialBinding.PER_PART)
+
+        self.view.DisplayModeBody = "Through"
+        self.setAngle(180)  # The sector has five faces and only three colors.
+        self.view.Visibility = False
+        self.view.DisplayModeBody = "Tip"
+        self.assertAlmostEqual(self.view.getBoundingBox().YMin, 0, places=5)
+        self.assertEqual(binding.getValue(), coin.SoMaterialBinding.OVERALL)
+
+        self.view.DisplayModeBody = "Through"
+        self.view.Visibility = True
+        self.setAngle(360)
+        self.doc.addObject("App::Link", "Link").setLink(self.body)
+        self.assertEqual(binding.getValue(), coin.SoMaterialBinding.PER_PART)
+        self.setAngle(180)
+        self.assertEqual(binding.getValue(), coin.SoMaterialBinding.OVERALL)
 
 
 class PartDesignTransformed(unittest.TestCase):
