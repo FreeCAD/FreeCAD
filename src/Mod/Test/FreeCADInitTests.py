@@ -76,6 +76,8 @@ class FreeCADInitContractTest(unittest.TestCase):
                 "ImperialCivil": 7,
                 "FEM": 8,
                 "MeterDecimal": 9,
+                "InternalRad": 10,
+                "FEMRad": 11,
             },
             {name: member.value for name, member in Units.Scheme.__members__.items()},
         )

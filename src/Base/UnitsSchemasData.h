@@ -27,6 +27,7 @@
 #include <format>
 #include <map>
 #include <vector>
+#include <utility>
 
 #include "UnitsConvData.h"
 #include "UnitsSchemasSpecs.h"
@@ -854,7 +855,30 @@ inline const UnitsSchemaSpec s9
 
 // clang-format on
 // NOLINTEND
-inline const std::vector schemaSpecs {s3, s4, s5, s6, s7, s8, s9, s0, s1, s2};
+
+inline UnitsSchemaSpec makeRadSchema(
+    UnitsSchemaSpec base,
+    const std::size_t num,
+    std::string name,
+    const char* description
+)
+{
+    base.num = num;
+    base.name = std::move(name);
+    base.description = description;
+    base.isDefault = false;
+    base.isMultUnitAngle = false;
+    base.translationSpecs["Angle"] = {{0, "rad", rad}};
+    return base;
+}
+
+inline const UnitsSchemaSpec s10
+    = makeRadSchema(s3, 10, "InternalRad", QT_TRANSLATE_NOOP("UnitsApi", "Standard (mm, kg, s, rad)"));
+
+inline const UnitsSchemaSpec s11
+    = makeRadSchema(s6, 11, "FEMRad", QT_TRANSLATE_NOOP("UnitsApi", "FEM (mm, N, s, rad)"));
+
+inline const std::vector schemaSpecs {s3, s4, s5, s6, s7, s8, s9, s0, s1, s2, s10, s11};
 
 /**
  * Special functions
