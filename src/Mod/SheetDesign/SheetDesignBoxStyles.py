@@ -452,11 +452,21 @@ def style_0226(t, L, W, D, joint=JOINT):
 
 
 def style_0228(t, L, W, D):
-    """An RSC with a divider: a fifth panel inside the first, and a sixth across the box."""
-    flaps = [(W / 2, 1), (W / 2, 0), (W / 2, 1), (W / 2 - t, 0), None, None]
-    blank = slotted(t, [L, W, L, W - t, L / 2, W - 2 * t], D, flaps, flaps, joint=None)
-    return [blank.piece("box")]
+    """An RSC with a divider. The row is: joint, divider, a half long panel, end panel, long
+    panel, end panel, and a second half long panel.
 
+    The two half panels make one long side. The second half is on the outer side of the
+    first. The divider goes across the box, and its joint strip is on the long panel. Each
+    panel but the divider has a top flap and a bottom flap.
+    """
+    blank = Blank(t)
+    panels = tube(blank, [W - 3 * t, L / 2, W, L, W + t, 0.59 * L], D)
+    blank.flap(panels[0].edge("near"), JOINT, 90.0, inset=(t, t), taper=(JOINT / 3, JOINT / 3))
+    # The layer of each pair of flaps. The second half panel is one layer out.
+    for panel, layer in zip(panels[1:], (1, 0, 1, 0, 2)):
+        for side in ("left", "right"):
+            blank.flap(panel.edge(side), W / 2 - (t if layer == 0 else 0), 90.0, offset=layer * t)
+    return [blank.piece("box")]
 
 
 def style_0301(t, L, W, D):
@@ -744,58 +754,77 @@ def style_0470(t, L, W, D):
     return [blank.piece("tray")]
 
 
-def _bliss_body(t, L, W, D, flanges):
+def _flat_strip(blank, edge, width):
+    """A strip on an edge, in the plane of its panel. Its score has the angle zero."""
+    p, q = edge
+    u = (q - p) / p.distanceToPoint(q)
+    n = V(u.y, -u.x, 0)
+    blank._add([p, q, q + n * width, p + n * width])
+    blank.score(p, q, 0.0)
+    return Panel(p, q, q + n * width, p + n * width)
+
+
+def _bliss_body(t, L, W, D, flaps):
+    """The body of a Bliss box: a bottom, two side walls, and two top halves.
+
+    flaps: "three" = joint flaps on the two ends of the bottom and of the side walls.
+           "five" = also on the two ends of the top halves.
+    The joint flaps fold in on the end pieces.
+    """
+    size = 30.0
     blank = Blank(t)
     base = blank.panel(0, 0, W, L)
-    panels = [base]
+    for end in ("right", "left"):
+        # The flap of the bottom is narrower than the bottom: the flaps of the walls are
+        # beside it in the plane of the end.
+        blank.flap(base.edge(end), size, 90.0, inset=(size + t, size + t))
     for key in ("far", "near"):
         wall = blank.flap(base.edge(key), D, 90.0)
-        panels += [wall, blank.flap(wall.edge("far"), W / 2, 90.0)]
-    if flanges:
-        # Flanges on the two ends of each panel of the body. They fold on the end panels.
-        size = 30.0
-        for end in ("right", "left"):
-            blank.flap(base.edge(end), size, 90.0, offset=t, inset=(size, size))
-        for index in (1, 3):
-            for end in ("left", "right"):
-                blank.flap(panels[index].edge(end), size, 90.0, offset=t, inset=(size, size))
+        top = blank.flap(wall.edge("far"), W / 2 - t, 90.0)
+        for end in ("left", "right"):
+            blank.flap(wall.edge(end), size, 90.0)
+            if flaps == "five":
+                # The flap of a top half is at its free side, and a little longer.
+                clear = size + 2 * t
+                blank.flap(top.edge(end), 1.2 * size, 90.0, inset=(clear, 0.0) if end == "left" else (0.0, clear))
     return blank.piece("body")
 
 
-def _bliss_end(t, W, D, flaps, legs):
+def _bliss_end(t, W, D, flap, legs):
+    """An end piece of a Bliss box. flap: a flap of the full width on one long edge.
+    legs: a strip on each short edge, in the plane of the piece."""
     blank = Blank(t)
-    height = D + (30.0 if legs else 0.0)
-    base = blank.panel(0, 0, W, height)
-    if flaps:
-        size = 30.0
-        blank.flap(base.edge("far"), size, 90.0)
-        blank.flap(base.edge("near"), size, 90.0)
-        blank.flap(base.edge("left"), size, 90.0, inset=(size, size))
+    base = blank.panel(0, 0, W, D)
+    if flap:
+        blank.flap(base.edge("right"), 0.4 * D, 90.0)
+    if legs:
+        for key in ("far", "near"):
+            _flat_strip(blank, base.edge(key), 0.2 * W)
     return blank
 
 
-def _bliss(t, L, W, D, body_flanges, end_flaps, legs):
+def _bliss(t, L, W, D, body_flaps, end_flap, legs):
     return [
-        _bliss_body(t, L, W, D, body_flanges),
-        _bliss_end(t, W, D, end_flaps, legs).piece("end 1"),
-        _bliss_end(t, W, D, end_flaps, legs).piece("end 2"),
+        _bliss_body(t, L, W, D, body_flaps),
+        _bliss_end(t, W, D, end_flap, legs).piece("end 1"),
+        _bliss_end(t, W, D, end_flap, legs).piece("end 2"),
     ]
 
 
 def style_0601a(t, L, W, D):
-    return _bliss(t, L, W, D, False, True, False)
+    return _bliss(t, L, W, D, "three", True, False)
 
 
 def style_0601b(t, L, W, D):
-    return _bliss(t, L, W, D, False, True, True)
+    return _bliss(t, L, W, D, "three", True, True)
 
 
 def style_0606a(t, L, W, D):
-    return _bliss(t, L, W, D, True, False, False)
+    return _bliss(t, L, W, D, "five", False, False)
 
 
 def style_0606b(t, L, W, D):
-    return _bliss(t, L, W, D, True, False, True)
+    return _bliss(t, L, W, D, "five", False, True)
 
 
 def style_0711(t, L, W, D):
