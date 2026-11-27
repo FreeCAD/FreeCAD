@@ -24,6 +24,9 @@
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapePy.h>
 
 #include "Features.h"
 
@@ -44,10 +47,92 @@ public:
             "it, the result has the keys Panel (the name of the panel), Top (the edge is on the\n"
             "top side), and Length. If not, the result is None."
         );
+        add_varargs_method(
+            "bendCount",
+            &Module::bendCount,
+            "bendCount(feature) -> int\n"
+            "The number of bends of a sheet design feature."
+        );
+        add_varargs_method(
+            "foldedShape",
+            &Module::foldedShape,
+            "foldedShape(feature, fractions, fuse=False) -> (shape, overlap)\n"
+            "The solid of a sheet design feature in a state between flat and folded. The list\n"
+            "has one value for each bend, in the sequence of the bend lines of the flat pattern:\n"
+            "0 = flat, 1 = folded. With fuse, the result is one solid and overlap is the volume\n"
+            "of material in the same space. The document does not change."
+        );
         initialize("This module is the SheetDesign module.");  // register with Python
     }
 
 private:
+    Py::Object bendCount(const Py::Tuple& args)
+    {
+        PyObject* object = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(App::DocumentObjectPy::Type), &object)) {
+            throw Py::Exception();
+        }
+        auto* feature = freecad_cast<SheetDesign::Feature*>(
+            static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr()
+        );
+        if (!feature) {
+            throw Py::TypeError("The object is not a sheet design feature");
+        }
+        try {
+            return Py::Long(static_cast<long>(feature->getModel()->bends.size()));
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        catch (const Standard_Failure& e) {
+            throw Py::RuntimeError(e.GetMessageString());
+        }
+    }
+
+    Py::Object foldedShape(const Py::Tuple& args)
+    {
+        PyObject* object = nullptr;
+        PyObject* list = nullptr;
+        PyObject* fuse = Py_False;
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!O|O!",
+                &(App::DocumentObjectPy::Type),
+                &object,
+                &list,
+                &PyBool_Type,
+                &fuse
+            )) {
+            throw Py::Exception();
+        }
+        auto* feature = freecad_cast<SheetDesign::Feature*>(
+            static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr()
+        );
+        if (!feature) {
+            throw Py::TypeError("The object is not a sheet design feature");
+        }
+        std::vector<double> fractions;
+        for (const Py::Object& item : Py::Sequence(list)) {
+            fractions.push_back(static_cast<double>(Py::Float(item)));
+        }
+        try {
+            double overlap = 0.0;
+            const bool one = PyObject_IsTrue(fuse) == 1;
+            const TopoDS_Shape shape
+                = feature->getModel()->makeFoldedAt(fractions, one, one ? &overlap : nullptr);
+            Py::Tuple result(2);
+            result.setItem(0, Py::asObject(new Part::TopoShapePy(new Part::TopoShape(shape))));
+            result.setItem(1, Py::Float(overlap));
+            return result;
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        catch (const Standard_Failure& e) {
+            throw Py::RuntimeError(e.GetMessageString());
+        }
+    }
+
     Py::Object edgeInfo(const Py::Tuple& args)
     {
         PyObject* object = nullptr;

@@ -478,3 +478,53 @@ class TestSheetDesignGui(unittest.TestCase):
         subprocess.run([binary, script], timeout=120, check=False)
         with open(result, encoding="utf-8") as handle:
             self.assertEqual(handle.read(), "yes")
+
+    # ------------------------------------------------------------------- fold state
+
+    def test_fold_state_leaves_no_object_in_the_document(self):
+        flat = self.flat_with_two_bends()
+        source = flat.Source
+        count = len(self.doc.Objects)
+        panel = self.open_panel(flat)
+        form = panel.form
+        self.assertTrue(form.foldSequence.isChecked())
+        form.foldSlider.setValue(50)
+        self.assertTrue(panel.preview.is_shown())
+        self.assertFalse(source.ViewObject.Visibility)
+        self.assertEqual(form.foldLabel.text(), "Fold state: 50 %")
+        panel.fold_measured()
+        self.assertIn("Overlap: 0.0", form.foldLabel.text())
+        # The preview is one temporary object. The source is not changed.
+        self.assertEqual(len(self.doc.Objects), count + 1)
+        self.assertGreater(self.doc.getObject("FoldPreview").Shape.Volume, 0.0)
+        form.foldSlider.setValue(100)
+        self.assertEqual(len(self.doc.Objects), count)
+        self.assertFalse(panel.preview.is_shown())
+        self.assertTrue(source.ViewObject.Visibility)
+        form.foldSlider.setValue(20)
+        self.close_panel(accept=False)
+        self.assertFalse(panel.preview.is_shown())
+        self.assertTrue(source.ViewObject.Visibility)
+        self.assertEqual(len(self.doc.Objects), count)
+
+    def test_fold_check_and_frames(self):
+        flat = self.flat_with_two_bends()
+        panel = self.open_panel(flat)
+        panel.fold_check()
+        self.assertIn("No overlap", panel.form.foldLabel.text())
+        folder = tempfile.mkdtemp()
+        self.assertEqual(panel.fold_frames(folder, steps=4, size=(320, 180)), 5)
+        self.assertEqual(sorted(os.listdir(folder)), ["fold_%04d.png" % i for i in range(5)])
+        self.assertEqual(panel.form.foldSlider.value(), 100)
+
+    def test_fold_slider_on_a_flat_pattern_with_no_bend_data(self):
+        """The state of a flat pattern from an older file."""
+        flat = self.add("SheetDesign::FlatPattern", "OldFlat")
+        flat.Source = self.flange  # No recompute.
+        panel = self.open_panel(flat)
+        self.assertEqual(len(flat.BendAngles), 1)
+        self.assertEqual(panel.form.bendsTable.rowCount(), 1)
+        panel.form.foldSequence.setChecked(False)
+        panel.form.foldSlider.setValue(0)
+        preview = self.doc.getObject("FoldPreview")
+        self.assertLess(preview.Shape.BoundBox.ZLength, self.T + 0.2)

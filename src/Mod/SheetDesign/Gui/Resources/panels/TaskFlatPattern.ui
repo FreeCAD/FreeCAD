@@ -93,6 +93,71 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="group1">
+     <property name="title">
+      <string>Fold State</string>
+     </property>
+     <layout class="QFormLayout" name="layout1">
+      <item row="0" column="0" colspan="2">
+       <widget class="QSlider" name="foldSlider">
+        <property name="toolTip">
+         <string>Shows the part between flat (left) and folded (right), as a temporary object</string>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="foldSequence">
+        <property name="text">
+         <string>Fold in the bend sequence</string>
+        </property>
+        <property name="toolTip">
+         <string>Folds one bend after the other, in the bend sequence. If not set, all bends fold together</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="foldLabel">
+        <property name="text">
+         <string></string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="foldCheck">
+        <property name="text">
+         <string>Check Fold</string>
+        </property>
+        <property name="toolTip">
+         <string>Looks for material in the same space at each step of the fold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QPushButton" name="foldFrames">
+        <property name="text">
+         <string>Save Frames…</string>
+        </property>
+        <property name="toolTip">
+         <string>Saves an image of each step of the fold into a folder</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string></string>

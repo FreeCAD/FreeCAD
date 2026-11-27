@@ -2352,3 +2352,98 @@ class TestSheetDesign(unittest.TestCase):
         self.assertIn(f"Scale of the view: {SheetDesignDrawing.scale_text(view.Scale)}", _table.Symbol)
         template = view.findParentPage().Template
         self.assertLess(flat.Shape.BoundBox.XLength * view.Scale, template.Width.Value)
+
+    # --------------------------------------------------------------------------- fold state
+
+    def test_fold_state_from_flat_to_folded(self):
+        flange = self.add_end_flange(self.add_base())
+        folded, overlap = SheetDesign.foldedShape(flange, [1.0], True)
+        self.assertAlmostEqual(folded.Volume, flange.Shape.Volume, places=5)
+        self.assertEqual(overlap, 0.0)
+        # At zero, the part has the size of the flat pattern.
+        flat, _overlap = SheetDesign.foldedShape(flange, [0.0])
+        length = self.LENGTH + self.allowance() + 20.0
+        self.assertAlmostEqual(flat.BoundBox.XLength, length, places=2)
+        self.assertLess(flat.BoundBox.ZLength, self.T + 0.2)
+        # In a middle state, the bend has the same length of material: the volume stays.
+        half, overlap = SheetDesign.foldedShape(flange, [0.5], True)
+        self.assertTrue(half.isValid())
+        self.assertEqual(len(half.Solids), 1)
+        self.assertAlmostEqual(half.Volume, flange.Shape.Volume, delta=0.02 * flange.Shape.Volume)
+        self.assertEqual(overlap, 0.0)
+        # The flange is at 45 degrees: its end is lower than in the folded state.
+        self.assertLess(half.BoundBox.ZMax, flange.Shape.BoundBox.ZMax - 3.0)
+        self.assertGreater(half.BoundBox.ZMax, self.T + 5.0)
+        # The document did not change.
+        self.assertFalse(flange.State and "Touched" in flange.State)
+
+    def test_fold_state_for_each_bend(self):
+        first = self.add_end_flange(self.add_base())
+        second = self.add_flange(first, V(0, 0, self.T), V(0, self.WIDTH, self.T), Length=20.0)
+        only_first, _o = SheetDesign.foldedShape(second, [1.0, 0.0])
+        only_second, _o = SheetDesign.foldedShape(second, [0.0, 1.0])
+        self.assertAlmostEqual(only_first.BoundBox.XMax, self.LENGTH + self.R + self.T, places=5)
+        self.assertLess(only_first.BoundBox.XMin, -20.0)
+        self.assertAlmostEqual(only_second.BoundBox.XMin, -(self.R + self.T), places=5)
+        self.assertGreater(only_second.BoundBox.XMax, self.LENGTH + 20.0)
+
+    def test_fold_state_finds_a_collision_on_the_way(self):
+        """A lip that is clear when folded goes through the base on its way if it folds first."""
+        import SheetDesignFold
+
+        base = self.add_base()
+        wall = self.add_end_flange(base, Length=20.0)
+        x = self.LENGTH + self.R + self.T
+        z = self.T + self.R + 20.0
+        lip = self.add_flange(wall, V(x, 0, z), V(x, self.WIDTH, z), Length=30.0, Reversed=True)
+        self.assertEqual(lip.Overlap.Value, 0.0)
+        flat = self.add_flat(lip)
+        fractions = SheetDesignFold.fractions(flat, 0.5, in_sequence=False)
+        self.assertEqual(fractions, [0.5, 0.5])
+        flat.BendOrder = [2, 1]
+        # The second bend line of the model folds first: it is complete at half of the state.
+        self.assertEqual(SheetDesignFold.fractions(flat, 0.5, in_sequence=True), [0.0, 1.0])
+        self.assertEqual(SheetDesignFold.fractions(flat, 0.75, in_sequence=True), [0.5, 1.0])
+        worst = SheetDesignFold.worst_overlap(flat, steps=8, in_sequence=True)
+        self.assertGreaterEqual(worst[0], 0.0)
+
+    def test_refold_with_all_angles_zero_is_the_flat_blank(self):
+        face = self.flat_rectangle(140.0)
+        line = Part.makeLine(V(100, 0, 0), V(100, self.WIDTH, 0))
+        obj = self.add_refold(face, [line], [0.0])
+        self.assertSolid(obj)
+        self.assertAlmostEqual(obj.Shape.Volume, 140.0 * self.WIDTH * self.T, places=6)
+
+    def test_fold_state_does_not_need_the_bend_data_of_the_flat_pattern(self):
+        """A flat pattern from an older file has no BendAngles before its first recompute."""
+        import SheetDesignFold
+
+        flange = self.add_end_flange(self.add_base())
+        flat = self.doc.addObject("SheetDesign::FlatPattern", "Flat")
+        flat.Source = flange  # No recompute: the bend data is empty.
+        self.assertEqual(list(flat.BendAngles), [])
+        self.assertEqual(SheetDesign.bendCount(flange), 1)
+        self.assertEqual(SheetDesignFold.fractions(flat, 0.5, in_sequence=True), [0.5])
+        shape, _overlap = SheetDesignFold.shape(flat, 0.0)
+        self.assertLess(shape.BoundBox.ZLength, self.T + 0.2)
+
+    def test_fold_state_of_a_part_with_closing_bends(self):
+        """The panels of a webbed corner move with their tree bends in a middle state."""
+        import SheetDesignBoxStyles
+        import SheetDesignFold
+
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        piece = SheetDesignBoxStyles.STYLES["0226 Bellows Style Top and Bottom Container"](4.0, 300.0, 200.0, 150.0)[0]
+        box = SheetDesignBoxStyles.fold(self.doc, self.rule, piece, "Bellows")
+        self.doc.recompute()
+        self.assertSolid(box)
+        flat = self.add_flat(box)
+        folded = box.Shape.BoundBox
+        half, _overlap = SheetDesignFold.shape(flat, 0.5, in_sequence=False)
+        opened, _overlap = SheetDesignFold.shape(flat, 0.0, in_sequence=False)
+        self.assertTrue(half.isValid())
+        self.assertGreater(half.BoundBox.XLength, folded.XLength + 50.0)
+        self.assertLess(opened.BoundBox.ZLength, 10.0)
+        # The smallest fold angle is not zero, thus the sizes agree to some millimeters.
+        self.assertAlmostEqual(opened.BoundBox.XLength, flat.Shape.BoundBox.XLength, delta=3.0)

@@ -209,13 +209,30 @@ def tube(blank, widths, height, angles=90.0):
     return panels
 
 
-def slotted(t, widths, depth, bottom=None, top=None):
-    """A slotted box: a tube with flaps. A flap is (length, layer) or None.
+#: The width of the manufacturer's joint strip.
+JOINT = 35.0
+
+
+def add_joint(blank, panel, width=JOINT, taper=0.0):
+    """Add the manufacturer's joint: a strip on the free end of the first panel of a tube.
+
+    The strip is as high as the panel, without the flaps. It goes on the outer side of the last
+    panel, where the box is glued or stitched, thus its score is one thickness farther out.
+    taper: the two free corners of the strip are cut at an angle by this size.
+    """
+    t = blank.t
+    return blank.flap(panel.edge("near"), width, 90.0, offset=t, inset=(t, t), taper=(taper, taper))
+
+
+def slotted(t, widths, depth, bottom=None, top=None, joint=JOINT, joint_taper=0.0):
+    """A slotted box: a tube with flaps and a joint strip. A flap is (length, layer) or None.
 
     In the row of panels, "right" is the bottom side and "left" is the top side.
     """
     blank = Blank(t)
     panels = tube(blank, widths, depth)
+    if joint:
+        add_joint(blank, panels[0], joint, joint_taper)
     for side, flaps in (("right", bottom), ("left", top)):
         if not flaps:
             continue
@@ -322,8 +339,10 @@ def style_0225(t, L, W, D):
     return _rsc(t, L, W, D, bottom, None)
 
 
-def style_0226(t, L, W, D):
+def style_0226(t, L, W, D, joint=JOINT):
     """A bellows top and bottom: the flaps of all four panels are one band with no slot.
+
+    The blank is one rectangle: the manufacturer's joint strip, then the panels L, W, L, W.
 
     Each flap of an end panel has two diagonal scores. Its center triangle folds in from the end
     wall. Its two side triangles fold flat under the flaps of the long panels, thus they are
@@ -331,8 +350,15 @@ def style_0226(t, L, W, D):
     the side triangle, and the center triangle make a closed loop of panels.
 
     The end walls are lower by two thicknesses at the top and at the bottom. This gives the
-    space for the two layers of triangles below the long flaps. The corner at the
-    manufacturer's joint has no side triangle.
+    space for the two layers of triangles below the long flaps.
+
+    The joint strip is on the first long panel, and it has the full height of the blank. It goes
+    on the outer side of the last end panel. Its two flap parts have the same diagonal score as
+    the corner of that end panel, and they fold together with that corner. The board is thus
+    double in a small zone at the joint corner. A model of stiff panels cannot show this without
+    material in the same space: the folded model has an Overlap there, as large as the two flap
+    parts of the strip. The last end panel is complete: its outer side triangle has no long
+    flap to hold it, and folds flat on its center triangle.
     """
     blank = Blank(t)
     a = blank.allowance(90.0)
@@ -343,34 +369,50 @@ def style_0226(t, L, W, D):
         spans.append((x, x + width))
         x += width + a
     right = spans[-1][1]
+    # The strip is the outer layer, thus the first long panel is longer by one thickness.
+    start = -t
+    spans[0] = (start, spans[0][1])
+    left = start - a - joint
     blank.faces.append(
         Part.Face(
             Part.makePolygon(
-                [V(0, -half, 0), V(right, -half, 0), V(right, D + half, 0), V(0, D + half, 0), V(0, -half, 0)]
+                [V(left, -half, 0), V(right, -half, 0), V(right, D + half, 0), V(left, D + half, 0), V(left, -half, 0)]
             )
         )
     )
     # The scores between the walls. They stop below the layers of the triangles.
     for x0, x1 in spans[:-1]:
         blank.score(V(x1 + a / 2, 2 * t, 0), V(x1 + a / 2, D - 2 * t, 0), 90.0)
+    blank.score(V(start - a / 2, 2 * t, 0), V(start - a / 2, D - 2 * t, 0), 90.0)  # The strip.
 
-    def corner(edge, toward, base, up, joint=False):
+    def corner(edge, toward, base, up, kind="full"):
         """One corner. edge: the X of the end of the long panel. toward: +1 if the end panel
         is at a larger X. base: the Y of the top or the bottom of the long walls. up: +1 for
-        the top flaps, -1 for the bottom flaps."""
+        the top flaps, -1 for the bottom flaps.
+
+        kind "full": a long flap, a side triangle, and a center triangle.
+        kind "strip": the same on the joint strip. The diagonal ends on the edge of the strip.
+        kind "free": the outer corner of the last end panel. Only the diagonal.
+        """
 
         def at(u, v):
             return V(edge + toward * u, base + up * v, 0)
 
-        if joint:
-            # No side triangle at the manufacturer's joint: the flap ends on its diagonal.
-            cut = [at(2 * a, a), at(a + half, half + 1), at(-1, half + 1), at(-1, a)]
-            blank.holes.append(Part.Face(Part.makePolygon(cut + [cut[0]])))
+        def relief(p, q):
+            blank.slot(min(p.x, q.x), min(p.y, q.y), max(p.x, q.x), max(p.y, q.y))
+
+        if kind == "free":
+            relief(at(a, -2 * t), at(2 * a, a))
+            blank.score(at(2 * a, a), at(a + half, half), 180.0)  # Side to center triangle.
             return
-        p, q = at(0, -2 * t), at(a, a)
-        blank.slot(min(p.x, q.x), min(p.y, q.y), max(p.x, q.x), max(p.y, q.y))  # Relief.
+        relief(at(0, -2 * t), at(a, a))
         blank.score(at(a, a), at(a, half), 180.0)  # Long flap to side triangle.
-        blank.score(at(2 * a, a), at(a + half, half), 180.0)  # Side to center triangle.
+        if kind == "strip":
+            blank.score(at(2 * a, a), at(a + joint, joint), 180.0)
+            y = base + up * (-2 * t + a / 2)
+            blank.score(V(edge + toward * a, y, 0), V(edge + toward * (a + joint), y, 0), 90.0)
+        else:
+            blank.score(at(2 * a, a), at(a + half, half), 180.0)  # Side to center triangle.
 
     for base, up in ((D, 1), (0.0, -1)):
         for index, (x0, x1) in enumerate(spans):
@@ -378,20 +420,19 @@ def style_0226(t, L, W, D):
                 # A long panel: the score of its flap, and a corner at each end.
                 blank.score(V(x0, base + up * a / 2, 0), V(x1, base + up * a / 2, 0), 90.0)
                 corner(x1, 1, base, up)
-                if index > 0:
-                    corner(x0, -1, base, up)
+                corner(x0, -1, base, up, "full" if index > 0 else "strip")
             else:
                 # An end panel: the score of its center triangle, two thicknesses lower.
                 y = base + up * (-2 * t + a / 2)
                 blank.score(V(x0, y, 0), V(x1, y, 0), 90.0)
-        corner(right + a, -1, base, up, joint=True)
+        corner(right + a, -1, base, up, "free")
     return [blank.piece("box")]
 
 
 def style_0228(t, L, W, D):
     """An RSC with a divider: a fifth panel inside the first, and a sixth across the box."""
     flaps = [(W / 2, 1), (W / 2, 0), (W / 2, 1), (W / 2 - t, 0), None, None]
-    blank = slotted(t, [L, W, L, W - t, L / 2, W - 2 * t], D, flaps, flaps)
+    blank = slotted(t, [L, W, L, W - t, L / 2, W - 2 * t], D, flaps, flaps, joint=None)
     return [blank.piece("box")]
 
 
@@ -416,7 +457,7 @@ def style_0306(t, L, W, D):
 
 def style_0310(t, L, W, D):
     body = Blank(t)
-    tube(body, [L, W, L, W], D)
+    add_joint(body, tube(body, [L, W, L, W], D)[0])
     return [body.piece("tube"), _cover(t, L, W, D / 4, "cover 1"), _cover(t, L, W, D / 4, "cover 2")]
 
 
@@ -429,7 +470,9 @@ def style_0320(t, L, W, D):
 def style_0325(t, L, W, D):
     """A tube with flanges that fold to the outer side, and two covers."""
     body = Blank(t)
-    for panel in tube(body, [L, W, L, W], D):
+    panels = tube(body, [L, W, L, W], D)
+    add_joint(body, panels[0])
+    for panel in panels:
         for side in ("left", "right"):
             body.flap(panel.edge(side), 30.0, -90.0)
     return [body.piece("tube"), _cover(t, L, W, D / 4, "cover 1"), _cover(t, L, W, D / 4, "cover 2")]
@@ -453,7 +496,7 @@ def _octagon_cover(t, side, depth, name):
 def style_0351(t, L, W, D):
     side = 0.4 * L
     body = Blank(t)
-    tube(body, [side] * 8, D, 45.0)
+    add_joint(body, tube(body, [side] * 8, D, 45.0)[0])
     cover_side = side + 2 * t * math.tan(math.pi / 8) + 2
     return [
         body.piece("tube"),
@@ -495,7 +538,7 @@ def style_0403(t, L, W, D):
 def style_0406(t, L, W, D):
     """A wrap around blank: the tube goes around the length, the flaps close the ends."""
     flaps = [(D / 2, 1), (D / 2, 0), (D / 2, 1), (D / 2, 0)]
-    return [slotted(t, [W, D, W, D], L, flaps, flaps).piece("wrap")]
+    return [slotted(t, [W, D, W, D], L, flaps, flaps, joint_taper=JOINT / 3).piece("wrap")]
 
 
 def style_0410(t, L, W, D):
@@ -638,7 +681,7 @@ def style_0711(t, L, W, D):
     """An auto bottom with RSC top flaps. The diagonal scores of the bottom are flat when the
     box is set up, thus they have the angle zero."""
     top = [(W / 2, 1), (W / 2, 0), (W / 2, 1), (W / 2, 0)]
-    blank = slotted(t, [L, W, L, W], D, _snap_bottom(W), top)
+    blank = slotted(t, [L, W, L, W], D, _snap_bottom(W), top, joint_taper=JOINT / 3)
     panels = tube(Blank(t), [L, W, L, W], D)
     allowance = blank.allowance(90.0)
     for panel in (panels[1], panels[3]):

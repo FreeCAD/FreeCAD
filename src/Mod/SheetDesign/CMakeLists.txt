@@ -13,6 +13,7 @@ set(SheetDesign_Scripts
     SheetDesignBoxStyles.py
     SheetDesignDrawing.py
     SheetDesignExport.py
+    SheetDesignFold.py
     TestSheetDesignApp.py
     TestSheetDesignBoxStyles.py
 )

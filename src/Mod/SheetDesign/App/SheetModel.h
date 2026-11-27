@@ -335,6 +335,18 @@ public:
      */
     TopoDS_Shape makeFolded(bool fuse, bool refine, double* overlap = nullptr) const;
 
+    /**
+     * The solid in a state between flat and folded, for a view of the fold.
+     *
+     * @param fractions  For each bend, the part of its angle that is done: 0 = flat, 1 = folded.
+     *                   A bend with no value is folded.
+     */
+    TopoDS_Shape makeFoldedAt(
+        const std::vector<double>& fractions,
+        bool fuse,
+        double* overlap = nullptr
+    ) const;
+
     /// The flat pattern as one face in flat space.
     TopoDS_Shape makeFlat() const;
 
@@ -402,7 +414,8 @@ private:
         const gp_Vec2d& normal,
         double angle,
         bool up,
-        double radius
+        double radius,
+        double knownAllowance = -1.0
     ) const;
 
     /// Add a bend between two panels and set the folded position of the child panel.

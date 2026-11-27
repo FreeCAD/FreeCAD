@@ -47,6 +47,10 @@ class TestBoxStyles(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
 
+    #: Style code: the largest permitted overlap in mm^3, as a part of one for the test size.
+    #: 0226: the two flap parts of the joint strip are on the corner of the last end panel.
+    DOUBLE_BOARD = {"0226": 6000.0}
+
     def check_style(self, name, size):
         function = SheetDesignBoxStyles.STYLES[name]
         pieces = function(self.THICKNESS, *size)
@@ -60,8 +64,9 @@ class TestBoxStyles(unittest.TestCase):
             self.assertTrue(folded.isValid(), f"{label}: {folded.getStatusString()}")
             self.assertTrue(folded.Shape.isValid(), label)
             self.assertEqual(len(folded.Shape.Solids), 1, label)
-            # No two panels have material in the same space.
-            self.assertEqual(folded.Overlap.Value, 0.0, label)
+            # No two panels have material in the same space, but for a style where the
+            # handbook blank has the board double in a zone.
+            self.assertLessEqual(folded.Overlap.Value, self.DOUBLE_BOARD.get(name.split()[0], 0.0), label)
             # The flat pattern is the blank. A relief opening at a corner web is very small.
             self.assertTrue(flat.isValid(), f"{label}: {flat.getStatusString()}")
             area = piece.face.Area

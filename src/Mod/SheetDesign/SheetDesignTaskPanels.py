@@ -27,6 +27,8 @@ name as the widget. Thus a new value needs only a property on the feature and a 
 that name in the .ui file.
 """
 
+import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -350,6 +352,39 @@ class TaskUnfold(TaskPanel):
         self.form.bendsLabel.setText(bends)
 
 
+class FoldPreview:
+    """A temporary object that shows a shape. The panel removes it when it closes."""
+
+    NAME = "FoldPreview"
+
+    def __init__(self):
+        self.obj = None
+
+    def show(self, shape, like):
+        if self.obj is None:
+            self.obj = like.Document.addObject("Part::Feature", self.NAME)
+            view, source = self.obj.ViewObject, like.ViewObject
+            if view is not None and source is not None:
+                for name in ("ShapeColor", "LineColor", "LineWidth", "DisplayMode"):
+                    try:
+                        setattr(view, name, getattr(source, name))
+                    except (AttributeError, ValueError):
+                        pass
+                view.Selectable = False
+        self.obj.Shape = shape
+
+    def remove(self):
+        if self.obj is not None:
+            try:
+                self.obj.Document.removeObject(self.obj.Name)
+            except (ReferenceError, RuntimeError):  # The object is gone, for example after an undo.
+                pass
+        self.obj = None
+
+    def is_shown(self):
+        return self.obj is not None
+
+
 class TaskFlatPattern(TaskPanel):
     ui_file = "TaskFlatPattern.ui"
     title = "Flat Pattern"
@@ -359,6 +394,98 @@ class TaskFlatPattern(TaskPanel):
         self.form.exportButton.clicked.connect(self.export)
         self.form.drawingButton.clicked.connect(self.drawing)
         self.form.bendsTable.itemChanged.connect(self.sequence_changed)
+        # A flat pattern from an older file has no bend data before its first recompute.
+        if self.obj.Source is not None and not list(self.obj.BendAngles):
+            self.obj.touch()
+            self.doc.recompute()
+        self.preview = FoldPreview()
+        self.source_was_visible = None
+        self.form.foldSequence.setChecked(True)
+        self.form.foldSlider.valueChanged.connect(self.fold_changed)
+        self.form.foldSlider.sliderReleased.connect(self.fold_measured)
+        self.form.foldSequence.toggled.connect(lambda _state: self.fold_changed(self.form.foldSlider.value()))
+        self.form.foldCheck.clicked.connect(self.fold_check)
+        self.form.foldFrames.clicked.connect(self.fold_frames)
+
+    # ------------------------------------------------------------------- fold state
+
+    def fold_state(self):
+        return self.form.foldSlider.value() / 100.0, self.form.foldSequence.isChecked()
+
+    def fold_changed(self, value):
+        """Show the part in the state of the slider. This is a view only."""
+        import SheetDesignFold
+
+        source = self.obj.Source
+        if source is None or source.ViewObject is None:
+            return
+        if value >= 100:
+            self.fold_end()
+            self.form.foldLabel.setText("")
+            return
+        state, in_sequence = self.fold_state()
+        try:
+            shape, _overlap = SheetDesignFold.shape(self.obj, state, in_sequence)
+        except RuntimeError as error:
+            self.form.foldLabel.setText(str(error))
+            return
+        if self.source_was_visible is None:
+            self.source_was_visible = source.ViewObject.Visibility
+            source.ViewObject.hide()
+        self.preview.show(shape, source)
+        self.form.foldLabel.setText(translate("SheetDesign", "Fold state: {} %").format(value))
+
+    def fold_measured(self):
+        """The slider stopped: measure the overlap of this state."""
+        import SheetDesignFold
+
+        value = self.form.foldSlider.value()
+        if value >= 100 or self.obj.Source is None:
+            return
+        state, in_sequence = self.fold_state()
+        _shape, overlap = SheetDesignFold.shape(self.obj, state, in_sequence, True)
+        self.form.foldLabel.setText(
+            translate("SheetDesign", "Fold state: {} %. Overlap: {:.1f} mm³").format(value, overlap)
+        )
+
+    def fold_check(self):
+        import SheetDesignFold
+
+        worst, where = SheetDesignFold.worst_overlap(self.obj, 20, self.form.foldSequence.isChecked())
+        if worst > 0.0:
+            text = translate("SheetDesign", "Largest overlap in the fold: {:.1f} mm³ at {:.0f} %").format(
+                worst, where * 100.0
+            )
+        else:
+            text = translate("SheetDesign", "No overlap in 20 steps of the fold")
+        self.form.foldLabel.setText(text)
+
+    def fold_frames(self, folder=None, steps=60, size=(1280, 720)):
+        """Save one image for each step of the fold."""
+        if not folder:
+            folder = QtGui.QFileDialog.getExistingDirectory(
+                FreeCADGui.getMainWindow(), translate("SheetDesign", "Folder for the Frames")
+            )
+        if not folder:
+            return 0
+        view = FreeCADGui.ActiveDocument.ActiveView
+        before = self.form.foldSlider.value()
+        for index in range(steps + 1):
+            self.form.foldSlider.setValue(round(100.0 * index / steps))
+            FreeCADGui.updateGui()
+            view.saveImage(os.path.join(folder, "fold_%04d.png" % index), size[0], size[1], "Current")
+        self.form.foldSlider.setValue(before)
+        return steps + 1
+
+    def fold_end(self):
+        self.preview.remove()
+        source = self.obj.Source
+        if self.source_was_visible is not None and source is not None and source.ViewObject is not None:
+            source.ViewObject.Visibility = self.source_was_visible
+        self.source_was_visible = None
+
+    def close(self):
+        self.fold_end()
 
     def update(self):
         super().update()

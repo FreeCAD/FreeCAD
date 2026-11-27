@@ -1174,12 +1174,13 @@ gp_Trsf SheetModel::afterBend(
     const gp_Vec2d& normal,
     double angle,
     bool up,
-    double radius
+    double radius,
+    double knownAllowance
 ) const
 {
     // The child moves back by the bend allowance, then turns around the bend axis.
     const double t = params.thickness;
-    const double allowance = bendAllowance(angle, radius);
+    const double allowance = knownAllowance >= 0.0 ? knownAllowance : bendAllowance(angle, radius);
     gp_Dir axisDir(normal.Y(), -normal.X(), 0.0);  // normal x Z
     if (!up) {
         axisDir.Reverse();
@@ -1669,7 +1670,8 @@ void SheetModel::place(int panel)
             gp_Vec2d(bend.normal),
             bend.angle,
             bend.up,
-            bend.radius
+            bend.radius,
+            bend.allowance
         );
         place(bend.childPanel);
     }
@@ -1992,6 +1994,30 @@ TopoDS_Shape SheetModel::makeFolded(bool fuse, bool refine, double* overlap) con
         *overlap = difference;
     }
     return refine ? unify(result) : result;
+}
+
+TopoDS_Shape SheetModel::makeFoldedAt(const std::vector<double>& fractions, bool fuse, double* overlap) const
+{
+    // A bend that is not complete has the same length of material in its zone. Thus its
+    // allowance stays, its angle is smaller, and its radius is larger.
+    SheetModel state = *this;
+    for (std::size_t i = 0; i < state.bends.size(); ++i) {
+        Bend& bend = state.bends[i];
+        double fraction = i < fractions.size() ? fractions[i] : 1.0;
+        fraction = std::min(1.0, std::max(0.0, fraction));
+        if (fraction >= 1.0 - 1.0e-9 || bend.allowance <= 1.0e-9) {
+            continue;
+        }
+        const double neutral = bend.allowance / bend.angle - bend.radius;  // k times t
+        bend.angle = std::max(bend.angle * fraction, 1.0e-3);
+        bend.radius = std::max(bend.allowance / bend.angle - neutral, 0.0);
+    }
+    for (std::size_t i = 0; i < state.panels.size(); ++i) {
+        if (state.panels[i].parentBend < 0) {
+            state.place(static_cast<int>(i));
+        }
+    }
+    return state.makeFolded(fuse, false, overlap);
 }
 
 TopoDS_Shape SheetModel::makeFlat() const

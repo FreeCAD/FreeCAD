@@ -690,8 +690,14 @@ std::shared_ptr<SheetModel> Refold::buildModel()
         line.up = degrees >= 0.0;
         lines.push_back(line);
     }
-    if (lines.empty()) {
+    if (lineNumber == 0) {
         throw Base::ValueError("Sheet design: the bend line object has no line");
+    }
+    if (lines.empty()) {
+        // All scores have the angle zero: the part is the flat blank.
+        return std::make_shared<SheetModel>(
+            SheetModel::makeBase(face, placement, params, getNameInDocument())
+        );
     }
     return std::make_shared<SheetModel>(
         SheetModel::fromFlat(face, lines, placement, params, getNameInDocument())
