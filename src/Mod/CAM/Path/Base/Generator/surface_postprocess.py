@@ -181,9 +181,9 @@ def _optimize_travel(
     safe_z,
     clearance_z,
     optimize_ratio,
-    step_down,
     horiz_feed,
     horiz_rapid,
+    vert_feed,
     vert_rapid,
     safe_pdc=None,
     cutter=None,
@@ -206,9 +206,9 @@ def _optimize_travel(
         clearance_z (float): Clearance height.
         optimize_ratio (float): Multiplier for the cutter diameter to determine the
             maximum allowed distance for a keep-down transition.
-        step_down (float): The step-down distance per pass.
         horiz_feed (float): Horizontal cutting feed rate.
         horiz_rapid (float): Horizontal rapid feed rate.
+        vert_feed (float): Vertical cutting feed rate.
         vert_rapid (float): Vertical rapid feed rate.
         safe_pdc (ocl.PathDropCutter, optional): Pre-built path drop cutter for
             collision detection. Reused across transitions.
@@ -224,6 +224,7 @@ def _optimize_travel(
         return []
 
     cutter_diam = cutter.getDiameter()
+    threshold = max(cutter_diam, 3.0)
     dx = next_point[0] - last_point[0]
     dy = next_point[1] - last_point[1]
     xy_dist_sqrd = dx * dx + dy * dy
@@ -236,8 +237,9 @@ def _optimize_travel(
             start_z,
             depth_offset,
             safe_z,
-            step_down,
+            threshold,
             horiz_feed,
+            vert_feed,
             force_keep_down,
         )
         if transition_cmds:
@@ -253,11 +255,19 @@ def _dropcutter_transition(
     start_z,
     depth_offset,
     safe_z,
-    step_down,
+    threshold,
     horiz_feed,
+    vert_feed,
     force_keep_down=False,
 ):
-    """Probes a transition path and returns surface-following G1 commands."""
+    """Probes a transition path and returns surface-following G1 commands.
+
+    Returns None when the tool should retract instead: the link rises above
+    the operation's Start Depth, or (unless force_keep_down) it climbs
+    anywhere along its length higher than the 'threshold' value.
+
+    Stair drops are plunges and run at vert_feed (horiz_feed when not given).
+    """
     ocl = _get_ocl()
     path = ocl.Path()
     # Create a line high above the part for the drop-cutter to start from
@@ -274,17 +284,15 @@ def _dropcutter_transition(
 
     # We only perform the aggressive climb check if we are NOT being forced to stay down.
     if not force_keep_down:
-        first_transition_pt = cl_points[1]
-        initial_climb = abs(first_transition_pt.z - start[2])
+        climb = max(pt.z for pt in cl_points) - start[2]
         step_over_transition = abs(start[2] - end[2]) < 1e-3
-        above_start_z = start[2] > start_z
 
-        # If the initial climb is more than half a step-down, it's faster to retract.
-        if (
-            step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition
-        ) or above_start_z:
+        # Climbing anywhere along the link higher than the 'threshold' value:
+        # retracting is faster.
+        if climb > threshold and not step_over_transition:
             Path.Log.debug(
-                f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds safety check."
+                f"Keep-down move aborted: climb ({climb:.2f}mm) exceeds the threshold "
+                f"({threshold:.2f}mm)."
             )
             return None  # Abort the transition
 
@@ -292,17 +300,41 @@ def _dropcutter_transition(
     z_floor = min(start[2], end[2])
     commands = []
 
-    # Generate G1 moves that follow the probed surface
-    for pt in cl_points[1:-1]:  # Skip first and last point to avoid duplicating moves
-        z = (
-            max(pt.z, z_floor) + depth_offset
-        )  # Plus a small buffer to avoid touching previous on Multi-pass
-        commands.append(Path.Command("G1", {"X": pt.x, "Y": pt.y, "Z": z, "F": horiz_feed}))
+    # Probed surface, skipping the first and last point to avoid duplicating
+    # moves, then the exact start of the next cutting pass.
+    route = [
+        (pt.x, pt.y, max(pt.z, z_floor) + depth_offset)  # Plus a small buffer for Multi-pass
+        for pt in cl_points[1:-1]
+    ]
+    route.append((end[0], end[1], end[2] + depth_offset))
 
-    # Ensure a perfect final connection to the start of the next cutting pass
-    commands.append(
-        Path.Command("G1", {"X": end[0], "Y": end[1], "Z": end[2] + depth_offset, "F": horiz_feed})
-    )
+    # A height change steeper than 45 degrees between two probes is taken as a stair:
+    # climb vertically at the lower point, come down vertically at the lower point.
+    # The probes can fall either side of the obstacle's edge, and  a straight diagonal
+    # between them would cut its corner; the stair always runs at or above that diagonal.
+    # The climb only moves through air (everything above a probe's safe height is
+    # clear) and runs at the horizontal feed. The drop is a plunge, possibly into
+    # stock not cut yet on a multi-pass layer, and runs at the vertical feed.
+    prev = (start[0], start[1], start[2] + depth_offset)
+    for cur in route:
+        if cur[2] > start_z + depth_offset:
+            Path.Log.debug("Keep-Tool-Down move aborted: Link above start depth")
+            return None
+        dz = cur[2] - prev[2]
+        step_sqrd = (cur[0] - prev[0]) ** 2 + (cur[1] - prev[1]) ** 2
+        feed = horiz_feed
+        if dz * dz > step_sqrd:
+            if dz > 0:
+                commands.append(
+                    Path.Command("G1", {"X": prev[0], "Y": prev[1], "Z": cur[2], "F": horiz_feed})
+                )
+            else:
+                commands.append(
+                    Path.Command("G1", {"X": cur[0], "Y": cur[1], "Z": prev[2], "F": horiz_feed})
+                )
+                feed = vert_feed  # the vertical drop below
+        commands.append(Path.Command("G1", {"X": cur[0], "Y": cur[1], "Z": cur[2], "F": feed}))
+        prev = cur
     return commands
 
 
@@ -322,7 +354,7 @@ def _make_safe_pdc(safe_stl, cutter, final_z, sample_interval):
 # ---------------------------------------------------------------------------
 
 
-def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in):
+def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in, depth_offset=0.0):
     """
     Attempts multiple arc lead-in or lead-out strategies in order of preference,
     returning the first successful result.
@@ -347,6 +379,9 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
         safe_pdc (ocl.PathDropCutter): Pre-configured, reusable drop-cutter.
         cutter (ocl.Cutter): Active cutter.
         lead_feed (float): Feed rate for the arc move (mm/min).
+        depth_offset (float): Depth Offset added to the Z of the emitted moves.
+            The line and the probing stay in the model frame, and so does the
+            returned point.
 
     Returns:
         tuple: (list_of_Path.Commands, entry_point) on success,
@@ -359,7 +394,9 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
 
     # Strategy 1: Forward tangent arc (Lead-in and Lead-out)
     # Standard entry/exit — tangent to the cut direction at full radius.
-    cmds, lead = _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in)
+    cmds, lead = _generate_lead_arc(
+        line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in, depth_offset
+    )
     if lead:
         Path.Log.debug("LeadIn/LeadOut: forward tangent arc")
         return cmds, lead
@@ -379,7 +416,7 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
             line_90_deg = [p_attach, p_perpendicular] + line[1:]
 
             cmds, lead = _generate_lead_arc(
-                line_90_deg, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in=True
+                line_90_deg, safe_pdc, cutter, lead_feed, lift_lead_z, True, depth_offset
             )
             if lead:
                 Path.Log.debug("LeadIn: Succeeded with 90-degree perpendicular arc.")
@@ -398,7 +435,7 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
         ] + line[1:]
 
         cmds, lead = _generate_lead_arc(
-            reversed_line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
+            reversed_line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in, depth_offset
         )
         if lead:
             Path.Log.debug("LeadIn: reverse tangent arc")
@@ -412,7 +449,9 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
         lead = (p_prev[0], p_prev[1], p_attach[2] + radius)
         Path.Log.debug("LeadOut: retreat to previous point")
         return [
-            Path.Command("G1", {"X": lead[0], "Y": lead[1], "Z": lead[2], "F": lead_feed})
+            Path.Command(
+                "G1", {"X": lead[0], "Y": lead[1], "Z": lead[2] + depth_offset, "F": lead_feed}
+            )
         ], lead
 
     # Note: Other strategies can be added here.
@@ -422,7 +461,9 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
     return [], None
 
 
-def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in):
+def _generate_lead_arc(
+    line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in, depth_offset=0.0
+):
     """
     Generates a 90-degree tangent lead-in or lead-out arc at constant Z.
 
@@ -439,6 +480,8 @@ def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_i
         cutter (ocl.Cutter): Active cutter — diameter used for arc radius.
         lead_feed (float): Feed rate for the arc move (mm/min).
         is_lead_in (bool): True = lead-in arc; False = lead-out arc.
+        depth_offset (float): Depth Offset added to the Z of the emitted moves;
+            the returned point stays in the model frame.
 
     Returns:
         tuple: (list_of_Path.Commands, entry_exit_point_or_None)
@@ -494,7 +537,7 @@ def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_i
                 {
                     "X": p_attach[0],
                     "Y": p_attach[1],
-                    "Z": cut_z,
+                    "Z": cut_z + depth_offset,
                     "I": i_offset,
                     "J": j_offset,
                     "F": lead_feed,
@@ -514,7 +557,7 @@ def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_i
                 {
                     "X": entry_exit_point[0],
                     "Y": entry_exit_point[1],
-                    "Z": cut_z + lift_lead_z,
+                    "Z": cut_z + lift_lead_z + depth_offset,
                     "I": i_offset,
                     "J": j_offset,
                     "F": lead_feed,
@@ -936,7 +979,7 @@ def scan_lines_to_gcode(
         # A. Generate Lead-in
         if use_smart_leads and safe_pdc:
             lead_in_cmds, lead_start = _attempt_lead_arc(
-                line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in=True
+                line, safe_pdc, cutter, lead_feed, lift_lead_z, True, depth_offset
             )
             if lead_start:
                 first_point = lead_start
@@ -953,9 +996,9 @@ def scan_lines_to_gcode(
                     safe_z,
                     clearance_z,
                     optimize_ratio,
-                    step_down,
                     horiz_feed,
                     horiz_rapid,
+                    vert_feed,
                     vert_rapid,
                     safe_pdc,
                     cutter,
@@ -997,7 +1040,7 @@ def scan_lines_to_gcode(
         # F. Generate Lead-out
         if use_smart_leads and safe_pdc:
             lead_out_cmds, lead_end = _attempt_lead_arc(
-                line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in=False
+                line, safe_pdc, cutter, lead_feed, lift_lead_z, False, depth_offset
             )
             commands.extend(lead_out_cmds)
             last_point = lead_end if lead_end else line[-1]
