@@ -45,6 +45,7 @@
 
 #include "utilities/error.h"
 #include "utilities/error_stack.h"
+#include "utilities/scoped_ptr.hpp"
 #include "path.hpp"
 #include "path_line.hpp"
 #include "path_point.hpp"
@@ -57,11 +58,9 @@
 
 namespace KDL {
 
-using namespace std;
 
-
-Path* Path::Read(istream& is) {
-	// unique_ptr because exception can be thrown !
+Path* Path::Read(std::istream& is) {
+	// auto_ptr because exception can be thrown !
 	IOTrace("Path::Read");
 	char storage[64];
 	EatWord(is,"[",storage,sizeof(storage));
@@ -80,7 +79,7 @@ Path* Path::Read(istream& is) {
 		Frame endpos;
 		is >> startpos;
 		is >> endpos;
-		unique_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
+		scoped_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
 		double eqradius;
 		is >> eqradius;
 		EatEnd(is,']');
@@ -101,7 +100,7 @@ Path* Path::Read(istream& is) {
 		is >> R_base_end;
 		is >> alpha;
 		alpha *= deg2rad;
-		unique_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
+		scoped_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
 		is >> eqradius;
 		EatEnd(is,']');
 		IOTracePop();
@@ -121,8 +120,8 @@ Path* Path::Read(istream& is) {
 		is >> radius;
 		double eqradius;
 		is >> eqradius;
-		unique_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
-		unique_ptr<Path_RoundedComposite> tr(
+		scoped_ptr<RotationalInterpolation> orient( RotationalInterpolation::Read(is) );
+		scoped_ptr<Path_RoundedComposite> tr(
 			new Path_RoundedComposite(radius,eqradius,orient.release())
 		);
 		int size;
@@ -141,7 +140,7 @@ Path* Path::Read(istream& is) {
 	} else if (strcmp(storage,"COMPOSITE")==0) {
 		IOTrace("COMPOSITE");
 		int size;
-		unique_ptr<Path_Composite> tr( new Path_Composite() );
+		scoped_ptr<Path_Composite> tr( new Path_Composite() );
 		is >> size;
 		int i;
 		for (i=0;i<size;i++) {
@@ -154,7 +153,7 @@ Path* Path::Read(istream& is) {
 	} else if (strcmp(storage,"CYCLIC_CLOSED")==0) {
 		IOTrace("CYCLIC_CLOSED");
 		int times;
-		unique_ptr<Path> tr( Path::Read(is) );
+		scoped_ptr<Path> tr( Path::Read(is) );
 		is >> times;
 		EatEnd(is,']');
 		IOTracePop();
@@ -163,10 +162,8 @@ Path* Path::Read(istream& is) {
 	} else {
 		throw Error_MotionIO_Unexpected_Traj();
 	}
-	return nullptr; // just to avoid the warning;
+	return NULL; // just to avoid the warning;
 }
-
-
 
 }
 

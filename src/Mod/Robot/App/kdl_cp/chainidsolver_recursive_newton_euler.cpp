@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2009  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Copyright  (C)  2009  Ruben Smits <ruben dot smits at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
-// Maintainer: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Author: Ruben Smits <ruben dot smits at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -25,7 +23,7 @@
 #include "frames_io.hpp"
 
 namespace KDL{
-    
+
     ChainIdSolver_RNE::ChainIdSolver_RNE(const Chain& chain_,Vector grav):
         chain(chain_),nj(chain.getNrOfJoints()),ns(chain.getNrOfSegments()),
         X(ns),S(ns),v(ns),a(ns),f(ns)
@@ -33,27 +31,40 @@ namespace KDL{
         ag=-Twist(grav,Vector::Zero());
     }
 
+    void ChainIdSolver_RNE::updateInternalDataStructures() {
+        nj = chain.getNrOfJoints();
+        ns = chain.getNrOfSegments();
+        X.resize(ns);
+        S.resize(ns);
+        v.resize(ns);
+        a.resize(ns);
+        f.resize(ns);
+    }
+
     int ChainIdSolver_RNE::CartToJnt(const JntArray &q, const JntArray &q_dot, const JntArray &q_dotdot, const Wrenches& f_ext,JntArray &torques)
     {
+        if(nj != chain.getNrOfJoints() || ns != chain.getNrOfSegments())
+            return (error = E_NOT_UP_TO_DATE);
+
         //Check sizes when in debug mode
         if(q.rows()!=nj || q_dot.rows()!=nj || q_dotdot.rows()!=nj || torques.rows()!=nj || f_ext.size()!=ns)
-            return (error = -1);
+            return (error = E_SIZE_MISMATCH);
         unsigned int j=0;
 
         //Sweep from root to leaf
         for(unsigned int i=0;i<ns;i++){
             double q_,qdot_,qdotdot_;
-            if(chain.getSegment(i).getJoint().getType()!=Joint::None){
+            if(chain.getSegment(i).getJoint().getType()!=Joint::Fixed) {
                 q_=q(j);
                 qdot_=q_dot(j);
                 qdotdot_=q_dotdot(j);
                 j++;
             }else
                 q_=qdot_=qdotdot_=0.0;
-            
+
             //Calculate segment properties: X,S,vj,cj
-            X[i]=chain.getSegment(i).pose(q_);//Remark this is the inverse of the 
-                                                //frame for transformations from 
+            X[i]=chain.getSegment(i).pose(q_);//Remark this is the inverse of the
+                                                //frame for transformations from
                                                 //the parent to the current coord frame
             //Transform velocity and unit velocity to segment frame
             Twist vj=X[i].M.Inverse(chain.getSegment(i).twist(q_,qdot_));
@@ -76,8 +87,11 @@ namespace KDL{
         //Sweep from leaf to root
         j=nj-1;
         for(int i=ns-1;i>=0;i--){
-            if(chain.getSegment(i).getJoint().getType()!=Joint::None)
-                torques(j--)=dot(S[i],f[i]);
+            if(chain.getSegment(i).getJoint().getType()!=Joint::Fixed) {
+                torques(j)=dot(S[i],f[i]);
+                torques(j)+=chain.getSegment(i).getJoint().getInertia()*q_dotdot(j);  // add torque from joint inertia
+                --j;
+            }
             if(i!=0)
                 f[i-1]=f[i-1]+X[i]*f[i];
         }

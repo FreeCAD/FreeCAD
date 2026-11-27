@@ -25,8 +25,6 @@
 
 namespace KDL
 {
-    using namespace Eigen;
-
     JntArray::JntArray()
     {
     }
@@ -56,29 +54,29 @@ namespace KDL
 
     void JntArray::resize(unsigned int newSize)
     {
-        data.resize(newSize);
+        data.conservativeResizeLike(Eigen::VectorXd::Zero(newSize));
     }
 
     double JntArray::operator()(unsigned int i,unsigned int j)const
     {
-        (void)j;assert(j==0);
+        assert(j==0);
         return data(i);
     }
 
     double& JntArray::operator()(unsigned int i,unsigned int j)
     {
-        (void)j;assert(j==0);
+        assert(j==0);
         return data(i);
     }
 
     unsigned int JntArray::rows()const
     {
-        return data.rows();
+        return static_cast<unsigned int>(data.rows());
     }
 
     unsigned int JntArray::columns()const
     {
-        return data.cols();
+        return static_cast<unsigned int>(data.cols());
     }
 
     void Add(const JntArray& src1,const JntArray& src2,JntArray& dest)
@@ -116,7 +114,7 @@ namespace KDL
     {
         if(src1.rows()!=src2.rows())
             return false;
-        return src1.data.isApprox(src2.data,eps);
+        return (src1.data-src2.data).isZero(eps);
     }
 
     bool operator==(const JntArray& src1,const JntArray& src2){return Equal(src1,src2);}

@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Copyright  (C)  2007  Ruben Smits <ruben dot smits at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
-// Maintainer: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Author: Ruben Smits <ruben dot smits at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -26,31 +24,31 @@
 namespace KDL
 {
     ChainJntToJacSolver::ChainJntToJacSolver(const Chain& _chain):
-        chain(_chain),locked_joints_(chain.getNrOfJoints(),false),
-        nr_of_unlocked_joints_(chain.getNrOfJoints())
+        chain(_chain),locked_joints_(chain.getNrOfJoints(),false)
     {
     }
 
+    void ChainJntToJacSolver::updateInternalDataStructures() {
+        locked_joints_.resize(chain.getNrOfJoints(),false);
+    }
     ChainJntToJacSolver::~ChainJntToJacSolver()
     {
     }
 
     int ChainJntToJacSolver::setLockedJoints(const std::vector<bool> locked_joints)
     {
+        if(locked_joints_.size() != chain.getNrOfJoints())
+            return (error = E_NOT_UP_TO_DATE);
         if(locked_joints.size()!=locked_joints_.size())
-            return -1;
+            return (error = E_SIZE_MISMATCH);
         locked_joints_=locked_joints;
-        nr_of_unlocked_joints_=0;
-        for(unsigned int i=0;i<locked_joints_.size();i++){
-            if(!locked_joints_[i])
-                nr_of_unlocked_joints_++;
-        }
-
-        return 0;
+        return (error = E_NOERROR);
     }
 
     int ChainJntToJacSolver::JntToJac(const JntArray& q_in, Jacobian& jac, int seg_nr)
     {
+        if(locked_joints_.size() != chain.getNrOfJoints())
+            return (error = E_NOT_UP_TO_DATE);
         unsigned int segmentNr;
         if(seg_nr<0)
             segmentNr=chain.getNrOfSegments();
@@ -60,10 +58,10 @@ namespace KDL
         //Initialize Jacobian to zero since only segmentNr columns are computed
         SetToZero(jac) ;
 
-        if(q_in.rows()!=chain.getNrOfJoints()||nr_of_unlocked_joints_!=jac.columns())
-            return (error = E_JAC_FAILED);
+        if( q_in.rows()!=chain.getNrOfJoints() || jac.columns() != chain.getNrOfJoints())
+            return (error = E_SIZE_MISMATCH);
         else if(segmentNr>chain.getNrOfSegments())
-            return (error = E_JAC_FAILED);
+            return (error = E_OUT_OF_RANGE);
 
         T_tmp = Frame::Identity();
         SetToZero(t_tmp);
@@ -72,7 +70,7 @@ namespace KDL
         Frame total;
         for (unsigned int i=0;i<segmentNr;i++) {
             //Calculate new Frame_base_ee
-            if(chain.getSegment(i).getJoint().getType()!=Joint::None){
+            if(chain.getSegment(i).getJoint().getType()!=Joint::Fixed) {
             	//pose of the new end-point expressed in the base
                 total = T_tmp*chain.getSegment(i).pose(q_in(j));
                 //changing base of new segment's twist to base frame if it is not locked
@@ -88,7 +86,7 @@ namespace KDL
             changeRefPoint(jac,total.p-T_tmp.p,jac);
 
             //Only increase jointnr if the segment has a joint
-            if(chain.getSegment(i).getJoint().getType()!=Joint::None){
+            if(chain.getSegment(i).getJoint().getType()!=Joint::Fixed) {
                 //Only put the twist inside if it is not locked
                 if(!locked_joints_[j])
                     jac.setColumn(k++,t_tmp);
@@ -98,13 +96,6 @@ namespace KDL
             T_tmp = total;
         }
         return (error = E_NOERROR);
-    }
-
-    const char* ChainJntToJacSolver::strError(const int error) const
-    {
-        if (E_JAC_FAILED == error)
-            return "Jac Failed";
-        else return SolverI::strError(error);
     }
 }
 

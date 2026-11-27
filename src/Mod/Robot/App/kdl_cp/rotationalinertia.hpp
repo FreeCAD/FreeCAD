@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_ROTATIONALINERTIA_HPP
+#define KDL_ROTATIONALINERTIA_HPP
 
 #include "frames.hpp"
 
@@ -70,3 +71,6 @@ namespace KDL
     RotationalInertia operator+(const RotationalInertia& Ia, const RotationalInertia& Ib);
 
 }
+
+#endif
+

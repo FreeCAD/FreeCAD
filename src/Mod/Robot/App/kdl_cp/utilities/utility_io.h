@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 /***************************************************************************** 
  *  \author 
  *  	Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
@@ -19,7 +17,8 @@
  *     functions and macro definitions related to file/stream I/O.
  */
 
-#pragma once
+#ifndef KDL_UTILITY_IO_H_84822
+#define KDL_UTILITY_IO_H_84822
 
 //#include <kdl/kdl-config.h>
 
@@ -75,3 +74,6 @@ void EatEnd( std::istream& is, int delim );
 
 
 }
+
+
+#endif

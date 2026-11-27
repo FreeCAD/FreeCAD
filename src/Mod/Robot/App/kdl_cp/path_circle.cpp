@@ -40,7 +40,6 @@
  *		$Id: path_circle.cpp,v 1.1.1.1.2.5 2003/07/24 13:26:15 psoetens Exp $
  *		$Name:  $
  ****************************************************************************/
-// clazy:excludeall=rule-of-two-soft
 
 
 #include "path_circle.hpp"
@@ -48,51 +47,56 @@
 
 namespace KDL {
 
-
-
 Path_Circle::Path_Circle(const Frame& F_base_start,
-			const Vector& _V_base_center,
-			const Vector& V_base_p,
-			const Rotation& R_base_end,
-			double alpha,
-			RotationalInterpolation* _orient,
-			double _eqradius,
-            bool _aggregate) :
-				orient(_orient) ,
-				eqradius(_eqradius),
-                aggregate(_aggregate)
-			{
-					F_base_center.p = _V_base_center;
-					orient->SetStartEnd(F_base_start.M,R_base_end);
-					double oalpha = orient->Angle();
+                         const Vector& _V_base_center,
+                         const Vector& V_base_p,
+                         const Rotation& R_base_end,
+                         double alpha,
+                         RotationalInterpolation* _orient,
+                         double _eqradius,
+                         bool _aggregate) :
+    orient(_orient) ,
+    eqradius(_eqradius),
+    aggregate(_aggregate)
+{
+    F_base_center.p = _V_base_center;
+    orient->SetStartEnd(F_base_start.M,R_base_end);
+    double oalpha = orient->Angle();
 
-					Vector x(F_base_start.p - F_base_center.p);
-					radius = x.Normalize();
-					if (radius < epsilon) throw Error_MotionPlanning_Circle_ToSmall();
-					Vector tmpv(V_base_p-F_base_center.p);
-					tmpv.Normalize();
-					Vector z( x * tmpv);
-                    double n = z.Normalize();
-				    if (n < epsilon) throw Error_MotionPlanning_Circle_No_Plane();
-					F_base_center.M = Rotation(x,z*x,z);
-					double dist = alpha*radius;
-					// See what has the slowest eq. motion, and adapt
-					// the other to this slower motion
-					// use eqradius to transform between rot and transl.
-					// the same as for lineair motion
-					if (oalpha*eqradius > dist) {
-						// rotational_interpolation is the limitation
-						pathlength = oalpha*eqradius;
-						scalerot   = 1/eqradius;
-						scalelin   = dist/pathlength;
-					} else {
-						// translation is the limitation
-						pathlength = dist;
-						scalerot   = oalpha/pathlength;
-						scalelin   = 1;
-					}
-			}
-
+    Vector x(F_base_start.p - F_base_center.p);
+    radius = x.Normalize();
+    if (radius < epsilon) {
+        if (aggregate)
+            delete orient;
+        throw Error_MotionPlanning_Circle_ToSmall();
+    }
+    Vector tmpv(V_base_p-F_base_center.p);
+    tmpv.Normalize();
+    Vector z( x * tmpv);
+    double n = z.Normalize();
+    if (n < epsilon) {
+        if (aggregate)
+            delete orient;
+        throw Error_MotionPlanning_Circle_No_Plane();
+    }
+    F_base_center.M = Rotation(x,z*x,z);
+    double dist = alpha*radius;
+    // See what has the slowest eq. motion, and adapt
+    // the other to this slower motion
+    // use eqradius to transform between rot and transl.
+    // the same as for lineair motion
+    if (oalpha*eqradius > dist) {
+        // rotational_interpolation is the limitation
+        pathlength = oalpha*eqradius;
+        scalerot = 1/eqradius;
+        scalelin = dist/pathlength;
+    } else {
+        // translation is the limitation
+        pathlength = dist;
+        scalerot = oalpha/pathlength;
+        scalelin = 1;
+    }
+}
 
 
 double Path_Circle::LengthToS(double length) {
@@ -153,8 +157,6 @@ Path_Circle::~Path_Circle() {
         delete orient;
 }
 
-
-
 void Path_Circle::Write(std::ostream& os) {
 	os << "CIRCLE[ ";
 	os << "  " << Pos(0) << std::endl;
@@ -167,6 +169,4 @@ void Path_Circle::Write(std::ostream& os) {
 	os << "]"<< std::endl;
 }
 
-
 }
-

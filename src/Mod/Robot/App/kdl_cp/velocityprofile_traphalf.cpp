@@ -43,8 +43,8 @@
 
 
 //#include "error.h"
-#include <algorithm>
 #include "velocityprofile_traphalf.hpp"
+#include <algorithm>
 
 namespace KDL {
 
@@ -54,7 +54,7 @@ VelocityProfile_TrapHalf::VelocityProfile_TrapHalf(double _maxvel,double _maxacc
 
 void VelocityProfile_TrapHalf::SetMax(double _maxvel,double _maxacc, bool _starting)
 {
-    maxvel = _maxvel; maxacc = _maxacc; starting = _starting;
+	maxvel = _maxvel; maxacc = _maxacc; starting = _starting;
 }
 
 void VelocityProfile_TrapHalf::PlanProfile1(double v,double a) {
@@ -185,8 +185,8 @@ double VelocityProfile_TrapHalf::Acc(double time) const {
 }
 
 VelocityProfile* VelocityProfile_TrapHalf::Clone() const {
-    VelocityProfile_TrapHalf* res =  new VelocityProfile_TrapHalf(maxvel,maxacc, starting);
-    res->SetProfileDuration( this->startpos, this->endpos, this->duration );
+	VelocityProfile_TrapHalf* res =  new VelocityProfile_TrapHalf(maxvel,maxacc, starting);
+	res->SetProfileDuration( this->startpos, this->endpos, this->duration );
 	return res;
 }
 

@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
 
 /*****************************************************************************
  * \file  
@@ -24,9 +23,10 @@
  *      $Name:  $ 
  ****************************************************************************/
 
-#pragma once
+#ifndef Rall2D_H
+#define Rall2D_H
 
-#include <cmath>
+#include <math.h>
 #include <assert.h>
 #include "utility.h"
 
@@ -42,7 +42,7 @@ namespace KDL {
  *  -   S defines a scalar type that can operate on Rall1d.  This is the type that 
  *      is used to give back values of Norm() etc. 
  *
- * S is useful when you recurse a Rall1d object into itself to create a 2nd, 3th, 4th,.. 
+ * S is useful when you recurse a Rall1d object into itself to create a 2nd, 3rd, 4th,.. 
  * derivatives. (e.g. Rall1d< Rall1d<double>, Rall1d<double>, double> ).
  *
  * S is always passed by value. 
@@ -59,7 +59,7 @@ class Rall2d
         V dd;   //!< 2nd derivative
     public :
         // = Constructors
-        INLINE Rall2d() {}
+        INLINE Rall2d():t(),d(),dd() {};
 
         explicit INLINE  Rall2d(typename TI<T>::Arg c)
             {t=c;SetToZero(d);SetToZero(dd);}
@@ -531,5 +531,26 @@ INLINE  bool Equal(const Rall2d<T,V,S>& y,const Rall2d<T,V,S>& x,double eps=epsi
             );
 }
 
+template <class T,class V,class S>
+INLINE  bool operator==(const Rall2d<T,V,S>& y,const Rall2d<T,V,S>& x)
+{
+#ifdef KDL_USE_EQUAL
+    return Equal(y, x);
+#else
+    return (x.t == y.t &&
+            x.d == y.d &&
+            x.dd == y.dd);
+#endif
 
 }
+
+template <class T,class V,class S>
+INLINE  bool operator!=(const Rall2d<T,V,S>& y,const Rall2d<T,V,S>& x)
+{
+    return !operator==(y, x);
+}
+
+}
+
+
+#endif

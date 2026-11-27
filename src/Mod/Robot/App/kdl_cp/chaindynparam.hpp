@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
-// Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
+// Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at intermodalics dot eu>
 
 // Version: 1.0
-// Author: Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
-// Maintainer: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Author: Dominick Vanthienen <dominick dot vanthienen at intermodalics dot eu>
+// Maintainer: Ruben Smits <ruben dot smits at intermodalics dot eu>
 // URL: http://www.orocos.org/kdl
 
 // This library is free software; you can redistribute it and/or
@@ -21,11 +19,13 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDLCHAINDYNPARAM_HPP
+#define KDLCHAINDYNPARAM_HPP
 
 #include "chainidsolver_recursive_newton_euler.hpp"
 #include "articulatedbodyinertia.hpp"
 #include "jntspaceinertiamatrix.hpp"
+#include <Eigen/StdVector>
 
 namespace KDL {
 
@@ -44,7 +44,7 @@ namespace KDL {
      * (expressed in the segments reference frame) and the dynamical
      * parameters of the segments.
      */
-    class ChainDynParam
+    class ChainDynParam : public SolverI
     {
     public:
         ChainDynParam(const Chain& chain, Vector _grav);
@@ -54,11 +54,14 @@ namespace KDL {
 	virtual int JntToMass(const JntArray &q, JntSpaceInertiaMatrix& H);
 	virtual int JntToGravity(const JntArray &q,JntArray &gravity);
 
+    /// @copydoc KDL::SolverI::updateInternalDataStructures()
+    virtual void updateInternalDataStructures();
+
     private:
-        const Chain chain;
-	//int nr;
+        const Chain& chain;
+	int nr;  // unused, remove in a future version
 	unsigned int nj;
-        unsigned int ns;
+        unsigned int ns;	
 	Vector grav;
 	Vector vectornull;
 	JntArray jntarraynull;
@@ -68,10 +71,12 @@ namespace KDL {
         std::vector<Frame> X;
         std::vector<Twist> S;
         //std::vector<RigidBodyInertia> I;
-        std::vector<ArticulatedBodyInertia> Ic;
+        std::vector<ArticulatedBodyInertia, Eigen::aligned_allocator<ArticulatedBodyInertia> > Ic;
         Wrench F;
         Twist ag;
 	
     };
 
 }
+
+#endif

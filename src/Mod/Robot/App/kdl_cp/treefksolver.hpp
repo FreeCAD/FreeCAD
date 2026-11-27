@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 // Copyright  (C)  2008  Julia Jesse
 
@@ -22,7 +20,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_TREE_FKSOLVER_HPP
+#define KDL_TREE_FKSOLVER_HPP
 
 #include <string>
 
@@ -51,7 +50,7 @@ namespace KDL {
          *
          * @param q_in input joint coordinates
          * @param p_out reference to output cartesian pose
-         * @param segmentName
+         *
          * @return if < 0 something went wrong
          */
         virtual int JntToCart(const JntArray& q_in, Frame& p_out, std::string segmentName)=0;
@@ -107,3 +106,5 @@ namespace KDL {
 
 
 }//end of namespace KDL
+
+#endif

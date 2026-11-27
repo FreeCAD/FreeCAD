@@ -23,7 +23,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDLCHAINIKSOLVERPOS_NR_JL_HPP
+#define KDLCHAINIKSOLVERPOS_NR_JL_HPP
 
 #include "chainiksolver.hpp"
 #include "chainfksolver.hpp"
@@ -41,6 +42,10 @@ namespace KDL {
     class ChainIkSolverPos_NR_JL : public ChainIkSolverPos
     {
     public:
+
+        static const int E_IKSOLVERVEL_FAILED = -100; //! Child IK solver vel failed
+        static const int E_FKSOLVERPOS_FAILED = -101; //! Child FK solver failed
+
         /**
          * Constructor of the solver, it needs the chain, a forward
          * position kinematics solver and an inverse velocity
@@ -59,12 +64,55 @@ namespace KDL {
          * @return
          */
         ChainIkSolverPos_NR_JL(const Chain& chain,const JntArray& q_min, const JntArray& q_max, ChainFkSolverPos& fksolver,ChainIkSolverVel& iksolver,unsigned int maxiter=100,double eps=1e-6);
+
+        /**
+         * Constructor of the solver, it needs the chain, a forward
+         * position kinematics solver and an inverse velocity
+         * kinematics solver for that chain.
+         *
+         * @param chain the chain to calculate the inverse position for
+         * @param fksolver a forward position kinematics solver
+         * @param iksolver an inverse velocity kinematics solver
+         * @param maxiter the maximum Newton-Raphson iterations,
+         * default: 100
+         * @param eps the precision for the position, used to end the
+         * iterations, default: epsilon (defined in kdl.hpp)
+         *
+         * @return
+         */
+        ChainIkSolverPos_NR_JL(const Chain& chain, ChainFkSolverPos& fksolver,ChainIkSolverVel& iksolver,unsigned int maxiter=100,double eps=1e-6);
+
         ~ChainIkSolverPos_NR_JL();
 
+
+        /**
+         * Calculates the joint values that correspond to the input pose given an initial guess.
+         * @param q_init Initial guess for the joint values.
+         * @param p_in The input pose of the chain tip.
+         * @param q_out The resulting output joint values
+         * @return E_MAX_ITERATIONS_EXCEEDED if the maximum number of iterations was exceeded before a result was found
+         *         E_NOT_UP_TO_DATE if the internal data is not up to date with the chain
+         *         E_SIZE_MISMATCH if the size of the input/output data does not match the chain.
+         */
         virtual int CartToJnt(const JntArray& q_init, const Frame& p_in, JntArray& q_out);
 
+        /**
+         * Function to set the joint limits.
+         * @param q_min minimum values for the joints
+         * @param q_max maximum values for the joints
+         * @return E_SIZE_MISMATCH if input sizes do not match the chain
+         */
+        int setJointLimits(const JntArray& q_min, const JntArray& q_max);
+
+        /// @copydoc KDL::SolverI::updateInternalDataStructures
+        virtual void updateInternalDataStructures();
+
+        /// @copydoc KDL::SolverI::strError()
+        const char* strError(const int error) const;
+
     private:
-        const Chain chain;
+        const Chain& chain;
+        unsigned int nj;
         JntArray q_min;
         JntArray q_max;
         ChainIkSolverVel& iksolver;
@@ -79,3 +127,5 @@ namespace KDL {
     };
 
 }
+
+#endif

@@ -25,13 +25,11 @@
 
 #include <Eigen/Core>
 
-using namespace Eigen;
-
 namespace KDL{
     
     const static bool mhi=true;
 
-    RigidBodyInertia::RigidBodyInertia(double m_,const Vector& h_,const RotationalInertia& I_,bool /*mhi*/):
+    RigidBodyInertia::RigidBodyInertia(double m_,const Vector& h_,const RotationalInertia& I_,bool mhi):
         m(m_),h(h_),I(I_)
     {
     }
@@ -39,8 +37,8 @@ namespace KDL{
     RigidBodyInertia::RigidBodyInertia(double m_, const Vector& c_, const RotationalInertia& Ic):
         m(m_),h(m*c_){
         //I=Ic-c x c x
-        Vector3d c_eig=Map<const Vector3d>(c_.data);
-        Map<Matrix3d>(I.data)=Map<const Matrix3d>(Ic.data)-m_*(c_eig*c_eig.transpose()-c_eig.dot(c_eig)*Matrix3d::Identity());
+        Eigen::Vector3d c_eig=Eigen::Map<const Eigen::Vector3d>(c_.data);
+        Eigen::Map<Eigen::Matrix3d>(I.data)=Eigen::Map<const Eigen::Matrix3d>(Ic.data)-m_*(c_eig*c_eig.transpose()-c_eig.dot(c_eig)*Eigen::Matrix3d::Identity());
     }
     
     RigidBodyInertia operator*(double a,const RigidBodyInertia& I){
@@ -61,14 +59,14 @@ namespace KDL{
         //hb=R*(h-m*r)
         //Ib = R(Ia+r x h x + (h-m*r) x r x)R'
         Vector hmr = (I.h-I.m*X.p);
-        Vector3d r_eig = Map<Vector3d>(X.p.data);
-        Vector3d h_eig = Map<const Vector3d>(I.h.data);
-        Vector3d hmr_eig = Map<Vector3d>(hmr.data);
-        Matrix3d rcrosshcross = h_eig *r_eig.transpose()-r_eig.dot(h_eig)*Matrix3d::Identity();
-        Matrix3d hmrcrossrcross = r_eig*hmr_eig.transpose()-hmr_eig.dot(r_eig)*Matrix3d::Identity();
-        Matrix3d R = Map<Matrix3d>(X.M.data);
+        Eigen::Vector3d r_eig = Eigen::Map<Eigen::Vector3d>(X.p.data);
+        Eigen::Vector3d h_eig = Eigen::Map<const Eigen::Vector3d>(I.h.data);
+        Eigen::Vector3d hmr_eig = Eigen::Map<Eigen::Vector3d>(hmr.data);
+        Eigen::Matrix3d rcrosshcross = h_eig *r_eig.transpose()-r_eig.dot(h_eig)*Eigen::Matrix3d::Identity();
+        Eigen::Matrix3d hmrcrossrcross = r_eig*hmr_eig.transpose()-hmr_eig.dot(r_eig)*Eigen::Matrix3d::Identity();
+        Eigen::Matrix3d R = Eigen::Map<Eigen::Matrix3d>(X.M.data);
         RotationalInertia Ib;
-        Map<Matrix3d>(Ib.data) = R*((Map<const Matrix3d>(I.I.data)+rcrosshcross+hmrcrossrcross)*R.transpose());
+        Eigen::Map<Eigen::Matrix3d>(Ib.data) = R*((Eigen::Map<const Eigen::Matrix3d>(I.I.data)+rcrosshcross+hmrcrossrcross)*R.transpose());
         
         return RigidBodyInertia(I.m,T.M*hmr,Ib,mhi);
     }
@@ -77,9 +75,9 @@ namespace KDL{
         //mb=ma
         //hb=R*h
         //Ib = R(Ia)R' with r=0
-        Matrix3d R = Map<const Matrix3d>(M.data);
+        Eigen::Matrix3d R = Eigen::Map<const Eigen::Matrix3d>(M.data);
         RotationalInertia Ib;
-        Map<Matrix3d>(Ib.data) = R.transpose()*(Map<const Matrix3d>(I.I.data)*R);
+        Eigen::Map<Eigen::Matrix3d>(Ib.data) = R.transpose()*(Eigen::Map<const Eigen::Matrix3d>(I.I.data)*R);
         
         return RigidBodyInertia(I.m,M*I.h,Ib,mhi);
     }
@@ -89,13 +87,13 @@ namespace KDL{
         //hb=(h-m*r)
         //Ib = (Ia+r x h x + (h-m*r) x r x)
         Vector hmr = (this->h-this->m*p);
-        Vector3d r_eig = Map<const Vector3d>(p.data);
-        Vector3d h_eig = Map<Vector3d>(this->h.data);
-        Vector3d hmr_eig = Map<Vector3d>(hmr.data);
-        Matrix3d rcrosshcross = h_eig * r_eig.transpose()-r_eig.dot(h_eig)*Matrix3d::Identity();
-        Matrix3d hmrcrossrcross = r_eig*hmr_eig.transpose()-hmr_eig.dot(r_eig)*Matrix3d::Identity();
+        Eigen::Vector3d r_eig = Eigen::Map<const Eigen::Vector3d>(p.data);
+        Eigen::Vector3d h_eig = Eigen::Map<Eigen::Vector3d>(this->h.data);
+        Eigen::Vector3d hmr_eig = Eigen::Map<Eigen::Vector3d>(hmr.data);
+        Eigen::Matrix3d rcrosshcross = h_eig * r_eig.transpose()-r_eig.dot(h_eig)*Eigen::Matrix3d::Identity();
+        Eigen::Matrix3d hmrcrossrcross = r_eig*hmr_eig.transpose()-hmr_eig.dot(r_eig)*Eigen::Matrix3d::Identity();
         RotationalInertia Ib;
-        Map<Matrix3d>(Ib.data) = Map<Matrix3d>(this->I.data)+rcrosshcross+hmrcrossrcross;
+        Eigen::Map<Eigen::Matrix3d>(Ib.data) = Eigen::Map<Eigen::Matrix3d>(this->I.data)+rcrosshcross+hmrcrossrcross;
         
         return RigidBodyInertia(this->m,hmr,Ib,mhi);
     }

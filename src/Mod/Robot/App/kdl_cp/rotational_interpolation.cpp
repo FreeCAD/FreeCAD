@@ -50,10 +50,7 @@
 
 namespace KDL {
 
-using namespace std;
-
-RotationalInterpolation* RotationalInterpolation::Read(istream& is) {
-	// unique_ptr because exception can be thrown !
+RotationalInterpolation* RotationalInterpolation::Read(std::istream& is) {
 	IOTrace("RotationalInterpolation::Read");
 	char storage[64];
 	EatWord(is,"[",storage,sizeof(storage));
@@ -70,19 +67,18 @@ RotationalInterpolation* RotationalInterpolation::Read(istream& is) {
 		EatEnd(is,']');
 		IOTracePop();
 		IOTracePop();
-		return nullptr;
+		return NULL;
 	} else if (strcmp(storage,"TWOAXIS")==0) {
 		IOTrace("TWOAXIS");
 		throw Error_Not_Implemented();
 		EatEnd(is,']');
 		IOTracePop();
 		IOTracePop();
-		return nullptr;
+		return NULL;
 	} else {
 		throw Error_MotionIO_Unexpected_Traj();
 	}
-	return nullptr; // just to avoid the warning;
+	return NULL; // just to avoid the warning;
 }
 
 }
-

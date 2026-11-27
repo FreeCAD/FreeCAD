@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 /***************************************************************************
   tag: Erwin Aertbelien  Mon May 10 19:10:36 CEST 2004  velocityprofile.cxx
 
@@ -52,9 +50,7 @@
 
 namespace KDL {
 
-using namespace std;
-
-VelocityProfile* VelocityProfile::Read(istream& is) {
+VelocityProfile* VelocityProfile::Read(std::istream& is) {
 	IOTrace("VelocityProfile::Read");
 	char storage[25];
 	EatWord(is,"[",storage,sizeof(storage));
@@ -94,9 +90,7 @@ VelocityProfile* VelocityProfile::Read(istream& is) {
 	else {
 		throw Error_MotionIO_Unexpected_MotProf();
 	}
-    return nullptr;
+    return 0;
 }
-
-
 
 }

@@ -7,7 +7,8 @@
  *      Author: rubensmits
  */
 
-#pragma once
+#ifndef TREEIKSOLVER_HPP_
+#define TREEIKSOLVER_HPP_
 
 #include "tree.hpp"
 #include "jntarray.hpp"
@@ -74,3 +75,5 @@ public:
 };
 
 }
+
+#endif /* TREEIKSOLVER_HPP_ */

@@ -27,14 +27,13 @@
  *      $Id: rrframes.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
-// clazy:excludeall=rule-of-two-soft
 
-#pragma once
+#ifndef RRFRAMES_H
+#define RRFRAMES_H
 
 
 #include "utilities/rall2d.h"
 #include "frames.hpp"
-
 
 
 namespace KDL {
@@ -47,18 +46,19 @@ class FrameAcc;
 class RotationAcc;
 class VectorAcc;
 
-IMETHOD bool Equal(const FrameAcc& r1,const FrameAcc& r2,double eps);
-IMETHOD bool Equal(const Frame& r1,const FrameAcc& r2,double eps);
-IMETHOD bool Equal(const FrameAcc& r1,const Frame& r2,double eps);
-IMETHOD bool Equal(const RotationAcc& r1,const RotationAcc& r2,double eps);
-IMETHOD bool Equal(const Rotation& r1,const RotationAcc& r2,double eps);
-IMETHOD bool Equal(const RotationAcc& r1,const Rotation& r2,double eps);
-IMETHOD bool Equal(const TwistAcc& a,const TwistAcc& b,double eps);
-IMETHOD bool Equal(const Twist& a,const TwistAcc& b,double eps);
-IMETHOD bool Equal(const TwistAcc& a,const Twist& b,double eps);
-IMETHOD bool Equal(const VectorAcc& r1,const VectorAcc& r2,double eps);
-IMETHOD bool Equal(const Vector& r1,const VectorAcc& r2,double eps);
-IMETHOD bool Equal(const VectorAcc& r1,const Vector& r2,double eps);
+IMETHOD bool Equal(const FrameAcc& r1,const FrameAcc& r2,double eps=epsilon);
+IMETHOD bool Equal(const Frame& r1,const FrameAcc& r2,double eps=epsilon);
+IMETHOD bool Equal(const FrameAcc& r1,const Frame& r2,double eps=epsilon);
+IMETHOD bool Equal(const RotationAcc& r1,const RotationAcc& r2,double eps=epsilon);
+IMETHOD bool Equal(const Rotation& r1,const RotationAcc& r2,double eps=epsilon);
+IMETHOD bool Equal(const RotationAcc& r1,const Rotation& r2,double eps=epsilon);
+IMETHOD bool Equal(const TwistAcc& a,const TwistAcc& b,double eps=epsilon);
+IMETHOD bool Equal(const Twist& a,const TwistAcc& b,double eps=epsilon);
+IMETHOD bool Equal(const TwistAcc& a,const Twist& b,double eps=epsilon);
+IMETHOD bool Equal(const VectorAcc& r1,const VectorAcc& r2,double eps=epsilon);
+IMETHOD bool Equal(const Vector& r1,const VectorAcc& r2,double eps=epsilon);
+IMETHOD bool Equal(const VectorAcc& r1,const Vector& r2,double eps=epsilon);
+
 
 class VectorAcc
 {
@@ -78,7 +78,7 @@ public:
     IMETHOD VectorAcc& operator -= (const VectorAcc& arg);
     IMETHOD static VectorAcc Zero();
     IMETHOD void ReverseSign();
-    IMETHOD doubleAcc Norm();
+    IMETHOD doubleAcc Norm(double eps=epsilon);
     IMETHOD friend VectorAcc operator + (const VectorAcc& r1,const VectorAcc& r2);
     IMETHOD friend VectorAcc operator - (const VectorAcc& r1,const VectorAcc& r2);
     IMETHOD friend VectorAcc operator + (const Vector& r1,const VectorAcc& r2);
@@ -106,7 +106,6 @@ public:
     IMETHOD friend doubleAcc dot(const VectorAcc& lhs,const Vector& rhs);
     IMETHOD friend doubleAcc dot(const Vector& lhs,const VectorAcc& rhs);
 };
-
 
 
 class RotationAcc
@@ -162,8 +161,6 @@ public:
 };
 
 
-
-
 class FrameAcc
 {
 public:
@@ -199,12 +196,6 @@ public:
     IMETHOD TwistAcc operator * (const TwistAcc& arg) const;
     IMETHOD TwistAcc operator * (const Twist& arg) const;
 };
-
-
-
-
-
-
 
 
 //very similar to Wrench class.
@@ -259,12 +250,68 @@ public:
 
 };
 
-
-
-
-}
-
-
 #ifdef KDL_INLINE
 #include "frameacc.inl"
+#endif
+
+} // namespace KDL
+
+template<> struct std::hash<KDL::doubleAcc>
+{
+    std::size_t operator()(KDL::doubleAcc const& da) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, da.t);
+        KDL::hash_combine(seed, da.d);
+        KDL::hash_combine(seed, da.dd);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::VectorAcc>
+{
+    std::size_t operator()(KDL::VectorAcc const& va) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, va.p);
+        KDL::hash_combine(seed, va.v);
+        KDL::hash_combine(seed, va.dv);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::RotationAcc>
+{
+    std::size_t operator()(KDL::RotationAcc const& ra) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, ra.R);
+        KDL::hash_combine(seed, ra.w);
+        KDL::hash_combine(seed, ra.dw);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::FrameAcc>
+{
+    std::size_t operator()(KDL::FrameAcc const& fa) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, fa.M);
+        KDL::hash_combine(seed, fa.p);
+        return seed;
+    }
+};
+
+template<> struct std::hash<KDL::TwistAcc>
+{
+    std::size_t operator()(KDL::TwistAcc const& ta) const noexcept
+    {
+        size_t seed = 0;
+        KDL::hash_combine(seed, ta.vel);
+        KDL::hash_combine(seed, ta.rot);
+        return seed;
+    }
+};
+
 #endif

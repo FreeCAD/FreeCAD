@@ -21,7 +21,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#pragma once
+#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_NSO_HPP
+#define KDL_CHAIN_IKSOLVERVEL_PINV_NSO_HPP
 
 #include "chainiksolver.hpp"
 #include "chainjnttojacsolver.hpp"
@@ -29,10 +30,6 @@
 
 namespace KDL
 {
-    
-    // FIXME: seems this class is unused/unmaintained/unfinished for several years
-    //        it supposed to be either fixer or removed
-
     /**
      * Implementation of a inverse velocity kinematics algorithm based
      * on the generalize pseudo inverse to calculate the velocity
@@ -65,9 +62,7 @@ namespace KDL
          * @param alpha the null-space velocity gain
          *
          */
-        
-        // FIXME: alpha is int but is initialized with a float value.
-        ChainIkSolverVel_pinv_nso(const Chain& chain, JntArray opt_pos, JntArray weights, double eps=0.00001,int maxiter=150, double alpha = 0.25);
+        ChainIkSolverVel_pinv_nso(const Chain& chain, const JntArray& opt_pos, const JntArray& weights, double eps=0.00001,int maxiter=150, double alpha = 0.25);
         explicit ChainIkSolverVel_pinv_nso(const Chain& chain, double eps=0.00001,int maxiter=150, double alpha = 0.25);
         ~ChainIkSolverVel_pinv_nso();
 
@@ -76,7 +71,40 @@ namespace KDL
          * not (yet) implemented.
          *
          */
-        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return -1;};
+        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return (error = E_NOT_IMPLEMENTED);};
+
+        /**
+         * Request the joint weights for optimization criterion
+         *
+         *
+         * @return const reference to the joint weights
+         */
+        const JntArray& getWeights()const
+        {
+            return weights;
+        }
+
+        /**
+         * Request the optimal joint positions
+         *
+         *
+         * @return const reference to the optimal joint positions
+         */
+        const JntArray& getOptPos()const
+        {
+            return opt_pos;
+        }
+
+        /**
+         * Request null space velocity gain
+         *
+         *
+         * @return const reference to the null space velocity gain
+         */
+        const double& getAlpha()const
+        {
+            return alpha;
+        }
 
         /**
          *Set joint weights for optimization criterion
@@ -102,8 +130,17 @@ namespace KDL
          */
         virtual int setAlpha(const double alpha);
 
+        /**
+         * Retrieve the latest return code from the SVD algorithm
+         * @return 0 if CartToJnt() not yet called, otherwise latest SVD result code.
+         */
+        int getSVDResult()const {return svdResult;};
+
+        /// @copydoc KDL::SolverI::updateInternalDataStructures
+        virtual void updateInternalDataStructures();
+
     private:
-        const Chain chain;
+        const Chain& chain;
         ChainJntToJacSolver jnt2jac;
         unsigned int nj;
         Jacobian jac;
@@ -115,9 +152,11 @@ namespace KDL
         Eigen::VectorXd tmp2;
         double eps;
         int maxiter;
-
+        int svdResult;
         double alpha;
         JntArray weights;
         JntArray opt_pos;
     };
 }
+#endif
+

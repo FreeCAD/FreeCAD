@@ -56,7 +56,8 @@
  *     CONSEQUENCE : everything has to be declared public.
  ****************************************************************************/
 
-#pragma once
+#ifndef TRAJECTORY_H
+#define TRAJECTORY_H
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -79,12 +80,6 @@ namespace KDL {
 	class Trajectory
 	{
 	public:
-        virtual Path*      GetPath() = 0;
-        // The underlying Path - FreeCAD change
-
-        virtual VelocityProfile* GetProfile() = 0;
-        // The velocity profile - FreeCAD change
-
 		virtual double Duration() const = 0;
 		// The duration of the trajectory
 
@@ -107,3 +102,6 @@ namespace KDL {
 
 
 }
+
+
+#endif

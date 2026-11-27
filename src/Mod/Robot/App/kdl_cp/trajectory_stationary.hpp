@@ -15,7 +15,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#pragma once
+#ifndef TRAJECTORY_STATIONARY_H
+#define TRAJECTORY_STATIONARY_H
 
 #include "trajectory.hpp"
 
@@ -30,32 +31,19 @@ namespace KDL {
 	  {
 		double duration;
 		Frame pos;
-		VelocityProfile* prof; // FreeCAD change
-		Path*      path; // FreeCAD change
 	public:
 		Trajectory_Stationary(double _duration,const Frame& _pos):
 		  duration(_duration),pos(_pos) {}
-          
-        // FreeCAD change
-	    virtual Path* GetPath() {
-            return path; 
-        }
-
-        // FreeCAD change
-	    virtual VelocityProfile* GetProfile() {
-            return prof;
-        }
-          
 		virtual double Duration() const {
 			return duration;
 		}
-		virtual Frame Pos(double /*time*/) const {
+		virtual Frame Pos(double time) const {
 			return pos;
 		}
-		virtual Twist Vel(double /*time*/) const {
+		virtual Twist Vel(double time) const {
 			return Twist::Zero();
 		}
-		virtual Twist Acc(double /*time*/) const {
+		virtual Twist Acc(double time) const {
 			return Twist::Zero();
 		}
 		virtual void Write(std::ostream& os) const;
@@ -63,9 +51,10 @@ namespace KDL {
 		virtual Trajectory* Clone() const {
 			return new Trajectory_Stationary(duration,pos);
 		}
-
 		virtual ~Trajectory_Stationary() {}
 	};
 
 
 }
+
+#endif

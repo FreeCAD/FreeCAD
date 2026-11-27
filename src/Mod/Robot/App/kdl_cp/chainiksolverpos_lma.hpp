@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
+#ifndef KDL_CHAINIKSOLVERPOS_GN_HPP
+#define KDL_CHAINIKSOLVERPOS_GN_HPP
 /**
  \file   chainiksolverpos_lma.hpp
  \brief  computing inverse position kinematics using Levenberg-Marquardt.
@@ -29,7 +29,7 @@
  *   Suite 330, Boston, MA  02111-1307  USA                                *
  *                                                                         *
  ***************************************************************************/
-#pragma once
+
 
 #include "chainiksolver.hpp"
 #include "chain.hpp"
@@ -69,6 +69,9 @@ private:
     typedef Eigen::Matrix<ScalarType,Eigen::Dynamic,1> VectorXq;
 public:
 
+    static const int E_GRADIENT_JOINTS_TOO_SMALL = -100;
+    static const int E_INCREMENT_JOINTS_TOO_SMALL = -101;
+
     /**
 	 * \brief constructs an ChainIkSolverPos_LMA solver.
 	 *
@@ -80,7 +83,7 @@ public:
 	 * \f$ E = \Delta \mathbf{x}^T \mathbf{L} \mathbf{L}^T \Delta \mathbf{x} \f$, with \f$\mathbf{L}\f$ a diagonal matrix.
 	 *
 	 * \param _chain specifies the kinematic chain.
-	 * \param _L specifies the "square root" of the weight (diagonal) matrix in task space. This diagonal matrix is specified as a vector.
+	 * \param _l specifies the "square root" of the weight (diagonal) matrix in task space. This diagonal matrix is specified as a vector.
 	 * \param _eps specifies the desired accuracy in task space; <B>after</B> weighing with
 	 *        the weight matrix, it is applied on \f$E\f$.
 	 * \param _maxiter specifies the maximum number of iterations.
@@ -91,7 +94,7 @@ public:
      */
     ChainIkSolverPos_LMA(
     		const KDL::Chain& _chain,
-    		const Eigen::Matrix<double,6,1>& _L,
+		const Eigen::Matrix<double,6,1>& _l,
     		double _eps=1E-5,
     		int _maxiter=500,
     		double _eps_joints=1E-15
@@ -115,10 +118,10 @@ public:
      * \param q_init initial joint position.
      * \param T_base_goal goal position expressed with respect to the robot base.
      * \param q_out  joint position that achieves the specified goal position (if successful).
-     * \return 0 if successful,
-     *        -1 the gradient of \f$ E \f$ towards the joints is to small,
-     *        -2 if joint position increments are to small,
-     *        -3 if number of iterations is exceeded.
+     * \return E_NOERROR if successful,
+     *         E_GRADIENT_JOINTS_TOO_SMALL the gradient of \f$ E \f$ towards the joints is to small,
+     *         E_INCREMENT_JOINTS_TOO_SMALL if joint position increments are to small,
+     *         E_MAX_ITER_EXCEEDED if number of iterations is exceeded.
      */
     virtual int CartToJnt(const KDL::JntArray& q_init, const KDL::Frame& T_base_goal, KDL::JntArray& q_out);
 
@@ -147,8 +150,16 @@ public:
      */
     void display_jac(const KDL::JntArray& jval);
 
+    /// @copydoc KDL::SolverI::updateInternalDataStructures
+    void updateInternalDataStructures();
 
+    /// @copydoc KDL::SolverI::strError()
+    virtual const char* strError(const int error) const;
 
+private:
+    const KDL::Chain& chain;
+    unsigned int nj;
+    unsigned int ns;
 
 public:
 
@@ -204,13 +215,11 @@ public:
     bool display_information;
 private:
     // additional specification of the inverse position kinematics problem:
-
-
     unsigned int maxiter;
     double eps;
     double eps_joints;
     Eigen::Matrix<ScalarType,6,1> L;
-    const KDL::Chain& chain;
+
 
 
     // state of compute_fwdpos and compute_jacobian:
@@ -227,11 +236,7 @@ private:
     MatrixXq A;
     VectorXq tmp;
     Eigen::LDLT<MatrixXq> ldlt;
-#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
-     Eigen::JacobiSVD<MatrixXq, Eigen::ComputeThinU | Eigen::ComputeThinV> svd;
-#else
     Eigen::JacobiSVD<MatrixXq> svd;
-#endif
     VectorXq diffq;
     VectorXq q_new;
     VectorXq original_Aii;
@@ -242,3 +247,10 @@ private:
 
 
 } // namespace KDL
+
+
+
+
+
+
+#endif

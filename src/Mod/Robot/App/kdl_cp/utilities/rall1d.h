@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
+ 
 /*****************************************************************************
  * \file  
  *      class for automatic differentiation on scalar values and 1st 
@@ -24,7 +23,8 @@
  *      $Name:  $ 
  ****************************************************************************/
  
-#pragma once
+#ifndef Rall1D_H
+#define Rall1D_H
 #include <assert.h>
 #include "utility.h"
 
@@ -37,7 +37,7 @@ namespace KDL {
  *  -   S defines a scalar type that can operate on Rall1d.  This is the type that 
  *      is used to give back values of Norm() etc. 
  *
- * S is useful when you recurse a Rall1d object into itself to create a 2nd, 3th, 4th,.. 
+ * S is useful when you recurse a Rall1d object into itself to create a 2nd, 3rd, 4th,.. 
  * derivatives. (e.g. Rall1d< Rall1d<double>, Rall1d<double>, double> ).
  *
  * S is always passed by value. 
@@ -56,7 +56,7 @@ class Rall1d
         T t;        //!< value
         V grad;     //!< gradient
     public :
-        INLINE Rall1d() {}
+        INLINE Rall1d():t(),grad() {};
 
         T value() const {
             return t;
@@ -471,4 +471,24 @@ INLINE  bool Equal(const Rall1d<T,V,S>& y,const Rall1d<T,V,S>& x,double eps=epsi
     return (Equal(x.t,y.t,eps)&&Equal(x.grad,y.grad,eps));
 }
 
+template <class T,class V,class S>
+INLINE  bool operator==(const Rall1d<T,V,S>& y,const Rall1d<T,V,S>& x)
+{
+#ifdef KDL_USE_EQUAL
+    return Equal(y, x);
+#else
+    return (x.t == y.t && x.grad == y.grad);
+#endif
 }
+
+template <class T,class V,class S>
+INLINE  bool operator!=(const Rall1d<T,V,S>& y,const Rall1d<T,V,S>& x)
+{
+    return !operator==(y, x);
+}
+
+}
+
+
+
+#endif

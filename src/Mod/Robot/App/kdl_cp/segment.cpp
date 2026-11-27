@@ -66,5 +66,10 @@ namespace KDL {
         return joint.twist(qdot).RefPoint(joint.pose(q).M * f_tip.p);
     }
 
+    void Segment::setFrameToTip(const Frame& f_tip_new)
+    {
+        f_tip = joint.pose(0).Inverse() * f_tip_new;
+    }
+
 }//end of namespace KDL
 

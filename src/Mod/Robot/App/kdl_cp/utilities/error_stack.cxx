@@ -33,7 +33,7 @@ static ErrorStack errorstack;
 
 
 void IOTrace(const std::string& description) {
-    errorstack.push(description);   
+    errorstack.push(description);
 }
 
 
@@ -50,11 +50,21 @@ void IOTraceOutput(std::ostream& os) {
 
 
 void IOTracePopStr(char* buffer,int size) {
+    if (size <= 0)
+    {
+        // TODO: all sizes everywhere should be of size_t!
+        return;
+    }
     if (errorstack.empty()) {
         *buffer = 0;
         return;
     }
+#if defined(_WIN32)
+    strncpy_s(buffer,size,errorstack.top().c_str(),size);
+#else
     strncpy(buffer,errorstack.top().c_str(),size);
+#endif
+    buffer[size - 1] = '\0';
     errorstack.pop();
 }
 

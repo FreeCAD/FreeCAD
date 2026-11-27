@@ -43,7 +43,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#pragma once
+#ifndef KDL_MOTION_ROUNDEDCOMPOSITE_H
+#define KDL_MOTION_ROUNDEDCOMPOSITE_H
 
 #include "path.hpp"
 #include "path_composite.hpp"
@@ -89,7 +90,7 @@ class Path_RoundedComposite : public Path
 		Path_RoundedComposite(double radius,double eqradius,RotationalInterpolation* orient, bool aggregate=true);
 
 		/**
-		 * Adds a point to this rounded composite, between to adjecent points
+		 * Adds a point to this rounded composite, between two adjacent points
 		 * a Path_Line will be created, between two lines there will be
 		 * rounding with the given radius with a Path_Circle
 		 *
@@ -97,7 +98,7 @@ class Path_RoundedComposite : public Path
 		 * - 3101 if the eq. radius <= 0
 		 * - 3102 if the first segment in a rounding has zero length.
 		 * - 3103 if the second segment in a rounding has zero length.
-		 * - 3104 if the angle between the first and the second segment is close to std::numbers::pi.
+		 * - 3104 if the angle between the first and the second segment is close to PI.
 		 *         (meaning that the segments are on top of each other)
 		 * - 3105 if the distance needed for the rounding is larger then the first segment.
 		 * - 3106 if the distance needed for the rounding is larger then the second segment.
@@ -199,3 +200,6 @@ class Path_RoundedComposite : public Path
 
 
 }
+
+
+#endif
