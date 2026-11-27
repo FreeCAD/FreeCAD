@@ -575,3 +575,30 @@ void PyObjectBase::clearAttributes()
     }
 }
 // clang-format on
+
+void Base::PyRegisterEnum(
+    PyObject* module,
+    const char* name,
+    std::span<const std::pair<const char*, long>> entries
+)
+{
+    try {
+        Py::Dict constants;
+        for (const auto& [key, value] : entries) {
+            constants.setItem(key, Py::Long(value));
+        }
+
+        PyObject* enumModule = PyImport_ImportModule("enum");
+        if (!enumModule) {
+            throw Py::Exception();
+        }
+        Py::Callable intEnum(Py::Module(enumModule, true).getAttr("IntEnum"));
+        Py::Object enumClass = intEnum.apply(Py::TupleN(Py::String(name), constants));
+
+        Py::Module(module).setAttr(name, enumClass);
+    }
+    catch (const Py::Exception&) {
+        Base::PyException exc;  // fetches and clears the Python error
+        exc.reportException();
+    }
+}
