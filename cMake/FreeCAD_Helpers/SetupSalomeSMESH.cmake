@@ -6,8 +6,8 @@ macro(SetupSalomeSMESH)
         # set the internal smesh version:
         # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecad.org/viewtopic.php?f=10&t=30838
         set(SMESH_VERSION_MAJOR 7)
-        set(SMESH_VERSION_MINOR 7)
-        set(SMESH_VERSION_PATCH 1)
+        set(SMESH_VERSION_MINOR 8)
+        set(SMESH_VERSION_PATCH 0)
         set(SMESH_VERSION_TWEAK 0)
 
         #if we use smesh we definitely also need vtk, no matter of external or internal smesh
