@@ -29,7 +29,7 @@ class PySideUicTest(unittest.TestCase):
 """
 
         with tempfile.TemporaryDirectory() as directory:
-            ui_file = Path(directory, "TestWidget.ui")
+            ui_file = Path(directory, "TestWidget💥'\"​💥​.ui")
             ui_file.write_text(ui, encoding="utf-8")
 
             form_class, base_class = FreeCADGui.PySideUic.loadUiType(str(ui_file))

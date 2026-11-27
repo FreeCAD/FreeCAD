@@ -93,9 +93,13 @@ Gui.addWorkbench(TestWorkbench())
 
 # Base system tests
 FreeCAD.__unit_test__ += [
-    "Workbench",
-    "Menu",
-    "GuiDocument",
+    "TestWorkbench",
+    "TestMenu",
+    "TestGuiDocument",
+    "TestGuiRecompute",
+    "TestPySideUic",
+    "TestTreeSelection",
+    "TestView3DFramebufferCapture",
     "TestGroupVisibilityRestoreGui",
     "TestGraphicsViewWrapping",
     "TestMDIView",
