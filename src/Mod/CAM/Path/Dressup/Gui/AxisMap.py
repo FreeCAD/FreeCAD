@@ -185,11 +185,7 @@ class ObjectDressup:
         newcommandlist = []
 
         # Track original coordinates before axis mapping
-        last_input_pos = {
-            "X": 0.0,
-            "Y": 0.0,
-            "Z": 0.0,
-        }
+        last_input_pos = {"X": 0.0, "Y": 0.0, "Z": 0.0}
 
         # Original modal feedrate (mm/s)
         last_input_feed = 0.0
@@ -203,7 +199,7 @@ class ObjectDressup:
         # Cache settings
         radius = obj.Radius.Value
         min_rotary_move = obj.MinRotaryMove
-        direction = -1.0 if obj.Reverse else 1.0
+        direction = -1 if obj.Reverse else 1
 
         epsilon = 1e-12
 
@@ -227,7 +223,7 @@ class ObjectDressup:
             delta = {axis: current_pos[axis] - last_input_pos[axis] for axis in ("X", "Y", "Z")}
 
             # Original movement distance
-            move_length = math.sqrt(sum(value**2 for value in delta.values()))
+            move_length = math.hypot(*delta.values())
 
             # Start with original command parameters
             newparams = dict(input_params)
@@ -249,23 +245,18 @@ class ObjectDressup:
                     newparams[outAxis] = last_emitted_rotary
 
                 elif cmd.Name == "G1":
-
                     # Calculate movement from the last emitted position
                     rotary_delta = target_rotary - last_emitted_rotary
 
                     # Only emit rotary movements above the minimum threshold
                     if abs(rotary_delta) >= min_rotary_move:
-
                         newparams[outAxis] = target_rotary
                         last_emitted_rotary = target_rotary
 
                         # Calculate angular feedrate in degrees/second
                         if move_length > epsilon and last_input_feed > epsilon:
-
                             move_time = move_length / last_input_feed
-
                             newparams["F"] = abs(rotary_delta) / move_time
-
                             last_feed_mode = "rotary"
 
                         rotary_move_emitted = True
@@ -277,13 +268,14 @@ class ObjectDressup:
                     newparams[outAxis] = last_emitted_rotary
 
             # Restore linear feedrate when no rotary move is emitted
-            if cmd.Name == "G1":
-
-                if not rotary_move_emitted and last_feed_mode == "rotary":
-
-                    if last_input_feed > epsilon:
-                        newparams["F"] = last_input_feed
-                        last_feed_mode = "linear"
+            if (
+                cmd.Name == "G1"
+                and not rotary_move_emitted
+                and last_feed_mode == "rotary"
+                and last_input_feed > epsilon
+            ):
+                newparams["F"] = last_input_feed
+                last_feed_mode = "linear"
 
             # Create transformed command
             newcommand = Path.Command(cmd.Name, newparams)
