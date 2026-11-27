@@ -566,8 +566,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
     if (ctx.hasFace) {
         if (addCommandsByName(menu, {
                 "TechDraw_AreaDimension",
-                "TechDraw_Hatch",
-                "TechDraw_GeometricHatch",
+                "TechDraw_HatchFace",
             }) > 0) {
             menu.addSeparator();
             added = true;

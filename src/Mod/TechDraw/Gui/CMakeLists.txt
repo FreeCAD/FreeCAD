@@ -53,8 +53,7 @@ set(TechDrawGui_UIC_SRCS
     TaskCenterLine.ui
     TaskDetail.ui
     TaskDimension.ui
-    TaskGeomHatch.ui
-    TaskHatch.ui
+    TaskHatchFace.ui
     TaskLeaderLine.ui
     TaskLineDecor.ui
     TaskLinkDim.ui
@@ -148,12 +147,11 @@ SET(TechDrawGui_SRCS
     TaskDimension.ui
     TaskDimension.cpp
     TaskDimension.h
-    TaskGeomHatch.ui
-    TaskGeomHatch.cpp
-    TaskGeomHatch.h
-    TaskHatch.ui
-    TaskHatch.cpp
-    TaskHatch.h
+    TaskHatchFace.ui
+    TaskHatchFace.cpp
+    TaskHatchFace.h
+    HatchPatterns.cpp
+    HatchPatterns.h
     TaskLeaderLine.ui
     TaskLeaderLine.cpp
     TaskLeaderLine.h
@@ -427,8 +425,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLinkDim.ui
     TaskSectionView.ui
     TaskSpreadsheetView.ui
-    TaskGeomHatch.ui
-    TaskHatch.ui
+    TaskHatchFace.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     TaskCosVertex.ui
