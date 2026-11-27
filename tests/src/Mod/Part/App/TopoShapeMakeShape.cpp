@@ -46,7 +46,7 @@ protected:
 private:
     std::string _docName;
     Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* _sids = nullptr;
+    Data::ElementIDRefs* _sids = nullptr;
     Part::TopoShape _shape;
     Part::TopoShape::Mapper _mapper;
 };

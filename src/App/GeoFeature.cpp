@@ -208,16 +208,13 @@ App::Material GeoFeature::getMaterialAppearance() const
     return App::Material(App::Material::DEFAULT);
 }
 
-void GeoFeature::setMaterialAppearance(const App::Material& material)
-{
-    Q_UNUSED(material)
-}
+void GeoFeature::setMaterialAppearance(const App::Material& /*material*/)
+{}
 
-bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& /*directionZ*/,
+                                             Base::Vector3d& /*directionX*/,
+                                             const char* /*subname*/) const
 {
-    Q_UNUSED(subname)
-    Q_UNUSED(directionZ)
-    Q_UNUSED(directionX)
     return false;
 }
 

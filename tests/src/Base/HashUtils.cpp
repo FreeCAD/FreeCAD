@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-// SPDX-FileCopyrightText: 2022 Zheng Lei
-// SPDX-FileCopyrightText: 2023 FreeCAD Project Association
+// SPDX-FileCopyrightText: 2026 The FreeCAD project association AISBL
 // SPDX-FileNotice: Part of the FreeCAD project.
-
 /******************************************************************************
  *                                                                            *
  *   FreeCAD is free software: you can redistribute it and/or modify          *
@@ -20,4 +18,30 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "ByteArray.h"
+#include <gtest/gtest.h>
+
+#include <Base/HashUtils.h>
+
+#include <string_view>
+
+TEST(HashUtils, fnv1a64KnownValue)
+{
+    EXPECT_EQ(
+        Base::fnv1a64(Base::asBytes(std::string_view {})),
+        static_cast<std::size_t>(14695981039346656037ULL)
+    );
+    EXPECT_EQ(
+        Base::fnv1a64(Base::asBytes(std::string_view {"hello"})),
+        static_cast<std::size_t>(0xa430d84680aabd0bULL)
+    );
+}
+
+TEST(HashUtils, hashCombineUsesBoostCompatibleFormula)
+{
+    constexpr std::size_t seed = 0x12345678U;
+    constexpr std::size_t value = 0xabcdef01U;
+    constexpr std::size_t expected = seed
+        ^ (value + static_cast<std::size_t>(0x9e3779b97f4a7c15ULL) + (seed << 6U) + (seed >> 2U));
+
+    EXPECT_EQ(Base::hashCombine(seed, value), expected);
+}
