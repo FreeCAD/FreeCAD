@@ -203,13 +203,15 @@ class ObjectOp(PathOp.ObjectOp):
                     if len(edges) == 1:
                         # wire with one edge
                         flip = reverseDir
-                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.FirstParameter)):
-                        flip = False
-                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.LastParameter)):
-                        flip = True
                     else:
-                        Path.Log.warning("Error while checks points coincide")
-                        return
+                        # Offset arcs can meet within the job tolerance without
+                        # their underlying curve endpoints being exactly equal.
+                        start_gap = lastPoint.distanceToPoint(edge.valueAt(edge.FirstParameter))
+                        end_gap = lastPoint.distanceToPoint(edge.valueAt(edge.LastParameter))
+                        if min(start_gap, end_gap) > max(tol, Path.Geom.Tolerance):
+                            obj.Path = Path.Path()
+                            raise ValueError("Wire edges do not connect within geometry tolerance")
+                        flip = end_gap < start_gap
 
                     lastPoint = edge.valueAt(edge.FirstParameter if flip else edge.LastParameter)
 
