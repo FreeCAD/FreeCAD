@@ -417,5 +417,20 @@ class DraftCreation(test_base.DraftTestCaseDoc):
 
         self.assertEqual(clean_edges, eof_edges, "'{}' failed".format(operation))
 
+    def test_hatch_without_faces(self):
+        """A hatch on an object without faces must recompute without errors."""
+        operation = "Draft Hatch without faces"
+        _msg("  Test '{}'".format(operation))
+        rect = Draft.make_rectangle(50, 30)
+        rect.MakeFace = False
+        self.doc.recompute()
+
+        patfile = App.getResourceDir() + "Mod/TechDraw/PAT/FCPAT.pat"
+        obj = Draft.make_hatch(rect, patfile, "Horizontal5", scale=1, rotation=0)
+        self.doc.recompute()
+
+        self.assertTrue(obj.isValid(), "'{}' failed".format(operation))
+        self.assertTrue(obj.Shape.isNull(), "'{}' failed".format(operation))
+
 
 ## @}

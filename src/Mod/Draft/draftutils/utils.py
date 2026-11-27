@@ -43,7 +43,7 @@ import PySide.QtCore as QtCore
 
 import FreeCAD as App
 from draftutils import params
-from draftutils.messages import _wrn, _err, _log
+from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import translate
 from builtins import open
 
@@ -951,7 +951,7 @@ def _modifiers_filter_objects(objs, copy, scale=False):
                     "%s shares a base with %d other objects. Please check if you want to modify this.",
                 ) % (obj.Name, len(parents) - 1)
                 _err(message)
-            if not scale or utils.get_type(obj.Base) == "Wire":
+            if not scale or get_type(obj.Base) == "Wire":
                 result.append(obj.Base)
         elif (
             not copy and hasattr(obj, "Placement") and "ReadOnly" in obj.getEditorMode("Placement")

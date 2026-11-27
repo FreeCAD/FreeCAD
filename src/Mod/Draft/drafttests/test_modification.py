@@ -892,5 +892,23 @@ class DraftModification(test_base.DraftTestCaseDoc):
         for i in range(4):
             self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6), "'{}' failed".format(operation))
 
+    def test_scale_move_base(self):
+        """Scale an object with MoveBase set: its Wire base is scaled with it."""
+        operation = "Draft Scale with MoveBase"
+        _msg("  Test '{}'".format(operation))
+
+        wire = Draft.make_wire([Vector(0.0, 0.0, 0.0), Vector(4.0, 0.0, 0.0)])
+        obj = self.doc.addObject("Part::FeaturePython", "Host")
+        obj.addProperty("App::PropertyBool", "MoveBase")
+        obj.addProperty("App::PropertyLink", "Base")
+        obj.MoveBase = True
+        obj.Base = wire
+        self.doc.recompute()
+        Draft.scale([obj], Vector(2.0, 2.0, 1.0), Vector(0.0, 0.0, 0.0), False)
+        self.doc.recompute()
+
+        end = wire.Shape.Vertexes[-1].Point
+        self.assertTrue(end.isEqual(Vector(8.0, 0.0, 0.0), 1e-6), "'{}' failed".format(operation))
+
 
 ## @}

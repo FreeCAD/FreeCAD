@@ -207,7 +207,7 @@ def get_spline_normal(edge, tol=-1):
     if edge.isNull():
         return None
 
-    if is_straight_line(shape, tol):
+    if is_straight_line(edge, tol):
         return None
 
     plane = edge.findPlane(tol)
