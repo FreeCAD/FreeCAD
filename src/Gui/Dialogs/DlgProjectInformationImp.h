@@ -52,13 +52,39 @@ public:
     ~DlgProjectInformationImp() override;
     void accept() override;
 
+    /*!
+     * Discards the edits, but still honors a checked "do not ask again": someone who
+     * wants to be rid of the dialog is as likely to dismiss it as to confirm it.
+     */
+    void reject() override;
+
+    /*!
+     * Shows the options that are only offered when a document has just been created:
+     * remembering the creator, the company and the license as defaults, and
+     * suppressing the dialog for future new documents. The file section is hidden
+     * because none of it is known until the document has been written.
+     */
+    void setNewDocumentMode();
+
+    /*!
+     * Offers this dialog for a document that has just been created, unless the user
+     * has turned that off. Does nothing without a GUI.
+     *
+     * @param[in] doc The document that was just created.
+     */
+    static void showForNewDocument(App::Document* doc);
+
 private Q_SLOTS:
     void open_url();
     void onLicenseTypeChanged(int index);
 
 private:
+    void applyNewDocumentOptions();
+    void applyDontShowAgain();
+
     App::Document* _doc;
     Ui_DlgProjectInformation* ui;
+    bool _newDocumentMode {false};
 };
 
 }  // namespace Dialog
