@@ -568,6 +568,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
               << "Sketcher_Rotate"
               << "Sketcher_Scale"
               << "Sketcher_Offset"
+              << "Sketcher_Restriction"
               << "Sketcher_Symmetry"
               << "Sketcher_RemoveAxesAlignment"
               << "Separator"
@@ -591,6 +592,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
               << "Sketcher_Rotate"
               << "Sketcher_Scale"
               << "Sketcher_Offset"
+              << "Sketcher_Restriction"
               << "Sketcher_Symmetry"
               << "Sketcher_RemoveAxesAlignment";
 }

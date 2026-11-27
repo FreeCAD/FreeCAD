@@ -114,6 +114,8 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry* geo) const
         || geo->is<Part::GeomArcOfHyperbola>()
         || geo->is<Part::GeomArcOfParabola>()
         || geo->is<Part::GeomBSplineCurve>()
+        || geo->is<Part::GeomRestrictedCurve>()
+        || geo->is<Part::GeomOffsetCurve>()
         || geo->is<Part::GeomLineSegment>()) {
         return true;
     }
@@ -1601,6 +1603,18 @@ void SketchObject::rebuildVertexIndex()
             VertexId2PosId.push_back(PointPos::mid);
         }
         else if ((*it)->is<Part::GeomBSplineCurve>()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::end);
+        }
+        else if ((*it)->is<Part::GeomRestrictedCurve>()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::end);
+        }
+        else if ((*it)->is<Part::GeomOffsetCurve>()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(PointPos::start);
             VertexId2GeoId.push_back(i);
