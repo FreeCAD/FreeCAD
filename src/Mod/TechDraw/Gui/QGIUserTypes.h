@@ -85,7 +85,8 @@ enum : int {
     QGMarker,
     QGMText,
     QGTracker,
-    TemplateTextField
+    TemplateTextField,
+    QGISketch
 };
 };
 }

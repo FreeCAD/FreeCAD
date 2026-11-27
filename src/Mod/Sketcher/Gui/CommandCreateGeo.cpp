@@ -73,6 +73,25 @@
 using namespace std;
 using namespace SketcherGui;
 
+namespace
+{
+
+bool isExternalGeometryCommandActive(Gui::Document* document)
+{
+    if (document) {
+        auto* activeView = document->getActiveView();
+        if (activeView) {
+            const QVariant capability = activeView->property("SketcherExternalGeometryEnabled");
+            if (capability.isValid() && !capability.toBool()) {
+                return false;
+            }
+        }
+    }
+    return isCommandActive(document);
+}
+
+}  // namespace
+
 #define CONSTRUCTION_UPDATE_ACTION(CLASS, ICON) \
     /* This macro creates an updateAction() function that will toggle between normal & \
      * construction icon */ \
@@ -1854,7 +1873,7 @@ public:
 
     bool isActive() override
     {
-        return isCommandActive(getActiveGuiDocument());
+        return isExternalGeometryCommandActive(getActiveGuiDocument());
     }
 };
 
@@ -1892,7 +1911,7 @@ void CmdSketcherProjection::activated(int iMsg)
 
 bool CmdSketcherProjection::isActive()
 {
-    return isCommandActive(getActiveGuiDocument());
+    return isExternalGeometryCommandActive(getActiveGuiDocument());
 }
 
 // Externals - Intersection ==================================================================
@@ -1929,7 +1948,7 @@ void CmdSketcherIntersection::activated(int iMsg)
 
 bool CmdSketcherIntersection::isActive()
 {
-    return isCommandActive(getActiveGuiDocument());
+    return isExternalGeometryCommandActive(getActiveGuiDocument());
 }
 
 // ======================================================================================
