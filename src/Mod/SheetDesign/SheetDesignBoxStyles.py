@@ -312,32 +312,120 @@ def style_0206(t, L, W, D):
     return _rsc(t, L, W, D, flaps, flaps)
 
 
-def _snap_bottom(W):
-    """Four bottom flaps in four layers. The end flaps taper, as in a die-cut bottom."""
-    side = {"taper": (W / 4, W / 4)}
-    return [(0.7 * W, 0), (0.5 * W, 1, side), (0.45 * W, 3), (0.5 * W, 2, side)]
+def _frame(panel):
+    """The direction along the hinge of a panel, and the direction to its far side."""
+    u = (panel.b - panel.a) / panel.a.distanceToPoint(panel.b)
+    return u, V(u.y, -u.x, 0)
+
+
+def _tongue(blank, panel, length, hook=(0.0, 0.0), chamfer=0.0):
+    """Add a tongue on the far side of a panel, in the plane of the panel.
+
+    hook: the free end of the tongue is wider than its neck at the two ends (a barb).
+    chamfer: the two free corners are cut at an angle.
+    """
+    u, n = _frame(panel)
+    d, c = panel.d, panel.c
+    neck = 0.4 * length
+    points = [d, c]
+    if hook[1] > 0:
+        points += [c + n * neck, c + n * neck + u * hook[1]]
+    hi, lo = c + u * hook[1], d - u * hook[0]
+    points += [hi + n * (length - chamfer), hi + n * length - u * chamfer] if chamfer > 0 else [hi + n * length]
+    points += [lo + n * length + u * chamfer, lo + n * (length - chamfer)] if chamfer > 0 else [lo + n * length]
+    if hook[0] > 0:
+        points += [d + n * neck - u * hook[0], d + n * neck]
+    blank._add(points)
+
+
+def _notch(blank, panel, width, depth):
+    """Cut a rectangular notch in the middle of the far side of a panel."""
+    u, n = _frame(panel)
+    middle = (panel.c + panel.d) * 0.5
+    p, q = middle - u * (width / 2), middle + u * (width / 2)
+    blank.hole(Part.Face(Part.makePolygon([p + n, q + n, q - n * depth, p - n * depth, p + n])))
+
+
+def _tab(blank, panel, position, width, length):
+    """Add a rectangular tab on the far side of a panel. position: 0 to 1 along that side."""
+    u, n = _frame(panel)
+    middle = panel.d + (panel.c - panel.d) * position
+    p, q = middle - u * (width / 2), middle + u * (width / 2)
+    blank._add([p, q, q + n * length, p + n * length])
+
+
+def _window(blank, panel, s0, s1, d0, d1):
+    """Cut a rectangular hole in a panel. s is along the hinge from the corner a, and d is
+    the distance from the hinge side."""
+    u, n = _frame(panel)
+    points = [panel.a + u * s + n * d for s, d in ((s0, d0), (s1, d0), (s1, d1), (s0, d1), (s0, d0))]
+    blank.hole(Part.Face(Part.makePolygon(points)))
+
+
+def _slit(blank, panel, points, width=1.0):
+    """Cut a slit along a line of points (s, d) in a panel. See _window for s and d."""
+    u, n = _frame(panel)
+    for (s0, d0), (s1, d1) in zip(points, points[1:]):
+        p, q = panel.a + u * s0 + n * d0, panel.a + u * s1 + n * d1
+        along = (q - p) / p.distanceToPoint(q)
+        side = V(along.y, -along.x, 0) * (width / 2)
+        p, q = p - along * (width / 2), q + along * (width / 2)
+        blank.hole(Part.Face(Part.makePolygon([p - side, q - side, q + side, p + side, p - side])))
+
+
+def _snap_bottom(blank, panels, L, W, hooks=False):
+    """The bottom of a snap lock box: four die-cut flaps of the same depth.
+
+    The first long panel has the largest flap, with a notch. Each end panel has a flap with
+    one diagonal side and a tongue beside the second long panel. The second long panel has
+    a flap with two diagonal sides and a tongue in the middle.
+    hooks: the tongues of the end panels have a barb, and the middle tongue has cut corners.
+    """
+    t = blank.t
+    depth = 0.75 * W
+    neck, tip = 0.7 * depth, 0.3 * depth
+    large = blank.flap(panels[0].edge("right"), depth, 90.0)
+    _notch(blank, large, 0.4 * L, tip)
+    barb = 0.12 * W if hooks else 0.0
+    # On the edge "right", the first end of a flap is at the side of the next panel.
+    end = blank.flap(panels[1].edge("right"), neck, 90.0, offset=2 * t, taper=(0.0, 0.57 * W))
+    _tongue(blank, end, tip, hook=(0.0, barb))
+    middle = blank.flap(panels[2].edge("right"), neck, 90.0, offset=t, taper=(0.32 * L, 0.32 * L))
+    _tongue(blank, middle, tip, chamfer=0.25 * tip if hooks else 0.0)
+    end = blank.flap(panels[3].edge("right"), neck, 90.0, offset=3 * t, taper=(0.57 * W, 0.0))
+    _tongue(blank, end, tip, hook=(barb, 0.0))
 
 
 def _tuck_top(t, L, W, D, blank, panels):
-    """A lid on the third panel with a tuck flap, and dust flaps on the end panels."""
-    lid = blank.flap(panels[2].edge("left"), W - t, 90.0, offset=t)
-    blank.flap(lid.edge("far"), 0.25 * D, 90.0, inset=(t, t), round_corners=0.2 * D)
+    """A lid on the first panel with a tuck flap, and dust flaps on the end panels."""
+    lid = blank.flap(panels[0].edge("left"), W - t, 90.0, offset=t)
+    blank.flap(lid.edge("far"), 0.2 * W, 90.0, inset=(t, t), round_corners=0.1 * W)
     for panel in (panels[1], panels[3]):
         # The dust flaps are narrower than the box, thus the tuck flap of the lid has its space.
-        blank.flap(panel.edge("left"), 0.35 * W, 90.0, inset=(2 * t, 2 * t), taper=(W / 8, W / 8))
+        blank.flap(panel.edge("left"), W / 2, 90.0, inset=(2 * t, 2 * t))
+
+
+def _snap_box(t, L, W, D, hooks):
+    blank = Blank(t)
+    panels = tube(blank, [L, W, L, W], D)
+    add_joint(blank, panels[0])
+    _snap_bottom(blank, panels, L, W, hooks)
+    return blank, panels
 
 
 def style_0215(t, L, W, D):
-    blank = slotted(t, [L, W, L, W], D, _snap_bottom(W), None)
-    panels = tube(Blank(t), [L, W, L, W], D)  # The same panels, for their edges.
+    """A snap lock bottom, and a tuck top on the panel of the largest bottom flap."""
+    blank, panels = _snap_box(t, L, W, D, hooks=False)
     _tuck_top(t, L, W, D, blank, panels)
     return [blank.piece("box")]
 
 
 def style_0216(t, L, W, D):
-    top = [(W / 2, 1), (W / 2, 0), (W / 2, 1), (W / 2, 0)]
-    return _rsc(t, L, W, D, _snap_bottom(W), top)
-
+    """A snap lock bottom with hooks, and the top of an RSC."""
+    blank, panels = _snap_box(t, L, W, D, hooks=True)
+    for panel, layer in zip(panels, (1, 0, 1, 0)):
+        blank.flap(panel.edge("left"), W / 2, 90.0, offset=layer * t)
+    return [blank.piece("box")]
 
 
 def style_0225(t, L, W, D):
@@ -495,7 +583,9 @@ def style_0306(t, L, W, D):
 def style_0310(t, L, W, D):
     body = Blank(t)
     add_joint(body, tube(body, [L, W, L, W], D)[0])
-    return [body.piece("tube"), _cover(t, L, W, D / 4, "cover 1"), _cover(t, L, W, D / 4, "cover 2")]
+    # The covers of this style are the side slotted type.
+    covers = [_cover(t, L, W, D / 4, name, corner="end") for name in ("cover 1", "cover 2")]
+    return [body.piece("tube")] + covers
 
 
 def style_0320(t, L, W, D):
@@ -664,41 +754,70 @@ def style_0416(t, L, W, D):
     return [_folder(t, L, W, D / 2.5, dust="end").piece("folder")]
 
 
-def _roll_end_tray(t, L, W, depth, lid=False, bottom_flaps=False):
-    """A tray with side walls and rolled end walls: outer wall, top strip, inner wall."""
+def _roll_end_tray(t, L, W, depth, tabs=2, cover=False):
+    """A tray with side walls and rolled end walls: outer wall, top strip, inner wall.
+
+    tabs: the number of locking tabs on the free edge of each inner wall. Each tab goes into
+          a slot in the bottom.
+    cover: a locking cover on the rear wall: a side flap on each end, a front flap, and an
+           ear on each end of the front flap.
+    """
     blank = Blank(t)
     base = blank.panel(0, 0, L, W)
+    places = (0.2, 0.8) if tabs == 2 else (0.5,)
+    size = 0.18 * W if tabs == 2 else 0.25 * W
     for key in ("far", "near"):
         outer = blank.flap(base.edge(key), depth, 90.0, offset=t)
         top = blank.flap(outer.edge("far"), 3 * t, 90.0)
         inner = blank.flap(top.edge("far"), depth - 2 * t, 90.0)
-        if bottom_flaps:
-            blank.flap(inner.edge("far"), 0.15 * L, -90.0)
+        for place in places:
+            _tab(blank, inner, place, size, 1.5 * t)
+            x0, x1 = (L - 2.5 * t, L - 0.25 * t) if key == "far" else (0.25 * t, 2.5 * t)
+            blank.slot(x0, place * W - size / 2 - 2.0, x1, place * W + size / 2 + 2.0)
     back = blank.flap(base.edge("right"), depth, 90.0)
     front = blank.flap(base.edge("left"), depth, 90.0)
     for wall in (back, front):
-        # Ears on the side walls. They are between the outer and the inner end walls.
-        blank.flap(wall.edge("left"), 0.5 * depth, 90.0, inset=(0.0, t))
-        blank.flap(wall.edge("right"), 0.5 * depth, 90.0, inset=(t, 0.0))
-    if lid:
-        cover = blank.flap(back.edge("far"), W + t, 90.0, offset=t)
-        blank.flap(cover.edge("far"), 0.5 * depth, 90.0, inset=(4 * t, 4 * t), round_corners=0.5 * depth)
+        # Flaps on the side walls. They are between the outer and the inner end walls.
+        blank.flap(wall.edge("left"), 0.8 * depth, 90.0, inset=(0.0, t))
+        blank.flap(wall.edge("right"), 0.8 * depth, 90.0, inset=(t, 0.0))
+    if cover:
+        # The cover is longer than the tray, thus its side flaps are outside the end walls.
+        lid = blank.flap(back.edge("far"), W + 2 * t, 90.0, offset=t, widen=(3 * t, 3 * t))
+        for end in ("left", "right"):
+            blank.flap(lid.edge(end), 0.9 * depth, 90.0, inset=(2 * t, 2 * t), taper=(0.15 * W, 0.15 * W))
+        # The ears are one layer out from the side flaps.
+        flap = blank.flap(lid.edge("far"), 0.87 * depth, 90.0, widen=(1.5 * t, 1.5 * t))
+        for end in ("left", "right"):
+            blank.flap(flap.edge(end), 0.8 * depth, 90.0, round_corners=0.3 * depth)
     return blank
 
 
 def style_0422(t, L, W, D):
-    return [_roll_end_tray(t, L, W, D / 2.5).piece("tray")]
+    return [_roll_end_tray(t, L, W, D / 2.5, tabs=2).piece("tray")]
 
 
 def style_0427(t, L, W, D):
-    return [_roll_end_tray(t, L, W, D / 2.5, lid=True).piece("tray")]
+    return [_roll_end_tray(t, L, W, D / 2.5, tabs=1, cover=True).piece("tray")]
 
 
 def style_0457(t, L, W, D):
-    """A self locking tray: the corner flaps taper, as lock tabs do."""
-    blank, _base, _walls = tray(t, L, W, D / 2.5, corner=None)
+    """A self locking tray. Each end wall has a hook flap on each end. The hook flaps fold on
+    the outer side of the side walls, and each head goes into a slit of the side wall."""
+    depth = D / 2.5
+    blank = Blank(t)
+    base = blank.panel(0, 0, L, W)
+    for key in ("right", "left"):
+        wall = blank.flap(base.edge(key), depth, 90.0)
+        # A slit near each end: a part along the wall, and a diagonal part.
+        for a, b, c in ((0.34, 0.27, 0.20), (0.66, 0.73, 0.80)):
+            _slit(blank, wall, [(a * L, 0.6 * depth), (b * L, 0.6 * depth), (c * L, 0.4 * depth)])
+    for key in ("far", "near"):
+        wall = blank.flap(base.edge(key), depth, 90.0, widen=(t, t))
+        # The side of a hook flap at the bottom is a diagonal. The head is at the far end.
+        for end, taper in (("left", (0.45 * depth, 0.1 * depth)), ("right", (0.1 * depth, 0.45 * depth))):
+            hook = blank.flap(wall.edge(end), 0.55 * depth, 90.0, taper=taper)
+            _tongue(blank, hook, 0.35 * depth, chamfer=0.12 * depth)
     return [blank.piece("tray")]
-
 
 
 def style_0460(t, L, W, D):
@@ -733,7 +852,7 @@ def style_0470(t, L, W, D):
 
     Each end is on the rear wall: the outer end wall, a flap on the bottom, and a part that
     rolls in from the top. The front wall has a flap on each end, between the two layers of
-    the end. The cover is open. The locking tabs and slots are not in this blank.
+    the end. The cover is open.
     """
     depth = D / 2
     blank = Blank(t)
@@ -744,13 +863,17 @@ def style_0470(t, L, W, D):
     blank.flap(cover.edge("far"), 0.3 * depth, 90.0, inset=(3 * t, 3 * t), round_corners=0.15 * depth)
     for end in ("left", "right"):
         # The flap of the front wall starts above the flap on the bottom.
-        blank.flap(front.edge(end), 0.5 * W, 90.0, inset=(2 * t, 0.0) if end == "left" else (0.0, 2 * t))
+        blank.flap(front.edge(end), W - 6 * t, 90.0, inset=(2 * t, 0.0) if end == "left" else (0.0, 2 * t))
         low, high = ("left", "right") if end == "left" else ("right", "left")
         # The end wall starts one thickness above the bottom, thus its flap is on the bottom.
         outer = blank.flap(rear.edge(end), W - t, 90.0, inset=(t, 0.0) if end == "left" else (0.0, t))
-        blank.flap(outer.edge(low), 0.4 * L, 90.0, inset=(2 * t, 2 * t))
+        foot = blank.flap(outer.edge(low), 0.4 * L, 90.0, inset=(2 * t, 2 * t))
         top = blank.flap(outer.edge(high), 4 * t, 90.0)
-        blank.flap(top.edge("far"), depth - 6 * t, 90.0, inset=(2 * t, 2 * t))
+        inner = blank.flap(top.edge("far"), depth - 6 * t, 90.0, inset=(2 * t, 2 * t))
+        # The locking tab of the inner wall goes into a slot of the flap on the bottom.
+        size = 0.25 * W
+        _tab(blank, inner, 0.5, size, 2 * t)
+        _window(blank, foot, foot.width / 2 - size / 2 - 4.0, foot.width / 2 + size / 2 + 4.0, 0.25 * t, 3.5 * t)
     return [blank.piece("tray")]
 
 
@@ -828,20 +951,25 @@ def style_0606b(t, L, W, D):
 
 
 def style_0711(t, L, W, D):
-    """An auto bottom with RSC top flaps. The diagonal scores of the bottom are flat when the
-    box is set up, thus they have the angle zero."""
-    top = [(W / 2, 1), (W / 2, 0), (W / 2, 1), (W / 2, 0)]
-    blank = slotted(t, [L, W, L, W], D, _snap_bottom(W), top, joint_taper=JOINT / 3)
-    panels = tube(Blank(t), [L, W, L, W], D)
+    """An auto bottom with RSC top flaps. Each bottom flap of a long panel has a diagonal
+    score, where the flap of the adjacent end panel is glued. The diagonal scores are flat
+    when the box is set up, thus they have the angle zero."""
+    blank = Blank(t)
+    panels = tube(blank, [L, W, L, W], D)
+    add_joint(blank, panels[0], taper=JOINT / 3)
+    for panel, layer in zip(panels, (1, 0, 1, 0)):
+        blank.flap(panel.edge("left"), W / 2, 90.0, offset=layer * t)
+    depth = 0.75 * W
     allowance = blank.allowance(90.0)
-    for panel in (panels[1], panels[3]):
-        p, q = panel.edge("right")
-        u = (q - p) / p.distanceToPoint(q)
-        n = V(u.y, -u.x, 0)
-        start = p + n * (t + allowance)
-        blank.score(start + u * 5.0, start + u * (0.4 * W) + n * (0.35 * W), 0.0)
+    for panel, layer in ((panels[0], 0), (panels[2], 1)):
+        flap = blank.flap(panel.edge("right"), depth, 90.0, offset=layer * t)
+        _notch(blank, flap, 0.15 * L, 0.15 * depth)
+        # On the edge "right", the first end is at the side of the next panel.
+        u, n = _frame(flap)
+        blank.score(flap.a + u * 5.0 + n * 2.0, flap.a + u * (0.7 * depth) + n * (0.7 * depth), 0.0)
+    for panel, layer in ((panels[1], 2), (panels[3], 3)):
+        blank.flap(panel.edge("right"), W / 2, 90.0, offset=layer * t, taper=(W / 4, W / 4))
     return [blank.piece("box")]
-
 
 
 def style_0760(t, L, W, D):
@@ -868,7 +996,8 @@ def style_0760(t, L, W, D):
         lid = blank.flap(cover.edge(end), depth, 90.0)
         blank.flap(front.edge(end), corner, 90.0)
         # The collapse scores: two on the end wall of the bottom, one on the flap of the cover.
-        for panel, corners in ((wall, ("a", "b")), (lid, ("b",))):
+        # On the flap of the cover, the score starts at the side of the front flap.
+        for panel, corners in ((wall, ("a", "b")), (lid, ("b",) if end == "left" else ("a",))):
             for name in corners:
                 start = getattr(panel, name)
                 along = (panel.b - panel.a) if name == "a" else (panel.a - panel.b)
@@ -963,17 +1092,17 @@ def style_0931(t, L, W, D):
 
 
 def style_0933(t, L, W, D):
-    long_cards = [_card(t, L, D / 2, [L / 4, L / 2, 3 * L / 4], f"long card {i + 1}") for i in range(2)]
-    short_cards = [_card(t, W, D / 2, [W / 3, 2 * W / 3], f"short card {i + 1}") for i in range(3)]
+    long_cards = [_card(t, L, D / 2, [L / 6, L / 2, 5 * L / 6], f"long card {i + 1}") for i in range(2)]
+    short_cards = [_card(t, W, D / 2, [W / 4, 3 * W / 4], f"short card {i + 1}") for i in range(3)]
     return long_cards + short_cards
 
 
 
 def style_0935(t, L, W, D):
-    cards = [_card(t, L, D / 2, [L / 4, L / 2, 3 * L / 4], f"long card {i + 1}") for i in range(2)]
-    cards += [_card(t, W, D / 2, [W / 3, 2 * W / 3], f"short card {i + 1}") for i in range(2)]
+    cards = [_card(t, L, D / 2, [L / 6, L / 2, 5 * L / 6], f"long card {i + 1}") for i in range(2)]
+    cards += [_card(t, W, D / 2, [W / 4, 3 * W / 4], f"short card {i + 1}") for i in range(2)]
     # The slots of the high card are as deep as those of the short cards.
-    cards.append(_card(t, W, D, [W / 3, 2 * W / 3], "high card", depth=D / 4))
+    cards.append(_card(t, W, D, [W / 4, 3 * W / 4], "high card", depth=D / 4))
     return cards
 
 
@@ -988,9 +1117,14 @@ def style_0966(t, L, W, D):
 
 
 def style_0967(t, L, W, D):
-    """A scored piece that rolls into a block: each turn is shorter."""
-    a = W / 2
-    return _tubes(t, D, [a, a / 2, a - 2 * t, a / 2 - 2 * t, a - 4 * t, a / 2 - 4 * t], 90.0)
+    """A pad of eight equal panels with a low part and a high part.
+
+    The first panel folds on the second: the low part, with two layers. The second and the
+    third panel are the base, with a flat score between them. The other panels fold on the
+    third in a zigzag: the high part, with six layers. This fold is an interpretation of the
+    handbook sketch.
+    """
+    return _tubes(t, D, [W / 2 - 2 * t] + [W / 2] * 7, [180, 0, 180, -180, 180, -180, 180])
 
 
 def style_die_cut_pad(t, L, W, D):
