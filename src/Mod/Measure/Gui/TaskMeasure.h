@@ -34,6 +34,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/MeasureManager.h>
 #include <Gui/Document.h>
 
@@ -88,7 +89,7 @@ private:
     void saveMeasurement();
     void quitMeasurement();
 
-    Measure::MeasureBase* _mMeasureObject = nullptr;
+    App::WeakPtrT<Measure::MeasureBase> _mMeasureObject {nullptr};
 
     QFormLayout* formLayout {nullptr};
     QLineEdit* valueResult {nullptr};
