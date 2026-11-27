@@ -22,7 +22,10 @@
 
 #pragma once
 
+#include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -98,6 +101,17 @@ protected:
     void onDocumentRestored() override;
 
 private:
+    // The object of this link that stands for srcObj, an object of the linked assembly: one
+    // of its components, or an object inside one of its flexible sub-assemblies (at any
+    // depth). subPrefix receives the sub-name prefix to add to its references.
+    App::DocumentObject* getLocalObject(App::DocumentObject* srcObj, std::string& subPrefix) const;
+    // The reverse of getLocalObject(): the object of the linked assembly that localObj, an
+    // object of this link, stands for.
+    App::DocumentObject* getSourceObject(App::DocumentObject* localObj) const;
+    // The assembly links of the linked assembly, each with the assembly link of this link
+    // that stands for it.
+    std::vector<std::pair<AssemblyLink*, AssemblyLink*>> getSubAssemblyLinks() const;
+
     std::unordered_map<App::DocumentObject*, std::string> objSubPrefixMap;
 };
 
