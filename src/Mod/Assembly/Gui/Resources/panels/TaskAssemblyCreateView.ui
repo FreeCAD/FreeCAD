@@ -34,7 +34,11 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QListWidget" name="stepList"/>
+    <widget class="QTreeWidget" name="stepList">
+     <property name="headerHidden">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="3" column="0">
     <widget class="QPushButton" name="btnAlignDragger">
@@ -46,7 +50,10 @@
    <item row="4" column="0">
     <widget class="QLabel" name="LabelAlignDragger">
      <property name="text">
-      <string>Select a feature to align. Press Esc to cancel.</string>
+      <string>Pick a reference in the 3D view. Click away to cancel.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
