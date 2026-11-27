@@ -99,10 +99,10 @@ protected:
 
     Base::Reference<ParameterGrp> getParmGroup();
 
+private:
     bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText
     QColor m_colNormal;
 
-private:
     void checkCursorChange();
     QTextCursor m_lastCursor;
 

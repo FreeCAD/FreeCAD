@@ -110,6 +110,8 @@ protected:
     std::vector<int> getSeps() const { return seps; }
     void setSeps(std::vector<int> newSeps) { seps = newSeps; }
 
+    bool showTextBackground();
+
 private:
     bool verticalSep;
     std::vector<int> seps;
@@ -120,6 +122,7 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGraphicsRectItem* m_background;
     QGraphicsItemGroup* m_textItems;
     QGraphicsRectItem* m_frame;
     QColor m_colNormal;
@@ -127,8 +130,6 @@ private:
 
     DragState m_dragState;
     bool m_inhibitSnapOnPosChange{false};
-
-private:
 };
 
 }  // namespace TechDrawGui

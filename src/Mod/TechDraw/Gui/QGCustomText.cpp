@@ -45,15 +45,14 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
-    QGraphicsTextItem(parent)
+    QGraphicsTextItem(parent),
+    tightBounding(false),
+    m_colNormal(getNormalColor())
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-
-    m_colNormal  = getNormalColor();
-    tightBounding = false;
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
@@ -66,8 +65,8 @@ void QGCustomText::centerAt(double cX, double cY)
     QRectF box = boundingRect();
     double width = box.width();
     double height = box.height();
-    double newX = cX - width/2.;
-    double newY = cY - height/2.;
+    double newX = cX - (width/2);
+    double newY = cY - (height/2);
     setPos(newX, newY);
 }
 
@@ -82,7 +81,7 @@ void QGCustomText::justifyLeftAt(double cX, double cY, bool vCenter)
     double height = box.height();
     double newY = cY - height;
     if (vCenter) {
-        newY = cY - height/2.;
+        newY = cY - (height/2);
     }
     setPos(cX, newY);
 }
