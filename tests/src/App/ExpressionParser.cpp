@@ -4,6 +4,7 @@
 #include <gmock/gmock.h>
 
 #include <cmath>
+#include <numbers>
 
 #include "Base/Quantity.h"
 #include "Base/NumericFormatting.h"
@@ -13,6 +14,7 @@
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
 #include "App/ExpressionParser.h"
+#include "App/PropertyStandard.h"
 #include "App/PropertyUnits.h"
 
 #include "src/App/InitApplication.h"
@@ -446,6 +448,71 @@ TEST_F(ExpressionParserTest, canParseProperties)
     this_obj()->addDynamicProperty("App::PropertyQuantity", "Bar");
     EXPECT_THAT(parseExpr("Sketch.Bar"), IsQuantity(Base::Quantity()))
         << "PropertyQuantity on object";
+}
+
+// https://github.com/FreeCAD/FreeCAD/issues/15302
+TEST_F(ExpressionParserTest, reservedWordsAfterDotAreNames)
+{
+    EXPECT_THAT(parseExpr("_math.pi"), IsDouble(std::numbers::pi)) << "constant name in a module";
+    EXPECT_THAT(parseExpr("_math.e"), IsDouble(std::numbers::e)) << "constant name in a module";
+    EXPECT_THAT(parseExpr("1 + _math.pi"), IsDouble(1 + std::numbers::pi))
+        << "inside a larger expression";
+
+    auto addFloat = [this](const char* name, double value) {
+        auto prop = freecad_cast<App::PropertyFloat*>(
+            this_obj()->addDynamicProperty("App::PropertyFloat", name)
+        );
+        ASSERT_NE(prop, nullptr);
+        prop->setValue(value);
+    };
+    addFloat("pi", 1);
+    addFloat("e", 2);
+    addFloat("true", 3);
+    addFloat("N", 4);
+    addFloat("kg", 5);
+
+    EXPECT_THAT(parseExpr("Sketch.pi"), IsDouble(1)) << "constant name as property of an object";
+    EXPECT_THAT(parseExpr("<<Sketch>>.e"), IsDouble(2)) << "constant name after a quoted object";
+    EXPECT_THAT(parseExpr(".true"), IsDouble(3)) << "lowercase constant spelling is kept";
+    EXPECT_THAT(parseExpr("_self.N"), IsDouble(4)) << "unit name as property";
+    EXPECT_THAT(parseExpr("Sketch.kg * 2"), IsDouble(10)) << "unit name inside a larger expression";
+}
+
+TEST_F(ExpressionParserTest, reservedWordsAfterDotSurviveToString)
+{
+    this_obj()->addDynamicProperty("App::PropertyFloat", "pi");
+    this_obj()->addDynamicProperty("App::PropertyFloat", "N");
+    this_obj()->addDynamicProperty("App::PropertyFloat", "Foo");
+
+    EXPECT_EQ(parse(this_obj(), "Sketch.pi")->toString(), ".pi")
+        << "own reserved-name property keeps its '.'";
+    EXPECT_EQ(parse(this_obj(), "<<Sketch>>.N")->toString(), ".N")
+        << "own reserved-name property keeps its '.'";
+    EXPECT_EQ(parse(this_obj(), "Sketch.Foo")->toString(), "Foo")
+        << "own ordinary property is still written bare";
+
+    for (const auto* text : {"_math.pi", ".pi", "Sketch.pi", "_self.N", "<<Sketch>>.N"}) {
+        const auto expression = parse(this_obj(), text);
+        const std::string written = expression->toString();
+        const auto reparsed = parse(this_obj(), written.c_str());
+        EXPECT_EQ(reparsed->toString(), written)
+            << "\"" << text << "\" written as \"" << written << "\"";
+        EXPECT_NE(freecad_cast<VariableExpression*>(reparsed.get()), nullptr)
+            << "\"" << text << "\" written as \"" << written << "\" no longer reads as a path";
+    }
+}
+
+TEST_F(ExpressionParserTest, reservedWordsKeepMeaningOutsidePaths)
+{
+    EXPECT_THAT(parseExpr("pi"), IsDouble(std::numbers::pi)) << "bare constant";
+    EXPECT_THAT(parseExpr("2 N"), IsQuantity(Base::Quantity(2000, Base::Unit::Force)))
+        << "bare unit";
+    EXPECT_THAT(parseExpr("_math.tau * pi"), IsDouble(2 * std::numbers::pi * std::numbers::pi))
+        << "constant after a path";
+
+    EXPECT_THAT(parseExpr("_math.sqrt(2)"), IsParserError(_)) << "calls through a path";
+    EXPECT_THAT(parseExpr("_self.\xC2\xB0"), IsParserError(_)) << "unit symbol is not a name";
+    EXPECT_THAT(parseExpr("2.e"), IsParserError(_)) << "number followed by dot";
 }
 
 }  // namespace App::ExpressionParser::Test
