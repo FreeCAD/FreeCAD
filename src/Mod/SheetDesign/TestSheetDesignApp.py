@@ -2447,3 +2447,79 @@ class TestSheetDesign(unittest.TestCase):
         self.assertLess(opened.BoundBox.ZLength, 10.0)
         # The smallest fold angle is not zero, thus the sizes agree to some millimeters.
         self.assertAlmostEqual(opened.BoundBox.XLength, flat.Shape.BoundBox.XLength, delta=3.0)
+
+    # ------------------------------------------------------------------------------- scores
+
+    def bellows(self):
+        import SheetDesignBoxStyles
+
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        piece = SheetDesignBoxStyles.STYLES["0226 Bellows Style Top and Bottom Container"](4.0, 300.0, 200.0, 150.0)[0]
+        box = SheetDesignBoxStyles.fold(self.doc, self.rule, piece, "Bellows")
+        self.doc.recompute()
+        return box, self.add_flat(box)
+
+    def test_bends_on_one_line_are_one_score(self):
+        """The bellows blank: 32 bends of the model are 16 scores of the designer."""
+        import SheetDesignExport
+
+        _box, flat = self.bellows()
+        self.assertEqual(len(flat.BendAngles), 32)
+        groups, numbers = SheetDesignExport.scores_of(flat)
+        # Four vertical scores, two horizontal scores, and ten diagonals.
+        self.assertEqual(len(groups), 16)
+        self.assertEqual(numbers, list(range(1, 17)))
+        sizes = sorted(len(group) for group in groups)
+        self.assertEqual(sizes, [1] * 10 + [3] * 4 + [5] * 2)
+        layout = SheetDesignExport.Layout(flat)
+        vertical = [s for s in layout.scores if len(s.bends) == 3]
+        self.assertEqual(vertical[0].angles(), [("UP", 90.0), ("UP", 180.0)])
+        self.assertIn("UP 90°/UP 180°", vertical[0].text())
+
+    def test_a_double_score_is_two_scores(self):
+        import SheetDesignExport
+
+        V2 = FreeCAD.Vector
+        lines = [
+            (V2(0, 0, 0), V2(100, 0, 0)),
+            (V2(0, 6, 0), V2(100, 6, 0)),  # Beside the first line: a double score.
+            (V2(110, 2, 0), V2(200, 2, 0)),  # After the first line, a small step to the side.
+            (V2(300, 0, 0), V2(400, 0, 0)),  # On the same line, but far.
+        ]
+        self.assertEqual(SheetDesignExport.group_scores(lines, 4.0), [[0, 2], [1], [3]])
+
+    def test_sequence_numbers_are_for_scores(self):
+        import SheetDesignExport
+        import SheetDesignFold
+
+        _box, flat = self.bellows()
+        groups, _numbers = SheetDesignExport.scores_of(flat)
+        # A number for each bend is not a valid sequence, because the scores have more bends.
+        flat.BendOrder = list(range(1, 33))
+        self.assertEqual(SheetDesignExport.scores_of(flat)[1], list(range(1, 17)))
+        # The first score folds last.
+        numbers = [16] + list(range(1, 16))
+        order = [0] * 32
+        for group, number in zip(groups, numbers):
+            for index in group:
+                order[index] = number
+        flat.BendOrder = order
+        self.assertEqual(SheetDesignExport.scores_of(flat)[1], numbers)
+        fractions = SheetDesignFold.fractions(flat, 0.5, in_sequence=True)
+        # All bends of one score have the same part of their angle.
+        for group in groups:
+            self.assertEqual(len({fractions[i] for i in group}), 1)
+        self.assertEqual({fractions[i] for i in groups[0]}, {0.0})
+        self.assertEqual({fractions[i] for i in groups[1]}, {1.0})
+
+    def test_drawing_table_has_a_row_for_each_score(self):
+        import SheetDesignDrawing
+
+        _box, flat = self.bellows()
+        rows, _layout = SheetDesignDrawing.table_rows(flat)
+        self.assertEqual(len(rows), 16)
+        self.assertIn("90°/180°", [row[2] for row in rows])
+        notes = SheetDesignDrawing.notes_svg(flat, 0.2)
+        self.assertEqual(notes.count("<circle"), 16)
+        self.assertEqual(notes.count("<line"), 32)

@@ -74,7 +74,12 @@ def notes_svg(flat, scale):
             f'<line x1="{x1:.3f}" y1="{y1:.3f}" x2="{x2:.3f}" y2="{y2:.3f}" stroke="{color}" '
             f'stroke-width="0.35" stroke-dasharray="6 2 1 2" fill="none"/>'
         )
-        # The number is in a circle on the middle of the line.
+    # One number for each score, in a circle on the middle of its longest bend.
+    for score in layout.scores:
+        bend = score.main
+        color = UP_COLOR if bend.angle >= 0 else DOWN_COLOR
+        x1, y1 = paper(bend.start)
+        x2, y2 = paper(bend.end)
         mx, my = (x1 + x2) / 2, (y1 + y2) / 2
         body.append(f'<circle cx="{mx:.3f}" cy="{my:.3f}" r="{radius}" fill="#ffffff" stroke="{color}" stroke-width="0.35"/>')
         body.append(
@@ -87,12 +92,26 @@ def notes_svg(flat, scale):
 
 
 def table_rows(flat):
-    """The rows of the bend table, in the bend sequence: (number, direction, angle, radius)."""
+    """The rows of the bend table: one row for each score, in the bend sequence.
+
+    A row is (number, direction, angle, radius). A score with bends of different angles shows
+    each value."""
     layout = SheetDesignExport.Layout(flat)
-    rows = [
-        (bend.number, "Up" if bend.angle >= 0 else "Down", f"{abs(bend.angle):g}°", f"{bend.radius:g}")
-        for bend in layout.bends
-    ]
+    rows = []
+    for score in layout.scores:
+        values = score.angles()
+        directions = []
+        for direction, _angle in values:
+            if direction.capitalize() not in directions:
+                directions.append(direction.capitalize())
+        rows.append(
+            (
+                score.number,
+                "/".join(directions),
+                "/".join(f"{angle:g}°" for _direction, angle in values),
+                "/".join(f"{radius:g}" for radius in score.radii()),
+            )
+        )
     return sorted(rows), layout
 
 
@@ -107,8 +126,7 @@ def table_svg(flat, scale=None):
     width = sum(size for _title, size in columns)
     row = 6.0
     lines = [f"Flat size: {layout.box.XLength:.2f} x {layout.box.YLength:.2f} mm"]
-    source = getattr(flat, "Source", None)
-    thickness = _thickness(source)
+    thickness = SheetDesignExport.thickness_of(flat)
     if thickness is not None:
         lines.append(f"Thickness: {thickness:g} mm")
     if scale is not None:
@@ -135,19 +153,6 @@ def table_svg(flat, scale=None):
     for number, line in enumerate(lines):
         body.append(f'<text x="0" y="{table_height + row * (number + 1) - 1.0}" {text}>{line}</text>')
     return _svg(width + 0.5, height, -0.25, -0.25, body)
-
-
-def _thickness(feature):
-    """The thickness of the part of a feature, from its sheet rule. None if not found."""
-    for _step in range(1000):
-        if feature is None:
-            return None
-        rule = getattr(feature, "Rule", None)
-        if rule is not None and hasattr(rule, "Thickness"):
-            return rule.Thickness.Value
-        edge = getattr(feature, "Edge", None) or getattr(feature, "Edges", None)
-        feature = getattr(feature, "Source", None) or (edge[0] if edge else None)
-    return None
 
 
 class _Symbol:

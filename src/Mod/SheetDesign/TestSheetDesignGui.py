@@ -528,3 +528,23 @@ class TestSheetDesignGui(unittest.TestCase):
         panel.form.foldSlider.setValue(0)
         preview = self.doc.getObject("FoldPreview")
         self.assertLess(preview.Shape.BoundBox.ZLength, self.T + 0.2)
+
+    def test_panel_table_has_a_row_for_each_score(self):
+        import SheetDesignBoxStyles
+
+        self.rule.Thickness = 4.0
+        self.rule.BendRadius = 0.0
+        piece = SheetDesignBoxStyles.STYLES["0226 Bellows Style Top and Bottom Container"](4.0, 300.0, 200.0, 150.0)[0]
+        box = SheetDesignViewProviders.attach(SheetDesignBoxStyles.fold(self.doc, self.rule, piece, "Bellows"))
+        flat = self.add("SheetDesign::FlatPattern", "BoxFlat")
+        flat.Source = box
+        self.doc.recompute()
+        table = self.open_panel(flat).form.bendsTable
+        self.assertEqual(table.rowCount(), 16)
+        self.assertEqual(table.item(0, 2).text(), "90 °/180 °")
+        table.item(0, 0).setText("3")
+        order = list(flat.BendOrder)
+        self.assertEqual(len(order), 32)
+        self.assertEqual(sorted(set(order)), list(range(1, 17)))
+        self.assertEqual(table.item(0, 0).text(), "3")
+        self.assertEqual(table.item(2, 0).text(), "1")

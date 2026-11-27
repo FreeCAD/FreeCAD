@@ -495,9 +495,10 @@ class TaskFlatPattern(TaskPanel):
 
         table = self.form.bendsTable
         angles, radii = list(self.obj.BendAngles), list(self.obj.BendRadii)
-        numbers = SheetDesignExport.bend_numbers(self.obj, len(angles))
+        # One row for each score: the bends on one straight line fold in one action.
+        self.score_groups, numbers = SheetDesignExport.scores_of(self.obj, len(angles))
         table.blockSignals(True)
-        table.setRowCount(len(angles))
+        table.setRowCount(len(self.score_groups))
         table.setHorizontalHeaderLabels(
             [
                 translate("SheetDesign", "Sequence"),
@@ -507,9 +508,23 @@ class TaskFlatPattern(TaskPanel):
             ]
         )
         table.horizontalHeader().setStretchLastSection(True)
-        for row, (angle, radius) in enumerate(zip(angles, radii)):
-            direction = translate("SheetDesign", "Up") if angle >= 0 else translate("SheetDesign", "Down")
-            for column, text in enumerate((str(numbers[row]), direction, f"{abs(angle):g} °", f"{radius:g} mm")):
+        up, down = translate("SheetDesign", "Up"), translate("SheetDesign", "Down")
+
+        def unique(values):
+            result = []
+            for value in values:
+                if value not in result:
+                    result.append(value)
+            return "/".join(result)
+
+        for row, group in enumerate(self.score_groups):
+            texts = (
+                str(numbers[row]),
+                unique(up if angles[i] >= 0 else down for i in group),
+                unique(f"{abs(angles[i]):g} °" for i in group),
+                unique(f"{radii[i]:g} mm" for i in group),
+            )
+            for column, text in enumerate(texts):
                 item = QtGui.QTableWidgetItem(text)
                 if column > 0:
                     item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
@@ -517,22 +532,26 @@ class TaskFlatPattern(TaskPanel):
         table.blockSignals(False)
 
     def sequence_changed(self, item):
-        """A number in the first column: put the bend at that place of the sequence."""
+        """A number in the first column: put the score at that place of the sequence."""
         if item.column() != 0:
             return
         import SheetDesignExport
 
-        count = self.form.bendsTable.rowCount()
-        numbers = SheetDesignExport.bend_numbers(self.obj, count)
+        groups, numbers = SheetDesignExport.scores_of(self.obj, len(self.obj.BendAngles))
+        count = len(groups)
         try:
             wanted = int(item.text())
         except ValueError:
             wanted = 0
         if 1 <= wanted <= count and wanted != numbers[item.row()]:
-            # The bend that had this number gets the old number of the changed bend.
+            # The score that had this number gets the old number of the changed score.
             other = numbers.index(wanted)
             numbers[other], numbers[item.row()] = numbers[item.row()], wanted
-            self.obj.BendOrder = numbers
+            order = [0] * len(self.obj.BendAngles)
+            for group, number in zip(groups, numbers):
+                for index in group:
+                    order[index] = number
+            self.obj.BendOrder = order
             self.changed()
         else:
             self.update()

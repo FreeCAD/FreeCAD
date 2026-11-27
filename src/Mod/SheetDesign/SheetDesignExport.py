@@ -56,18 +56,138 @@ LAYERS = {
 DEFLECTION = 0.01
 
 
-def bend_numbers(flat, count=None):
-    """The number of each bend in the bend sequence. The property BendOrder gives it, if it has
-    each number from 1 one time. If not, the numbers are 1, 2, 3."""
+def thickness_of(flat):
+    """The thickness of the part of a flat pattern, from its sheet rule. None if not found."""
+    feature = getattr(flat, "Source", None)
+    for _step in range(1000):
+        if feature is None:
+            return None
+        rule = getattr(feature, "Rule", None)
+        if rule is not None and hasattr(rule, "Thickness"):
+            return rule.Thickness.Value
+        edge = getattr(feature, "Edge", None) or getattr(feature, "Edges", None)
+        feature = getattr(feature, "Source", None) or (edge[0] if edge else None)
+    return None
+
+
+def _bend_lines(flat):
+    """The bend lines of a flat pattern in the XY plane, and the outlines of its formed regions."""
+    parts = flat.Shape.SubShapes
+    to_xy = parts[0].Placement.inverse().toMatrix()
+    lines, forms = [], []
+    for part in parts[1:]:
+        if part.ShapeType == "Edge":
+            lines.append(part.transformed(to_xy, True))
+        else:
+            # The compound with the outlines of the formed regions.
+            forms += part.transformed(to_xy, True).Wires
+    return lines, forms
+
+
+def group_scores(segments, thickness):
+    """Put the bends that are on one straight line into one score.
+
+    segments: (start, end) of each bend line. Two bend lines are one score if they are
+    parallel, almost on one line, and end to end. A horizontal score of a box changes its
+    position by some thicknesses from panel to panel, and a crossing score leaves a gap, thus
+    the limits are a small number of thicknesses.
+
+    Returns a list of scores. Each score is a list of bend indexes. The scores are in the
+    sequence of their first bend.
+    """
+    across = 2.5 * thickness
+    gap = 5.0 * thickness
+    count = len(segments)
+
+    def relation(i, k):
+        """Returns (kind, distance): "line" for end to end, "beside" for side by side."""
+        p, q = segments[i]
+        r, s = segments[k]
+        direction, other = q - p, s - r
+        if direction.Length < 1e-9 or other.Length < 1e-9:
+            return None, 0.0
+        length = direction.Length
+        direction = direction / length
+        if abs(direction.cross(other / other.Length).z) > 0.01:
+            return None, 0.0
+        distance = max(abs((r - p).cross(direction).z), abs((s - p).cross(direction).z))
+        if distance > across:
+            return None, 0.0
+        low, high = sorted(((r - p).dot(direction), (s - p).dot(direction)))
+        overlap = min(length, high) - max(0.0, low)
+        if overlap > thickness:
+            return "beside", distance
+        if -overlap > gap:
+            return None, 0.0
+        return "line", distance
+
+    pairs = []
+    beside = set()
+    for i in range(count):
+        for k in range(i + 1, count):
+            kind, distance = relation(i, k)
+            if kind == "line":
+                pairs.append((distance, i, k))
+            elif kind == "beside":
+                beside.add((i, k))
+    # Join the nearest lines first. Two lines that are side by side are never in one score.
+    group_of = {i: [i] for i in range(count)}
+    for _distance, i, k in sorted(pairs):
+        first, second = group_of[i], group_of[k]
+        if first is second:
+            continue
+        if any((min(m, n), max(m, n)) in beside for m in first for n in second):
+            continue
+        first.extend(second)
+        for member in second:
+            group_of[member] = first
+    groups = []
+    for i in range(count):
+        if group_of[i] not in groups:
+            groups.append(group_of[i])
+    return sorted((sorted(group) for group in groups), key=lambda group: group[0])
+
+
+def scores_of(flat, count=None):
+    """The scores of a flat pattern: (groups, numbers).
+
+    groups: for each score, the indexes of its bends. numbers: the number of each score in the
+    bend sequence. The property BendOrder gives the numbers, if all bends of a score have the
+    same number and each number from 1 is used one time. If not, the numbers are 1, 2, 3.
+    """
     if count is None:
         count = len(getattr(flat, "BendAngles", []))
+    groups = [[index] for index in range(count)]
+    try:
+        lines = _bend_lines(flat)[0]
+    except (AttributeError, IndexError):
+        lines = []
+    if len(lines) == count and count:
+        segments = [(line.Vertexes[0].Point, line.Vertexes[-1].Point) for line in lines]
+        groups = group_scores(segments, thickness_of(flat) or 1.0)
     order = [int(value) for value in getattr(flat, "BendOrder", [])]
-    if sorted(order) == list(range(1, count + 1)):
-        return order
-    return list(range(1, count + 1))
+    if len(order) == count:
+        values = [{order[index] for index in group} for group in groups]
+        if all(len(value) == 1 for value in values):
+            numbers = [next(iter(value)) for value in values]
+            if sorted(numbers) == list(range(1, len(groups) + 1)):
+                return groups, numbers
+    return groups, list(range(1, len(groups) + 1))
+
+
+def bend_numbers(flat, count=None):
+    """The sequence number of each bend: the number of its score."""
+    groups, numbers = scores_of(flat, count)
+    result = [0] * sum(len(group) for group in groups)
+    for group, number in zip(groups, numbers):
+        for index in group:
+            result[index] = number
+    return result
 
 
 class Bend:
+    """One bend of the model: the part of a score between two panels."""
+
     def __init__(self, edge, angle, radius, number=0):
         self.start = edge.Vertexes[0].Point
         self.end = edge.Vertexes[-1].Point
@@ -76,24 +196,58 @@ class Bend:
         self.number = number
 
     @property
+    def length(self):
+        return (self.end - self.start).Length
+
+    @property
     def layer(self):
         return BEND_UP if self.angle >= 0 else BEND_DOWN
 
+    @property
+    def direction(self):
+        return "UP" if self.angle >= 0 else "DOWN"
+
+
+class Score:
+    """One straight line that folds in one action: one bend or more."""
+
+    def __init__(self, number, bends):
+        self.number = number
+        self.bends = bends
+        self.main = max(bends, key=lambda bend: bend.length)
+
+    def angles(self):
+        """The different (direction, angle) values of the bends, in their sequence."""
+        values = []
+        for bend in self.bends:
+            value = (bend.direction, round(abs(bend.angle), 6))
+            if value not in values:
+                values.append(value)
+        return values
+
+    def radii(self):
+        values = []
+        for bend in self.bends:
+            if round(bend.radius, 6) not in values:
+                values.append(round(bend.radius, 6))
+        return values
+
     def text(self, degree="°"):
-        direction = "UP" if self.angle >= 0 else "DOWN"
-        number = f"{self.number} " if self.number else ""
-        return f"{number}{direction} {abs(self.angle):g}{degree} R{self.radius:g}"
+        angles = "/".join(f"{direction} {angle:g}{degree}" for direction, angle in self.angles())
+        radii = "/".join(f"{radius:g}" for radius in self.radii())
+        return f"{self.number} {angles} R{radii}"
 
     def text_position(self, height):
-        """The start point and the rotation of the text, beside the middle of the line."""
-        direction = self.end - self.start
+        """The start point and the rotation of the text, beside the middle of the longest bend."""
+        start, end = self.main.start, self.main.end
+        direction = end - start
         rotation = math.degrees(math.atan2(direction.y, direction.x))
         if rotation > 90 or rotation <= -90:
             rotation += 180 if rotation < 0 else -180
         radians = math.radians(rotation)
         along = FreeCAD.Vector(math.cos(radians), math.sin(radians), 0)
         normal = FreeCAD.Vector(-along.y, along.x, 0)
-        middle = (self.start + self.end) * 0.5
+        middle = (start + end) * 0.5
         length = 0.6 * height * len(self.text())
         return middle - along * (length / 2) + normal * (0.4 * height), rotation
 
@@ -112,21 +266,17 @@ class Layout:
         self.cutouts = [wire for wire in face.Wires if not wire.isSame(face.OuterWire)]
         angles = list(getattr(flat, "BendAngles", []))
         radii = list(getattr(flat, "BendRadii", []))
-        self.bends = []
+        lines, self.forms = _bend_lines(flat)
         numbers = bend_numbers(flat, len(angles))
-        self.forms = []
-        lines = []
-        for part in parts[1:]:
-            if part.ShapeType == "Edge":
-                lines.append(part)
-            else:
-                # The compound with the outlines of the formed regions.
-                self.forms += part.transformed(to_xy, True).Wires
-        for index, line in enumerate(lines):
-            edge = line.transformed(to_xy, True)
+        self.bends = []
+        for index, edge in enumerate(lines):
             angle = angles[index] if index < len(angles) else 0.0
             radius = radii[index] if index < len(radii) else 0.0
             self.bends.append(Bend(edge, angle, radius, numbers[index] if index < len(numbers) else 0))
+        self.scores = []
+        if len(lines) == len(angles):
+            groups, score_numbers = scores_of(flat, len(angles))
+            self.scores = [Score(number, [self.bends[i] for i in group]) for group, number in zip(groups, score_numbers)]
         self.box = face.BoundBox
 
     def wires(self):
@@ -206,6 +356,8 @@ def dxf_text(flat, labels=True):
     height = layout.text_height()
     for bend in layout.bends:
         text += _dxf((0, "LINE"), (8, bend.layer), (10, f"{bend.start.x:.6f}"), (20, f"{bend.start.y:.6f}"), (11, f"{bend.end.x:.6f}"), (21, f"{bend.end.y:.6f}"))
+    # One label for each score. A score can have more than one bend.
+    for bend in layout.scores:
         if labels:
             position, rotation = bend.text_position(height)
             text += _dxf((0, "TEXT"), (8, BEND_TEXT), (10, f"{position.x:.6f}"), (20, f"{position.y:.6f}"), (40, f"{height:.3f}"), (1, bend.text("%%d")), (50, f"{rotation:.3f}"))
@@ -265,6 +417,7 @@ def svg_text(flat, labels=True):
         groups[bend.layer].append(
             f'<line x1="{bend.start.x:.4f}" y1="{flip(bend.start.y):.4f}" x2="{bend.end.x:.4f}" y2="{flip(bend.end.y):.4f}"/>'
         )
+    for bend in layout.scores:
         if labels:
             position, rotation = bend.text_position(text_height)
             x, y = position.x, flip(position.y)

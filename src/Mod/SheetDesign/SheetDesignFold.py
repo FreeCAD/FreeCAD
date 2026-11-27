@@ -33,8 +33,9 @@ import SheetDesignExport
 def fractions(flat, state, in_sequence=True):
     """The part of each bend that is done, for a state from 0 (flat) to 1 (folded).
 
-    The list is in the sequence of the bend lines. With in_sequence, the bends fold one after
-    the other, in the bend sequence of the flat pattern (BendOrder).
+    The list is in the sequence of the bend lines. With in_sequence, the scores fold one after
+    the other, in the bend sequence of the flat pattern (BendOrder). All bends of one score
+    fold together.
     """
     # The count comes from the model. The flat pattern of an older file can have no bend data
     # before its first recompute.
@@ -43,7 +44,8 @@ def fractions(flat, state, in_sequence=True):
     if not in_sequence or count == 0:
         return [state] * count
     numbers = SheetDesignExport.bend_numbers(flat, count)
-    return [min(1.0, max(0.0, state * count - (number - 1))) for number in numbers]
+    scores = max(numbers)
+    return [min(1.0, max(0.0, state * scores - (number - 1))) for number in numbers]
 
 
 def shape(flat, state, in_sequence=True, fuse=False):
