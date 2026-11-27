@@ -23,5 +23,6 @@
 # Unit test for the Surface module
 from SurfaceTests.TestBlendCurve import TestBlendCurve
 from SurfaceTests.TestGeomFillSurface import TestGeomFillSurface
+from SurfaceTests.TestIntersectionCurve import TestIntersectionCurve
 
-__all__ = ["TestBlendCurve", "TestGeomFillSurface"]
+__all__ = ["TestBlendCurve", "TestGeomFillSurface", "TestIntersectionCurve"]
