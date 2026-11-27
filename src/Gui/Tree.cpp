@@ -3538,8 +3538,6 @@ void TreeWidget::onUpdateStatus()
 
     UpdateDisabler disabler(*this, updateBlocked);
 
-    std::vector<App::DocumentObject*> errors;
-
     // Use a local copy in case of nested calls
     auto localNewObjects = NewObjects;
     NewObjects.clear();
@@ -3563,9 +3561,6 @@ void TreeWidget::onUpdateStatus()
             if (!obj) {
                 continue;
             }
-            if (obj->isError()) {
-                errors.push_back(obj);
-            }
             if (docItem->ObjectMap.contains(obj)) {
                 continue;
             }
@@ -3587,10 +3582,6 @@ void TreeWidget::onUpdateStatus()
         auto iter = ObjectTable.find(obj);
         if (iter == ObjectTable.end()) {
             continue;
-        }
-
-        if (v.second.test(CS_Error) && obj->isError()) {
-            errors.push_back(obj);
         }
 
         if (!iter->second.empty()) {
@@ -3679,41 +3670,6 @@ void TreeWidget::onUpdateStatus()
         this->blockSelection(false);
     }
 
-    auto activeDocItem = getDocumentItem(Application::Instance->activeDocument());
-
-    QTreeWidgetItem* errItem = nullptr;
-    for (auto obj : errors) {
-        DocumentObjectDataPtr data;
-        if (activeDocItem) {
-            auto it = activeDocItem->ObjectMap.find(obj);
-            if (it != activeDocItem->ObjectMap.end()) {
-                data = it->second;
-            }
-        }
-        if (!data) {
-            auto docItem = getDocumentItem(Application::Instance->getDocument(obj->getDocument()));
-            if (docItem) {
-                auto it = docItem->ObjectMap.find(obj);
-                if (it != docItem->ObjectMap.end()) {
-                    data = it->second;
-                }
-            }
-        }
-        if (data) {
-            auto item = data->rootItem;
-            if (!item && !data->items.empty()) {
-                item = *data->items.begin();
-                data->docItem->showItem(item, false, true);
-            }
-            if (!errItem) {
-                errItem = item;
-            }
-        }
-    }
-    if (errItem) {
-        scrollToItem(errItem);
-    }
-
     updateGeometries();
     statusTimer->stop();
 
@@ -3796,7 +3752,9 @@ void TreeWidget::onItemCollapsed(QTreeWidgetItem* item)
 {
     // object item collapsed
     if (item && item->type() == TreeWidget::ObjectType) {
-        static_cast<DocumentObjectItem*>(item)->setExpandedStatus(false);
+        auto objItem = static_cast<DocumentObjectItem*>(item);
+        objItem->setExpandedStatus(false);
+        objItem->testStatus(false);  // takes over its children's error icon
     }
 }
 
@@ -3807,6 +3765,7 @@ void TreeWidget::onItemExpanded(QTreeWidgetItem* item)
         auto objItem = static_cast<DocumentObjectItem*>(item);
         objItem->setExpandedStatus(true);
         objItem->getOwnerDocument()->populateItem(objItem, false, false);
+        objItem->testStatus(false);  // hands its children's error icon back to them
     }
 }
 
@@ -6515,9 +6474,11 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     bool external = object()->getDocument() != getOwnerDocument()->document()
         || (linked && linked->getDocument() != obj->getDocument());
     bool freezed = pObject->isFreezed();
+    bool error = pObject->isError();
+    bool childError = !error && !isExpanded() && hasErrorInDescendants();
 
     int currentStatus = ((freezed ? 1 : 0) << 5) | ((external ? 1 : 0) << 4)
-        | ((object()->showInTree() ? 0 : 1) << 3) | ((pObject->isError() ? 1 : 0) << 2)
+        | ((object()->showInTree() ? 0 : 1) << 3) | ((error || childError ? 1 : 0) << 2)
         | ((pObject->isTouched() || pObject->mustExecute() == 1 ? 1 : 0) << 1) | (visible ? 1 : 0);
 
 
@@ -6553,7 +6514,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         mode = QIcon::Disabled;
     }
 
-    QIcon& icon = mode == QIcon::Normal ? icon1 : icon2;
+    // icon1 and icon2 are shared by all items of this object, but a child error depends
+    // on this item's expansion, so such an item builds its own icon.
+    QIcon childErrorIcon;
+    QIcon& icon = childError ? childErrorIcon : (mode == QIcon::Normal ? icon1 : icon2);
 
     if (icon.isNull()) {
         generateIcon(currentStatus, mode, icon);
@@ -6566,6 +6530,29 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     }
 
     this->setIcon(0, icon);
+}
+
+bool DocumentObjectItem::hasErrorInDescendants() const
+{
+    const auto& table = getTree()->ObjectTable;
+    std::set<App::DocumentObject*> visited;
+    std::vector<App::DocumentObject*> pending(myData->children.begin(), myData->children.end());
+    while (!pending.empty()) {
+        auto obj = pending.back();
+        pending.pop_back();
+        if (!obj || !obj->isAttachedToDocument() || !visited.insert(obj).second) {
+            continue;
+        }
+        if (obj->isError()) {
+            return true;
+        }
+        auto it = table.find(obj);
+        if (it != table.end() && !it->second.empty()) {
+            const auto& children = (*it->second.begin())->children;
+            pending.insert(pending.end(), children.begin(), children.end());
+        }
+    }
+    return false;
 }
 
 QVariant DocumentObjectItem::data(int column, int role) const
