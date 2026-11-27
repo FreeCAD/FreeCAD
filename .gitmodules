@@ -15,3 +15,6 @@
 	path = src/3rdParty/pivy
 	url = https://github.com/FreeCAD/pivy.git
 	branch = freecad-master
+[submodule "src/3rdParty/exprtk"]
+	path = src/3rdParty/exprtk
+	url = https://github.com/ArashPartow/exprtk

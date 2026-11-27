@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2026 F. Foinant-Willig <flachyjoe@gmail.com>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
