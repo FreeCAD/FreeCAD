@@ -122,6 +122,7 @@
 #include <Base/Tools.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include <App/FeaturePythonPyImp.h>
 #include "DrawComplexSection.h"
@@ -221,7 +222,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     return cuttingTool;
 }
 
-TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
+Part::TopoShape DrawComplexSection::getShapeToPrepare() const
 {
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
@@ -232,7 +233,7 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 }
 
 //get the shape ready for projection and cut surface finding
-TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, double shapeSize)
+Part::TopoShape DrawComplexSection::prepareShape(const Part::TopoShape& cutShape, double shapeSize)
 {
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
@@ -240,7 +241,7 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
     }
 
     //"Aligned" projection (Aligned Section)
-    if (m_alignResult.IsNull()) {
+    if (m_alignResult.isNull()) {
         return {};
     }
 
@@ -253,14 +254,14 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
     }
 
     if (debugSection()) {
-        BRepTools::Write(m_preparedShape, "DCSprepareShape_preparedShape.brep"); //debug
+        BRepTools::Write(m_preparedShape.getShape(), "DCSprepareShape_preparedShape.brep"); //debug
     }
 
     return m_preparedShape;
 }
 
 
-void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
+void DrawComplexSection::makeSectionCut(const Part::TopoShape& baseShape)
 {
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
@@ -271,11 +272,11 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         connectAlignWatcher =
             QObject::connect(&m_alignWatcher, &QFutureWatcherBase::finished, &m_alignWatcher,
                              [this] { this->onSectionCutFinished(); });
-
         // We create a lambda closure to hold a copy of baseShape.
         // This is important because this variable might be local to the calling
         // function and might get destructed before the parallel processing finishes.
-        auto lambda = [this, baseShape]{this->makeAlignedPieces(baseShape);};
+        Part::TopoShape alignShape = baseShape.makeElementCopy();
+        auto lambda = [this, alignShape]{this->makeAlignedPieces(alignShape);};
         m_alignFuture = QtConcurrent::run(std::move(lambda));
         m_alignWatcher.setFuture(m_alignFuture);
         waitingForAlign(true);
@@ -304,7 +305,7 @@ void DrawComplexSection::onSectionCutFinished()
 
 //! for Aligned strategy, cut the rawShape by each segment of the tool profile and arrange the
 //! cut results in order.
-void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
+void DrawComplexSection::makeAlignedPieces(const Part::TopoShape& rawShape)
 {
     if (!canBuild(getSectionCS(), CuttingToolWireObject.getValue())) {
         throw Base::RuntimeError("Profile is parallel to Section Normal");
@@ -329,7 +330,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 
     // we should wind up with one entry per segment of the profile
     // this should be done with map and a response class
-    std::vector<TopoDS_Shape> pieces(edgesAll.size());       // results of cutting source with each segment's tool shape
+    std::vector<Part::TopoShape> pieces(edgesAll.size());    // results of cutting source with each segment's tool shape
     std::vector<double> pieceXSizeAll(edgesAll.size());      //size in sectionCS.XDirection (width)
     std::vector<double> pieceYSizeAll(edgesAll.size());      //size in sectionCS.YDirection (height)
     std::vector<double> pieceZSizeAll(edgesAll.size());    //size in sectionCS.Direction (depth)
@@ -366,11 +367,11 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         }
 
         double pieceVertical{0};
-        TopoDS_Shape rotatedPiece = cutAndRotatePiece(rawShape, face, segmentIndex, segmentNormal, pieceVertical);
+        Part::TopoShape rotatedPiece = cutAndRotatePiece(rawShape, face, segmentIndex, segmentNormal, pieceVertical);
         if (debugSection()) {
             stringstream ss;
             ss << "DCSmakeAlignedPieces_cutAndRotatedPiece" << segmentIndex << ".brep";
-            BRepTools::Write(rotatedPiece, ss.str().c_str());//debug
+            BRepTools::Write(rotatedPiece.getShape(), ss.str().c_str());//debug
         }
 
         AlignedSizeResponse sizeResponse = getAlignedSize(rotatedPiece, segmentIndex);
@@ -383,21 +384,21 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         if (debugSection()) {
             stringstream ss;
             ss << "DCSAlignedPiece" << segmentIndex << ".brep";
-            BRepTools::Write(sizeResponse.alignedPiece, ss.str().c_str());//debug
+            BRepTools::Write(sizeResponse.alignedPiece.getShape(), ss.str().c_str());//debug
         }
 
         auto pieceOnPlane = movePieceToPaperPlane(sizeResponse.alignedPiece, sizeResponse.zMax);
         if (debugSection()) {
             stringstream ss;
             ss << "DCSpieceOnPlane" << segmentIndex << ".brep";
-            BRepTools::Write(pieceOnPlane, ss.str().c_str());//debug
+            BRepTools::Write(pieceOnPlane.getShape(), ss.str().c_str());//debug
         }
         // pieceOnPlane is on the paper plane, with piece centroid at the origin
         pieces.at(segmentIndex) = pieceOnPlane;
     }
 
     if (pieces.empty()) {
-        m_alignResult = TopoDS_Compound();
+        m_alignResult = Part::TopoShape();
         Base::Console().message("DCS::makeAlignedPieces - no result\n");
         return;
     }
@@ -427,35 +428,29 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         if (debugSection()) {
             stringstream ss;
             ss << "DCSMovedPiece" << iPiece << ".brep";
-            BRepTools::Write(pieces.at(iPiece), ss.str().c_str());//debug
+            BRepTools::Write(pieces.at(iPiece).getShape(), ss.str().c_str());//debug
         }
     }
 
     //make a compound of the aligned pieces
-    BRep_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    for (auto& piece : pieces) {
-        builder.Add(comp, piece);
-    }
+    Part::TopoShape comp = Part::TopoShape(0, rawShape.Hasher).makeElementCompound(pieces);
 
     //center the compound along SectionCS XDirection
     Base::Vector3d centerVector = Base::convertTo<Base::Vector3d>(gMovementVector) * cursorPosition / -2;
-    TopoDS_Shape centeredCompound = ShapeUtils::moveShape(comp, centerVector);
+    Part::TopoShape centeredCompound = ShapeUtils::moveShape(comp, centerVector);
 
     if (debugSection()) {
-        BRepTools::Write(centeredCompound, "DCSmap40CenteredCompound.brep");//debug
+        BRepTools::Write(centeredCompound.getShape(), "DCSmap40CenteredCompound.brep");//debug
     }
 
     // re-align our shape with the projection CS
     gp_Ax3 stdCS;                                 //OXYZ
     gp_Trsf xPieceAlign;
     xPieceAlign.SetTransformation(getProjectionCS(), stdCS);
-    BRepBuilderAPI_Transform mkTransAlign(centeredCompound, xPieceAlign);
-    TopoDS_Shape alignedCompound = mkTransAlign.Shape();
+    Part::TopoShape alignedCompound = centeredCompound.makeElementTransform(xPieceAlign);
 
     if (debugSection()) {
-        BRepTools::Write(alignedCompound, "DCSmap50AlignedCompound.brep");//debug
+        BRepTools::Write(alignedCompound.getShape(), "DCSmap50AlignedCompound.brep");//debug
     }
 
     m_alignResult = alignedCompound;
@@ -565,10 +560,10 @@ TopoDS_Shape DrawComplexSection::getShapeToIntersect()
         return DrawViewSection::getShapeToIntersect();
     }
     //Aligned
-    return m_preparedShape;
+    return m_preparedShape.getShape();
 }
 
-TopoDS_Shape DrawComplexSection::getShapeForDetail() const
+Part::TopoShape DrawComplexSection::getShapeForDetail() const
 {
     if (ProjectionStrategy.getValue() == 0) {//Offset
         return DrawViewSection::getShapeForDetail();
@@ -917,7 +912,7 @@ bool DrawComplexSection::validateProfilePosition(const TopoDS_Wire& profileWire,
 
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
-    BRepBndLib::AddOptimal(m_saveShape, shapeBox);
+    BRepBndLib::AddOptimal(m_saveShape.getShape(), shapeBox);
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;   //NOLINT
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     double spanLow = xMin;
@@ -1014,15 +1009,15 @@ bool DrawComplexSection::boxesIntersect(TopoDS_Face& face, TopoDS_Shape& shape)
     return !box0.IsOut(box1);
 }
 
-TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape& shape0,
-                                                     const TopoDS_Shape& shape1)
+Part::TopoShape DrawComplexSection::shapeShapeIntersect(const Part::TopoShape& shape0,
+                                                        const Part::TopoShape& shape1)
 {
     FCBRepAlgoAPI_Common anOp;
     anOp.SetFuzzyValue(EWTOLERANCE);
     TopTools_ListOfShape anArg1;
     TopTools_ListOfShape anArg2;
-    anArg1.Append(shape0);
-    anArg2.Append(shape1);
+    anArg1.Append(shape0.getShape());
+    anArg2.Append(shape1.getShape());
     anOp.SetArguments(anArg1);
     anOp.SetTools(anArg2);
     anOp.Build();
@@ -1030,14 +1025,15 @@ TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape& shape0,
     if (isTrulyEmpty(result)) {
         return {};
     }
-    return result;
+    return Part::TopoShape(0, shape1.Hasher).makeElementShape(
+        anOp, std::vector<Part::TopoShape>{shape0, shape1}, Part::OpCodes::Common);
 }
 
 //find all the intersecting regions of face and shape
 std::vector<TopoDS_Face> DrawComplexSection::faceShapeIntersect(const TopoDS_Face& face,
                                                                 const TopoDS_Shape& shape)
 {
-    TopoDS_Shape intersect = shapeShapeIntersect(face, shape);
+    TopoDS_Shape intersect = shapeShapeIntersect(face, shape).getShape();
     if (intersect.IsNull()) {
         return {};
     }
@@ -1223,33 +1219,30 @@ bool DrawComplexSection::getReversers(const gp_Vec& gProfileVec, double& horizRe
 //! align a copy of the piece with OXYZ so we can use bounding box to get
 //! width, depth, height of the piece. We copy the piece so the transformation
 //! does not affect the original.
-AlignedSizeResponse DrawComplexSection::getAlignedSize(const TopoDS_Shape& pieceRotated,
+AlignedSizeResponse DrawComplexSection::getAlignedSize(const Part::TopoShape& pieceRotated,
                                                   int iPiece) const
 {
     gp_Ax3 stdCS;                                 //OXYZ
-    BRepBuilderAPI_Copy BuilderPieceCopy(pieceRotated);
-    TopoDS_Shape copyPieceRotatedShape = BuilderPieceCopy.Shape();
+    Part::TopoShape copyPieceRotatedShape = pieceRotated.makeElementCopy();
     gp_Trsf xPieceAlign;
     xPieceAlign.SetTransformation(stdCS, getProjectionCS());
-    BRepBuilderAPI_Transform mkTransAlign(copyPieceRotatedShape, xPieceAlign);
-    TopoDS_Shape pieceAligned = mkTransAlign.Shape();
+    Part::TopoShape pieceAligned = copyPieceRotatedShape.makeElementTransform(xPieceAlign);
     // we may have shifted our piece off center, so we better recenter here
     gp_Trsf xPieceRecenter;
-    gp_Vec rotatedCentroid = gp_Vec(ShapeUtils::findCentroid(pieceAligned).XYZ());
+    gp_Vec rotatedCentroid = gp_Vec(ShapeUtils::findCentroid(pieceAligned.getShape()).XYZ());
     xPieceRecenter.SetTranslation(rotatedCentroid * -1.0);
-    BRepBuilderAPI_Transform mkTransRecenter(pieceAligned, xPieceRecenter, true);
-    pieceAligned = mkTransRecenter.Shape();
+    pieceAligned = pieceAligned.makeElementTransform(xPieceRecenter, nullptr, Part::CopyType::copy);
 
     if (debugSection()) {
         stringstream ss;
         ss << "DCSDpieceAligned" << iPiece << ".brep";
-        BRepTools::Write(pieceAligned, ss.str().c_str());//debug
+        BRepTools::Write(pieceAligned.getShape(), ss.str().c_str());//debug
         ss.clear();
         ss.str(std::string());
     }
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
-    BRepBndLib::AddOptimal(pieceAligned, shapeBox);
+    BRepBndLib::AddOptimal(pieceAligned.getShape(), shapeBox);
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;  //NOLINT
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     double pieceXSize(xMax - xMin);
@@ -1261,7 +1254,7 @@ AlignedSizeResponse DrawComplexSection::getAlignedSize(const TopoDS_Shape& piece
 
 //! cut the rawShape with a tool derived from the segmentFace and align the result with the
 //! page plane.  Also supplies the piece size.
-TopoDS_Shape DrawComplexSection::cutAndRotatePiece(const TopoDS_Shape& rawShape,
+Part::TopoShape DrawComplexSection::cutAndRotatePiece(const Part::TopoShape& rawShape,
                                                       const TopoDS_Face& segmentFace,
                                                       int iPiece,               // for debug only
                                                       Base::Vector3d uOrientedSegmentNormal,
@@ -1273,14 +1266,14 @@ TopoDS_Shape DrawComplexSection::cutAndRotatePiece(const TopoDS_Shape& rawShape,
 
     BRepPrimAPI_MakePrism mkPrism(segmentFace, extrudeVec);
     TopoDS_Shape segmentTool = mkPrism.Shape();
-    TopoDS_Shape intersect = shapeShapeIntersect(segmentTool, rawShape);
-    if (intersect.IsNull()) {
+    Part::TopoShape intersect = shapeShapeIntersect(segmentTool, rawShape);
+    if (intersect.isNull()) {
         return {};
     }
     if (debugSection()) {
         stringstream ss;
         ss << "DCSAintersect" << iPiece << ".brep";
-        BRepTools::Write(intersect, ss.str().c_str());//debug
+        BRepTools::Write(intersect.getShape(), ss.str().c_str());//debug
         ss.clear();
         ss.str(std::string());
     }
@@ -1288,7 +1281,7 @@ TopoDS_Shape DrawComplexSection::cutAndRotatePiece(const TopoDS_Shape& rawShape,
     // move intersection shape to the origin so we can rotate it without worrying about
     // center of rotation.
     gp_Trsf xPieceCenter;
-    gp_Vec pieceCentroid = gp_Vec(ShapeUtils::findCentroid(intersect).XYZ());
+    gp_Vec pieceCentroid = gp_Vec(ShapeUtils::findCentroid(intersect.getShape()).XYZ());
 
     // save the amount we moved this piece in the vertical direction so we can
     // put it back in the right place later
@@ -1297,12 +1290,11 @@ TopoDS_Shape DrawComplexSection::cutAndRotatePiece(const TopoDS_Shape& rawShape,
     pieceVertical = maskedVertical.X() + maskedVertical.Y() + maskedVertical.Z();
 
     xPieceCenter.SetTranslation(pieceCentroid * -1.0);
-    BRepBuilderAPI_Transform mkTransXLate(intersect, xPieceCenter, true);
-    TopoDS_Shape pieceCentered = mkTransXLate.Shape();
+    Part::TopoShape pieceCentered = intersect.makeElementTransform(xPieceCenter, nullptr, Part::CopyType::copy);
     if (debugSection()) {
         stringstream ss;
         ss << "DCSBpieceCentered" << iPiece << ".brep";
-        BRepTools::Write(pieceCentered, ss.str().c_str());//debug
+        BRepTools::Write(pieceCentered.getShape(), ss.str().c_str());//debug
         ss.clear();
         ss.str(std::string());
     }
@@ -1317,28 +1309,27 @@ TopoDS_Shape DrawComplexSection::cutAndRotatePiece(const TopoDS_Shape& rawShape,
     pieceCS.Rotate(faceAxis, faceAngle);
     gp_Trsf xPieceRotate;
     xPieceRotate.SetTransformation(stdCS, pieceCS);
-    BRepBuilderAPI_Transform mkTransRotate(pieceCentered, xPieceRotate, true);
-    TopoDS_Shape pieceRotated = mkTransRotate.Shape();
+    Part::TopoShape pieceRotated = pieceCentered.makeElementTransform(xPieceRotate, nullptr, Part::CopyType::copy);
 
     return pieceRotated;
 }
 
-TopoDS_Shape DrawComplexSection::movePieceToPaperPlane(const TopoDS_Shape& piece, double sizeMax)
+Part::TopoShape DrawComplexSection::movePieceToPaperPlane(const Part::TopoShape& piece, double sizeMax)
 {
     //now we need to move the piece so that the interesting face is coincident
     //with the paper plane (stdXY).  This will be a move along stdZ by -zMax.
     gp_Vec toPaperPlane = gp::OZ().Direction().XYZ() * sizeMax * -1.0;
     gp_Trsf xPieceToPlane;
     xPieceToPlane.SetTranslation(toPaperPlane);
-    BRepBuilderAPI_Transform mkTransDisplace(piece, xPieceToPlane, true);
-    TopoDS_Shape pieceToPlane = mkTransDisplace.Shape();
+    Part::TopoShape pieceToPlane = Part::TopoShape(piece.Tag, piece.Hasher)
+                                       .makeElementTransform(piece, xPieceToPlane, nullptr, Part::CopyType::copy);
 
     // piece is on the paper plane, with piece centroid at the origin
     return pieceToPlane;
 }
 
 //! move the piece to its position across the page (X for a left right profile)
-TopoDS_Shape DrawComplexSection::distributePiece(const TopoDS_Shape& piece,
+Part::TopoShape DrawComplexSection::distributePiece(const Part::TopoShape& piece,
                                                  double pieceSizeInDirection,
                                                  double verticalDisplace,
                                                  const gp_Vec& alignmentAxis,
@@ -1351,8 +1342,8 @@ TopoDS_Shape DrawComplexSection::distributePiece(const TopoDS_Shape& piece,
 
     gp_Trsf xPieceDistribute;
     xPieceDistribute.SetTranslation(netDisplacementVector);
-    BRepBuilderAPI_Transform mkTransDistribute(piece, xPieceDistribute, true);
-    auto distributedPiece = mkTransDistribute.Shape();
+    Part::TopoShape distributedPiece = Part::TopoShape(piece.Tag, piece.Hasher)
+                                           .makeElementTransform(piece, xPieceDistribute, nullptr, Part::CopyType::copy);
 
     return distributedPiece;
 }

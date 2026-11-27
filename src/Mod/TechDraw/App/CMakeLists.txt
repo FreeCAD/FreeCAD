@@ -191,6 +191,8 @@ SET(Geometry_SRCS
     CosmeticExtension.h
     GeometryMatcher.cpp
     GeometryMatcher.h
+    HLRExtractor.cpp
+    HLRExtractor.h
 )
 
 SET(Python_SRCS
