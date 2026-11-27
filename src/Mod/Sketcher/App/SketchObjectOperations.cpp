@@ -213,6 +213,7 @@ std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdL
     return dst;
 }
 
+// clang-format on
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
@@ -236,8 +237,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
     const Part::Geometry* geo1 = getGeometry(GeoIdList[0]);
     const Part::Geometry* geo2 = getGeometry(GeoIdList[1]);
 
-    if (geo1->is<Part::GeomLineSegment>()
-        && geo2->is<Part::GeomLineSegment>()) {
+    if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
         auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
         auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
 
@@ -246,34 +246,80 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
         return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
     }
     // TODO: Find a way to eval two correct points that can be bound by an arc created using
-    // Here is an attempt for reference, works some times but it depends on the curves, their direction, etc
-    // else if (geo1->isDerivedFrom<Part::GeomCurve>()
+    // Here is an attempt for reference, works some times but it depends on the curves, their
+    // direction, etc else if (geo1->isDerivedFrom<Part::GeomCurve>()
     //     && geo2->isDerivedFrom<Part::GeomCurve>()) {
     //     auto* lineSeg1 = static_cast<const Part::GeomCurve*>(geo1);
     //     auto* lineSeg2 = static_cast<const Part::GeomCurve*>(geo2);
 
-    //     // .05 is a safe bet, if the param becomes too large, it won't be able to form the fillet's arc
-    //     Base::Vector3d midPnt1 = lineSeg1->pointAtParameter(.05f);
-    //     Base::Vector3d midPnt2 = lineSeg2->pointAtParameter(.05f);
-    //     return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
+    //     // .05 is a safe bet, if the param becomes too large, it won't be able to form the
+    //     fillet's arc Base::Vector3d midPnt1 = lineSeg1->pointAtParameter(.05f); Base::Vector3d
+    //     midPnt2 = lineSeg2->pointAtParameter(.05f); return fillet(GeoIdList[0], GeoIdList[1],
+    //     midPnt1, midPnt2, radius, trim, createCorner, chamfer);
     // }
 
     return -1;
 }
 
-int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
-                         const Base::Vector3d& refPnt2, double radius, bool trim, bool createCorner, bool chamfer)
+int SketchObject::fillet(
+    int GeoId1,
+    int GeoId2,
+    const Base::Vector3d& refPnt1,
+    const Base::Vector3d& refPnt2,
+    double radius,
+    bool trim,
+    bool createCorner,
+    bool chamfer
+)
 {
-    if (GeoId1 < 0 || GeoId1 > getHighestCurveIndex() || GeoId2 < 0 || GeoId2 > getHighestCurveIndex()) {
+    if (GeoId1 < 0 || GeoId1 > getHighestCurveIndex() || GeoId2 < 0
+        || GeoId2 > getHighestCurveIndex()) {
         return -1;
     }
 
     // two geometries can only get filleted if they have a coincident point
-    std::vector<int> GeoIdList;
-    std::vector<PointPos> PosIdList;
-    getDirectlyCoincidentPoints(GeoId1, GeoId2, GeoIdList, PosIdList);
+    using Point = std::pair<int, PointPos>;
+    std::map<Point, std::vector<Point>> connections;
 
-    if (GeoIdList.size() < 1) {
+    for (const auto* c : Constraints.getValues()) {
+        if (c->Type != Sketcher::Coincident && c->Type != Sketcher::Tangent) {
+            continue;
+        }
+        if (c->FirstPos == PointPos::none || c->SecondPos == PointPos::none) {
+            continue;
+        }
+
+        const Point a {c->First, c->FirstPos}, b {c->Second, c->SecondPos};
+        connections[a].push_back(b);
+        connections[b].push_back(a);
+    }
+
+    std::set<Point> visited;
+    std::vector<Point> pending;
+
+    for (const auto& [p, _] : connections) {
+        if (p.first == GeoId1) {
+            pending.push_back(p);
+        }
+    }
+
+    bool coincident = false;
+    while (!pending.empty()) {
+        Point p = pending.back();
+        pending.pop_back();
+        if (!visited.insert(p).second) {
+            continue;
+        }
+        if (p.first == GeoId2) {
+            coincident = true;
+            break;
+        }
+        for (const auto& next : connections.at(p)) {
+            pending.push_back(next);
+        }
+    }
+
+    if (!coincident) {
         return -1;
     }
 
@@ -288,7 +334,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     int pos2 = 0;
     bool reverse = false;
     Base::Vector3d cornerPoint;
-    std::unique_ptr<Part::GeomArcOfCircle> arc(createFilletGeometry(geo1, geo2, refPnt1, refPnt2, radius, pos1, pos2, reverse, cornerPoint));
+    std::unique_ptr<Part::GeomArcOfCircle> arc(
+        createFilletGeometry(geo1, geo2, refPnt1, refPnt2, radius, pos1, pos2, reverse, cornerPoint)
+    );
     if (!arc) {
         return -1;
     }
@@ -306,7 +354,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d p1 = arc->getStartPoint(true);
     Base::Vector3d p2 = arc->getEndPoint(true);
 
-    if(!reverse) {
+    if (!reverse) {
         std::swap(p1, p2);
     }
 
@@ -314,12 +362,15 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         // Stays undefined/-1 if createCorner=false
         int newId1 = -1, newId2 = -1;
         bool swapped1 = false, swapped2 = false;
-        // When keeping the corner, we split the original geometry into two and turn the two geometries that form the corner into construction geometry.
-        // To keep the indices stable, we have to swap the ids:
+        // When keeping the corner, we split the original geometry into two and turn the two
+        // geometries that form the corner into construction geometry. To keep the indices stable,
+        // we have to swap the ids:
         //  * GeoId1,2 are the non-construction geometries
         //  * newId1,2 are the construction geometries, relative to GeoId1,2
-        //  * swapped1,2 indicates if the construction geometries and original ones had to be swapped
-        // This is because SketchObject::split pushes the new geometry, which is created on the PointPos::end side of the curve, at the end of SketchObject::Geometry
+        //  * swapped1,2 indicates if the construction geometries and original ones had to be
+        //  swapped
+        // This is because SketchObject::split pushes the new geometry, which is created on the
+        // PointPos::end side of the curve, at the end of SketchObject::Geometry
 
         // The resulting ids from this operation:
         // [GeoId1, GeoId2, ...]
@@ -355,15 +406,16 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             else {
                 // Add construction geometry
 
-                auto splitCornerPiece = [&](int& geoId, PointPos pos, const Base::Vector3d& point) -> std::pair<int, bool>
-                {
+                auto splitCornerPiece = [&](int& geoId,
+                                            PointPos pos,
+                                            const Base::Vector3d& point) -> std::pair<int, bool> {
                     int highest = getHighestCurveIndex();
 
                     split(geoId, point);
                     int newId = highest + 1;
 
                     const bool needsSwap = pos == PointPos::start;
-                    if(needsSwap) {
+                    if (needsSwap) {
                         std::swap(newId, geoId);
                     }
 
@@ -386,23 +438,23 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         moveGeometry(GeoId1, PosId1, p1, false, true);
         moveGeometry(GeoId2, PosId2, p2, false, true);
 
-        auto makeTangent = [&](int firstGeoId, PointPos firstPosId,
-                               int secondGeoId, PointPos secondPosId) {
-            auto tangent = std::make_unique<Sketcher::Constraint>();
-            tangent->Type = Sketcher::Tangent;
+        auto makeTangent =
+            [&](int firstGeoId, PointPos firstPosId, int secondGeoId, PointPos secondPosId) {
+                auto tangent = std::make_unique<Sketcher::Constraint>();
+                tangent->Type = Sketcher::Tangent;
 
-        #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            tangent->First = firstGeoId;
-            tangent->FirstPos = firstPosId;
-            tangent->Second = secondGeoId;
-            tangent->SecondPos = secondPosId;
-        #else
-            tangent->addElement(GeoElementId(firstGeoId, firstPosId));
-            tangent->addElement(GeoElementId(secondGeoId, secondPosId));
-        #endif
+#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+                tangent->First = firstGeoId;
+                tangent->FirstPos = firstPosId;
+                tangent->Second = secondGeoId;
+                tangent->SecondPos = secondPosId;
+#else
+                tangent->addElement(GeoElementId(firstGeoId, firstPosId));
+                tangent->addElement(GeoElementId(secondGeoId, secondPosId));
+#endif
 
-            addConstraint(std::move(tangent));
-        };
+                addConstraint(std::move(tangent));
+            };
 
         makeTangent(GeoId1, PosId1, filletId, filletPosId1);
         makeTangent(GeoId2, PosId2, filletId, filletPosId2);
@@ -410,13 +462,15 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         if (createCorner) {
             // Swapping the geometry and construction geometry to keep the ids stable
             const auto swapGeometries = [&](int geoId, int newId, bool swapped) {
-                if(swapped) {
+                if (swapped) {
                     return;
                 }
 
-                // the original geometry should keep its id, the new construction geometry should be added at the end
-                // because split splits depending on the endpoints, we cannot control which geometry keeps the original id and which one get added at the end.
-                // So at this point, we swap the geometries and associated constraints to keep the order correct
+                // the original geometry should keep its id, the new construction geometry should be
+                // added at the end because split splits depending on the endpoints, we cannot
+                // control which geometry keeps the original id and which one get added at the end.
+                // So at this point, we swap the geometries and associated constraints to keep the
+                // order correct
 
                 const auto& allConstraints = this->Constraints.getValues();
 
@@ -482,6 +536,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
     return 0;
 }
+// clang-format off
 
 SketchSolveStatus SketchObject::extend(int GeoId, double increment, PointPos endpoint)
 {
