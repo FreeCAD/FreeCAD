@@ -75,7 +75,7 @@ jobs:
           git push origin "$PR_BRANCH" --force
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@15733dbdfeedb4f7fdb73d13c6f5ac83b710fab8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1
         with:
           branch: ${{ env.PR_BRANCH }}
           base: ${{ env.TRANSLATION_REF }}
