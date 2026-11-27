@@ -48,6 +48,14 @@ public:
             "top side), and Length. If not, the result is None."
         );
         add_varargs_method(
+            "modelInfo",
+            &Module::modelInfo,
+            "modelInfo(feature) -> dict\n"
+            "The structure of the sheet model of a feature: Thickness, Panels (the count), Root\n"
+            "(the index of the root panel), and Bends. Each bend is a dict with Parent, Child,\n"
+            "Start, End, Normal (in flat space), Angle (radians), Up, Radius, Allowance, Closing."
+        );
+        add_varargs_method(
             "bendCount",
             &Module::bendCount,
             "bendCount(feature) -> int\n"
@@ -66,6 +74,63 @@ public:
     }
 
 private:
+    Py::Object modelInfo(const Py::Tuple& args)
+    {
+        PyObject* object = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(App::DocumentObjectPy::Type), &object)) {
+            throw Py::Exception();
+        }
+        auto* feature = freecad_cast<SheetDesign::Feature*>(
+            static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr()
+        );
+        if (!feature) {
+            throw Py::TypeError("The object is not a sheet design feature");
+        }
+        try {
+            std::shared_ptr<const SheetDesign::SheetModel> sheet = feature->getModel();
+            auto point = [](double x, double y) {
+                Py::Tuple value(2);
+                value.setItem(0, Py::Float(x));
+                value.setItem(1, Py::Float(y));
+                return value;
+            };
+            Py::Dict info;
+            info.setItem("Thickness", Py::Float(sheet->params.thickness));
+            info.setItem("Panels", Py::Long(static_cast<long>(sheet->panels.size())));
+            long root = 0;
+            for (std::size_t i = 0; i < sheet->panels.size(); ++i) {
+                if (sheet->panels[i].parentBend < 0) {
+                    root = static_cast<long>(i);
+                    break;
+                }
+            }
+            info.setItem("Root", Py::Long(root));
+            Py::List bends;
+            for (const SheetDesign::Bend& bend : sheet->bends) {
+                Py::Dict item;
+                item.setItem("Parent", Py::Long(static_cast<long>(bend.parentPanel)));
+                item.setItem("Child", Py::Long(static_cast<long>(bend.childPanel)));
+                item.setItem("Start", point(bend.start.X(), bend.start.Y()));
+                item.setItem("End", point(bend.end.X(), bend.end.Y()));
+                item.setItem("Normal", point(bend.normal.X(), bend.normal.Y()));
+                item.setItem("Angle", Py::Float(bend.angle));
+                item.setItem("Up", Py::Boolean(bend.up));
+                item.setItem("Radius", Py::Float(bend.radius));
+                item.setItem("Allowance", Py::Float(bend.allowance));
+                item.setItem("Closing", Py::Boolean(bend.closing));
+                bends.append(item);
+            }
+            info.setItem("Bends", bends);
+            return info;
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        catch (const Standard_Failure& e) {
+            throw Py::RuntimeError(e.GetMessageString());
+        }
+    }
+
     Py::Object bendCount(const Py::Tuple& args)
     {
         PyObject* object = nullptr;
