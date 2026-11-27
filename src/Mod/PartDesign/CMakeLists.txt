@@ -69,6 +69,7 @@ set(PartDesign_TestScripts
 
 if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
+        PartDesignTests/TestDeleteFeatureGui.py
         PartDesignTests/TestMaterial.py
         PartDesignTests/TestSuppressed.py
     )

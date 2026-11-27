@@ -244,6 +244,40 @@ bool ViewProviderBody::isActiveBody()
     }
 }
 
+App::DocumentObject* ViewProviderBody::getDeleteTarget(App::DocumentObject* context) const
+{
+    // The only body of its document is what is being modelled, not a component among
+    // others: what is selected in it is deleted as if the body was active. An instance of
+    // it (a Link) is still deleted as a whole.
+    const App::Document* doc = getObject()->getDocument();
+    if (context == getObject() && doc && doc->countObjectsOfType<PartDesign::Body>() == 1) {
+        return nullptr;
+    }
+
+    auto* activeView = Gui::Application::Instance->activeView();
+    if (!activeView) {
+        return context;
+    }
+
+    App::DocumentObject* activeParent = nullptr;
+    std::string activeSubName;
+    auto* activeBody
+        = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &activeParent, &activeSubName);
+    if (activeBody != getObject() || !activeParent) {
+        return context;
+    }
+
+    // getActiveObject() resolves links, so compare the stored activation path
+    // to distinguish two Link instances that reference the same Body.
+    for (auto* obj : activeParent->getSubObjectList(activeSubName.c_str())) {
+        if (obj && obj->getLinkedObject(true) == activeBody) {
+            return obj == context ? nullptr : context;
+        }
+    }
+
+    return context;
+}
+
 void ViewProviderBody::toggleActiveBody()
 {
     if (isActiveBody()) {
