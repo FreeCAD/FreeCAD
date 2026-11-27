@@ -23,6 +23,8 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchValidateCoincidents.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
+    SketcherTests/TestPerpendicularArcProjection.py
+    SketcherTests/TestPerpendicularArcProjection.FCStd
     SketcherTests/TestSketchInternalFaces.py
     SketcherTests/TestSketcherEllipse.py
 )
