@@ -16,6 +16,7 @@ set(PartDesign_Scripts
 if(BUILD_GUI)
     list (APPEND PartDesign_Scripts
           InitGui.py
+          FormSurfaceFeature.py
           TestPartDesignGui.py
           TestPartDesignPatternLabelsGui.py
           InvoluteGearFeature.py
@@ -59,6 +60,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestBoolean.py
     PartDesignTests/TestBaseFeature.py
     PartDesignTests/TestFillet.py
+    PartDesignTests/TestFormSurface.py
     PartDesignTests/TestChamfer.py
     PartDesignTests/TestDraft.py
     PartDesignTests/TestThickness.py

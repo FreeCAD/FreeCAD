@@ -26,6 +26,7 @@
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFDouble.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -82,6 +83,38 @@ class GuiExport SoTransformDragger: public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorDragger);
+    // Planar scale
+    SO_KIT_CATALOG_ENTRY_HEADER(planarScaleSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleXSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleXSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleXSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleXRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleXRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleXRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleXDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleXDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleXDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleYSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleYSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleYSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleYRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleYRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleYRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleYDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleYDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleYDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarScaleUniformDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarScaleUniformDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarScaleUniformDragger);
     // Rotator
     SO_KIT_CATALOG_ENTRY_HEADER(xRotatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yRotatorDragger);
@@ -103,6 +136,9 @@ public:
     SoSFInt32 rotationIncrementCountX;  //!< used from outside for rotation x steps.
     SoSFInt32 rotationIncrementCountY;  //!< used from outside for rotation y steps.
     SoSFInt32 rotationIncrementCountZ;  //!< used from outside for rotation z steps.
+
+    SoSFVec3f planarScaleFactor;  //!< requested scale in the dragger coordinate system.
+    SoSFBool planarScaleVisible;  //!< show the nine planar scale controls.
 
     SoSFString xAxisLabel;  //!< label for X axis
     SoSFString yAxisLabel;  //!< label for Y axis
@@ -169,6 +205,8 @@ protected:
 
     static void translationSensorCB(void* f, SoSensor*);
     static void rotationSensorCB(void* f, SoSensor*);
+    static void planarScaleValueChangedCB(void* f, SoDragger* d);
+    static void planarScaleFinishCB(void* f, SoDragger* d);
     static void valueChangedCB(void*, SoDragger* d);
     static void cameraCB(void* data, SoSensor*);
     static void idleCB(void* data, SoSensor*);  //!< scheduled from cameraCB to auto scale dragger.
@@ -185,6 +223,7 @@ private:
     SbVec3f axisScale;
 
     bool scaleInited {false};
+    bool resettingPlanarScale {false};
 
     void updateAxisScale();
 
