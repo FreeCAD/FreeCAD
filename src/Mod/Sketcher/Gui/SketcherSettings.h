@@ -47,8 +47,6 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
-    void resetSettingsToDefaults() override;
-
 protected:
     void changeEvent(QEvent* e) override;
     void dimensioningModeChanged(int index);
@@ -56,6 +54,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_SketcherSettings> ui;
+    void resetSettingsToDefaults() override;
 };
 
 /**
@@ -73,6 +72,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -134,6 +134,9 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
+
+    static void loadThemeDefaults();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -152,7 +155,7 @@ enum class AutoScaleMode : int
 
     // Attempts to find scale reference objects int the viewport
     // (such as a 3d body) and disable the feature if it finds one
-    WhenNoScaleFeatureIsVisible = 2
+    WhenNoScaleFeatureIsVisible = 2,
 };
 
 }  // namespace SketcherGui

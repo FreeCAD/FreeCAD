@@ -25,6 +25,8 @@
  ***************************************************************************/
 
 
+#include <Gui/PreferencePages/ThemeDefaults.h>
+
 #include "DlgPrefsTechDrawColorsImp.h"
 #include "ui_DlgPrefsTechDrawColors.h"
 
@@ -95,6 +97,14 @@ void DlgPrefsTechDrawColorsImp::loadSettings()
     ui->pcbLightTextColor->onRestore();
     ui->pcbUnderline->onRestore();
     ui->pcb_Breakline->onRestore();
+}
+
+void DlgPrefsTechDrawColorsImp::resetSettingsToDefaults()
+{
+    PreferencePage::resetSettingsToDefaults();
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    Gui::ThemeDefaults::applyWidgetColors(this);
+    loadSettings();
 }
 
 /**

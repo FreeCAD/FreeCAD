@@ -48,6 +48,9 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
+
+    static void loadThemeDefaults();
 
     void loadStyleSheet();
 
