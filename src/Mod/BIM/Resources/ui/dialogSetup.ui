@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</string>
+      <string>This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; BIM Setup, and more options are available under the Edit -&gt; Preferences menu.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

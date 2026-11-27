@@ -81,29 +81,6 @@ class BIM_Setup:
             import RebarTools
         except ImportError:
             m.append("Reinforcement")
-        # disabled as WebTools can currentyl not be installed because of WebGui dependency
-        # try:
-        #    import BIMServer
-        # except ImportError:
-        #    m.append("WebTools")
-        if sys.version_info.major < 3:
-            try:
-                import CommandsFrame
-            except ImportError:
-                m.append("Flamingo")
-        else:
-            try:
-                import CFrame
-            except ImportError:
-                m.append("Dodo")
-        try:
-            import FastenerBase
-        except ImportError:
-            m.append("Fasteners")
-        try:
-            import report
-        except ImportError:
-            m.append("Reporting")
         try:
             import ifcopenshell
         except ImportError:
@@ -130,10 +107,10 @@ class BIM_Setup:
             t = (
                 translate(
                     "BIM",
-                    "Some additional workbenches are not installed, that extend BIM functionality:",
+                    "Some additional workbenches that extend BIM functionality are not installed:",
                 )
                 + " <b>"
-                + ",".join(m)
+                + ", ".join(m)
                 + "</b>. "
                 + translate("BIM", "Install them from menu Tools -> Addon Manager.")
             )

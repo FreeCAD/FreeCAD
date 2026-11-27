@@ -16,11 +16,11 @@ if App.GuiUp:
 
 class _Move:
     def __init__(self, move_type, placement):
+        self.Label = "Test move"
         self.MoveType = move_type
         self.MovementTransform = placement
 
 
-@unittest.skipIf(not App.GuiUp, "GUI tests require FreeCAD GUI mode")
 class TestCommandCreateView(unittest.TestCase):
     def test_move_list_row_edits_movement_distance(self):
         move = _Move("Normal", App.Placement(App.Vector(3, 4, 0), App.Rotation()))

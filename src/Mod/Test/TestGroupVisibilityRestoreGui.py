@@ -19,7 +19,6 @@ class GroupViewProxy:
         pass
 
 
-@unittest.skipIf(not App.GuiUp, "GUI tests require FreeCAD GUI mode")
 class TestGroupVisibilityRestoreGui(unittest.TestCase):
     def _rewrite_archive(self, source, target, mode, group_first):
         with zipfile.ZipFile(source) as archive, zipfile.ZipFile(target, "w") as output:

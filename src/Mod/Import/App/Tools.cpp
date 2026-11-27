@@ -20,6 +20,8 @@
  ******************************************************************************/
 
 
+#include <algorithm>
+
 #include <TDataStd_Name.hxx>
 #include <TDF_ChildIterator.hxx>
 #include <TDF_Tool.hxx>
@@ -53,7 +55,15 @@ Base::Color Tools::convertColor(const Quantity_ColorRGBA& rgba)
 
 Quantity_ColorRGBA Tools::convertColor(const Base::Color& col)
 {
-    return Quantity_ColorRGBA(Quantity_Color(col.r, col.g, col.b, OCC_COLOR_SPACE), col.a);
+    // Out-of-range components (e.g. a transparency given in percent) are not checked by
+    // OCCT and can crash the STEP writer, so clamp them to the valid range
+    auto clamp = [](float v) {
+        return std::clamp(v, 0.0F, 1.0F);
+    };
+    return Quantity_ColorRGBA(
+        Quantity_Color(clamp(col.r), clamp(col.g), clamp(col.b), OCC_COLOR_SPACE),
+        clamp(col.a)
+    );
 }
 
 static inline std::ostream& operator<<(std::ostream& os, const Quantity_ColorRGBA& rgba)
