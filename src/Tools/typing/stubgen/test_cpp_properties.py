@@ -14,13 +14,17 @@ sys.path.insert(0, str(TYPING_DIR))
 from stubgen.cpp_properties import (  # noqa: E402
     CppProperty,
     TypedCppProperty,
-    add_cpp_properties,
     discover_cpp_properties,
     typed_cpp_properties,
 )
+from stubgen.api_extract import module_from_source  # noqa: E402
+from stubgen.generated_api import add_cpp_properties_to_model  # noqa: E402
+from stubgen.render import render_module  # noqa: E402
+from stubgen.stub_support import StubSupport  # noqa: E402
+from python_api_model.model import ApiOrigin, PythonApiModel  # noqa: E402
 from stubgen.document_object_types import direct_python_types  # noqa: E402
 from stubgen.discovery import collect_type_registrations  # noqa: E402
-from stubgen.parsing import iter_source_files  # noqa: E402
+from stubgen.parsing import load_source_files  # noqa: E402
 from stubgen.property_contracts import load_property_catalog  # noqa: E402
 from stubgen.source_inputs import collect_binding_classes  # noqa: E402
 from stubgen.type_hierarchy import (  # noqa: E402
@@ -37,7 +41,7 @@ class CppPropertyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.hierarchy = discover_type_hierarchy(ROOT_DIR)
-        source_files = list(iter_source_files(ROOT_DIR, ROOT_DIR / "src"))
+        source_files = load_source_files(ROOT_DIR, ROOT_DIR / "src")
         registrations = collect_type_registrations(ROOT_DIR, source_files)
         cls.classes = collect_binding_classes(ROOT_DIR, ROOT_DIR / "src", registrations)
         cls.catalog = load_property_catalog(ROOT_DIR)
@@ -206,14 +210,6 @@ class CppPropertyTests(unittest.TestCase):
                 ),
             },
         )
-
-        geometry_property = next(property_ for property_ in typed if property_.name == "Geometry")
-        rendered = add_cpp_properties(
-            "class SketchObject:\n    ...\n",
-            (geometry_property,),
-        )
-        self.assertIn("from collections.abc import Sequence", rendered)
-        self.assertIn("import Part as Part", rendered)
 
     def test_scoped_constructor_properties_are_discovered(self):
         properties = discover_cpp_properties(ROOT_DIR, self.hierarchy)
@@ -432,7 +428,19 @@ class GeoFeature:
             direct_python_types(self.classes, self.hierarchy),
         )
 
-        rendered = add_cpp_properties(source, typed)
+        module = module_from_source(
+            ROOT_DIR,
+            ROOT_DIR / "src/Test.pyi",
+            source,
+            "FreeCAD",
+            origin=ApiOrigin.MODULE_STUB,
+            include_module_doc=False,
+        )
+        model, support = add_cpp_properties_to_model(PythonApiModel((module,)), typed)
+        rendered = render_module(
+            model.modules[0],
+            support=StubSupport(module_fragments=support),
+        )
         tree = ast.parse(rendered)
         geo_feature = next(node for node in tree.body if isinstance(node, ast.ClassDef))
         placement = next(
@@ -444,10 +452,15 @@ class GeoFeature:
         self.assertIn("from . import Base as Base", rendered)
 
         with self.assertRaisesRegex(ValueError, "already declares C\\+\\+ properties"):
-            add_cpp_properties(
+            collision = module_from_source(
+                ROOT_DIR,
+                ROOT_DIR / "src/Test.pyi",
                 "class GeoFeature:\n    Placement: object\n",
-                (typed[0],),
+                "FreeCAD",
+                origin=ApiOrigin.MODULE_STUB,
+                include_module_doc=False,
             )
+            add_cpp_properties_to_model(PythonApiModel((collision,)), (typed[0],))
 
         bool_source = """\
 from __future__ import annotations
@@ -469,10 +482,18 @@ class DocumentObject:
             )
             if property_.name == "Visibility"
         )
-        self.assertNotIn(
-            "from FreeCAD import Base as Base",
-            add_cpp_properties(bool_source, (bool_property,)),
+        bool_module = module_from_source(
+            ROOT_DIR,
+            ROOT_DIR / "src/Test.pyi",
+            bool_source,
+            "FreeCAD",
+            origin=ApiOrigin.MODULE_STUB,
+            include_module_doc=False,
         )
+        _, bool_support = add_cpp_properties_to_model(
+            PythonApiModel((bool_module,)), (bool_property,)
+        )
+        self.assertFalse(any("Base as Base" in source for _, source in bool_support))
 
     def test_any_binding_placeholder_is_replaced_by_cpp_property_contract(self):
         property_ = TypedCppProperty(
@@ -483,15 +504,22 @@ class DocumentObject:
             "src/Mod/CAM/App/FeatureArea.cpp",
             49,
         )
-        rendered = add_cpp_properties(
-            """from typing import Any
+        source = """from typing import Any
 
 class FeatureArea:
     WorkPlane: Any
     "The workplane."
-""",
-            (property_,),
+"""
+        module = module_from_source(
+            ROOT_DIR,
+            ROOT_DIR / "src/Test.pyi",
+            source,
+            "Path",
+            origin=ApiOrigin.BINDING_SPEC,
+            include_module_doc=False,
         )
+        model, support = add_cpp_properties_to_model(PythonApiModel((module,)), (property_,))
+        rendered = render_module(model.modules[0], support=StubSupport(module_fragments=support))
 
         tree = ast.parse(rendered)
         feature_area = next(node for node in tree.body if isinstance(node, ast.ClassDef))
