@@ -926,11 +926,11 @@ def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
     horizontal = []
     offset = 10.0
 
-    for f in faces:  # translate all faces to z
-        f.translate(FreeCAD.Vector(0, 0, z - f.BoundBox.ZMin))
+    # Make faces horizontal and translate to z
+    hor_faces = [makeHorizontal(f, z) for f in faces]
 
     # Make compound from incoming shapes
-    allFaces = Part.makeCompound(faces)
+    allFaces = Part.makeCompound(hor_faces)
 
     # Ckeck if incoming shapes have area
     if isRoughly(allFaces.Area, 0):
@@ -940,15 +940,15 @@ def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
 
     # Make boundbox face with offset and cut incoming faces from it
     bboxFace = makeBoundBoxFace(allFaces.BoundBox, offset, z)
-    cut = bboxFace.cut(faces, tol)
+    cut = bboxFace.cut(hor_faces, tol)
     wires = [w for w in cut.Wires[1:] if w.isClosed()]  # exclude open wires from "bad" shape
     horizontal = Part.makeFace(wires, "Part::FaceMakerBullseye").Faces
 
     # restore order
     if keepOrder and len(horizontal) > 1:
-        ordered = [None] * len(faces)
+        ordered = [None] * len(hor_faces)
         for face in horizontal:
-            for i, f in enumerate(faces):
+            for i, f in enumerate(hor_faces):
                 if face.BoundBox.intersect(f.BoundBox) and face.isInside(
                     f.Vertexes[0].Point, Tolerance, False
                 ):
@@ -961,3 +961,21 @@ def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
             Path.Log.info(translate("PathGeom", "Can not restore order of faces."))
 
     return horizontal
+
+
+def makeHorizontal(shape, z=0):
+    """makeHorizontal(shape, z) ... returns flat horizontal shape (edge, wire, face) translated to z"""
+    bb = shape.BoundBox
+    if isRoughly(bb.ZLength, 0):  # shape already flat and horizontal
+        hor_shape = shape
+    else:
+        ext = shape.extrude(FreeCAD.Vector(0, 0, 2 + bb.ZLength))
+        wires = ext.slice(FreeCAD.Vector(0, 0, 1), bb.ZMax + 1)
+        if isinstance(shape, Part.Face):  # shape is a Face
+            hor_shape = Part.makeFace(wires, "Part::FaceMakerBullseye").Faces[0]
+        elif isinstance(shape, Part.Wire):  # shape is a Wire
+            hor_shape = wires[0]
+        else:  # shape is a Edge
+            hor_shape = wires[0].Edges[0]
+
+    return hor_shape.translated(FreeCAD.Vector(0, 0, z - hor_shape.BoundBox.ZMax))
