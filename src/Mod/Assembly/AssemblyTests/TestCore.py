@@ -724,3 +724,37 @@ class TestCore(AssemblyTestBase):
 
     def test_link_array_joint_on_point_pattern(self):
         self._check_pattern_array_joint("Point")
+
+    def test_sel_gate_allows_external_linked_datum(self):
+        _msg("  Test 'MakeJointSelGate allows external linked datum'")
+        ext_doc = App.newDocument("ExternalDatumDoc")
+        self.addCleanup(App.closeDocument, ext_doc.Name)
+        ext_part = ext_doc.addObject("App::Part", "ExtPart")
+        ext_box = ext_part.newObject("Part::Box", "ExtBox")
+        ext_lcs = ext_part.newObject("Part::LocalCoordinateSystem", "ExtLCS")
+        ext_doc.recompute()
+
+        App.setActiveDocument(self.doc.Name)
+        sub_assembly = self.assembly.newObject("Assembly::AssemblyObject", "SubAssembly")
+        link = sub_assembly.newObject("App::Link", "ExtLink")
+        link.LinkedObject = ext_part
+        root_box = sub_assembly.newObject("Part::Box", "RootBox")
+        root_lcs = sub_assembly.newObject("Part::LocalCoordinateSystem", "RootLCS")
+        self.doc.recompute()
+
+        gate = JointObject.MakeJointSelGate(None, sub_assembly)
+
+        ext_sub = f"{sub_assembly.Name}.{link.Name}.{ext_lcs.Name}."
+        self.assertTrue(gate.allow(self.doc, self.assembly, ext_sub))
+
+        ext_lcs.AttachmentSupport = [(ext_box, "Face1")]
+        ext_lcs.MapMode = "FlatFace"
+        self.assertTrue(gate.allow(self.doc, self.assembly, ext_sub))
+
+        root_sub = f"{sub_assembly.Name}.{root_lcs.Name}."
+        self.assertEqual(root_lcs.MapMode, "Deactivated")
+        self.assertTrue(gate.allow(self.doc, self.assembly, root_sub))
+
+        root_lcs.AttachmentSupport = [(root_box, "Face1")]
+        root_lcs.MapMode = "FlatFace"
+        self.assertFalse(gate.allow(self.doc, self.assembly, root_sub))
