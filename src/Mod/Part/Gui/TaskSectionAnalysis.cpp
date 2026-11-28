@@ -22,14 +22,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGroupBox>
-#include <QLabel>
 #include <QMessageBox>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
 
 
 #include <App/Application.h>
@@ -62,6 +55,8 @@
 
 #include "TaskSectionAnalysis.h"
 #include "ViewProviderSectionAnalysis.h"
+
+#include "ui_TaskSectionAnalysis.h"
 
 
 using namespace PartGui;
@@ -129,8 +124,10 @@ SectionAnalysisWidget::SectionAnalysisWidget(
     : QWidget(parent)
     , feature(feat)
     , viewProvider(vp)
+    , ui(std::make_unique<Ui_SectionAnalysisWidget>())
 {
-    setupUi();
+    ui->setupUi(this);
+    loadFromFeature();
     setupConnections();
 
     // Angles and offset come from the plane, not from defaults, so a reopened
@@ -167,26 +164,8 @@ Part::SectionAnalysis* SectionAnalysisWidget::getObject() const
     return feature;
 }
 
-void SectionAnalysisWidget::setupUi()
+void SectionAnalysisWidget::loadFromFeature()
 {
-    auto* mainLayout = new QVBoxLayout(this);
-
-    // --- Cutting Plane group ---
-    auto* planeGroup = new QGroupBox(tr("Cutting Plane"), this);
-    auto* planeLayout = new QGridLayout(planeGroup);
-
-    // Preset combo
-    planeLayout->addWidget(new QLabel(tr("Preset"), this), 0, 0);
-    presetCombo = new QComboBox(this);
-    presetCombo->addItem(tr("XY Plane (Z normal)"));
-    presetCombo->addItem(tr("XZ Plane (Y normal)"));
-    presetCombo->addItem(tr("YZ Plane (X normal)"));
-    presetCombo->addItem(tr("View direction"));
-    // Shown when the plane matches no preset, so the box reads as "none of
-    // these" rather than as an empty control that failed to populate.
-    presetCombo->setPlaceholderText(tr("(no preset)"));
-    planeLayout->addWidget(presetCombo, 0, 1);
-
     // Seed the base the first time only. After that it is what the preset left,
     // which is what lets a reopened section still know its preset and angles.
     const Base::Vector3d n = feature->PlaneNormal.getValue();
@@ -199,189 +178,108 @@ void SectionAnalysisWidget::setupUi()
     // into PlaneNormal, so asking the plane would say "none" for anything tilted.
     const Base::Vector3d base = feature->AngleBase.getValue();
     if (isAlignedWith(base, Base::Vector3d::UnitZ)) {
-        presetCombo->setCurrentIndex(static_cast<int>(Preset::XY));
+        ui->presetCombo->setCurrentIndex(static_cast<int>(Preset::XY));
     }
     else if (isAlignedWith(base, Base::Vector3d::UnitY)) {
-        presetCombo->setCurrentIndex(static_cast<int>(Preset::XZ));
+        ui->presetCombo->setCurrentIndex(static_cast<int>(Preset::XZ));
     }
     else if (isAlignedWith(base, Base::Vector3d::UnitX)) {
-        presetCombo->setCurrentIndex(static_cast<int>(Preset::YZ));
+        ui->presetCombo->setCurrentIndex(static_cast<int>(Preset::YZ));
     }
     else {
-        presetCombo->setCurrentIndex(-1);
+        ui->presetCombo->setCurrentIndex(-1);
     }
+    applyPresetAngleLabels(static_cast<Preset>(ui->presetCombo->currentIndex()));
 
-    // Angle adjustments (tilt the plane from the preset orientation)
-    angleLabel1 = new QLabel(tr("X-angle"), this);
-    planeLayout->addWidget(angleLabel1, 1, 0);
-    angle1Spin = new Gui::QuantitySpinBox(this);
-    angle1Spin->setUnit(Base::Unit::Angle);
-    angle1Spin->setRange(-90.0, 90.0);
-    angle1Spin->setSingleStep(0.1);
-    angle1Spin->setValue(0.0);
-    planeLayout->addWidget(angle1Spin, 1, 1);
+    ui->offsetSpin->setValue(feature->PlaneOffset.getValue());
+    ui->flipCheck->setChecked(feature->FlipCut.getValue());
 
-    angleLabel2 = new QLabel(tr("Z-angle"), this);
-    planeLayout->addWidget(angleLabel2, 2, 0);
-    angle2Spin = new Gui::QuantitySpinBox(this);
-    angle2Spin->setUnit(Base::Unit::Angle);
-    angle2Spin->setRange(-90.0, 90.0);
-    angle2Spin->setSingleStep(0.1);
-    angle2Spin->setValue(0.0);
-    planeLayout->addWidget(angle2Spin, 2, 1);
-
-    applyPresetAngleLabels(static_cast<Preset>(presetCombo->currentIndex()));
-
-    // Offset along the normal.
-    auto* offsetLabel = new QLabel(tr("Offset"), this);
-    planeLayout->addWidget(offsetLabel, 3, 0);
-    offsetSpin = new Gui::QuantitySpinBox(this);
-    offsetSpin->setUnit(Base::Unit::Length);
-    offsetSpin->setRange(-1.0e7, 1.0e7);
-    offsetSpin->setSingleStep(1.0);
-    offsetSpin->setValue(feature->PlaneOffset.getValue());
-    planeLayout->addWidget(offsetSpin, 3, 1);
-
-    flipCheck = new QCheckBox(tr("Flip direction"), this);
-    flipCheck->setChecked(feature->FlipCut.getValue());
-    planeLayout->addWidget(flipCheck, 4, 0, 1, 2);
-
-    mainLayout->addWidget(planeGroup);
-
-    // --- Appearance group ---
-    auto* appearGroup = new QGroupBox(tr("Appearance"), this);
-    auto* appearLayout = new QGridLayout(appearGroup);
-
-    appearLayout->addWidget(new QLabel(tr("Section color"), this), 0, 0);
-    sectionColorBtn = new Gui::ColorButton(this);
-    {
-        // Reflect the section's actual colour (each new section gets a distinct
-        // default colour assigned at creation) rather than a fixed swatch.
-        const App::Material& curMat = viewProvider->ShapeAppearance[0];
-        sectionColorBtn->setColor(
-            QColor::fromRgbF(curMat.diffuseColor.r, curMat.diffuseColor.g, curMat.diffuseColor.b)
-        );
-    }
-    appearLayout->addWidget(sectionColorBtn, 0, 1);
-
-    hatchCheck = new QCheckBox(tr("Show hatching"), this);
-    hatchCheck->setChecked(viewProvider->ShowHatching.getValue());
-    appearLayout->addWidget(hatchCheck, 1, 0, 1, 2);
-
-    autoHideHatchCheck = new QCheckBox(tr("Fade hatching when zoomed out"), this);
-    autoHideHatchCheck->setToolTip(
-        tr("Fade the hatching out, then stop drawing it, once the lines are too\n"
-           "close together on screen to be told apart")
+    // Reflect the section's actual colour - each new section is created with a
+    // distinct one - rather than a fixed swatch.
+    const App::Material& curMat = viewProvider->ShapeAppearance[0];
+    ui->sectionColorBtn->setColor(
+        QColor::fromRgbF(curMat.diffuseColor.r, curMat.diffuseColor.g, curMat.diffuseColor.b)
     );
-    autoHideHatchCheck->setChecked(viewProvider->AutoHideHatching.getValue());
-    appearLayout->addWidget(autoHideHatchCheck, 4, 0, 1, 2);
 
-    perSolidColorCheck = new QCheckBox(tr("Per-Body colors"), this);
-    perSolidColorCheck->setChecked(viewProvider->PerBodyColors.getValue());
+    ui->hatchCheck->setChecked(viewProvider->ShowHatching.getValue());
+    ui->autoHideHatchCheck->setChecked(viewProvider->AutoHideHatching.getValue());
+    ui->ghostCheck->setChecked(viewProvider->ShowRemovedMaterial.getValue());
+    ui->perSolidColorCheck->setChecked(viewProvider->PerBodyColors.getValue());
+
     // Nothing to tell apart below two bodies, and while it is on the single
-    // colour picker would overwrite the per-body colours it assigns
-    // Counted from the source recursion rather than read off SourceParts, which
-    // Display mode leaves empty by design - so this was permanently greyed out
-    // in the default mode. It still showed ticked, because PerBodyColors is a
-    // separate view property the cap reads directly, so setting it from the
-    // property editor worked while the panel insisted it could not be changed.
-    perSolidColorCheck->setEnabled(
+    // colour picker would overwrite the per-body colours it assigns. Counted
+    // from the sources, because Display mode leaves SourceParts empty by design.
+    ui->perSolidColorCheck->setEnabled(
         Part::SectionAnalysis::distinctSourceParts(feature->Source.getValues(), feature).size() > 1
     );
-    if (!perSolidColorCheck->isEnabled()) {
-        perSolidColorCheck->setToolTip(tr("The section only comes from a single body"));
+    if (!ui->perSolidColorCheck->isEnabled()) {
+        ui->perSolidColorCheck->setToolTip(tr("The section only comes from a single body"));
     }
-    sectionColorBtn->setEnabled(!perSolidColorCheck->isChecked());
-    appearLayout->addWidget(perSolidColorCheck, 2, 0, 1, 2);
-
-    ghostCheck = new QCheckBox(tr("Show memoved material"), this);
-    ghostCheck->setToolTip(
-        tr("Draw the material the section removes faintly, so the\n"
-           "cross-sections have something to sit in")
-    );
-    ghostCheck->setChecked(viewProvider->ShowRemovedMaterial.getValue());
-    // Row and span given, like every other row here. The one argument overload
-    // is QLayout's, and on a grid it drops the widget in a cell of its own
-    // choosing spanning a single column - which is neither where this reads as
-    // going nor the full width its siblings get.
-    appearLayout->addWidget(ghostCheck, 5, 0, 1, 2);
-
-    showPlaneCheck = new QCheckBox(tr("Show cutting plane"), this);
-    showPlaneCheck->setChecked(true);
-    appearLayout->addWidget(showPlaneCheck, 3, 0, 1, 2);
-
-    mainLayout->addWidget(appearGroup);
-
-    // Update View checkbox
-    updateViewCheck = new QCheckBox(tr("Update view"), this);
-    updateViewCheck->setChecked(true);
-    mainLayout->addWidget(updateViewCheck);
-
-    mainLayout->addStretch();
+    ui->sectionColorBtn->setEnabled(!ui->perSolidColorCheck->isChecked());
 }
 
 
 void SectionAnalysisWidget::setupConnections()
 {
     connect(
-        presetCombo,
+        ui->presetCombo,
         qOverload<int>(&QComboBox::activated),
         this,
         &SectionAnalysisWidget::onPresetChanged
     );
     connect(
-        angle1Spin,
+        ui->angle1Spin,
         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this,
         &SectionAnalysisWidget::onAngle1Changed
     );
     connect(
-        angle2Spin,
+        ui->angle2Spin,
         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this,
         &SectionAnalysisWidget::onAngle2Changed
     );
-    connect(offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, [this](double value) {
+    connect(ui->offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, [this](double value) {
         const PanelWrite writing(this);
         feature->PlaneOffset.setValue(value);
         recompute();
     });
-    connect(flipCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onFlipToggled);
-    connect(sectionColorBtn, &Gui::ColorButton::changed, this, [this]() {
-        onSectionColorChanged(sectionColorBtn->color());
+    connect(ui->flipCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onFlipToggled);
+    connect(ui->sectionColorBtn, &Gui::ColorButton::changed, this, [this]() {
+        onSectionColorChanged(ui->sectionColorBtn->color());
     });
-    connect(hatchCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onHatchToggled);
-    connect(autoHideHatchCheck, &QCheckBox::toggled, this, [this](bool on) {
+    connect(ui->hatchCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onHatchToggled);
+    connect(ui->autoHideHatchCheck, &QCheckBox::toggled, this, [this](bool on) {
         viewProvider->AutoHideHatching.setValue(on);
     });
-    connect(perSolidColorCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onPerSolidColorToggled);
-    connect(ghostCheck, &QCheckBox::toggled, this, [this](bool on) {
+    connect(ui->perSolidColorCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onPerSolidColorToggled);
+    connect(ui->ghostCheck, &QCheckBox::toggled, this, [this](bool on) {
         viewProvider->ShowRemovedMaterial.setValue(on);
     });
-    connect(showPlaneCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onShowPlaneToggled);
-    connect(updateViewCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onUpdateViewToggled);
+    connect(ui->showPlaneCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onShowPlaneToggled);
+    connect(ui->updateViewCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onUpdateViewToggled);
 }
 
 void SectionAnalysisWidget::applyPresetAngleLabels(Preset preset)
 {
     switch (preset) {
         case Preset::XY:
-            angleLabel1->setText(tr("X-angle"));
-            angleLabel2->setText(tr("Y-angle"));
+            ui->angleLabel1->setText(tr("X-angle"));
+            ui->angleLabel2->setText(tr("Y-angle"));
             break;
         case Preset::XZ:
-            angleLabel1->setText(tr("X-angle"));
-            angleLabel2->setText(tr("Z-angle"));
+            ui->angleLabel1->setText(tr("X-angle"));
+            ui->angleLabel2->setText(tr("Z-angle"));
             break;
         case Preset::YZ:
-            angleLabel1->setText(tr("Y-angle"));
-            angleLabel2->setText(tr("Z-angle"));
+            ui->angleLabel1->setText(tr("Y-angle"));
+            ui->angleLabel2->setText(tr("Z-angle"));
             break;
         default:
             // View direction, or no preset at all: the tilt axes are derived
             // from the current normal, so they have no standing names.
-            angleLabel1->setText(tr("Angle-1"));
-            angleLabel2->setText(tr("Angle-2"));
+            ui->angleLabel1->setText(tr("Angle-1"));
+            ui->angleLabel2->setText(tr("Angle-2"));
             break;
     }
 }
@@ -392,11 +290,11 @@ void SectionAnalysisWidget::refreshFromFeature()
         return;
     }
 
-    const QSignalBlocker blockOffset(offsetSpin);
-    const QSignalBlocker blockAngle1(angle1Spin);
-    const QSignalBlocker blockAngle2(angle2Spin);
+    const QSignalBlocker blockOffset(ui->offsetSpin);
+    const QSignalBlocker blockAngle1(ui->angle1Spin);
+    const QSignalBlocker blockAngle2(ui->angle2Spin);
 
-    offsetSpin->setValue(feature->PlaneOffset.getValue());
+    ui->offsetSpin->setValue(feature->PlaneOffset.getValue());
 
     Base::Vector3d normal = feature->PlaneNormal.getValue();
     const double len = normal.Length();
@@ -428,8 +326,8 @@ void SectionAnalysisWidget::refreshFromFeature()
     );
 
     constexpr double toDegrees = 180.0 / std::numbers::pi;
-    angle1Spin->setValue(a1 * toDegrees);
-    angle2Spin->setValue(a2 * toDegrees);
+    ui->angle1Spin->setValue(a1 * toDegrees);
+    ui->angle2Spin->setValue(a2 * toDegrees);
 }
 
 Base::Vector3d SectionAnalysisWidget::normalForPreset(Preset preset) const
@@ -451,10 +349,10 @@ Base::Vector3d SectionAnalysisWidget::normalForPreset(Preset preset) const
 
 void SectionAnalysisWidget::resetTiltAngles()
 {
-    const QSignalBlocker blockAngle1(angle1Spin);
-    const QSignalBlocker blockAngle2(angle2Spin);
-    angle1Spin->setValue(0.0);
-    angle2Spin->setValue(0.0);
+    const QSignalBlocker blockAngle1(ui->angle1Spin);
+    const QSignalBlocker blockAngle2(ui->angle2Spin);
+    ui->angle1Spin->setValue(0.0);
+    ui->angle2Spin->setValue(0.0);
 }
 
 void SectionAnalysisWidget::centreOffsetOnSources(const Base::Vector3d& normal)
@@ -466,8 +364,8 @@ void SectionAnalysisWidget::centreOffsetOnSources(const Base::Vector3d& normal)
         feature->PlaneOffset.setValue(centre * normal);
     }
 
-    const QSignalBlocker blockOffset(offsetSpin);
-    offsetSpin->setValue(feature->PlaneOffset.getValue());
+    const QSignalBlocker blockOffset(ui->offsetSpin);
+    ui->offsetSpin->setValue(feature->PlaneOffset.getValue());
 }
 
 void SectionAnalysisWidget::onPresetChanged(int index)
@@ -544,8 +442,8 @@ void SectionAnalysisWidget::applyAngles()
     const PanelWrite writing(this);
 
     // Negated so a positive angle tilts the way the box reads
-    double a1 = -angle1Spin->value().getValue() * std::numbers::pi / 180.0;
-    double a2 = angle2Spin->value().getValue() * std::numbers::pi / 180.0;
+    double a1 = -ui->angle1Spin->value().getValue() * std::numbers::pi / 180.0;
+    double a2 = ui->angle2Spin->value().getValue() * std::numbers::pi / 180.0;
 
     // Base normal and tilt axes both come from presetFrame, which is the same
     // frame the tilt handles are placed in. A second copy of the preset switch
@@ -599,8 +497,8 @@ void SectionAnalysisWidget::applyAngles()
     // Tilting moves the offset too: same point, different distance along the
     // new normal, so the box has to follow.
     {
-        const QSignalBlocker blockOffset(offsetSpin);
-        offsetSpin->setValue(newOffset);
+        const QSignalBlocker blockOffset(ui->offsetSpin);
+        ui->offsetSpin->setValue(newOffset);
     }
 
     recompute();
@@ -636,7 +534,7 @@ void SectionAnalysisWidget::onPerSolidColorToggled(bool on)
         viewProvider->setPerSolidColors(on);
     }
     // The single colour would be applied to every face, undoing the per-body one
-    sectionColorBtn->setEnabled(!on);
+    ui->sectionColorBtn->setEnabled(!on);
 }
 
 void SectionAnalysisWidget::onShowPlaneToggled(bool on)
@@ -655,7 +553,7 @@ void SectionAnalysisWidget::onUpdateViewToggled(bool on)
 
 void SectionAnalysisWidget::recompute()
 {
-    if (updateViewCheck && updateViewCheck->isChecked()) {
+    if (ui->updateViewCheck && ui->updateViewCheck->isChecked()) {
         feature->getDocument()->recomputeFeature(feature);
     }
 }

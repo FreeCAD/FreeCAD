@@ -30,16 +30,6 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-class QComboBox;
-class QCheckBox;
-class QLabel;
-
-namespace Gui
-{
-class QuantitySpinBox;
-class ColorButton;
-}  // namespace Gui
-
 namespace Part
 {
 class SectionAnalysis;
@@ -48,6 +38,7 @@ class SectionAnalysis;
 namespace PartGui
 {
 
+class Ui_SectionAnalysisWidget;
 class ViewProviderSectionAnalysis;
 
 class SectionAnalysisWidget: public QWidget
@@ -80,7 +71,9 @@ public:
     ViewProviderSectionAnalysis* getViewProvider() const;
 
 private:
-    void setupUi();
+    /// Put the feature's and the view provider's current state into the
+    /// widgets. Separate from the layout so there is one place state enters.
+    void loadFromFeature();
     void setupConnections();
 
     /// Base orientation and the two axes the angle boxes turn about.
@@ -149,21 +142,7 @@ private:
         SectionAnalysisWidget* panel;
     };
 
-    QComboBox* presetCombo = nullptr;
-    QLabel* angleLabel1 = nullptr;
-    QLabel* angleLabel2 = nullptr;
-    Gui::QuantitySpinBox* offsetSpin = nullptr;
-    Gui::QuantitySpinBox* angle1Spin = nullptr;
-    Gui::QuantitySpinBox* angle2Spin = nullptr;
-
-    QCheckBox* flipCheck = nullptr;
-    Gui::ColorButton* sectionColorBtn = nullptr;
-    QCheckBox* hatchCheck = nullptr;
-    QCheckBox* autoHideHatchCheck = nullptr;
-    QCheckBox* perSolidColorCheck = nullptr;
-    QCheckBox* ghostCheck = nullptr;
-    QCheckBox* showPlaneCheck = nullptr;
-    QCheckBox* updateViewCheck = nullptr;
+    std::unique_ptr<Ui_SectionAnalysisWidget> ui;
 };
 
 class TaskSectionAnalysis: public Gui::TaskView::TaskDialog
