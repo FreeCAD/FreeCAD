@@ -4,7 +4,7 @@ General:
   UUID: "0bcac89d-ba24-4fca-a1bd-a3c52ff09e26"
   Name: "Copper-230"
   Author: "Joe Da Silva"
-  License: "LGPL-2.0-or-later"
+  License: "LGPL-2.1-or-later"
   SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
   ReferenceSource: "144-8-mechanical.pdf"
   Tags:
@@ -59,6 +59,7 @@ Models:
   Toughness:
     UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
     ImpactCharpy: "130 J"
+    NotchConcentration: "5.0"
     NotchTensileStrength: "372 MPa"
   IsotropicLinearElasticArrays:
     UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
@@ -79,8 +80,8 @@ Models:
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:
-      - [["295 K", "130 J", "372 MPa"],
-         ["195 K", "111 J", "403 MPa"],
-         ["76 K",  "106 J", "491 MPa"],
-         ["20 K",  "103 J", "496 MPa"],
-         ["4 K",   "",      "516 MPa"]]
+      - [["295 K", "130 J", "372 MPa", "5.0"],
+         ["195 K", "111 J", "403 MPa", "5.0"],
+         ["76 K",  "106 J", "491 MPa", "5.0"],
+         ["20 K",  "103 J", "496 MPa", "5.0"],
+         ["4 K",   "",      "516 MPa", "5.0"]]
