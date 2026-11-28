@@ -114,9 +114,6 @@ class GenericMultiAxisIndustrial(PostProcessor):
                 prop["default"] = True
             elif name == "supported_commands":
                 prop["default"] = "\n".join(prop["default"].split("\n") + cls.EXTRA_SUPPORTED)
-            elif name == "spindle_decimals":
-                # S takes an integer.
-                prop["default"] = 0
 
         return common_props
 

@@ -143,8 +143,5 @@ class Mach3_Mach4(PostProcessor):
                 prop["default"] = POSTAMBLE
             elif name == "supports_tool_radius_compensation":
                 prop["default"] = True
-            elif name == "spindle_decimals":
-                # S takes an integer.
-                prop["default"] = 0
 
         return common_props

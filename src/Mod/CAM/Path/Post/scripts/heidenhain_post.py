@@ -160,12 +160,6 @@ class HeidenhainPost(PostProcessor):
             elif prop["name"] == "output_tool_length_offset":
                 # TOOL CALL applies the length from the tool table; there is no G43.
                 prop["default"] = False
-            elif prop["name"] == "feed_precision":
-                prop["default"] = 0
-            elif prop["name"] == "spindle_decimals":
-                prop["default"] = 0
-            elif prop["name"] == "axis_precision":
-                prop["default"] = 3
 
         return common_props
 

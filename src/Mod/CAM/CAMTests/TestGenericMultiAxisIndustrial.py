@@ -168,7 +168,6 @@ class TestGenericMultiAxisIndustrial(IndustrialPostTestBase):
         schema = {p["name"]: p for p in self.post.get_common_property_schema()}
         self.assertEqual("", schema["drill_cycles_to_translate"]["default"])
         self.assertTrue(schema["supports_tool_radius_compensation"]["default"])
-        self.assertEqual(0, schema["spindle_decimals"]["default"])
 
     # ------------------------------------------------------------------
     # program frame

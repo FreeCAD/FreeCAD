@@ -176,6 +176,11 @@ def _check_dropped_data(raw: Dict[str, Any], machine: Machine, report: _Report, 
         )
 
 
+# Post-processor properties that were removed. They never had an effect, because
+# output.precision always took priority, so a file that still has them is valid.
+REMOVED_PROPERTIES = frozenset({"axis_precision", "feed_precision", "spindle_decimals"})
+
+
 def _check_postprocessor(machine: Machine, report: _Report, source=None):
     """Check the referenced postprocessor resolves and its property keys are known."""
     name = machine.postprocessor_file_name
@@ -219,7 +224,7 @@ def _check_postprocessor(machine: Machine, report: _Report, source=None):
         report.info("no-schema", f"property schema unavailable for '{name}': {exc}", source)
         return
 
-    unknown = sorted(set(machine.postprocessor_properties) - known)
+    unknown = sorted(set(machine.postprocessor_properties) - known - REMOVED_PROPERTIES)
     if unknown:
         report.warning(
             "unknown-properties",
