@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
 # SPDX-FileNotice: Part of the FreeCAD project.
@@ -19,15 +18,19 @@
 #   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
 #                                                                              #
 ################################################################################
-import FreeCAD
+
 import math
-import Path.Base.Generator.spiral_facing as spiral_facing
-import Path.Base.Generator.zigzag_facing as zigzag_facing
-import Path.Base.Generator.directional_facing as directional_facing
-import Path.Base.Generator.bidirectional_facing as bidirectional_facing
-import Path.Base.Generator.facing_common as facing_common
+
+import FreeCAD
 import Part
 import Path
+from Path.Base.Generator import (
+    bidirectional_facing,
+    directional_facing,
+    facing_common,
+    spiral_facing,
+    zigzag_facing,
+)
 
 from CAMTests.PathTestUtils import PathTestBase
 
@@ -961,9 +964,8 @@ class TestPathFacingGenerator(PathTestBase):
         # Should have multiple unique positions
         unique_positions = set(positions)
         self.assertGreater(len(unique_positions), 4)
-        import Path
 
-        p = Path.Path(commands)
+        # p = Path.Path(commands)
         # print(p.toGCode())
 
     def test_spiral_milling_direction(self):
@@ -995,7 +997,6 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_spiral_centered_on_origin(self):
         """Test spiral with rectangle centered on origin to debug overlapping passes."""
-        import Part
 
         # Create a 10x6 rectangle centered on origin (-5,-3) to (5,3)
         centered_rectangle = Part.makePolygon(
@@ -1029,15 +1030,12 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertGreater(len(unique_positions), 4)
 
         # Print G-code for debugging
-        import Path
-
-        p = Path.Path(commands)
+        # p = Path.Path(commands)
         # print("Centered on origin G-code:")
         # print(p.toGCode())
 
     def test_spiral_axis_preference_variations(self):
         """Test spiral with different axis preferences and milling directions."""
-        import Part
 
         # Create a 12x8 rectangle centered on origin (-6,-4) to (6,4)
         # Long axis = 12mm (X), Short axis = 8mm (Y)
@@ -1072,16 +1070,12 @@ class TestPathFacingGenerator(PathTestBase):
                 self.assertGreater(len(commands), 8)
 
                 # Print G-code for debugging
-                import Path
-
-                p = Path.Path(commands)
+                # p = Path.Path(commands)
                 # print(f"\n{axis_pref} axis, {milling_dir} milling G-code:")
                 # print(p.toGCode())
 
     def test_spiral_angled_rectangle(self):
         """Test spiral with angled rectangle to verify it follows polygon shape, not bounding box."""
-        import Part
-        import math
 
         # Create a 12x8 rectangle rotated 30 degrees
         # This will test if spiral follows the actual polygon or just the axis-aligned bounding box
@@ -1118,9 +1112,7 @@ class TestPathFacingGenerator(PathTestBase):
                 self.assertGreater(len(commands), 8)
 
                 # Print G-code for debugging
-                import Path
-
-                p = Path.Path(commands)
+                # p = Path.Path(commands)
                 # print(f"\nAngled rectangle {axis_pref} axis G-code:")
                 # print(p.toGCode())
 
@@ -1249,7 +1241,8 @@ class TestPathFacingGenerator(PathTestBase):
             "Spiral should move inward - later moves should be closer to center",
         )
 
-    def test_spiral_reaches_center_high_stepover(self):
+    def test_spiral_reaches_center(self):
+        """Test clearing center area with step over from 1 to 100%"""
         wire = Part.makePolygon(
             [
                 FreeCAD.Vector(0, 0, 0),
@@ -1259,10 +1252,11 @@ class TestPathFacingGenerator(PathTestBase):
                 FreeCAD.Vector(0, 0, 0),
             ]
         )
-        commands = spiral_facing.spiral(polygon=wire, tool_diameter=5.0, stepover_percent=80)
-
-        closest = min(abs(cmd.Parameters["Y"] - 47) for cmd in commands if "Y" in cmd.Parameters)
-        self.assertLessEqual(closest, 2.5 + 1e-6)
+        d = 5
+        for i in range(1, 101):
+            commands = spiral_facing.spiral(polygon=wire, tool_diameter=d, stepover_percent=i)
+            dist = commands[-1].y - commands[-4].y
+            self.assertLessEqual(dist, d + 1e-6)
 
     def test_spiral_no_extra_loops_near_center(self):
         wire = Part.makePolygon(
@@ -1277,6 +1271,23 @@ class TestPathFacingGenerator(PathTestBase):
         commands = spiral_facing.spiral(polygon=wire, tool_diameter=5.0, stepover_percent=40)
 
         self.assertLess(len(commands), 20)
+
+    def test_spiral_one_line(self):
+        # not enough area for spiral, create only one line instead
+        wire = Part.makePolygon(
+            [
+                FreeCAD.Vector(-5, -5, 0),
+                FreeCAD.Vector(5, -5, 0),
+                FreeCAD.Vector(5, 5, 0),
+                FreeCAD.Vector(-5, 5, 0),
+                FreeCAD.Vector(-5, -5, 0),
+            ]
+        )
+        commands = spiral_facing.spiral(polygon=wire, tool_diameter=10, stepover_percent=100)
+        self.assertEqual(commands[-2].x, 0)
+        self.assertEqual(commands[-2].y, 5)
+        self.assertEqual(commands[-1].x, 0)
+        self.assertEqual(commands[-1].y, -5)
 
     # ------------------------------------------------------------------ #
     #  Boundary wire tests — verify facing_common functions handle        #
