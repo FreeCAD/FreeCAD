@@ -599,6 +599,7 @@ SET(FemTools_SRCS
     femtools/errors.py
     femtools/femutils.py
     femtools/geomtools.py
+    femtools/loadtable.py
     femtools/membertools.py
     femtools/migrate_app.py
     femtools/objecttools.py

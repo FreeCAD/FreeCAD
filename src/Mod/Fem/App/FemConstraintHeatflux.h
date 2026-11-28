@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include <App/PropertyFile.h>
+
 #include "FemConstraint.h"
 
 namespace Fem
@@ -52,6 +54,13 @@ public:
     App::PropertyBool CavityRadiation;
     App::PropertyString CavityName;
     App::PropertyBool ClosedCavity;
+
+    // Heat flux given at points and interpolated onto the faces
+    App::PropertyEnumeration FluxDistribution;
+    App::PropertyEnumeration TableSource;
+    App::PropertyLink TableSheet;
+    App::PropertyStringList TableRows;
+    App::PropertyFile TableFile;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
