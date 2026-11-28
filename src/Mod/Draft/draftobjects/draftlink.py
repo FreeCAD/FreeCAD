@@ -37,6 +37,9 @@ the arrays that use it.
 # \ingroup draftobjects
 # \brief Provides the base class for Link objects used by other objects.
 
+from math import dist
+from sys import float_info
+
 import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -51,6 +54,22 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 ## \addtogroup draftobjects
 # @{
+
+
+def _placements_match(current, target):
+    if current.isSame(target):
+        return True
+    if not current.Base.isEqual(target.Base, 0.0):
+        return False
+
+    # Restoring a saved axis and angle can introduce quaternion roundoff.
+    # Opposite quaternions represent the same rotation.
+    current_q = current.Rotation.Q
+    target_q = target.Rotation.Q
+    return (
+        dist(current_q, target_q) <= float_info.epsilon
+        or dist(current_q, (-component for component in target_q)) <= float_info.epsilon
+    )
 
 
 class DraftLink(DraftObject):
@@ -194,7 +213,9 @@ class DraftLink(DraftObject):
                 obj.Count = len(pls)
             if getattr(obj, "ExpandArray", False) and getattr(obj, "AlwaysSyncPlacement", False):
                 for pla, child in zip(pls, obj.ElementList):
-                    child.Placement = pla
+                    # Reassigning an unchanged placement touches the element again.
+                    if not _placements_match(child.Placement, pla):
+                        child.Placement = pla
         else:
             obj.PlacementList = pls
             if obj.Count != len(pls):
