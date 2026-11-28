@@ -43,6 +43,7 @@
 #include <xercesc/util/XMLString.hpp>
 
 #include <boost/regex.hpp>
+#include <clocale>
 #include <thread>
 
 #include <App/Application.h>
@@ -459,6 +460,10 @@ PyObject* Gui::ApplicationPy::sEmbedToWindow(PyObject* /*self*/, PyObject* args)
 
 static QWidget* setupMainWindow()
 {
+    // Qt sets the C locale from the environment when a QApplication is made, by FreeCAD or by
+    // the program embedding it. Numbers must keep '.' as decimal point, as in
+    // Application::runApplication()
+    setlocale(LC_NUMERIC, "C");
     if (!Gui::Application::Instance) {
         static Gui::Application* app = new Gui::Application(true);
         Q_UNUSED(app);
