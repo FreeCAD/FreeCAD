@@ -86,6 +86,40 @@ retrieved_asset = manager.get(asset_uri)
 print(f"Retrieved: {retrieved_asset}")
 ```
 
+## Multiple stores
+
+Any number of stores can be registered with `register_store()`, for example
+by an addon that provides a remote, team-managed tool server. The `store`
+argument of the manager APIs is optional:
+
+- **Read APIs** (`get`, `get_raw`, `get_bulk`, `fetch`, `exists`, `list_assets`,
+  `list_versions`, `is_empty`, `count_assets`) accept a store name, a sequence
+  of store names, or `None`. `None` resolves to the search order from the
+  `AssetStoreSearchOrder` preference (default `local,builtin`). Results are
+  merged across the stores and deduplicated by asset id; the first store in
+  the order wins. `limit` and `offset` apply to the merged result.
+- **Write APIs** (`add`, `add_raw`, `add_file`, `delete`) accept a store name
+  or `None`. `None` resolves to the `AssetStoreWriteStore` preference
+  (default `local`).
+- A store name that is not registered is skipped on reads with a warning, and
+  raises a `ValueError` on writes. Writes never fall back to another store.
+- `list_assets_attributed()` returns `(uri, store_name)` pairs, so that a UI
+  can show which store an asset resolves from.
+
+`Path.Preferences` provides `getAssetStoreSearchOrder()`,
+`setAssetStoreSearchOrder()`, `getAssetStoreWriteStore()` and
+`setAssetStoreWriteStore()`.
+
+### Change notifications
+
+`add_asset_observer(callback)` registers a callback that receives
+`(store_name, uri, action)`, where `action` is `"created"`, `"updated"` or
+`"deleted"`. The manager calls the observers after each write. A store whose
+content changes outside the manager (for example a sync worker) announces
+the change with `notify_asset_changed()`. Callbacks can arrive on any thread;
+Qt consumers must forward them to the GUI thread, for example with a queued
+signal.
+
 ## The Serializer Protocol
 
 The serializer protocol defines how assets are converted to and from bytes and how their
@@ -126,19 +160,23 @@ classDiagram
 
     class AssetManager["AssetManager
     <small>Creates, assembles or deletes assets from URIs</small>"] {
-        stores: Mapping[str, AssetStore]   // maps protocol to store
+        stores: Mapping[str, AssetStore]   // maps store name to store
         register_store(store: AssetStore, cacheable: bool = False)
         register_asset(asset_class: Type[Asset], serializer: Type[AssetSerializer])
-        get(uri: AssetUri | str, store: str = "local", depth: Optional[int] = None) Any
-        get_raw(uri: AssetUri | str, store: str = "local") bytes
-        add(obj: Asset, store: str = "local") AssetUri
-        add_raw(asset_type: str, asset_id: str, data: bytes, store: str = "local") AssetUri
-        delete(uri: AssetUri | str, store: str = "local")
-        is_empty(asset_type: str | None = None, store: str = "local") bool
-        list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str = "local") List[AssetUri]
-        list_versions(uri: AssetUri | str, store: str = "local") List[AssetUri]
-        get_bulk(uris: Sequence[AssetUri | str], store: str = "local", depth: Optional[int] = None) List[Any]
-        fetch(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str = "local", depth: Optional[int] = None) List[Asset]
+        get(uri: AssetUri | str, store: str | Sequence[str] | None = None, depth: Optional[int] = None) Any
+        get_raw(uri: AssetUri | str, store: str | Sequence[str] | None = None) bytes
+        add(obj: Asset, store: str | None = None) AssetUri
+        add_raw(asset_type: str, asset_id: str, data: bytes, store: str | None = None) AssetUri
+        delete(uri: AssetUri | str, store: str | None = None)
+        is_empty(asset_type: str | None = None, store: str | Sequence[str] | None = None) bool
+        list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str | Sequence[str] | None = None) List[AssetUri]
+        list_assets_attributed(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str | Sequence[str] | None = None) List[Tuple[AssetUri, str]]
+        list_versions(uri: AssetUri | str, store: str | Sequence[str] | None = None) List[AssetUri]
+        get_bulk(uris: Sequence[AssetUri | str], store: str | Sequence[str] | None = None, depth: Optional[int] = None) List[Any]
+        fetch(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str | Sequence[str] | None = None, depth: Optional[int] = None) List[Asset]
+        add_asset_observer(callback: Callable[[str, AssetUri, str], None])
+        remove_asset_observer(callback: Callable[[str, AssetUri, str], None])
+        notify_asset_changed(store_name: str, uri: AssetUri | str, action: str)
     }
 
     class AssetStore["AssetStore

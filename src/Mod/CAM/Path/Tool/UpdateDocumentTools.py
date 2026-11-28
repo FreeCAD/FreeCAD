@@ -72,19 +72,23 @@ def resolve_library_source(asset_manager, embedded_tool_id: str, depth: int = 0)
     resolves the shape as a real dependency via ``ToolBitShape.from_bytes()``
     and populates those defaults for real.
 
-    At depth=0 this only ever searches "local" - the toolbit itself only
-    ever needs syncing from the user's own local library. But a resolved
-    shape *dependency* is different: toolbitshape (.fcstd) assets are, by
-    design, never copied into "local" the way .fctb tool files are - they
-    stay in "builtin", so depth>=1 also searches "builtin", or every stock
-    shape's dependency resolution would fail with "shape not found" for a
-    perfectly normal tool.
+    Stores follow the configured search order (AssetStoreSearchOrder), so a
+    tool that lives in an addon-registered store is found as well. At
+    depth=0 the "builtin" store is left out: the toolbit itself only ever
+    needs syncing from the user's own libraries, not from the stock copies
+    shipped with FreeCAD. But a resolved shape *dependency* is different:
+    toolbitshape (.fcstd) assets are, by design, never copied out of
+    "builtin" the way .fctb tool files are, so depth>=1 searches the full
+    order, or every stock shape's dependency resolution would fail with
+    "shape not found" for a perfectly normal tool.
     """
     if not embedded_tool_id:
         return None
     from .assets.uri import AssetUri
 
-    stores = "local" if depth == 0 else ("local", "builtin")
+    stores = tuple(asset_manager.get_default_search_stores())
+    if depth == 0:
+        stores = tuple(name for name in stores if name != "builtin") or stores
     return asset_manager.get_or_none(
         AssetUri.build(asset_type="toolbit", asset_id=embedded_tool_id),
         store=stores,

@@ -28,9 +28,11 @@ geometry), and fully replacing a stale tool with a fresh library copy.
 
 import unittest
 from typing import cast
+from unittest import mock
 
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
+from Path.Tool.assets import MemoryStore
 from Path.Tool.toolbit import ToolBitEndmill
 from Path.Tool.FeedsSpeeds import get_presets, make_preset, set_presets
 from Path.Tool.UpdateDocumentTools import (
@@ -44,9 +46,17 @@ from Path.Tool.UpdateDocumentTools import (
 
 class TestResolveLibrarySource(PathTestWithAssets):
     """Uses the isolated in-memory AssetManager (self.assets) from
-    PathTestWithAssets, which registers a "local" store - the only store
-    a depth=0 lookup ever searches (see resolve_library_source's
-    docstring). Matching is ToolBitID only - no fallback, no guessing."""
+    PathTestWithAssets, which registers a "local" store. A depth=0 lookup
+    searches the configured store search order without "builtin" (see
+    resolve_library_source's docstring). Matching is ToolBitID only - no
+    fallback, no guessing."""
+
+    def _add_tool_to_store(self, store_name: str, tool_id: str):
+        """Registers an extra store holding a copy of the 5mm endmill
+        under a different id."""
+        self.assets.register_store(MemoryStore(store_name))
+        data = self.assets.get_raw("toolbit://5mm_Endmill", store="local")
+        self.assets.add_raw("toolbit", tool_id, data, store=store_name)
 
     def test_direct_id_match(self):
         found = resolve_library_source(self.assets, "5mm_Endmill")
@@ -59,6 +69,25 @@ class TestResolveLibrarySource(PathTestWithAssets):
 
     def test_unknown_id_returns_none(self):
         found = resolve_library_source(self.assets, "not-a-real-id")
+        self.assertIsNone(found)
+
+    def test_finds_tool_in_additional_store(self):
+        self._add_tool_to_store("remote", "remote_only_tool")
+        with mock.patch(
+            "Path.Preferences.getAssetStoreSearchOrder",
+            return_value=("remote", "local", "builtin"),
+        ):
+            found = resolve_library_source(self.assets, "remote_only_tool")
+        self.assertIsNotNone(found)
+
+    def test_store_outside_search_order_is_not_searched(self):
+        self._add_tool_to_store("remote", "remote_only_tool")
+        found = resolve_library_source(self.assets, "remote_only_tool")
+        self.assertIsNone(found)
+
+    def test_builtin_toolbit_is_not_a_library_source(self):
+        self._add_tool_to_store("builtin", "builtin_only_tool")
+        found = resolve_library_source(self.assets, "builtin_only_tool")
         self.assertIsNone(found)
 
 
