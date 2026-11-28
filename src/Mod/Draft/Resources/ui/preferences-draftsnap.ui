@@ -252,7 +252,7 @@ Major grid lines are thicker than minor grid lines.</string>
          <string> %</string>
         </property>
         <property name="maximum">
-         <number>100</number>
+         <number>99</number>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>gridTransparency</cstring>

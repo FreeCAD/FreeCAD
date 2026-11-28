@@ -34,6 +34,7 @@
 ## \addtogroup drafttests
 # @{
 
+import FreeCAD as App
 import FreeCADGui as Gui
 from drafttests import auxiliary as aux
 from drafttests import test_base
@@ -58,6 +59,46 @@ class DraftPivy(test_base.DraftTestCaseDoc):
         Gui.getDocument(self.doc).ActiveView.getSceneGraph().addChild(cube)
         _msg("  Adding cube to the active view scene")
         self.assertTrue(cube, "Pivy is not working properly.")
+
+    def test_grid_transparency_updates_existing_tracker(self):
+        """The grid fades as transparency rises, preserving line contrast."""
+        from draftguitools import gui_trackers
+
+        prefs = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        key = "gridTransparency"
+        if key in prefs.GetInts():
+            self.addCleanup(prefs.SetInt, key, prefs.GetInt(key))
+        else:
+            self.addCleanup(prefs.RemInt, key)
+        prefs.SetInt(key, 0)
+
+        grid = gui_trackers.gridTracker(self.doc.Name)
+        try:
+            Gui.updateGui()
+            self.assertAlmostEqual(grid.mat1.transparency[0], 0.8)
+            self.assertAlmostEqual(grid.mat2.transparency[0], 0.2)
+
+            prefs.SetInt(key, 50)
+            grid.reset()
+            self.assertAlmostEqual(grid.mat1.transparency[0], 0.9)
+            self.assertAlmostEqual(grid.mat2.transparency[0], 0.6)
+            self.assertAlmostEqual(grid._human_material.transparency[0], 0.65)
+            axis_and_label_materials = (grid._text_material, *grid._axis_materials)
+            for material in axis_and_label_materials:
+                self.assertAlmostEqual(material.transparency[0], 0.5)
+
+            for percent in (99, 100):
+                with self.subTest(percent=percent):
+                    prefs.SetInt(key, percent)
+                    grid.reset()
+                    self.assertAlmostEqual(grid.mat1.transparency[0], 0.998)
+                    self.assertAlmostEqual(grid.mat2.transparency[0], 0.992)
+                    self.assertAlmostEqual(grid._human_material.transparency[0], 0.993)
+                    for material in axis_and_label_materials:
+                        self.assertAlmostEqual(material.transparency[0], 0.99)
+        finally:
+            grid.finalize()
+            Gui.updateGui()
 
 
 ## @}
