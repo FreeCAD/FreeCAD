@@ -393,6 +393,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_femimport.py
     femtest/app/test_material.py
     femtest/app/test_mesh.py
+    femtest/app/test_mesh_nodes.py
     femtest/app/test_object.py
     femtest/app/test_open.py
     femtest/app/test_result.py
