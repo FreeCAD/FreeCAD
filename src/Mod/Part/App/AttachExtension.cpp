@@ -23,7 +23,11 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+
 #include <gp.hxx>
+#include <Precision.hxx>
+#include <QtGlobal>
 
 #include <Base/Console.h>
 #include <Base/ProgramVersion.h>
@@ -483,6 +487,10 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             updatePropertyStatus(isAttacherActive(), /*base*/ true);
         }
     }
+    else if (prop == getExtendedObject()->getPropertyByName("Placement")) {
+        // Part::Datum attaches before onExtendedDocumentRestored so keep the value from the file
+        _restoredPlacement = getPlacement().getValue();
+    }
     if (prop == &(this->AttacherType)) {
         this->changeAttacherType(this->AttacherType.getValue());
     }
@@ -721,6 +729,51 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     }
 }
 
+void AttachExtension::warnIfMovedByLegacyLineDirection()
+{
+    if (!_restoredPlacement) {
+        return;
+    }
+
+    const auto& placement = getPlacement().getValue();
+    const auto& restored = *_restoredPlacement;
+    // the file rounds coordinates so far from the origin allow more
+    double tol = Precision::Confusion() * std::max(1.0, 1e-6 * restored.getPosition().Length());
+    if (placement.getRotation().isSame(restored.getRotation(), Precision::Confusion())
+        && placement.getPosition().IsEqual(restored.getPosition(), tol)) {
+        return;
+    }
+
+    auto version = Base::getVersion(getExtendedObject()->getDocument()->getProgramVersion());
+    if (version < Base::Version::v1_1 || version > Base::Version::v26_3) {
+        return;
+    }
+
+    const auto& objs = AttachmentSupport.getValues();
+    const auto& subs = AttachmentSupport.getSubValues();
+    bool lineSupport = false;
+    for (std::size_t i = 0; i < objs.size(); ++i) {
+        auto sobj = objs[i] ? objs[i]->getSubObject(subs[i].c_str()) : nullptr;
+        if (sobj && sobj->getLinkedObject(true)->isDerivedFrom<App::Line>()) {
+            lineSupport = true;
+            break;
+        }
+    }
+    if (!lineSupport) {
+        return;
+    }
+
+    Base::Console().warning(
+        getExtendedObject()->getFullLabel(),
+        QT_TRANSLATE_NOOP(
+            "Notifications",
+            "Placement changed on open: FreeCAD 1.1 to 26.3 could save a wrong direction for "
+            "objects attached to a datum line or axis. Check the attachment, then use Mark to "
+            "Recompute and Recompute to update dependent objects."
+        ) "\n"
+    );
+}
+
 void AttachExtension::onExtendedDocumentRestored()
 {
     try {
@@ -741,6 +794,9 @@ void AttachExtension::onExtendedDocumentRestored()
         }
 
         bool bAttached = positionBySupport();
+        if (bAttached) {
+            warnIfMovedByLegacyLineDirection();
+        }
 
         updateSinglePropertyStatus(bAttached);
     }

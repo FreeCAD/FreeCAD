@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 #include <App/PropertyLinks.h>
@@ -149,6 +151,7 @@ protected:
     void initBase(bool force);
 
     void handleLegacyTangentPlaneOrientation();
+    void warnIfMovedByLegacyLineDirection();
 
 public:
     void updateAttacherVals(bool base = false) const;
@@ -166,6 +169,7 @@ private:
     _Properties _baseProps;
 
     mutable int _active = -1;
+    std::optional<Base::Placement> _restoredPlacement;
 };
 
 
