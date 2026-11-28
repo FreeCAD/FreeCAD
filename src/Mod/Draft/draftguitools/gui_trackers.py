@@ -1329,7 +1329,7 @@ class gridTracker(Tracker):
         self._axis_colors = (col, red, green, blue)
         self._update_axis_colors()
 
-        # Fade each material from its default transparency to fully transparent.
+        # Preserve the contrast between major and minor lines as the grid fades.
         opacity = 1 - gtrans
         self.mat1.transparency.setValue(1 - 0.2 * opacity)
         self.mat2.transparency.setValue(1 - 0.8 * opacity)
@@ -1344,7 +1344,8 @@ class gridTracker(Tracker):
 
     def getGridColors(self):
         """Returns grid colors stored in the preferences"""
-        gtrans = params.get_param("gridTransparency") / 100.0
+        # Older profiles may still contain the previous 100% maximum.
+        gtrans = min(params.get_param("gridTransparency"), 99) / 100.0
         col = utils.get_rgba_tuple(params.get_param("gridColor"))[:3]
         if params.get_param("coloredGridAxes"):
             vp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")

@@ -87,10 +87,15 @@ class DraftPivy(test_base.DraftTestCaseDoc):
             for material in axis_and_label_materials:
                 self.assertAlmostEqual(material.transparency[0], 0.5)
 
-            prefs.SetInt(key, 100)
-            grid.reset()
-            for material in (grid.mat1, grid.mat2, grid._human_material, *axis_and_label_materials):
-                self.assertAlmostEqual(material.transparency[0], 1.0)
+            for percent in (99, 100):
+                with self.subTest(percent=percent):
+                    prefs.SetInt(key, percent)
+                    grid.reset()
+                    self.assertAlmostEqual(grid.mat1.transparency[0], 0.998)
+                    self.assertAlmostEqual(grid.mat2.transparency[0], 0.992)
+                    self.assertAlmostEqual(grid._human_material.transparency[0], 0.993)
+                    for material in axis_and_label_materials:
+                        self.assertAlmostEqual(material.transparency[0], 0.99)
         finally:
             grid.finalize()
             Gui.updateGui()
