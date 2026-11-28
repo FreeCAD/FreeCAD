@@ -85,10 +85,10 @@ class Draft_Hyperlink:
             m.setInformativeText(
                 translate("draft", "This may lead to the opening of various windows")
             )
-            m.setStandardButtons(m.Ok | m.Cancel)
+            m.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
             ret = m.exec_()
 
-        if len(self.hyperlinks_list) == 1 or ret == m.Ok:
+        if len(self.hyperlinks_list) == 1 or ret == QtWidgets.QMessageBox.Ok:
             for hyperlink in self.hyperlinks_list:
                 self.open_hyperlink(hyperlink)
 
