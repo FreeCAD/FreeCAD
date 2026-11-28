@@ -225,6 +225,18 @@ class TestSubShapeBinder(unittest.TestCase):
         self.assertTrue(shape.Edges[0].isSame(shape.Faces[0].Edges[0]))
         self.assertAlmostEqual(shape.Length, 20 * math.pi + 10)
 
+    def testMakeFaceVersion3KeepsDroppingOpenEdges(self):
+        """A binder saved as version 3 keeps its shape: only the disc, the line dropped."""
+        binder = self._circleAndSeparateLine()
+        self.assertEqual(binder._Version, 4)
+        binder._Version = 3
+        self.Doc.recompute()
+        shape = binder.Shape
+
+        self.assertEqual(len(shape.Faces), 1)
+        self.assertAlmostEqual(shape.Faces[0].Area, 100 * math.pi)
+        self.assertEqual(len(shape.Edges), 1)
+
     def testMakeFaceWithoutFacesKeepsWires(self):
         """Without any face, the bound edges come back as they were, not split."""
         shape = self._sketchBinder(

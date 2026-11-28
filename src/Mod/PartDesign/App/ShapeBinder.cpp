@@ -511,7 +511,9 @@ void SubShapeBinder::setupObject()
 {
     // Version 3 marks binders that default to FaceMakerBuildFace when turning
     // bound wires into faces. Older binders keep the previous face maker.
-    _Version.setValue(3);
+    // Version 4 also keeps the bound edges that bound no face; version 3 binders
+    // keep dropping them so that their shape does not change on recompute.
+    _Version.setValue(4);
     checkPropertyStatus();
 }
 
@@ -970,13 +972,17 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
                     // predate sketches producing faces by default, so they keep
                     // the previous face maker (FaceMakerBullseye) to avoid
                     // silently changing their generated topology on reopen.
-                    if (_Version.getValue() >= 3) {
+                    // Loose edges are kept from _Version 4 on, for the same reason.
+                    if (_Version.getValue() >= 4) {
                         FacesAndLooseWires made = makeFacesKeepingLooseEdges(result);
                         result = made.faces;
                         looseWires = made.looseWires;
                     }
                     else {
-                        result = result.makeElementFace();
+                        const char* faceMaker = _Version.getValue() >= 3
+                            ? "Part::FaceMakerBuildFace"
+                            : nullptr;
+                        result = result.makeElementFace(nullptr, faceMaker);
                     }
                 }
                 catch (...) {
