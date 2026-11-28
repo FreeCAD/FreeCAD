@@ -3014,8 +3014,16 @@ App::Document* Application::reopen(App::Document* doc)
         App::GetApplication().openDocument(name.c_str());
     }
     else {
+        std::vector<App::Document*> deps;
+        try {
+            deps = doc->getDependentDocuments(true);
+        }
+        catch (Base::Exception& e) {
+            e.reportException();
+            deps = doc->getDependentDocuments(false);
+        }
         std::vector<std::string> docs;
-        for (auto d : doc->getDependentDocuments(true)) {
+        for (auto d : deps) {
             if (d->testStatus(App::Document::PartialDoc)
                 || d->testStatus(App::Document::PartialRestore)) {
                 docs.emplace_back(d->FileName.getValue());

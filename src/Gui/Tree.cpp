@@ -1222,7 +1222,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
             contextMenu.addAction(this->reloadDocAction);
         }
         else {
-            for (auto d : doc->getDependentDocuments()) {
+            for (auto d : doc->getDependentDocuments(false)) {
                 if (d->testStatus(App::Document::PartialDoc)) {
                     contextMenu.addAction(this->reloadDocAction);
                     break;
