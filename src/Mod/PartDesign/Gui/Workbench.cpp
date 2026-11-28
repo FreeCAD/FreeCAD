@@ -415,6 +415,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     additives->setCommand("Additive Features");
 
     *additives << "PartDesign_Pad"
+               << "PartDesign_Rib"
                << "PartDesign_Revolution"
                << "PartDesign_AdditiveLoft"
                << "PartDesign_AdditivePipe"
@@ -512,6 +513,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     part->setCommand("Part Design Modeling Features");
 
     *part << "PartDesign_Pad"
+          << "PartDesign_Rib"
           << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
           << "PartDesign_AdditivePipe"
