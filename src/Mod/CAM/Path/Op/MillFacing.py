@@ -316,6 +316,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             z_finish_step=finish_step,
             final_depth=final_depth,
             user_depths=None,
+            single_pass=not obj.MultPass,
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
 

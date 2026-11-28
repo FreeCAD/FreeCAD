@@ -1200,6 +1200,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         else:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
+            self.form.chk_multiPass.hide()
 
         if self.haveFinishDepth():
             self.finishDepth = PathGuiUtil.QuantitySpinBox(
@@ -1294,6 +1295,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.finalDepth.updateProperty()
         if self.haveStepDown():
             self.stepDown.updateProperty()
+            if obj.MultiPass != self.form.chk_multiPass:
+                obj.MultiPass = self.form.chk_multiPass.isChecked()
         if self.haveFinishDepth():
             self.finishDepth.updateProperty()
         if PathOp.FeatureLinking & self.features:
@@ -1311,6 +1314,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.finalDepth.updateWidget()
         if self.haveStepDown():
             self.stepDown.updateWidget()
+            self.form.chk_multiPass.setChecked(obj.MultiPass)
         if self.haveFinishDepth():
             self.finishDepth.updateWidget()
         if PathOp.FeatureLinking & self.features:
@@ -1330,6 +1334,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 self.form.workplane.blockSignals(False)
 
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         signals = []
@@ -1341,6 +1346,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
             signals.append(self.form.finalDepth.editingFinished)
         if self.haveStepDown():
             signals.append(self.form.stepDown.editingFinished)
+            signals.append(self.form.chk_multiPass.checkStateChanged)
         if self.haveFinishDepth():
             signals.append(self.form.finishDepth.editingFinished)
         if PathOp.FeatureLinking & self.features:
@@ -1356,6 +1362,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
             "StartDepth",
             "FinalDepth",
             "StepDown",
+            "MultiPass",
             "FinishDepth",
             "CollisionAvoidanceStrategy",
             "CollisionClearance",
@@ -1373,6 +1380,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
         self.form.resetDefaults.clicked.connect(lambda: self.resetDefaults(obj))
+        self.form.chk_multiPass.checkStateChanged.connect(self.updateVisibility)
 
     def resetDefaults(self, obj):
         """Re-derive every height and depth for the operation's current work
@@ -1409,6 +1417,10 @@ class TaskPanelHeightsPage(TaskPanelPage):
         enabled = self.selectionZLevel(obj, sel) is not None
         self.form.startDepthSet.setEnabled(enabled)
         self.form.finalDepthSet.setEnabled(enabled)
+
+    def updateVisibility(self):
+        if self.haveStepDown():
+            self.form.stepDown.setEnabled(self.form.chk_multiPass.isChecked())
 
 
 class TaskPanelToolControllerPage(TaskPanelPage):

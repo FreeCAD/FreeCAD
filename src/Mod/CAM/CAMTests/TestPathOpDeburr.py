@@ -209,6 +209,7 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
 
         deburr = PathDeburr.Create("Deburr", parentJob=job)
         deburr.Base = [(part, [sub_name])]
+        deburr.MultiPass = False
         deburr.recompute()
 
         return deburr

@@ -573,6 +573,7 @@ class ObjectOp(PathOp.ObjectOp):
             z_finish_step=finish_step,
             final_depth=finDep,
             user_depths=None,
+            single_pass=not obj.MultiPass,
         )
 
 

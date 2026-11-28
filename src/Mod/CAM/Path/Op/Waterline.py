@@ -134,10 +134,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                 (translate("path_waterline", "Collectively"), "Collectively"),
                 (translate("path_waterline", "Individually"), "Individually"),
             ],
-            "LayerMode": [
-                (translate("path_waterline", "Single-pass"), "Single-pass"),
-                (translate("path_waterline", "Multi-pass"), "Multi-pass"),
-            ],
         }
 
         if dataType == "raw":
@@ -361,15 +357,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                 QT_TRANSLATE_NOOP("App::Property", "Ignore outer waterlines above this height."),
             ),
             (
-                "App::PropertyEnumeration",
-                "LayerMode",
-                "Clearing Options",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Complete the operation in a single pass at depth, or multiple passes to final depth.",
-                ),
-            ),
-            (
                 "App::PropertyVectorDistance",
                 "PatternCenterCustom",
                 "Clearing Options",
@@ -478,7 +465,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             "IgnoreOuterAbove": obj.StartDepth.Value + 0.00001,
             "StartPoint": FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
             "Algorithm": "OCL Dropcutter",
-            "LayerMode": "Single-pass",
             "CutMode": "Conventional",
             "CutPattern": "None",
             "HandleMultipleFeatures": "Collectively",
@@ -909,12 +895,13 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # Calculate default depthparams for operation
         self.depthParams = PathUtils.depth_params(
-            obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value,
-            obj.StartDepth.Value,
-            obj.StepDown.Value,
-            0.0,
-            obj.FinalDepth.Value,
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=obj.StartDepth.Value,
+            step_down=obj.StepDown.Value,
+            z_finish_step=0,
+            final_depth=obj.FinalDepth.Value,
+            single_pass=not obj.MultPass,
         )
         self.midDep = (obj.StartDepth.Value + obj.FinalDepth.Value) / 2.0
 
@@ -1255,11 +1242,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             minSmplInt = smplInt
 
         # Compute number and size of stepdowns, and final depth
-        if obj.LayerMode == "Single-pass":
-            depthparams = [obj.FinalDepth.Value]
-        else:
-            depthparams = [dp for dp in self.depthParams]
-        lenDP = len(depthparams)
+        depthparams = [dp for dp in self.depthParams]
 
         # Scan the piece to depth at smplInt
         if obj.Algorithm == "OCL Adaptive":
@@ -1842,19 +1825,16 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         finDep = obj.FinalDepth.Value + (self.geoTlrnc / 10.0)
         depthParams = PathUtils.depth_params(
-            obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value,
-            obj.StartDepth.Value,
-            obj.StepDown.Value,
-            0.0,
-            finDep,
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=obj.StartDepth.Value,
+            step_down=obj.StepDown.Value,
+            z_finish_step=0,
+            final_depth=finDep,
+            single_pass=not obj.MultPass,
         )
 
-        # Compute number and size of stepdowns, and final depth
-        if obj.LayerMode == "Single-pass":
-            depthparams = [finDep]
-        else:
-            depthparams = [dp for dp in depthParams]
+        depthparams = [dp for dp in depthParams]
         Path.Log.debug("Experimental Waterline depthparams:\n{}".format(depthparams))
 
         # Prepare PathDropCutter objects with STL data

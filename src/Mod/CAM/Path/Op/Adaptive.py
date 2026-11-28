@@ -205,7 +205,7 @@ def GenerateGCode(op, obj, adaptiveResults):
         p2 = region["StartPoint"]
         helixRadius = max(math.dist(p1[:2], p2[:2]), helixRadius)
 
-    stepDown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
+    stepDown = max(obj.StepDown.Value if obj.MultiPass else 999, _ADAPTIVE_MIN_STEPDOWN)
 
     if obj.HelixMaxRampAngle < 0:
         obj.HelixMaxRampAngle = 0
@@ -803,7 +803,7 @@ def ExecuteModelAware(op, obj):
                     cutlist += [([d], i[1]) for i in insidePathArray2dDepthTuples if d in i[0]]
 
             # need to convert results to python object to be JSON serializable
-            stepdown = max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN)
+            stepdown = max(obj.StepDown.Value if obj.MultiPass else 999, _ADAPTIVE_MIN_STEPDOWN)
             adaptiveResults = list()
             for depths, region in cutlist:
                 for result in region["toolpaths"]:
@@ -1366,7 +1366,7 @@ def _getWorkingEdgesModelAware(op, obj):
         clearance_height=obj.ClearanceHeight.Value,
         safe_height=obj.SafeHeight.Value,
         start_depth=obj.StartDepth.Value,
-        step_down=max(obj.StepDown.Value, _ADAPTIVE_MIN_STEPDOWN),
+        step_down=max(obj.StepDown.Value if obj.MultiPass else 999, _ADAPTIVE_MIN_STEPDOWN),
         z_finish_step=0.0,
         final_depth=obj.FinalDepth.Value,
         user_depths=None,

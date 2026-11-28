@@ -215,6 +215,12 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
+        if Path.Geom.isRoughly(obj.StartDepth.Value, obj.FinalDepth.Value):
+            Path.Log.error(
+                translate("CAM", "%s: Start depth is the same as final depth") % obj.Label
+            )
+            raise PathOp.DepthsException
+
         holes = []
         for base, subs in self.baseShapes(obj):
             for sub in subs:

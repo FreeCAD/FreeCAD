@@ -310,15 +310,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyEnumeration",
-                "LayerMode",
-                "Clearing Options",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Complete the operation in a single pass at depth, or multiple passes to final depth.",
-                ),
-            ),
-            (
                 "App::PropertyVectorDistance",
                 "PatternCenterCustom",
                 "Clearing Options",
@@ -462,10 +453,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 (translate("CAM_Surface", "Collectively"), "Collectively"),
                 (translate("CAM_Surface", "Individually"), "Individually"),
             ],
-            "LayerMode": [
-                (translate("CAM_Surface", "Single-pass"), "Single-pass"),
-                (translate("CAM_Surface", "Multi-pass"), "Multi-pass"),
-            ],
             "ProfileEdges": [
                 (translate("CAM_Surface", "None"), "None"),
                 (translate("CAM_Surface", "Only"), "Only"),
@@ -507,7 +494,6 @@ class ObjectSurface(PathOp.ObjectOp):
             "CutPatternReversed": False,
             "StartPoint": FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
             "ProfileEdges": "None",
-            "LayerMode": "Single-pass",
             "ScanType": "Planar",
             "RotationAxis": "X",
             "CutMode": "Conventional",
@@ -874,12 +860,13 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Calculate default depthparams for operation
         self.depthParams = PathUtils.depth_params(
-            obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value,
-            obj.StartDepth.Value,
-            obj.StepDown.Value,
-            0.0,
-            obj.FinalDepth.Value,
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=obj.StartDepth.Value,
+            step_down=obj.StepDown.Value,
+            z_finish_step=0,
+            final_depth=obj.FinalDepth.Value,
+            single_pass=not obj.MultPass,
         )
         self.midDep = (obj.StartDepth.Value + obj.FinalDepth.Value) / 2.0
 
@@ -1101,10 +1088,10 @@ class ObjectSurface(PathOp.ObjectOp):
             return trans
 
         # Compute number and size of stepdowns, and final depth
-        if obj.LayerMode == "Single-pass":
-            depthparams = [obj.FinalDepth.Value]
-        elif obj.LayerMode == "Multi-pass":
+        if obj.MultiPass:
             depthparams = [i for i in self.depthParams]
+        else:
+            depthparams = [obj.FinalDepth.Value]
         lenDP = len(depthparams)
 
         # Prepare PathDropCutter objects with STL data
@@ -1188,10 +1175,10 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.OptimizeLinearPaths = False
 
         # Process OCL scan data
-        if obj.LayerMode == "Single-pass":
-            final.extend(self._planarDropCutSingle(JOB, obj, pdc, safePDC, depthparams, SCANDATA))
-        elif obj.LayerMode == "Multi-pass":
+        if obj.MultiPass:
             final.extend(self._planarDropCutMulti(JOB, obj, pdc, safePDC, depthparams, SCANDATA))
+        else:
+            final.extend(self._planarDropCutSingle(JOB, obj, pdc, safePDC, depthparams, SCANDATA))
 
         # If cut pattern is `Circular`, restore initial OLP value
         if obj.CutPattern in ["Circular", "CircularZigZag"]:
@@ -1806,7 +1793,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 # to SafeHeight for lack of an accurate stock model, but then
                 # speed up the drop back down when using multi pass, dropping
                 # quickly to *previous* layer depth.
-                stepDown = obj.StepDown.Value if hasattr(obj, "StepDown") else 0
+                stepDown = obj.StepDown.Value if obj.MultiPass else 999
                 rtpd = min(height, p2.z + stepDown + 2)
             elif not p1:
                 Path.Log.debug("_stepTransitionCmds() p1 is None")
@@ -2087,18 +2074,16 @@ class ObjectSurface(PathOp.ObjectOp):
             return indexes
 
         # Compute number and size of stepdowns, and final depth
-        if obj.LayerMode == "Single-pass":
-            depthparams = [self.FinalDepth]
-        else:
-            dep_par = PathUtils.depth_params(
-                self.clearHeight,
-                self.safeHeight,
-                self.bbRadius,
-                obj.StepDown.Value,
-                0.0,
-                self.FinalDepth,
-            )
-            depthparams = [i for i in dep_par]
+        dep_par = PathUtils.depth_params(
+            clearance_height=self.clearHeight,
+            safe_height=self.safeHeight,
+            start_depth=self.bbRadius,
+            step_down=obj.StepDown.Value,
+            z_finish_step=0,
+            final_depth=self.FinalDepth,
+            single_pass=not obj.MultPass,
+        )
+        depthparams = [i for i in dep_par]
         prevDepth = depthparams[0]
         lenDP = len(depthparams)
 
@@ -2351,7 +2336,7 @@ class ObjectSurface(PathOp.ObjectOp):
             if pnt.z > zMax:
                 zMax = pnt.z
 
-            if obj.LayerMode == "Multi-pass":
+            if obj.MultiPass:
                 # if z travels above previous layer, start/continue hold high cycle
                 if pnt.z > prvDep and optimize is True:
                     if self.onHold is False:

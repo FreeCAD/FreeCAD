@@ -165,7 +165,8 @@ class TestPathRotarySurface(PathTestBase):
         op.AngularResolution = 15.0
         # Clear the OpToolDiameter expression that the SetupSheet auto-binds.
         op.setExpression("StepDown", None)
-        op.StepDown = 0.0  # single radial pass by default; test_07 covers multi-pass
+        op.StepDown = 1.0
+        op.MultiPass = False  # single radial pass by default; test_07 covers multi-pass
         op.RadialStockToLeave = 0.0
         op.MaxFeed = 5000.0
         op.LinearDeflection = 0.2

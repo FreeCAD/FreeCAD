@@ -409,6 +409,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             z_finish_step=finish_step,
             final_depth=finDep,
             user_depths=None,
+            single_pass=not obj.MultPass,
         )
         shape = Part.makeCompound(Faces)
         env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=depthparams)
@@ -436,6 +437,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 z_finish_step=finish_step,
                 final_depth=finDep1,
                 user_depths=None,
+                single_pass=not obj.MultPass,
             )
             envTop = PathUtils.getEnvelope(
                 base[0].Shape, subshape=highFace.Shape, depthparams=depthparams1
@@ -460,6 +462,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 z_finish_step=finish_step,
                 final_depth=finDep2,
                 user_depths=None,
+                single_pass=not obj.MultPass,
             )
             envBottom = PathUtils.getEnvelope(
                 base[0].Shape, subshape=lowFace.Shape, depthparams=depthparams2

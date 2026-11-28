@@ -393,6 +393,13 @@ class ObjectOp:
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
+            obj.addProperty(
+                "App::PropertyBool",
+                "MultiPass",
+                "Depth",
+                QT_TRANSLATE_NOOP("App::Property", "Disable to make one pass at the final depth"),
+            )
+            obj.MultiPass = True
 
         if FeatureFinishDepth & features:
             obj.addProperty(
@@ -688,7 +695,20 @@ class ObjectOp:
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
-            obj.StepDown = 0
+        if FeatureStepDown & features and not hasattr(obj, "MultiPass"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "MultiPass",
+                "Depth",
+                QT_TRANSLATE_NOOP("App::Property", "Disable to make one pass at the final depth"),
+            )
+            obj.MultiPass = True
+            if not Path.Geom.isStrictlyGreater(obj.StepDown.Value, 0):
+                obj.MultiPass = False
+                obj.clearExpression("StepDown")
+                obj.StepDown = 999
+            if hasattr(obj, "LayerMode"):  # migration for PlanarSurface, Surface and Waterline
+                obj.MultiPass = obj.LayerMode == "Multi-pass"
 
         if FeatureLinking & features and not hasattr(obj, "CollisionAvoidanceStrategy"):
             self.addLinking(obj)
@@ -1195,6 +1215,11 @@ class ObjectOp:
         ):
             Path.Log.error(
                 translate("CAM_Operation", "%s: Safe height is above clearance height") % obj.Label
+            )
+            isValid = False
+        if FeatureStepDown & features and not Path.Geom.isStrictlyGreater(obj.StepDown.Value, 0):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Step down is zero or negative") % obj.Label
             )
             isValid = False
         return isValid

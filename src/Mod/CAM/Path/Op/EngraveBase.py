@@ -49,15 +49,11 @@ class ObjectOp(PathOp.ObjectOp):
 
     def getZValues(self, obj):
         zValues = []
-        if obj.StepDown.Value != 0:
+        if obj.MultiPass:
             z = obj.StartDepth.Value - obj.StepDown.Value
-            stepdown = obj.StepDown.Value
-            if stepdown < 0:
-                stepdown = -stepdown
-
-            while z > obj.FinalDepth.Value:
+            while Path.Geom.isStrictlyGreater(z, obj.FinalDepth.Value):
                 zValues.append(z)
-                z -= stepdown
+                z -= obj.StepDown.Value
 
         zValues.append(obj.FinalDepth.Value)
         return zValues

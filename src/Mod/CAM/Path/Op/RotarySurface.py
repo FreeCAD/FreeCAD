@@ -567,7 +567,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             Path.Log.error("Rotary Surface: Step Over must be positive.")
             return
 
-        step_down = float(obj.StepDown.Value) if hasattr(obj, "StepDown") else 0.0
+        step_down = obj.StepDown.Value if obj.MultiPass else 999
         stock_to_leave = float(obj.RadialStockToLeave.Value)
 
         # Optional restriction to user-selected faces. Tightens axial and

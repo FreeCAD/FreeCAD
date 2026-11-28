@@ -329,7 +329,7 @@ class _Geometry(object):
             zStart = model.Shape.BoundBox.ZMax
             Path.Log.error("Base object not set")
         finalDepth = obj.FinalDepth.Value
-        stepDown = abs(obj.StepDown.Value)
+        stepDown = obj.StepDown.Value if obj.MultiPass else 999
 
         return cls.FromTool(obj.ToolController.Tool, zStart, finalDepth, stepDown)
 
