@@ -31,7 +31,7 @@ import zipfile
 
 import FreeCAD
 import FreeCADGui
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Gui Document code
@@ -416,3 +416,137 @@ class TestGuiDocument(unittest.TestCase):
             # Std_Save must reach the focused macro editor, not the active document,
             # the macro is written and the document is left untouched
             self.assertEqual(doc_mtime_after, doc_mtime_before)
+
+
+class TestGuiOpenFiles(unittest.TestCase):
+    """Opening files from macOS Finder: Open With, double-click, Dock drop (QFileOpenEvent)."""
+
+    def setUp(self):
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp_dir.cleanup)
+        self.docs_before = set(FreeCAD.listDocuments())
+        self.addCleanup(self._closeNewDocuments)
+
+    def _closeNewDocuments(self):
+        for name in self._newDocuments():
+            FreeCAD.closeDocument(name)
+
+    def _newDocuments(self):
+        return set(FreeCAD.listDocuments()) - self.docs_before
+
+    def _saveEmptyDocument(self, name):
+        doc = FreeCAD.newDocument(name)
+        path = os.path.join(self.temp_dir.name, name + ".FCStd")
+        doc.saveAs(path)
+        FreeCAD.closeDocument(doc.Name)
+        return path
+
+    def _sendFileOpenEvent(self, path):
+        # Sends what macOS sends when a file is opened from Finder: Open With, double-click, Dock
+        # drop. Closes every modal dialog the event opens, so that a test fails instead of hanging,
+        # and returns them as (class name, message box text) in the order they were opened.
+        dialogs = []
+        modal_before = QtWidgets.QApplication.activeModalWidget()
+
+        def closeDialog():
+            dialog = QtWidgets.QApplication.activeModalWidget()
+            if dialog is None or dialog is modal_before:
+                return
+            text = dialog.text() if isinstance(dialog, QtWidgets.QMessageBox) else ""
+            dialogs.append((dialog.metaObject().className(), text))
+            dialog.reject()
+
+        timer = QtCore.QTimer()
+        timer.timeout.connect(closeDialog)
+        timer.start(50)
+        try:
+            app = QtWidgets.QApplication.instance()
+            QtWidgets.QApplication.sendEvent(app, QtGui.QFileOpenEvent(path))
+        finally:
+            timer.stop()
+        return dialogs
+
+    def testFileOpenEventOpensDocument(self):
+        path = self._saveEmptyDocument("FinderDocument")
+        self.assertEqual(self._sendFileOpenEvent(path), [])
+        self.assertEqual(self._newDocuments(), {"FinderDocument"})
+
+    def testFileOpenEventOpensBackupAsDocument(self):
+        # a backup has no import type, File > Open opens it as a document
+        saved = self._saveEmptyDocument("FinderBackup")
+        backup = os.path.join(self.temp_dir.name, "FinderBackup.FCBak")
+        os.rename(saved, backup)
+
+        self.assertEqual(self._sendFileOpenEvent(backup), [])
+        self.assertEqual(self._newDocuments(), {"FinderBackup"})
+
+    def testFileOpenEventOpensImportableFile(self):
+        try:
+            import Part
+        except ImportError:
+            self.skipTest("Part workbench is not available")
+        path = os.path.join(self.temp_dir.name, "FinderBox.brep")
+        Part.makeBox(1, 2, 3).exportBrep(path)
+
+        self.assertEqual(self._sendFileOpenEvent(path), [])
+
+        new_docs = self._newDocuments()
+        self.assertEqual(len(new_docs), 1)
+        doc = FreeCAD.getDocument(new_docs.pop())
+        shapes = [obj for obj in doc.Objects if obj.isDerivedFrom("Part::Feature")]
+        self.assertEqual(len(shapes), 1)
+        self.assertAlmostEqual(shapes[0].Shape.Volume, 6.0)
+
+    def testFileOpenEventOpensMacroInEditorWithoutRunningIt(self):
+        marker = os.path.join(self.temp_dir.name, "macro_ran")
+        path = os.path.join(self.temp_dir.name, "finder_macro.py")
+        with open(path, "w", encoding="utf-8") as macro_file:
+            macro_file.write(f"open({marker!r}, 'w').close()\n")
+        main_window = FreeCADGui.getMainWindow()
+
+        self.assertEqual(self._sendFileOpenEvent(path), [])
+
+        editor = main_window.getActiveWindow()
+        self.assertIsNotNone(editor)
+        self.assertIn("EditorView", editor.getTypeId())
+
+        def closeEditor():
+            main_window.removeWindow(editor)
+            QtCore.QCoreApplication.sendPostedEvents(None, QtCore.QEvent.Type.DeferredDelete)
+
+        self.addCleanup(closeEditor)
+        self.assertFalse(os.path.exists(marker), "a macro opened from Finder must not be run")
+
+    def testFileOpenEventReportsUnsupportedFile(self):
+        path = os.path.join(self.temp_dir.name, "FinderDrawing.notafreecadtype")
+        with open(path, "w", encoding="utf-8") as unsupported_file:
+            unsupported_file.write("no module imports this\n")
+
+        dialogs = self._sendFileOpenEvent(path)
+
+        # File > Open's message. Not the title: macOS message boxes have none.
+        message = QtCore.QCoreApplication.translate(
+            "StdCmdOpen", "Loading the file %1 is not supported"
+        ).replace("%1", path)
+        self.assertEqual(dialogs, [("QMessageBox", message)])
+        self.assertEqual(self._newDocuments(), set())
+
+    def testFileOpenEventCancelledModuleChoiceOpensNothing(self):
+        # a type that more than one module imports makes FreeCAD ask which one to use
+        ext = next(
+            (
+                ext
+                for ext, modules in sorted(FreeCAD.getImportType().items())
+                if isinstance(modules, list) and len(set(modules)) > 1
+            ),
+            None,
+        )
+        if ext is None:
+            self.skipTest("no file type with more than one import module")
+        path = os.path.join(self.temp_dir.name, "FinderChoice." + ext)
+        open(path, "w", encoding="utf-8").close()
+
+        dialogs = self._sendFileOpenEvent(path)
+
+        self.assertEqual([class_name for class_name, _ in dialogs], ["Gui::SelectModule"])
+        self.assertEqual(self._newDocuments(), set())

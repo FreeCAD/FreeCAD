@@ -36,6 +36,7 @@
 #include <QByteArray>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QTextStream>
 #include <QFileInfo>
 #include <QFileOpenEvent>
@@ -54,6 +55,7 @@
 #include "GuiApplication.h"
 #include "Application.h"
 #include "MainWindow.h"
+#include "ModuleIO.h"
 #include "SpaceballEvent.h"
 
 
@@ -194,13 +196,29 @@ bool GUIApplication::event(QEvent* ev)
             return true;
         }
 
-        QString file = static_cast<QFileOpenEvent*>(ev)->file();
-        QFileInfo fi(file);
-        if (fi.suffix().toLower() == QLatin1String("fcstd")) {
-            QByteArray fn = file.toUtf8();
-            Application::Instance->open(fn, "FreeCAD");
+        const QString file = static_cast<QFileOpenEvent*>(ev)->file();
+
+        // Backups have no import type. Open them as documents, as File > Open does.
+        if (file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive)) {
+            Application::Instance->open(file.toUtf8(), "FreeCAD");
             return true;
         }
+
+        // Same lookup as SelectModule::importHandler, which also returns nothing on Cancel.
+        const QFileInfo fi(file);
+        const App::Application& app = App::GetApplication();
+        if (app.getImportFilters(fi.completeSuffix().toLower().toStdString()).empty()
+            && app.getImportFilters(fi.suffix().toLower().toStdString()).empty()) {
+            QMessageBox::critical(
+                Gui::getMainWindow(),
+                qApp->translate("StdCmdOpen", "Cannot Open File"),
+                qApp->translate("StdCmdOpen", "Loading the file %1 is not supported").arg(file)
+            );
+            return true;
+        }
+
+        ModuleIO::openFile(file);
+        return true;
     }
 
     return GUIApplicationNativeEventAware::event(ev);
