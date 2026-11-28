@@ -25,6 +25,8 @@
 
 # Gui Unit tests for the FEM module
 from femtest.gui.test_open import TestObjectOpen as FemGuiTest01
+from femtest.gui.test_material_task_panel import TestMaterialTaskPanel as FemGuiTest02
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemGuiTest01.__name__ else True
+False if FemGuiTest02.__name__ else True

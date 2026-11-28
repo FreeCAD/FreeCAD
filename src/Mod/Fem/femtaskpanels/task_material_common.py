@@ -103,7 +103,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         QtCore.QObject.connect(
             self.parameterWidget.qsb_expansion_reference_temperature,
             QtCore.SIGNAL("editingFinished()"),
-            self.tec_changed,
+            self.tert_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.qsb_specific_heat,
@@ -226,7 +226,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
                 self.parameterWidget.qsb_expansion_coefficient.property("value").UserString
             )
 
-    def tec_changed(self):
+    def tert_changed(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
             self.material["ThermalExpansionReferenceTemperature"] = (
                 self.parameterWidget.qsb_expansion_reference_temperature.property(

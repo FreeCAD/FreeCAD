@@ -746,6 +746,7 @@ endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
+    femtest/gui/test_material_task_panel.py
     femtest/gui/test_open.py
 )
 
