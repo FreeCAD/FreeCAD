@@ -28,6 +28,7 @@
 #include "ViewProviderHole.h"
 
 
+class QLabel;
 class Ui_TaskHoleParameters;
 
 namespace App
@@ -60,6 +61,7 @@ public:
     ~TaskHoleParameters() override;
 
     void apply() override;
+    void recomputeFeature();
 
     bool getThreaded() const;
     long getThreadType() const;
@@ -165,6 +167,7 @@ private:
 
     std::unique_ptr<Observer> observer;
     QWidget* proxy;
+    QLabel* previewErrorLabel = nullptr;
     std::unique_ptr<Ui_TaskHoleParameters> ui;
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
