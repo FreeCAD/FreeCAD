@@ -428,8 +428,6 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
 
     actEditHide.setData(QStringLiteral("OBTN EditHide"));
 
-    actEditShow.setData(QStringLiteral("OBTN EditShow"));
-
     actTaskShow.setData(QStringLiteral("OBTN TaskShow"));
 
     actNoAutoMode.setData(QStringLiteral("OBTN NoAutoMode"));
@@ -440,7 +438,6 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
     autoModeMenu.setToolTipsVisible(true);
     autoModeMenu.addAction(&actNoAutoMode);
     autoModeMenu.addAction(&actAutoHide);
-    autoModeMenu.addAction(&actEditShow);
     autoModeMenu.addAction(&actEditHide);
     autoModeMenu.addAction(&actTaskShow);
     addAction(&actAutoMode);
@@ -524,7 +521,6 @@ void OverlayTabWidget::refreshIcons()
         actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay_light.svg"));
         actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
         actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-        actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
         actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
         actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icons/transparent_light.svg"));
         pxAutoHide = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
@@ -533,7 +529,6 @@ void OverlayTabWidget::refreshIcons()
         actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
         actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode.svg"));
         actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow.svg"));
-        actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow.svg"));
         actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide.svg"));
         actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icons/transparent.svg"));
         pxAutoHide = BitmapFactory().pixmap("qss:overlay/icons/autohide.svg");
@@ -897,16 +892,14 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
 
         setRect(rect);
     }
+    const bool legacyEditShow = handle->GetBool("EditShow", false);
     if (handle->GetBool("AutoHide", false)) {
         setAutoMode(AutoMode::AutoHide);
     }
     else if (handle->GetBool("EditHide", false)) {
         setAutoMode(AutoMode::EditHide);
     }
-    else if (handle->GetBool("EditShow", false)) {
-        setAutoMode(AutoMode::EditShow);
-    }
-    else if (handle->GetBool("TaskShow", getDockArea() == Qt::RightDockWidgetArea)) {
+    else if (legacyEditShow || handle->GetBool("TaskShow", getDockArea() == Qt::RightDockWidgetArea)) {
         setAutoMode(AutoMode::TaskShow);
     }
     else {
@@ -928,6 +921,11 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
 
     getSplitter()->setSizes(sizes);
     hGrp = handle;
+    if (legacyEditShow) {
+        Base::StateLocker lock(_saving);
+        hGrp->SetBool("TaskShow", autoMode == AutoMode::TaskShow);
+        hGrp->RemoveBool("EditShow");
+    }
 
     // if updated save the state into settings to preserve layout in case of defaults change
     saveTabs();
@@ -995,8 +993,6 @@ void OverlayTabWidget::retranslate()
     actAutoHide.setToolTip(tr("Auto hide docked widgets on leave"));
     actEditHide.setText(tr("Hide on edit"));
     actEditHide.setToolTip(tr("Auto hide docked widgets on editing"));
-    actEditShow.setText(tr("Show on edit"));
-    actEditShow.setToolTip(tr("Auto show docked widgets on editing"));
     actTaskShow.setText(tr("Auto task"));
     actTaskShow.setToolTip(
         tr("Auto show task view for any current task, and hide the view when there is no task.")
@@ -1019,41 +1015,12 @@ void OverlayTabWidget::syncAutoMode()
                 action->setIcon(pxAutoHideMode);
                 actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
                 actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
                 actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
             }
             else {
                 QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide.svg");
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 action->setIcon(pxAutoHideMode);
-                actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
-                actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
-            }
-            break;
-        case AutoMode::EditShow:
-            action = &actEditShow;
-            if (isDarkTheme()) {
-                QPixmap pxEditShowMode = BitmapFactory().pixmap(
-                    "qss:overlay/icons/editshow_lighter.svg"
-                );
-                action->setIcon(pxEditShowMode);
-                QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actAutoHide.setIcon(pxAutoHideMode);
-                actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-                actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
-            }
-            else {
-                QPixmap pxEditShowMode = BitmapFactory().pixmap("qss:overlay/icons/editshow.svg");
-                action->setIcon(pxEditShowMode);
-                QPixmap pxAutoHideMode = BitmapFactory().pixmap(
-                    "qss:overlay/icons/autohide_lightgray.svg"
-                );
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actAutoHide.setIcon(pxAutoHideMode);
                 actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
                 actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
                 actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
@@ -1069,7 +1036,6 @@ void OverlayTabWidget::syncAutoMode()
                 QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
                 actAutoHide.setIcon(pxAutoHideMode);
                 actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
             }
@@ -1081,7 +1047,6 @@ void OverlayTabWidget::syncAutoMode()
                 );
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
                 actAutoHide.setIcon(pxAutoHideMode);
                 actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
             }
@@ -1096,7 +1061,6 @@ void OverlayTabWidget::syncAutoMode()
                 QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
                 actAutoHide.setIcon(pxAutoHideMode);
                 actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
             }
@@ -1108,7 +1072,6 @@ void OverlayTabWidget::syncAutoMode()
                 );
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
                 actAutoHide.setIcon(pxAutoHideMode);
                 actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
             }
@@ -1121,7 +1084,6 @@ void OverlayTabWidget::syncAutoMode()
                 QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
                 actAutoHide.setIcon(pxAutoHideMode);
                 actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
             }
@@ -1133,7 +1095,6 @@ void OverlayTabWidget::syncAutoMode()
                 );
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
                 actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
                 actAutoHide.setIcon(pxAutoHideMode);
                 actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
             }
@@ -1157,9 +1118,6 @@ void OverlayTabWidget::onAction(QAction* action)
         }
         else if (action == &actAutoHide) {
             setAutoMode(AutoMode::AutoHide);
-        }
-        else if (action == &actEditShow) {
-            setAutoMode(AutoMode::EditShow);
         }
         else if (action == &actTaskShow) {
             setAutoMode(AutoMode::TaskShow);
@@ -1280,10 +1238,6 @@ bool OverlayTabWidget::checkAutoHide() const
     }
 
     bool activeDocInEdit = Application::Instance->isInEdit(Application::Instance->activeDocument());
-    if (autoMode == AutoMode::EditShow) {
-        return !activeDocInEdit && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
-    }
-
     if (autoMode == AutoMode::TaskShow) {
         if (isTransparent()) {
             return false;
@@ -1475,13 +1429,10 @@ void OverlayTabWidget::setAutoMode(AutoMode mode)
     autoMode = mode;
 
     if (hGrp) {
-        bool autohide = false, editshow = false, edithide = false, taskshow = false;
+        bool autohide = false, edithide = false, taskshow = false;
         switch (mode) {
             case AutoMode::AutoHide:
                 autohide = true;
-                break;
-            case AutoMode::EditShow:
-                editshow = true;
                 break;
             case AutoMode::EditHide:
                 edithide = true;
@@ -1494,7 +1445,6 @@ void OverlayTabWidget::setAutoMode(AutoMode mode)
         }
         Base::StateLocker lock(_saving);
         hGrp->SetBool("AutoHide", autohide);
-        hGrp->SetBool("EditShow", editshow);
         hGrp->SetBool("EditHide", edithide);
         hGrp->SetBool("TaskShow", taskshow);
     }
@@ -1586,10 +1536,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if (!enable && isTransparent()) {
         option = OverlayOption::ShowTab;
     }
-    else if (
-        enable && !isTransparent()
-        && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)
-    ) {
+    else if (enable && !isTransparent() && autoMode == AutoMode::AutoHide) {
         option = OverlayOption::Disable;
     }
     else {

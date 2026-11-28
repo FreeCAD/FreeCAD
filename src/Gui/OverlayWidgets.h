@@ -142,8 +142,6 @@ public:
         NoAutoMode,
         /// Auto hide tab widget on lost of focus
         AutoHide,
-        /// Auto show tab widget on any new editing task
-        EditShow,
         /// Auto hide tab widget on any new editing task
         EditHide,
         /// Auto show on any task panel e.g. suggestive task panel in PartDesign
@@ -410,7 +408,6 @@ private:
     QAction actNoAutoMode;
     QAction actAutoHide;
     QAction actEditHide;
-    QAction actEditShow;
     QAction actTaskShow;
     QAction actAutoMode;
     QMenu autoModeMenu;
