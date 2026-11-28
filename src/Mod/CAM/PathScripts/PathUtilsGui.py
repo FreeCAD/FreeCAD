@@ -25,7 +25,7 @@ import Path
 import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from PySide.QtGui import QInputDialog
 
 if False:
@@ -37,17 +37,16 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-class PathUtilsUserInput(object):
+class PathUtilsUserInput:
     def selectedToolController(self):
         tc = None
         # check if a user has selected a tool controller in the tree.
         # Return the first one and remove all from selection
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            if hasattr(sel.Object, "Proxy"):
-                if isinstance(sel.Object.Proxy, PathToolController.ToolController):
-                    if tc is None:
-                        tc = sel.Object
-                    FreeCADGui.Selection.removeSelection(sel.Object)
+        for obj in FreeCADGui.Selection.getSelection():
+            if hasattr(obj, "Proxy") and isinstance(obj.Proxy, PathToolController.ToolController):
+                if tc is None:
+                    tc = obj
+                FreeCADGui.Selection.removeSelection(obj)
         return tc
 
     def chooseToolController(self, controllers):
@@ -57,7 +56,7 @@ class PathUtilsUserInput(object):
         r = form.exec_()
         if not r:
             return None
-        return [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
+        return next(i for i in controllers if i.Label == form.uiToolController.currentText())
 
     def chooseJob(self, jobs):
         selected = FreeCADGui.Selection.getSelection()
