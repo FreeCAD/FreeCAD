@@ -67,9 +67,15 @@ InputDevice::toDevicePixelPosition(
     qreal devicePixelRatio
 )
 {
-  int xpos = static_cast<int>(std::lround(logicalPosition.x() * devicePixelRatio));
-  int ypos = static_cast<int>(
-      std::lround((logicalWindowSize[1] - logicalPosition.y() - 1.0) * devicePixelRatio));
+  // QuarterWidget::resizeEvent() sizes the viewport as
+  // static_cast<int>(devicePixelRatio * logical), so flip in device pixels
+  // against that same height, and map the position to the device pixel that
+  // contains it. Flipping in logical pixels first turns the trailing "- 1"
+  // into "- devicePixelRatio" device pixels, and rounding puts half of all
+  // positions one pixel too far along each axis
+  const int height = static_cast<int>(logicalWindowSize[1] * devicePixelRatio);
+  int xpos = static_cast<int>(std::floor(logicalPosition.x() * devicePixelRatio));
+  int ypos = height - 1 - static_cast<int>(std::floor(logicalPosition.y() * devicePixelRatio));
 
   constexpr int ShortMin = std::numeric_limits<short>::min();
   constexpr int ShortMax = std::numeric_limits<short>::max();
