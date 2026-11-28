@@ -147,6 +147,7 @@ namespace netgen {
 #ifdef WIN32
 #include <process.h>
 #endif
+#include "NETGENPlugin_ngcompat.hxx"
 using namespace nglib;
 using namespace std;
 
@@ -800,7 +801,7 @@ void NETGENPlugin_Mesher::RestrictLocalSize(netgen::Mesh& ngMesh,
       size = netgen::mparam.minh;
     }
   }
-  netgen::Point3d pi(p.X(), p.Y(), p.Z());
+  ngcompat::Point3 pi(p.X(), p.Y(), p.Z());
   ngMesh.RestrictLocalH( pi, size );
 }
 
@@ -921,57 +922,58 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
           }
           netgen::Segment seg;
           // ng node ids
-          seg[0] = prevNgId;
-          seg[1] = prevNgId = ngNodeId( p2.node, ngMesh, nodeNgIdMap );
+          seg[0] = ngcompat::PI( prevNgId );
+          prevNgId = ngNodeId( p2.node, ngMesh, nodeNgIdMap );
+          seg[1] = ngcompat::PI( prevNgId );
           // node param on curve
-          seg.epgeominfo[ 0 ].dist = p1.param;
-          seg.epgeominfo[ 1 ].dist = p2.param;
+          ngcompat::Dist( seg, 0 ) = p1.param;
+          ngcompat::Dist( seg, 1 ) = p2.param;
           // uv on face
-          seg.epgeominfo[ 0 ].u = p1.u;
-          seg.epgeominfo[ 0 ].v = p1.v;
-          seg.epgeominfo[ 1 ].u = p2.u;
-          seg.epgeominfo[ 1 ].v = p2.v;
+          ngcompat::U( seg, 0 ) = p1.u;
+          ngcompat::V( seg, 0 ) = p1.v;
+          ngcompat::U( seg, 1 ) = p2.u;
+          ngcompat::V( seg, 1 ) = p2.v;
 
           //geomEdge = fSide.Edge( fSide.EdgeIndex( 0.5 * ( p1.normParam + p2.normParam )));
           //seg.epgeominfo[ 0 ].edgenr = seg.epgeominfo[ 1 ].edgenr = occgeom.emap.FindIndex( geomEdge );
 
           //seg.epgeominfo[ iEnd ].edgenr = edgeID; //  = geom.emap.FindIndex(edge);
-          seg.si = faceNgID;                   // = geom.fmap.FindIndex (face);
-          seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
+          ngcompat::SetFace( ngMesh, seg, faceNgID );                   // = geom.fmap.FindIndex (face);
+          ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 ); // segment id
           ngMesh.AddSegment (seg);
 
           SMESH_TNodeXYZ np1( p1.node ), np2( p2.node );
           RestrictLocalSize( ngMesh, 0.5*(np1+np2), (np1-np2).Modulus() );
 
 #ifdef DUMP_SEGMENTS
-          cout << "Segment: " << seg.edgenr << " on SMESH face " << helper.GetMeshDS()->ShapeToIndex( face ) << std::endl
-               << "\tface index: " << seg.si << std::endl
+          cout << "Segment: " << ngcompat::SegId( seg ) << " on SMESH face " << helper.GetMeshDS()->ShapeToIndex( face ) << std::endl
+               << "\tface index: " << ngcompat::FaceOf( ngMesh, seg ) << std::endl
                << "\tp1: " << seg[0] << std::endl
                << "\tp2: " << seg[1] << std::endl
-               << "\tp0 param: " << seg.epgeominfo[ 0 ].dist << std::endl
-               << "\tp0 uv: " << seg.epgeominfo[ 0 ].u <<", "<< seg.epgeominfo[ 0 ].v << std::endl
+               << "\tp0 param: " << ngcompat::Dist( seg, 0 ) << std::endl
+               << "\tp0 uv: " << ngcompat::U( seg, 0 ) <<", "<< ngcompat::V( seg, 0 ) << std::endl
             //<< "\tp0 edge: " << seg.epgeominfo[ 0 ].edgenr << std::endl
-               << "\tp1 param: " << seg.epgeominfo[ 1 ].dist << std::endl
-               << "\tp1 uv: " << seg.epgeominfo[ 1 ].u <<", "<< seg.epgeominfo[ 1 ].v << std::endl;
+               << "\tp1 param: " << ngcompat::Dist( seg, 1 ) << std::endl
+               << "\tp1 uv: " << ngcompat::U( seg, 1 ) <<", "<< ngcompat::V( seg, 1 ) << std::endl;
             //<< "\tp1 edge: " << seg.epgeominfo[ 1 ].edgenr << std::endl;
 #endif
           if ( isSeam )
           {
             if ( helper.GetPeriodicIndex() & 1 ) {
-              seg.epgeominfo[ 0 ].u = otherSeamParam;
-              seg.epgeominfo[ 1 ].u = otherSeamParam;
-              swap (seg.epgeominfo[0].v, seg.epgeominfo[1].v);
+              ngcompat::U( seg, 0 ) = otherSeamParam;
+              ngcompat::U( seg, 1 ) = otherSeamParam;
+              swap (ngcompat::V( seg, 0 ), ngcompat::V( seg, 1 ));
             } else {
-              seg.epgeominfo[ 0 ].v = otherSeamParam;
-              seg.epgeominfo[ 1 ].v = otherSeamParam;
-              swap (seg.epgeominfo[0].u, seg.epgeominfo[1].u);
+              ngcompat::V( seg, 0 ) = otherSeamParam;
+              ngcompat::V( seg, 1 ) = otherSeamParam;
+              swap (ngcompat::U( seg, 0 ), ngcompat::U( seg, 1 ));
             }
             swap (seg[0], seg[1]);
-            swap (seg.epgeominfo[0].dist, seg.epgeominfo[1].dist);
-            seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
+            swap (ngcompat::Dist( seg, 0 ), ngcompat::Dist( seg, 1 ));
+            ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 ); // segment id
             ngMesh.AddSegment (seg);
 #ifdef DUMP_SEGMENTS
-            cout << "Segment: " << seg.edgenr << std::endl
+            cout << "Segment: " << ngcompat::SegId( seg ) << std::endl
                  << "\t is SEAM (reverse) of the previous. "
                  << " Other " << (helper.GetPeriodicIndex() & 1 ? "U" : "V")
                  << " = " << otherSeamParam << std::endl;
@@ -980,11 +982,11 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
           else if ( fOri == TopAbs_INTERNAL )
           {
             swap (seg[0], seg[1]);
-            swap( seg.epgeominfo[0], seg.epgeominfo[1] );
-            seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
+            swap( ngcompat::EPGI(seg, 0), ngcompat::EPGI(seg, 1) );
+            ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 ); // segment id
             ngMesh.AddSegment (seg);
 #ifdef DUMP_SEGMENTS
-            cout << "Segment: " << seg.edgenr << std::endl << "\t is REVERSE of the previous" << std::endl;
+            cout << "Segment: " << ngcompat::SegId( seg ) << std::endl << "\t is REVERSE of the previous" << std::endl;
 #endif
           }
         }
@@ -1057,7 +1059,7 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
       // Add surface elements
 
       netgen::Element2d tri(3);
-      tri.SetIndex ( faceNgID );
+      tri.SetIndex ( ngcompat::FRI( faceNgID ));
       SMESH_TNodeXYZ xyz[3];
 
 #ifdef DUMP_TRIANGLES
@@ -1101,7 +1103,7 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
           int ind = reverse ? 3-i : i+1;
           tri.GeomInfoPi(ind).u = uv.X();
           tri.GeomInfoPi(ind).v = uv.Y();
-          tri.PNum      (ind) = ngNodeId( node, ngMesh, nodeNgIdMap );
+          tri.PNum      (ind) = ngcompat::PI( ngNodeId( node, ngMesh, nodeNgIdMap ));
         }
 
         // pass a triangle size to NG size-map
@@ -1201,8 +1203,8 @@ void NETGENPlugin_Mesher::FixIntFaces(const netgen::OCCGeometry& occgeom,
     int i, nbFaces = ngMesh.GetNSE();
     for (int i = 1; i <= nbFaces; ++i)
     {
-      netgen::Element2d elem = ngMesh.SurfaceElement(i);
-      if ( ngFaceIds.count( elem.GetIndex() ))
+      netgen::Element2d elem = ngcompat::CopyEl2d( ngMesh.SurfaceElement( ngcompat::SEI( i )));
+      if ( ngFaceIds.count( ngcompat::Nr( elem.GetIndex() )))
       {
         swap( elem[1], elem[2] );
         ngMesh.AddSurfaceElement (elem);
@@ -1244,13 +1246,13 @@ bool NETGENPlugin_Mesher::FixFaceMesh(const netgen::OCCGeometry& occgeom,
   NCollection_Map<Link> linkMap;
   for ( int iF = 1; iF <= ngMesh.GetNSE(); ++iF )
   {
-    const netgen::Element2d& elem = ngMesh.SurfaceElement(iF);
-    if ( faceID != elem.GetIndex() )
+    const auto& elem = ngMesh.SurfaceElement( ngcompat::SEI( iF ));
+    if ( faceID != ngcompat::Nr( elem.GetIndex() ))
       continue;
-    int n0 = elem[ elem.GetNP() - 1 ];
+    int n0 = ngcompat::Nr( elem[ elem.GetNP() - 1 ] );
     for ( int i = 0; i < elem.GetNP(); ++i )
     {
-      int n1 = elem[i];
+      int n1 = ngcompat::Nr( elem[i] );
       Link link( n0, n1 );
       if ( !linkMap.Add( link ))
         linkMap.Remove( link );
@@ -1260,10 +1262,10 @@ bool NETGENPlugin_Mesher::FixFaceMesh(const netgen::OCCGeometry& occgeom,
   // add/remove boundary links
   for ( int iSeg = 1; iSeg <= ngMesh.GetNSeg(); ++iSeg )
   {
-    const netgen::Segment& seg = ngMesh.LineSegment( iSeg );
-    if ( seg.si != faceID ) // !edgeIDs.Contains( seg.edgenr ))
+    const netgen::Segment& seg = ngMesh.LineSegment( ngcompat::SegI( iSeg ));
+    if ( ngcompat::FaceOf( ngMesh, seg ) != faceID ) // !edgeIDs.Contains( ngcompat::SegId( seg ) ))
       continue;
-    Link link( seg[1], seg[0] ); // reverse!!!
+    Link link( ngcompat::Nr( seg[1] ), ngcompat::Nr( seg[0] )); // reverse!!!
     if ( !linkMap.Add( link ))
       linkMap.Remove( link );
   }
@@ -1275,7 +1277,7 @@ bool NETGENPlugin_Mesher::FixFaceMesh(const netgen::OCCGeometry& occgeom,
   // make triangles of the links
 
   netgen::Element2d tri(3);
-  tri.SetIndex ( faceID );
+  tri.SetIndex ( ngcompat::FRI( faceID ));
 
   NCollection_Map<Link>::Iterator linkIt( linkMap );
   Link link1 = linkIt.Value();
@@ -1295,9 +1297,9 @@ bool NETGENPlugin_Mesher::FixFaceMesh(const netgen::OCCGeometry& occgeom,
              link3.IsConnected( link2 ) )
         {
           // add a triangle
-          tri[0] = link1.n2;
-          tri[1] = link1.n1;
-          tri[2] = ( link2.Contains( link1.n1 ) ? link2.n1 : link3.n1 );
+          tri[0] = ngcompat::PI( link1.n2 );
+          tri[1] = ngcompat::PI( link1.n1 );
+          tri[2] = ngcompat::PI( link2.Contains( link1.n1 ) ? link2.n1 : link3.n1 );
           if ( tri[0] == tri[2] || tri[1] == tri[2] )
             return false;
           ngMesh.AddSurfaceElement( tri );
@@ -1465,17 +1467,17 @@ void NETGENPlugin_Mesher::AddIntVerticesInFaces(const netgen::OCCGeometry&     o
       int ngIdLast = 0;
       for (i = 1; i <= ngMesh.GetNSeg(); ++i)
       {
-        netgen::Segment & seg = ngMesh.LineSegment(i);
-        if ( seg.si != faceNgID ) continue;
+        netgen::Segment & seg = ngMesh.LineSegment( ngcompat::SegI( i ));
+        if ( ngcompat::FaceOf( ngMesh, seg ) != faceNgID ) continue;
         gp_XY uv[2];
         for ( int iEnd = 0; iEnd < 2; ++iEnd)
         {
-          uv[iEnd].SetCoord( seg.epgeominfo[iEnd].u, seg.epgeominfo[iEnd].v );
-          if ( ngIdLast == seg[ iEnd ] ) continue;
+          uv[iEnd].SetCoord( ngcompat::U( seg, iEnd ), ngcompat::V( seg, iEnd ) );
+          if ( ngIdLast == ngcompat::Nr( seg[ iEnd ] )) continue;
           dist2 = helper.ApplyIn2D(surf, uv[iEnd], vData.uv, gp_XY_Subtracted,0).SquareModulus();
           if ( dist2 < closeDist2 )
-            vData.ngIdClose = seg[ iEnd ], vData.uvClose = uv[iEnd], closeDist2 = dist2;
-          ngIdLast = seg[ iEnd ];
+            vData.ngIdClose = ngcompat::Nr( seg[ iEnd ] ), vData.uvClose = uv[iEnd], closeDist2 = dist2;
+          ngIdLast = ngcompat::Nr( seg[ iEnd ] );
         }
         if ( !nbV )
         {
@@ -1500,15 +1502,15 @@ void NETGENPlugin_Mesher::AddIntVerticesInFaces(const netgen::OCCGeometry&     o
       // try to find more close node among segments added for internal vertices
       for (i = nbSegInit+1; i <= ngMesh.GetNSeg(); ++i)
       {
-        netgen::Segment & seg = ngMesh.LineSegment(i);
-        if ( seg.si != faceNgID ) continue;
+        netgen::Segment & seg = ngMesh.LineSegment( ngcompat::SegI( i ));
+        if ( ngcompat::FaceOf( ngMesh, seg ) != faceNgID ) continue;
         gp_XY uv[2];
         for ( int iEnd = 0; iEnd < 2; ++iEnd)
         {
-          uv[iEnd].SetCoord( seg.epgeominfo[iEnd].u, seg.epgeominfo[iEnd].v );
+          uv[iEnd].SetCoord( ngcompat::U( seg, iEnd ), ngcompat::V( seg, iEnd ) );
           dist2 = helper.ApplyIn2D(surf, uv[iEnd], vData.uv, gp_XY_Subtracted,0).SquareModulus();
           if ( dist2 < closeDist2 )
-            vData.ngIdClose = seg[ iEnd ], vData.uvClose = uv[iEnd], closeDist2 = dist2;
+            vData.ngIdClose = ngcompat::Nr( seg[ iEnd ] ), vData.uvClose = uv[iEnd], closeDist2 = dist2;
         }
       }
       // decide whether to use the closest node as the second end of segment or to
@@ -1516,7 +1518,7 @@ void NETGENPlugin_Mesher::AddIntVerticesInFaces(const netgen::OCCGeometry&     o
       int segEnd1 = vData.ngId;
       int segEnd2 = vData.ngIdClose; // to use closest node
       gp_XY uvV = vData.uv, uvP = vData.uvClose;
-      double segLenHint  = ngMesh.GetH( ngMesh.Point( vData.ngId ));
+      double segLenHint  = ngMesh.GetH( ngMesh.Point( ngcompat::PI( vData.ngId )));
       double nodeDist2D  = sqrt( closeDist2 );
       double nodeDist3D  = evalDist( vData.uv, vData.uvClose, surf );
       bool avgLenOK  = ( avgSegLen2d < 0.75 * nodeDist2D );
@@ -1547,17 +1549,17 @@ void NETGENPlugin_Mesher::AddIntVerticesInFaces(const netgen::OCCGeometry&     o
       netgen::Segment seg;
 
       if ( segEnd1 > segEnd2 ) swap( segEnd1, segEnd2 ), swap( uvV, uvP );
-      seg[0] = segEnd1;  // ng node id
-      seg[1] = segEnd2;  // ng node id
-      seg.edgenr = ngMesh.GetNSeg() + 1;// segment id
-      seg.si = faceNgID;
+      seg[0] = ngcompat::PI( segEnd1 );  // ng node id
+      seg[1] = ngcompat::PI( segEnd2 );  // ng node id
+      ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 );// segment id
+      ngcompat::SetFace( ngMesh, seg, faceNgID );
 
-      seg.epgeominfo[ 0 ].dist = 0; // param on curve
-      seg.epgeominfo[ 0 ].u    = uvV.X();
-      seg.epgeominfo[ 0 ].v    = uvV.Y();
-      seg.epgeominfo[ 1 ].dist = 1; // param on curve
-      seg.epgeominfo[ 1 ].u    = uvP.X();
-      seg.epgeominfo[ 1 ].v    = uvP.Y();
+      ngcompat::Dist( seg, 0 ) = 0; // param on curve
+      ngcompat::U( seg, 0 )    = uvV.X();
+      ngcompat::V( seg, 0 )    = uvV.Y();
+      ngcompat::Dist( seg, 1 ) = 1; // param on curve
+      ngcompat::U( seg, 1 )    = uvP.X();
+      ngcompat::V( seg, 1 )    = uvP.Y();
 
 //       seg.epgeominfo[ 0 ].edgenr = 10; //  = geom.emap.FindIndex(edge);
 //       seg.epgeominfo[ 1 ].edgenr = 10; //  = geom.emap.FindIndex(edge);
@@ -1566,8 +1568,8 @@ void NETGENPlugin_Mesher::AddIntVerticesInFaces(const netgen::OCCGeometry&     o
 
       // add reverse segment
       swap (seg[0], seg[1]);
-      swap( seg.epgeominfo[0], seg.epgeominfo[1] );
-      seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
+      swap( ngcompat::EPGI(seg, 0), ngcompat::EPGI(seg, 1) );
+      ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 ); // segment id
       ngMesh.AddSegment (seg);
     }
 
@@ -1658,15 +1660,15 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
       double closeDist2 = numeric_limits<double>::max(), avgDist2;
       for (i = 1; i <= ngMesh.GetNSE(); ++i)
       {
-        const netgen::Element2d& elem = ngMesh.SurfaceElement(i);
-        if ( !ngFaceIds.count( elem.GetIndex() )) continue;
+        const auto& elem = ngMesh.SurfaceElement( ngcompat::SEI( i ));
+        if ( !ngFaceIds.count( ngcompat::Nr( elem.GetIndex() ))) continue;
         avgDist2 = 0;
         multimap< double, int> dist2nID; // sort nodes of element by distance from V
         for ( int j = 0; j < elem.GetNP(); ++j)
         {
           netgen::MeshPoint mp = ngMesh.Point( elem[j] );
           double d2 = dist2( mpV, mp );
-          dist2nID.insert( make_pair( d2, elem[j] ));
+          dist2nID.insert( make_pair( d2, ngcompat::Nr( elem[j] )));
           avgDist2 += d2 / elem.GetNP();
           if ( !nbV )
             totNbSeg++, totSegLen+= sqrt( dist2( mp, ngMesh.Point( elem[(j+1)%elem.GetNP()])));
@@ -1689,18 +1691,18 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
       double closeDist2   = dist_vData->first;
       TIntVSoData & vData = dist_vData->second;
 
-      const netgen::MeshPoint& mpV = ngMesh.Point( vData.ngId );
+      const netgen::MeshPoint& mpV = ngMesh.Point( ngcompat::PI( vData.ngId ));
 
       // try to find more close face among ones added for internal vertices
       for (i = nbFaceInit+1; i <= ngMesh.GetNSE(); ++i)
       {
         double avgDist2 = 0;
         multimap< double, int> dist2nID;
-        const netgen::Element2d& elem = ngMesh.SurfaceElement(i);
+        const auto& elem = ngMesh.SurfaceElement( ngcompat::SEI( i ));
         for ( int j = 0; j < elem.GetNP(); ++j)
         {
           double d = dist2( mpV, ngMesh.Point( elem[j] ));
-          dist2nID.insert( make_pair( d, elem[j] ));
+          dist2nID.insert( make_pair( d, ngcompat::Nr( elem[j] )));
           avgDist2 += d / elem.GetNP();
           if ( avgDist2 < closeDist2 )
             vData.ngIdClose= i, vData.ngIdCloseN= dist2nID.begin()->second, closeDist2= avgDist2;
@@ -1709,9 +1711,9 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
       // sort nodes of the closest face by angle with vector from V to the closest node
       const double tol = numeric_limits<double>::min();
       map< double, int > angle2ID;
-      const netgen::Element2d& closeFace = ngMesh.SurfaceElement( vData.ngIdClose );
+      const auto& closeFace = ngMesh.SurfaceElement( ngcompat::SEI( vData.ngIdClose ));
       netgen::MeshPoint mp[2];
-      mp[0] = ngMesh.Point( vData.ngIdCloseN );
+      mp[0] = ngMesh.Point( ngcompat::PI( vData.ngIdCloseN ));
       gp_XYZ p1( NGPOINT_COORDS( mp[0] ));
       gp_XYZ pV( NGPOINT_COORDS( mpV ));
       gp_Vec v2p1( pV, p1 );
@@ -1722,7 +1724,7 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
       {
         mp[1] = ngMesh.Point( closeFace[j] );
         gp_Vec v2p( pV, gp_Pnt( NGPOINT_COORDS( mp[1] )) );
-        angle2ID.insert( make_pair( v2p1.Angle( v2p ), closeFace[j]));
+        angle2ID.insert( make_pair( v2p1.Angle( v2p ), ngcompat::Nr( closeFace[j] )));
       }
       // get node with angle of 60 degrees or greater
       map< double, int >::iterator angle_id = angle2ID.lower_bound( 60. * M_PI / 180. );
@@ -1733,10 +1735,10 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
 
       // find points to create a triangle
       netgen::Element2d tri(3);
-      tri.SetIndex ( 1 );
-      tri[0] = vData.ngId;
-      tri[1] = vData.ngIdCloseN; // to use the closest nodes
-      tri[2] = angle_id->second; // to use the node with best angle
+      tri.SetIndex ( ngcompat::FRI( 1 ));
+      tri[0] = ngcompat::PI( vData.ngId );
+      tri[1] = ngcompat::PI( vData.ngIdCloseN ); // to use the closest nodes
+      tri[2] = ngcompat::PI( angle_id->second ); // to use the node with best angle
 
       // decide whether to use the closest node and the node with best angle or to create new ones
       for ( int isBestAngleN = 0; isBestAngleN < 2; ++isBestAngleN )
@@ -1760,7 +1762,7 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
         }
         else
         {
-          double segLenHint = ngMesh.GetH( ngMesh.Point( vData.ngId ));
+          double segLenHint = ngMesh.GetH( ngMesh.Point( ngcompat::PI( vData.ngId )));
           bool avgLenOK  = ( avgSegLen < 0.75 * distN1 );
           bool hintLenOK = ( segLenHint  < 0.75 * distN1 );
           createNew = (createNew || avgLenOK || hintLenOK );
@@ -1783,7 +1785,7 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
 
           mp[isBestAngleN].SetPoint( netgen::Point<3> (p.X(), p.Y(), p.Z()));
           ngMesh.AddPoint ( mp[isBestAngleN], 1, netgen::SURFACEPOINT );
-          tri[triInd] = ngMesh.GetNP();
+          tri[triInd] = ngcompat::PI( int( ngMesh.GetNP() ));
           nodeVec.push_back( helper.AddNode( p.X(), p.Y(), p.Z()) );
         }
       }
@@ -1926,8 +1928,8 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
         ngID2 = ngMesh.GetNP() + 1;
         if ( i > 0 ) // prev segment belongs to same wire
         {
-          netgen::Segment& prevSeg = ngMesh.LineSegment( ngMesh.GetNSeg() );
-          prevSeg[1] = ngID1;
+          netgen::Segment& prevSeg = ngMesh.LineSegment( ngcompat::SegI( int( ngMesh.GetNSeg() )));
+          prevSeg[1] = ngcompat::PI( ngID1 );
         }
       }
 
@@ -1935,18 +1937,18 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
 
       netgen::Segment seg;
 
-      seg[0]     = ngID1;                // ng node id
-      seg[1]     = ngID2;                // ng node id
-      seg.edgenr = ngMesh.GetNSeg() + 1; // ng segment id
-      seg.si     = faceID;               // = geom.fmap.FindIndex (face);
+      seg[0]     = ngcompat::PI( ngID1 );      // ng node id
+      seg[1]     = ngcompat::PI( ngID2 );      // ng node id
+      ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 ); // ng segment id
+      ngcompat::SetFace( ngMesh, seg, faceID );               // = geom.fmap.FindIndex (face);
 
       for ( int iEnd = 0; iEnd < 2; ++iEnd)
       {
         const UVPtStruct& pnt = uvPtVec[ i + iEnd ];
 
-        seg.epgeominfo[ iEnd ].dist = pnt.param; // param on curve
-        seg.epgeominfo[ iEnd ].u    = pnt.u;
-        seg.epgeominfo[ iEnd ].v    = pnt.v;
+        ngcompat::Dist( seg, iEnd ) = pnt.param; // param on curve
+        ngcompat::U( seg, iEnd )    = pnt.u;
+        ngcompat::V( seg, iEnd )    = pnt.v;
 
         // find out edge id and node parameter on edge
         onVertex = ( pnt.normParam + 1e-10 > vertexNormPar );
@@ -1965,7 +1967,7 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
           // if ( onVertex ) // param on curve is different on each of two edges
           //   seg.epgeominfo[ iEnd ].dist = helper.GetNodeU( edge, pnt.node );
         }
-        seg.epgeominfo[ iEnd ].edgenr = edgeID; //  = geom.emap.FindIndex(edge);
+        ngcompat::SetEdge( ngMesh, seg, iEnd, edgeID ); //  = geom.emap.FindIndex(edge);
       }
 
       ngMesh.AddSegment (seg);
@@ -1986,8 +1988,8 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
       if ( isInternalWire )
       {
         swap (seg[0], seg[1]);
-        swap( seg.epgeominfo[0], seg.epgeominfo[1] );
-        seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
+        swap( ngcompat::EPGI(seg, 0), ngcompat::EPGI(seg, 1) );
+        ngcompat::SetSegId( seg, ngMesh.GetNSeg() + 1 ); // segment id
         ngMesh.AddSegment (seg);
       }
     } // loop on segments on a wire
@@ -1995,10 +1997,10 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
     // close chain of segments
     if ( nbSegments > 0 )
     {
-      netgen::Segment& lastSeg = ngMesh.LineSegment( ngMesh.GetNSeg() - int( isInternalWire));
+      netgen::Segment& lastSeg = ngMesh.LineSegment( ngcompat::SegI( int( ngMesh.GetNSeg() ) - int( isInternalWire )));
       const SMDS_MeshNode * lastNode = uvPtVec.back().node;
-      lastSeg[1] = node2ngID.insert( make_pair( lastNode, lastSeg[1] )).first->second;
-      if ( lastSeg[1] > ngMesh.GetNP() )
+      lastSeg[1] = ngcompat::PI( node2ngID.insert( make_pair( lastNode, ngcompat::Nr( lastSeg[1] ))).first->second );
+      if ( ngcompat::Nr( lastSeg[1] ) > int( ngMesh.GetNP() ))
       {
         netgen::MeshPoint mp( netgen::Point<3> (lastNode->X(), lastNode->Y(), lastNode->Z()) );
         ngMesh.AddPoint ( mp, 1, netgen::EDGEPOINT );
@@ -2006,7 +2008,7 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
       }
       if ( isInternalWire )
       {
-        netgen::Segment& realLastSeg = ngMesh.LineSegment( ngMesh.GetNSeg() );
+        netgen::Segment& realLastSeg = ngMesh.LineSegment( ngcompat::SegI( int( ngMesh.GetNSeg() )));
         realLastSeg[0] = lastSeg[1];
       }
     }
@@ -2015,24 +2017,24 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
     cout << "BEGIN WIRE " << iW << std::endl;
     for ( int i = prevNbNGSeg+1; i <= ngMesh.GetNSeg(); ++i )
     {
-      netgen::Segment& seg = ngMesh.LineSegment( i );
+      netgen::Segment& seg = ngMesh.LineSegment( ngcompat::SegI( i ));
       if ( i > 1 ) {
-        netgen::Segment& prevSeg = ngMesh.LineSegment( i-1 );
+        netgen::Segment& prevSeg = ngMesh.LineSegment( ngcompat::SegI( i-1 ));
         if ( seg[0] == prevSeg[1] && seg[1] == prevSeg[0] )
         {
-          cout << "Segment: " << seg.edgenr << std::endl << "\tis REVERSE of the previous one" << std::endl;
+          cout << "Segment: " << ngcompat::SegId( seg ) << std::endl << "\tis REVERSE of the previous one" << std::endl;
           continue;
         }
       }
-      cout << "Segment: " << seg.edgenr << std::endl
-           << "\tp1: " << seg[0] << "   n" << nodeVec[ seg[0]]->GetID() << std::endl
-           << "\tp2: " << seg[1] << "   n" << nodeVec[ seg[1]]->GetID() <<  std::endl
-           << "\tp0 param: " << seg.epgeominfo[ 0 ].dist << std::endl
-           << "\tp0 uv: " << seg.epgeominfo[ 0 ].u <<", "<< seg.epgeominfo[ 0 ].v << std::endl
-           << "\tp0 edge: " << seg.epgeominfo[ 0 ].edgenr << std::endl
-           << "\tp1 param: " << seg.epgeominfo[ 1 ].dist << std::endl
-           << "\tp1 uv: " << seg.epgeominfo[ 1 ].u <<", "<< seg.epgeominfo[ 1 ].v << std::endl
-           << "\tp1 edge: " << seg.epgeominfo[ 1 ].edgenr << std::endl;
+      cout << "Segment: " << ngcompat::SegId( seg ) << std::endl
+           << "\tp1: " << ngcompat::Nr( seg[0] ) << "   n" << nodeVec[ ngcompat::Nr( seg[0] )]->GetID() << std::endl
+           << "\tp2: " << ngcompat::Nr( seg[1] ) << "   n" << nodeVec[ ngcompat::Nr( seg[1] )]->GetID() <<  std::endl
+           << "\tp0 param: " << ngcompat::Dist( seg, 0 ) << std::endl
+           << "\tp0 uv: " << ngcompat::U( seg, 0 ) <<", "<< ngcompat::V( seg, 0 ) << std::endl
+           << "\tp0 edge: " << ngcompat::GeomEdgeOf( ngMesh, seg, 0 ) << std::endl
+           << "\tp1 param: " << ngcompat::Dist( seg, 1 ) << std::endl
+           << "\tp1 uv: " << ngcompat::U( seg, 1 ) <<", "<< ngcompat::V( seg, 1 ) << std::endl
+           << "\tp1 edge: " << ngcompat::GeomEdgeOf( ngMesh, seg, 1 ) << std::endl;
     }
     cout << "--END WIRE " << iW << std::endl;
 #endif
@@ -2094,7 +2096,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
   int i, nbInitNod = initState._nbNodes;
   for (i = nbInitNod+1; i <= nbNod; ++i )
   {
-    const netgen::MeshPoint& ngPoint = ngMesh.Point(i);
+    const netgen::MeshPoint& ngPoint = ngMesh.Point( ngcompat::PI( i ));
     SMDS_MeshNode* node = NULL;
     TopoDS_Vertex aVert;
     // First, netgen creates nodes on vertices in occgeo.vmap,
@@ -2129,9 +2131,9 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
   int nbInitSeg = initState._nbSegments;
   for (i = nbInitSeg+1; i <= nbSeg; ++i )
   {
-    const netgen::Segment& seg = ngMesh.LineSegment(i);
+    const netgen::Segment& seg = ngMesh.LineSegment( ngcompat::SegI( i ));
     TopoDS_Edge aEdge;
-    int pinds[3] = { seg.pnums[0], seg.pnums[1], seg.pnums[2] };
+    int pinds[3] = { ngcompat::Nr( seg[0] ), ngcompat::Nr( seg[1] ), ngcompat::Nr( seg[2] ) };
     int nbp = 0;
     double param2 = 0;
     for (int j=0; j < 3; ++j)
@@ -2145,11 +2147,11 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
       {
         if (aEdge.IsNull())
         {
-          int aGeomEdgeInd = seg.epgeominfo[j].edgenr;
+          int aGeomEdgeInd = ngcompat::GeomEdgeOf( ngMesh, seg, j );
           if (aGeomEdgeInd > 0 && aGeomEdgeInd <= occgeo.emap.Extent())
             aEdge = TopoDS::Edge(occgeo.emap(aGeomEdgeInd));
         }
-        param = seg.epgeominfo[j].dist;
+        param = ngcompat::Dist( seg, j );
         param2 += param;
       }
       else // middle point
@@ -2211,15 +2213,15 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
   vector<const SMDS_MeshNode*> nodes;
   for (i = nbInitFac+1; i <= nbFac; ++i )
   {
-    const netgen::Element2d& elem = ngMesh.SurfaceElement(i);
-    int aGeomFaceInd = elem.GetIndex();
+    auto&& elem = ngMesh.SurfaceElement( ngcompat::SEI( i ));  // Element2d& or Element2dRef
+    int aGeomFaceInd = ngcompat::Nr( elem.GetIndex() );
     TopoDS_Face aFace;
     if (aGeomFaceInd > 0 && aGeomFaceInd <= occgeo.fmap.Extent())
       aFace = TopoDS::Face(occgeo.fmap(aGeomFaceInd));
     nodes.clear();
     for (int j=1; j <= elem.GetNP(); ++j)
     {
-      int pind = elem.PNum(j);
+      int pind = ngcompat::Nr( elem.PNum(j) );
       if ( pind < 1 || pind >= nodeVec.size() )
         break;
       if ( SMDS_MeshNode* node = nodeVec_ACCESS(pind))
@@ -2253,7 +2255,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
       else
         face = meshDS->AddFace(nodes[0],nodes[1],nodes[2],nodes[3]);
       // exclude qudrangle elements from computation of 3D mesh
-      const_cast< netgen::Element2d& >( elem ).SetIndex( quadFaceID );
+      elem.SetIndex( ngcompat::FRI( quadFaceID ));
       break;
     case netgen::TRIG6:
       nodes[5] = mediumNode( nodes[0],nodes[1],nodes[5], quadHelper );
@@ -2269,7 +2271,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
       face = meshDS->AddFace(nodes[0],nodes[1],nodes[2],nodes[3],
                              nodes[4],nodes[7],nodes[5],nodes[6]);
       // exclude qudrangle elements from computation of 3D mesh
-      const_cast< netgen::Element2d& >( elem ).SetIndex( quadFaceID );
+      elem.SetIndex( ngcompat::FRI( quadFaceID ));
       break;
     default:
       MESSAGE("NETGEN created a face of unexpected type, ignoring");
@@ -2292,15 +2294,15 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
 
   for (i = 1; i <= nbVol; ++i)
   {
-    const netgen::Element& elem = ngMesh.VolumeElement(i);      
-    int aSolidInd = elem.GetIndex();
+    const auto& elem = ngMesh.VolumeElement( ngcompat::EI( i ));
+    int aSolidInd = ngcompat::Nr( elem.GetIndex() );
     TopoDS_Solid aSolid;
     if (aSolidInd > 0 && aSolidInd <= occgeo.somap.Extent())
       aSolid = TopoDS::Solid(occgeo.somap(aSolidInd));
     nodes.clear();
     for (int j=1; j <= elem.GetNP(); ++j)
     {
-      int pind = elem.PNum(j);
+      int pind = ngcompat::Nr( elem.PNum(j) );
       if ( pind < 1 || pind >= nodeVec.size() )
         break;
       if ( SMDS_MeshNode* node = nodeVec_ACCESS(pind) )
@@ -2381,7 +2383,7 @@ namespace
         Standard_Real u = u1 + delta*i;
         gp_Pnt p = curve->Value(u);
         NETGENPlugin_Mesher::RestrictLocalSize( mesh, p.XYZ(), size );
-        netgen::Point3d pi(p.X(), p.Y(), p.Z());
+        ngcompat::Point3 pi(p.X(), p.Y(), p.Z());
         double resultSize = mesh.GetH(pi);
         if ( resultSize - size > 0.1*size )
           // netgen does restriction iff oldH/newH > 1.2 (localh.cpp:136)
@@ -2418,7 +2420,8 @@ namespace
             << ": " << ex.DynamicType()->Name();
 #else
       << ": " << ex.ExceptionType();
-#endif    if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
+#endif
+    if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
       str << ": " << ex.GetMessageString();
     return std::move(str);
   }
@@ -2857,9 +2860,9 @@ bool NETGENPlugin_Mesher::Compute()
           // exclude from computation ng segments built on EDGEs of F
           for (int i = 1; i <= _ngMesh->GetNSeg(); i++)
           {
-            netgen::Segment & seg = _ngMesh->LineSegment(i);
-            if (seg.si == faceID)
-              seg.si = 0;
+            netgen::Segment & seg = _ngMesh->LineSegment( ngcompat::SegI( i ));
+            if (ngcompat::FaceOf( *_ngMesh, seg ) == faceID)
+              ngcompat::SetFace( *_ngMesh, seg, 0 );
           }
           // add new segments to _ngMesh instead of excluded ones
           helper.SetSubShape( F );
@@ -3078,9 +3081,9 @@ bool NETGENPlugin_Mesher::Compute()
           // remove segments not attached to geometry (IPAL0052479)
           for (int i = 1; i <= _ngMesh->GetNSeg(); ++i)
           {
-            const netgen::Segment & seg = _ngMesh->LineSegment (i);
-            if ( seg.epgeominfo[ 0 ].edgenr == 0 )
-              _ngMesh->DeleteSegment( i );
+            const netgen::Segment & seg = _ngMesh->LineSegment( ngcompat::SegI( i ));
+            if ( ngcompat::GeomEdgeOf( *_ngMesh, seg, 0 ) == 0 )
+              _ngMesh->DeleteSegment( ngcompat::SegI( i ));
           }
           _ngMesh->Compress();
         }
@@ -3365,10 +3368,10 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
   NCollection_Map<Link> linkMap;
   for (int i = 1; i <= ngMesh->GetNSeg(); ++i )
   {
-    const netgen::Segment& seg = ngMesh->LineSegment(i);
-    Link link(seg[0], seg[1]);
+    const netgen::Segment& seg = ngMesh->LineSegment( ngcompat::SegI( i ));
+    Link link( ngcompat::Nr( seg[0] ), ngcompat::Nr( seg[1] ));
     if ( !linkMap.Add( link )) continue;
-    int aGeomEdgeInd = seg.epgeominfo[0].edgenr;
+    int aGeomEdgeInd = ngcompat::GeomEdgeOf( *ngMesh, seg, 0 );
     if (aGeomEdgeInd > 0 && aGeomEdgeInd <= occgeo.emap.Extent())
     {
       vector<int>& aVec = aResMap[_mesh->GetSubMesh(occgeo.emap(aGeomEdgeInd))];
@@ -3526,8 +3529,8 @@ double NETGENPlugin_Mesher::GetProgress(const SMESH_Algo* holder,
     int curShapeIndex = _curShapeIndex;
     if ( _ngMesh->GetNE() > 0 )
     {
-      netgen::Element el = (*_ngMesh)[netgen::ElementIndex( _ngMesh->GetNE()-1 )];
-      curShapeIndex = el.GetIndex();
+      const auto& el = _ngMesh->VolumeElement( ngcompat::EI( int( _ngMesh->GetNE() )));
+      curShapeIndex = ngcompat::Nr( el.GetIndex() );
     }
     if ( curShapeIndex != _curShapeIndex )
     {
@@ -3663,54 +3666,53 @@ void NETGENPlugin_Mesher::toPython( const netgen::Mesh* ngMesh,
           << "mesh = smesh.Mesh()" << std::endl << std::endl;
 
   using namespace netgen;
-  PointIndex pi;
-  for (pi = PointIndex::BASE; 
-       pi < ngMesh->GetNP()+PointIndex::BASE; pi++)
+  // debug dump; indices go through ngcompat so both netgen APIs compile
+  for ( int i = 1; i <= int( ngMesh->GetNP() ); ++i )
   {
-    outfile << "mesh.AddNode( ";
-    outfile << (*ngMesh)[pi](0) << ", ";
-    outfile << (*ngMesh)[pi](1) << ", ";
-    outfile << (*ngMesh)[pi](2) << ") ## "<< pi << std::endl;
+    const MeshPoint& p = ngMesh->Point( ngcompat::PI( i ));
+    outfile << "mesh.AddNode( " << p(0) << ", " << p(1) << ", " << p(2) << ") ## " << i << std::endl;
   }
 
   int nbDom = ngMesh->GetNDomains();
   for ( int i = 0; i < nbDom; ++i )
     outfile<< "grp" << i+1 << " = mesh.CreateEmptyGroup( SMESH.FACE, 'domain"<< i+1 << "')"<< std::endl;
 
-  SurfaceElementIndex sei;
-  for (sei = 0; sei < ngMesh->GetNSE(); sei++)
+  for ( int i = 1; i <= int( ngMesh->GetNSE() ); ++i )
   {
+    const auto& sel = ngMesh->SurfaceElement( ngcompat::SEI( i ));
     outfile << "mesh.AddFace([ ";
-    Element2d sel = (*ngMesh)[sei];
     for (int j = 0; j < sel.GetNP(); j++)
-      outfile << sel[j] << ( j+1 < sel.GetNP() ? ", " : " ])");
+      outfile << ngcompat::Nr( sel[j] ) << ( j+1 < sel.GetNP() ? ", " : " ])");
+#if !NG_HAS_REGIONS
     if ( sel.IsDeleted() ) outfile << " ## IsDeleted ";
+#endif
     outfile << std::endl;
 
-    if ((*ngMesh)[sei].GetIndex())
+    if ( ngcompat::Nr( sel.GetIndex() ))
     {
-      if ( int dom1 = ngMesh->GetFaceDescriptor((*ngMesh)[sei].GetIndex ()).DomainIn())
-        outfile << "grp"<< dom1 <<".Add([ " << (int)sei+1 << " ])" << std::endl;
-      if ( int dom2 = ngMesh->GetFaceDescriptor((*ngMesh)[sei].GetIndex ()).DomainOut())
-        outfile << "grp"<< dom2 <<".Add([ " << (int)sei+1 << " ])" << std::endl;
+      const auto& fd = ngMesh->GetFaceDescriptor( sel.GetIndex() );
+      if ( int dom1 = fd.DomainIn())
+        outfile << "grp"<< dom1 <<".Add([ " << i << " ])" << std::endl;
+      if ( int dom2 = fd.DomainOut())
+        outfile << "grp"<< dom2 <<".Add([ " << i << " ])" << std::endl;
     }
   }
 
-  for (ElementIndex ei = 0; ei < ngMesh->GetNE(); ei++)
+  for ( int i = 1; i <= int( ngMesh->GetNE() ); ++i )
   {
-    Element el = (*ngMesh)[ei];
+    const auto& el = ngMesh->VolumeElement( ngcompat::EI( i ));
     outfile << "mesh.AddVolume([ ";
     for (int j = 0; j < el.GetNP(); j++)
-      outfile << el[j] << ( j+1 < el.GetNP() ? ", " : " ])");
+      outfile << ngcompat::Nr( el[j] ) << ( j+1 < el.GetNP() ? ", " : " ])");
     outfile << std::endl;
   }
 
   for (int i = 1; i <= ngMesh->GetNSeg(); i++)
   {
-    const Segment & seg = ngMesh->LineSegment (i);
+    const Segment & seg = ngMesh->LineSegment( ngcompat::SegI( i ));
     outfile << "mesh.AddEdge([ "
-            << seg[0] << ", "
-            << seg[1] << " ])" << std::endl;
+            << ngcompat::Nr( seg[0] ) << ", "
+            << ngcompat::Nr( seg[1] ) << " ])" << std::endl;
   }
   cout << "Write " << pyFile << std::endl;
 }
@@ -4136,13 +4138,16 @@ NETGENPlugin_NetgenLibWrapper::NETGENPlugin_NetgenLibWrapper()
   {
     // redirect all netgen output (mycout,myerr,cout) to _outputFileName
     _outputFileName = getOutputFileName();
-    netgen::mycout  = new ofstream ( _outputFileName.c_str() );
-    netgen::myerr   = netgen::mycout;
+    std::ostream* ngOut = new ofstream ( _outputFileName.c_str() );
+#if !NG_HAS_REGIONS
+    netgen::mycout  = ngOut;   // removed in netgen >= 6.2.2608, which prints via std::cout
+    netgen::myerr   = ngOut;
+#endif
     _coutBuffer     = std::cout.rdbuf();
 #ifdef _DEBUG_
     cout << "NOTE: netgen output is redirected to file " << _outputFileName << std::endl;
 #else
-    std::cout.rdbuf( netgen::mycout->rdbuf() );
+    std::cout.rdbuf( ngOut->rdbuf() );
 #endif
   }
 #if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
