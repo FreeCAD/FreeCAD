@@ -377,11 +377,12 @@ def get_femelements_by_femnodes_std(femelement_table, node_list):
     e: elementlist
     nodes: nodelist"""
     FreeCAD.Console.PrintMessage("std search: get_femelements_by_femnodes_std\n")
+    node_set = set(node_list)
     e = []  # elementlist
     for elementID in sorted(femelement_table):
         nodecount = 0
         for nodeID in femelement_table[elementID]:
-            if nodeID in node_list:
+            if nodeID in node_set:
                 nodecount = nodecount + 1
         # all nodes of the element are in the node_list!
         if nodecount == len(femelement_table[elementID]):
@@ -403,43 +404,44 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
         --> if exact 6 or 8 element nodes are in node_list --> add femelement
     e: elementlist
     nodes: nodelist"""
+    node_set = set(node_list)
     e = []  # elementlist
     for elementID in sorted(femelement_table):
         nodecount = 0
         el_nd_ct = len(femelement_table[elementID])
         if el_nd_ct == 4:  # tetra4
             for nodeID in femelement_table[elementID]:
-                if nodeID in node_list:
+                if nodeID in node_set:
                     nodecount = nodecount + 1
             if nodecount == 3:
                 e.append(elementID)
         elif el_nd_ct == 10:  # tetra10
             for nodeID in femelement_table[elementID]:
-                if nodeID in node_list:
+                if nodeID in node_set:
                     nodecount = nodecount + 1
             if nodecount == 4:
                 e.append(elementID)
         elif el_nd_ct == 8:  # hexa8
             for nodeID in femelement_table[elementID]:
-                if nodeID in node_list:
+                if nodeID in node_set:
                     nodecount = nodecount + 1
             if nodecount == 4:
                 e.append(elementID)
         elif el_nd_ct == 20:  # hexa20
             for nodeID in femelement_table[elementID]:
-                if nodeID in node_list:
+                if nodeID in node_set:
                     nodecount = nodecount + 1
             if nodecount == 8:
                 e.append(elementID)
         elif el_nd_ct == 6:  # penta6
             for nodeID in femelement_table[elementID]:
-                if nodeID in node_list:
+                if nodeID in node_set:
                     nodecount = nodecount + 1
             if nodecount == 3 or nodecount == 4:
                 e.append(elementID)
         elif el_nd_ct == 15:  # penta15
             for nodeID in femelement_table[elementID]:
-                if nodeID in node_list:
+                if nodeID in node_set:
                     nodecount = nodecount + 1
             if nodecount == 6 or nodecount == 8:
                 e.append(elementID)
@@ -921,13 +923,14 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
     edge_table = {}  # { meshedgeID : ( nodeID, ... , nodeID ) }
     refedge_nodes = femmesh.getNodesByEdge(refedge)
     if is_solid_femmesh(femmesh):
+        refedge_nodes_set = set(refedge_nodes)
         refedge_fem_volumeelements = []
         # if at least two nodes of a femvolumeelement are in
         # refedge_nodes the volume is added to refedge_fem_volumeelements
         for elem in femelement_table:
             nodecount = 0
             for node in femelement_table[elem]:
-                if node in refedge_nodes:
+                if node in refedge_nodes_set:
                     nodecount += 1
             if nodecount > 1:
                 refedge_fem_volumeelements.append(elem)
@@ -936,7 +939,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
         for elem in refedge_fem_volumeelements:
             fe_refedge_nodes = []
             for node in femelement_table[elem]:
-                if node in refedge_nodes:
+                if node in refedge_nodes_set:
                     fe_refedge_nodes.append(node)
                 # { volumeID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
                 edge_table[elem] = fe_refedge_nodes
@@ -944,13 +947,14 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
         # the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_face_femmesh(femmesh):
+        refedge_nodes_set = set(refedge_nodes)
         refedge_fem_faceelements = []
         # if at least two nodes of a femfaceelement are in
         # refedge_nodes the volume is added to refedge_fem_volumeelements
         for elem in femelement_table:
             nodecount = 0
             for node in femelement_table[elem]:
-                if node in refedge_nodes:
+                if node in refedge_nodes_set:
                     nodecount += 1
             if nodecount > 1:
                 refedge_fem_faceelements.append(elem)
@@ -959,7 +963,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
         for elem in refedge_fem_faceelements:
             fe_refedge_nodes = []
             for node in femelement_table[elem]:
-                if node in refedge_nodes:
+                if node in refedge_nodes_set:
                     fe_refedge_nodes.append(node)
                 # { faceID : ( edgenodeID, ... , edgenodeID  )} # only the refedge nodes
                 edge_table[elem] = fe_refedge_nodes
@@ -1132,6 +1136,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
             # We need to sort them according to the
             # shell mesh notation of tria3, tria6, quad4, quad8
             ref_face_nodes = femmesh.getNodesByFace(ref_face)
+            ref_face_nodes_set = set(ref_face_nodes)
             # try to use getccxVolumesByFace() to get the volume ids
             # of element with elementfaces on the ref_face
             # --> should work for tetra4 and tetra10
@@ -1146,7 +1151,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                     veID = ve[0]
                     ve_ref_face_nodes = []
                     for nodeID in femelement_table[veID]:
-                        if nodeID in ref_face_nodes:
+                        if nodeID in ref_face_nodes_set:
                             ve_ref_face_nodes.append(nodeID)
                     # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
                     face_table[veID] = ve_ref_face_nodes
@@ -1163,7 +1168,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                 for veID in ref_face_volume_elements:
                     ve_ref_face_nodes = []
                     for nodeID in femelement_table[veID]:
-                        if nodeID in ref_face_nodes:
+                        if nodeID in ref_face_nodes_set:
                             ve_ref_face_nodes.append(nodeID)
                     # { volumeID : ( facenodeID, ... , facenodeID ) } only the ref_face nodes
                     face_table[veID] = ve_ref_face_nodes
@@ -1882,8 +1887,11 @@ def femelements_count_ok(len_femelement_table, count_femelements):
 # ************************************************************************************************
 def delete_duplicate_mesh_elements(refelement_table):
     new_refelement_table = {}  # duplicates deleted
+    seen = set()
     for elem, nodes in refelement_table.items():
-        if sorted(nodes) not in sortlistoflistvalues(new_refelement_table.values()):
+        key = tuple(sorted(nodes))
+        if key not in seen:
+            seen.add(key)
             new_refelement_table[elem] = nodes
     return new_refelement_table
 
