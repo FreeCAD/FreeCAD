@@ -181,6 +181,7 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_TUX "Build the FreeCAD Tux module" ON)
     option(BUILD_WEB "Build the FreeCAD Web module" ON)
     option(BUILD_SURFACE "Build the FreeCAD surface module" ON)
+    option(BUILD_SHEETDESIGN "Build the FreeCAD sheet design module" ON)
     option(ENABLE_DEVELOPER_TESTS "Build the FreeCAD unit tests suit" ON)
 
     if(MSVC OR APPLE)

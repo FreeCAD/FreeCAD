@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskBasePanel</class>
+ <widget class="QWidget" name="TaskBasePanel">
+  <property name="windowTitle">
+   <string>Base Panel</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Base Panel</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_profileLabel">
+        <property name="text">
+         <string>Profile</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="profileLabel">
+        <property name="toolTip">
+         <string>The sketch of the panel. An open sketch of straight lines is the section of the part</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_ruleLabel">
+        <property name="text">
+         <string>Sheet rule</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="ruleLabel">
+        <property name="toolTip">
+         <string>The variable set with the thickness, the bend radius, and the K-factor</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_Width">
+        <property name="text">
+         <string>Width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Width">
+        <property name="toolTip">
+         <string>For an open sketch: the size of the part at 90 degrees to the sketch plane</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="Symmetric">
+        <property name="text">
+         <string>Symmetric to the sketch plane</string>
+        </property>
+        <property name="toolTip">
+         <string>For an open sketch: puts the sketch plane in the middle of the width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="Refine">
+        <property name="text">
+         <string>Refine shape</string>
+        </property>
+        <property name="toolTip">
+         <string>Merges faces of the solid that are on the same surface</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

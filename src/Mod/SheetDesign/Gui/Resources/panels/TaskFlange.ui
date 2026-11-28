@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFlange</class>
+ <widget class="QWidget" name="TaskFlange">
+  <property name="windowTitle">
+   <string>Flange</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Edge</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_edgeLabel">
+        <property name="text">
+         <string>Edges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="edgeLabel">
+        <property name="toolTip">
+         <string>The edges of the panel that hold the bends</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QPushButton" name="selectEdge">
+        <property name="text">
+         <string>Select Edge</string>
+        </property>
+        <property name="toolTip">
+         <string>Selects a different edge for the flange</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="Reversed">
+        <property name="text">
+         <string>Bend to the opposite side</string>
+        </property>
+        <property name="toolTip">
+         <string>Bends the flange to the other side of the panel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_profileLabel">
+        <property name="text">
+         <string>Profile</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="profileLabel">
+        <property name="toolTip">
+         <string>The sketch that gives the shape of the flange or the section of a contour</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group1">
+     <property name="title">
+      <string>Size</string>
+     </property>
+     <layout class="QFormLayout" name="layout1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_Length">
+        <property name="text">
+         <string>Length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Length">
+        <property name="toolTip">
+         <string>The length of the flange, measured as the length type says</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_LengthType">
+        <property name="text">
+         <string>Length type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="LengthType">
+        <property name="toolTip">
+         <string>How the length is measured</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_Angle">
+        <property name="text">
+         <string>Bend angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Angle">
+        <property name="toolTip">
+         <string>The angle of the bend</string>
+        </property>
+        <property name="unit">
+         <string>deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="UseRuleRadius">
+        <property name="text">
+         <string>Bend radius of the sheet rule</string>
+        </property>
+        <property name="toolTip">
+         <string>Uses the bend radius of the sheet rule for this flange</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_Radius">
+        <property name="text">
+         <string>Bend radius</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Radius">
+        <property name="toolTip">
+         <string>The bend radius of this flange</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group2">
+     <property name="title">
+      <string>Position</string>
+     </property>
+     <layout class="QFormLayout" name="layout2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_Position">
+        <property name="text">
+         <string>Position</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="Position">
+        <property name="toolTip">
+         <string>Where the flange is against the edge</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_Offset">
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Offset">
+        <property name="toolTip">
+         <string>Moves the bend line out of the panel. A negative value moves it into the panel</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group3">
+     <property name="title">
+      <string>Ends</string>
+     </property>
+     <layout class="QFormLayout" name="layout3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_Gap1">
+        <property name="text">
+         <string>Gap at start</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Gap1">
+        <property name="toolTip">
+         <string>The distance from the start of the edge to the flange</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_Gap2">
+        <property name="text">
+         <string>Gap at end</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Gap2">
+        <property name="toolTip">
+         <string>The distance from the end of the edge to the flange</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_Miter1">
+        <property name="text">
+         <string>Miter at start</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Miter1">
+        <property name="toolTip">
+         <string>The angle of the side of the flange at the start of the edge</string>
+        </property>
+        <property name="unit">
+         <string>deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_Miter2">
+        <property name="text">
+         <string>Miter at end</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Miter2">
+        <property name="toolTip">
+         <string>The angle of the side of the flange at the end of the edge</string>
+        </property>
+        <property name="unit">
+         <string>deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="AutoMiter">
+        <property name="text">
+         <string>Automatic miter</string>
+        </property>
+        <property name="toolTip">
+         <string>Cuts this flange and an adjacent flange if they overlap in the flat pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_MiterGap">
+        <property name="text">
+         <string>Miter gap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::QuantitySpinBox" name="MiterGap">
+        <property name="toolTip">
+         <string>The distance between two flanges after an automatic miter</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_Extend1">
+        <property name="text">
+         <string>Extension at start</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Extend1">
+        <property name="toolTip">
+         <string>Makes the panel of the flange wider than its bend at the start of the edge</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_Extend2">
+        <property name="text">
+         <string>Extension at end</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::QuantitySpinBox" name="Extend2">
+        <property name="toolTip">
+         <string>Makes the panel of the flange wider than its bend at the end of the edge</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group4">
+     <property name="title">
+      <string>Corners</string>
+     </property>
+     <layout class="QFormLayout" name="layout4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_CornerType">
+        <property name="text">
+         <string>Corner type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="CornerType">
+        <property name="toolTip">
+         <string>The corner between two flanges of this feature on adjacent edges, for bends of 90 degrees</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_CornerGap">
+        <property name="text">
+         <string>Corner gap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="CornerGap">
+        <property name="toolTip">
+         <string>The gap between the two flanges of a closed corner</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group5">
+     <property name="title">
+      <string>Relief</string>
+     </property>
+     <layout class="QFormLayout" name="layout5">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_ReliefType">
+        <property name="text">
+         <string>Relief type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="ReliefType">
+        <property name="toolTip">
+         <string>The cut at each end of the bend that has a gap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_ReliefWidth">
+        <property name="text">
+         <string>Relief width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="ReliefWidth">
+        <property name="toolTip">
+         <string>The width of the relief along the edge</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_ReliefDepth">
+        <property name="text">
+         <string>Relief depth</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="ReliefDepth">
+        <property name="toolTip">
+         <string>The depth of the relief, from the bend line into the panel</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

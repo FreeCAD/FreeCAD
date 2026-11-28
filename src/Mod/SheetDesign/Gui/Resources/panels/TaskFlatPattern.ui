@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFlatPattern</class>
+ <widget class="QWidget" name="TaskFlatPattern">
+  <property name="windowTitle">
+   <string>Flat Pattern</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Flat Pattern</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_sourceLabel">
+        <property name="text">
+         <string>Source</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="sourceLabel">
+        <property name="toolTip">
+         <string>The feature that gives the flat pattern</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="BendLines">
+        <property name="text">
+         <string>Bend lines</string>
+        </property>
+        <property name="toolTip">
+         <string>Adds the center lines of the bends</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QTableWidget" name="bendsTable">
+        <property name="toolTip">
+         <string>The bends. Change a number in the first column to set the bend sequence</string>
+        </property>
+        <property name="columnCount">
+         <number>4</number>
+        </property>
+        <column>
+         <property name="text">
+          <string>Sequence</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Direction</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Angle</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Radius</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="drawingButton">
+        <property name="text">
+         <string>Make Drawing</string>
+        </property>
+        <property name="toolTip">
+         <string>Makes a drawing page with the flat pattern, the bend notes, and the bend table</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QPushButton" name="exportButton">
+        <property name="text">
+         <string>Export…</string>
+        </property>
+        <property name="toolTip">
+         <string>Exports the flat pattern to a DXF or an SVG file</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="group1">
+     <property name="title">
+      <string>Fold State</string>
+     </property>
+     <layout class="QFormLayout" name="layout1">
+      <item row="0" column="0" colspan="2">
+       <widget class="QSlider" name="foldSlider">
+        <property name="toolTip">
+         <string>Shows the part between flat (left) and folded (right), as a temporary object</string>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="foldSequence">
+        <property name="text">
+         <string>Fold in the bend sequence</string>
+        </property>
+        <property name="toolTip">
+         <string>Folds one bend after the other, in the bend sequence. If not set, all bends fold together</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="foldLabel">
+        <property name="text">
+         <string></string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="foldCheck">
+        <property name="text">
+         <string>Check Fold</string>
+        </property>
+        <property name="toolTip">
+         <string>Looks for material in the same space at each step of the fold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QPushButton" name="foldFrames">
+        <property name="text">
+         <string>Save Frames…</string>
+        </property>
+        <property name="toolTip">
+         <string>Saves an image of each step of the fold into a folder</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

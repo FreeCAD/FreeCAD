@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskUnfold</class>
+ <widget class="QWidget" name="TaskUnfold">
+  <property name="windowTitle">
+   <string>Unfold</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Unfold</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_faceLabel">
+        <property name="text">
+         <string>Face</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="faceLabel">
+        <property name="toolTip">
+         <string>The flat face of the solid that stays in its position</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_ruleLabel">
+        <property name="text">
+         <string>Sheet rule</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="ruleLabel">
+        <property name="toolTip">
+         <string>The variable set with the K-factor. The thickness and the radii come from the solid</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_thicknessLabel">
+        <property name="text">
+         <string>Thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="thicknessLabel">
+        <property name="toolTip">
+         <string>The thickness that was found in the solid</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_bendsLabel">
+        <property name="text">
+         <string>Bends</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="bendsLabel">
+        <property name="toolTip">
+         <string>The number of bends that were found in the solid</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="Refine">
+        <property name="text">
+         <string>Refine shape</string>
+        </property>
+        <property name="toolTip">
+         <string>Merges faces of the solid that are on the same surface</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

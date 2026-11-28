@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskRefold</class>
+ <widget class="QWidget" name="TaskRefold">
+  <property name="windowTitle">
+   <string>Refold</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="group0">
+     <property name="title">
+      <string>Refold</string>
+     </property>
+     <layout class="QFormLayout" name="layout0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_profileLabel">
+        <property name="text">
+         <string>Outline</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="profileLabel">
+        <property name="toolTip">
+         <string>The outline of the flat pattern</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_linesLabel">
+        <property name="text">
+         <string>Bend lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="linesLabel">
+        <property name="toolTip">
+         <string>The sketch with the bend lines</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QTableWidget" name="anglesTable">
+        <property name="toolTip">
+         <string>The bend angle of each line in degrees. A negative value bends to the opposite side. The value 0 keeps the line flat</string>
+        </property>
+        <property name="columnCount">
+         <number>1</number>
+        </property>
+        <column>
+         <property name="text">
+          <string>Angle</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="Refine">
+        <property name="text">
+         <string>Refine shape</string>
+        </property>
+        <property name="toolTip">
+         <string>Merges faces of the solid that are on the same surface</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string></string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
