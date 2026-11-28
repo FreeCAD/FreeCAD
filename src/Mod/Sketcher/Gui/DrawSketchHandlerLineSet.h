@@ -1116,7 +1116,7 @@ private:
             generateAutoConstraintsOnElement(ac1, geoId, ac1Pos);
             ac1.clear();
 
-            removeRedundantAutoConstraints();
+            removeRedundantAutoConstraints(true);
 
             createGeneratedAutoConstraints(false);
             sugConstraints[0].clear();
