@@ -41,11 +41,13 @@
 #include <App/Property.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Base/Color.h>
 #include <Base/Tools.h>
 #include <CXX/Extensions.hxx>
 
 #include "ExpressionCompleter.h"
 #include "FuzzyMatcher.h"
+#include "SyntaxHighlighter.h"
 
 
 FC_LOG_LEVEL_INIT("Completer", true, true)
@@ -1540,6 +1542,88 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
 
 ///////////////////////////////////////////////////////////////////////
 
+namespace
+{
+// Colors expression tokens using the lexer of the expression parser and the Editor color preferences.
+class ExpressionHighlighter: public SyntaxHighlighter
+{
+public:
+    explicit ExpressionHighlighter(QPlainTextEdit* edit)
+        : SyntaxHighlighter(edit)
+    {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Editor"
+        );
+        for (const char* name :
+             {"Number", "String", "Keyword", "Class name", "Define name", "Operator"}) {
+            const QString type = QLatin1String(name);
+            const auto packed = hGrp->GetUnsigned(name, Base::Color::asPackedRGB<QColor>(color(type)));
+            setColor(type, Base::Color::fromPackedRGB<QColor>(static_cast<uint32_t>(packed)));
+        }
+        setDocument(edit->document());
+    }
+
+protected:
+    void highlightBlock(const QString& text) override
+    {
+        // The lexer reports UTF-8 byte columns, relative to the block because it has no newline.
+        const QByteArray utf8 = text.toUtf8();
+        for (const auto& [token, column, tokenText] : ExpressionParser::tokenize(utf8.toStdString())) {
+            const int start = static_cast<int>(QString::fromUtf8(utf8.constData(), column).size());
+            QString tokenString = QString::fromStdString(tokenText);
+            TColor type {};
+            switch (token) {
+                case ExpressionParser::IDENTIFIER:
+                case ExpressionParser::CELLADDRESS: {
+                    // Names keep the text color but stand out from the rest of the expression.
+                    QTextCharFormat format;
+                    format.setFontWeight(QFont::Bold);
+                    setFormat(start, static_cast<int>(tokenString.size()), format);
+                    continue;
+                }
+                case ExpressionParser::NUM:
+                case ExpressionParser::INTEGER:
+                case ExpressionParser::ONE:
+                    type = Number;
+                    break;
+                case ExpressionParser::STRING:
+                    type = String;
+                    break;
+                case ExpressionParser::CONSTANT:
+                    type = Keyword;
+                    break;
+                case ExpressionParser::UNIT:
+                case ExpressionParser::USUNIT:
+                    type = Classname;
+                    break;
+                case ExpressionParser::FUNC:
+                    // The token includes the opening parenthesis: color it like ')'.
+                    setFormat(start + static_cast<int>(tokenString.size()) - 1, 1, colorByType(Operator));
+                    tokenString = tokenString.chopped(1).trimmed();
+                    type = Defname;
+                    break;
+                case ExpressionParser::EQ:
+                case ExpressionParser::NEQ:
+                case ExpressionParser::LT:
+                case ExpressionParser::GT:
+                case ExpressionParser::GTE:
+                case ExpressionParser::LTE:
+                case ExpressionParser::MINUSSIGN:
+                    type = Operator;
+                    break;
+                default:
+                    // Single characters are returned as their own code.
+                    if (token >= 256) {
+                        continue;
+                    }
+                    type = Operator;
+            }
+            setFormat(start, static_cast<int>(tokenString.size()), colorByType(type));
+        }
+    }
+};
+}  // namespace
+
 ExpressionTextEdit::ExpressionTextEdit(QWidget* parent)
     : QPlainTextEdit(parent)
     , completer(nullptr)
@@ -1547,6 +1631,7 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget* parent)
     , exactMatch(false)
 {
     connect(this, &QPlainTextEdit::textChanged, this, &ExpressionTextEdit::slotTextChanged);
+    new ExpressionHighlighter(this);  // owned by this widget
 }
 
 void ExpressionTextEdit::setExactMatch(bool enabled)
