@@ -25,14 +25,25 @@
 
 #include "PreCompiled.h"
 
+#include <QApplication>
+#include <QDialog>
+#include <QInputDialog>
+
+#include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection/Selection.h>
-
+#include <Gui/Selection/SelectionObject.h>
+#include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/Gui/AttacherTexts.h>
+#include <Mod/Sketcher/Gui/SketchOrientationDialog.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DlgEditConstraintValue.h"
@@ -46,8 +57,71 @@
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
+using namespace Part;
+using namespace Attacher;
+
 namespace Sketcher3DGui
 {
+// Todo : code quality :its similer to sketcher2d, we can make shared but need to rethink.
+Attacher::eMapMode SuggestAutoMapMode(
+    Attacher::SuggestResult::eSuggestResult* pMsgId = nullptr,
+    QString* message = nullptr,
+    std::vector<Attacher::eMapMode>* allmodes = nullptr
+)
+{
+    // convert pointers into valid references, to avoid checking for null pointers everywhere
+    Attacher::SuggestResult::eSuggestResult buf;
+    if (!pMsgId) {
+        pMsgId = &buf;
+    }
+    Attacher::SuggestResult::eSuggestResult& msg = *pMsgId;
+    QString buf2;
+    if (!message) {
+        message = &buf2;
+    }
+    QString& msg_str = *message;
+
+    App::PropertyLinkSubList tmpSupport;
+    Gui::Selection().getAsPropertyLinkSubList(tmpSupport);
+
+    Attacher::SuggestResult sugr;
+    AttachEngine3D eng;
+    eng.setUp(tmpSupport);
+    eng.suggestMapModes(sugr);
+    if (allmodes) {
+        *allmodes = sugr.allApplicableModes;
+    }
+    msg = sugr.message;
+    switch (msg) {
+        case Attacher::SuggestResult::srOK:
+            break;
+        case Attacher::SuggestResult::srNoModesFit:
+            msg_str = QObject::tr("There are no modes that accept the selected set of subelements");
+            break;
+        case Attacher::SuggestResult::srLinkBroken:
+            msg_str = QObject::tr("Broken link to support subelements");
+            break;
+        case Attacher::SuggestResult::srUnexpectedError:
+            msg_str = QObject::tr("Unexpected error");
+            break;
+        case Attacher::SuggestResult::srIncompatibleGeometry:
+            if (tmpSupport.getSubValues()[0].substr(0, 4) == std::string("Face")) {
+                msg_str = QObject::tr("Face is non-planar");
+            }
+            else {
+                msg_str = QObject::tr(
+                    "Selected shapes are of wrong form (e.g., a curved edge "
+                    "where a straight one is needed)"
+                );
+            }
+            break;
+        default:
+            msg_str = QObject::tr("Unexpected error");
+            assert(0 /*no message for eSuggestResult enum item*/);
+    }
+
+    return sugr.bestFitMode;
+}
 
 DEF_STD_CMD_A(CmdSketcher3DCreateSketch)
 
@@ -66,17 +140,188 @@ CmdSketcher3DCreateSketch::CmdSketcher3DCreateSketch()
 void CmdSketcher3DCreateSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Attacher::eMapMode mapmode = Attacher::mmDeactivated;
+    std::string groupName;
+    bool bAttach = false;
+    bool groupSelected = false;
+    if (Gui::Selection().countObjectsOfType<App::DocumentObjectGroup>() > 0) {
+        auto selection = Gui::Selection().getSelection();
+        if (selection.size() > 1) {
+            Gui::TranslatedUserWarning(
+                getActiveGuiDocument(),
+                QObject::tr("Invalid Selection"),
+                QObject::tr("Too many objects selected")
+            );
+            return;
+        }
 
-    std::string FeatName = getUniqueObjectName("Sketch3D");
+        groupName = selection[0].FeatName;
+        groupSelected = true;
+    }
+    else if (Gui::Selection().hasSelection()) {
+        Attacher::SuggestResult::eSuggestResult msgid = Attacher::SuggestResult::srOK;
+        QString msg_str;
+        std::vector<Attacher::eMapMode> validModes;
+        mapmode = SuggestAutoMapMode(&msgid, &msg_str, &validModes);
+        if (msgid == Attacher::SuggestResult::srOK) {
+            bAttach = true;
+        }
+        if (msgid != Attacher::SuggestResult::srOK && msgid != Attacher::SuggestResult::srNoModesFit) {
+            Gui::TranslatedUserWarning(
+                getActiveGuiDocument(),
+                QObject::tr("Sketch mapping"),
+                QObject::tr("Cannot map the sketch to the selected object. %1.").arg(msg_str)
+            );
+            return;
+        }
+        if (validModes.size() > 1) {
+            validModes.insert(validModes.begin(), Attacher::mmDeactivated);
+            bool ok;
+            QStringList items;
+            items.push_back(QObject::tr("Do not attach"));
+            int iSugg = 0;  // index of the auto-suggested mode in the list of valid modes
+            for (size_t i = 0; i < validModes.size(); ++i) {
+                auto uiStrings
+                    = AttacherGui::getUIStrings(AttachEnginePlane::getClassTypeId(), validModes[i]);
+                items.push_back(uiStrings[0]);
+                if (validModes[i] == mapmode) {
+                    iSugg = items.size() - 1;
+                }
+            }
+            QString text = QInputDialog::getItem(
+                Gui::getMainWindow(),
+                qApp->translate("Sketcher3D_CreateSketch", "Sketch Attachment"),
+                qApp->translate(
+                    "Sketcher3D_CreateSketch",
+                    "Select the method to attach this sketch to selected object"
+                ),
+                items,
+                iSugg,
+                false,
+                &ok,
+                Qt::MSWindowsFixedSizeDialogHint
+            );
+            if (!ok) {
+                return;
+            }
+            int index = items.indexOf(text);
+            if (index == 0) {
+                bAttach = false;
+                mapmode = Attacher::mmDeactivated;
+            }
+            else {
+                bAttach = true;
+                mapmode = validModes[index - 1];
+            }
+        }
+    }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create a new 3D sketch"));
-    doCommand(
-        Doc,
-        "App.activeDocument().addObject('Sketcher3D::Sketch3DObject', '%s')",
-        FeatName.c_str()
-    );
-    doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
-    commitCommand();
+    if (bAttach) {
+
+        std::vector<Gui::SelectionObject> objects = Gui::Selection().getSelectionEx();
+        App::PropertyLinkSubList support;
+        Gui::Selection().getAsPropertyLinkSubList(support);
+        std::string supportString = support.getPyReprString();
+
+        // create Sketch on Face
+        std::string FeatName = getUniqueObjectName("Sketch3D");
+
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create a new 3D sketch on a face"));
+        doCommand(
+            Doc,
+            "App.activeDocument().addObject('Sketcher3D::Sketch3DObject', '%s')",
+            FeatName.c_str()
+        );
+        if (mapmode < Attacher::mmDummy_NumberOfModes) {
+            doCommand(
+                Gui,
+                "App.activeDocument().%s.MapMode = \"%s\"",
+                FeatName.c_str(),
+                AttachEngine::getModeName(mapmode).c_str()
+            );
+        }
+        else {
+            assert(0 /* mapmode index out of range */);
+        }
+        doCommand(
+            Gui,
+            "App.activeDocument().%s.AttachmentSupport = %s",
+            FeatName.c_str(),
+            supportString.c_str()
+        );
+        doCommand(Gui, "App.activeDocument().recompute()");  // recompute the sketch placement based
+                                                             // on its support
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+
+        Part::Feature* part = static_cast<Part::Feature*>(
+            support.getValue()
+        );  // if multi-part support, this will return 0
+        if (part) {
+            App::DocumentObjectGroup* grp = part->getGroup();
+            if (grp) {
+                doCommand(
+                    Doc,
+                    "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                    grp->getNameInDocument(),
+                    FeatName.c_str()
+                );
+            }
+        }
+        commitCommand();
+    }
+    else {
+        // ask user for orientation
+        SketcherGui::SketchOrientationDialog Dlg;
+
+        Dlg.adjustSize();
+        if (Dlg.exec() != QDialog::Accepted) {
+            return;  // canceled
+        }
+        Base::Vector3d p = Dlg.Pos.getPosition();
+        Base::Rotation r = Dlg.Pos.getRotation();
+
+        std::string FeatName = getUniqueObjectName("Sketch3D");
+
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create a new 3D sketch"));
+        if (groupSelected) {
+            doCommand(
+                Doc,
+                "App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('"
+                "Sketcher3D::Sketch3DObject', '%s'))",
+                groupName.c_str(),
+                FeatName.c_str()
+            );
+        }
+        else {
+            doCommand(
+                Doc,
+                "App.activeDocument().addObject('Sketcher3D::Sketch3DObject', '%s')",
+                FeatName.c_str()
+            );
+        }
+
+        doCommand(
+            Doc,
+            "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
+            "App.Rotation(%f, %f, %f, %f))",
+            FeatName.c_str(),
+            p.x,
+            p.y,
+            p.z,
+            r[0],
+            r[1],
+            r[2],
+            r[3]
+        );
+        doCommand(
+            Doc,
+            "App.activeDocument().%s.MapMode = \"%s\"",
+            FeatName.c_str(),
+            AttachEngine::getModeName(Attacher::mmDeactivated).c_str()
+        );
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+        commitCommand();
+    }
 }
 
 bool CmdSketcher3DCreateSketch::isActive()

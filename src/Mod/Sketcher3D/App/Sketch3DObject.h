@@ -29,6 +29,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
@@ -51,7 +52,7 @@ namespace Sketcher3D
  *  Inherited Part::Feature so downstream part operations can use
  *  it directly.
  */
-class Sketcher3DExport Sketch3DObject: public Part::Feature
+class Sketcher3DExport Sketch3DObject: public Part::Feature, public Part::AttachExtension
 {
 
     PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3D::Sketch3DObject);
@@ -70,6 +71,8 @@ public:
     {
         return "Sketcher3DGui::ViewProviderSketch3D";
     }
+
+    void transformPlacement(const Base::Placement& transform) override;
 
     /// add a geometry primitive. Returns assigned GeoId.
     int addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction = false);

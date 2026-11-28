@@ -3,6 +3,7 @@
 set(Sketcher3DGui_LIBS
     Sketcher3D
     PartGui
+    SketcherGui
     FreeCADGui
 )
 

@@ -29,6 +29,7 @@
 #include <TopoDS_Edge.hxx>
 
 #include <Base/Console.h>
+#include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 
@@ -44,6 +45,11 @@ PROPERTY_SOURCE(Sketcher3D::Sketch3DObject, Part::Feature)
 
 Sketch3DObject::Sketch3DObject()
 {
+    AttachExtension::initExtension(this);
+    auto* engine = new Attacher::AttachEnginePlane;
+    engine->precision = Attacher::AttachEnginePlane::planarPrecision();
+    setAttacher(engine);
+
     ADD_PROPERTY_TYPE(
         Geometry,
         (nullptr),
@@ -75,6 +81,16 @@ const std::string& Sketch3DObject::referencePrefix()
 }
 
 Sketch3DObject::~Sketch3DObject() = default;
+
+void Sketch3DObject::transformPlacement(const Base::Placement& transform)
+{
+    if (MapMode.getValue() != Attacher::mmDeactivated && !AttachmentSupport.getValues().empty()) {
+        positionBySupport();
+    }
+    else {
+        Part::Feature::transformPlacement(transform);
+    }
+}
 
 int Sketch3DObject::addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction)
 {

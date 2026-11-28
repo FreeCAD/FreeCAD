@@ -31,6 +31,7 @@
 #include <fastsignals/signal.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
@@ -82,7 +83,8 @@ constexpr Color3f kSnapMarkerDiffuseColor {1.0F, 0.55F, 0.0F};
 constexpr Color3f kSnapMarkerEmissiveColor {0.6F, 0.3F, 0.0F};
 constexpr Color3f kReferenceColor {0.0F, 0.0F, 0.86F};
 
-class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
+class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart,
+                                                public PartGui::ViewProviderAttachExtension
 {
     Q_DECLARE_TR_FUNCTIONS(Sketcher3DGui::ViewProviderSketch3D)
     PROPERTY_HEADER_WITH_OVERRIDE(Sketcher3DGui::ViewProviderSketch3D);

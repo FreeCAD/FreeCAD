@@ -71,6 +71,7 @@ PyMOD_INIT_FUNC(Sketcher3DGui)
     try {
         Base::Interpreter().runString("import Sketcher3D");
         Base::Interpreter().runString("import PartGui");
+        Base::Interpreter().runString("import SketcherGui");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());

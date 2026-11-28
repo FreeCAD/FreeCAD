@@ -124,6 +124,7 @@ int spaceHandleTriadAxesForPlane(ViewProviderSketch3D::ActivePlane plane)
 
 ViewProviderSketch3D::ViewProviderSketch3D()
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
     PointSize.setValue(5.0F);
     LineWidth.setValue(2.0F);
     updateActivePlaneFrame();
@@ -854,15 +855,26 @@ Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
     SbVec3f rayEnd;
     viewer->projectPointToLine(cursorPx, rayStart, rayEnd);
 
+    Base::Placement invPlm = App::GeoFeature::getGlobalPlacement(getSketch3DObject()).inverse();
+    Base::Vector3d localStart;
+    Base::Vector3d localEnd;
+    invPlm.multVec(Base::Vector3d(rayStart[0], rayStart[1], rayStart[2]), localStart);
+    invPlm.multVec(Base::Vector3d(rayEnd[0], rayEnd[1], rayEnd[2]), localEnd);
+
     SbPlane plane(
         Base::convertTo<SbVec3f>(getActivePlaneFrame().normal),
         Base::convertTo<SbVec3f>(getActivePlaneFrame().origin)
     );
 
     SbVec3f hit;
-    if (!plane.intersect(SbLine(rayStart, rayEnd), hit)) {
+    if (!plane.intersect(
+            SbLine(Base::convertTo<SbVec3f>(localStart), Base::convertTo<SbVec3f>(localEnd)),
+            hit
+        )) {
         SbVec3f fp = viewer->getPointOnFocalPlane(cursorPx);
-        return Base::Vector3d(fp[0], fp[1], fp[2]);
+        Base::Vector3d localFp;
+        invPlm.multVec(Base::Vector3d(fp[0], fp[1], fp[2]), localFp);
+        return localFp;
     }
     return Base::Vector3d(hit[0], hit[1], hit[2]);
 }
