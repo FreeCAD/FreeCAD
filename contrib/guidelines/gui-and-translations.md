@@ -4,7 +4,7 @@
 
 A UI change affects a workflow, not just a widget. Start with the user's task, the state in
 which the command is available, and what happens on accept, cancel, failure, and repeated use.
-Use the [design guide](https://freecad.github.io/DevelopersHandbook/designguide/) and
+Use the [design guide](https://www.freecad.org/dev/design/intro/) and
 [FEP-0007](https://github.com/FreeCAD/FreeCAD-Enhancement-Proposals/blob/master/FEPs/FEP-0007-consistent-language/README.md)
 alongside the current implementation.
 

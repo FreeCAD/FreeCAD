@@ -222,7 +222,7 @@ QString GraphvizView::getDirPath()
     }
     auto msg = QStringLiteral(
                    "<html><head/><body>%1 "
-                   "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2</a>"
+                   "<a href=\"https://wiki.freecad.org/Std_DependencyGraph\">%2</a>"
                    "<p>%3</p></body></html>"
     )
                    .arg(

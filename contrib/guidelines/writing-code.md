@@ -145,8 +145,8 @@ If a block needs a long description of its steps, give the operation a meaningfu
 Document workarounds with the condition that makes them necessary. Avoid status markers,
 commented-out implementations, and comments that merely restate syntax.
 
-Follow the handbook's [header guidance](https://freecad.github.io/DevelopersHandbook/codeformatting/Copyright-Headers)
-and [templates](https://freecad.github.io/DevelopersHandbook/codeformatting/Copyright-Snippets).
+Follow the handbook's [header guidance](https://www.freecad.org/dev/code/copyright/#copyright-headers)
+and [templates](https://www.freecad.org/dev/code/copyright/#copyright-snippets).
 Preserve existing headers and obtain accurate authorship for new ones. Modify binding specs,
 generator inputs, and maintained declarations rather than generated output. Third-party code,
 submodules, translation catalogs, baselines, and lockfiles need their own update process.

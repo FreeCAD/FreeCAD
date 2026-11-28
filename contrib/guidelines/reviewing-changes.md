@@ -71,7 +71,7 @@ broad filter is not progress; the regression case and the original positive case
 | Evidence | Do the tests exercise the failure and meaningful unaffected cases? What remains unverified? |
 | Maintainability | Are names, structure, comments, and dependencies clear without a verbal walkthrough? |
 
-The [handbook review guide](https://freecad.github.io/DevelopersHandbook/bestpractices/codereview)
+The [handbook review guide](https://www.freecad.org/dev/code/review/)
 offers broader conventions. Apply them with local context. A historical naming style is not
 automatically a defect in a focused fix, and a reviewer preference is not an API contract.
 
