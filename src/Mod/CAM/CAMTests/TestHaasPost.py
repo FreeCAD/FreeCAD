@@ -38,10 +38,10 @@ import Constants
 import FreeCAD
 import Path
 from CAMTests import PathTestUtils
+from CAMTests import PostTestSupport
 from CAMTests.TestGenericMultiAxisIndustrial import EOL, IndustrialPostTestBase, _tap
 from Path.Post.Processor import PostProcessorFactory, WrapperPost
 from Path.Post.CAMErrors import CAMError, CAMValueError
-from Machine.models.machine import Machine
 
 try:
     from Path.Post.TiltedWorkPlane import PlaneCommand
@@ -230,33 +230,7 @@ class TestHaasPost(IndustrialPostTestBase):
 
 def _machine_bc(strategy):
     """A UMC-style table-table machine: B tilts about Y and carries C."""
-    from Machine.models.machine import RotaryAxis, AxisRole
-
-    machine = Machine.create_3axis_config()
-    machine.name = "Test Haas UMC"
-    machine.rotary_axes["C"] = RotaryAxis(
-        name="C",
-        rotation_vector=FreeCAD.Vector(0, 0, 1),
-        role=AxisRole.TABLE_ROTARY,
-        parent="B",
-        sequence=0,
-    )
-    machine.rotary_axes["B"] = RotaryAxis(
-        name="B",
-        rotation_vector=FreeCAD.Vector(0, 1, 0),
-        min_limit=-35,
-        max_limit=120,
-        role=AxisRole.TABLE_ROTARY,
-        parent=None,
-        sequence=1,
-    )
-    machine.kinematics.rotation_strategy = strategy
-    machine.output.output_header = False
-    machine.output.comments.enabled = False
-    machine.output.precision.axis = 3
-    machine.output.precision.feed = 3
-    machine.output.precision.spindle = 0
-    machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
+    machine = PostTestSupport.make_rotary_machine("BC", strategy, name="Test Haas UMC")
     machine.postprocessor_properties["uppercase_output"] = False
     return machine
 

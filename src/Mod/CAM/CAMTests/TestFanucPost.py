@@ -39,10 +39,10 @@ import Constants
 import FreeCAD
 import Path
 from CAMTests import PathTestUtils
+from CAMTests import PostTestSupport
 from CAMTests.TestGenericMultiAxisIndustrial import EOL, IndustrialPostTestBase, _tap
 from Path.Post.Processor import PostProcessorFactory
 from Path.Post.CAMErrors import CAMValueError
-from Machine.models.machine import Machine
 
 try:
     from Path.Post.TiltedWorkPlane import PlaneCommand
@@ -238,33 +238,7 @@ class TestFanucPost(IndustrialPostTestBase):
 
 def _machine_ac(strategy):
     """A table-table AC machine, C carrying A, as TestPathTiltedWorkPlane builds it."""
-    from Machine.models.machine import RotaryAxis, AxisRole
-
-    machine = Machine.create_3axis_config()
-    machine.name = "Test Fanuc AC"
-    machine.rotary_axes["C"] = RotaryAxis(
-        name="C",
-        rotation_vector=FreeCAD.Vector(0, 0, 1),
-        role=AxisRole.TABLE_ROTARY,
-        parent="A",
-        sequence=0,
-    )
-    machine.rotary_axes["A"] = RotaryAxis(
-        name="A",
-        rotation_vector=FreeCAD.Vector(1, 0, 0),
-        min_limit=-120,
-        max_limit=120,
-        role=AxisRole.TABLE_ROTARY,
-        parent=None,
-        sequence=1,
-    )
-    machine.kinematics.rotation_strategy = strategy
-    machine.output.output_header = False
-    machine.output.comments.enabled = False
-    machine.output.precision.axis = 3
-    machine.output.precision.feed = 3
-    machine.output.precision.spindle = 0
-    machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
+    machine = PostTestSupport.make_rotary_machine("AC", strategy, name="Test Fanuc AC")
     machine.postprocessor_properties["uppercase_output"] = False
     return machine
 
@@ -407,10 +381,7 @@ class TestFanucTiltedWorkPlane(PathTestUtils.PathTestBase):
 
     def test_a_three_axis_machine_refuses_a_tilted_plane(self):
         self._op("Tilted", self._plane())
-        machine = Machine.create_3axis_config()
-        machine.output.output_header = False
-        machine.output.comments.enabled = False
-        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
+        machine = PostTestSupport.make_machine(quiet=True)
         with self.assertRaisesRegex(CAMValueError, "rotary axes"):
             self._export(machine)
 

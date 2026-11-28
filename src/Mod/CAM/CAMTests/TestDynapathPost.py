@@ -31,10 +31,8 @@ numbers and the E end-of-file marker.
 
 import Path
 import Constants
-from CAMTests import PathTestUtils
-from CAMTests import PostTestMocks
-from Path.Post.Processor import PostProcessorFactory, VALID_SCOPES, property_scope
-from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
+from CAMTests import PostTestSupport
+from Machine.models.machine import OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
@@ -50,61 +48,23 @@ def _tap(name="G84", **overrides):
     return command
 
 
-class TestDynapathPost(PathTestUtils.PathTestBase):
+class TestDynapathPost(PostTestSupport.MachinePostTestBase):
     """Dynapath output on a three-axis mock job."""
 
-    @classmethod
-    def setUpClass(cls):
-        cls.job, cls.profile_op, cls.tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
-        cls.job.Machine = "dynapath"
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "dynapath")
+    POST_NAME = "dynapath"
+    MACHINE_NAME = "Test Dynapath"
 
-    def setUp(self):
-        self.maxDiff = None
-
-        machine = Machine.create_3axis_config()
-        machine.name = "Test Dynapath"
-        machine.output.units = OutputUnits.METRIC
-        machine.output.output_header = False
-        machine.output.comments.enabled = False
-        machine.output.precision.axis = 3
-        machine.output.precision.feed = 3
-        machine.output.precision.spindle = 0
-        machine.output.duplicates.commands = True
-        machine.output.duplicates.parameters = True
-        machine.processing.tool_change_format = Constants.ToolChangeFormat.NO_TOOL_CHANGE
-        machine.toolheads = [
-            Toolhead(
-                name="Spindle",
-                toolhead_type=ToolheadType.ROTARY,
-                min_rpm=0,
-                max_rpm=6000,
-                max_power_kw=5.0,
-            )
-        ]
+    def configure_machine(self, machine):
         # The program name is tested on its own.
         machine.postprocessor_properties["program_name"] = "TEST"
-        self.profile_op.Path = Path.Path([])
+
+    def setUp(self):
+        super().setUp()
         self.profile_op.ClearanceHeight = type("obj", (object,), {"Value": 18.0})()
-        self.post._machine = machine
-        self.post.apply_configuration_bundle()
 
     # ------------------------------------------------------------------
     # helpers
     # ------------------------------------------------------------------
-
-    def export(self, commands=None):
-        if commands is not None:
-            self.profile_op.Path = Path.Path(
-                [Path.Command(c) if isinstance(c, str) else c for c in commands]
-            )
-        self.post.apply_configuration_bundle()
-        return self.post.export2()[0][1]
-
-    def lines(self, commands=None):
-        return self.export(commands).split(EOL)
 
     def op_lines(self, commands):
         """The lines the operation produced, between the fixture and the postamble."""
@@ -113,12 +73,6 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
         end = len(lines) - lines[::-1].index("M05") - 1
         return lines[start:end]
 
-    def assert_line(self, expected, lines):
-        self.assertIn(expected, lines, f"expected line {expected!r} in\n{EOL.join(lines)}")
-
-    def assert_no_line(self, unexpected, lines):
-        self.assertNotIn(unexpected, lines, f"unexpected line {unexpected!r} in\n{EOL.join(lines)}")
-
     # ------------------------------------------------------------------
     # schema
     # ------------------------------------------------------------------
@@ -126,9 +80,7 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
     def test_default_file_extension(self):
         self.assertEqual("ncc", self.post.get_file_extension())
 
-    def test_property_schema_is_well_formed(self):
-        for prop in self.post.get_full_property_schema():
-            self.assertIn(property_scope(prop), VALID_SCOPES, prop["name"])
+    def test_property_schema_names(self):
         names = {prop["name"] for prop in self.post.get_property_schema()}
         self.assertEqual(
             names,

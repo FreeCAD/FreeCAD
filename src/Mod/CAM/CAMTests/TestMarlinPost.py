@@ -24,50 +24,22 @@
 import re
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
-import CAMTests.PostTestMocks as PostTestMocks
-from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine, Toolhead, ToolheadType
+import CAMTests.PostTestSupport as PostTestSupport
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestMarlinPost(PathTestUtils.PathTestBase):
+class TestMarlinPost(PostTestSupport.MachinePostTestBase):
     """Test Marlin-specific features of the marlin_post.py postprocessor.
 
     The only Marlin-specific behaviour is G4 dwell P→S conversion.
     All other functionality is inherited from the base PostProcessor.
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls.job, cls.profile_op, cls.tool_controller = (
-            PostTestMocks.create_default_job_with_operation()
-        )
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "marlin")
-
-    @classmethod
-    def tearDownClass(cls):
-        pass
-
-    def setUp(self):
-        self.post.reinitialize()
-        self.maxDiff = None
-        self.post._machine = Machine.create_3axis_config()
-        self.post._machine.name = "Test Marlin Machine"
-        self.post.apply_configuration_bundle()
-        toolhead = Toolhead(
-            name="Default Toolhead",
-            toolhead_type=ToolheadType.ROTARY,
-            min_rpm=0,
-            max_rpm=24000,
-            max_power_kw=1.0,
-        )
-        self.post._machine.toolheads = [toolhead]
-
-    def tearDown(self):
-        pass
+    POST_NAME = "marlin"
+    MACHINE_NAME = "Test Marlin Machine"
+    QUIET = False
 
     # ----- Dwell P→S conversion tests -----
 

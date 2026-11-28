@@ -28,6 +28,7 @@ import Path
 import unittest
 from Path.Post.Processor import PostProcessor
 from Machine.models.machine import Machine
+from CAMTests import PostTestSupport
 from CAMTests.PostTestMocks import MockJob
 import Path.Tool.Controller as PathToolController
 from Path.Tool.toolbit import ToolBit
@@ -242,9 +243,7 @@ class TestToolProcessing(unittest.TestCase):
 
     def _run_export2(self, machine):
         """Run export2 with the given machine configuration."""
-        processor = PostProcessor(self.job, tooltip=None, tooltipargs=None, units=None)
-        processor._machine = machine
-        return processor.export2()
+        return PostTestSupport.run_export2(self.job, machine)
 
     def _get_all_gcode(self, results):
         """Extract all G-code from export results."""

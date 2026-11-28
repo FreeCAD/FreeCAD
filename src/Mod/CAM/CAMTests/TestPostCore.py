@@ -31,6 +31,7 @@ from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 import unittest
+from CAMTests import PostTestSupport
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
@@ -884,10 +885,9 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
     def _create_test_machine(self, **properties):
         """Create a test machine with specified postprocessor properties."""
-        from Machine.models.machine import Machine, Toolhead, ToolheadType
-
-        machine = Machine.create_3axis_config()
-        machine.name = "TestMachine"
+        machine = PostTestSupport.make_machine(
+            "TestMachine", toolhead=PostTestSupport.make_manual_toolhead()
+        )
         machine.postprocessor_file_name = "generic"
         machine.postprocessor_properties = {
             "pierce_delay": 1000,
@@ -896,18 +896,6 @@ class TestJobPropertyOverrides(unittest.TestCase):
             "show_dialog": False,  # Disable dialogs for automated tests
             **properties,
         }
-
-        # Add toolhead
-        toolhead = Toolhead(
-            name="Default Toolhead",
-            toolhead_type=ToolheadType.ROTARY,
-            id="toolhead1",
-            max_power_kw=2.2,
-            max_rpm=24000,
-            min_rpm=6000,
-            tool_change="manual",
-        )
-        machine.toolheads = [toolhead]
         return machine
 
     def test_job_property_overrides_basic(self):
@@ -1222,22 +1210,9 @@ class TestToolChangeFormatOutput(unittest.TestCase):
         comments=False,
     ):
         """A machine with the tool change settings under test."""
-        from Machine.models.machine import Machine, Toolhead, ToolheadType
-
-        machine = Machine.create_3axis_config()
-        machine.name = "TestMachine"
-        machine.toolheads = [
-            Toolhead(
-                name="Default Toolhead",
-                toolhead_type=ToolheadType.ROTARY,
-                id="toolhead1",
-                max_power_kw=2.2,
-                max_rpm=24000,
-                min_rpm=6000,
-                tool_change="manual",
-                toolhead_wait=1.0,
-            )
-        ]
+        machine = PostTestSupport.make_machine(
+            "TestMachine", toolhead=PostTestSupport.make_manual_toolhead(toolhead_wait=1.0)
+        )
         machine.processing.tool_change_format = fmt
         machine.processing.early_tool_prep = early
         machine.processing.assert_tool_prep = assert_prep
