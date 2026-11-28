@@ -690,6 +690,130 @@ class DocumentBasicCases(unittest.TestCase):
         self.assertIn("Test", self.Doc.Python.PropertiesList)
         self.assertIn("Test", self.Doc.Link.PropertiesList)
 
+    def createCopyOnChangeLink(self, mode="Enabled", override=True):
+        template = self.Doc.addObject("App::Part", "Template")
+        for name in ("Height", "Width"):
+            template.addProperty("App::PropertyLength", name, "Configuration")
+            template.setPropertyStatus(name, "CopyOnChange")
+        template.setExpression("Height", "60 mm")
+        template.setExpression("Width", "Height * 2")
+        template.addProperty("App::PropertyInteger", "Revision", "Configuration")
+        self.Doc.recompute()
+
+        link = self.Doc.addObject("App::Link", "Instance")
+        link.setLink(template)
+        link.LinkCopyOnChange = mode
+        self.Doc.recompute()
+        if override:
+            link.setExpression("Height", "85 mm")
+            self.Doc.recompute()
+        return link
+
+    def testCopyOnChangeDisabledAndEnabledBeforeOverride(self):
+        link = self.createCopyOnChangeLink("Disabled", override=False)
+        template = self.Doc.Template
+        self.assertEqual(link.LinkedObject, template)
+
+        template.setExpression("Height", "70 mm")
+        self.Doc.recompute()
+        self.assertEqual(link.LinkCopyOnChange, "Disabled")
+        self.assertEqual(link.LinkedObject, template)
+        self.assertEqual(template.Height.Value, 70)
+
+        link.LinkCopyOnChange = "Enabled"
+        self.Doc.recompute()
+        self.assertEqual(link.LinkedObject, template)
+        self.assertEqual(link.Height.Value, 70)
+        template.setExpression("Height", "75 mm")
+        self.Doc.recompute()
+        self.assertEqual(link.LinkCopyOnChange, "Enabled")
+        self.assertEqual(link.LinkedObject, template)
+        self.assertEqual(link.Height.Value, 75)
+        self.assertEqual(self.Doc.recompute(), 0)
+
+    def testCopyOnChangeOverrideReplacesInheritedExpression(self):
+        link = self.createCopyOnChangeLink()
+        copy = link.LinkedObject
+        self.assertEqual(link.LinkCopyOnChange, "Owned")
+        self.assertNotEqual(copy, self.Doc.Template)
+        self.assertNotIn("Height", dict(copy.ExpressionEngine))
+        self.assertIn("Width", dict(copy.ExpressionEngine))
+
+        copy.touch()
+        self.Doc.recompute()
+        self.assertEqual(copy.Height.Value, 85)
+        self.assertEqual(copy.Width.Value, 170)
+        self.assertEqual(self.Doc.Template.Height.Value, 60)
+        self.assertEqual(self.Doc.recompute(), 0)
+
+        link.Width = 200
+        self.Doc.recompute()
+        self.assertNotIn("Width", dict(copy.ExpressionEngine))
+        self.assertEqual(copy.Width.Value, 200)
+        self.assertEqual(self.Doc.Template.Width.Value, 120)
+        self.assertEqual(self.Doc.recompute(), 0)
+
+        self.Doc.Template.Revision = 1
+        self.Doc.recompute()
+        self.assertEqual(link.LinkCopyOnChange, "Owned")
+        self.assertEqual(link.LinkedObject, copy)
+        self.assertEqual(copy.Revision, 0)
+        self.assertEqual(copy.Width.Value, 200)
+        self.assertEqual(self.Doc.recompute(), 0)
+
+    def testCopyOnChangeOverrideRepairsSavedCopy(self):
+        link = self.createCopyOnChangeLink()
+        link.setExpression("Height", "85")
+        link.LinkedObject.setExpression("Height", "60 mm")
+        doc = self.saveAndRestore()
+        doc.recompute()
+        copy = doc.Instance.LinkedObject
+        self.assertNotIn("Height", dict(copy.ExpressionEngine))
+        self.assertEqual(copy.Height.Value, 85)
+        self.assertEqual(doc.Template.Height.Value, 60)
+        self.assertEqual(doc.recompute(), 0)
+
+    def testCopyOnChangeOverrideSurvivesTrackingRefresh(self):
+        link = self.createCopyOnChangeLink("Tracking")
+        previous_copy = link.LinkedObject.Name
+        self.Doc.Template.setExpression("Width", "Height * 3")
+        self.Doc.Template.Revision = 1
+        self.Doc.recompute()
+        # The replacement objects were not in the original recompute queue.
+        self.Doc.recompute()
+
+        copy = link.LinkedObject
+        self.assertNotEqual(copy.Name, previous_copy)
+        self.assertNotIn("Height", dict(copy.ExpressionEngine))
+        self.assertEqual(copy.Height.Value, 85)
+        self.assertEqual(copy.Width.Value, 255)
+        self.assertEqual(self.Doc.Template.Width.Value, 180)
+        self.assertEqual(copy.Revision, 1)
+        self.assertEqual(self.Doc.recompute(), 0)
+
+    def testCopyOnChangeLiteralOverrideSurvivesSavedTrackingRefresh(self):
+        link = self.createCopyOnChangeLink("Tracking", override=False)
+        link.Height = 85
+        self.Doc.recompute()
+        self.assertEqual(link.LinkedObject.Height.Value, 85)
+
+        doc = self.saveAndRestore()
+        doc.recompute()
+        previous_copy = doc.Instance.LinkedObject.Name
+        doc.Template.Revision = 1
+        doc.recompute()
+        doc.recompute()
+
+        copy = doc.Instance.LinkedObject
+        self.assertNotEqual(copy.Name, previous_copy)
+        self.assertNotIn("Height", dict(copy.ExpressionEngine))
+        self.assertIn("Width", dict(copy.ExpressionEngine))
+        self.assertEqual(copy.Height.Value, 85)
+        self.assertEqual(copy.Width.Value, 170)
+        self.assertEqual(copy.Revision, 1)
+        self.assertEqual(doc.Template.Height.Value, 60)
+        self.assertEqual(doc.recompute(), 0)
+
     def testNoProxy(self):
         test = self.Doc.addObject("App::DocumentObject", "Object")
         test.addProperty("App::PropertyPythonObject", "Dictionary")
