@@ -142,7 +142,8 @@ class MgDynwriter:
             m = obj.Material
             refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
             for name in (n for n in refs if n in bodies):
-                if "ElectricalConductivity" not in m:
+                conductivity = self.write.electricalConductivityTable(obj)
+                if conductivity is None and "ElectricalConductivity" not in m:
                     Console.PrintMessage(f"m: {m}\n")
                     raise general_writer.WriteError(
                         "The electrical conductivity must be specified for all materials.\n\n"
@@ -153,7 +154,8 @@ class MgDynwriter:
                         "The relative permeability must be specified for all materials.\n\n"
                     )
                 self.write.material(name, "Name", m["Name"])
-                conductivity = Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m")
+                if conductivity is None:
+                    conductivity = Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m")
                 self.write.material(name, "Electric Conductivity", conductivity)
                 self.write.material(name, "Relative Permeability", float(m["RelativePermeability"]))
                 # permittivity might be necessary for the post processor

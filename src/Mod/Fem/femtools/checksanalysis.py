@@ -199,6 +199,14 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         if not member.cons_initialtemperature:
             if not member.geos_fluidsection:
                 message += "Thermomechanical analysis: No initial temperature defined.\n"
+    # CalculiX still writes the emissivity of the constraint, the card one would be dropped silently
+    for c in member.cons_heatflux:
+        obj = c["Object"]
+        if obj.ConstraintType == "Radiation" and obj.EmissivitySource == "Material":
+            message += (
+                f"{obj.Label} takes its emissivity from the material card, which the CalculiX "
+                "writer doesn't read yet. Set its EmissivitySource to Constraint.\n"
+            )
 
     # constraints
     # fixed

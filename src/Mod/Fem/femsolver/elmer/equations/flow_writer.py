@@ -146,8 +146,16 @@ class Flowwriter:
                 if "Density" in m:
                     density = self.write.convert(m["Density"], "M/L^3")
                     self.write.material(name, "Density", density)
-                if "ThermalConductivity" in m:
+                # Written after Heat, it must give the same table and not the scalar
+                # Without Heat on the body there is no Temperature and FlowSolve never reads it
+                tConductivity = None
+                if name in self.write.heatBodies():
+                    tConductivity = self.write.convertTable(
+                        obj, "ConductivityTable", "M*L/(T^3*O)", "thermal conductivity"
+                    )
+                if tConductivity is None and "ThermalConductivity" in m:
                     tConductivity = self.write.convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                if tConductivity is not None:
                     self.write.material(name, "Heat Conductivity", tConductivity)
                 if "DynamicViscosity" in m:
                     dViscosity = self.write.convert(m["DynamicViscosity"], "M/(L*T)")

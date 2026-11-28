@@ -1,0 +1,18 @@
+---
+# SPDX-License-Identifier: LGPL-2.1-or-later
+General:
+  UUID: "1243c74e-c1d2-4b7d-ba4d-f48ee2c50a2a"
+  Name: "Test Radiation Arrays"
+  Author: "The FreeCAD project association"
+  License: "LGPL-2.1-or-later"
+  Description: "This material is for testing purposes only. It does not describe any real material."
+Models:
+  Radiation:
+    UUID: '37f34fe3-21c5-423c-b05d-11a96a4274f7'
+    Emissivity: "0.3"
+  RadiationArrays:
+    UUID: '19d1c673-4f5f-439e-b426-bd557979cc30'
+    RadiationProperties:
+      - [["1500 K", "0.6"],
+         ["500 K", "0.2"],
+         ["300 K", ""]]

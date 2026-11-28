@@ -34,12 +34,24 @@ PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint)
 
 static const char* ConstraintTypes[] = {"Flux", "Convection", "Radiation", nullptr};
 
+// Constraint by default, an older document keeps the emissivity it was writen with
+static const char* EmissivitySources[] = {"Constraint", "Material", nullptr};
+
 ConstraintHeatflux::ConstraintHeatflux()
 {
     ADD_PROPERTY_TYPE(AmbientTemp, (0.0), "ConstraintHeatflux", App::Prop_None, "Ambient temperature");
     /*ADD_PROPERTY(FaceTemp,(0.0));*/
     ADD_PROPERTY_TYPE(FilmCoef, (0.0), "ConstraintHeatflux", App::Prop_None, "Film coefficient");
     ADD_PROPERTY_TYPE(Emissivity, (0.0), "ConstraintHeatflux", App::Prop_None, "Emissivity");
+    ADD_PROPERTY_TYPE(
+        EmissivitySource,
+        (0L),
+        "ConstraintHeatflux",
+        App::Prop_None,
+        "Where the emissivity comes from, the Emissivity of this constraint or the material card "
+        "of the body"
+    );
+    EmissivitySource.setEnums(EmissivitySources);
     ADD_PROPERTY_TYPE(
         DistributedHeatFlux,
         (0.0),
