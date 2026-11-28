@@ -55,9 +55,16 @@ bool IsArcMotion(const MillMotion& m)
 float MillPathSegment::mResolution = 1;
 float MillPathSegment::mSmallRadStep = (pi / 8);
 
-MillPathSegment::MillPathSegment(const EndMill& _endmill, const MillMotion& from, const MillMotion& to)
+MillPathSegment::MillPathSegment(
+    const EndMill& _endmill,
+    const MillMotion& from,
+    const MillMotion& to,
+    const mat4x4 frame
+)
 {
     mat4x4_identity(mShearMat);
+    mat4x4_dup(mFrame, frame);
+    FrameRotation(mFrameRot, frame);
     MotionPosToVec(mStartPos, from);
     MotionPosToVec(mDiff, to);
     vec3_sub(mDiff, mDiff, mStartPos);
@@ -92,11 +99,9 @@ MillPathSegment::MillPathSegment(const EndMill& _endmill, const MillMotion& from
         }
         numSimSteps = (int)(mSweepAng / mStepAngRad) + 1;
         mStepAngRad = mArcDir * mSweepAng / numSimSteps;
-        if (mSmallRad) {
-            // when the radius is too small, we just use the tool itself to carve the stock
-            mShape = endmill->toolShape;
-        }
-        else {
+        // A tight arc is cut with the tool's own shapes (see render). It must not copy them into
+        // mShape: that would share their buffers, which the destructor then frees.
+        if (!mSmallRad) {
             endmill->GenerateArcSegmentDL(
                 mRadius,
                 mStepAngRad * SWEEP_ARC_PAD,
@@ -146,17 +151,33 @@ void MillPathSegment::AppendPathPoints(std::vector<MillPathPosition>& pointsBuff
         for (int i = 1; i <= numSimSteps; i++) {
             ang -= mStepAngRad;
             z += zStep;
-            mpPos.X = mCenter[PX] - sinf(ang) * mRadius;
-            mpPos.Y = mCenter[PY] + cosf(ang) * mRadius;
-            mpPos.Z = z;
+            vec3 world;
+            FramePosToWorld(
+                world,
+                mFrame,
+                mCenter[PX] - sinf(ang) * mRadius,
+                mCenter[PY] + cosf(ang) * mRadius,
+                z
+            );
+            mpPos.X = world[PX];
+            mpPos.Y = world[PY];
+            mpPos.Z = world[PZ];
             mpPos.SegmentId = segmentIndex;
             pointsBuffer.push_back(mpPos);
         }
     }
     else {
-        mpPos.X = mStartPos[PX] + mDiff[PX];
-        mpPos.Y = mStartPos[PY] + mDiff[PY];
-        mpPos.Z = mStartPos[PZ] + mDiff[PZ];
+        vec3 world;
+        FramePosToWorld(
+            world,
+            mFrame,
+            mStartPos[PX] + mDiff[PX],
+            mStartPos[PY] + mDiff[PY],
+            mStartPos[PZ] + mDiff[PZ]
+        );
+        mpPos.X = world[PX];
+        mpPos.Y = world[PY];
+        mpPos.Z = world[PZ];
         mpPos.SegmentId = segmentIndex;
         pointsBuffer.push_back(mpPos);
     }
@@ -166,9 +187,40 @@ void MillPathSegment::render(int step)
 {
     mStepNumber = step;
     mat4x4 mat, mat2, rmat;
-    mat4x4_identity(mat);
-    mat4x4_identity(rmat);
-    if (mMotionType == MTCurved) {
+    mat4x4_dup(mat, mFrame);
+    mat4x4_dup(rmat, mFrameRot);
+    if (mMotionType == MTCurved && mSmallRad) {
+        // Tight arc (radius not larger than the tool's): sweep the tool along the chord from the
+        // previous step to this one, like a straight move, and draw the whole tool only at the
+        // arc start. Drawing the whole tool at every step left dimples between the steps.
+        const float a0 = mStartAngRad - (step - 1) * mStepAngRad;
+        const float a1 = a0 - mStepAngRad;
+        const float dz = mDiff[PZ] / numSimSteps;
+        const float z0 = mCenter[PZ] + dz * (step - 1);
+        const float x0 = mCenter[PX] - sinf(a0) * mRadius;
+        const float y0 = mCenter[PY] + cosf(a0) * mRadius;
+        const float dx = mCenter[PX] - sinf(a1) * mRadius - x0;
+        const float dy = mCenter[PY] + cosf(a1) * mRadius - y0;
+        const float len = sqrtf(dx * dx + dy * dy);
+        mat4x4_translate_in_place(mat, x0, y0, z0);
+        if (step == 1 || len < EPSILON) {
+            endmill->toolShape.Render(mat, rmat);
+        }
+        if (len >= EPSILON) {
+            const float ang = atan2f(dy, dx);
+            mat4x4_rotate_Z(mat, mat, ang);
+            mat4x4_rotate_Z(rmat, rmat, ang);
+            mat4x4 shear;
+            mat4x4_identity(shear);
+            shear[0][2] = dz / len;
+            mat4x4_mul(mat2, mat, shear);
+            mat4x4_scale_aniso(mat2, mat2, len, 1, 1);
+            endmill->pathShape.Render(mat2, rmat);
+            mat4x4_translate_in_place(mat, len, 0, dz);
+            endmill->halfToolShape.Render(mat, rmat);
+        }
+    }
+    else if (mMotionType == MTCurved) {
         mat4x4_translate_in_place(
             mat,
             mCenter[PX],
@@ -177,12 +229,9 @@ void MillPathSegment::render(int step)
         );
         mat4x4_rotate_Z(mat, mat, mStartAngRad - (step - 1) * mStepAngRad);
         mat4x4_rotate_Z(rmat, rmat, mStartAngRad - (step - 1) * mStepAngRad);
-
-        if (!mSmallRad) {
-            mShape.Render(mat, rmat);
-        }
-        // a tight arc stamps the whole tool at each step's end; a wide one only at its last
-        if (mSmallRad || step == numSimSteps) {
+        mShape.Render(mat, rmat);
+        // the last piece ends in the whole tool
+        if (step == numSimSteps) {
             mat4x4_rotate_Z(mat, mat, -mStepAngRad);
             mat4x4_rotate_Z(rmat, rmat, -mStepAngRad);
             mat4x4_translate_in_place(mat, 0, mRadius, mDiff[PZ] / numSimSteps);
@@ -191,20 +240,19 @@ void MillPathSegment::render(int step)
     }
     else {
         if (mMotionType == MTVertical) {
-            if (mStepLength[PZ] > 0) {
-                mat4x4_translate_in_place_v(mat, mStartPos);
-            }
-            else {
-                mat4x4_translate_in_place(
-                    mat,
-                    mStartPos[PX],
-                    mStartPos[PY],
-                    mStartPos[PZ] + mStepNumber * mStepLength[PZ]
-                );
-            }
+            // the tool at the lowest point of its travel so far
+            const int lowest = mStepLength[PZ] > 0 ? 0 : step;
+            mat4x4_translate_in_place(
+                mat,
+                mStartPos[PX],
+                mStartPos[PY],
+                mStartPos[PZ] + lowest * mStepLength[PZ]
+            );
             endmill->toolShape.Render(mat, rmat);
         }
         else {
+            // The end tool goes where the tool has got to, at the depth reached so far: placing it
+            // at the move's final depth cut too deep at the end of a ramp.
             float renderDist = step * mStepDistance;
             mat4x4_translate_in_place_v(mat, mStartPos);
             mat4x4_rotate_Z(mat, mat, mXYAngle);
@@ -215,7 +263,7 @@ void MillPathSegment::render(int step)
             }
             mat4x4_scale_aniso(mat2, mat2, renderDist, 1, 1);
             endmill->pathShape.Render(mat2, rmat);
-            mat4x4_translate_in_place(mat, renderDist, 0, mDiff[PZ]);
+            mat4x4_translate_in_place(mat, renderDist, 0, step * mStepLength[PZ]);
             endmill->halfToolShape.Render(mat, rmat);
         }
     }
@@ -238,7 +286,84 @@ void MillPathSegment::GetHeadPosition(vec3 headPos)
         vec3_scale(mHeadPos, mHeadPos, (float)mStepNumber);
         vec3_add(mHeadPos, mHeadPos, mStartPos);
     }
-    vec3_dup(headPos, mHeadPos);
+    FramePosToWorld(headPos, mFrame, mHeadPos[PX], mHeadPos[PY], mHeadPos[PZ]);
+}
+
+void MillPathSegment::GetToolRotation(mat4x4 rot) const
+{
+    mat4x4_dup(rot, mFrameRot);
+}
+
+float MillPathSegment::Length() const
+{
+    if (mMotionType == MTCurved) {
+        // helix length: the unrolled arc length combined with the rise
+        const float arc = mRadius * mSweepAng;
+        return sqrtf(arc * arc + mDiff[PZ] * mDiff[PZ]);
+    }
+    return mXYZDistance;
+}
+
+void MillPathSegment::StepBox(int fromStep, int toStep, vec3 lo, vec3 hi) const
+{
+    // The tip's places over the steps widened by the tool's profile, in the segment's frame. An
+    // arc's pieces turn SWEEP_ARC_PAD steps' worth and bow out past their ends, so a step's
+    // length pads them.
+    float reach = 0;
+    float zLo = std::numeric_limits<float>::max();
+    float zHi = -zLo;
+    const std::vector<float>& profile = endmill->profilePoints;
+    for (size_t i = 0; i + 1 < profile.size(); i += 2) {
+        reach = std::max(reach, std::fabs(profile[i]));
+        zLo = std::min(zLo, profile[i + 1]);
+        zHi = std::max(zHi, profile[i + 1]);
+    }
+    const bool arc = mMotionType == MTCurved;
+    const float pad = arc ? std::fabs(mStepAngRad) * mRadius : 0.f;
+    float boxLo[3];
+    float boxHi[3];
+    for (int c = 0; c < 3; c++) {
+        boxLo[c] = std::numeric_limits<float>::max();
+        boxHi[c] = -std::numeric_limits<float>::max();
+    }
+    const int first = std::clamp(fromStep, 0, numSimSteps);
+    const int last = std::clamp(toStep, first, numSimSteps);
+    // a straight move's ends hold its whole sweep
+    const int stride = arc ? 1 : std::max(1, last - first);
+    for (int k = first; k <= last; k += stride) {
+        vec3 at;
+        if (arc) {
+            const float angle = mStartAngRad - k * mStepAngRad;
+            vec3_set(
+                at,
+                mCenter[PX] - sinf(angle) * mRadius,
+                mCenter[PY] + cosf(angle) * mRadius,
+                mCenter[PZ] + mDiff[PZ] * k / numSimSteps
+            );
+        }
+        else {
+            for (int c = 0; c < 3; c++) {
+                at[c] = mStartPos[c] + k * mStepLength[c];
+            }
+        }
+        for (int c = 0; c < 2; c++) {
+            boxLo[c] = std::min(boxLo[c], at[c] - reach - pad);
+            boxHi[c] = std::max(boxHi[c], at[c] + reach + pad);
+        }
+        boxLo[PZ] = std::min(boxLo[PZ], at[PZ] + zLo);
+        boxHi[PZ] = std::max(boxHi[PZ], at[PZ] + zHi);
+    }
+    MovedBox(mFrame, boxLo, boxHi, lo, hi);
+}
+
+void MillPathSegment::SetMinSimSteps(int steps)
+{
+    if (mMotionType == MTCurved || numSimSteps >= steps) {
+        return;
+    }
+    numSimSteps = steps;
+    mStepDistance = mXYDistance / numSimSteps;
+    vec3_scale(mStepLength, mDiff, 1.f / (float)numSimSteps);
 }
 
 float MillPathSegment::SetQuality(float quality, float maxStockDimension)
@@ -250,7 +375,9 @@ float MillPathSegment::SetQuality(float quality, float maxStockDimension)
     if (mResolution < 0.5) {
         mResolution = 0.5;
     }
-    mSmallRadStep = pi / 8;
+    // Tight arcs are cut by sweeping the tool along chords. At high quality the chords are short
+    // enough to stay within about 0.015 mm of an arc of 3 mm radius.
+    mSmallRadStep = quality >= 9 ? pi / 16 : pi / 8;
     if (quality < 4) {
         mSmallRadStep = pi / 2;
     }

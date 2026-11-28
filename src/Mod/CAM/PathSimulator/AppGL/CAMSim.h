@@ -65,6 +65,7 @@ public:
     );
     void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
     void AddCommand(Command* cmd);
+    void BeginOperation(const std::string& name);
 };
 
 }  // namespace CAMSimulator

@@ -25,9 +25,12 @@
 # pragma warning(disable : 4251)
 #endif
 
+#include <deque>
 #include <queue>
 #include <functional>
 #include <chrono>
+#include <string>
+#include <vector>
 
 #include <QOpenGLWidget>
 #include <QPainter>
@@ -39,7 +42,14 @@
 
 #include <Mod/Part/App/TopoShape.h>
 
+#include "MillMotion.h"
+
 class SoCamera;
+
+namespace Base
+{
+class Rotation;
+}  // namespace Base
 
 namespace Gui
 {
@@ -67,6 +77,16 @@ public:
     std::vector<Vertex> verts;
     std::vector<GLushort> indices;
     bool needsUpdate = false;
+};
+
+// A program entry: a G-code line, an operation start, or a new work plane frame
+struct SimGCode
+{
+public:
+    std::string line;  // the G-code line, or the operation name when isOpStart is set
+    bool isFrame = false;
+    bool isOpStart = false;
+    MillFrame frame;
 };
 
 struct SimTool
@@ -98,6 +118,14 @@ public:
     void resetSimulation();
 
     void addGcodeCommand(const char* cmd);
+    void beginOperation(const std::string& name);
+    void setFrame(
+        const Base::Placement& placement,
+        const Base::Rotation& pose,
+        float indexRate,
+        const std::vector<float>& angles
+    );
+    void setRotaryAxes(const std::vector<SimRotaryAxis>& axes);
     void addTool(
         const std::vector<float>& toolProfilePoints,
         int toolNumber,
@@ -140,10 +168,11 @@ private:
     std::unique_ptr<MillSimulation> mMillSimulator;
     float mQuality = 10;
 
-    std::vector<std::string> mGCode;
+    std::vector<SimGCode> mGCode;
     std::size_t mLastGCode = 0;
 
     std::vector<SimTool> mTools;
+    std::vector<SimRotaryAxis> mRotaryAxes;
 
     const SoCamera* mCamera = nullptr;
     SimShape mStock;
@@ -151,6 +180,10 @@ private:
 
     std::unique_ptr<MillSimulationState> mState;
     clock::time_point mLastProcessSim = clock::time_point::min();
+    std::deque<clock::time_point> mFrameTimes;
+    float mFps = 0;
+    // the DebugFps parameter: show the frame rate
+    bool mDebugFps = false;
 
     GuiDisplay* mGui = nullptr;
     QColor mBackground;
