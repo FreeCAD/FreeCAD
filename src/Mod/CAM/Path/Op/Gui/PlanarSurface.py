@@ -55,7 +55,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         tuples.append(("strategySelect", "Strategy"))
         tuples.append(("cutPattern", "CutPattern"))
         tuples.append(("cutPatternZLevel", "CutPatternZLevel"))
-        tuples.append(("layerMode", "LayerMode"))
         tuples.append(("sampleInterval", "SampleInterval"))
         tuples.append(("adaptiveSampling", "AdaptiveSampling"))
         tuples.append(("minSampleInterval", "MinSampleInterval"))
@@ -90,7 +89,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("strategySelect", "Strategy"),
             ("boundBoxSelect", "BoundBox"),
-            ("layerMode", "LayerMode"),
             ("cutPattern", "CutPattern"),
             ("cutPatternZLevel", "CutPatternZLevel"),
             ("profileEdges", "ProfileEdges"),
@@ -109,9 +107,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.CutPattern = self.form.cutPattern.currentData()
 
         obj.CutPatternZLevel = self.form.cutPatternZLevel.currentData()
-
-        if obj.LayerMode != str(self.form.layerMode.currentData()):
-            obj.LayerMode = str(self.form.layerMode.currentData())
 
         # -- Performance and Accuracy --
         PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
@@ -187,7 +182,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Strategy, self.form.strategySelect)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.selectInComboBox(obj.CutPatternZLevel, self.form.cutPatternZLevel)
-        self.selectInComboBox(obj.LayerMode, self.form.layerMode)
 
         # -- Performance and Accuracy --
         self.form.sampleInterval.setText(
@@ -300,7 +294,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.strategySelect.currentIndexChanged)
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.cutPatternZLevel.currentIndexChanged)
-        signals.append(self.form.layerMode.currentIndexChanged)
         # -- Performance and Accuracy --
         signals.append(self.form.accuracySlider.valueChanged)
         signals.append(self.form.sampleInterval.editingFinished)
@@ -448,9 +441,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.form.cutPatternZLevel.setVisible(is_zlevel)
         self.form.cutPatternZLevel_label.setVisible(is_zlevel)
-
-        self.form.layerMode.setVisible(is_surface_scan)
-        self.form.layerMode_label.setVisible(is_surface_scan)
 
     def _updatePerformanceWidgets(self, strategy, sample_interval):
         """Manages widgets in the 'Performance and Accuracy' group."""

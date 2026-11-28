@@ -204,6 +204,16 @@
          </property>
         </widget>
        </item>
+       <item row="3" column="3">
+        <widget class="QCheckBox" name="chk_multiPass">
+         <property name="text">
+          <string></string>
+         </property>
+         <property name="toolTip">
+          <string>Use step down to make multiple pass. Disable to make one pass at final depth.</string>
+        </property>
+        </widget>
+       </item>
        <item row="4" column="0" colspan="2">
         <widget class="QLabel" name="finishDepthLabel">
          <property name="minimumSize">

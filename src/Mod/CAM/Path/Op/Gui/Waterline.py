@@ -58,7 +58,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("algorithmSelect", "Algorithm"),
             ("boundBoxSelect", "BoundBox"),
-            ("layerMode", "LayerMode"),
             ("cutPattern", "CutPattern"),
         ]
         enumTups = PathWaterline.ObjectWaterline.propertyEnumerations(dataType="raw")
@@ -73,9 +72,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if obj.BoundBox != str(self.form.boundBoxSelect.currentData()):
             obj.BoundBox = str(self.form.boundBoxSelect.currentData())
-
-        if obj.LayerMode != str(self.form.layerMode.currentData()):
-            obj.LayerMode = str(self.form.layerMode.currentData())
 
         if obj.CutPattern != str(self.form.cutPattern.currentData()):
             obj.CutPattern = str(self.form.cutPattern.currentData())
@@ -95,7 +91,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.selectInComboBox(obj.Algorithm, self.form.algorithmSelect)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
-        self.selectInComboBox(obj.LayerMode, self.form.layerMode)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.form.boundaryAdjustment.setText(
             FreeCAD.Units.Quantity(obj.BoundaryAdjustment.Value, FreeCAD.Units.Length).UserString
@@ -120,7 +115,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals = []
         signals.append(self.form.algorithmSelect.currentIndexChanged)
         signals.append(self.form.boundBoxSelect.currentIndexChanged)
-        signals.append(self.form.layerMode.currentIndexChanged)
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stepOver.editingFinished)

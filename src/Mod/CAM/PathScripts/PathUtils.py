@@ -743,21 +743,25 @@ class depth_params:
         final_depth,
         user_depths=None,
         equalstep=False,
+        single_pass=False,
     ):
         """self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False"""
 
         self.__clearance_height = clearance_height
         self.__safe_height = safe_height
         self.__start_depth = start_depth
-        self.__step_down = math.fabs(step_down)
+        self.__step_down = step_down
         self.__z_finish_step = math.fabs(z_finish_step)
         self.__final_depth = final_depth
         self.__user_depths = user_depths
-        self.data = self.__get_depths(equalstep=equalstep)
+        self.data = self.__get_depths(equalstep=equalstep, singlePass=single_pass)
         self.index = 0
 
         if self.__z_finish_step > self.__step_down:
             raise ValueError("z_finish_step must be less than step_down")
+
+        if not Path.Geom.isStrictlyGreater(self.__step_down, 0):
+            raise ValueError("step_down must be greater than zero")
 
     def __iter__(self):
         self.index = 0
@@ -830,7 +834,7 @@ class depth_params:
         """
         return self.__user_depths
 
-    def __get_depths(self, equalstep=False):
+    def __get_depths(self, equalstep=False, singlePass=False):
         """returns a list of depths to be used in order from first to last.
         equalstep=True: all steps down before the finish pass will be equalized."""
 
@@ -843,6 +847,9 @@ class depth_params:
             return []
 
         depths = [self.__final_depth]
+
+        if singlePass:
+            return depths
 
         # apply finish step if necessary
         if self.__z_finish_step > 0:

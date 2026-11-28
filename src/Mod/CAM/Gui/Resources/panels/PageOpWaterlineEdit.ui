@@ -56,25 +56,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="layerMode_label">
-        <property name="text">
-         <string>Layer mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="layerMode">
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="cutPattern_label">
         <property name="text">
@@ -217,7 +198,6 @@ A step over of 100% results in no overlap between two different cycles.</string>
  <tabstops>
   <tabstop>algorithmSelect</tabstop>
   <tabstop>boundBoxSelect</tabstop>
-  <tabstop>layerMode</tabstop>
   <tabstop>cutPattern</tabstop>
   <tabstop>stepOver</tabstop>
   <tabstop>sampleInterval</tabstop>

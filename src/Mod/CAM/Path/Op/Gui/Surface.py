@@ -62,7 +62,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("scanType", "ScanType"),
             ("cutPattern", "CutPattern"),
             ("profileEdges", "ProfileEdges"),
-            ("layerMode", "LayerMode"),
             ("dropCutterDirSelect", "DropCutterDir"),
         ]
         enumTups = PathSurface.ObjectSurface.propertyEnumerations(dataType="raw")
@@ -78,9 +77,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if obj.ScanType != str(self.form.scanType.currentData()):
             obj.ScanType = str(self.form.scanType.currentData())
-
-        if obj.LayerMode != str(self.form.layerMode.currentData()):
-            obj.LayerMode = str(self.form.layerMode.currentData())
 
         """
         The following method of getting values from the UI form
@@ -141,7 +137,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.ScanType, self.form.scanType)
-        self.selectInComboBox(obj.LayerMode, self.form.layerMode)
 
         """
         The following method of setting values in the UI form
@@ -201,7 +196,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals = []
         signals.append(self.form.boundBoxSelect.currentIndexChanged)
         signals.append(self.form.scanType.currentIndexChanged)
-        signals.append(self.form.layerMode.currentIndexChanged)
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.profileEdges.currentIndexChanged)
         signals.append(self.form.avoidLastX_Faces.editingFinished)

@@ -551,12 +551,13 @@ class ObjectSlot(PathOp.ObjectOp):
         # Enforce limits and prep depth steps
         self.opApplyPropertyLimits(obj)
         self.depthParams = PathUtils.depth_params(
-            obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value,
-            obj.StartDepth.Value,
-            obj.StepDown.Value,
-            0,
-            obj.FinalDepth.Value,
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=obj.StartDepth.Value,
+            step_down=obj.StepDown.Value,
+            z_finish_step=0,
+            final_depth=obj.FinalDepth.Value,
+            single_pass=not obj.MultPass,
         )
 
         # Main path generation
@@ -1559,7 +1560,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _lineCollisionCheck(self, obj, p1, p2):
         """Model the swept volume of a linear tool move and check for collision with the model."""
         rad = getattr(self.tool.Diameter, "Value", self.tool.Diameter) / 2
-        extVect = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
+        extVect = FreeCAD.Vector(0, 0, max(obj.StartDepth.Value - obj.FinalDepth.Value, 1))
 
         def make_cylinder(point):
             circle = Part.makeCircle(rad, point)
@@ -1639,7 +1640,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         # Radius and extrusion direction
         rad = getattr(self.tool.Diameter, "Value", self.tool.Diameter) / 2
-        extVect = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
+        extVect = FreeCAD.Vector(0, 0, max(obj.StartDepth.Value - obj.FinalDepth.Value, 1))
 
         if self.isArc == 1:
             # Full circle slot: make annular ring

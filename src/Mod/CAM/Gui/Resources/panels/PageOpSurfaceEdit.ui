@@ -45,20 +45,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="layerMode_label">
-        <property name="text">
-         <string>Layer mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QComboBox" name="layerMode">
-        <property name="toolTip">
-         <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="cutPattern_label">
         <property name="text">

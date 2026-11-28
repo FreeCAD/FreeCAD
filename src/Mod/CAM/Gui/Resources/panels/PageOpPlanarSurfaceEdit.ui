@@ -53,16 +53,6 @@
       <item row="2" column="1">
        <widget class="QComboBox" name="cutPatternZLevel"/>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="layerMode_label">
-        <property name="text">
-         <string>Layer mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="layerMode"/>
-      </item>
      </layout>
     </widget>
    </item>
@@ -597,7 +587,6 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
   <tabstop>strategySelect</tabstop>
   <tabstop>cutPattern</tabstop>
   <tabstop>cutPatternZLevel</tabstop>
-  <tabstop>layerMode</tabstop>
   <tabstop>performanceAccuracyGroup</tabstop>
   <tabstop>accuracySlider</tabstop>
   <tabstop>sampleInterval</tabstop>

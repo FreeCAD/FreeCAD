@@ -372,15 +372,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyEnumeration",
-                "LayerMode",
-                "Clearing Options",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Complete the operation in a single pass at depth, or multiple passes to final depth.",
-                ),
-            ),
-            (
                 "App::PropertyFloat",
                 "StepOver",
                 "Clearing Options",
@@ -669,10 +660,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 (translate("CAM_PlanarSurface", "Adaptive"), "Adaptive"),
                 (translate("CAM_PlanarSurface", "Grid"), "Grid"),
             ],
-            "LayerMode": [
-                (translate("CAM_PlanarSurface", "Single-pass"), "Single-pass"),
-                (translate("CAM_PlanarSurface", "Multi-pass"), "Multi-pass"),
-            ],
             "SamplingAccuracy": [
                 (translate("CAM_PlanarSurface", "Standard"), "4"),
                 (translate("CAM_PlanarSurface", "High"), "8"),
@@ -722,7 +709,6 @@ class ObjectSurface(PathOp.ObjectOp):
             "UseStartPoint": False,
             "StartPoint": FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
             "CutPatternReversed": False,
-            "LayerMode": "Single-pass",
             "CutMode": "Conventional",
             "CutPattern": "Line",
             "CutPatternZLevel": "None",
@@ -789,7 +775,6 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("AvoidFacesOverlap", A)
         obj.setEditorMode("HandleMultipleFeatures", A)
         obj.setEditorMode("CutPattern", A)
-        obj.setEditorMode("LayerMode", A)
         obj.setEditorMode("ProfileEdges", A)
         obj.setEditorMode("LeadInOut", A)
         obj.setEditorMode("LeadFeed", A)
@@ -1275,7 +1260,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "lead_feed_percent": obj.LeadFeed,
             "lift_lead_z": obj.LeadLiftDistance.Value,
             "volumetric_percent": obj.VolumetricFeedPercent,
-            "is_multipass": getattr(obj, "LayerMode", "Single-pass") == "Multi-pass",
+            "is_multipass": obj.MultiPass,
         }
 
         # Ensure we have cutting faces (Fallback to whole model if none selected)
@@ -1327,7 +1312,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 )
 
             # D. Multi-pass operation
-            if getattr(obj, "LayerMode", "Single-pass") == "Multi-pass":
+            if obj.MultiPass:
                 scan_lines = surface_postprocess.apply_multipass(
                     scan_lines, obj.StartDepth.Value, obj.FinalDepth.Value, obj.StepDown.Value
                 )
@@ -1940,7 +1925,6 @@ def SetupProperties():
     setup.append("CutPatternAngle")
     setup.append("CutPatternReversed")
     setup.append("DepthOffset")
-    setup.append("LayerMode")
     setup.append("StepOver")
     setup.append("CutPatternZLevel")
     setup.append("SamplingAccuracy")

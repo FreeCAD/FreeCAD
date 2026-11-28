@@ -187,7 +187,8 @@ class TestPathRotaryPostRegression(PathTestBase):
         cls.op.StepOver = 4.0
         cls.op.AngularResolution = 15.0
         cls.op.setExpression("StepDown", None)
-        cls.op.StepDown = 0.0
+        cls.op.StepDown = 1.0
+        cls.op.MultiPass = False
         cls.op.RadialStockToLeave = 0.0
         cls.op.MaxFeed = 5000.0
         cls.op.LinearDeflection = 0.2
