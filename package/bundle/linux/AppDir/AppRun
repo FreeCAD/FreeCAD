@@ -70,6 +70,9 @@ export PATH_TO_FREECAD_LIBDIR="${HERE}/usr/lib"
 export FONTCONFIG_FILE=/etc/fonts/fonts.conf
 export FONTCONFIG_PATH=/etc/fonts
 
+# ensure it's able to load the right modules to read the OS settings.
+export GIO_MODULE_DIR="${PREFIX}/lib/gio/modules"
+
 # Use X by default even on Wayland, but allow overriding via FREECAD_QT_QPA_PLATFORM.
 # Warn users of this if QT_QPA_PLATFORM is already set by their environment.
 if [ -z "${FREECAD_QT_QPA_PLATFORM:-}" ] && [ -n "${QT_QPA_PLATFORM:-}" ]; then

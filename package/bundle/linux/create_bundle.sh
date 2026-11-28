@@ -9,6 +9,30 @@ mkdir -p ${conda_env}
 
 cp -a ../../../.pixi/envs/default/* ${conda_env}
 
+# GTK on Wayland needs dconf to read the desktop's GSettings.
+# Delete once https://github.com/conda-forge/staged-recipes/pull/35845 is merged
+bundle_dconf() (
+    work=$(mktemp -d)
+    trap 'rm -rf -- "$work"' EXIT
+    archive="$work/dconf-51.0.tar.xz"
+    curl -fsSL https://download.gnome.org/sources/dconf/51/dconf-51.0.tar.xz -o "$archive"
+    printf '%s  %s\n' e65c1b7867f836faad9f9ee04acf5c5a6cae2bbc784833fe093207e0cb590248 "$archive" | sha256sum -c -
+    tar -xJf "$archive" -C "$work"
+
+    PKG_CONFIG_PATH= PKG_CONFIG_LIBDIR="$CONDA_PREFIX/lib/pkgconfig:$CONDA_PREFIX/share/pkgconfig" \
+        meson setup "$work/build" "$work/dconf-51.0" --prefix=/usr --sysconfdir=/etc \
+            --buildtype=release --wrap-mode=nodownload -Dbash_completion=false -Dman=false -Dvapi=false
+    meson compile -C "$work/build" dconfsettings
+
+    # Replace the compiler's Conda RPATH with the mounted AppImage's library directory.
+    module="$work/build/gsettings/libdconfsettings.so"
+    patchelf --set-rpath '$ORIGIN/../..' "$module"
+    install -Dm755 "$module" "$conda_env/lib/gio/modules/libdconfsettings.so"
+    install -Dm644 "$work/dconf-51.0/COPYING" "$conda_env/share/licenses/dconf/COPYING"
+    "$CONDA_PREFIX/bin/gio-querymodules" "$conda_env/lib/gio/modules"
+)
+bundle_dconf
+
 echo -e "\nDelete unnecessary stuff"
 rm -rf ${conda_env}/include
 find ${conda_env} -name \*.a -delete
@@ -66,6 +90,8 @@ rm -rf ${conda_env}/lib/objects-Release
 rm -rf ${conda_env}/lib/perl5
 rm -rf ${conda_env}/lib/python*/site-packages/conda
 rm -rf ${conda_env}/lib/python*/site-packages/distlib
+rm -rf ${conda_env}/lib/python*/site-packages/mesonbuild
+rm -rf ${conda_env}/lib/python*/site-packages/meson-*.dist-info
 rm -rf ${conda_env}/lib/python*/site-packages/pandas/tests
 rm -rf ${conda_env}/lib/python*/site-packages/pre_commit
 rm -rf ${conda_env}/lib/python*/site-packages/pycparser
