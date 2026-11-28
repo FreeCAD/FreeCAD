@@ -643,7 +643,7 @@ class _CommandStructure:
         QtCore.QObject.connect(self.modeb, QtCore.SIGNAL("toggled(bool)"), self.switchLH)
 
         # restore preset
-        stored = params.get_param_arch("StructurePreset")
+        stored = params.get_param_arch(self._paramPrefix() + "Preset")
         if stored:
             if stored.lower().startswith("precast_"):
                 self.valuec.setCurrentIndex(1)
@@ -744,6 +744,19 @@ class _CommandStructure:
 
     def setCategory(self, i):
 
+        if i == 1:
+            self.precast.form.show()
+            self.pSelect = self.precast.PrecastTypes
+            default_preset = "Beam" if self.mode == StructureMode.BEAM else "Pillar"
+            preset_index = self.pSelect.index(default_preset)
+            # Adding the items would otherwise apply the first preset before the default.
+            with QtCore.QSignalBlocker(self.vPresets):
+                self.vPresets.clear()
+                self.vPresets.addItems(self.pSelect)
+                self.vPresets.setCurrentIndex(preset_index)
+            self.setPreset(preset_index)
+            return
+
         self.vPresets.clear()
         if i > 1:
             self.precast.form.hide()
@@ -751,18 +764,12 @@ class _CommandStructure:
             fpresets = self._createItemlist(self.pSelect)
             self.vPresets.addItems(fpresets)
             self.setPreset(0)
-        elif i == 1:
-            self.precast.form.show()
-            self.pSelect = self.precast.PrecastTypes
-            fpresets = self.precast.PrecastTypes
-            self.vPresets.addItems(fpresets)
-            self.setPreset(0)
         else:
             self.precast.form.hide()
             self.pSelect = [None]
             fpresets = [" "]
             self.vPresets.addItems(fpresets)
-            params.set_param_arch("StructurePreset", "")
+            params.set_param_arch(self._paramPrefix() + "Preset", "")
 
     def setPreset(self, i):
 
@@ -778,7 +785,7 @@ class _CommandStructure:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
-                params.set_param_arch("StructurePreset", self.Profile)
+                params.set_param_arch(self._paramPrefix() + "Preset", self.Profile)
             else:
                 # elt[4] is the profile's width (along its local X), elt[5] its
                 # height (along its local Y). A beam's profile height is its
@@ -802,7 +809,9 @@ class _CommandStructure:
                 self.setWidth(width)
                 self.Profile = elt
                 self.shape_kind = ShapeKind.PROFILE
-                params.set_param_arch("StructurePreset", ";".join([str(i) for i in self.Profile]))
+                params.set_param_arch(
+                    self._paramPrefix() + "Preset", ";".join([str(i) for i in self.Profile])
+                )
 
     def switchLH(self, beam_toggled):
 
