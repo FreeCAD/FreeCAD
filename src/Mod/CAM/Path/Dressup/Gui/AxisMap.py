@@ -82,11 +82,18 @@ class ObjectDressup:
                 "The centre of rotation.\nAffects only to Path repesentation in 3d view.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "MinRotaryMove",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Minimum rotary movement in degrees"),
+        )
 
         obj.AxisMap = ("X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C")
         obj.AxisMap = "Y->A"
         obj.Radius = 45
         obj.Proxy = self
+        obj.MinRotaryMove = 0.05
 
         self.defineCylinder(obj)
 
@@ -124,6 +131,17 @@ class ObjectDressup:
             obj.ViewObject.signalChangeIcon()
 
     def onDocumentRestored(self, obj):
+        if not hasattr(obj, "MinRotaryMove"):
+            obj.addProperty(
+                "App::PropertyAngle",
+                "MinRotaryMove",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Minimum rotary movement in degrees",
+                ),
+            )
+            obj.MinRotaryMove = 0.05
         if not hasattr(obj, "Reverse"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -160,31 +178,113 @@ class ObjectDressup:
         PathDressup.placeWithBase(obj)
         job = PathUtils.findParentJob(obj)
         deflection = job.GeometryTolerance.Value
+
         path = obj.Base.Path
         path = PostUtils.splitArcs(path, deflection=deflection)
 
         newcommandlist = []
-        lastPar = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+
+        # Track original coordinates before axis mapping
+        last_input_pos = {"X": 0.0, "Y": 0.0, "Z": 0.0}
+
+        # Original modal feedrate (mm/s)
+        last_input_feed = 0.0
+
+        # Track whether the output feedrate is currently linear or rotary
+        last_feed_mode = "linear"
+
+        # Last rotary position actually emitted (degrees)
+        last_emitted_rotary = 0.0
+
+        # Cache settings
+        radius = obj.Radius.Value
+        min_rotary_move = obj.MinRotaryMove
+        direction = -1 if obj.Reverse else 1
+
+        epsilon = 1e-12
 
         for cmd in path.Commands:
-            newparams = dict(cmd.Parameters)
+
+            # Original command parameters
+            input_params = dict(cmd.Parameters)
+
+            # Update original modal feedrate
+            if "F" in input_params:
+                last_input_feed = input_params["F"]
+
+            # Calculate current original position
+            current_pos = last_input_pos.copy()
+
+            for axis in ("X", "Y", "Z"):
+                if axis in input_params:
+                    current_pos[axis] = input_params[axis]
+
+            # Calculate original movement vector
+            delta = {axis: current_pos[axis] - last_input_pos[axis] for axis in ("X", "Y", "Z")}
+
+            # Original movement distance
+            move_length = math.hypot(*delta.values())
+
+            # Start with original command parameters
+            newparams = dict(input_params)
+
+            # Extract selected axis
             remapvar = newparams.pop(inAxis, None)
+
+            rotary_move_emitted = False
+
             if remapvar is not None:
-                if obj.Reverse:
-                    remapvar = -remapvar
-                newparams[outAxis] = math.degrees(remapvar / obj.Radius.Value)
-                locdiff = dict(set(newparams.items()) - set(lastPar.items()))
-                if len(locdiff) == 1 and outAxis in locdiff:
-                    # calculate rotational feed rate
-                    feed = cmd.Parameters.get("F", lastPar["F"])
-                    newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
-                newcommand = Path.Command(cmd.Name, newparams)
-                newcommand.Annotations = cmd.Annotations
-                newcommandlist.append(newcommand)
-                lastPar.update(newparams)
-            else:
-                newcommandlist.append(cmd)
-                lastPar.update(cmd.Parameters)
+
+                # Convert the absolute input position to rotary degrees
+                target_rotary = math.degrees(direction * remapvar / radius)
+
+                if cmd.Name == "G0":
+
+                    # Rapid moves always map directly
+                    last_emitted_rotary = target_rotary
+                    newparams[outAxis] = last_emitted_rotary
+
+                elif cmd.Name == "G1":
+                    # Calculate movement from the last emitted position
+                    rotary_delta = target_rotary - last_emitted_rotary
+
+                    # Only emit rotary movements above the minimum threshold
+                    if abs(rotary_delta) >= min_rotary_move:
+                        newparams[outAxis] = target_rotary
+                        last_emitted_rotary = target_rotary
+
+                        # Calculate angular feedrate in degrees/second
+                        if move_length > epsilon and last_input_feed > epsilon:
+                            move_time = move_length / last_input_feed
+                            newparams["F"] = abs(rotary_delta) / move_time
+                            last_feed_mode = "rotary"
+
+                        rotary_move_emitted = True
+
+                else:
+
+                    # Preserve direct mapping for other command types
+                    last_emitted_rotary = target_rotary
+                    newparams[outAxis] = last_emitted_rotary
+
+            # Restore linear feedrate when no rotary move is emitted
+            if (
+                cmd.Name == "G1"
+                and not rotary_move_emitted
+                and last_feed_mode == "rotary"
+                and last_input_feed > epsilon
+            ):
+                newparams["F"] = last_input_feed
+                last_feed_mode = "linear"
+
+            # Create transformed command
+            newcommand = Path.Command(cmd.Name, newparams)
+            newcommand.Annotations = cmd.Annotations
+
+            newcommandlist.append(newcommand)
+
+            # Update original position AFTER processing the move
+            last_input_pos = current_pos
 
         path = Path.Path(newcommandlist)
         path.Center = obj.Centre
