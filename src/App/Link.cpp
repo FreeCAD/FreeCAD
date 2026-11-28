@@ -61,6 +61,64 @@ bool isSuppressedLinkElement(const App::DocumentObject* obj)
     auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
     return ext && ext->Suppressed.getValue();
 }
+
+bool hasExternalCopyReferences(const LinkGroup& group, const DocumentObject* owner)
+{
+    for (auto* dependent : group.getInList()) {
+        if (dependent != owner) {
+            return true;
+        }
+    }
+
+    const auto& copies = group.ElementList.getValues();
+    for (auto* copy : copies) {
+        for (auto* dependent : copy->getInList()) {
+            if (dependent != &group && std::ranges::find(copies, dependent) == copies.end()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void restoreCopyOnChangeSource(LinkBaseExtension& link, DocumentObject* owner)
+{
+    auto* sourceProperty = link.getLinkCopyOnChangeSourceProperty();
+    auto* target = link.getLinkedObjectProperty();
+    auto* groupProperty = link.getLinkCopyOnChangeGroupProperty();
+    if (!sourceProperty || !target || !groupProperty) {
+        return;
+    }
+
+    auto* source = sourceProperty->getValue();
+    if (!source) {
+        return;
+    }
+
+    auto* group = freecad_cast<LinkGroup*>(groupProperty->getValue());
+    if (group && group->isAttachedToDocument()) {
+        const auto& copies = group->ElementList.getValues();
+        if (source == target->getValue()
+            || std::ranges::find(copies, target->getValue()) == copies.end()) {
+            return;
+        }
+
+        if (auto* xlink = freecad_cast<PropertyXLink*>(target)) {
+            xlink->setValue(source, xlink->getSubValues());
+        }
+        else {
+            target->setValue(source);
+        }
+
+        // Keep copies that other objects still reference.
+        const bool keepCopies = hasExternalCopyReferences(*group, owner);
+        groupProperty->setValue(nullptr);
+        if (!keepCopies) {
+            group->getDocument()->removeObject(group->getNameInDocument());
+        }
+    }
+    sourceProperty->setValue(nullptr);
+}
 }  // namespace
 
 ////////////////////////////////////////////////////////////////////////
@@ -2155,6 +2213,10 @@ void LinkBaseExtension::update(App::DocumentObject* parent, const Property* prop
         }
     }
     else if (prop == getLinkCopyOnChangeProperty()) {
+        if (getLinkCopyOnChangeValue() == CopyOnChangeDisabled
+            && !parent->getDocument()->isPerformingTransaction()) {
+            restoreCopyOnChangeSource(*this, parent);
+        }
         setupCopyOnChange(parent, getLinkCopyOnChangeSourceValue() == nullptr);
     }
     else if (prop == getLinkCopyOnChangeSourceProperty()) {

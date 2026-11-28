@@ -690,6 +690,34 @@ class DocumentBasicCases(unittest.TestCase):
         self.assertIn("Test", self.Doc.Python.PropertiesList)
         self.assertIn("Test", self.Doc.Link.PropertiesList)
 
+    def testDisableCopyOnChangeReturnsToSource(self):
+        for mode in ("Enabled", "Tracking"):
+            with self.subTest(mode=mode):
+                source = self.Doc.addObject("App::Part", "Source")
+                source.addProperty("App::PropertyLength", "Height", "Configuration")
+                source.Height = 60
+                source.setPropertyStatus("Height", "CopyOnChange")
+                link = self.Doc.addObject("App::Link", "Instance")
+                link.setLink(source)
+                link.LinkCopyOnChange = mode
+                self.Doc.recompute()
+
+                link.Height = 85
+                self.Doc.recompute()
+                copy_name = link.LinkedObject.Name
+                self.assertNotEqual(link.LinkedObject, source)
+                self.assertEqual(link.LinkedObject.Height.Value, 85)
+
+                link.LinkCopyOnChange = "Disabled"
+                self.Doc.recompute()
+                self.assertEqual(link.LinkedObject, source)
+                self.assertNotIn("Height", link.PropertiesList)
+                self.assertIsNone(self.Doc.getObject(copy_name))
+
+                source.Height = 70
+                self.Doc.recompute()
+                self.assertEqual(link.LinkedObject.Height.Value, 70)
+
     def testNoProxy(self):
         test = self.Doc.addObject("App::DocumentObject", "Object")
         test.addProperty("App::PropertyPythonObject", "Dictionary")
