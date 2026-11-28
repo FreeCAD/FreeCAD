@@ -790,7 +790,10 @@ void Document::_resetEdit()
         // resetEdit() above calls into Application->unsetEditDocument() which
         // will prevent recursive calling.
 
-        App::GetApplication().commitTransaction(getDocument()->getBookedTransactionID());
+        // TransformNoDialog: the caller's own task panel owns the open transaction, left open
+        if (d->_editModePrevious != ViewProvider::TransformNoDialog) {
+            App::GetApplication().commitTransaction(getDocument()->getBookedTransactionID());
+        }
     }
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
