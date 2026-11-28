@@ -1751,94 +1751,134 @@ class PostProcessor:
             self.machine_state = None
 
     def _expand_xy_before_z(self, postables):
-        """Decompose first move after tool change into XY then Z.
+        """Decompose the initial move after a tool change into XY then Z.
 
         When machine processing.xy_before_z_after_tool_change is True,
-        splits the first move command after a tool change into two moves:
-        first XY positioning, then Z plunge. This is a safety feature to
-        prevent plunging into the workpiece before positioning.
+        ensures that XY positioning takes place before the initial Z move
+        after a tool change.
 
-        Subclasses can override to customize post-tool-change move ordering.
+        Combined XY/Z moves are split into separate XY and Z moves.
+        Z-only moves are temporarily held until an XY move is found.
+
+        Subclasses can override this method to customize
+        post-tool-change move ordering.
         """
+
+        # Check whether the machine setting is enabled.
         if not self.values["XY_BEFORE_Z_AFTER_TOOL_CHANGE"]:
             return
 
         Path.Log.debug("Processing XY before Z after tool change")
+
         for section_name, sublist in postables:
-            # Track whether we just saw a tool change
-            tool_change_seen = False
+
+            # Start with the same initial state as Version 1.
+            tool_change_seen = True
+            pending_z = None
 
             for item in sublist:
+
+                # Detect tool-controller objects.
                 if item.item_type == "tool_controller":
                     tool_change_seen = True
+                    pending_z = None
+
                     Path.Log.debug(f"Tool change detected: T{item.data['tool_number']}")
                     continue
 
-                if item.path:
-                    new_commands = []
-                    first_move_processed = False
+                if not item.path:
+                    continue
 
-                    for cmd in item.path.Commands:
-                        # Check if this is a tool change command (M6)
-                        if cmd.Name in Constants.MCODE_TOOL_CHANGE:
-                            new_commands.append(cmd)
-                            tool_change_seen = True
-                            first_move_processed = False
-                            Path.Log.debug("M6 tool change detected in operation")
+                commands = item.path.Commands
+                new_commands = []
+                changed = False
+
+                for cmd in commands:
+
+                    # Detect an actual M6 tool-change command.
+                    if cmd.Name in Constants.MCODE_TOOL_CHANGE:
+                        new_commands.append(cmd)
+                        tool_change_seen = True
+                        pending_z = None
+
+                        Path.Log.debug("M6 tool change detected in operation")
+                        continue
+
+                    # Process movement commands after a tool change.
+                    if tool_change_seen and cmd.Name in Constants.GCODE_MOVE_ALL:
+
+                        has_xy = "X" in cmd.Parameters or "Y" in cmd.Parameters
+                        has_z = "Z" in cmd.Parameters
+
+                        # CASE 1: Combined XY/Z movement.
+                        if has_xy and has_z:
+
+                            Path.Log.debug(f"Decomposing combined XY/Z move: {cmd.Name}")
+
+                            # Extract XY and rotational parameters.
+                            xy_params = {
+                                k: v
+                                for k, v in cmd.Parameters.items()
+                                if k in ("X", "Y", "A", "B", "C")
+                            }
+
+                            # Extract Z and all remaining parameters.
+                            z_params = {
+                                k: v
+                                for k, v in cmd.Parameters.items()
+                                if k not in ("X", "Y", "A", "B", "C")
+                            }
+
+                            if xy_params:
+                                new_commands.append(Path.Command(cmd.Name, xy_params))
+
+                            new_commands.append(Path.Command(cmd.Name, z_params))
+
+                            changed = True
+                            tool_change_seen = False
+                            pending_z = None
                             continue
 
-                        # Check if this is the first move after tool change
-                        if (
-                            tool_change_seen
-                            and not first_move_processed
-                            and cmd.Name in Constants.GCODE_MOVE_ALL
-                        ):
-                            # Check if this move has both XY and Z components
-                            has_xy = "X" in cmd.Parameters or "Y" in cmd.Parameters
-                            has_z = "Z" in cmd.Parameters
+                        # CASE 2: Z-only movement.
+                        if has_z and not has_xy:
 
-                            if has_xy and has_z:
-                                Path.Log.debug(
-                                    f"Decomposing first move after tool change: {cmd.Name}"
-                                )
+                            Path.Log.debug(f"Holding initial Z move: {cmd.Parameters}")
 
-                                # Create XY-only move (first)
-                                xy_params = {}
-                                for param in ["X", "Y", "A", "B", "C"]:
-                                    if param in cmd.Parameters:
-                                        xy_params[param] = cmd.Parameters[param]
+                            # Temporarily hold the Z movement.
+                            pending_z = cmd
+                            changed = True
+                            continue
 
-                                if xy_params:
-                                    xy_cmd = Path.Command(cmd.Name, xy_params)
-                                    new_commands.append(xy_cmd)
-                                    Path.Log.debug(f"  XY move: {cmd.Name} {xy_params}")
+                        # CASE 3: XY movement.
+                        if has_xy:
 
-                                # Create Z-only move (second)
-                                z_params = {"Z": cmd.Parameters["Z"]}
-                                # Preserve other non-XY parameters (like F, S, etc.)
-                                for param in cmd.Parameters:
-                                    if param not in ["X", "Y", "Z", "A", "B", "C"]:
-                                        z_params[param] = cmd.Parameters[param]
+                            Path.Log.debug(f"Processing XY move: {cmd.Parameters}")
 
-                                z_cmd = Path.Command(cmd.Name, z_params)
-                                new_commands.append(z_cmd)
-                                Path.Log.debug(f"  Z move: {cmd.Name} {z_params}")
-
-                                first_move_processed = True
-                                tool_change_seen = False  # Reset after decomposing the move
-                            else:
-                                # Move doesn't have both XY and Z, just add it as-is
-                                new_commands.append(cmd)
-                                if has_xy or has_z:
-                                    first_move_processed = True
-                                    tool_change_seen = False  # Reset after processing any move
-                        else:
-                            # Not the first move or not a move command
+                            # Add XY movement first.
                             new_commands.append(cmd)
 
-                    if len(new_commands) != len(item.path.Commands):
-                        item.path = Path.Path(new_commands)
-                        Path.Log.debug(f"Updated path for {item.label}")
+                            # Release the previously held Z movement.
+                            if pending_z is not None:
+                                new_commands.append(pending_z)
+                                pending_z = None
+
+                            changed = True
+                            tool_change_seen = False
+                            continue
+
+                    # Keep all other commands unchanged.
+                    new_commands.append(cmd)
+
+                # If no XY movement was found, retain the pending Z move.
+                if pending_z is not None:
+                    new_commands.append(pending_z)
+                    pending_z = None
+
+                # Replace the original path if it was modified.
+                if changed:
+                    item.path = Path.Path(new_commands)
+
+                    Path.Log.debug(f"Updated path for {item.label}")
 
     def _expand_bcnc_commands(self, postables):
         """Inject or remove bCNC block annotation commands.
