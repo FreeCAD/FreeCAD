@@ -242,8 +242,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # BoundBox on a Part::FeaturePython already includes the object's Placement, so
         # BoundBox.ZMin is directly comparable to the world Z of the base face.
         z_pos = covering.Shape.BoundBox.ZMin
-        self.assertGreaterEqual(z_pos, 1000.0)
-        self.assertLess(z_pos, 1000.1)  # Ensure it's still "micro"
+        self.assertAlmostEqual(z_pos, 1000.0 - 0.05, places=2)
 
     def test_parametric_pattern_correctness(self):
         """Verify geometry and count for Parametric Pattern mode."""
@@ -276,6 +275,29 @@ class TestArchCovering(TestArchBase.TestArchBase):
             covering.Shape.hashCode(),
             base_face.hashCode(),
             "Final shape should be different from the base face.",
+        )
+
+    def test_parametric_pattern_both_faces(self):
+        """Verify that parametric patterns generate line overlays on both top and bottom faces."""
+        self.printTestMessage("parametric pattern both faces...")
+        base = (self.box, ["Face6"])  # Face6 is at Z=1000
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Parametric Pattern"
+        covering.TileThickness = 20.0
+        self.document.recompute()
+
+        # The slab solid extends from Z=1000 to Z=1020.
+        # Pattern lines should be offset on both the top face (+0.05 mm -> ~1020.05 mm)
+        # and the bottom face (-0.05 mm -> ~999.95 mm).
+        top_edges = [e for e in covering.Shape.Edges if abs(e.BoundBox.Center.z - 1020.05) < 0.1]
+        bottom_edges = [e for e in covering.Shape.Edges if abs(e.BoundBox.Center.z - 999.95) < 0.1]
+
+        self.assertGreater(len(top_edges), 0, "No pattern lines found on the top face.")
+        self.assertGreater(len(bottom_edges), 0, "No pattern lines found on the bottom face.")
+        self.assertEqual(
+            len(top_edges),
+            len(bottom_edges),
+            "Top and bottom pattern line counts should match.",
         )
 
     def test_smart_face_detection(self):
