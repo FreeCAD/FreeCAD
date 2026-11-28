@@ -149,6 +149,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Offset2D"
           << "Part_Thickness"
           << "Part_ProjectionOnSurface"
+          << "Part_SectionAnalysis"
           << "Part_SectionCut"
           << "Separator"
           << "Part_EditAttachment"
@@ -205,6 +206,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_CompOffset"
           << "Part_Thickness"
           << "Part_ProjectionOnSurface"
+          << "Part_SectionAnalysis"
           << "Part_ColorPerFace";  // See issues #0477 and #1954 in the tracker
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);

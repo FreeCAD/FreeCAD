@@ -68,6 +68,7 @@ set(PartGui_UIC_SRCS
     TaskOffset.ui
     TaskSweep.ui
     TaskAttacher.ui
+    TaskSectionAnalysis.ui
 )
 
 SET(Python_SRCS
@@ -236,6 +237,13 @@ SET(PartGui_SRCS
     ViewProvider2DObject.h
     ViewProviderMirror.cpp
     ViewProviderMirror.h
+    ViewProviderSectionAnalysis.cpp
+    ViewProviderSectionAnalysis.h
+    SectionCapHarvest.cpp
+    SectionCapHarvest.h
+    TaskSectionAnalysis.cpp
+    TaskSectionAnalysis.h
+    TaskSectionAnalysis.ui
     ViewProviderPython.cpp
     ViewProviderPython.h
     ViewProviderBoolean.cpp

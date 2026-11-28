@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::SectionAnalysisWidget</class>
+ <widget class="QWidget" name="PartGui::SectionAnalysisWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>264</width>
+    <height>380</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Section Analysis</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="planeGroup">
+     <property name="title">
+      <string>Cutting Plane</string>
+     </property>
+     <layout class="QGridLayout" name="planeLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="presetLabel">
+        <property name="text">
+         <string>Preset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="presetCombo">
+        <property name="placeholderText">
+         <string>(no preset)</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>XY Plane (Z normal)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>XZ Plane (Y normal)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>YZ Plane (X normal)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>View direction</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="angleLabel1">
+        <property name="text">
+         <string>X-angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="angle1Spin">
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>-90.000000000000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep" stdset="0">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="angleLabel2">
+        <property name="text">
+         <string>Z-angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="angle2Spin">
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>-90.000000000000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>90.000000000000000</double>
+        </property>
+        <property name="singleStep" stdset="0">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="offsetLabel">
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="offsetSpin">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>-10000000.000000000000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>10000000.000000000000000</double>
+        </property>
+        <property name="singleStep" stdset="0">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="flipCheck">
+        <property name="text">
+         <string>Flip direction</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="appearGroup">
+     <property name="title">
+      <string>Appearance</string>
+     </property>
+     <layout class="QGridLayout" name="appearLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="sectionColorLabel">
+        <property name="text">
+         <string>Section color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::ColorButton" name="sectionColorBtn"/>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="hatchCheck">
+        <property name="text">
+         <string>Show hatching</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="perSolidColorCheck">
+        <property name="text">
+         <string>Per-Body colors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="showPlaneCheck">
+        <property name="text">
+         <string>Show cutting plane</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="autoHideHatchCheck">
+        <property name="toolTip">
+         <string>Fade the hatching out, then stop drawing it, once the lines are too
+close together on screen to be told apart</string>
+        </property>
+        <property name="text">
+         <string>Fade hatching when zoomed out</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QCheckBox" name="ghostCheck">
+        <property name="toolTip">
+         <string>Draw the material the section removes faintly, so the
+cross-sections have something to sit in</string>
+        </property>
+        <property name="text">
+         <string>Show removed material</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="updateViewCheck">
+     <property name="text">
+      <string>Update view</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="bottomSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>presetCombo</tabstop>
+  <tabstop>angle1Spin</tabstop>
+  <tabstop>angle2Spin</tabstop>
+  <tabstop>offsetSpin</tabstop>
+  <tabstop>flipCheck</tabstop>
+  <tabstop>sectionColorBtn</tabstop>
+  <tabstop>hatchCheck</tabstop>
+  <tabstop>perSolidColorCheck</tabstop>
+  <tabstop>showPlaneCheck</tabstop>
+  <tabstop>autoHideHatchCheck</tabstop>
+  <tabstop>ghostCheck</tabstop>
+  <tabstop>updateViewCheck</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
