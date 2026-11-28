@@ -23,6 +23,8 @@
  **************************************************************************/
 
 #include <BRep_Tool.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -30,19 +32,22 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepProj_Projection.hxx>
+#include <Bnd_Box.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <ShapeFix_Face.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeFix_Wireframe.hxx>
+#include <ShapeUpgrade_UnifySameDomain.hxx>
 #include <Standard_Failure.hxx>
+#include <Standard_Real.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
-#include <sstream>
-
+#include <BOPTools_AlgoTools.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 #include "FeatureProjectOnSurface.h"
 #include "ShapeAnalysis_FreeBoundsFix.h"
@@ -130,6 +135,7 @@ TopoDS_Face ProjectOnSurface::getSupportFace() const
 
 std::vector<TopoDS_Shape> ProjectOnSurface::getProjectionShapes() const
 {
+
     std::vector<TopoDS_Shape> shapes;
     auto objects = Projection.getValues();
     auto subvalues = Projection.getSubValues();
@@ -217,8 +223,15 @@ std::vector<TopoDS_Shape> ProjectOnSurface::createProjectedWire(
         return {};
     }
     if (shape.ShapeType() == TopAbs_FACE) {
-        auto wires = projectFace(TopoDS::Face(shape), supportFace, dir);
-        auto face = createFaceFromWire(wires, supportFace);
+        const auto sourceFace = TopoDS::Face(shape);
+        auto wires = projectFace(sourceFace, supportFace, dir);
+
+        // trim target with boolean common operation to create face
+        auto face = createFaceByClippingSource(sourceFace, supportFace, dir);
+        if (face.IsNull()) {
+            // fallback to original
+            face = createFaceFromWire(wires, supportFace);
+        }
         auto face_or_solid = createSolidIfHeight(face);
         if (!face_or_solid.IsNull()) {
             return {face_or_solid};
@@ -293,9 +306,15 @@ TopoDS_Face ProjectOnSurface::createFaceFromParametricWire(
             }
         }
     }
-    // auto doneFlag = faceMaker.IsDone();
-    // auto error = faceMaker.Error();
-    return faceMaker.Face();
+    // check validity of make face result
+    if (!faceMaker.IsDone()) {
+        return {};
+    }
+    TopoDS_Face result = faceMaker.Face();
+    if (result.IsNull() || !BRepCheck_Analyzer(result).IsValid()) {
+        return {};
+    }
+    return result;
 }
 
 std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
@@ -337,6 +356,92 @@ std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
     }
 
     return wiresInParametricSpace;
+}
+
+
+TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
+    const TopoDS_Face& sourceFace,
+    const TopoDS_Face& supportFace,
+    const gp_Dir& direction
+) const
+{
+    // creates an extrusion, prism and then boolean common operation
+    // to create the projected face
+    if (sourceFace.IsNull()) {
+        return {};
+    }
+
+    // find the combined bounding box of source and target
+    Bnd_Box bounds;
+    BRepBndLib::Add(sourceFace, bounds);
+    BRepBndLib::Add(supportFace, bounds);
+    if (bounds.IsVoid()) {
+        return {};
+    }
+
+
+    // extrude the source face towards the target
+    const auto length = 2.0 * Max(Sqrt(bounds.SquareExtent()), 1.0);
+    gp_Vec extrusion(direction);
+    extrusion.Multiply(length);
+
+
+    // and make prism for boolean common op to trim
+    BRepPrimAPI_MakePrism prismMaker(sourceFace, extrusion);
+    if (!prismMaker.IsDone()) {
+        return {};
+    }
+
+
+    // get trimmed face
+    FCBRepAlgoAPI_Common common(supportFace, prismMaker.Shape());
+    common.Build();
+    if (!common.IsDone()) {
+        return {};
+    }
+
+    // connect faces across seams
+    // for example, when projecting onto a cylinder with a seam that splits the prjected face
+    // it would only return a face on one side of the seam, so we conenct patches then find the nearest
+    TopTools_ListOfShape patches;
+    BOPTools_AlgoTools::MakeConnexityBlocks(common.Shape(), TopAbs_EDGE, TopAbs_FACE, patches);
+
+
+    // find the closest face to the proejction source
+    auto nearestDistance = Precision::Infinite();
+    TopoDS_Face nearestFace;
+    for (const auto& patch : patches) {
+        // Note: we use unifysamedomain instead of removesplitter here b/c
+        // it succeeds in unifying edges (of projection) across cylinderical seam
+        ShapeUpgrade_UnifySameDomain unify(patch, true, true, false);
+        unify.Build();
+
+        TopExp_Explorer faces(unify.Shape(), TopAbs_FACE);
+
+        if (!faces.More()) {
+            continue;
+        }
+
+        const auto candidate = TopoDS::Face(faces.Current());
+
+        faces.Next();
+
+        // filter out multi-face results
+        if (faces.More() || !BRepCheck_Analyzer(candidate).IsValid()) {
+            continue;
+        }
+
+        BRepExtrema_DistShapeShape distance(candidate, sourceFace);
+        distance.Perform();
+        if (!distance.IsDone() || distance.Value() >= nearestDistance) {
+            continue;
+        }
+
+        nearestDistance = distance.Value();
+        nearestFace = candidate;
+    }
+
+    return nearestFace;
 }
 
 TopoDS_Shape ProjectOnSurface::createSolidIfHeight(const TopoDS_Face& face) const
