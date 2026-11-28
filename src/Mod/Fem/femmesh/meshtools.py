@@ -680,7 +680,7 @@ def get_femmesh_groupdata_sets_by_name(femmesh, fem_object, group_data_type):
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
-            if grp_name.startswith(obj.Name + "_"):
+            if grp_name == f"{obj.Name}_{group_data_type}s":
                 if femmesh.getGroupElementType(g) == group_data_type:
                     FreeCAD.Console.PrintMessage(
                         "  found mesh group for the IDs: {}, Type: {}\n".format(
@@ -1681,8 +1681,10 @@ def get_analysis_group_elements(aAnalysis, aPart):
     for m in aAnalysis.Group:
         if hasattr(m, "References"):
             if len(m.References) > 0:
-                grp_ele = get_reference_group_elements(m, aPart)
-                group_elements[grp_ele[0]] = grp_ele[1]
+                # The readers trust a group : by name on the meshed shape, or none and they search
+                own = all(parent == aPart for parent, _ in m.References)
+                names = {name for _, childs in m.References for name in childs}
+                group_elements[m.Name] = sorted(names) if own else []
             elif len(m.References) == 0 and (
                 is_of_type(m, "Fem::MaterialCommon")
                 # TODO test and implement ElementGeometry1D and ElementGeometry2D
@@ -1820,6 +1822,9 @@ def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShap
                     )
                     return {}
             elif hasattr(m, "References") and m.References:
+                # Without the elements of this material what is left for the other can't be told
+                if not group_elements[m.Name]:
+                    return group_elements
                 # ShapeType of the group elements, strip the number of the first group element
                 # http://stackoverflow.com/questions/12851791/removing-numbers-from-string
                 group_shape_type = "".join(i for i in group_elements[m.Name][0] if not i.isdigit())

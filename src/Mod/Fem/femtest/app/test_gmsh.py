@@ -26,14 +26,16 @@ __url__ = "https://www.freecad.org"
 import unittest
 import importlib
 import shutil
+import tempfile
 from os.path import join
 
 import FreeCAD
 
 import Fem
+import ObjectsFem
 from femexamples import manager
 from femtools.femutils import is_derived_from
-from femmesh import gmshtools
+from femmesh import gmshtools, meshtools
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
@@ -381,3 +383,254 @@ class TestGMSHRefinements(TestGMSHBase):
         except gmshtools.GmshError:
             # this exception is thrown if gmsh is not available. We pass in this case
             pass
+
+
+class TestGMSHAnalysisGroups(TestGMSHBase):
+    fcc_print("import TestGMSHAnalysisGroups")
+
+    def setUp(self):
+        super().setUp()
+        self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        self.addCleanup(
+            self.prefs.SetBool,
+            "AnalysisGroupMeshing",
+            self.prefs.GetBool("AnalysisGroupMeshing", False),
+        )
+        self.prefs.SetBool("AnalysisGroupMeshing", True)
+        self.box = self.make_box("Box")
+
+    def make_box(self, name, x=0):
+        box = self.document.addObject("Part::Box", name)
+        box.Length, box.Width, box.Height = 10, 8, 6
+        box.Placement.Base = FreeCAD.Vector(x, 0, 0)
+        self.document.recompute()
+        return box
+
+    def fixed(self, *references):
+        constraint = ObjectsFem.makeConstraintFixed(self.document, "Fixed")
+        constraint.References = list(references)
+        return constraint
+
+    def run_mesh(self, shape, members, **properties):
+        analysis = ObjectsFem.makeAnalysis(self.document, "Analysis")
+        analysis.addObjects(members)
+        mesh = ObjectsFem.makeMeshGmsh(self.document, "Mesh")
+        mesh.Shape = shape
+        mesh.CharacteristicLengthMax = "2 mm"
+        for name, value in properties.items():
+            setattr(mesh, name, value)
+        analysis.addObject(mesh)
+        self.document.recompute()
+        try:
+            self.execute_gmsh(mesh)
+        except gmshtools.GmshError:
+            self.skipTest("gmsh not found")
+        return mesh
+
+    def fragments(self):
+        import BOPTools.SplitFeatures
+
+        # Half as high as the box, the fragments split the Face2 it lies against
+        small = self.make_box("Small", 10)
+        small.Height = 3
+        self.document.recompute()
+        parts = BOPTools.SplitFeatures.makeBooleanFragments(name="Parts")
+        parts.Objects = [self.box, small]
+        parts.Mode = "CompSolid"
+        self.document.recompute()
+        return small, parts
+
+    def groups_of(self, femmesh, member):
+        groups = {}
+        for group in femmesh.Groups:
+            name = femmesh.getGroupName(group)
+            if name == member.Name or name.startswith(member.Name + "_"):
+                groups[name[len(member.Name) :]] = femmesh.getGroupElementType(group)
+        return groups
+
+    def read_nodes(self, femmesh, member):
+        return sorted(
+            meshtools.get_femmesh_groupdata_sets_by_name(femmesh, {"Object": member}, "Node")
+        )
+
+    def search(self, femmesh, *shapes):
+        methods = {
+            "Vertex": femmesh.getNodesByVertex,
+            "Edge": femmesh.getNodesByEdge,
+            "Face": femmesh.getNodesByFace,
+            "Solid": femmesh.getNodesBySolid,
+        }
+        return sorted({node for shape in shapes for node in methods[shape.ShapeType](shape)})
+
+    def assert_left_to_the_search(self, femmesh, constraint, *shapes):
+        self.assertEqual(self.groups_of(femmesh, constraint), {})
+        self.assertEqual(
+            meshtools.get_femnodes_by_femobj_with_references(femmesh, {"Object": constraint}),
+            self.search(femmesh, *shapes),
+        )
+
+    def test_groups_of_each_kind_of_reference(self):
+        expected = {
+            ("Vertex1",): {"_Nodes": "Node"},
+            ("Edge1",): {"_Edges": "Edge", "_Nodes": "Node"},
+            ("Face1",): {"_Faces": "Face", "_Nodes": "Node"},
+            ("Solid1",): {"_Volumes": "Volume", "_Nodes": "Node"},
+            ("Face1", "Edge6"): {"_Faces": "Face", "_Edges": "Edge", "_Nodes": "Node"},
+        }
+        for order in ("1st", "2nd"):
+            for elements, groups in expected.items():
+                with self.subTest(order=order, elements=elements):
+                    constraint = self.fixed((self.box, elements))
+                    femmesh = self.run_mesh(self.box, [constraint], ElementOrder=order).FemMesh
+                    ids = {femmesh.getGroupName(group): group for group in femmesh.Groups}
+                    # gmsh drops the point elements from the unv file of a build without vtk
+                    if elements[0] == "Vertex1" and "Vertex1" not in ids:
+                        self.skipTest("no vertex groups in this build")
+                    self.assertEqual(self.groups_of(femmesh, constraint), groups)
+                    shapes = [self.box.Shape.getElement(element) for element in elements]
+                    self.assertEqual(
+                        self.read_nodes(femmesh, constraint), self.search(femmesh, *shapes)
+                    )
+                    for element in elements:
+                        element_type = femmesh.getGroupElementType(ids[element])
+                        if element_type != "0DElement":
+                            group = ids[f"{constraint.Name}_{element_type}s"]
+                            self.assertEqual(
+                                sorted(femmesh.getGroupElements(group)),
+                                sorted(femmesh.getGroupElements(ids[element])),
+                            )
+
+    def test_groups_survive_saving_and_reopening(self):
+        constraint = self.fixed((self.box, ("Face1",)))
+        mesh = self.run_mesh(self.box, [constraint])
+        before = self.read_nodes(mesh.FemMesh, constraint)
+        self.assertTrue(before)
+        with tempfile.TemporaryDirectory() as folder:
+            path = join(folder, "groups.FCStd")
+            self.document.saveCopy(path)
+            reopened = FreeCAD.openDocument(path)
+            self.addCleanup(FreeCAD.closeDocument, reopened.Name)
+            after = self.read_nodes(
+                reopened.getObject(mesh.Name).FemMesh, reopened.getObject(constraint.Name)
+            )
+        self.assertEqual(after, before)
+
+    def test_a_mesh_group_labelled_like_a_face_does_not_replace_that_face(self):
+        constraint = self.fixed((self.box, ("Face1",)))
+        analysis = ObjectsFem.makeAnalysis(self.document, "Analysis")
+        analysis.addObject(constraint)
+        mesh = ObjectsFem.makeMeshGmsh(self.document, "Mesh")
+        mesh.Shape = self.box
+        analysis.addObject(mesh)
+        group = ObjectsFem.makeMeshGroup(self.document, mesh, True, "UserGroup")
+        group.Label = "Face1"
+        group.References = [(self.box, ("Face2",))]
+        self.document.recompute()
+        try:
+            self.execute_gmsh(mesh)
+        except gmshtools.GmshError:
+            self.skipTest("gmsh not found")
+        self.assertEqual(
+            self.read_nodes(mesh.FemMesh, constraint),
+            self.search(mesh.FemMesh, self.box.Shape.Face1),
+        )
+
+    def test_a_reference_split_by_the_fragments_is_left_to_the_search(self):
+        small, parts = self.fragments()
+        constraint = self.fixed((self.box, ("Face2",)), (small, ("Face2",)))
+        femmesh = self.run_mesh(parts, [constraint]).FemMesh
+        self.assert_left_to_the_search(femmesh, constraint, self.box.Shape.Face2, small.Shape.Face2)
+
+    def test_a_shape_group_the_mesh_does_not_have_is_left_to_the_search(self):
+        # No volume in a surface mesh, no Solid1 group
+        constraint = self.fixed((self.box, ("Solid1", "Face1")))
+        # The end of the gmsh run hides an exception, the next member would lose its groups
+        next_member = self.fixed((self.box, ("Face2",)))
+        femmesh = self.run_mesh(self.box, [constraint, next_member], ElementDimension="2D").FemMesh
+        self.assert_left_to_the_search(femmesh, constraint, self.box.Shape, self.box.Shape.Face1)
+        self.assertEqual(
+            self.read_nodes(femmesh, next_member), self.search(femmesh, self.box.Shape.Face2)
+        )
+
+    def test_a_reference_on_another_object_gets_no_group(self):
+        # Same size and local position as the box, elsewhere through its container
+        other = self.make_box("Other")
+        container = self.document.addObject("App::Part", "Container")
+        container.addObject(other)
+        container.Placement.Base = FreeCAD.Vector(100, 0, 0)
+        self.document.recompute()
+        constraint = self.fixed((other, ("Face1",)))
+        femmesh = self.run_mesh(self.box, [constraint]).FemMesh
+        self.assertEqual(self.groups_of(femmesh, constraint), {})
+
+    def test_each_member_of_two_fragments_reads_its_own_elements(self):
+        # The numbering of the shape and the one of the groups must stay the same
+        _, parts = self.fragments()
+        constraints = [
+            self.fixed((parts, (f"Face{number + 1}",))) for number in range(len(parts.Shape.Faces))
+        ]
+        materials = []
+        for solid in ("Solid1", "Solid2"):
+            material = ObjectsFem.makeMaterialSolid(self.document, "Material")
+            material.References = [(parts, (solid,))]
+            materials.append(material)
+        femmesh = self.run_mesh(parts, constraints + materials).FemMesh
+        for constraint, face in zip(constraints, parts.Shape.Faces):
+            self.assertEqual(self.read_nodes(femmesh, constraint), self.search(femmesh, face))
+        femobjects = [{"Object": material} for material in materials]
+        self.assertTrue(meshtools.get_femelement_sets_from_group_data(femmesh, femobjects))
+        for femobject, solid in zip(femobjects, parts.Shape.Solids):
+            nodes = set()
+            for volume in femobject["FEMElements"]:
+                nodes.update(femmesh.getElementNodes(volume))
+            self.assertEqual(sorted(nodes), self.search(femmesh, solid))
+
+    def test_a_member_named_like_the_start_of_another_reads_its_own_group(self):
+        longer = ObjectsFem.makeConstraintFixed(self.document, "Fixed_1")
+        longer.References = [(self.box, ("Face2",))]
+        shorter = self.fixed((self.box, ("Face1",)))
+        femmesh = self.run_mesh(self.box, [longer, shorter]).FemMesh
+        self.assertEqual(
+            self.read_nodes(femmesh, longer), self.search(femmesh, self.box.Shape.Face2)
+        )
+        self.assertEqual(
+            self.read_nodes(femmesh, shorter), self.search(femmesh, self.box.Shape.Face1)
+        )
+
+    def test_a_coincident_face_of_a_compound_reads_its_own_group(self):
+        compound = self.document.addObject("Part::Compound", "Compound")
+        compound.Links = [self.box, self.make_box("Right", 10)]
+        self.document.recompute()
+        faces = compound.Shape.Faces
+        twins = [i + 1 for i, face in enumerate(faces) if abs(face.CenterOfMass.x - 10) < 1e-9]
+        self.assertEqual(len(twins), 2)
+        name = f"Face{twins[1]}"
+        constraint = self.fixed((compound, (name,)))
+        femmesh = self.run_mesh(compound, [constraint], CoherenceMesh=False).FemMesh
+        ids = {femmesh.getGroupName(group): group for group in femmesh.Groups}
+        nodes = set()
+        for element in femmesh.getGroupElements(ids[name]):
+            nodes.update(femmesh.getElementNodes(element))
+        self.assertEqual(self.read_nodes(femmesh, constraint), sorted(nodes))
+
+    def test_a_material_without_elements_next_to_an_empty_one_has_no_group(self):
+        small, parts = self.fragments()
+        first = ObjectsFem.makeMaterialSolid(self.document, "First")
+        first.References = [(small, ("Solid1",))]
+        second = ObjectsFem.makeMaterialSolid(self.document, "Second")
+        constraint = self.fixed((parts, ("Face1",)))
+        femmesh = self.run_mesh(parts, [first, second, constraint]).FemMesh
+        self.assertEqual(self.groups_of(femmesh, first), {})
+        self.assertEqual(self.groups_of(femmesh, second), {})
+        self.assertEqual(self.groups_of(femmesh, constraint), {"_Faces": "Face", "_Nodes": "Node"})
+        # The end of the gmsh run hides an exception, ask without it
+        self.assertEqual(
+            meshtools.get_analysis_group_elements(first.getParentGroup(), parts),
+            {first.Name: [], constraint.Name: ["Face1"]},
+        )
+
+    def test_setting_off_makes_no_group(self):
+        self.prefs.SetBool("AnalysisGroupMeshing", False)
+        constraint = self.fixed((self.box, ("Face1",)))
+        femmesh = self.run_mesh(self.box, [constraint]).FemMesh
+        self.assert_left_to_the_search(femmesh, constraint, self.box.Shape.Face1)
