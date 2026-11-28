@@ -527,6 +527,7 @@ namespace Gui
 {
 
 [[nodiscard]] GuiExport bool isInternalGuiTestRun();
+[[nodiscard]] GuiExport bool isSystemInDarkMode();
 
 /**
  */

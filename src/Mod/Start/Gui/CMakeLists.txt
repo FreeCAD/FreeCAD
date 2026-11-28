@@ -79,16 +79,6 @@ SET(StartGuiThumbnail_PNG
         Resources/thumbnails/Theme_thumbnail_light.png
         )
 
-# Add CoreFoundation to StartGui_LIBS on macOS
-if (APPLE)
-    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
-    if (COREFOUNDATION_LIBRARY)
-        list(APPEND StartGui_LIBS ${COREFOUNDATION_LIBRARY})
-    else()
-        message(SEND_ERROR "CoreFoundation not found. Please ensure you're building on macOS.")
-    endif()
-endif()
-
 add_library(StartGui SHARED
     ${StartGui_SRCS}
     ${StartGuiIcon_SVG}
