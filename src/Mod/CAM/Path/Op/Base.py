@@ -774,7 +774,16 @@ class ObjectOp:
     def opExecute(self, obj):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
-        Should be overwritten by subclasses."""
+        Should be overwritten by subclasses.
+
+        Append the commands of the toolpath to self.commandlist.
+
+        To record information about the toolpath as a whole, add items to the
+        dictionary self.annotations (string keys; string or number values).
+        execute() empties it before each call and stores it in
+        obj.Path.Annotations, where a post-processor, a dressup or a report can
+        read it. Define each key in Constants.py. Use Path.Command.Annotations
+        for information about one command."""
 
     def baseShapes(self, obj):
         """baseShapes(obj) ... yield (base, subs) tuples for the operation's
@@ -1411,6 +1420,9 @@ class ObjectOp:
             return
 
         self.commandlist = []
+        # Operation-level annotations: opExecute() can add items to this dictionary.
+        # execute() assigns them to obj.Path.Annotations.
+        self.annotations = {}
         self.commandlist.append(Path.Command(f"({obj.Label})"))
         if obj.Comment:
             self.commandlist.append(Path.Command(f"({obj.Comment})"))
@@ -1488,6 +1500,8 @@ class ObjectOp:
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         path = Path.Path(self.commandlist)
+        if self.annotations:
+            path.Annotations = self.annotations
 
         # The path is in the work plane's frame; Placement positions it. That
         # is the convention the rest of the pipeline already honours -

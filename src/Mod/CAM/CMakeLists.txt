@@ -616,6 +616,7 @@ SET(Tests_SRCS
     CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
+    CAMTests/TestPathCommandToolAxis.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py
@@ -687,6 +688,8 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeIcon.py
     CAMTests/TestPathToolLibrary.py
     CAMTests/TestPathToolLibrarySerializer.py
+    CAMTests/TestPathToolpathAnnotations.py
+    CAMTests/TestPathToolpathStore.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py

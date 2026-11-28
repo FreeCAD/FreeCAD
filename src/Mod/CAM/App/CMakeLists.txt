@@ -68,6 +68,8 @@ SET(Path_SRCS
     FeatureArea.h
     PathSegmentWalker.h
     PathSegmentWalker.cpp
+    ToolpathStore.h
+    ToolpathStore.cpp
     Voronoi.cpp
     Voronoi.h
     VoronoiCell.cpp

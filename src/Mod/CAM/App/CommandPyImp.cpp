@@ -25,7 +25,10 @@
 
 
 #include <Base/Exception.h>
+#include <cmath>
+
 #include <Base/PlacementPy.h>
+#include <Base/VectorPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 // files generated out of CommandPy.xml
@@ -311,6 +314,34 @@ void CommandPy::setAnnotations(Py::Dict arg)
             throw Py::TypeError("Annotation keys must be strings");
         }
     }
+}
+
+// ToolAxis attribute get/set
+
+Py::Object CommandPy::getToolAxis() const
+{
+    const auto& axis = getCommandPtr()->ToolAxis;
+    if (!axis) {
+        return Py::None();
+    }
+    return Py::asObject(new Base::VectorPy(new Base::Vector3d(*axis)));
+}
+
+void CommandPy::setToolAxis(Py::Object arg)
+{
+    if (arg.isNone()) {
+        getCommandPtr()->ToolAxis.reset();
+        return;
+    }
+    if (!PyObject_TypeCheck(arg.ptr(), &(Base::VectorPy::Type))) {
+        throw Py::TypeError("ToolAxis must be a Vector or None");
+    }
+    Base::Vector3d axis = *static_cast<Base::VectorPy*>(arg.ptr())->getVectorPtr();
+    const double length = axis.Length();
+    if (!std::isfinite(length) || length < 1e-12) {
+        throw Py::ValueError("ToolAxis must be a vector with a length");
+    }
+    getCommandPtr()->ToolAxis = axis / length;
 }
 
 // GCode methods

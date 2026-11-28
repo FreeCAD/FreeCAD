@@ -50,6 +50,12 @@ class Path(Persistence):
     def getClearedArea(self, diameter: float, zmax: float, bbox: BoundBox, /) -> Area:
         """Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox."""
 
+    def addAnnotations(self, annotations: dict, /) -> Path:
+        """
+        addAnnotations(annotations): adds the items of a dictionary to the annotations
+        of the path and returns the path
+        """
+
     @constmethod
     def toGCode(self) -> str:
         """returns a gcode string representing the path"""
@@ -69,6 +75,25 @@ class Path(Persistence):
 
     Commands: list
     """the list of commands of this path"""
+
+    Annotations: dict
+    """The annotations of the path as a whole (operation level).
+
+    A dictionary of string keys with string or number values. Use it for
+    information about the full path that a post-processor, a dressup or a
+    report can read; use Command.Annotations for one command.
+
+    The attribute returns a copy of the dictionary: a change to the returned
+    dictionary does not change the path. To change one item, use
+    addAnnotations(). An assignment replaces all items.
+
+    The annotations are independent of the commands: a change to Commands keeps
+    them. copy() copies them and the document stores them. Path.Path(commands)
+    makes a path with no annotations. toGCode() does not write them.
+
+    For a document object, obj.Path.addAnnotations({...}) and
+    obj.Path.Annotations = {...} change the path of the object.
+    """
 
     Center: Any
     """the center position for all rotational parameters"""

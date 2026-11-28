@@ -85,6 +85,27 @@ public:
         return vpcCommands[pos];
     }
 
+    /** Annotations of the Toolpath as a whole (operation level).
+     * They are independent of the Command list: clear() and setFromGCode() keep them.
+     * A copy of the Toolpath copies them, and the document stores them.
+     */
+    const AnnotationMap& getAnnotations() const
+    {
+        return annotations;
+    }
+    void setAnnotations(const AnnotationMap& values)
+    {
+        annotations = values;
+    }
+    void setAnnotation(const std::string& key, const std::string& value)
+    {
+        annotations[key] = value;
+    }
+    void setAnnotation(const std::string& key, double value)
+    {
+        annotations[key] = value;
+    }
+
     // support for rotation
     const Base::Vector3d& getCenter() const
     {
@@ -97,6 +118,7 @@ public:
 protected:
     std::vector<Command> vpcCommands;
     Base::Vector3d center;
+    AnnotationMap annotations;
     // KDL::Path_Composite *pcPath;
 
     /*

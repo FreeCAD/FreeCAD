@@ -25,6 +25,7 @@
 #pragma once
 
 #include <map>
+#include <optional>
 #include <string>
 #include <variant>
 #include <Base/Persistence.h>
@@ -34,6 +35,9 @@
 
 namespace Path
 {
+/// Annotations of a Command or of a Toolpath: a value is a string or a number.
+using AnnotationMap = std::map<std::string, std::variant<std::string, double>>;
+
 /** The representation of a cnc command in a path */
 class PathExport Command: public Base::Persistence
 {
@@ -107,6 +111,13 @@ public:
     std::string Name;
     std::map<std::string, double> Parameters;
     std::map<std::string, std::variant<std::string, double>> Annotations;
+
+    /** The Tool Axis at the end point of this command: the direction from the part
+     * toward the tool, in the frame of the Toolpath. Empty when the command does
+     * not give one; the tool then points along +Z of that frame.
+     * No operation writes it and no post-processor reads it at this time.
+     */
+    std::optional<Base::Vector3d> ToolAxis;
 };
 
 }  // namespace Path

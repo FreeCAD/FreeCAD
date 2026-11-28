@@ -176,12 +176,28 @@ void Command::setFromGCode(const std::string& str)
 {
     Parameters.clear();
     Annotations.clear();
+    ToolAxis.reset();
 
     // Check for annotation comment and split the string
     std::string gcode_part = str;
     std::string annotation_part;
 
-    auto comment_pos = str.find("; ");
+    // Annotations follow "; ". A "; " inside a parenthesis comment is part of the
+    // comment text and does not start the annotations.
+    auto comment_pos = std::string::npos;
+    bool in_comment = false;
+    for (std::size_t i = 0; i + 1 < str.size(); ++i) {
+        if (str[i] == '(') {
+            in_comment = true;
+        }
+        else if (str[i] == ')') {
+            in_comment = false;
+        }
+        else if (!in_comment && str[i] == ';' && str[i + 1] == ' ') {
+            comment_pos = i;
+            break;
+        }
+    }
     if (comment_pos != std::string::npos) {
         gcode_part = str.substr(0, comment_pos);
         annotation_part = str.substr(comment_pos + 1);  // length of "; "
@@ -360,6 +376,9 @@ Command Command::transform(const Base::Placement& other)
         c.Parameters[k] = v;
     }
     c.Annotations = Annotations;
+    if (ToolAxis) {
+        c.ToolAxis = other.getRotation().multVec(*ToolAxis);
+    }
     return c;
 }
 

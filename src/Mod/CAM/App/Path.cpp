@@ -30,8 +30,10 @@
 #include <Mod/CAM/App/PathSegmentWalker.h>
 
 #include <numbers>
+#include <sstream>
 
 #include "Path.h"
+#include "ToolpathStore.h"
 
 
 using namespace Path;
@@ -106,6 +108,7 @@ Toolpath::Toolpath()
 Toolpath::Toolpath(const Toolpath& otherPath)
     : vpcCommands(otherPath.vpcCommands)
     , center(otherPath.center)
+    , annotations(otherPath.annotations)
 {
     recalculate();
 }
@@ -120,6 +123,7 @@ Toolpath& Toolpath::operator=(const Toolpath& otherPath)
 
     vpcCommands = otherPath.vpcCommands;
     center = otherPath.center;
+    annotations = otherPath.annotations;
     recalculate();
     return *this;
 }
@@ -554,7 +558,7 @@ void Toolpath::Save(Writer& writer) const
     }
     else {
         writer.Stream() << writer.ind() << "<Path file=\""
-                        << writer.addFile((writer.ObjectName + ".nc").c_str(), this)
+                        << writer.addFile((writer.ObjectName + ToolpathStore::FileExtension).c_str(), this)
                         << "\" version=\"" << SchemaVersion << "\">" << std::endl;
         writer.incInd();
         saveCenter(writer, center);
@@ -565,10 +569,11 @@ void Toolpath::Save(Writer& writer) const
 
 void Toolpath::SaveDocFile(Base::Writer& writer) const
 {
-    if (toGCode().empty()) {
+    if (vpcCommands.empty() && annotations.empty()) {
         return;
     }
-    writer.Stream() << toGCode();
+    const std::string data = ToolpathStore::encode(vpcCommands, annotations);
+    writer.Stream().write(data.data(), static_cast<std::streamsize>(data.size()));
 }
 
 void Toolpath::Restore(XMLReader& reader)
@@ -604,13 +609,55 @@ void Toolpath::addCommandNoRecalc(const Command& Cmd)
 
 void Toolpath::RestoreDocFile(Base::Reader& reader)
 {
+    std::ostringstream buffer;
+    buffer << reader.getStream().rdbuf();
+    const std::string data = buffer.str();
+
+    if (ToolpathStore::isBinary(data)) {
+        ToolpathStore::decode(data, vpcCommands, annotations);
+        recalculate();
+        return;
+    }
+
+    // A document from before the binary store holds the path as G-code text,
+    // one command on each line.
+    std::istringstream text(data);
     std::string line;
-    while (std::getline(reader.getStream(), line)) {
-        if (!line.empty()) {
-            Command cmd;
-            cmd.setFromGCode(line);
-            addCommandNoRecalc(cmd);
+    int unreadable = 0;
+    while (std::getline(text, line)) {
+        if (line.empty()) {
+            continue;
         }
+        Command cmd;
+        try {
+            cmd.setFromGCode(line);
+        }
+        catch (const Base::Exception&) {
+            // One line that cannot be read must not discard the full Toolpath.
+            // Keep the line as a comment, so that the loss is visible in the
+            // Toolpath and in the output of a post-processor.
+            ++unreadable;
+            std::string shown = line;
+            for (char& c : shown) {
+                if (c == '(') {
+                    c = '[';
+                }
+                else if (c == ')') {
+                    c = ']';
+                }
+            }
+            cmd = Command();
+            cmd.Name = "(unreadable line: " + shown + ")";
+        }
+        addCommandNoRecalc(cmd);
+    }
+    if (unreadable > 0) {
+        Base::Console().error(
+            "%s: %d line(s) of the stored toolpath are not valid G-code and are kept as "
+            "comments. Recompute the operation.\n",
+            reader.getFileName().c_str(),
+            unreadable
+        );
     }
     recalculate();  // Only once, after all commands are loaded
 }

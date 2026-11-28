@@ -3,6 +3,7 @@
 from Base.Metadata import class_declarations, constmethod, export
 from Base.Persistence import Persistence
 from Base.Placement import Placement
+from Base.Vector import Vector
 
 @export(
     Include="Mod/CAM/App/Command.h",
@@ -48,3 +49,13 @@ class Command(Persistence):
 
     Placement: Placement
     """The coordinates of the endpoint of the command"""
+
+    ToolAxis: Vector | None
+    """The Tool Axis at the end point of the command, or None.
+
+    A unit vector from the part toward the tool, in the frame of the Toolpath.
+    None means that the command does not give one; the tool then points along +Z
+    of that frame. An assigned vector is normalized. Assign None to remove it.
+    Command.transform() rotates it. toGCode() does not write it.
+    No operation writes it and no post-processor reads it at this time.
+    """
