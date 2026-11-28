@@ -78,6 +78,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Automatic"), "Automatic"),
                 (translate("CAM_Pocket", "Manual"), "Manual"),
             ],
+            "HandleMultipleFeatures": [
+                (translate("PathProfile", "Collectively"), "Collectively"),
+                (translate("PathProfile", "Individually"), "Individually"),
+            ],
         }
 
         enums["ClearingPattern"] = [
@@ -248,6 +252,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Finishing pass will processing with one step down at final depth",
             ),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "HandleMultipleFeatures",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Choose how to process multiple Base Geometry features.",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -410,6 +423,18 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.FinishingPasses = (0, 0, 999999, 1)
             # ZigZagOffset is replaced by ZigZag with a finishing pass
             obj.FinishingPasses = 1 if obj.ClearingPattern == "ZigZagOffset" else 0
+        if not hasattr(obj, "HandleMultipleFeatures"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "HandleMultipleFeatures",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Choose how to process multiple Base Geometry features.",
+                ),
+            )
+            obj.HandleMultipleFeatures = ("Collectively", "Individually")
+            obj.HandleMultipleFeatures = "Individually"
         if hasattr(obj, "MinTravel"):
             obj.removeProperty("MinTravel")
 
@@ -442,6 +467,7 @@ def SetupProperties():
     setup.append("FinishingPasses")
     setup.append("FinishingOffset")
     setup.append("FinishingOneStepDown")
+    setup.append("HandleMultipleFeatures")
     setup.append("StartAt")
     setup.append("StepDown")
     setup.append("StepOver")
