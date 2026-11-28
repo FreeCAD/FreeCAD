@@ -29,6 +29,7 @@
 #include <QLineEdit>
 #include <QPointer>
 #include <QPushButton>
+#include <QScopeGuard>
 #include <QTimer>
 #include <QVBoxLayout>
 
@@ -995,36 +996,41 @@ void TaskView::removeTaskWatcher(TaskInfo& taskInfo)
 
 void TaskView::accept(App::Document* doc)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
-        Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
-        return;
-    }
-
-    // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
-    // the dialog leaves the 'accept' method
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
-    bool success = foundTaskInfo->ActiveDialog->accept();
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
-    if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
-        removeDialog(doc);
-    }
+    handleAcceptOrReject(doc, true);
 }
 
 void TaskView::reject(App::Document* doc)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
-        Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
+    handleAcceptOrReject(doc, false);
+}
+
+void TaskView::handleAcceptOrReject(App::Document* doc, bool acceptDialog)
+{
+    QPointer<TaskDialog> taskDialog = dialog(doc);
+    if (!taskDialog) {
+        Base::Console().warning(
+            "ActiveDialog was null in call to TaskView::{}()\n",
+            acceptDialog ? "accept" : "reject"
+        );
+        return;
+    }
+    if (taskDialog->property("taskview_accept_or_reject").toBool()) {
         return;
     }
 
-    // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
-    // the dialog leaves the 'reject' method
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
-    bool success = foundTaskInfo->ActiveDialog->reject();
-    foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
-    if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
+    bool success;
+    {
+        auto clearAcceptOrReject = qScopeGuard([&taskDialog]() {
+            if (taskDialog) {
+                taskDialog->setProperty("taskview_accept_or_reject", QVariant());
+            }
+        });
+        // Defer closeDialog() until the active dialog's accept or reject handler returns.
+        taskDialog->setProperty("taskview_accept_or_reject", true);
+        success = acceptDialog ? taskDialog->accept() : taskDialog->reject();
+    }
+    if (taskDialog && taskDialog == dialog(doc)
+        && (success || taskDialog->property("taskview_remove_dialog").isValid())) {
         removeDialog(doc);
     }
 }
