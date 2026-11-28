@@ -1162,7 +1162,7 @@ def drawEllipse(ellipse, forceShape=False):
             shape.Placement = pl
             return shape
     except Part.OCCError:
-        warn(arc)
+        warn(ellipse)
     return None
 
 

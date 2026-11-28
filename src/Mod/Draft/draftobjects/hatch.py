@@ -32,7 +32,7 @@ import FreeCAD as App
 from draftgeoutils.general import geomType
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _err, _log
+from draftutils.messages import _err, _log, _wrn
 from draftutils.translate import translate
 
 
