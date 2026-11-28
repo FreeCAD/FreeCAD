@@ -126,12 +126,18 @@ class TestArchStructureGui(TestArchBaseGui.TestArchBaseGui):
             column = self._open_taskbox(stack, StructureMode.COLUMN)
             self.assertIsNone(column.Profile)
             column.valuec.setCurrentIndex(1)
-            column.vPresets.setCurrentIndex(column.precast.PrecastTypes.index("Pillar"))
+            self.assertEqual(column.vPresets.currentText(), "Pillar")
             self.assertEqual(column.Profile, "Precast_Pillar")
+            self.assertEqual(
+                [column.vPresets.itemText(i) for i in range(column.vPresets.count())],
+                column.precast.PrecastTypes,
+            )
+            column.vPresets.setCurrentText("Panel")
+            self.assertEqual(column.Profile, "Precast_Panel")
 
             self.assertEqual(self._open_taskbox(stack, StructureMode.BEAM).Profile, "Precast_Beam")
             reopened_column = self._open_taskbox(stack, StructureMode.COLUMN)
-            self.assertEqual(reopened_column.Profile, "Precast_Pillar")
+            self.assertEqual(reopened_column.Profile, "Precast_Panel")
             reopened_column.valuec.setCurrentIndex(0)
             self.assertIsNone(self._open_taskbox(stack, StructureMode.COLUMN).Profile)
             self.assertEqual(self._open_taskbox(stack, StructureMode.BEAM).Profile, "Precast_Beam")

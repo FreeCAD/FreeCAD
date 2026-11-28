@@ -744,17 +744,24 @@ class _CommandStructure:
 
     def setCategory(self, i):
 
+        if i == 1:
+            self.precast.form.show()
+            self.pSelect = self.precast.PrecastTypes
+            default_preset = "Beam" if self.mode == StructureMode.BEAM else "Pillar"
+            preset_index = self.pSelect.index(default_preset)
+            # Adding the items would otherwise apply the first preset before the default.
+            with QtCore.QSignalBlocker(self.vPresets):
+                self.vPresets.clear()
+                self.vPresets.addItems(self.pSelect)
+                self.vPresets.setCurrentIndex(preset_index)
+            self.setPreset(preset_index)
+            return
+
         self.vPresets.clear()
         if i > 1:
             self.precast.form.hide()
             self.pSelect = [p for p in Presets if p[1] == Categories[i - 2]]
             fpresets = self._createItemlist(self.pSelect)
-            self.vPresets.addItems(fpresets)
-            self.setPreset(0)
-        elif i == 1:
-            self.precast.form.show()
-            self.pSelect = self.precast.PrecastTypes
-            fpresets = self.precast.PrecastTypes
             self.vPresets.addItems(fpresets)
             self.setPreset(0)
         else:
