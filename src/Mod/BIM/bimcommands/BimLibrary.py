@@ -49,8 +49,6 @@ FILTERS = [
     "*.BREP",
     "*.ifc",
     "*.IFC",
-    "*.sat",
-    "*.SAT",
 ]
 TEMPLIBPATH = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "OfflineLibrary")
 THUMBNAILSPATH = os.path.join(TEMPLIBPATH, "__thumbcache__")
@@ -114,6 +112,7 @@ class BIM_Library_TaskPanel:
 
         self.mainDocName = FreeCAD.Gui.ActiveDocument.Document.Name
         self.previewDocName = "Viewer"
+        self._transaction_name = translate("BIM", "Insert Library Object")
 
         self.linked = False
 
@@ -538,12 +537,9 @@ class BIM_Library_TaskPanel:
 
     def reject(self):
 
-        if hasattr(self, "box") and self.box:
-            self.box.off()
         FreeCADGui.Control.closeDialog()
         if self.previewDocName in FreeCAD.listDocuments():
             FreeCAD.closeDocument(self.previewDocName)
-        FreeCAD.ActiveDocument.recompute()
 
     def insert(self, index=None):
 
@@ -573,47 +569,36 @@ class BIM_Library_TaskPanel:
         before = FreeCAD.ActiveDocument.Objects
         self.name = os.path.splitext(os.path.basename(path))[0]
         ext = os.path.splitext(path.lower())[1]
+        self.reject()  # Close the task panel.
         if ext in [".stp", ".step", ".brp", ".brep"]:
             self.place(path)
         elif ext == ".fcstd":
+            FreeCAD.ActiveDocument.openTransaction(self._transaction_name)
             FreeCADGui.ActiveDocument.mergeProject(path)
-            from draftutils import todo
-
-            todo.ToDo.delay(self.reject, None)
+            FreeCAD.ActiveDocument.commitTransaction()
         elif ext == ".ifc":
-            from importers import importIFC
+            from nativeifc import ifc_import
 
-            importIFC.ZOOMOUT = False
-            importIFC.insert(path, FreeCAD.ActiveDocument.Name)
-            from draftutils import todo
-
-            todo.ToDo.delay(self.reject, None)
-        elif ext in [".sat", ".sab"]:
-            try:
-                # InventorLoader addon
-                import importerIL
-            except ImportError:
-                try:
-                    # CADExchanger addon
-                    import CadExchangerIO
-                except ImportError:
-                    FreeCAD.Console.PrintError(
-                        translate(
-                            "BIM",
-                            "Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed",
-                        )
-                        + "\n"
-                    )
-                else:
-                    path = CadExchangerIO.insert(path, FreeCAD.ActiveDocument.Name, returnpath=True)
-                    self.place(path)
-            else:
-                path = importerIL.insert(path, FreeCAD.ActiveDocument.Name)
+            FreeCAD.ActiveDocument.openTransaction(self._transaction_name)
+            ifc_import.insert(path, FreeCAD.ActiveDocument.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+        # When a point is picked to place a STEP or BREP file the code below has already run.
+        # Therefore no zoom action takes place (which probably makes sense in that scenario).
         FreeCADGui.Selection.clearSelection()
         for o in FreeCAD.ActiveDocument.Objects:
             if not o in before:
                 FreeCADGui.Selection.addSelection(o)
         FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
+
+    def insert_shape(self):
+        import Arch
+
+        FreeCAD.ActiveDocument.openTransaction(self._transaction_name)
+        obj = Arch.makeEquipment()
+        obj.Shape = self.shape
+        obj.Label = self.name
+        FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.commitTransaction()
 
     def download(self, url):
 
@@ -663,7 +648,7 @@ class BIM_Library_TaskPanel:
                 hints=self.get_hints(),
             )
         else:
-            Part.show(self.shape)
+            self.insert_shape()
 
     def get_hints(self):
         "returns status bar input hints for the current tool state"
@@ -723,15 +708,10 @@ class BIM_Library_TaskPanel:
 
     def mouseClick(self, point, info):
 
+        self.box.off()
         if point:
-            import Arch
-
-            self.box.off()
             self.shape.translate(point.add(self.getDelta()))
-            obj = Arch.makeEquipment()
-            obj.Shape = self.shape
-            obj.Label = self.name
-        self.reject()
+            self.insert_shape()
 
     def getDelta(self):
 
