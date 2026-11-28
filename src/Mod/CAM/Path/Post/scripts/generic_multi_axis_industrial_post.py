@@ -301,7 +301,10 @@ class GenericMultiAxisIndustrial(PostProcessor):
                         cmd = Path.Command(
                             cmd.Name,
                             cmd.Parameters,
-                            {**cmd.Annotations, Constants.ANNOT_MODAL_BARRIER: True},
+                            {
+                                **cmd.Annotations,
+                                "PARAMETER_MODAL": True,
+                            },
                         )
                         changed = True
                     if rigid and cmd.Name in Constants.GCODE_MOVE_TAP:
@@ -419,14 +422,13 @@ class GenericMultiAxisIndustrial(PostProcessor):
             and "S" in command.Parameters
         ):
             params = {k: v for k, v in command.Parameters.items() if k != "S"}
-            command = Path.Command(command.Name, params, command.Annotations)
+            command = Path.Command(
+                command.Name,
+                params,
+                command.Annotations,
+            )
 
-        doubles = self.values["OUTPUT_DOUBLES"]
-        self.values["OUTPUT_DOUBLES"] = True
-        try:
-            return self._convert_move(command)
-        finally:
-            self.values["OUTPUT_DOUBLES"] = doubles
+        return self._convert_move(command)
 
     def _convert_generic_command(self, command: Path.Command) -> str:
         """Rigid tapping S<rpm>: the S must be written even when it repeats the spindle's."""

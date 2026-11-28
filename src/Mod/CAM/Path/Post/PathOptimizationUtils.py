@@ -12,37 +12,68 @@ import Path
 from Path.Base.MachineState import MachineState
 
 
-def modal_axis(command: Path.Command, previous_command: Path.Command) -> Path.Command | None:
+def modal_axis(
+    command: Path.Command,
+    previous_command: Path.Command,
+) -> Path.Command | None:
     """
-    Removes redundant axis parameters
-    See modal_gcode()
+    Removes redundant modal parameters.
+
+    Coordinate axes (X, Y, Z, A, B, C) are modal across motion commands.
+    R is modal only for commands explicitly marked with PARAMETER_MODAL,
+    such as canned drilling cycles.
+
+    See modal_gcode().
     """
 
     def axis_modal_fn(previous_command, command):
-        # make a new dict of not-the-same axis
         new_params = {}
 
-        # They are barriers
-        if command.Name in Constants.NOT_PARAMETER_MODAL:
+        parameter_modal = command.Annotations.get("PARAMETER_MODAL", False)
+
+        # Normal non-modal commands remain barriers.
+        if command.Name in Constants.NOT_PARAMETER_MODAL and not parameter_modal:
             new_command = command
             next_previous_command = None
 
         else:
-            # `dont_axis_modal` never comes into play because NOT_PARAMETER_MODAL are total barriers
-            dont_axis_modal = Constants.NOT_PARAMETER_MODAL.get(command.Name, [])
+            # Commands explicitly marked PARAMETER_MODAL can suppress
+            # their parameters without the normal non-modal restrictions.
+            dont_axis_modal = (
+                [] if parameter_modal else Constants.NOT_PARAMETER_MODAL.get(command.Name, [])
+            )
 
             for parameter, value in command.Parameters.items():
-                if parameter not in Constants.PARAMETER_MODAL or parameter in dont_axis_modal:
+
+                # Coordinate axes are modal across motion commands.
+                is_coordinate = parameter in {"X", "Y", "Z", "A", "B", "C"}
+
+                # R is modal only in explicitly marked canned cycles.
+                is_cycle_parameter = parameter == "R" and parameter_modal
+
+                # Other parameters retain the existing modal behaviour,
+                # except R, which is handled separately above.
+                is_modal_parameter = (
+                    (parameter in Constants.PARAMETER_MODAL and parameter != "R")
+                    or is_coordinate
+                    or is_cycle_parameter
+                )
+
+                if not is_modal_parameter or parameter in dont_axis_modal:
                     new_params[parameter] = value
+
                 elif previous_command is None or parameter not in previous_command.Parameters:
                     new_params[parameter] = value
+
                 elif previous_command.Parameters[parameter] != value:
                     new_params[parameter] = value
-                # else don't copy
 
-            new_command = Path.Command(command.Name, new_params, command.Annotations)
+            new_command = Path.Command(
+                command.Name,
+                new_params,
+                command.Annotations,
+            )
 
-            # elide if empty
             if (
                 new_command.Name == ""
                 and new_command.Parameters == {}
@@ -50,19 +81,28 @@ def modal_axis(command: Path.Command, previous_command: Path.Command) -> Path.Co
             ):
                 new_command = None
 
-            # need to keep a running-state of ALL previous axis parameters
+            # Preserve the previous values of modal parameters,
+            # including parameters omitted from the output.
             if previous_command is not None:
                 next_previous_parameters = {**previous_command.Parameters}
             else:
                 next_previous_parameters = {}
+
             next_previous_parameters.update(command.Parameters)
+
             next_previous_command = Path.Command(
-                command.Name, next_previous_parameters, command.Annotations
+                command.Name,
+                next_previous_parameters,
+                command.Annotations,
             )
 
         return next_previous_command, new_command
 
-    return _deduplicate(axis_modal_fn, command, previous_command)
+    return _deduplicate(
+        axis_modal_fn,
+        command,
+        previous_command,
+    )
 
 
 def modal_gcode(command: Path.Command, previous_command: Path.Command) -> Path.Command | None:
