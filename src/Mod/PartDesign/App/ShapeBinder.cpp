@@ -29,8 +29,10 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <Precision.hxx>
 
 
+#include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>
@@ -41,6 +43,8 @@
 #include <App/Link.h>
 #include <App/Datums.h>
 #include <App/ElementNamingUtils.h>
+#include <Base/Rotation.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "ShapeBinder.h"
@@ -472,7 +476,8 @@ void SubShapeBinder::setupObject()
 {
     // Version 3 marks binders that default to FaceMakerBuildFace when turning
     // bound wires into faces. Older binders keep the previous face maker.
-    _Version.setValue(3);
+    // Version 4 marks binders whose faces follow the normal of bound sketches.
+    _Version.setValue(4);
     checkPropertyStatus();
 }
 
@@ -592,12 +597,29 @@ void SubShapeBinder::clearCopiedObjects()
     _CopiedLink.setValue(nullptr);
 }
 
+static void followSketchNormals(Part::TopoShape& shape, const std::vector<Base::Vector3d>& normals)
+{
+    const auto& normal = normals.front();
+    if (std::ranges::any_of(normals, [&normal](const auto& n) { return n.Dot(normal) <= 0.0; })) {
+        return;
+    }
+    gp_Pln plane;
+    if (!shape.hasSubShape(TopAbs_FACE) || !shape.findPlane(plane)) {
+        return;
+    }
+    const gp_Dir sketchDir(normal.x, normal.y, normal.z);
+    if (plane.Axis().Direction().IsOpposite(sketchDir, Precision::Confusion())) {
+        shape.setShape(shape.getShape().Reversed(), false);
+    }
+}
+
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
 {
     Part::TopoShape result;
     std::vector<Part::TopoShape> shapes;
     std::vector<std::pair<int, int>> shapeOwners;
     std::vector<const Base::Matrix4D*> shapeMats;
+    std::vector<Base::Vector3d> sketchNormals;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
     bool init = (!forced && (options & UpdateForced)) ? true : false;
@@ -789,16 +811,31 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
         for (const auto& sub : subs) {
             ++subidx;
             try {
+                App::DocumentObject* owner = nullptr;
                 auto shape = Part::Feature::getTopoShape(
                     obj,
                     Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
                         | Part::ShapeOption::Transform,
-                    sub.c_str()
+                    sub.c_str(),
+                    nullptr,
+                    &owner
                 );
                 if (!shape.isNull()) {
                     shapes.push_back(shape);
                     shapeOwners.emplace_back(sidx, subidx);
                     shapeMats.push_back(&res.first->second);
+                    if (owner && owner->isDerivedFrom<Part::Part2DObject>()) {
+                        Base::Matrix4D sourceMat = res.first->second;
+                        const auto path = Data::noElementName(sub.c_str());
+                        if (auto source = obj->getSubObject(path.c_str(), nullptr, &sourceMat)) {
+                            source->getLinkedObject(true, &sourceMat, false);
+                        }
+                        if (sourceMat.determinant3() > 0.0) {
+                            sketchNormals.push_back(
+                                Base::Rotation(sourceMat).multVec(Base::Vector3d(0.0, 0.0, 1.0))
+                            );
+                        }
+                    }
                 }
             }
             catch (Base::Exception& e) {
@@ -959,6 +996,10 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
 
         if (Refine.getValue()) {
             result = result.makeElementRefine();
+        }
+        if (_Version.getValue() >= 4 && (shapes.size() > 1 || Relative.getValue())
+            && sketchNormals.size() == shapes.size()) {
+            followSketchNormals(result, sketchNormals);
         }
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);
