@@ -4953,24 +4953,36 @@ TopoShape& TopoShape::makeElementFace(
         maker = "Part::FaceMakerBullseye";
     }
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
-    mkFace->MyHasher = Hasher;
-    mkFace->MyOp = op;
-    mkFace->MyElementMapPolicy = elementMapPolicy;
+    return makeElementFace(shapes, *mkFace, op, plane, elementMapPolicy);
+}
+
+TopoShape& TopoShape::makeElementFace(
+    const std::vector<TopoShape>& shapes,
+    FaceMaker& mkFace,
+    const char* op,
+    const gp_Pln* plane,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    assert(!mkFace.IsDone());
+    mkFace.MyHasher = Hasher;
+    mkFace.MyOp = op;
+    mkFace.MyElementMapPolicy = elementMapPolicy;
     if (plane) {
-        mkFace->setPlane(*plane);
+        mkFace.setPlane(*plane);
     }
 
     for (auto& shape : shapes) {
         if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
-            mkFace->useTopoCompound(shape);
+            mkFace.useTopoCompound(shape);
         }
         else {
-            mkFace->addTopoShape(shape);
+            mkFace.addTopoShape(shape);
         }
     }
-    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
+    mkFace.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 
-    const auto& ret = mkFace->getTopoShape();
+    const auto& ret = mkFace.getTopoShape();
     setShape(ret._Shape);
     if (elementMapPolicy == ElementMapPolicy::Drop) {
         dropElementNaming();

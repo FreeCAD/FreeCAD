@@ -43,7 +43,9 @@
 #include <GeomAPI.hxx>
 #include <GProp_GProps.hxx>
 #include <Precision.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
 
 #include <algorithm>
@@ -71,6 +73,30 @@ void Part::FaceMakerBuildFace::setPlane(const gp_Pln& plane)
 {
     myPlane = plane;
     planeSupplied = true;
+}
+
+void Part::FaceMakerBuildFace::setLooseEdgePolicy(LooseEdgePolicy policy)
+{
+    myLooseEdgePolicy = policy;
+}
+
+void Part::FaceMakerBuildFace::appendLooseEdges(const TopTools_ListOfShape& edges)
+{
+    if (myLooseEdgePolicy == LooseEdgePolicy::Drop) {
+        return;
+    }
+    // Faces are built from these very edges, so an edge a face uses is in the map. The
+    // splitter merges coincident input edges, so one edge can also be listed twice.
+    TopTools_IndexedMapOfShape seen;
+    for (const TopoDS_Shape& shape : myShapesToReturn) {
+        TopExp::MapShapes(shape, TopAbs_EDGE, seen);
+    }
+    for (TopTools_ListIteratorOfListOfShape it(edges); it.More(); it.Next()) {
+        if (!seen.Contains(it.Value())) {
+            seen.Add(it.Value());
+            myShapesToReturn.push_back(it.Value());
+        }
+    }
 }
 
 // Split self-intersecting edges (e.g., figure-8 BSplines) at their crossing
@@ -300,6 +326,7 @@ void Part::FaceMakerBuildFace::Build_Essence()
     gp_Pln plane;
     if (!findPlane(edges, plane)) {
         FC_LOG("FaceMakerBuildFace: cannot determine plane from edges");
+        appendLooseEdges(edges);
         return;
     }
 
@@ -309,4 +336,5 @@ void Part::FaceMakerBuildFace::Build_Essence()
     for (const TopoDS_Face& f : collectBoundedFaces(edges, plane)) {
         myShapesToReturn.push_back(f);
     }
+    appendLooseEdges(edges);
 }

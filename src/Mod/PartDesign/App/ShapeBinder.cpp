@@ -41,6 +41,7 @@
 #include <App/Link.h>
 #include <App/Datums.h>
 #include <App/ElementNamingUtils.h>
+#include <Mod/Part/App/FaceMakerBuildFace.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "ShapeBinder.h"
@@ -56,6 +57,44 @@ namespace PartDesign
 {
 extern bool getPDRefineModelParameter();
 }
+
+namespace
+{
+struct FacesAndLooseWires
+{
+    Part::TopoShape faces;
+    /// Null when every edge bounds a face.
+    Part::TopoShape looseWires;
+};
+
+// The faces FaceMakerBuildFace finds in `wires`, and the edges of `wires` that bound no face,
+// joined into wires. Without any face, `wires` alone, unchanged, stand in for the faces.
+FacesAndLooseWires makeFacesKeepingLooseEdges(const Part::TopoShape& wires)
+{
+    Part::FaceMakerBuildFace maker;
+    maker.setLooseEdgePolicy(Part::FaceMakerBuildFace::LooseEdgePolicy::Keep);
+    Part::TopoShape made(0, wires.Hasher);
+    made.makeElementFace(wires.getSubTopoShapes(TopAbs_WIRE), maker);
+
+    std::vector<Part::TopoShape> faces = made.getSubTopoShapes(TopAbs_FACE);
+    if (faces.empty()) {
+        return {wires, {}};
+    }
+    std::vector<Part::TopoShape> looseEdges = made.getSubTopoShapes(TopAbs_EDGE, TopAbs_FACE);
+    if (looseEdges.empty()) {
+        return {made, {}};
+    }
+    return {
+        Part::TopoShape(0, wires.Hasher)
+            .makeElementCompound(
+                faces,
+                nullptr,
+                Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+            ),
+        Part::TopoShape(0, wires.Hasher).makeElementWires(looseEdges)
+    };
+}
+}  // namespace
 
 // ============================================================================
 
@@ -472,7 +511,9 @@ void SubShapeBinder::setupObject()
 {
     // Version 3 marks binders that default to FaceMakerBuildFace when turning
     // bound wires into faces. Older binders keep the previous face maker.
-    _Version.setValue(3);
+    // Version 4 also keeps the bound edges that bound no face; version 3 binders
+    // keep dropping them so that their shape does not change on recompute.
+    _Version.setValue(4);
     checkPropertyStatus();
 }
 
@@ -920,6 +961,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
             }
         }
 
+        Part::TopoShape looseWires;
         if (!fused && (MakeFace.getValue() || Offset.getValue() != 0.0)
             && !result.hasSubShape(TopAbs_FACE) && result.hasSubShape(TopAbs_EDGE)) {
             result = result.makeElementWires();
@@ -930,9 +972,18 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
                     // predate sketches producing faces by default, so they keep
                     // the previous face maker (FaceMakerBullseye) to avoid
                     // silently changing their generated topology on reopen.
-                    const char* faceMaker = _Version.getValue() >= 3 ? "Part::FaceMakerBuildFace"
-                                                                     : nullptr;
-                    result = result.makeElementFace(nullptr, faceMaker);
+                    // Loose edges are kept from _Version 4 on, for the same reason.
+                    if (_Version.getValue() >= 4) {
+                        FacesAndLooseWires made = makeFacesKeepingLooseEdges(result);
+                        result = made.faces;
+                        looseWires = made.looseWires;
+                    }
+                    else {
+                        const char* faceMaker = _Version.getValue() >= 3
+                            ? "Part::FaceMakerBuildFace"
+                            : nullptr;
+                        result = result.makeElementFace(nullptr, faceMaker);
+                    }
                 }
                 catch (...) {
                 }
@@ -955,6 +1006,12 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
                 msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
                 Base::Console().error("{}", msg.str());
             }
+        }
+        // Loose wires are kept as bound, not offset: an offset rejects a mix of faces and wires,
+        // and a lone straight line has no plane to be offset in. They come after the faces, so
+        // the faces keep the element indices they have in a binder without loose wires.
+        if (!looseWires.isNull()) {
+            result = Part::TopoShape(0, result.Hasher).makeElementCompound({result, looseWires});
         }
 
         if (Refine.getValue()) {

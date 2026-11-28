@@ -368,7 +368,13 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
         }
         if (count > 1) {
             if (AllowMultiFace.getValue() || obj->isDerivedFrom<Part::Part2DObject>()) {
-                return shape;
+                // The profile may hold edges beside its faces, such as the ones a SubShapeBinder
+                // keeps when they bound no face; extruding them would add sheets to the solid.
+                if (allowOpen || shape.getSubTopoShapes(TopAbs_EDGE, TopAbs_FACE).empty()) {
+                    return shape;
+                }
+                return TopoShape(shape.Tag, shape.Hasher)
+                    .makeElementCompound(shape.getSubTopoShapes(TopAbs_FACE));
             }
             FC_WARN("Found more than one face from profile");
         }

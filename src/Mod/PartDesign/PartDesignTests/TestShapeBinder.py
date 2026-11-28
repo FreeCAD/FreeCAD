@@ -195,3 +195,102 @@ class TestSubShapeBinder(unittest.TestCase):
         self.assertAlmostEqual(binder.Shape.Area, 100)
         volume = 100 * math.pi * 2 * 20
         self.assertAlmostEqual(revolution.Shape.Volume, volume)
+
+    def _sketchBinder(self, geometry):
+        """Binds every edge of a new sketch holding `geometry`."""
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(geometry, False)
+        binder = body.newObject("PartDesign::SubShapeBinder", "Binder")
+        binder.Support = [(sketch, tuple(f"Edge{i + 1}" for i in range(len(geometry))))]
+        self.Doc.recompute()
+        return binder
+
+    def _circleAndSeparateLine(self):
+        return self._sketchBinder(
+            [
+                Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), 10),
+                Part.LineSegment(Base.Vector(20, -5, 0), Base.Vector(20, 5, 0)),
+            ]
+        )
+
+    def testMakeFaceKeepsOpenEdges(self):
+        """Issue 34630: the line no face uses stays in the binder beside the disc."""
+        shape = self._circleAndSeparateLine().Shape
+
+        self.assertEqual(len(shape.Faces), 1)
+        self.assertAlmostEqual(shape.Faces[0].Area, 100 * math.pi)
+        # The disc's edge comes first, so it keeps the index it has without the line.
+        self.assertEqual(len(shape.Edges), 2)
+        self.assertTrue(shape.Edges[0].isSame(shape.Faces[0].Edges[0]))
+        self.assertAlmostEqual(shape.Length, 20 * math.pi + 10)
+
+    def testMakeFaceVersion3KeepsDroppingOpenEdges(self):
+        """A binder saved as version 3 keeps its shape: only the disc, the line dropped."""
+        binder = self._circleAndSeparateLine()
+        self.assertEqual(binder._Version, 4)
+        binder._Version = 3
+        self.Doc.recompute()
+        shape = binder.Shape
+
+        self.assertEqual(len(shape.Faces), 1)
+        self.assertAlmostEqual(shape.Faces[0].Area, 100 * math.pi)
+        self.assertEqual(len(shape.Edges), 1)
+
+    def testMakeFaceWithoutFacesKeepsWires(self):
+        """Without any face, the bound edges come back as they were, not split."""
+        shape = self._sketchBinder(
+            [
+                Part.LineSegment(Base.Vector(-5, 0, 0), Base.Vector(5, 0, 0)),
+                Part.LineSegment(Base.Vector(0, -5, 0), Base.Vector(0, 5, 0)),
+            ]
+        ).Shape
+
+        self.assertEqual(len(shape.Faces), 0)
+        self.assertEqual(len(shape.Edges), 2)
+
+    def testMakeFaceOffsetWithOpenEdges(self):
+        """The faces are offset and the open edges kept as bound, in both offset modes."""
+        binder = self._circleAndSeparateLine()
+        binder.Offset = 1
+        for intersection in (False, True):
+            binder.OffsetIntersection = intersection
+            self.Doc.recompute()
+            # The disc grows from radius 10 to 11; the line stays 10 long.
+            self.assertEqual(len(binder.Shape.Faces), 1)
+            self.assertAlmostEqual(binder.Shape.Faces[0].Area, 121 * math.pi, places=6)
+            self.assertAlmostEqual(binder.Shape.Length, 22 * math.pi + 10, places=6)
+
+    def testPadFromBinderLeavesOpenEdgesOut(self):
+        """A Pad from a binder with two faces and open edges extrudes only the faces."""
+        corners = [(0, 0), (10, 0), (10, 10), (0, 10)]
+        square = [
+            Part.LineSegment(Base.Vector(*corners[i], 0), Base.Vector(*corners[(i + 1) % 4], 0))
+            for i in range(4)
+        ]
+        # The line splits the square in two and leaves a 5 long stub outside each side.
+        chord = Part.LineSegment(Base.Vector(-5, 5, 0), Base.Vector(15, 5, 0))
+        binder = self._sketchBinder(square + [chord])
+        self.assertEqual(len(binder.Shape.Faces), 2)
+
+        body = binder.getParentGeoFeatureGroup()
+        box = body.newObject("PartDesign::AdditiveBox", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        box.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, -5), FreeCAD.Rotation())
+        pad = body.newObject("PartDesign::Pad", "Pad")
+        pad.Profile = binder
+        pad.Length = 10
+        self.Doc.recompute()
+
+        self.assertTrue(pad.isValid())
+        # The extruded profile is the two half boxes alone: no sheet from the stubs.
+        prism = pad.AddSubShape
+        solidFaces = [face for solid in prism.Solids for face in solid.Faces]
+        sheets = [face for face in prism.Faces if not any(face.isSame(f) for f in solidFaces)]
+        self.assertEqual(len(sheets), 0)
+        self.assertAlmostEqual(prism.Volume, 1000)
+        # The box spans z -5..5, so the pad adds 5 of its 10 either way: 1000 + 10 * 10 * 5.
+        self.assertEqual(len(pad.Shape.Solids), 1)
+        self.assertAlmostEqual(pad.Shape.Volume, 1500)

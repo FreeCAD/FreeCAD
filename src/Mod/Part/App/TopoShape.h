@@ -59,6 +59,7 @@ namespace Part
 {
 
 struct ShapeHasher;
+class FaceMaker;
 class TopoShape;
 class TopoShapeCache;
 using TopoShapeMap = std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher>;
@@ -2663,6 +2664,14 @@ public:
         const std::vector<TopoShape>& shapes,
         const char* op = nullptr,
         const char* maker = nullptr,
+        const gp_Pln* plane = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    );
+    /// As above, with a face maker the caller configured and has not built yet.
+    TopoShape& makeElementFace(
+        const std::vector<TopoShape>& shapes,
+        FaceMaker& maker,
+        const char* op = nullptr,
         const gp_Pln* plane = nullptr,
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     );
