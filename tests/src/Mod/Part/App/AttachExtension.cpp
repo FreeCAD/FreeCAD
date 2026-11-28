@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cmath>
 #include <numbers>
 #include <sstream>
@@ -9,9 +10,11 @@
 #include <vector>
 
 #include <src/App/InitApplication.h>
+#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartBox.h>
@@ -355,4 +358,136 @@ TEST_F(AttachExtensionTest, testNonEmptyLegacySupportReplacesAttachmentSupport)
     ASSERT_EQ(object->AttachmentSupport.getSubValues().size(), 1);
     EXPECT_EQ(object->AttachmentSupport.getSubValues().front(), "Face2");
     EXPECT_STREQ(object->MapMode.getValueAsString(), "Deactivated");
+}
+
+namespace
+{
+class OpenWarningObserver: public Base::ILogger
+{
+public:
+    OpenWarningObserver()
+    {
+        Base::Console().attachObserver(this);
+    }
+
+    ~OpenWarningObserver() override
+    {
+        Base::Console().detachObserver(this);
+    }
+
+    const char* name() override
+    {
+        return "AttachOpenWarningObserver";
+    }
+
+    void sendLog(
+        const std::string& notifier,
+        const std::string& message,
+        Base::LogStyle level,
+        Base::IntendedRecipient,
+        Base::ContentType
+    ) override
+    {
+        if (level == Base::LogStyle::Warning
+            && message.find("Placement changed on open") != std::string::npos) {
+            labels.push_back(notifier.substr(notifier.find('#') + 1));
+        }
+    }
+
+    std::vector<std::string> labels;
+};
+
+void runInDocument(const App::Document* doc, const std::string& code)
+{
+    Base::Interpreter().runString(("import FreeCAD as App\ndoc = App.getDocument('"
+                                   + std::string(doc->getName()) + "')\n" + code)
+                                      .c_str());
+}
+
+std::vector<std::string> openWarningsAs(const App::Document* doc, const std::string& version)
+{
+    OpenWarningObserver observer;
+    runInDocument(doc, "version = '" + version + "'\n" + R"PY(
+import os, re, shutil, tempfile, zipfile
+directory = tempfile.mkdtemp()
+try:
+    source = os.path.join(directory, "source.FCStd")
+    target = os.path.join(directory, "target.FCStd")
+    doc.saveCopy(source)
+    with zipfile.ZipFile(source) as zin, zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as zout:
+        for item in zin.infolist():
+            data = zin.read(item.filename)
+            if item.filename == "Document.xml":
+                data = re.sub(rb'ProgramVersion="[^"]*"', b'ProgramVersion="' + version.encode() + b'"', data, count=1)
+            zout.writestr(item, data)
+    App.closeDocument(App.openDocument(target).Name)
+finally:
+    shutil.rmtree(directory)
+)PY");
+    std::ranges::sort(observer.labels);
+    return observer.labels;
+}
+
+const char* lineAttachedPlanes = R"PY(
+part = doc.addObject("App::Part", "Part")
+part.newObject("Part::LocalCoordinateSystem", "LCS")
+line = doc.addObject("Part::DatumLine", "Line")
+link = doc.addObject("App::Link", "LineLink")
+link.LinkedObject = line
+box = doc.addObject("Part::Box", "Box")
+supports = {
+    "OnLine": [(line, "")],
+    "OnLineEdge": [(line, "Edge1")],
+    "OnLcsAxis": [(part, "LCS.X_Axis")],
+    "OnLink": [(link, "")],
+    "OnFace": [(box, "Face6")],
+    "Kept": [(line, "")],
+}
+for label, support in supports.items():
+    plane = doc.addObject("Part::DatumPlane", label)
+    plane.AttachmentSupport = support
+    plane.MapMode = "FlatFace" if label == "OnFace" else "NormalToEdge"
+doc.recompute()
+for label in supports:
+    if label != "Kept":
+        doc.getObject(label).Placement = App.Placement(App.Vector(1, 2, 3), App.Rotation(App.Vector(0, 1, 0), 90))
+)PY";
+}  // namespace
+
+TEST_F(AttachExtensionTest, testWarnWhenLineAttachedPlacementMovesOnOpen)
+{
+    runInDocument(getDocument(), lineAttachedPlanes);
+    const std::vector<std::string> moved {"OnLcsAxis", "OnLine", "OnLineEdge", "OnLink"};
+
+    EXPECT_EQ(openWarningsAs(getDocument(), "1.1R20260725 (Git shallow)"), moved);
+    EXPECT_EQ(openWarningsAs(getDocument(), "26.3R48900 (Git)"), moved);
+}
+
+TEST_F(AttachExtensionTest, testNoOpenWarningOutsideAffectedVersions)
+{
+    runInDocument(getDocument(), lineAttachedPlanes);
+
+    EXPECT_TRUE(openWarningsAs(getDocument(), "1.0R39109 (Git)").empty());
+    EXPECT_TRUE(openWarningsAs(getDocument(), "27.1R49585 (Git)").empty());
+}
+
+TEST_F(AttachExtensionTest, testOpenWarningFarFromOrigin)
+{
+    runInDocument(getDocument(), R"PY(
+for i in range(20):
+    line = doc.addObject("Part::DatumLine", "Line")
+    line.Placement = App.Placement(App.Vector(2e9 + 1234.5678 * i, 6.1e8 - 98.7 * i, 345.6), App.Rotation(App.Vector(1, i, 2), 17 * i + 3))
+    plane = doc.addObject("Part::DatumPlane", "Far%d" % i)
+    plane.AttachmentSupport = [(line, "")]
+    plane.MapMode = "NormalToEdge"
+    plane.AttachmentOffset = App.Placement(App.Vector(123.456, -78.9, 0), App.Rotation(App.Vector(0, 0, 1), 7 * i))
+doc.recompute()
+far = doc.Far7.Placement
+doc.Far7.Placement = App.Placement(far.Base + App.Vector(0.5, 0, 0), far.Rotation)
+)PY");
+
+    EXPECT_EQ(
+        openWarningsAs(getDocument(), "1.1R20260725 (Git shallow)"),
+        std::vector<std::string> {"Far7"}
+    );
 }
