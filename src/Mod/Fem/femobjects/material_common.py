@@ -98,6 +98,46 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
+                type="App::PropertyStringList",
+                name="ElasticTable",
+                group="Temperature Tables",
+                doc="Young's modulus and Poisson ratio against temperature,\n"
+                + "each row 'temperature, Young's modulus, Poisson ratio'",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyStringList",
+                name="ConductivityTable",
+                group="Temperature Tables",
+                doc="Thermal conductivity against temperature,\n"
+                + "each row 'temperature, thermal conductivity'",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyStringList",
+                name="SpecificHeatTable",
+                group="Temperature Tables",
+                doc="Specific heat against temperature,\n"
+                + "each row 'temperature, specific heat'",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyStringList",
+                name="ExpansionTable",
+                group="Temperature Tables",
+                doc="Thermal expansion coefficient against temperature,\n"
+                + "each row 'temperature, expansion coefficient'",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="MaterialName",
                 group="Material",
