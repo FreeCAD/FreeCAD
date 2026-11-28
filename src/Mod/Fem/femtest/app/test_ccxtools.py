@@ -339,6 +339,79 @@ class TestCcxTools(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_element_formulation(self):
+        from types import SimpleNamespace
+
+        import Fem
+        import ObjectsFem
+        from femsolver.calculix import write_mesh
+
+        def mesh_of(kind):
+            mesh = Fem.FemMesh()
+            count = {"hexa8": 8, "hexa20": 20, "quad4": 4}[kind]
+            nodes = [mesh.addNode(float(i), float(i % 3), float(i % 2)) for i in range(count)]
+            if kind == "quad4":
+                mesh.addFace(nodes)
+            else:
+                mesh.addVolume(nodes)
+            return mesh
+
+        solver = ObjectsFem.makeSolverCalculiXCcxTools(self.document)
+        self.assertEqual(solver.ElementFormulation, "reduced integration")
+        warnings = []
+        console = SimpleNamespace(PrintWarning=warnings.append)
+        real_freecad = write_mesh.FreeCAD
+        write_mesh.FreeCAD = SimpleNamespace(Console=console)
+
+        def variants(kind, analysis_type, formulation, model_space="3D"):
+            solver.ElementFormulation = formulation
+            solver.ModelSpace = model_space
+            writer = SimpleNamespace(
+                solver_obj=solver,
+                analysis_type=analysis_type,
+                femmesh=mesh_of(kind),
+                member=SimpleNamespace(geos_fluidsection=[]),
+            )
+            return write_mesh.get_element_variants(writer)
+
+        try:
+            reduced = "reduced integration"
+            self.assertEqual(variants("hexa8", "static", "standard"), ("standard", "shell", "beam"))
+            self.assertEqual(
+                variants("hexa8", "static", reduced), ("reduced", "shell reduced", "beam reduced")
+            )
+            self.assertEqual(
+                variants("hexa8", "static", "incompatible mode"),
+                ("incompatible", "shell", "beam"),
+            )
+            self.assertEqual(
+                variants("quad4", "static", "incompatible mode", "axisymmetric")[1], "axisymmetric"
+            )
+            # The only warning : reduced integration on a linear mesh in a thermal analysis
+            self.assertEqual(warnings, [])
+            variants("hexa20", "thermomech", reduced)
+            variants("hexa8", "thermomech", "incompatible mode")
+            self.assertEqual(warnings, [])
+            variants("hexa8", "thermomech", reduced)
+            variants("quad4", "thermomech", reduced)
+            self.assertEqual(len(warnings), 2)
+        finally:
+            write_mesh.FreeCAD = real_freecad
+
+        # Documents saved with the old boolean properties are migrated
+        for old, value, expected in (
+            ("ReducedIntegration", False, "standard"),
+            ("ReducedIntegration", True, "reduced integration"),
+            ("BeamReducedIntegration", True, "reduced integration"),
+        ):
+            solver.addProperty("App::PropertyBool", old)
+            setattr(solver, old, value)
+            solver.ElementFormulation = "incompatible mode"
+            solver.Proxy.onDocumentRestored(solver)
+            self.assertEqual(solver.ElementFormulation, expected)
+            self.assertNotIn(old, solver.PropertiesList)
+
+    # ********************************************************************************************
     def input_file_writing_test(
         self,
         base_name,

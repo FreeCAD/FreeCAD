@@ -30,18 +30,31 @@ __url__ = "https://www.freecad.org"
 
 from os.path import join
 
+import FreeCAD
+
 from femmesh import meshtools
 
 
-def write_mesh(ccxwriter):
+def is_linear_mesh(femmesh):
+    # Only the highest dimension is written, its first element tells the order of the mesh
+    if femmesh.VolumeCount:
+        return len(femmesh.getElementNodes(femmesh.Volumes[0])) in (4, 5, 6, 8)
+    if femmesh.FaceCount:
+        return len(femmesh.getElementNodes(femmesh.Faces[0])) in (3, 4)
+    return False
 
-    element_param = 1  # highest element order only
-    group_param = False  # do not write mesh group data
 
-    is_reduced = ccxwriter.solver_obj.ReducedIntegration
+def get_element_variants(ccxwriter):
+    """Volume, face and edge element variants passed to writeABAQUS"""
 
-    # Use reduced integration solid/beam elements or replace beams with trusses if these settings are enabled in the ccx solver
-    vol_variant = "reduced" if is_reduced else "standard"
+    formulation = ccxwriter.solver_obj.ElementFormulation
+    is_reduced = formulation == "reduced integration"
+
+    # Reduced integration solid/beam elements, incompatible mode hexahedra (the other volumes
+    # standard), or trusses for beams if these settings are enabled in the ccx solver
+    vol_variant = {"reduced integration": "reduced", "incompatible mode": "incompatible"}.get(
+        formulation, "standard"
+    )
     if ccxwriter.solver_obj.ExcludeBendingStiffness:
         edge_variant = "truss"
     else:
@@ -68,6 +81,27 @@ def write_mesh(ccxwriter):
     # Add "reduced" to the face element group's name if Reduced Integration is enabled
     if is_reduced:
         face_variant += " reduced"
+
+    # Up to CalculiX 2.23 a heat transfer has no hourglass control, linear reduced elements give
+    # checkerboard temperatures there. Fixed upstream after 2.23, drop this warning once a
+    # CalculiX release has it
+    if is_reduced and ccxwriter.analysis_type == "thermomech" and is_linear_mesh(ccxwriter.femmesh):
+        FreeCAD.Console.PrintWarning(
+            "Reduced integration on a linear mesh (C3D8R, S4R, CPS4R, CPE4R, CAX4R) can give "
+            "wrong temperatures without any solver error, or a divergence, in a thermal analysis "
+            "with CalculiX 2.23 or older. Set the solver Element Formulation to standard or "
+            "incompatible mode.\n"
+        )
+
+    return vol_variant, face_variant, edge_variant
+
+
+def write_mesh(ccxwriter):
+
+    element_param = 1  # Highest element order only
+    group_param = False  # Do not write mesh group data
+
+    vol_variant, face_variant, edge_variant = get_element_variants(ccxwriter)
 
     if ccxwriter.split_inpfile:
         write_name = "femesh"
