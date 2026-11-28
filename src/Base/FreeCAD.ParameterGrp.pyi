@@ -4,9 +4,13 @@
 
 from typing import Literal, Protocol, TypeAlias
 
-_ParameterValue: TypeAlias = str | int | float | bool
-_ParameterContentTag: TypeAlias = Literal["String", "Integer", "Float", "Boolean", "Unsigned Long"]
-_ParameterContent: TypeAlias = tuple[_ParameterContentTag, str, _ParameterValue]
+_ParameterContent: TypeAlias = (
+    tuple[Literal["String"], str, str]
+    | tuple[Literal["Integer"], str, int]
+    | tuple[Literal["Float"], str, float]
+    | tuple[Literal["Boolean"], str, bool]
+    | tuple[Literal["Unsigned Long"], str, int]
+)
 
 class _ParameterObserver(Protocol):
     """Observer protocol for parameter changes inside one parameter group."""

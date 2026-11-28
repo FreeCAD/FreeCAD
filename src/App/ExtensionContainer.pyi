@@ -18,6 +18,8 @@ class ExtensionContainer(PropertyContainer):
 
     def addExtension(self, identifier: str, proxy: object = None, /) -> None:
         """
+        The second argument is ignored (deprecated 26.3, removed 27.2).
+
         Adds an extension to the object. Requires the string identifier for the python extension as argument
         """
 

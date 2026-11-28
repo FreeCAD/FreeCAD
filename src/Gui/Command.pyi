@@ -2,7 +2,7 @@
 
 from Base.Metadata import constmethod
 from Base.PyObjectBase import PyObjectBase
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, TypedDict
 
 class Command(PyObjectBase):
     """
@@ -12,8 +12,18 @@ class Command(PyObjectBase):
     Licence: LGPL
     """
 
+    if TYPE_CHECKING:
+        class _InfoDict(TypedDict):
+            name: str
+            menuText: str
+            toolTip: str
+            whatsThis: str
+            statusTip: str
+            pixmap: str
+            shortcut: str
+
     @staticmethod
-    def get(name: str, /) -> Optional["Command"]:
+    def get(name: str, /) -> Command | None:
         """
         Get a given command by name or None if it doesn't exist.
 
@@ -28,13 +38,13 @@ class Command(PyObjectBase):
         """
 
     @staticmethod
-    def listAll() -> List[str]:
+    def listAll() -> list[str]:
         """
         Returns the name of all commands.
         """
 
     @staticmethod
-    def listByShortcut(string: str, useRegExp: bool = False, /) -> List[str]:
+    def listByShortcut(string: str, useRegExp: bool = False, /) -> list[str]:
         """
         Returns a list of all commands, filtered by shortcut.
         Shortcuts are converted to uppercase and spaces removed
@@ -78,12 +88,12 @@ class Command(PyObjectBase):
         Resets shortcut for given command back to the default, returns True for success.
         """
 
-    def getInfo(self) -> Dict[Any, Any]:
+    def getInfo(self) -> _InfoDict:
         """
         Return information about this command.
         """
 
-    def getAction(self) -> List[Any]:
+    def getAction(self) -> list[Any]:
         """
         Return the associated QAction object.
         """
@@ -91,12 +101,12 @@ class Command(PyObjectBase):
     @staticmethod
     def createCustomCommand(
         macroFile: str,
-        menuText: Optional[str] = None,
-        toolTip: Optional[str] = None,
-        whatsThis: Optional[str] = None,
-        statusTip: Optional[str] = None,
-        pixmap: Optional[str] = None,
-        shortcut: Optional[str] = None,
+        menuText: str | None = None,
+        toolTip: str | None = None,
+        whatsThis: str | None = None,
+        statusTip: str | None = None,
+        pixmap: str | None = None,
+        shortcut: str | None = None,
     ) -> str:
         """
         Create a custom command for a macro. Returns name of the created command.
@@ -131,7 +141,7 @@ class Command(PyObjectBase):
         """
 
     @staticmethod
-    def findCustomCommand(name: str, /) -> Optional[str]:
+    def findCustomCommand(name: str, /) -> str | None:
         """
         Given the name of a macro, return the name of the custom command for that macro
         or None if there is no command matching that macro script name.

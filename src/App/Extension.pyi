@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileNotice: Part of the FreeCAD project.
 
-from typing import Final, Any
+from typing import Final
 from Base.PyObjectBase import PyObjectBase
+from ExtensionContainer import ExtensionContainer
 
 
 class Extension(PyObjectBase):
@@ -12,5 +13,5 @@ class Extension(PyObjectBase):
     Licence: LGPL
     """
 
-    ExtendedObject: Final[Any] = None
+    ExtendedObject: Final[ExtensionContainer]
     """Get extended container object"""

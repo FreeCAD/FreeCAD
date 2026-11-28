@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from FreeCADGui import _MDIView, _View3DInventor
 from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
-from typing import Any, Final, List, Optional
+from typing import Any, Final
+from App.Document import Document as AppDocument
 from App.DocumentObject import DocumentObject
-from ViewProvider import ViewProvider as _ViewProvider
-from ViewProviderDocumentObject import ViewProviderDocumentObject as _ViewProviderDocumentObject
+from ViewProvider import ViewProvider
+from ViewProviderDocumentObject import ViewProviderDocumentObject
 
 class Document(Persistence):
     """
@@ -44,7 +46,11 @@ class Document(Persistence):
         """
 
     def setEdit(
-        self, obj: str | DocumentObject | _ViewProvider, mode: int = 0, subname: str = ..., /
+        self,
+        obj: str | DocumentObject | ViewProvider,
+        mode: int = 0,
+        subname: str = ...,
+        /,
     ) -> bool:
         """
         Set an object in edit mode.
@@ -57,7 +63,7 @@ class Document(Persistence):
             Subelement name. Optional.
         """
 
-    def getInEdit(self) -> Optional[Any]:
+    def getInEdit(self) -> ViewProvider | None:
         """
         Returns the current object in edit mode or None if there is no such object.
         """
@@ -84,7 +90,7 @@ class Document(Persistence):
         Update the view representations of all objects.
         """
 
-    def getObject(self, name: str, /) -> Optional[Any]:
+    def getObject(self, name: str, /) -> ViewProvider | None:
         """
         Return the object with the given name. If no one exists, return None.
 
@@ -92,17 +98,17 @@ class Document(Persistence):
             Object name.
         """
 
-    def activeObject(self) -> Optional[Any]:
+    def activeObject(self) -> ViewProvider | None:
         """
         The active object of the document. Deprecated, use ActiveObject.
         """
 
-    def activeView(self) -> Optional[Any]:
+    def activeView(self) -> _MDIView | _View3DInventor | None:
         """
         The active view of the document. Deprecated, use ActiveView.
         """
 
-    def createView(self, type: str, /) -> Optional[Any]:
+    def createView(self, type: str, /) -> _MDIView | None:
         """
         Return a newly created view of a given type.
 
@@ -111,7 +117,7 @@ class Document(Persistence):
         """
 
     @constmethod
-    def mdiViewsOfType(self, type: str, /) -> List[Any]:
+    def mdiViewsOfType(self, type: str, /) -> list[_MDIView]:
         """
         Return a list of mdi views of a given type.
 
@@ -156,14 +162,14 @@ class Document(Persistence):
             Subelement name. Optional.
         """
 
-    def scrollToTreeItem(self, obj: _ViewProviderDocumentObject, /) -> None:
+    def scrollToTreeItem(self, obj: ViewProviderDocumentObject, /) -> None:
         """
         Scroll the tree view to the item of a view object.
 
         obj : Gui.ViewProviderDocumentObject
         """
 
-    def toggleInSceneGraph(self, obj: _ViewProvider, /) -> None:
+    def toggleInSceneGraph(self, obj: ViewProvider, /) -> None:
         """
         Add or remove view object from scene graph of all views depending
         on its canAddToSceneGraph().
@@ -171,7 +177,7 @@ class Document(Persistence):
         obj : Gui.ViewProvider
         """
 
-    def openCommand(self, name: str) -> int:
+    def openCommand(self, name: str, /, **kwargs: Any) -> int:
         """
         openCommand(name) -> int
 
@@ -192,29 +198,37 @@ class Document(Persistence):
 
         Aborts the current transaction of the document
         """
-    ActiveObject: Any = ...
+    ActiveObject: ViewProvider | None
     """The active object of the document."""
 
-    ActiveView: Any = ...
+    ActiveView: _MDIView | _View3DInventor | None
     """The active view of the document."""
 
-    EditingTransform: Any = ...
+    EditingTransform: Matrix
     """The editing transformation matrix."""
 
-    InEditInfo: Any = ...
-    """A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit."""
+    @property
+    def InEditInfo(self) -> tuple[ViewProviderDocumentObject, str, str, int] | None:
+        """
+        A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit.
 
-    EditMode: Final[int] = 0
+        Setter accepts a tuple (obj: ViewProviderDocumentObject, subname: str).
+        """
+
+    @InEditInfo.setter
+    def InEditInfo(self, /, value: Any) -> None: ...  # wont compile for tuple type
+
+    EditMode: Final[int]
     """Current edit mode. Only meaningful when there is a current object in edit."""
 
-    Document: Final[Any] = ...
+    Document: Final[AppDocument | None]
     """The related App document to this Gui document."""
 
-    Transacting: Final[bool] = False
+    Transacting: Final[bool]
     """Indicate whether the document is undoing/redoing."""
 
-    Modified: bool = False
+    Modified: bool
     """Returns True if the document is marked as modified, and False otherwise."""
 
-    TreeRootObjects: Final[List[Any]] = []
+    TreeRootObjects: Final[list[DocumentObject]]
     """The list of tree root objects."""

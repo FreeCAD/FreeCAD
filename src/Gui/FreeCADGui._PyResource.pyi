@@ -2,6 +2,8 @@
 
 """Typed public method signatures for the ``FreeCADGui._PyResource`` PyCXX type."""
 
+# source: `Gui/WidgetFactory.cpp`
+
 from collections.abc import Callable
 from typing import TypeAlias
 

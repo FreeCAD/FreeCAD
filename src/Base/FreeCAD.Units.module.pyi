@@ -33,11 +33,11 @@ def listSchemas(index: int, /) -> str:
 
 # Quantity formatting and parsing
 @overload
-def toNumber(value: Quantity, format: _NumberFormat = ..., decimals: int = ..., /) -> str:
+def toNumber(value: Quantity, format: _NumberFormat = "g", decimals: int = ..., /) -> str:
     """Format an existing Quantity value using the current unit schema."""
 
 @overload
-def toNumber(value: float, format: _NumberFormat = ..., decimals: int = ..., /) -> str:
+def toNumber(value: float, format: _NumberFormat = "g", decimals: int = ..., /) -> str:
     """Format a plain numeric value using the current unit schema."""
 
 def parseQuantity(expression: str, /) -> Quantity:
@@ -54,4 +54,8 @@ def setSchema(index: int, /) -> None:
     """Set the active unit-schema index."""
 
 def schemaTranslate(quantity: Quantity, schema: int, /) -> tuple[str, float, str]:
-    """Translate one quantity into the textual pieces used by another schema."""
+    """
+    Translate one quantity into the textual pieces used by another schema.
+
+    Returns (unitStrLocalised, factor, unitStr).
+    """

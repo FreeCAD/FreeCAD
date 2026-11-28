@@ -2,7 +2,7 @@
 
 from Metadata import export, forward_declarations, constmethod
 from PyObjectBase import PyObjectBase
-from typing import List, Final
+from typing import Final
 
 @export(
     Twin="BaseType",
@@ -23,17 +23,17 @@ class Type(PyObjectBase):
     Licence: LGPL
     """
 
-    Name: Final[str] = ""
+    Name: Final[str]
     """The name of the type id."""
 
-    Key: Final[int] = 0
+    Key: Final[int]
     """The key of the type id."""
 
-    Module: Final[str] = ""
+    Module: Final[str]
     """Module in which this class is defined."""
 
     @staticmethod
-    def fromName(name: str, /) -> "Type":
+    def fromName(name: str, /) -> Type:
         """
         Returns a type object by name.
 
@@ -41,11 +41,11 @@ class Type(PyObjectBase):
         """
 
     @staticmethod
-    def fromKey(key: int, /) -> "Type":
+    def fromKey(key: int, /) -> Type:
         """
         Returns a type id object by key.
 
-        key : int
+        key : (unsinged) int
         """
 
     @staticmethod
@@ -55,13 +55,13 @@ class Type(PyObjectBase):
         """
 
     @staticmethod
-    def getBadType() -> "Type":
+    def getBadType() -> Type:
         """
         Returns an invalid type id.
         """
 
     @staticmethod
-    def getAllDerivedFrom(type: str | "Type", /) -> List["Type"]:
+    def getAllDerivedFrom(type: str | Type, /) -> list[Type]:
         """
         Returns all descendants from the given type id.
 
@@ -69,7 +69,7 @@ class Type(PyObjectBase):
         """
 
     @constmethod
-    def getParent(self) -> "Type":
+    def getParent(self) -> Type:
         """
         Returns the parent type id.
         """
@@ -81,7 +81,7 @@ class Type(PyObjectBase):
         """
 
     @constmethod
-    def isDerivedFrom(self, type: str | "Type", /) -> bool:
+    def isDerivedFrom(self, type: str | Type, /) -> bool:
         """
         Returns true if given type id is a father of this type id.
 
@@ -89,7 +89,7 @@ class Type(PyObjectBase):
         """
 
     @constmethod
-    def getAllDerived(self) -> List[object]:
+    def getAllDerived(self) -> list[Type]:
         """
         Returns all descendants from this type id.
         """

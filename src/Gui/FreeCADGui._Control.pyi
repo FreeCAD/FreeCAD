@@ -2,6 +2,8 @@
 
 """Typed public method signatures for the ``FreeCADGui._Control`` PyCXX type."""
 
+# source: `Gui/TaskView/TaskDialogPython.cpp`
+
 from collections.abc import Sequence
 
 from FreeCADGui import Document, _TaskDialog
@@ -9,16 +11,16 @@ from FreeCADGui import Document, _TaskDialog
 class _Control:
     """Global task-panel control surface for the FreeCAD GUI."""
 
-    def showDialog(self, dialog: object, document: Document | None = None, /) -> _TaskDialog:
+    def showDialog(self, dialog: object, document: Document = ..., /) -> _TaskDialog:
         """Show one task dialog, optionally for a specific document."""
 
-    def activeDialog(self, document: Document | None = None, /) -> bool:
+    def activeDialog(self, document: Document = ..., /) -> bool:
         """Return whether a task dialog is active."""
 
-    def activeTaskDialog(self, document: Document | None = None, /) -> _TaskDialog | None:
+    def activeTaskDialog(self, document: Document = ..., /) -> _TaskDialog | None:
         """Return the active task dialog, if any."""
 
-    def closeDialog(self, document: Document | None = None, /) -> None:
+    def closeDialog(self, document: Document = ..., /) -> None:
         """Close the active task dialog."""
 
     def addTaskWatcher(self, watchers: Sequence[object], /) -> None:
@@ -27,13 +29,13 @@ class _Control:
     def clearTaskWatcher(self) -> None:
         """Clear the registered task watchers."""
 
-    def isAllowedAlterDocument(self, document: Document | None = None, /) -> bool:
+    def isAllowedAlterDocument(self, document: Document = ..., /) -> bool:
         """Return whether the active task dialog may alter the document."""
 
-    def isAllowedAlterView(self, document: Document | None = None, /) -> bool:
+    def isAllowedAlterView(self, document: Document = ..., /) -> bool:
         """Return whether the active task dialog may alter the view."""
 
-    def isAllowedAlterSelection(self, document: Document | None = None, /) -> bool:
+    def isAllowedAlterSelection(self, document: Document = ..., /) -> bool:
         """Return whether the active task dialog may alter the selection."""
 
     def showTaskView(self) -> None:
