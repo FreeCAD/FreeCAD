@@ -31,7 +31,7 @@ import zipfile
 
 import FreeCAD
 import FreeCADGui
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Gui Document code
@@ -132,6 +132,91 @@ class TestGuiDocument(unittest.TestCase):
         # Check if the new function returns the correct root objects
         expected_root_objects = [group1, group2, obj1, part1]
         self.assertEqual(set(root_objects), set(expected_root_objects))
+
+    def testTreeContextMenuWithCyclicDocuments(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            other = FreeCAD.newDocument("TestDocOther")
+            try:
+                self.doc.saveAs(os.path.join(temp_dir, "TestDoc.FCStd"))
+                other.saveAs(os.path.join(temp_dir, "TestDocOther.FCStd"))
+                target = self.doc.addObject("App::DocumentObjectGroup", "Target")
+                other_target = other.addObject("App::DocumentObjectGroup", "Target")
+                self.doc.addObject("App::Link", "Link").LinkedObject = other_target
+                other.addObject("App::Link", "Link").LinkedObject = target
+                with self.assertRaises(RuntimeError):
+                    self.doc.getDependentDocuments(True)
+
+                main_window = FreeCADGui.getMainWindow()
+                main_window.raise_()
+                main_window.activateWindow()
+                self._processEventsUntil(main_window.isActiveWindow)
+                dock = main_window.findChild(QtWidgets.QDockWidget, "Model")
+                self.assertIsNotNone(dock)
+                tree = dock.findChild(QtWidgets.QTreeWidget)
+                self.assertIsNotNone(tree)
+                model = tree.model()
+                rows = [
+                    model.index(row, 0)
+                    for row in range(model.rowCount())
+                    if model.index(row, 0).data() == self.doc.Label
+                ]
+                self.assertEqual(len(rows), 1)
+                tree.scrollTo(rows[0])
+                pos = tree.visualRect(rows[0]).center()
+
+                actions = []
+
+                def closeMenu():
+                    menu = QtWidgets.QApplication.activePopupWidget()
+                    if menu is not None:
+                        actions.extend(action.text() for action in menu.actions())
+                        menu.close()
+
+                QtCore.QTimer.singleShot(200, closeMenu)
+                event = QtGui.QContextMenuEvent(
+                    QtGui.QContextMenuEvent.Reason.Keyboard,
+                    pos,
+                    tree.viewport().mapToGlobal(pos),
+                )
+                QtWidgets.QApplication.sendEvent(tree.viewport(), event)
+                self.assertTrue(actions)
+            finally:
+                FreeCAD.closeDocument(other.Name)
+                FreeCAD.closeDocument(self.doc.Name)
+                self.doc = None
+
+    def testReloadWithCyclicDocuments(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = os.path.join(temp_dir, "TestDoc.FCStd")
+            other = FreeCAD.newDocument("TestDocOther")
+            try:
+                self.doc.saveAs(path)
+                other.saveAs(os.path.join(temp_dir, "TestDocOther.FCStd"))
+                target = self.doc.addObject("App::DocumentObjectGroup", "Target")
+                other.addObject("App::DocumentObjectGroup", "Extra")
+                back = other.addObject("App::Link", "Back")
+                back.LinkedObject = target
+                self.doc.addObject("App::Link", "Link").LinkedObject = back
+                self.doc.recompute()
+                other.recompute()
+                self.doc.save()
+                other.save()
+                FreeCAD.closeDocument(other.Name)
+                FreeCAD.closeDocument(self.doc.Name)
+
+                self.doc = FreeCAD.openDocument(path)
+                self.assertTrue(FreeCAD.getDocument("TestDocOther").Partial)
+                with self.assertRaises(RuntimeError):
+                    self.doc.getDependentDocuments(True)
+
+                FreeCADGui.reload(self.doc.Name)
+                self.assertFalse(FreeCAD.getDocument("TestDocOther").Partial)
+                self.assertTrue(hasattr(FreeCAD.getDocument("TestDocOther"), "Extra"))
+            finally:
+                for name in ("TestDocOther", "TestDoc"):
+                    if name in FreeCAD.listDocuments():
+                        FreeCAD.closeDocument(name)
+                self.doc = None
 
     def testIssue30418(self):
         class ViewProvider:
