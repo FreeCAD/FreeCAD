@@ -1383,3 +1383,50 @@ class TestAddSpindleHelper(unittest.TestCase):
         self.assertEqual(toolhead.max_power_kw, 3.0)
         self.assertEqual(toolhead.max_rpm, 24000)
         self.assertEqual(toolhead.min_rpm, 6000)
+
+
+class TestTrimTrailingZeros(unittest.TestCase):
+    """Tests for optional trimming of trailing zeros in formatted values."""
+
+    def _make_postprocessor(self, trim=True):
+        pp = object.__new__(PostProcessor)
+        pp.values = {
+            "OUTPUT_UNITS": OutputUnits.METRIC,
+            "AXIS_PRECISION": 3,
+            "FEED_PRECISION": 3,
+            "SPINDLE_DECIMALS": 0,
+            "TRIM_TRAILING_ZEROS": trim,
+        }
+        return pp
+
+    def test_preference_is_disabled_by_default(self):
+        schema = PostProcessor.get_common_property_schema()
+        prop = next(item for item in schema if item["name"] == "trim_trailing_zeros")
+
+        self.assertFalse(prop["default"])
+
+    def test_axis_formatting_unchanged_when_disabled(self):
+        pp = self._make_postprocessor(trim=False)
+
+        self.assertEqual(pp.format_parameter("X", 10.0), "10.000")
+        self.assertEqual(pp.format_parameter("Y", 0.0), "0.000")
+
+    def test_axis_formatting_trims_trailing_zeros_when_enabled(self):
+        pp = self._make_postprocessor(trim=True)
+
+        self.assertEqual(pp.format_parameter("X", 10.0), "10.0")
+        self.assertEqual(pp.format_parameter("Y", 0.0), "0.0")
+        self.assertEqual(pp.format_parameter("Z", -7.945), "-7.945")
+        self.assertEqual(pp.format_parameter("X", 12.340), "12.34")
+
+    def test_angle_formatting_trims_trailing_zeros_when_enabled(self):
+        pp = self._make_postprocessor(trim=True)
+
+        self.assertEqual(pp.format_parameter("A", 10.0), "10.0")
+        self.assertEqual(pp.format_parameter("B", 0.0), "0.0")
+        self.assertEqual(pp.format_parameter("C", -7.945), "-7.945")
+
+    def test_feed_formatting_is_not_affected(self):
+        pp = self._make_postprocessor(trim=True)
+
+        self.assertEqual(pp.format_parameter("F", 10.0), "600.000")

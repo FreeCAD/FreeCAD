@@ -69,6 +69,19 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
+def trim_trailing_zeros(value: str) -> str:
+    """Remove insignificant trailing zeros while keeping one decimal place."""
+    if "." not in value:
+        return value
+
+    value = value.rstrip("0").rstrip(".")
+
+    if "." not in value:
+        value += ".0"
+
+    return value
+
+
 def _sanitize_comment(string) -> str:
     """shared sanitizer"""
     # extra () could be confusing
@@ -718,6 +731,17 @@ class PostProcessor:
                 "help": translate(
                     "CAM",
                     "Decimals of precision for axis motion",
+                ),
+            },
+            {
+                "name": "trim_trailing_zeros",
+                "scope": SCOPE_MACHINE,
+                "type": "bool",
+                "label": translate("CAM", "Trim trailing zeros"),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    "Remove unnecessary trailing zeros from axis and angle values.",
                 ),
             },
             {
@@ -2172,7 +2196,10 @@ class PostProcessor:
 
     def _format_angle(self, value):
         precision = self.values["AXIS_PRECISION"]
-        return f"{float(value):.{precision}f}"
+        formatted = f"{float(value):.{precision}f}"
+        if self.values.get("TRIM_TRAILING_ZEROS", False):
+            return trim_trailing_zeros(formatted)
+        return formatted
 
     def _plane_postables(self, key, placement=None):
         """Postables for one tilted-work-plane line: TWP_DECLARE, TWP_ALIGN or
@@ -3880,10 +3907,12 @@ class PostProcessor:
 
         def format_axis_param(value):
             """Format axis parameter with unit conversion and precision."""
-
             converted_value = _convert_axis_param(value)
             precision = self.values["AXIS_PRECISION"]
-            return f"{converted_value:.{precision}f}"
+            formatted = f"{converted_value:.{precision}f}"
+            if self.values.get("TRIM_TRAILING_ZEROS", False):
+                return trim_trailing_zeros(formatted)
+            return formatted
 
         def format_feed_param(value):
             """Format feed parameter with speed precision and unit conversion."""
