@@ -36,6 +36,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
+#include "ObjectIdentifier.h"
 
 // FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -53,6 +54,126 @@ using CharRange = boost::iterator_range<const char*>;
 
 namespace
 {
+constexpr char copyOnChangeOverridesName[] = "_CopyOnChangeOverrides";
+
+PropertyStringList* getCopyOnChangeOverrides(const DocumentObject& copy)
+{
+    return freecad_cast<PropertyStringList*>(copy.getPropertyByName(copyOnChangeOverridesName));
+}
+
+bool hasCopyOnChangeOverride(const PropertyStringList* overrides, const char* name)
+{
+    return overrides
+        && std::ranges::find(overrides->getValues(), name) != overrides->getValues().end();
+}
+
+void recordCopyOnChangeOverride(DocumentObject& copy, const char* name)
+{
+    // Tracking needs to distinguish a literal override from an inherited value after reload.
+    auto* overrides = getCopyOnChangeOverrides(copy);
+    if (!overrides) {
+        overrides = static_cast<PropertyStringList*>(copy.addDynamicProperty(
+            "App::PropertyStringList",
+            copyOnChangeOverridesName,
+            "Base",
+            "Properties overridden by the owning link",
+            Prop_Hidden | Prop_Output
+        ));
+    }
+    if (overrides && !hasCopyOnChangeOverride(overrides, name)) {
+        auto names = overrides->getValues();
+        names.emplace_back(name);
+        overrides->setValues(names);
+    }
+}
+
+bool removeInheritedCopyOnChangeExpressions(DocumentObject& copy, const Property& property)
+{
+    bool removedExpression = false;
+    for (const auto& [path, expression] : copy.ExpressionEngine.getExpressions()) {
+        if (path.getProperty() == &property) {
+            copy.setExpression(path, {});
+            removedExpression = true;
+        }
+    }
+    return removedExpression;
+}
+
+void applyCopyOnChangeOverride(DocumentObject& copy,
+                               const Property& overrideProperty,
+                               bool requireInheritedExpression = false)
+{
+    auto* target = copy.getPropertyByName(overrideProperty.getName());
+    if (!target || !target->testStatus(Property::CopyOnChange)
+        || target->getTypeId() != overrideProperty.getTypeId()) {
+        return;
+    }
+    const bool removedExpression = removeInheritedCopyOnChangeExpressions(copy, *target);
+    if (requireInheritedExpression && !removedExpression) {
+        return;
+    }
+
+    recordCopyOnChangeOverride(copy, target->getName());
+    if (!target->isSame(overrideProperty)) {
+        if (std::unique_ptr<Property> value{overrideProperty.Copy()}) {
+            target->Paste(*value);
+        }
+    }
+}
+
+void applyExpressionBackedOverrides(DocumentObject& link,
+                                    DocumentObject& copy,
+                                    bool requireInheritedExpression = false)
+{
+    for (const auto& [path, expression] : link.ExpressionEngine.getExpressions()) {
+        if (auto* property = path.getProperty();
+            property && LinkBaseExtension::isCopyOnChangeProperty(&link, *property)) {
+            applyCopyOnChangeOverride(copy, *property, requireInheritedExpression);
+        }
+    }
+}
+
+bool canUpdateCopyOnChangeConfiguration(const DocumentObject& link, const Document* document)
+{
+    return document && !link.isRestoring() && !document->isPerformingTransaction();
+}
+
+bool isOwnedCopyOnChangeTarget(const LinkBaseExtension& link, const DocumentObject& target)
+{
+    const auto* source = link.getLinkCopyOnChangeSourceValue();
+    const auto mode = link.getLinkCopyOnChangeValue();
+    return source && source != &target && link.getLinkedObjectValue() == &target
+        && (mode == LinkBaseExtension::CopyOnChangeOwned
+            || mode == LinkBaseExtension::CopyOnChangeTracking);
+}
+
+void refreshCopyOnChangeValues(DocumentObject& link, const DocumentObject& source)
+{
+    const auto expressions = link.ExpressionEngine.getExpressions();
+    std::vector<Property*> properties;
+    source.getPropertyList(properties);
+    for (auto* sourceProperty : properties) {
+        if (sourceProperty->getContainer() != &source
+            || !sourceProperty->testStatus(Property::CopyOnChange)) {
+            continue;
+        }
+        auto* property = link.getPropertyByName(sourceProperty->getName());
+        if (!property || !LinkBaseExtension::isCopyOnChangeProperty(&link, *property)
+            || property->getTypeId() != sourceProperty->getTypeId()) {
+            continue;
+        }
+        const bool hasExpression = std::ranges::any_of(expressions, [property](const auto& binding) {
+            return binding.first.getProperty() == property;
+        });
+        if (!hasExpression && !property->isSame(*sourceProperty)) {
+            Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, property);
+            if (std::unique_ptr<Property> value{sourceProperty->Copy()}) {
+                property->Paste(*value);
+            }
+        }
+    }
+}
+
 bool isSuppressedLinkElement(const App::DocumentObject* obj)
 {
     if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
@@ -621,8 +742,13 @@ void LinkBaseExtension::syncCopyOnChange()
     // object to the new copy.
     std::vector<App::Property*> propList;
     linked->getPropertyList(propList);
+    const PropertyStringList* overrides = getCopyOnChangeOverrides(*linked);
     for (auto prop : propList) {
         if (!prop->testStatus(Property::CopyOnChange) || prop->getContainer() != linked) {
+            continue;
+        }
+        if (hasCopyOnChangeOverride(overrides, prop->getName())) {
+            applyCopyOnChangeOverride(*newLinked, *prop);
             continue;
         }
         auto p = newLinked->getPropertyByName(prop->getName());
@@ -631,6 +757,7 @@ void LinkBaseExtension::syncCopyOnChange()
             p->Paste(*pCopy);
         }
     }
+    applyExpressionBackedOverrides(*parent, *newLinked);
 
     if (copyOnChangeGroup) {
         // The order of the copied objects is in dependency order (because of
@@ -767,9 +894,11 @@ void LinkBaseExtension::setupCopyOnChange(DocumentObject* parent, bool checkSour
         return;
     }
 
+    bool sourceChanged = false;
     if (checkSource && !pauseCopyOnChange) {
         PropertyLink* source = getLinkCopyOnChangeSourceProperty();
         if (source) {
+            sourceChanged = source->getValue() != linked;
             source->setValue(linked);
             if (auto touched = getLinkCopyOnChangeTouchedProperty()) {
                 touched->setValue(false);
@@ -778,9 +907,18 @@ void LinkBaseExtension::setupCopyOnChange(DocumentObject* parent, bool checkSour
     }
 
     hasCopyOnChange = setupCopyOnChange(parent, linked, &copyOnChangeConns, hasCopyOnChange);
+    auto* document = parent->getDocument();
+    if (sourceChanged && canUpdateCopyOnChangeConfiguration(*parent, document)) {
+        refreshCopyOnChangeValues(*parent, *linked);
+    }
     if (hasCopyOnChange && getLinkCopyOnChangeValue() == CopyOnChangeOwned && getLinkedObjectValue()
         && getLinkedObjectValue() == getLinkCopyOnChangeSourceValue()) {
         makeCopyOnChange();
+    }
+    // Older documents can have an active expression on both sides of an override.
+    if (!pauseCopyOnChange && isOwnedCopyOnChangeTarget(*this, *linked)
+        && canUpdateCopyOnChangeConfiguration(*parent, document)) {
+        applyExpressionBackedOverrides(*parent, *linked, true);
     }
 }
 
@@ -915,13 +1053,7 @@ void LinkBaseExtension::checkCopyOnChange(App::DocumentObject* parent, const App
     if (getLinkCopyOnChangeValue() == CopyOnChangeOwned
         || (getLinkCopyOnChangeValue() == CopyOnChangeTracking
             && linked != getLinkCopyOnChangeSourceValue())) {
-        auto p = linked->getPropertyByName(prop.getName());
-        if (p && p->getTypeId() == prop.getTypeId()) {
-            std::unique_ptr<Property> pcopy(prop.Copy());
-            if (pcopy) {
-                p->Paste(*pcopy);
-            }
-        }
+        applyCopyOnChangeOverride(*linked, prop);
         return;
     }
 
@@ -932,13 +1064,7 @@ void LinkBaseExtension::checkCopyOnChange(App::DocumentObject* parent, const App
 
     auto copied = makeCopyOnChange();
     if (copied) {
-        linkedProp = copied->getPropertyByName(prop.getName());
-        if (linkedProp && linkedProp->getTypeId() == prop.getTypeId()) {
-            std::unique_ptr<Property> pcopy(prop.Copy());
-            if (pcopy) {
-                linkedProp->Paste(*pcopy);
-            }
-        }
+        applyCopyOnChangeOverride(*copied, prop);
     }
 }
 
@@ -2148,11 +2274,11 @@ void LinkBaseExtension::update(App::DocumentObject* parent, const Property* prop
 
         if (getLinkCopyOnChangeValue() == CopyOnChangeOwned && !pauseCopyOnChange
             && !parent->getDocument()->isPerformingTransaction()) {
-            getLinkCopyOnChangeProperty()->setValue(CopyOnChangeEnabled);
+            auto* mode = getLinkCopyOnChangeProperty();
+            Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, mode);
+            mode->setValue(CopyOnChangeEnabled);
         }
-        else {
-            setupCopyOnChange(parent, true);
-        }
+        setupCopyOnChange(parent, true);
     }
     else if (prop == getLinkCopyOnChangeProperty()) {
         setupCopyOnChange(parent, getLinkCopyOnChangeSourceValue() == nullptr);
