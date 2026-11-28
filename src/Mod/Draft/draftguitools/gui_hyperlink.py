@@ -54,6 +54,13 @@ __title__ = "FreeCAD Draft Workbench GUI Tools - Hyperlinks tools"
 __author__ = ""
 __url__ = "https://www.freecad.org"
 
+_FILE_LINK_PREFIX = r"\w:[\\/]|%\w+%|\\\\\w+|/[\w-]+"
+_LINK_PREFIX = rf"(?:{_FILE_LINK_PREFIX}|\w{{3,5}}://)"
+# A spaced dash can introduce prose before another absolute link.
+_HYPERLINK_PATTERN = re.compile(
+    rf"{_LINK_PREFIX}" rf"(?:(?! - (?:[\w\\/: -]* )?{_LINK_PREFIX})[\w\\/: -])+" r"\.\S+"
+)
+
 
 class Draft_Hyperlink:
     """The Draft_Hyperlink FreeCAD command definition."""
@@ -92,12 +99,7 @@ class Draft_Hyperlink:
             if hasattr(o.Object, "Text"):
 
                 for text in o.Object.Text:
-                    hyperlinks = re.findall(
-                        r"((\w:[\\/]|%\w+%|\\\\\w+|/\w+|\w{3,5}://)[\w\\/: ]+\.[\S]+)", text
-                    )
-
-                    for hyperlink in hyperlinks:
-                        self.hyperlinks_list.append(hyperlink[0])
+                    self.hyperlinks_list.extend(_HYPERLINK_PATTERN.findall(text))
 
     def has_hyperlinks(self):
         self.find_hyperlinks()
@@ -105,10 +107,7 @@ class Draft_Hyperlink:
         return len(self.hyperlinks_list) > 0
 
     def open_hyperlink(self, hyperlink):
-        file_hyperlink = len(re.findall(r"^(\w:[\\/]|%\w+%|\\\\\w+|/\w+)", hyperlink)) > 0
-
-        url = None
-        if file_hyperlink:
+        if re.match(_FILE_LINK_PREFIX, hyperlink):
             if not os.path.isfile(hyperlink):
                 _msg(translate("draft", "File not found:") + " " + hyperlink)
                 return
