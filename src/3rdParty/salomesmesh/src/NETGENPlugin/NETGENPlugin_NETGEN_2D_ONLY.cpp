@@ -29,6 +29,7 @@
 #undef NOMINMAX
 #endif
 
+#include <TopTools_MapOfShape.hxx>
 #include "NETGENPlugin_NETGEN_2D_ONLY.hxx"
 
 #include "NETGENPlugin_Mesher.hxx"
@@ -123,6 +124,7 @@ namespace netgen {
 #endif
 }
 
+#include "NETGENPlugin_ngcompat.hxx"
 using namespace std;
 using namespace netgen;
 using namespace nglib;
@@ -379,7 +381,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
         SMESH_TNodeXYZ n1 = seg->GetNode(0);
         SMESH_TNodeXYZ n2 = seg->GetNode(1);
         gp_XYZ p = 0.5 * ( n1 + n2 );
-        netgen::Point3d pi(p.X(), p.Y(), p.Z());
+        ngcompat::Point3 pi(p.X(), p.Y(), p.Z());
         ngMeshes[0]->RestrictLocalH( pi, factor * ( n1 - n2 ).Modulus() );
       }
     }
@@ -593,7 +595,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
             for ( size_t iP = 1; iP < uvPtVec.size(); ++iP )
             {
               SMESH_TNodeXYZ   p( uvPtVec[ iP ].node );
-              netgen::Point3d np( p.X(),p.Y(),p.Z());
+              ngcompat::Point3 np( p.X(),p.Y(),p.Z());
               double segLen = p.Distance( uvPtVec[ iP-1 ].node );
               double   size = ngMesh->GetH( np );
               netgen::mparam.minh = Min( netgen::mparam.minh, size );
@@ -625,7 +627,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       // add nodes
       for ( int ngID = nbInputNodes + 1; ngID <= nbNodes; ++ngID )
       {
-        const MeshPoint& ngPoint = ngMesh->Point( ngID );
+        const MeshPoint& ngPoint = ngMesh->Point( ngcompat::PI( ngID ));
         SMDS_MeshNode * node = meshDS->AddNode(ngPoint(0), ngPoint(1), ngPoint(2));
         nodeVec[ ngID ] = node;
       }
@@ -635,11 +637,11 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       vector<const SMDS_MeshNode*> nodes;
       for ( i = 1; i <= nbFaces ; ++i )
       {
-        const Element2d& elem = ngMesh->SurfaceElement(i);
+        const auto& elem = ngMesh->SurfaceElement( ngcompat::SEI( i ));
         nodes.resize( elem.GetNP() );
         for (j=1; j <= elem.GetNP(); ++j)
         {
-          int pind = elem.PNum(j);
+          int pind = ngcompat::Nr( elem.PNum(j) );
           if ( pind < 1 )
             break;
           nodes[ j-1 ] = nodeVec[ pind ];

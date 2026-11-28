@@ -35,6 +35,7 @@
 #include <windows.h>
 #undef NOMINMAX
 #endif
+#include <TopTools_MapOfShape.hxx>
 #include "NETGENPlugin_NETGEN_3D.hxx"
 
 #include "NETGENPlugin_Hypothesis.hxx"
@@ -120,6 +121,7 @@ namespace netgen {
     DLL_HEADER extern volatile multithreadt multithread;
 #endif
 }
+#include "NETGENPlugin_ngcompat.hxx"
 using namespace nglib;
 using namespace std;
 
@@ -507,7 +509,7 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   }
   else
   {
-    netgen::Point3d pmin, pmax;
+    ngcompat::Point3 pmin, pmax;
     ngMesh->GetBox (pmin, pmax);
     netgen::mparam.maxh = Dist(pmin, pmax)/2;
   }
