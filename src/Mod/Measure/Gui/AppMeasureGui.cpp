@@ -91,6 +91,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     CreateMassPropertiesCommands();
 
     // clang-format off
+    MeasureGui::DimensionLabel::initClass();
     MeasureGui::DimensionLinear::initClass();
     MeasureGui::SoScreenSpaceScale::initClass();
 
