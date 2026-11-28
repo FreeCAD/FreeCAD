@@ -226,22 +226,27 @@ class Heatwriter:
                     )
                 self.write.material(name, "Name", m["Name"])
                 self.write.material(name, "Density", self.write.getDensity(m))
-                if "ThermalConductivity" not in m:
-                    raise general_writer.WriteError(
-                        "Used material does not specify the necessary 'Thermal Conductivity'."
-                    )
-                self.write.material(
-                    name,
-                    "Heat Conductivity",
-                    self.write.convert(m["ThermalConductivity"], "M*L/(T^3*O)"),
+                # A table carried by the FEM material object wins over the scalar of the card
+                conductivity = self.write.convertTable(
+                    obj, "ConductivityTable", "M*L/(T^3*O)", "thermal conductivity"
                 )
-                if "SpecificHeat" not in m:
-                    raise general_writer.WriteError(
-                        "Used material does not specify the necessary 'Specific Heat'."
-                    )
-                self.write.material(
-                    name, "Heat Capacity", self.write.convert(m["SpecificHeat"], "L^2/(T^2*O)")
+                if conductivity is None:
+                    if "ThermalConductivity" not in m:
+                        raise general_writer.WriteError(
+                            "Used material does not specify the necessary 'Thermal Conductivity'."
+                        )
+                    conductivity = self.write.convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                self.write.material(name, "Heat Conductivity", conductivity)
+                capacity = self.write.convertTable(
+                    obj, "SpecificHeatTable", "L^2/(T^2*O)", "specific heat"
                 )
+                if capacity is None:
+                    if "SpecificHeat" not in m:
+                        raise general_writer.WriteError(
+                            "Used material does not specify the necessary 'Specific Heat'."
+                        )
+                    capacity = self.write.convert(m["SpecificHeat"], "L^2/(T^2*O)")
+                self.write.material(name, "Heat Capacity", capacity)
 
 
 ##  @}

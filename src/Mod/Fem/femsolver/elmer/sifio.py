@@ -97,6 +97,7 @@ def createSection(name):
 def writeSections(sections, stream):
     ids = _IdManager()
     _Writer(ids, sections, stream).write()
+    return ids
 
 
 def isNumbered(section):
@@ -123,6 +124,12 @@ class Builder:
 
     def getBodyNames(self):
         return self._bodies.keys()
+
+    def getBodySection(self, body, key):
+        section = self._bodies.get(body)
+        if section is None or key not in section:
+            return None
+        return section[key]
 
     def simulation(self, key, attr):
         self._simulation[key] = attr
@@ -214,7 +221,8 @@ class Sif:
         stream.write(_NEWLINE * 2)
         self._writeHeader(stream)
         stream.write(_NEWLINE * 2)
-        writeSections(self.sections, stream)
+        # The numbers the sections got, Elmer runs its solvers in that order
+        self.ids = writeSections(self.sections, stream)
 
     def _writeCheckKeywords(self, stream):
         stream.write(self._CHECK_KEYWORDS)

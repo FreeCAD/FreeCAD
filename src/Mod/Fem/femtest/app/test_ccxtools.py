@@ -339,6 +339,62 @@ class TestCcxTools(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_thermomech_bimetal_temperature_tables(self):
+        import Materials
+        from femexamples.thermomech_bimetal import setup
+        from femtools import materialtables
+
+        setup(self.document, "ccxtools", test_mode=True)
+        copper = self.document.MaterialCopper
+        manager = Materials.MaterialManager()
+        # Both cards have empty cells and fall in temperature
+        elastic_card = manager.getMaterial("1b714d0b-ed2b-4130-86cf-f2282658e2be")
+        thermal_card = manager.getMaterial("12cc83fb-d1d4-460e-a8fc-5236afef6ad0")
+        copper.ElasticTable = materialtables.rows_from_material(elastic_card, "ElasticTable")
+        for table in ("ConductivityTable", "SpecificHeatTable", "ExpansionTable"):
+            setattr(copper, table, materialtables.rows_from_material(thermal_card, table))
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_temperature_table_rows(self):
+        from femtools import materialtables
+
+        read = materialtables.sorted_rows
+        rows = read(["400 K, 17.5 µm/m/K", "+300 K, -1.65e-05 1/K"], "ExpansionTable", "Copper")
+        self.assertEqual([temperature for temperature, _cells in rows], [300.0, 400.0])
+        self.assertAlmostEqual(rows[0][1][0].getValueAs("1/K").Value, -1.65e-05)
+        self.assertAlmostEqual(rows[1][1][0].getValueAs("1/K").Value, 1.75e-05)
+        rows = read(["300 K, 120 GPa, .34"], "ElasticTable", "Copper")
+        self.assertAlmostEqual(rows[0][1][1].Value, 0.34)
+        # An empty item left by the list editor is no row, 0 K is a temperature
+        rows = read(["0 K, 400 W/m/K", " "], "ConductivityTable", "Copper")
+        self.assertEqual([temperature for temperature, _cells in rows], [0.0])
+        # Rows are typed by hand, a wrong one is named with the form to use
+        wrong = [
+            ("ConductivityTable", "abc"),
+            ("ConductivityTable", "300 K, 401 foo"),
+            ("ConductivityTable", "300 K"),
+            ("ConductivityTable", "300, 401 W/m/K"),
+            ("ConductivityTable", "300 K, 5 V"),
+            ("ConductivityTable", "1,5 K, 401 W/m/K"),
+            # The parser reads a bare unit as 1 of it, an empty cell as a tiny number
+            ("ConductivityTable", "300 K, W/m/K"),
+            ("ConductivityTable", "K, 401 W/m/K"),
+            ("ElasticTable", "300 K, 119000 MPa, "),
+            ("ConductivityTable", "300 K, 1/0 W/m/K"),
+            ("ConductivityTable", "1e400 K, 401 W/m/K"),
+            ("ConductivityTable", "-5 K, 401 W/m/K"),
+            ("ElasticTable", "300 K, 119000 MPa"),
+            ("ElasticTable", "300 K, 119000 MPa, 0,34"),
+            ("ElasticTable", "300 K, 119000 MPa, 0.34 MPa"),
+        ]
+        good = {"ConductivityTable": "290 K, 400 W/m/K", "ElasticTable": "290 K, 120 GPa, 0.34"}
+        for table, row in wrong:
+            with self.assertRaises(ValueError) as caught:
+                read([good[table], row], table, "Copper")
+            self.assertIn(f"Copper, {table}: can't read the row '{row}'", str(caught.exception))
+
+    # ********************************************************************************************
     def input_file_writing_test(
         self,
         base_name,

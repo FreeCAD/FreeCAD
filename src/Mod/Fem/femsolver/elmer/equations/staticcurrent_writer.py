@@ -68,12 +68,13 @@ class SCwriter:
             refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
             for name in (n for n in refs if n in bodies):
                 self.write.material(name, "Name", m["Name"])
-                if "ElectricalConductivity" in m:
-                    self.write.material(
-                        name,
-                        "Electric Conductivity",
-                        Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m").Value,
+                conductivity = self.write.electricalConductivityTable(obj)
+                if conductivity is None and "ElectricalConductivity" in m:
+                    conductivity = (
+                        Units.Quantity(m["ElectricalConductivity"]).getValueAs("S/m").Value
                     )
+                if conductivity is not None:
+                    self.write.material(name, "Electric Conductivity", conductivity)
 
     def handleStaticCurrentBndConditions(self):
         for obj in self.write.getMember("Fem::ConstraintElectromagnetic"):

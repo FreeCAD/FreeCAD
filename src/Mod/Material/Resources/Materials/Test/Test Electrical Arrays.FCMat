@@ -1,0 +1,15 @@
+---
+# SPDX-License-Identifier: LGPL-2.1-or-later
+General:
+  UUID: "bf4cce7d-9e0b-4687-bd7a-69d5385c1f12"
+  Name: "Test Electrical Arrays"
+  Author: "The FreeCAD project association"
+  License: "LGPL-2.1-or-later"
+  Description: "This material is for testing purposes only. It does not describe any real material."
+Models:
+  ElectricalArrays:
+    UUID: '8a95d378-8cf6-41c4-8756-77a3212657cc'
+    ElectricalProperties:
+      - [["1500 K", "70000 S/m"],
+         ["900 K", "60000 S/m"],
+         ["300 K", ""]]
