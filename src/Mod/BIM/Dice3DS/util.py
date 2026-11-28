@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: 2003 Carl Banks
 """Utitily function for Dice3DS.
 
 Defines some routines for calculating normals and transforming points.
