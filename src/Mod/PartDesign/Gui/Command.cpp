@@ -49,7 +49,9 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
+#include <Mod/PartDesign/App/FeatureLoft.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -1539,8 +1541,12 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
             return;
         }
 
-        // specific parameters for pipe
-        Gui::Command::updateActive();
+        auto pcPipe = dynamic_cast<PartDesign::Pipe*>(Feat);
+        Base::ObjectStatusLocker<App::Document::Status, App::Document> guard(
+            App::Document::IgnoreErrorOnRecompute,
+            Feat->getDocument(),
+            pcPipe && !pcPipe->Spine.getValue()
+        );
 
         finishProfileBased(cmd, sketch, Feat);
     };
@@ -1589,8 +1595,12 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
             return;
         }
 
-        // specific parameters for pipe
-        Gui::Command::updateActive();
+        auto pcPipe = dynamic_cast<PartDesign::Pipe*>(Feat);
+        Base::ObjectStatusLocker<App::Document::Status, App::Document> guard(
+            App::Document::IgnoreErrorOnRecompute,
+            Feat->getDocument(),
+            pcPipe && !pcPipe->Spine.getValue()
+        );
 
         finishProfileBased(cmd, sketch, Feat);
     };
@@ -1639,8 +1649,12 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
             return;
         }
 
-        // specific parameters for pipe
-        Gui::Command::updateActive();
+        auto pcLoft = dynamic_cast<PartDesign::Loft*>(Feat);
+        Base::ObjectStatusLocker<App::Document::Status, App::Document> guard(
+            App::Document::IgnoreErrorOnRecompute,
+            Feat->getDocument(),
+            pcLoft && pcLoft->Sections.getValues().empty()
+        );
 
         finishProfileBased(cmd, sketch, Feat);
     };
@@ -1688,8 +1702,12 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
             return;
         }
 
-        // specific parameters for pipe
-        Gui::Command::updateActive();
+        auto pcLoft = dynamic_cast<PartDesign::Loft*>(Feat);
+        Base::ObjectStatusLocker<App::Document::Status, App::Document> guard(
+            App::Document::IgnoreErrorOnRecompute,
+            Feat->getDocument(),
+            pcLoft && pcLoft->Sections.getValues().empty()
+        );
 
         finishProfileBased(cmd, sketch, Feat);
     };
