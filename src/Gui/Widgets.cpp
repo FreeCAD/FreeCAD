@@ -38,6 +38,8 @@
 #include <QTextBlock>
 #include <QTimer>
 #include <QToolTip>
+#include <QFontMetrics>
+#include <QScreen>
 
 
 #include <Base/Exception.h>
@@ -1221,6 +1223,60 @@ bool ToolTip::eventFilter(QObject* o, QEvent* e)
             break;
     }
     return false;
+}
+
+// ----------------------------------------------------------------------
+
+ToolTipWrapFilter::ToolTipWrapFilter(QObject* parent)
+    : QObject(parent)
+{}
+
+bool ToolTipWrapFilter::eventFilter(QObject* o, QEvent* e)
+{
+    if (e->type() == QEvent::ToolTip) {
+        auto* widget = qobject_cast<QWidget*>(o);
+        if (!widget) {
+            return false;
+        }
+
+        const QString original = widget->toolTip();
+        if (original.isEmpty() || Qt::mightBeRichText(original)) {
+            return false;
+        }
+
+        auto* he = static_cast<QHelpEvent*>(e);
+        const QString newStr = wrapForDisplay(original, widget);
+
+        if (newStr != original) {
+            QToolTip::showText(he->globalPos(), newStr, widget, QRect(), widget->toolTipDuration());
+            return true;
+        }
+        return false;
+    }
+    return QObject::eventFilter(o, e);
+}
+
+QString ToolTipWrapFilter::wrapForDisplay(const QString& original, const QWidget* widget)
+{
+    const QScreen* screen = widget->screen();
+    if (!screen) {
+        return original;
+    }
+
+    const int maxWidth = screen->availableSize().width() / 3;
+
+    const QFontMetrics fm(QToolTip::font());
+
+    int widest = 0;
+    for (const QString& line : original.split(QLatin1Char('\n'))) {
+        widest = std::max(widest, fm.horizontalAdvance(line));
+    }
+
+    if (widest <= maxWidth) {
+        return original;
+    }
+
+    return QStringLiteral("<p style='white-space:pre-wrap'>%1</p>").arg(original.toHtmlEscaped());
 }
 
 // ----------------------------------------------------------------------
