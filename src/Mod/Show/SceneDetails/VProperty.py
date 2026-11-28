@@ -47,4 +47,14 @@ class VProperty(SceneDetail):
         return getattr(self.doc.getObject(self.objname).ViewObject, self.propname)
 
     def apply_data(self, val):
-        setattr(self.doc.getObject(self.objname).ViewObject, self.propname, val)
+        vo = self.doc.getObject(self.objname).ViewObject
+        if self.propname not in vo.PropertiesList or "NoModify" in vo.getPropertyStatus(
+            self.propname
+        ):
+            setattr(vo, self.propname, val)
+            return
+        vo.setPropertyStatus(self.propname, "NoModify")
+        try:
+            setattr(vo, self.propname, val)
+        finally:
+            vo.setPropertyStatus(self.propname, "-NoModify")

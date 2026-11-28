@@ -445,6 +445,10 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
                 App::Property::NoModify,
                 &ShapeAppearance
             );
+            Base::ObjectStatusLocker<App::Property::Status, App::Property> placementGuard(
+                App::Property::NoModify,
+                &ShowPlacement
+            );
             // The material has to be checked again (#0001736)
             onChanged(&ShapeAppearance);
             onChanged(&ShowPlacement);
