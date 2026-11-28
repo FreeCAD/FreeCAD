@@ -239,11 +239,16 @@ void SectionAnalysisWidget::setupConnections()
         this,
         &SectionAnalysisWidget::onAngle2Changed
     );
-    connect(ui->offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, [this](double value) {
-        const PanelWrite writing(this);
-        feature->PlaneOffset.setValue(value);
-        recompute();
-    });
+    connect(
+        ui->offsetSpin,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            const PanelWrite writing(this);
+            feature->PlaneOffset.setValue(value);
+            recompute();
+        }
+    );
     connect(ui->flipCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onFlipToggled);
     connect(ui->sectionColorBtn, &Gui::ColorButton::changed, this, [this]() {
         onSectionColorChanged(ui->sectionColorBtn->color());
@@ -252,7 +257,12 @@ void SectionAnalysisWidget::setupConnections()
     connect(ui->autoHideHatchCheck, &QCheckBox::toggled, this, [this](bool on) {
         viewProvider->AutoHideHatching.setValue(on);
     });
-    connect(ui->perSolidColorCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onPerSolidColorToggled);
+    connect(
+        ui->perSolidColorCheck,
+        &QCheckBox::toggled,
+        this,
+        &SectionAnalysisWidget::onPerSolidColorToggled
+    );
     connect(ui->ghostCheck, &QCheckBox::toggled, this, [this](bool on) {
         viewProvider->ShowRemovedMaterial.setValue(on);
     });
