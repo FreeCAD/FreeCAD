@@ -2,10 +2,17 @@
 
 #include <gtest/gtest.h>
 
+#include <numbers>
+
 #include <boost/core/ignore_unused.hpp>
 #include "Mod/Part/App/FeaturePartCommon.h"
+#include "Mod/Part/App/Datums.h"
 #include <src/App/InitApplication.h>
+#include <App/Origin.h>
+#include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <Precision.hxx>
+#include <TopoDS.hxx>
 #include "PartTestHelpers.h"
 #include "App/MappedElement.h"
 #include <Base/Interpreter.h>
@@ -237,4 +244,24 @@ TEST_F(FeaturePartTest, getComplexElementTypes)
     EXPECT_STREQ(types[0], "Face");
     EXPECT_STREQ(types[1], "Edge");
     EXPECT_STREQ(types[2], "Vertex");
+}
+
+static gp_Dir lineShapeDirection(const App::DocumentObject* obj)
+{
+    auto shape = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+    return BRepAdaptor_Curve(TopoDS::Edge(shape.getSubShape(TopAbs_EDGE, 1))).Line().Direction();
+}
+
+TEST_F(FeaturePartTest, lineShapeFollowsOwnBaseDirection)
+{
+    auto origin = _doc->addObject<App::Origin>();
+    auto datum = _doc->addObject<Part::DatumLine>();
+    datum->Placement.setValue(
+        Base::Placement(Base::Vector3d(), Base::Rotation(Base::Vector3d(0, 1, 0), std::numbers::pi / 4))
+    );
+
+    EXPECT_TRUE(lineShapeDirection(origin->getX()).IsEqual(gp::DX(), Precision::Angular()));
+    EXPECT_TRUE(lineShapeDirection(datum).IsEqual(gp_Dir(1, 0, 1), Precision::Angular()));
+    EXPECT_TRUE(lineShapeDirection(origin->getY()).IsEqual(gp::DY(), Precision::Angular()));
+    EXPECT_TRUE(lineShapeDirection(origin->getZ()).IsEqual(gp::DZ(), Precision::Angular()));
 }

@@ -1046,17 +1046,12 @@ static TopoShape _getTopoShape(
         }
         else {
             if (linked->isDerivedFrom<App::Line>()) {
-                static TopoDS_Shape _shape;
-                if (_shape.IsNull()) {
-                    auto line = static_cast<App::Line*>(linked);
-                    Base::Vector3d dir = line->getBaseDirection();
-                    BRepBuilderAPI_MakeEdge builder(
-                        gp_Lin(gp_Pnt(0, 0, 0), Base::convertTo<gp_Dir>(dir))
-                    );
-                    _shape = builder.Shape();
-                    _shape.Infinite(Standard_True);
-                }
-                shape = TopoShape(tag, hasher, _shape);
+                auto line = static_cast<App::Line*>(linked);
+                Base::Vector3d dir = line->getBaseDirection();
+                BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), Base::convertTo<gp_Dir>(dir)));
+                TopoDS_Shape edge = builder.Shape();
+                edge.Infinite(Standard_True);
+                shape = TopoShape(tag, hasher, edge);
             }
             else if (linked->isDerivedFrom<App::Plane>()) {
                 static TopoDS_Shape _shape;
